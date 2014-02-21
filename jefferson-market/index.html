@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Jefferson Market</title>
+    <link rel="stylesheet" href="/css/nyplbase/css/style.min.css">
 </head>
  
 <body>
@@ -10,11 +11,10 @@
     <div>HEADER</div>
   </header>
 
-  <div class="branch">
-
+  <div class="branch grid">
     <!-- This is h-card microformat -->
     <!-- http://microformats.org/wiki/h-card -->
-    <div class="h-card">
+    <div class="h-card grid__item one-third">
       <h1 class="p-org">Jefferson Market</h1>
       <div class="p-adr">
         <div class="p-street-address">425 Avenue of the Americas (at 10th St.)</div>
@@ -23,28 +23,31 @@
         <span class="p-postal-code">10011-8454</span>
       </div>
       <div class="p-tel">(212) 243-4334</div>
-    </div>
+
+      <ul class="top-services">
+        <li class="icon-cog">Books</li>
+        <li class="icon-cog">Wheelchair accessible</li>
+        <li class="icon-cog">Bookdrop</li>
+      </ul>
+    </div><!--
+
+    --><div class="grid__item one-third">
+      <div class="maplink"><a href="directions.html">Map</a></div>
+      <div><a href="directions.html">Get Directions</a></div>
+      <div class="nearby-branches"><a href="">Nearby branches</a></div>
+      <div>Library Manager: Frank Collerius</div>
     
-    <div class="maplink"><a href="directions.html">Map</a></div>
-    <div><a href="directions.html">Get Directions</a></div>
-    <div class="nearby-branches"><a href="">Nearby branches</a></div>
-    <div>Library Manager: Frank Collerius</div>
     
-    <ul class="top-services">
-      <li class="icon books">Books</li>
-      <li class="icon wheelchair">Wheelchair accessible</li>
-      <li class="icon bookdrop">Bookdrop</li>
-    </ul>
+      <ul class="social">
+        <li class="icon-facebook">Facebook</li>
+        <li class="icon-twitter">Twitter</li>
+        <li class="icon-youtube">Youtube</li>
+      </ul>
+    </div><!--
     
-    <ul class="social">
-      <li class="icon facebook">Facebook</li>
-      <li class="icon twitter">Twitter</li>
-      <li class="icon youtube">Youtube</li>
-    </ul>
-    
-    <!-- This is h-event microformat -->
-    <!-- http://microformats.org/wiki/h-event -->
-    <div id="hours">
+    --><div id="hours" class="grid__item one-third">
+      <!-- This is h-event microformat -->
+      <!-- http://microformats.org/wiki/h-event -->
       <div class="h-event" id="hours-today">
         <h2 class="p-name">Today’s Hours</h2>
         
@@ -78,18 +81,18 @@
           </tbody>
         </table>
       </div>
+      <div id="catalog"><a href="">Catalog Items Here</a></div>
     </div>
-    <div id="catalog"><a href="">Catalog Items Here</a></div>
     
     <div id="features">
       <h2>Featured</h2>
-      <ul>
+      <ul class="grid-wrapper">
         <li>Feature One</li>
         <li>Feature Two</li>
       </ul>  
     </div>
     
-    <div id="events">
+    <div id="events grid">
       <h2>Events</h2>
       <ul>
         <li>Event One</li>
@@ -101,12 +104,13 @@
       <div><a href="events.html">See more events at Jefferson Market</a></div>
     </div>
     
-    <div id="about">
+    <div class="grid-wrapper">
+    <div id="about" class="grid__item one-half">
       <p>This space is for the general blurb</p>
       <div><a href="">More about Jefferson Market</a></div>
     </div>
     
-    <div id="plan-your-visit">
+    <div id="plan-your-visit" class="grid__item one-half">
       <ul>
         <li>Reserve a Computer</li>
         <li>Interlibrary Loan</li>
