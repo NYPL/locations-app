@@ -6,25 +6,42 @@ nyplLocationApp.factory('nypl_coordinates_service', ['$q', '$window', '$rootScop
     getCoordinates: function() {
       var defer = $q.defer(); // Object containing success/failure conditions
         
-        // Verify the browser supports Geolocation
-       if(!$window.navigator) {
-          $rootScope.$apply( function() { 
-            defer.reject(new Error ("Your browser does not support Geolocation"));
-          });
-       }
-       else {
+      // Verify the browser supports Geolocation
+      if (!$window.navigator && !$window.navigator.geolocation) {
+        $rootScope.$apply( function() { 
+          defer.reject(new Error ("Your browser does not support Geolocation"));
+        });
+      } else {
         $window.navigator.geolocation.getCurrentPosition(function (position) {
-          $rootScope.$apply( function() {
+          $rootScope.$apply(function () {
             defer.resolve(position.coords); // Extract coordinates for geoPosition obj
           });
         }, function (error) {
-          $rootScope.$apply( function() {
-            defer.reject(error);
-          });
+          switch (error.code) {
+            case 1:
+              $rootScope.$apply( function() {
+                defer.reject(new Error ("User denied permission"));
+              });
+              break;
+
+            case 1:
+              $rootScope.$apply( function() {
+                defer.reject(new Error ("The position is currently unavailable"));
+              });
+              break;
+
+            case 1:
+              $rootScope.$apply( function() {
+                defer.reject(new Error ("The request timed out"));
+              });
+              break;
+          }
         });
-       }
+      }
+
       return defer.promise; // Enables 'then' callback
     },
+
     // Calculate distance using 
     getDistance: function(lat1, lon1, lat2, lon2) {
       var radlat1 = Math.PI * lat1/180;
