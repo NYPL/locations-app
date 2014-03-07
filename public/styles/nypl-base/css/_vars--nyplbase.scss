@@ -1,0 +1,319 @@
+/*------------------------------------*\
+    VARS.SCSS
+\*------------------------------------*/
+/**
+ * Any variables you find set in inuit.css’ `_defaults.scss` that you do not wish to
+ * keep, simply redefine here. This means that if inuit.css, for example, sets
+ * your `$base-font-size` at 16px and you wish it to be 14px, simply redeclare
+ * that variable in this file. inuit.css ignores its own variables in favour of
+ * using your own, so you can completely modify how inuit.css works without ever
+ * having to alter the framework itself.
+ */
+
+
+
+
+
+/*------------------------------------*\
+    $CUSTOM
+\*------------------------------------*/
+/**
+ * Place any of your own variables that sit on top of inuit.css here.
+ *
+ * NOTE:
+ * I'm placing some custom variables here in this file 
+ * (rather than below Overrides, as it is in Inuit's original file)
+ * so that i can use NYPL colors in the Inuit overrides.
+ *
+ */
+
+
+/**
+ *  turn on/off NYPL-specific partials below
+ */
+			/**
+			 * NOTETOSELF --------------------------------------
+			 * is the style guide the only NYPL-specific partial?
+			 * -------------------------------------------------
+			 */
+$use-styleguide:         true; 
+
+
+
+/*------------------------------------*\
+    $TYPOGRAPHY
+\*------------------------------------*/
+
+/**
+ * Set the outside limit for optimal line length
+ */
+$measure:			50rem;
+
+
+/**
+ * Redefine $base-font-family before declaring the config variables
+ */
+$base-font-family:			"Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+$light-font-family:  		"Lato Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$lightital-font-family:		"Lato Light Italic", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$baseital-font-family:		"Lato Regular Italic", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$bold-font-family:			"Lato Bold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$boldital-font-family:		"Lato Bold Italic", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$black-font-family:			"Lato Black", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$blackital-font-family:		"Lato Black Italic", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+
+/**
+ * Define icon font
+ */
+$iconFontFamily:        "NYPL-icomoon";
+
+
+
+/**
+ * Config variables, from BFoo
+ */
+$fontPath:              "../fonts/";
+$imgPath:               "../img/";
+
+
+
+/**
+ * Font-sizes (in pixels). 
+ */
+$giga-size:         96px;
+$mega-size:         72px;
+$kilo-size:         60px;
+$big-size:			48px;
+
+$h1-size:           36px; // .alpha
+$h2-size:           24px; // .beta
+$h3-size:           21px; // .gamma
+$h4-size:           18px; // .delta
+$h5-size:           16px; // .epsilon
+$h6-size:           14px; // .zeta
+
+$milli-size:        12px;
+$micro-size:        10px;
+
+
+
+
+
+/*------------------------------------*\
+    $COLORS
+\*------------------------------------*/
+// Primary palette colors
+// -------------------------
+$red:					#d62828;
+$orange:				#f0731f;
+$green:					#acb737;
+$blue:					#0090c4;
+$purple:				#aa137e;
+
+// Secondary palette colors
+// -------------------------
+$redDarkest:			#690b0b;
+$redDarker:				#9c191e;
+$pink:					#ff5b64;
+$salmon:				#fd986c;
+
+$orangeDarkest:			#89380b;
+$orangeDarker:			#c9491a;
+$yellow:				#ffac1e;
+$yellowLight:			#fbb55d;
+
+$greenDarkest:			#645723;
+$greenDarker:			#858434;
+$greenNeon:				#ece94c;
+$greenLight:			#dbdf92;
+
+$indigo:				#3c3449;
+$blueDarker:			#015d90;
+$blueNeon:				#7edcdb;
+$blueLight:				#c2e7df;
+
+$purpleDarkest:			#5b2439;
+$purpleDarker:			#7f2352;
+$purpleNeon:			#eb4197;
+$purpleLight:			#eaa7ae;
+
+// Cool grays
+// -------------------------
+$coolGrayDarkest:		#62656c;
+$coolGrayDarker:		#858e95;
+$coolGray:				#acb1b7;
+$coolGrayLighter:		#cbccd0;
+$coolGrayLightest:		#dedede;
+
+// Warm grays
+// -------------------------
+$warmGrayDarkest:		#5e564b;
+$warmGrayDarker:		#7d7872;
+$warmGray:				#a29d97;
+$warmGrayLighter:		#c5c2bb;
+$warmGrayLightest:		#e2dedb;
+
+
+$white:					#ffffff;
+$softWhite:				#FCFAF7;
+$black:					#333333;
+
+
+
+
+
+
+/*------------------------------------*\
+    $OBJECTS-AND-ABSTRACTIONS
+\*------------------------------------*/
+/**
+ * All of inuit.css’ objects and abstractions are initially turned off by
+ * default. This means that you start any project with as little as possible,
+ * and introducing objects and abstractions is as simple as switching the
+ * following variables to `true`.
+ */
+$use-grids:         true;
+$use-flexbox:       false;
+$use-columns:       false;
+$use-nav:           true;
+$use-options:       false;
+$use-pagination:    true;
+$use-breadcrumb:    true;
+$use-media:         true;
+$use-marginalia:    false;
+$use-island:        false;
+$use-block-list:    true;
+$use-matrix:        false;
+$use-split:         false;
+$use-this-or-this:  false;
+$use-link-complex:  false;
+$use-flyout:        false;
+$use-arrows:        true;
+$use-sprite:        true;
+$use-icon-text:     false;
+$use-beautons:      true;
+$use-lozenges:      false;
+$use-rules:         false;
+$use-stats:         false;
+$use-greybox:       false;
+
+
+
+
+
+
+
+
+/*------------------------------------*\
+    $OVERRIDES
+\*------------------------------------*/
+/**
+ * Place any variables that should override inuit.css’ defaults here.
+ */
+ 
+ 
+
+/**
+ * Default colour for objects’ borders etc.
+ */
+$base-ui-color:     $warmGrayLightest; 
+
+
+/*------------------------------------*\
+    $RESPONSIVE
+\*------------------------------------*/
+/**
+ * Responsiveness?
+ */
+$responsive:        true;
+
+/**
+ * Responsiveness for widescreen/high resolution desktop monitors and beyond?
+ * Note: `$responsive` variable above must be set to true before enabling this.
+ */
+$responsive-extra:  true;
+
+
+/**
+ * Responsive push and pull produce a LOT of code, only turn them on if you
+ * definitely need them.
+ */
+$push:              true;
+/**
+ * Note: `$push` variable above must be set to true before enabling these.
+ */
+$palm-push:         true;
+$lap-push:          true;
+$lap-and-up-push:   true;
+$portable-push:     true;
+$desk-push:         true;
+
+$pull:              true;
+/**
+ * Note: `$pull` variable above must be set to true before enabling these.
+ */
+$palm-pull:         true;
+$lap-pull:          true;
+$lap-and-up-pull:   true;
+$portable-pull:     true;
+$desk-pull:         true;
+
+
+
+/**
+ * Tell inuit.css when breakpoints start.
+ */
+
+$tablet-start:			481px;
+$lap-start:				601px;
+$desk-start:     	  	1024px!default;
+$desk-wide-start:  		1200px!default;
+
+//from _mixins
+$palm-end:              $tablet-start - 1px;
+$lap-end:               $desk-start - 1px;
+
+
+
+
+/*------------------------------------*\
+    $BEAUTONS
+\*------------------------------------*/ 
+/**
+ * Set the background colors for beauton button functions.
+ */
+$beautons:              $blue;
+$beautons-inactive:     $coolGrayLightest;
+
+$beautons-positive:     $green;
+$beautons-negative:     $red;
+
+
+/*------------------------------------*\
+    $BRAND
+\*------------------------------------*/
+/**
+ * Brand stuff
+ */
+$brand-color:       $blue;
+$brand-face:        $base-font-family;
+
+/**
+ * How big would you like round corners to be by default?
+ */
+$brand-round:        2px!default;
+
+	/*----------------------------------------*\
+	    Additional brand variables for NYPL 
+	\*----------------------------------------*/
+	/**
+	 * Transition time
+	 */
+	$brand-timing:		0.15s;
+	/**
+	 * Color changes
+	 */
+	$brand-gradient:	7%;
+	$brand-hover:		10%
