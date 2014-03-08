@@ -1,17 +1,16 @@
 # The Locinator
 
-Run
+To get all the Ruby dependencies, run:
+
+    bundle install
+
+Then, to get all the front end dependencies:
 
     bower install
 
-to get all the front end dependencies. 
 
-Static prototype. Run a local browser to view, e.g.:
+To start a server, `cd` into the top of the cloned repository, run
 
-    ruby -run -e httpd -- -p 8000 .
+    rackup
 
-or
-
-    python -m SimpleHTTPServer 8000
-
-and go to `http://localhost:8000/`
+then go to `http://localhost:9292/`
