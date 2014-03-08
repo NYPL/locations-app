@@ -14,14 +14,24 @@
   		<a class="btn" data-ng-click="sortBy('locality')">City</a>
   	</section>
   	<br />
+
+    <!-- Locations are in h-card microformat -->
+    <!-- http://microformats.org/wiki/h-card -->
+
     <section data-ng-repeat="location in locations | filter:filter | orderBy:sort:reverse" class="location {{location.id}}">
-    	<h3>{{location.name}}</h3>
-    	<p>Address: {{location.street_address}}, {{location.locality}}, {{location.region}} {{location.postal_code}} </p>
+        <div class="h-card grid__item one-whole lap-and-up-two-thirds">
+            <div class="p-org"><b>{{location.name}}</b></div>
+            <div class="p-adr">
+                <div class="p-street-address">{{location.street_address}}</div>
+                <span class="p-locality">{{location.locality}}</span>, 
+                <span class="p-region">{{location.region}}</span>, 
+                <span class="p-postal-code">{{location.postal_code}}</span>
+            </div>
+            <div class="p-tel" data-ng-show="location.contacts.phone">Phone: {{location.contacts.phone}}</div>
+            <div class="u-email" data-ng-show="location.contacts.email">Email: {{location.contacts.email}}</div>
+        </div>
+
     	<p data-ng-show="location.distance">Estimated distance from your location: <strong>{{location.distance}} miles</strong></p>
-    	<section class="contact-info">
-    		<p data-ng-show="location.contacts.email">Email: {{location.contacts.email}}</p>
-    		<p data-ng-show="location.contacts.phone">Phone: {{location.contacts.phone}}</p>
-    	</section>
     </section>
   </section>
 </div>
