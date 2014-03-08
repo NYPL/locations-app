@@ -1,10 +1,10 @@
-<div class="coordinates" data-ng-controller="CoordsCtrl">
+<div class="grid__item one-whole lap-and-up-two-thirds coordinates" data-ng-controller="CoordsCtrl">
 	<section data-ng-show="coordinates">
 		<h3>User coordinates via geo-location</h3>
 		<p>Latitude: <strong>{{coordinates.latitude}}</strong> | Longitude: <strong>{{coordinates.longitude}}</strong></p>
 	</section>
 </div>
-<div class="all-locations" data-ng-controller="LocationsCtrl">
+<div class="grid__item one-whole lap-and-up-two-thirds all-locations" data-ng-controller="LocationsCtrl">
 	<h1 data-ng-show="errors">{{errors.message}}</h1>
   <h3>All NYPL Locations</h3>
   <section class="list">
