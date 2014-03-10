@@ -1,6 +1,6 @@
 <div class="grid__item one-whole lap-and-up-two-thirds coordinates" data-ng-controller="CoordsCtrl">
 	<section data-ng-show="coordinates">
-		<h3>User coordinates via geo-location</h3>
+		<h3>User coordinates via geo-location - Testing only</h3>
 		<p>Latitude: <strong>{{coordinates.latitude}}</strong> | Longitude: <strong>{{coordinates.longitude}}</strong></p>
 	</section>
 </div>
@@ -29,9 +29,8 @@
             </div>
             <div class="p-tel" data-ng-show="location.contacts.phone">Phone: {{location.contacts.phone}}</div>
             <div class="u-email" data-ng-show="location.contacts.email">Email: {{location.contacts.email}}</div>
+            <p data-ng-show="location.distance">Estimated distance from your location: <strong>{{location.distance}} miles</strong></p>
         </div>
-
-    	<p data-ng-show="location.distance">Estimated distance from your location: <strong>{{location.distance}} miles</strong></p>
     </section>
   </section>
 </div>
