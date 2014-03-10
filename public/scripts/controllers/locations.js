@@ -26,9 +26,9 @@ nyplLocationApp.controller('LocationsCtrl', function ($scope, nypl_locations_ser
   	$scope.lon1 = position.longitude;
   	$scope.distanceSet = true;
 
-		for(var i=0; i < $scope.locations.length; i++) {
-			$scope.locations[i].distance = nypl_coordinates_service.getDistance($scope.lat1, $scope.lon1, $scope.locations[i].lat, $scope.locations[i].long);
-		}
+		_.each($scope.locations, function(location) {
+			location.distance =  nypl_coordinates_service.getDistance($scope.lat1, $scope.lon1, location.lat, location.long);
+		});
 
 	}, function(error) {
 		$scope.errors = error;

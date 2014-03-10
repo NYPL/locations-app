@@ -9,6 +9,8 @@ var nyplLocationApp = angular.module('nyplLocationApp', [
   'nyplLocations'
 ]);
 
+nyplLocationApp.constant('_', window._);
+
 nyplLocationApp.config(function ($routeProvider) {
   $routeProvider
     .when('/', {
