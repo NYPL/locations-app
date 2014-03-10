@@ -19,7 +19,7 @@
     <!-- http://microformats.org/wiki/h-card -->
 
     <section>
-     <input type='text' ng-model='searchLocations' />
+     <input type='text' data-ng-model='searchLocations' placeholder='Enter search term'/>
     </section>
 
     <section data-ng-repeat="location in locations | filter:searchLocations | orderBy:sort:reverse" class="location {{location.id}}">
