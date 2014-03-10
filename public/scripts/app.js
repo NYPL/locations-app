@@ -1,5 +1,4 @@
 'use strict';
-
 var nyplLocationApp = angular.module('nyplLocationApp', [
   'ngCookies',
   'ngResource',

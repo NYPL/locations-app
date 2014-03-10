@@ -42,7 +42,7 @@ nyplLocationApp.factory('nypl_coordinates_service', ['$q', '$window', '$rootScop
       return defer.promise; // Enables 'then' callback
     },
 
-    // Calculate distance using 
+    // Calculate distance using coordinates
     getDistance: function(lat1, lon1, lat2, lon2) {
       var radlat1 = Math.PI * lat1/180;
       var radlat2 = Math.PI * lat2/180;
