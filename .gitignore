@@ -4,3 +4,4 @@ dist
 public/bower_components
 .idea/
 .idea
+node_modules
