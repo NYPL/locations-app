@@ -1,5 +1,5 @@
 'use strict';
-nyplLocationApp.factory('nypl_coordinates_service', ['$q', '$window', '$rootScope', function($q, $window, $rootScope) {
+nypl_locations.factory('nypl_coordinates_service', ['$q', '$window', '$rootScope', function($q, $window, $rootScope) {
 
   return {
     // Geolocation extraction of coordinates

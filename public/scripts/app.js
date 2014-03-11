@@ -1,16 +1,15 @@
 'use strict';
-var nyplLocationApp = angular.module('nyplLocationApp', [
+var nypl_locations = angular.module('nypl_locations', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
   'ngRoute',
-  'nyplLocationControllers',
-  'nyplLocations'
+  'locationService'
 ]);
 
-nyplLocationApp.constant('_', window._);
+nypl_locations.constant('_', window._);
 
-nyplLocationApp.config(function ($routeProvider) {
+nypl_locations.config(function ($routeProvider) {
   $routeProvider
     .when('/', {
       templateUrl: 'views/locations.html',

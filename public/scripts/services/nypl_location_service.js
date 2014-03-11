@@ -1,5 +1,5 @@
 'use strict';
-angular.module('nyplLocations', ['ngResource']).factory('nypl_locations_service', function($resource) {
+angular.module('locationService', ['ngResource']).factory('nypl_locations_service', function($resource) {
 
 	return {
 		all_locations: function() {
