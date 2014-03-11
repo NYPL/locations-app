@@ -3,3 +3,4 @@ dist
 .sass-cache
 public/bower_components
 .idea/
+.idea
