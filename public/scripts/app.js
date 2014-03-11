@@ -18,6 +18,9 @@ nypl_locations.config(function ($routeProvider) {
       templateUrl: 'views/coordinates.html',
       controller: 'CoordsCtrl'
     })
+    .when('/location/:symbol', {
+      templateUrl: 'views/location.html'
+    })
     .otherwise({
       redirectTo: '/'
     });

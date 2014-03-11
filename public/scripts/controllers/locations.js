@@ -1,4 +1,5 @@
 'use strict';
+
 nypl_locations.controller('LocationsCtrl', function ($scope, nypl_locations_service, nypl_coordinates_service) {
 
 	$scope.sort = "name";
@@ -33,4 +34,13 @@ nypl_locations.controller('LocationsCtrl', function ($scope, nypl_locations_serv
 		$scope.errors = error;
 		console.log(error.message);
 	});
+});
+
+nypl_locations.controller('LocationCtrl', function ($scope, $routeParams, nypl_locations_service) {
+
+	// Display all branches regardless of user's location
+	nypl_locations_service.single_location($routeParams.symbol).get(function (data) {
+		$scope.location = data;
+	});
+
 });

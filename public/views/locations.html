@@ -26,7 +26,7 @@
     <!-- http://microformats.org/wiki/h-card -->
     <section data-ng-repeat="location in locations | filter:searchLocations | orderBy:sort:reverse" class="location {{location.id}}">
         <div class="h-card grid__item one-whole lap-and-up-two-thirds">
-          <div class="p-org"><b>{{location.name}}</b></div>
+          <div class="p-org"><b><a href='/#/location/{{location.id}}'>{{location.name}}</a></b></div>
           <div class="p-adr">
             <div class="p-street-address">{{location.street_address}}</div>
             <span class="p-locality">{{location.locality}}</span>, 
