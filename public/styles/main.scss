@@ -1,0 +1,10 @@
+@import 'nypl-base/css/style';
+
+.locations {
+    @extend .grid;
+}
+
+.coordinates, .all-locations {
+    @extend .grid__item;
+    @extend .one-whole;
+}

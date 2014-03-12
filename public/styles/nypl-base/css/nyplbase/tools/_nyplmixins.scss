@@ -1,0 +1,89 @@
+/*------------------------------------*\
+    $NYPL-MIXINS
+\*------------------------------------*/
+	
+
+/*------------------------------------*\
+ * COLORS & GRADIENTS
+\*------------------------------------*/
+ 
+/**
+ * This makes a simple linear top-to-bottom gradient.
+ */
+@mixin linear-gradient($color, $toColor) {
+	background-color: $color;
+	background-image: -webkit-linear-gradient(top, $color, $toColor);
+	background-image: 		  linear-gradient(top, $color, $toColor);
+}
+
+
+/**
+ * This evaluates the background color of an element 
+ * in order to pick which text color to use on top of it.
+ * Particularly handy for buttons!
+ */ 
+@mixin text-on-bg($color){
+	@if lightness($color) <= 55% {
+			color: $white;	
+	}
+	@else {
+			color: inherit;		
+	}
+}
+
+
+/**
+ * Callouts
+ * puts a background color and 1px solid border on a container.
+ */
+@mixin callout-box($bgcolor, $bordercolor){
+	background: $bgcolor;
+	border-width: 1px;
+	border-style: solid;
+	border-color: $bordercolor;
+	border-radius:$brand-round;	
+	padding: $half-spacing-unit;
+}
+
+
+
+/*------------------------------------*\
+ * BUTTONS
+\*------------------------------------*/
+ 
+// The following mixin is kind of based on http://tallpixels.com/advanced-sass-mixins/
+
+/*
+ * This styles the button based on the color parameter, including text color.
+ * It also concatenates the ".gradient" class so that the mixin
+ * can use the background color to evaluate the darker stop color.
+*/
+@mixin button-color($color){
+	background: $color;
+	@include text-on-bg($color);
+
+	&.gradient{
+		$toColor: darken($color, $brand-gradient);
+		@include linear-gradient($color, $toColor);		
+	}
+
+	&:hover{
+		opacity: .85;
+	}
+}
+
+/* 
+ * Some buttons have specific use cases, such as the Donate button,
+ * and must be styled very specifically.
+ * Add context names here to add specific styling;
+ * the name you add provides the second part of the class name.
+   
+	USAGE:
+	.btn--donate {
+		@include f11y-context(donate)
+	}
+*/
+@mixin button-f11y-context($context-name){
+	@if $context-name == donate {@include button-color($red);text-transform: uppercase;}
+	@if $context-name == friends {@include button-color($greenNeon); color: $black; text-transform: uppercase;}
+}

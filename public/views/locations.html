@@ -1,0 +1,42 @@
+<div class="grid__item one-whole lap-and-up-two-thirds coordinates" data-ng-controller="CoordsCtrl">
+	<section data-ng-show="coordinates">
+		<h3>User coordinates via geo-location - Testing only</h3>
+		<p>Latitude: <strong>{{coordinates.latitude}}</strong> | Longitude: <strong>{{coordinates.longitude}}</strong></p>
+	</section>
+</div>
+
+<div class="grid__item one-whole lap-and-up-two-thirds all-locations" data-ng-controller="LocationsCtrl">
+	<h1 data-ng-show="errors">{{errors.message}}</h1>
+  
+  <h3>All NYPL Locations</h3>
+  <section class="list">
+  	<section class="filters">
+  		<a class="btn" data-ng-click="sortBy('name')">Name</a>
+  		<a class="btn" data-ng-click="sortBy('distance')" data-ng-show="distanceSet">Distance</a>
+  		<a class="btn" data-ng-click="sortBy('locality')">City</a>
+  	</section>
+  	
+    <br />
+
+    <section>
+      <input type='text' data-ng-model='searchLocations' placeholder='Enter search term'/>
+    </section>
+
+    <!-- Locations are in h-card microformat -->
+    <!-- http://microformats.org/wiki/h-card -->
+    <section data-ng-repeat="location in locations | filter:searchLocations | orderBy:sort:reverse" class="location {{location.id}}">
+        <div class="h-card grid__item one-whole lap-and-up-two-thirds">
+          <div class="p-org"><b>{{location.name}}</b></div>
+          <div class="p-adr">
+            <div class="p-street-address">{{location.street_address}}</div>
+            <span class="p-locality">{{location.locality}}</span>, 
+            <span class="p-region">{{location.region}}</span>, 
+            <span class="p-postal-code">{{location.postal_code}}</span>
+          </div>
+          <div class="p-tel" data-ng-show="location.contacts.phone">Phone: {{location.contacts.phone}}</div>
+          <div class="u-email" data-ng-show="location.contacts.email">Email: {{location.contacts.email}}</div>
+          <p data-ng-show="location.distance">Estimated distance from your location: <strong>{{location.distance}} miles</strong></p>
+        </div>
+    </section>
+  </section>
+</div>

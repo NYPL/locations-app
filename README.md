@@ -1,11 +1,16 @@
 # The Locinator
 
-Static prototype. Run a local browser to view, e.g.:
+To get all the Ruby dependencies, run:
 
-    ruby -run -e httpd -- -p 8000 .
+    bundle install
 
-or
+Then, to get all the front end dependencies:
 
-    python -m SimpleHTTPServer 8000
+    bower install
 
-and go to `http://localhost:8000/`
+
+To start a server, `cd` into the top of the cloned repository, run
+
+    rackup
+
+then go to `http://localhost:9292/`

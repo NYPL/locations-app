@@ -1,0 +1,110 @@
+/*------------------------------------*\
+    $COLORLABELS
+\*------------------------------------*/
+/**
+ *	 These are classes you can use to add specific backgrounds and text colors, if needed.
+ * 	 Special circumstances only! Don't mess with the branding choices!
+ */
+
+
+.white {background: $white}
+.black {background: $black}
+
+	.whiteText {color: $white}
+	.blackText {color: $black}
+	
+	
+// Primary palette colors
+// -------------------------
+.red {background: $red}
+.orange {background: $orange}
+.green {background: $green}
+.blue {background: $blue}
+.purple {background: $purple}
+
+	.redText {color: $red}
+	.orangeText {color: $orange}
+	.greenText {color: $green}
+	.blueText {color: $blue}
+	.purpleText {color: $purple}
+
+
+// Secondary palette colors
+// -------------------------
+.redDarkest {background: $redDarkest}
+.redDarker {background: $redDarker}
+.pink {background: $pink}
+.salmon {background: $salmon}
+
+	.redDarkestText {color: $redDarkest}
+	.redDarkerText {color: $redDarker}
+	.pinkText {color: $pink}
+	.salmonText {color: $salmon}
+
+.orangeDarkest {background: $orangeDarkest}
+.orangeDarker {background: $orangeDarker}
+.yellow {background: $yellow}
+.yellowLight {background: $yellowLight}
+
+	.orangeDarkestText {color: $orangeDarkest}
+	.orangeDarkerText {color: $orangeDarker}
+	.yellowText {color: $yellow}
+	.yellowLightText {color: $yellowLight}
+
+.greenDarkest {background: $greenDarkest}
+.greenDarker {background: $greenDarker}
+.greenNeon {background: $greenNeon}
+.greenLight{background: $greenLight}
+
+	.greenDarkestText {color: $greenDarkest}
+	.greenDarkerText {color: $greenDarker}
+	.greenNeonText {color: $greenNeon}
+	.greenLightText {color: $greenLight}
+
+.indigo {background: $indigo}
+.blueDarker {background: $blueDarker}
+.blueNeon {background: $blueNeon}
+.blueLight {background: $blueLight}
+
+	.indigoText {color: $indigo}
+	.blueDarkerText {color: $blueDarker}
+	.blueNeonText {color: $blueNeon}
+	.blueLightText {color: $blueLight}
+
+.purpleDarkest {background: $purpleDarkest}
+.purpleDarker {background: $purpleDarker}
+.purpleNeon {background: $purpleNeon}
+.purpleLight {background: $purpleLight}
+
+	.purpleDarkestText {color: $purpleDarkest}
+	.purpleDarkerText {color: $purpleDarker}
+	.purpleNeonText {color: $purpleNeon}
+	.purpleLightText {color: $purpleLight}
+
+// Cool grays
+// -------------------------
+.coolGrayDarkest {background: $coolGrayDarkest}
+.coolGrayDarker {background: $coolGrayDarker}
+.coolGray {background: $coolGray}
+.coolGrayLighter {background: $coolGrayLighter}
+.coolGrayLightest {background: $coolGrayLightest}
+
+	.coolGrayDarkestText {color: $coolGrayDarkest}
+	.coolGrayDarkerText {color: $coolGrayDarker}
+	.coolGrayText {color: $coolGray}
+	.coolGrayLighterText {color: $coolGrayLighter}
+	.coolGrayLightestText {color: $coolGrayLightest}
+
+// Warm grays
+// -------------------------
+.warmGrayDarkest {background: $warmGrayDarkest}
+.warmGrayDarker {background: $warmGrayDarker}
+.warmGray {background: $warmGray}
+.warmGrayLighter {background: $warmGrayLighter}
+.warmGrayLightest {background: $warmGrayLightest}
+
+	.warmGrayDarkestText {color: $warmGrayDarkest}
+	.warmGrayDarkerText {color: $warmGrayDarker}
+	.warmGrayText {color: $warmGray}
+	.warmGrayLighterText {color: $warmGrayLighter}
+	.warmGrayLightestText {color: $warmGrayLightest}
