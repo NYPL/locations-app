@@ -1,30 +1,40 @@
 describe('Locations: homepage', function () {
+  // Check ../support/landingPage.js for code
+  var landingPage = require('../support/landingPage.js');
+
   beforeEach(function () {
     browser.get('/');
-    ptor = protractor.getInstance();
+    browser.waitForAngular();
   });
 
-  it('should display the homepage', function () {
+  // better tests are needed for coordinates
+  it('should display the coordinates', function () {
     var ele = by.css('.coordinates');
-    expect(ptor.isElementPresent(ele)).toBe(true);
+    expect(element(ele).isPresent()).toBe(true);
   });
 
   it('should have 91 items by default', function () {
-    var elems = element.all(by.repeater('location in locations'));
-    expect(elems.count()).toBe(91);
+    var locations = landingPage.locations;
+    expect(locations.count()).toBe(91);
   });
 
-  it('should have one item after search', function () {
-    //element(by.input('searchLocations')).sendKeys('jefferson market');
-    element(by.model('searchLocations')).sendKeys('jefferson market');
-    var elems = element.all(by.repeater('location in locations'));
-    expect(elems.count()).toBe(1);
+  it('should have one item after searching', function () {
+    landingPage.search('jefferson market');
+    var locations = landingPage.locations;
+    expect(locations.count()).toBe(1);
   });
 
   it('should search by zip code', function () {
-    element(by.model('searchLocations')).sendKeys('10018');
-    var elems = element.all(by.repeater('location in locations'));
-    expect(elems.count()).toBe(1);
+    landingPage.search('10018');
+    var locations = landingPage.locations;
+    expect(locations.count()).toBe(1);
   });
 
 });
+
+
+// describe('Location Service', function () {
+//   beforeEach(module('locationService'));
+
+
+// });
