@@ -11,6 +11,6 @@ Then, to get all the front end dependencies:
 
 To start a server, `cd` into the top of the cloned repository, run
 
-    rackup
+    bundle exec rackup -p 8000
 
-then go to `http://localhost:9292/`
+then go to `http://localhost:8000/`
