@@ -18,7 +18,11 @@ nypl_locations.controller('LocationsCtrl', function ($scope, nypl_locations_serv
 	// Display all branches regardless of user's location
 	nypl_locations_service.all_locations().get(function (data) {
 		$scope.locations = data.branches;
-	});
+		console.log(data);
+ 	}, function (err, status) {
+ 		console.log(err);
+ 		console.log(status);
+ 	});
 
 	// Extract user coordinates
   nypl_coordinates_service.getCoordinates().then(function (position) {

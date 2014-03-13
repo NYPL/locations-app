@@ -11,13 +11,13 @@
     <div class="grid__item one-whole lap-and-up-one-half">
 
       <div class="p-adr">
-        <div class="p-street-address">{{location.address}}</div>
-        <span class="p-locality">{{location.city}}</span>, 
+        <div class="p-street-address">{{location.street_address}}</div>
+        <span class="p-locality">{{location.locality}}</span>, 
         <span class="p-region">{{location.region}}</span>, 
-        <span class="p-postal-code">{{location.zipcode}}</span>
+        <span class="p-postal-code">{{location.postal_code}}</span>
       </div>
 
-      <div class="p-tel">{{location.contacts.phone}}</div>
+      <div class="p-tel">{{location.contacts[0].phone}}</div>
 
       <ul class="top-services">
         <li class="icon-book">Books</li>
