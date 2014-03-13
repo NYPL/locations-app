@@ -35,14 +35,140 @@
       <div>Library Manager: Frank Collerius</div>
 
       <ul class="social">
-        <li class="icon-facebook">Facebook</li>
-        <li class="icon-twitter">Twitter</li>
-        <li class="icon-youtube">Youtube</li>
+        <li data-ng-repeat="social in location.social_media" class="icon-{{social.site}}">
+          <a href="{{social.href}}">{{social.site}}</a>
+        </li>
       </ul>
 
     </div>
 
+  </div><!--
+
+  --><div class="grid__item one-whole lap-and-up-one-third">
+    <div class="h-event" id="hours-today">
+      <h2 class="p-name">Today’s Hours</h2>
+      <time datetime="2014-02-14T10:00-05:00" class="dt-start">10am</time>–<time datetime="2014-02-14T17:00-05:00" class="dt-end">5pm</time>
+    </div>
+
+    <div id="hours-weekly">
+      <h2>Regular Hours</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Closed</th>
+            <th>10-8</th>
+            <th>11-6</th>
+            <th>10-8</th>
+            <th>11-6</th>
+            <th>10-5</th>
+            <th>10-5</th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="catalog"><a class="icon-books" href="">Catalog Items Here</a></div>
   </div>
+
+  <div id="features" class="grid__item one-whole">
+    <h2 class="hdg">Featured</h2>
+    
+    <ul class="grid">
+      <li class="grid__item one-whole lap-and-up-one-half">
+        <h3>Feature One</h3>
+        <p>Feature One</p>
+      </li><!--
+      --><li class="grid__item one-whole lap-and-up-one-half">
+        <h3>Feature Two</h3>
+        <p>Feature Two</p>
+      </li>
+    </ul>  
+    
+  </div>
+
+  <div id="events" class="grid__item one-whole">
+    <h2 class="hdg">Events</h2>
+    
+    <ul class="grid">
+      
+      <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in location._embedded.events">
+        <h3>{{event.title}}</h3>
+        <p>{{event.title}} - no teaser just yet</p>
+        <p>Start time: {{event.start}}</p>
+        <p>End time: {{event.end}}</p>
+      </li>
+          
+    </ul>   
+      
+    <div><a class="read-more" href="./events.html">See more events at Jefferson Market</a></div>
+  </div>
+
+  <div id="about-and-plan" class="grid ">
+  
+    <div id="about" class="grid__item one-whole lap-and-up-one-half">
+      <h2 class="hdg">About</h2>
+      <p>This space is for the general blurb</p>
+      <div><a class="read-more" href="">More about Jefferson Market</a></div>
+    </div><!--
+
+
+    --><div id="plan-your-visit" class="grid__item one-whole lap-and-up-one-half">
+      <h2 class="hdg">Plan Your Visit</h2>
+        <ul>
+          <li>Reserve a Computer</li>
+          <li>Interlibrary Loan</li>
+          <li>Meeting Rooms</li>
+        </ul>
+        <div><a class="read-more" href="/services/jefferson-market">See all services at Jefferson Market</a></div>
+    </div>
+
+  </div>
+
+  <div class="grid__item one-whole" id="blogs">
+  
+    <h2 class="hdg">Blogs</h2>
+    <ul>
+    
+      <li class="grid__item one-whole lap-and-up-one-third">
+        <img class="img--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;">
+        <h3>Your Village, Your Story: Jefferson Market's Greenwich Village Oral History Project Begins</h3>
+        <div class="teaser">On Thursday, November 14, twelve volunteer interviewers sat in a circle in the first floor auditorium at Jefferson Market Library having a dynamic conversation about the nature of memory, open interview questions, and the history of Greenwich Village.</div>
+      </li><!--
+      
+      --><li class="grid__item one-whole lap-and-up-one-third">
+        <img class="img--left" src="http://images.nypl.org/?id=1256651&amp;t=w" alt="" style="width: 100px;">
+        <h3>Mermaid Parade and The Merman</h3>
+        <div class="teaser">I was musing aloud about what the next supernatural fiction trend may be, now that vampires and werewolves have had their day. I jokingly said mermaids/mermen, but it looks like there may be something to that after all. </div>
+      </li><!--
+      
+      --><li class="grid__item one-whole lap-and-up-one-third">
+        <img class="img--left" src="http://images.nypl.org/?id=108353&amp;t=w" alt="" style="width: 100px;">
+        <h3>Title of This Post About Slow Looking and Wall Street</h3>
+        <div class="teaser">Many have heard about slow food, but fewer still about slow looking. This Wall Street Journal article from 2011 coined the term, referring to LSU's Hill Memorial Library and the way in which they presented their collection of John James Audubon's four-volume Birds of America (1827-38): slowing turning the pages for a rapt audience.</div>
+      </li>
+      
+    </ul>  
+  </div>
+
+  <div class="grid__item one-whole tablet-and-up-one-half" id="ask-nypl">
+    <div>AskNYPL</div>
+  </div><!--
+
+  --><div class="grid__item one-whole tablet-and-up-one-half" id="donate">
+    <div>Donate</div>
+  </div>
+  
 
 <!--   end container -->  
 </div>
