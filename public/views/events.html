@@ -1,0 +1,16 @@
+<div class="grid" data-ng-controller="LocationCtrl">
+  <p>Go back <a href="/#/location/{{location.slug}}">{{location.name}}</a></p>
+
+  <div class="grid__item one-whole lap-and-up-two-thirds">
+    <h1>Events at {{location.name}}</h1>
+
+    <ul class="grid">
+      <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in location._embedded.events">
+        <h3>{{event.title}}</h3>
+        <p>{{event.title}} - no teaser just yet</p>
+        <p>Start time: {{event.start}}</p>
+        <p>End time: {{event.end}}</p>
+      </li>
+    </ul>   
+  </div>
+</div>  

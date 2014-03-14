@@ -21,6 +21,9 @@ nypl_locations.config(function ($routeProvider) {
     .when('/location/:symbol', {
       templateUrl: 'views/location.html'
     })
+    .when('/location/:symbol/events', {
+      templateUrl: '/views/events.html'
+    })
     .otherwise({
       redirectTo: '/'
     });

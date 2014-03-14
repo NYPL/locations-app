@@ -45,6 +45,16 @@ nypl_locations.controller('LocationCtrl', function ($scope, $routeParams, nypl_l
 	// Display all branches regardless of user's location
 	nypl_locations_service.single_location($routeParams.symbol).get(function (data) {
 		$scope.location = data.location;
+
+		var today = new Date();
+		$scope.days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+		var day = $scope.days[today.getDay()];
+
+		$scope.hoursToday = {
+			'open': data.location.hours[day].open,
+			'close': data.location.hours[day].close
+		}
+
 	});
 
 });
