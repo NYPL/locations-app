@@ -1,16 +1,35 @@
 <div class="grid" data-ng-controller="LocationCtrl">
   <p>Go back <a href="/#/location/{{location.slug}}">{{location.name}}</a></p>
 
-  <div class="grid__item one-whole lap-and-up-two-thirds">
-    <h1>Events at {{location.name}}</h1>
+  <section class="grid">
+    <div class="grid__item one-whole lap-and-up-two-thirds">
+      <h1>Events at {{location.name}}</h1>
+    </div><!--
 
-    <ul class="grid">
-      <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in location._embedded.events">
-        <h3>{{event.title}}</h3>
-        <p>{{event.title}} - no teaser just yet</p>
-        <p>Start time: {{event.start}}</p>
-        <p>End time: {{event.end}}</p>
-      </li>
-    </ul>   
-  </div>
+    --><div class="grid__item one-whole lap-and-up-one-third">
+      <div class="h-event" id="hours-today">
+        <h2 class="p-name">Today’s Hours</h2>
+        <time datetime="2014-02-14T10:00-05:00" class="dt-start">{{hoursToday.open}}</time>–<time datetime="2014-02-14T17:00-05:00" class="dt-end">{{hoursToday.close}}</time>
+      </div>
+    </div>
+    <div class="grid__item">
+    This space is a couple of lines maximum with general stuff about what Events at a branch means.  Should be standard across all locations.
+    Examples of text type.  all events are free unless otherwise noted.
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="grid__item one-whole ">
+      Exhibition: Title of exhibition
+    </div>
+  </section>
+
+  <ul class="grid">
+    <li class="grid__item one-whole" data-ng-repeat="event in location._embedded.events">
+      <h3>{{event.title}}</h3>
+      <p>{{event.title}} - no teaser just yet</p>
+      <p>Start time: {{event.start}}</p>
+      <p>End time: {{event.end}}</p>
+    </li>
+  </ul>
 </div>  
