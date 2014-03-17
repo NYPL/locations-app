@@ -5,7 +5,7 @@
 	</section>
 </div>
 
-<div class="grid__item one-whole lap-and-up-two-thirds all-locations" data-ng-controller="LocationsCtrl">
+<div class="grid__item one-whole all-locations" data-ng-controller="LocationsCtrl">
 	<h1 data-ng-show="errors">{{errors.message}}</h1>
   
   <h3>All NYPL Locations</h3>
@@ -14,6 +14,11 @@
   		<a class="btn" data-ng-click="sortBy('name')">Name</a>
   		<a class="btn" data-ng-click="sortBy('distance')" data-ng-show="distanceSet">Distance</a>
   		<a class="btn" data-ng-click="sortBy('locality')">City</a>
+
+      <div>Show me only 
+        <input type="checkbox" data-ng-model="location.library_type" data-ng-true-value="lending" data-ng-false-value=""/>Lending Libraries 
+        <input type="checkbox" data-ng-model="location.library_type" data-ng-true-value="research" data-ng-false-value=""/>Research Libraries
+      </div>
   	</section>
   	
     <br />
@@ -22,21 +27,48 @@
       <input type='text' data-ng-model='searchLocations' placeholder='Enter search term'/>
     </section>
 
+    <section class="grid one-whole">
+      <div class="h-card grid__item one-quarter ">Location</div><!--
+
+      --><div class="h-card grid__item one-quarter ">Distance</div><!--
+
+      --><div class="h-card grid__item one-quarter ">Hours</div><!--
+
+    --><div class="h-card grid__item one-quarter">Services</div>
+    </section>
+
     <!-- Locations are in h-card microformat -->
     <!-- http://microformats.org/wiki/h-card -->
-    <section data-ng-repeat="location in locations | filter:searchLocations | orderBy:sort:reverse" class="location {{location.id}}">
-        <div class="h-card grid__item one-whole lap-and-up-two-thirds">
-          <div class="p-org"><b>{{location.name}}</b></div>
-          <div class="p-adr">
-            <div class="p-street-address">{{location.street_address}}</div>
-            <span class="p-locality">{{location.locality}}</span>, 
-            <span class="p-region">{{location.region}}</span>, 
-            <span class="p-postal-code">{{location.postal_code}}</span>
-          </div>
-          <div class="p-tel" data-ng-show="location.contacts.phone">Phone: {{location.contacts.phone}}</div>
-          <div class="u-email" data-ng-show="location.contacts.email">Email: {{location.contacts.email}}</div>
-          <p data-ng-show="location.distance">Estimated distance from your location: <strong>{{location.distance}} miles</strong></p>
+    <section data-ng-repeat="location in locations | filter:searchLocations | filter:location.library_type | orderBy:sort:reverse" class="location {{location.id}} grid one-whole">
+      <div class="h-card grid__item one-quarter">
+        <div class="p-org"><b>{{location.name}}</b></div>
+        <div class="p-adr">
+          <div class="p-street-address">{{location.street_address}}</div>
+          <span class="p-locality">{{location.locality}}</span>, 
+          <span class="p-region">{{location.region}}</span>, 
+          <span class="p-postal-code">{{location.postal_code}}</span>
         </div>
+        <div class="p-tel" data-ng-show="location.contacts.phone">Phone: {{location.contacts.phone}}</div>
+        <div class="u-email" data-ng-show="location.contacts.email">Email: {{location.contacts.email}}</div>
+      </div><!--
+
+      --><div class="h-card grid__item one-quarter">
+        <div data-ng-show="location.distance"><strong>{{location.distance}} miles</strong></div>
+        <div><a href="">View on Map</a></div>
+        <div><a href="">Get Directions</a></div>
+      </div><!--
+
+      --><div class="h-card grid__item one-quarter">
+        <ul>
+          <li data-ng-repeat='(day, hour) in location.hours' data-ng-if="day != 'exceptions'">
+            {{day}} {{hour.open}} - {{hour.close}}
+          </li>
+        </ul>
+      </div><!--
+
+      --><div class="h-card grid__item one-quarter">
+        <p>Services</p>
+      </div>
     </section>
   </section>
 </div>
