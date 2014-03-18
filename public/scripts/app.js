@@ -4,7 +4,7 @@ var nypl_locations = angular.module('nypl_locations', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
-  'locationService'
+  'locationService',
 ]);
 
 nypl_locations.constant('_', window._);
@@ -13,6 +13,9 @@ nypl_locations.config(function ($routeProvider) {
   $routeProvider
     .when('/', {
       templateUrl: 'views/locations.html',
+    })
+    .when('/menu', {
+      templateUrl: 'views/menu.html',
     })
     .when('/coordinates', {
       templateUrl: 'views/coordinates.html',
