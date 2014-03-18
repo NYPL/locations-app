@@ -1,4 +1,6 @@
-Protractor 
+# Tests
+
+## End-to-end tests with Protractor 
 
 I created a package.json file in the root directory in order to save the npm package for protractor. Then I ran:
 
@@ -19,8 +21,10 @@ Protractor is built on top of Selenium's WebDriver, and the Jasmine testing fram
 It should start the selenium server in the background and now Protractor can connect to it.
 
 The next step is only needed if you're starting a new Protractor test. This file should already exist when cloning this repo.
-# copy the config file for protractor
-## cp ./node_modules/protractor/example/chromeOnlyConf.js protractor_conf.js
+
+copy the config file for protractor
+
+    cp ./node_modules/protractor/example/chromeOnlyConf.js protractor_conf.js
 
 In the root directory with the webdriver-manager running in the background, run
 
@@ -28,6 +32,15 @@ In the root directory with the webdriver-manager running in the background, run
 
 to run the tests.  A new browser window should popup and all the tests should run automatically on that new window. The results can be seen in the terminal window where the protractor command was performed.
 
-More info on testing:
-http://www.ng-newsletter.com/posts/practical-protractor.html
-https://github.com/angular/protractor/blob/master/docs/getting-started.md
+## Unit tests with Karma
+
+You do not need to start up a server before running the unit tests.
+
+    cd tests
+    scripts/test.sh
+
+
+## More info on testing:
+
+* [http://www.ng-newsletter.com/posts/practical-protractor.html](http://www.ng-newsletter.com/posts/practical-protractor.html)
+* [https://github.com/angular/protractor/blob/master/docs/getting-started.md](https://github.com/angular/protractor/blob/master/docs/getting-started.md)
