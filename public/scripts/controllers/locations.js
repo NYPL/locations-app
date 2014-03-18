@@ -48,16 +48,16 @@ nypl_locations.controller('LocationCtrl', function ($scope, $routeParams, nypl_l
 
 		var today = new Date();
 		$scope.days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-		var day = $scope.days[today.getDay()];
+		var day = $scope.days[today.getDay()];  
 
 		$scope.hoursToday = {
 			'open': data.location.hours[day].open,
 			'close': data.location.hours[day].close
 		}
+ 		
+		$scope.location.type = nypl_locations_service.location_type($scope.location.id.toUpperCase());
 
-		$scope.location.type = nypl_locations_service.location_type($scope.location.id);
-
-		console.log($scope.location);
+		console.log( nypl_locations_service.convert_time("2014-04-12 14:00:00") );
 
 	});
 
