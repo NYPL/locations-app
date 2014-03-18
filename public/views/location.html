@@ -1,5 +1,5 @@
 <!--   container -->
-<div class="branch grid" data-ng-controller="LocationCtrl">
+<div class="{{location.type}} grid" data-ng-controller="LocationCtrl">
 
   <p><a href="/#/">All locations</a></p>
 
@@ -126,7 +126,7 @@
 
   </div>
 
-  <div class="grid__item one-whole" id="blogs">
+  <div class="grid__item one-whole" id="blogs" data-ng-show="location.type == 'circulating'">
     <h2 class="hdg">Blogs</h2>
     <ul>
     
@@ -134,6 +134,19 @@
         <img class="img--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
         <h3><a href="http://nypl.org/{{blog.path}}">{{blog.title}}</a></h3>
         <div class="teaser">{{blog.blurb}}</div>
+      </li>
+      
+    </ul>  
+  </div>
+
+  <div class="grid__item one-whole" id="exhibitions" data-ng-show="location.type == 'research'">
+    <h2 class="hdg">Exhibitions</h2>
+    <ul>
+    
+      <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='exhibition in location._embedded.exhibitions'>
+        <img class="img--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
+        <h3><a href="http://nypl.org/{{exhibition.path}}">{{exhibition.title}}</a></h3>
+        <div class="teaser">{{exhibition.blurb}}</div>
       </li>
       
     </ul>  
