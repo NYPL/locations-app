@@ -25,8 +25,8 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
 
 	    $scope.sort = "distance";
 
-    }, function () {
-
+    }, function (error) {
+    	console.log("Failed: " + error);
     });
   }
 
@@ -52,6 +52,5 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
 
 	}, function (error) {
 		$scope.errors = error;
-		console.log(error.message);
 	});
 });

@@ -14,8 +14,8 @@ nypl_locations.controller('MenuCtrl', function ($scope, $rootScope, nypl_geocode
 
       orderLocations(coords);
 
-    }, function () { // error callback
-
+    }, function (error) { // error callback
+      console.log("Failed: " + error);
     });
   };
 
@@ -29,6 +29,8 @@ nypl_locations.controller('MenuCtrl', function ($scope, $rootScope, nypl_geocode
     });
 
     orderLocations(userCoords);
+  }, function (error) {
+    $scope.errors = error;
   });
 
   function orderLocations(coords) {

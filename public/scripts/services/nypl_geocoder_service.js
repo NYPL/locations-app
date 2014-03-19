@@ -18,11 +18,12 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             defer.resolve(coords);
 
           } else {
-            defer.reject(new Error ("Error"));
+            defer.reject(new Error (status));
           }
         });
       } else {
         var latlng = new google.maps.LatLng(address.lat, address.lng);
+
         geocoder.geocode({latLng: latlng}, function (result, status) {
           if (status == google.maps.GeocoderStatus.OK) {
             var address_component = result[0].address_components;
@@ -30,7 +31,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
             defer.resolve(zipcode);
           } else {
-            defer.reject(new Error ("Error"));
+            defer.reject(new Error (status));
           }
         });
       }
