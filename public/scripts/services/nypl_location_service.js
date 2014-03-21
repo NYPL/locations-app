@@ -1,9 +1,14 @@
 'use strict';
-angular.module('locationService', ['ngResource']).factory('nypl_locations_service', function($resource) {
+angular.module('locationService', ['ngResource']).factory('nypl_locations_service', function($q, $resource) {
 
 	return {
 		all_locations: function() {
-			return $resource('./json/all-branches.json');
+      var defer = $q.defer();
+			$resource('./json/all-branches.json').get(function (data) {
+        defer.resolve(data.branches);
+      });
+
+      return defer.promise;
 		},
 		single_location: function(id) {
 			return $resource('./json/:id.json');

@@ -4,35 +4,47 @@
 describe('Locinator controllers', function() {
 
   describe('LocationsCtrlCtrl', function(){
-    var $scope, ctrl, $timeout, locServiceMock;
+    var scope, q, locationsService, deferred, locationsCtrl;
 
     beforeEach(module('nypl_locations'));
 
     beforeEach(function () {
-      locServiceMock = jasmine.createSpyObj('nypl_locations_service', ['all_locations']);
+      locationsService = {
+        all_locations: function () {
+          deferred = q.defer();
+          return deferred.promise;
+        },
+        single_location: function () {
+          return;
+        }
+      };
+    });
+
+    beforeEach(function () {
       inject(function($rootScope, $controller, $q, _$timeout_) {
 
-        $scope = $rootScope.$new();
-  
-        locServiceMock.all_locations.and.returnValue({
-          get: function () {return ['a', 'b', 'c', 'd']}
-        });
+        scope = $rootScope.$new();
+        q = $q;
       
-        $timeout = _$timeout_;
-      
-        ctrl = $controller('LocationsCtrl', {
-          $scope: $scope,
-          nypl_locations_service: locServiceMock
+        locationsCtrl = $controller('LocationsCtrl', {
+          $scope: scope,
+          nypl_locations_service: locationsService
         });
+        deferred.resolve("{'coords':{'test':'one'}}");
       });
     });
 
-    it('should have name as the default sort', function () {
-      expect($scope.sort).toEqual('name');
-    });
+    it('should have name as the default sort', inject(function (nypl_locations_service) {
 
-    it('should load the locations during init', function () {
-      expect($scope.locations).toEqual(['a', 'b', 'c', 'd']);
-    });
+      spyOn(locationsService, 'all_locations').and.callThrough();
+      
+      scope.init();
+      scope.$root.$digest();
+
+      expect(locationsService.all_locations).toHaveBeenCalled();
+      expect(scope.locations).toEqual("{'coords':{'test':'one'}}");
+    }));
+
+
   });
 });

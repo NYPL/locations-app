@@ -14,10 +14,12 @@ nypl_locations.controller('LocationsCtrl', function ($scope, nypl_locations_serv
 		$scope.reverse = false;
 	}
 
-	// Display all branches regardless of user's location
-	nypl_locations_service.all_locations().get(function (data) {
-		$scope.locations = data.branches;
-	});
+	$scope.init = function () {
+		// Display all branches regardless of user's location
+		nypl_locations_service.all_locations().then(function (data) {
+			$scope.locations = data;
+		});
+	};
 
 	// Extract user coordinates
   nypl_coordinates_service.getCoordinates().then(function (position) {
@@ -33,4 +35,7 @@ nypl_locations.controller('LocationsCtrl', function ($scope, nypl_locations_serv
 		$scope.errors = error;
 		console.log(error.message);
 	});
+
+	$scope.init();
+
 });
