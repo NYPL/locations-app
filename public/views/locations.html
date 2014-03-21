@@ -39,30 +39,40 @@
 
     <!-- Locations are in h-card microformat -->
     <!-- http://microformats.org/wiki/h-card -->
-    <section data-ng-repeat="location in locations | filter:searchLocations | filter:location.library_type | orderBy:sort:reverse" class="location {{location.id}} grid one-whole">
-      <div class="h-card grid__item one-quarter">
-        <div class="p-org"><b>{{location.name}}</b></div>
-        <div class="p-adr">
-          <div class="p-street-address">{{location.street_address}}</div>
-          <span class="p-locality">{{location.locality}}</span>, 
-          <span class="p-region">{{location.region}}</span>, 
-          <span class="p-postal-code">{{location.postal_code}}</span>
+    <section class="grid__item one-whole">
+      <div class="h-card grid__item one-whole lap-and-up-one-third">Location</div><!--
+
+      --><div class="h-card grid__item one-whole lap-and-up-one-third">Distance</div><!--
+
+      --><div class="h-card grid__item one-whole lap-and-up-one-third">Hours</div>
+    </section>
+
+    <section class="grid__item one-whole" data-ng-repeat="location in locations | filter:searchLocations | orderBy:sort:reverse" class="location {{location.id}}">
+        <div class="h-card grid__item one-whole lap-and-up-one-third ">
+          <div class="p-org"><b><a href='/#/location/{{location.slug}}'>{{location.name}}</a></b></div>
+          <div class="p-adr">
+            <div class="p-street-address">{{location.street_address}}</div>
+            <span class="p-locality">{{location.locality}}</span>, 
+            <span class="p-region">{{location.region}}</span>, 
+            <span class="p-postal-code">{{location.postal_code}}</span>
+          </div>
+          <div class="p-tel" data-ng-show="location.contacts.phone">Phone: {{location.contacts.phone}}</div>
+          <div class="u-email" data-ng-show="location.contacts.email">Email: {{location.contacts.email}}</div>
+        </div><!--
+
+        --><div class="h-card grid__item one-whole lap-and-up-one-third">
+          <div data-ng-show="location.distance"><strong>{{location.distance}} miles</strong></div>
+          <div><a href="">View on Map</a></div>
+          <div><a href="">Get Directions</a></div>
+        </div><!--
+
+        --><div class="h-card grid__item one-whole lap-and-up-one-third">
+          <ul>
+            <li data-ng-repeat='(day, hour) in location.hours' data-ng-if="day != 'exceptions'">
+              {{day}} {{hour.open}} - {{hour.close}}
+            </li>
+          </ul>
         </div>
-        <div class="p-tel" data-ng-show="location.contacts.phone">Phone: {{location.contacts.phone}}</div>
-        <div class="u-email" data-ng-show="location.contacts.email">Email: {{location.contacts.email}}</div>
-      </div><!--
-
-      --><div class="h-card grid__item one-quarter">
-        <div data-ng-show="location.distance"><strong>{{location.distance}} miles</strong></div>
-        <div><a href="">View on Map</a></div>
-        <div><a href="">Get Directions</a></div>
-      </div><!--
-
-      --><div class="h-card grid__item one-quarter">
-      </div><!--
-
-      --><div class="h-card grid__item one-quarter">
-        <p>Services</p>
       </div>
     </section>
   </section>
