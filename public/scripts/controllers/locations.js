@@ -1,7 +1,6 @@
 'use strict';
 nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_locations_service, nypl_coordinates_service, nypl_geocoder_service) {
-	var user_lat,
-			user_long;
+	var userCoords;
 
 	$scope.sort = "name";
 	$scope.reverse = false;
@@ -40,19 +39,19 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
 
 	// Extract user coordinates
   nypl_coordinates_service.getCoordinates().then(function (position) {
-		user_lat = position.latitude;
-		user_long = position.longitude;
+		userCoords = _.pick(position, 'latitude', 'longitude');
 
-		nypl_geocoder_service.geocoder({lat: user_lat, lng: user_long}).then(function (zipcode) {
+		nypl_geocoder_service.geocoder({lat: userCoords.latitude, lng: userCoords.longitude}).then(function (zipcode) {
 			$scope.zipcode = zipcode;
 		});
 
 		$scope.distanceSet = true;
 
 		_.each($scope.locations, function(location) {
-			location.distance =  nypl_coordinates_service.getDistance(user_lat, user_long, location.lat, location.long);
+			location.distance =  nypl_coordinates_service.getDistance(userCoords.latitude, userCoords.longitude, location.lat, location.long);
 		});
 
+		$scope.sort = "distance";
 	}, function (error) {
 		$scope.errors = error;
 	});
