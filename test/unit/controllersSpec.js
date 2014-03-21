@@ -35,7 +35,10 @@ describe('Locinator controllers', function() {
     });
 
     it('should have name as the default sort', inject(function (nypl_locations_service) {
+      expect(scope.sort).toEqual("name");
+    }));
 
+    it('should mock the locations service', inject(function (nypl_locations_service){
       spyOn(locationsService, 'all_locations').and.callThrough();
       
       scope.init();
