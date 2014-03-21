@@ -7,8 +7,8 @@ angular.module('locationService', ['ngResource']).factory('nypl_locations_servic
 			return $resource('http://evening-mesa-7447-160.herokuapp.com/locations');
 		},
 		single_location: function(symbol) {
-			return $resource('./json/jmr.json');
-      //return $resource('http://evening-mesa-7447-160.herokuapp.com/locations/' + symbol);
+			// return $resource('./json/jmr.json');
+      return $resource('http://evening-mesa-7447-160.herokuapp.com/locations/' + symbol);
 		},
 		location_type: function(id) {
 			switch(id) {

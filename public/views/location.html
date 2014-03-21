@@ -36,7 +36,7 @@
 
         <div class="social flush">
           <a href="{{social.href}}" data-ng-repeat="social in location.social_media" class="inline">
-            <span class="icon-{{social.site}}">{{social.site}}</span>
+            <span class="icon-{{social.rel}}"></span>
           </a>
         </div>
 
@@ -108,7 +108,7 @@
     <h2 class="hdg">Events</h2>
 
     <ul class="grid">
-      <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in location._embedded.events">
+      <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in location.events">
         <h3>{{event.title}}</h3>
         <p>{{event.title}} - no teaser just yet</p>
         <p>Start time: {{event.start}}</p>
@@ -142,10 +142,10 @@
   <div class="grid__item one-whole" id="blogs" data-ng-show="location.type == 'circulating'">
     <h2 class="hdg">Blogs</h2>
     <div class="grid">
-      <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='blog in location._embedded.blogs'>
+      <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='blog in location.blogs'>
         <img class="img--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
         <h3><a href="http://nypl.org/{{blog.path}}">{{blog.title}}</a></h3>
-        <div class="teaser">{{blog.blurb}}</div>
+        <div class="teaser">{{blog.body}}</div>
       </div>
     </div>
   </div>

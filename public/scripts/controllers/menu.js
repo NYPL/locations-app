@@ -6,12 +6,12 @@ nypl_locations.controller('MenuCtrl', function ($scope, $rootScope, nypl_geocode
       locations;
 
   nypl_locations_service.all_locations().get(function (data) {
-    locations = data.branches;
+    locations = data.locations;
+    $scope.locations = _.first(locations, 3);
   });
 
   $scope.submitAddress = function (address) {
     nypl_geocoder_service.geocoder(address).then(function (coords) {
-
       orderLocations(coords);
 
     }, function (error) { // error callback
