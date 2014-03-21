@@ -73,10 +73,9 @@ nypl_locations.controller('LocationCtrl', function ($scope, $routeParams, nypl_l
 			'open': data.location.hours[day].open,
 			'close': data.location.hours[day].close
 		}
- 		
+ 	
+ 		// Temporary until Greg adds type field in json object
 		$scope.location.type = nypl_locations_service.location_type($scope.location.id.toUpperCase());
-
-		console.log( nypl_locations_service.convert_time("2014-04-12 14:00:00") );
 
 	});
 

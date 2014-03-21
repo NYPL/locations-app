@@ -20,10 +20,6 @@ angular.module('locationService', ['ngResource']).factory('nypl_locations_servic
 				default:
 					return 'circulating';
 			}
-		},
-		convert_time: function(unix_time) {
-			var new_date = new Date(unix_time).getTime();
-			return new_date;
 		}
 	}
 });
