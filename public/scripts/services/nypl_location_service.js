@@ -3,12 +3,7 @@ angular.module('locationService', ['ngResource']).factory('nypl_locations_servic
 
 	return {
 		all_locations: function() {
-      var defer = $q.defer();
-			$resource('./json/all-branches.json').get(function (data) {
-        defer.resolve(data.branches);
-      });
-
-      return defer.promise;
+			return $resource('./json/all-branches.json');
 		},
 		single_location: function(id) {
 			return $resource('./json/:id.json');
