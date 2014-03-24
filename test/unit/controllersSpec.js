@@ -4,35 +4,50 @@
 describe('Locinator controllers', function() {
 
   describe('LocationsCtrlCtrl', function(){
-    var $scope, ctrl, $timeout, locServiceMock;
+    var scope, locationsCtrl, service, httpBackend;
 
     beforeEach(module('nypl_locations'));
 
-    beforeEach(function () {
-      locServiceMock = jasmine.createSpyObj('nypl_locations_service', ['all_locations']);
-      inject(function($rootScope, $controller, $q, _$timeout_) {
+    beforeEach(inject(function(nypl_locations_service, _$httpBackend_, _$rootScope_, $controller) {
+      service = nypl_locations_service;
+      httpBackend = _$httpBackend_;
+      scope = _$rootScope_.$new();
 
-        $scope = $rootScope.$new();
-  
-        locServiceMock.all_locations.and.returnValue({
-          get: function () {return ['a', 'b', 'c', 'd']}
-        });
-      
-        $timeout = _$timeout_;
-      
-        ctrl = $controller('LocationsCtrl', {
-          $scope: $scope,
-          nypl_locations_service: locServiceMock
-        });
+      locationsCtrl = $controller('LocationsCtrl', {
+        $scope: scope,
+        nypl_locations_service: service
       });
-    });
+    }));
 
     it('should have name as the default sort', function () {
-      expect($scope.sort).toEqual('name');
+      expect(scope.sort).toEqual("name");
     });
 
-    it('should load the locations during init', function () {
-      expect($scope.locations).toEqual(['a', 'b', 'c', 'd']);
+    it('should call the branches api and successfully got data back', function () {
+      httpBackend.expectGET("./json/all-branches.json").respond(200, {
+        'branches': '[{"name":"jmr"},{"name":"sasb"}]'
+      });
+
+      //expect(service.all_locations()).toBeDefined();
+      expect(scope.locations).not.toBeDefined();
+
+      httpBackend.flush();
+
+      console.log(scope.locations);
+      expect(scope.locations).toBeDefined();
+      expect(scope.locations).toBe('[{"name":"jmr"},{"name":"sasb"}]');
+      
     });
+
+    it('should call the branches api and failed', function () {
+      httpBackend.expectGET("./json/all-branches.json").respond(404, {
+        'branches': '[{"name":"jmr"},{"name":"sasb"}]'
+      });
+
+      httpBackend.flush();
+
+      expect(scope.locations).not.toBeDefined();
+    });
+
   });
 });

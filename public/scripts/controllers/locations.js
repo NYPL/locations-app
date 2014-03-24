@@ -55,6 +55,7 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
 	}, function (error) {
 		$scope.errors = error;
 	});
+
 });
 
 nypl_locations.controller('LocationCtrl', function ($scope, $routeParams, nypl_locations_service) {
