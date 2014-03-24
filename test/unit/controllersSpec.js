@@ -49,6 +49,5 @@ describe('Locinator controllers', function() {
       expect(scope.locations).not.toBeDefined();
     });
 
-
   });
 });
