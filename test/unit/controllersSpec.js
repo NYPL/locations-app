@@ -24,8 +24,8 @@ describe('Locinator controllers', function() {
     });
 
     it('should call the branches api and successfully got data back', function () {
-      httpBackend.expectGET("./json/all-branches.json").respond(200, {
-        'branches': '[{"name":"jmr"},{"name":"sasb"}]'
+      httpBackend.expectGET("http://evening-mesa-7447-160.herokuapp.com/locations").respond(200, {
+        'locations': '[{"name":"jmr"},{"name":"sasb"}]'
       });
 
       //expect(service.all_locations()).toBeDefined();
@@ -33,14 +33,13 @@ describe('Locinator controllers', function() {
 
       httpBackend.flush();
 
-      console.log(scope.locations);
       expect(scope.locations).toBeDefined();
       expect(scope.locations).toBe('[{"name":"jmr"},{"name":"sasb"}]');
       
     });
 
     it('should call the branches api and failed', function () {
-      httpBackend.expectGET("./json/all-branches.json").respond(404, {
+      httpBackend.expectGET("http://evening-mesa-7447-160.herokuapp.com/locations").respond(404, {
         'branches': '[{"name":"jmr"},{"name":"sasb"}]'
       });
 
