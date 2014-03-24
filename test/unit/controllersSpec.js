@@ -23,8 +23,8 @@ describe('Locinator controllers', function() {
       expect(scope.sort).toEqual("name");
     });
 
-    it('should call the branches api', function () {
-      httpBackend.whenGET("./json/all-branches.json").respond({
+    it('should call the branches api and successfully got data back', function () {
+      httpBackend.expectGET("./json/all-branches.json").respond(200, {
         'branches': '[{"name":"jmr"},{"name":"sasb"}]'
       });
 
@@ -35,7 +35,20 @@ describe('Locinator controllers', function() {
 
       console.log(scope.locations);
       expect(scope.locations).toBeDefined();
+      expect(scope.locations).toBe('[{"name":"jmr"},{"name":"sasb"}]');
+      
     });
+
+    it('should call the branches api and failed', function () {
+      httpBackend.expectGET("./json/all-branches.json").respond(404, {
+        'branches': '[{"name":"jmr"},{"name":"sasb"}]'
+      });
+
+      httpBackend.flush();
+
+      expect(scope.locations).not.toBeDefined();
+    });
+
 
   });
 });
