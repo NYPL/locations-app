@@ -1,6 +1,6 @@
 'use strict';
 // Filter formats military time to standard time
-nypl_locations.filter('format_time', function() {
+nypl_locations.filter('timeFormat', function() {
 
 	return function(time) {
 		// Checking if thruthy needed for async calls
@@ -16,4 +16,12 @@ nypl_locations.filter('format_time', function() {
 		}
 	}
 
+});
+
+// Coverts MYSQL Datetime stamp to ISO format
+nypl_locations.filter('dateToISO', function() {
+  return function(input) {
+    input = new Date(input).toISOString();
+    return input;
+  };
 });

@@ -47,9 +47,9 @@
   --><div class="grid__item one-whole lap-and-up-one-third">
     <div class="h-event" id="hours-today">
       <h2 class="p-name flush--ends">Today’s Hours</h2>
-      <time class="dt-start">{{hoursToday.open | format_time}}</time>
+      <time class="dt-start">{{hoursToday.open | timeFormat}}</time>
       –
-      <time class="dt-end">{{hoursToday.close | format_time}}</time>
+      <time class="dt-end">{{hoursToday.close | timeFormat}}</time>
     </div>
 
     <div id="location-hours">
@@ -59,7 +59,7 @@
         <div class="{{days[$index]}}" data-ng-repeat="day in location.hours" data-ng-if="$index != 7">
           <span class="day">{{days[$index]}}</span>
           <span class="time">
-            {{ location.hours[days[$index]].open | format_time }} - {{ location.hours[days[$index]].close | format_time }}
+            {{ location.hours[days[$index]].open | timeFormat }} - {{ location.hours[days[$index]].close | timeFormat }}
           </span>
         </div>
       </div>
@@ -119,8 +119,8 @@
       <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in location.events">
         <h3>{{event.title}}</h3>
         <p>{{event.title}} - no teaser just yet</p>
-        <p>Start time: {{event.start}}</p>
-        <p>End time: {{event.end}}</p>
+        <p>Start time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        <p>End time: {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
       </li>
     </ul>   
       

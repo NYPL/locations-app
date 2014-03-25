@@ -64,7 +64,7 @@
         --><div class="h-card grid__item one-quarter lap-and-up-one-quarter">
           <ul>
             <li data-ng-repeat='(day, hour) in location.hours' data-ng-if="day != 'exceptions'">
-              {{day}} {{hour.open}} - {{hour.close}}
+              {{day}} {{hour.open | timeFormat}} - {{hour.close | timeFormat}}
             </li>
           </ul>
         </div><!-- 
