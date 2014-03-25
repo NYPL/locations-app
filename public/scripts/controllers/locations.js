@@ -6,6 +6,7 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
 	// Display all branches regardless of user's location
 	nypl_locations_service.all_locations().get(function (data) {
 		$scope.locations = data.locations;
+		console.log($scope.locations);
  	}, function (err, status) {
  		console.log(err);
  		console.log(status);
