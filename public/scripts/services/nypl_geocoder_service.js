@@ -6,8 +6,11 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
       var defer = $q.defer();
       var coords = {};
       var geocoder = new google.maps.Geocoder();
+      var sw_bound = new google.maps.LatLng(40.49, -74.26);
+      var ne_bound = new google.maps.LatLng(40.91, -73.77);
+      var bounds = new google.maps.LatLngBounds(sw_bound, ne_bound);
 
-      geocoder.geocode({address: address}, function (result, status) {
+      geocoder.geocode({address: address, bounds: bounds}, function (result, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           coords.lat = result[0].geometry.location.k;
           coords.long = result[0].geometry.location.A;

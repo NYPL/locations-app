@@ -1,37 +1,12 @@
 'use strict';
 nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_locations_service, nypl_coordinates_service, nypl_geocoder_service) {
 	var userCoords;
-
-	$scope.sort = "name";
-	$scope.reverse = false;
-
-	$scope.sortBy = function(value) {
-		if ($scope.sort == value){
-			$scope.reverse = !$scope.reverse;
-			return;
-		}
-
-		$scope.sort = value;
-		$scope.reverse = false;
-	}
-
-	$scope.submitAddress = function (address) {
-		nypl_geocoder_service.get_coords(address).then(function (coords) {
-
-      _.each($scope.locations, function (location) {
-	      location.distance =  nypl_coordinates_service.getDistance(coords.lat, coords.long, location.lat, location.long);
-	    });
-
-	    $scope.sort = "distance";
-
-    }, function (error) {
-    	console.log("Failed: " + error);
-    });
-  }
+	$scope.predicate = 'name'; // Default sort upon DOM Load
 
 	// Display all branches regardless of user's location
 	nypl_locations_service.all_locations().get(function (data) {
 		$scope.locations = data.locations;
+		console.log($scope.locations);
  	}, function (err, status) {
  		console.log(err);
  		console.log(status);
@@ -45,16 +20,29 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
 			$scope.zipcode = zipcode;
 		});
 
-		$scope.distanceSet = true;
-
 		_.each($scope.locations, function(location) {
 			location.distance =  nypl_coordinates_service.getDistance(userCoords.latitude, userCoords.longitude, location.lat, location.long);
 		});
 
-		$scope.sort = "distance";
+		$scope.distanceSet = true;
+		$scope.predicate = 'distance';
 	}, function (error) {
 		$scope.errors = error;
 	});
+
+	$scope.submitAddress = function (address) {
+		nypl_geocoder_service.get_coords(address).then(function (coords) {
+
+      _.each($scope.locations, function (location) {
+	      location.distance =  nypl_coordinates_service.getDistance(coords.lat, coords.long, location.lat, location.long);
+	    });
+
+	    $scope.predicate = 'distance';
+
+    }, function (error) {
+    	console.log("Failed: " + error);
+    });
+  }
 
 });
 

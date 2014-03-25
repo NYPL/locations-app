@@ -9,7 +9,7 @@ var nypl_locations = angular.module('nypl_locations', [
 
 nypl_locations.constant('_', window._);
 
-nypl_locations.config(function ($routeProvider) {
+nypl_locations.config(function ($routeProvider, $locationProvider) {
   $routeProvider
     .when('/', {
       templateUrl: 'views/locations.html',
@@ -30,4 +30,7 @@ nypl_locations.config(function ($routeProvider) {
     .otherwise({
       redirectTo: '/'
     });
+
+    // usese the HTML5 History API, remove hash (need to test)
+    // $locationProvider.html5Mode(true);
 });

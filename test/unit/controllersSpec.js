@@ -19,10 +19,6 @@ describe('Locinator controllers', function() {
       });
     }));
 
-    it('should have name as the default sort', function () {
-      expect(scope.sort).toEqual("name");
-    });
-
     it('should call the branches api and successfully got data back', function () {
       httpBackend.expectGET("http://evening-mesa-7447-160.herokuapp.com/locations").respond(200, {
         'locations': '[{"name":"jmr"},{"name":"sasb"}]'
