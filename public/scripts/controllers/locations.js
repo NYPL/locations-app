@@ -16,7 +16,7 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
 	}
 
 	$scope.submitAddress = function (address) {
-		nypl_geocoder_service.geocoder(address).then(function (coords) {
+		nypl_geocoder_service.get_coords(address).then(function (coords) {
 
       _.each($scope.locations, function (location) {
 	      location.distance =  nypl_coordinates_service.getDistance(coords.lat, coords.long, location.lat, location.long);
@@ -41,7 +41,7 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
   nypl_coordinates_service.getCoordinates().then(function (position) {
 		userCoords = _.pick(position, 'latitude', 'longitude');
 
-		nypl_geocoder_service.geocoder({lat: userCoords.latitude, lng: userCoords.longitude}).then(function (zipcode) {
+		nypl_geocoder_service.get_zipcode({lat: userCoords.latitude, lng: userCoords.longitude}).then(function (zipcode) {
 			$scope.zipcode = zipcode;
 		});
 

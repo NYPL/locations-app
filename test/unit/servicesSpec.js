@@ -58,4 +58,25 @@ describe('NYPL Service Tests', function() {
     });
 
   });
+
+  describe('Utility: geocoder', function () {
+    var nypl_geocoder_service,
+        nypl_geocoder_mock, q, rootScope;
+
+    beforeEach(module('nypl_locations'));
+    beforeEach(function() {
+      inject(function (_nypl_geocoder_service_, $q, $rootScope) {
+        nypl_geocoder_mock = _nypl_geocoder_service_;
+
+        q = $q;
+        rootScope = $rootScope;
+      })
+    });
+
+    it('should get coordinates from a zipcode', function() {
+      expect(angular.isFunction(nypl_geocoder_mock.get_coords)).toBe(true);
+    });
+
+  });
+
 });
