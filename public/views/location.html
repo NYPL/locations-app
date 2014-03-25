@@ -47,7 +47,9 @@
   --><div class="grid__item one-whole lap-and-up-one-third">
     <div class="h-event" id="hours-today">
       <h2 class="p-name flush--ends">Today’s Hours</h2>
-      <time datetime="2014-02-14T10:00-05:00" class="dt-start">{{hoursToday.open}}</time>–<time datetime="2014-02-14T17:00-05:00" class="dt-end">{{hoursToday.close}}</time>
+      <time class="dt-start">{{hoursToday.open | format_time}}</time>
+      –
+      <time class="dt-end">{{hoursToday.close | format_time}}</time>
     </div>
 
     <div id="location-hours">
@@ -56,7 +58,9 @@
       <div class="weekly-hours">
         <div class="{{days[$index]}}" data-ng-repeat="day in location.hours" data-ng-if="$index != 7">
           <span class="day">{{days[$index]}}</span>
-          <span class="time">{{location.hours[days[$index]].open}} - {{location.hours[days[$index]].close}}</span>
+          <span class="time">
+            {{ location.hours[days[$index]].open | format_time }} - {{ location.hours[days[$index]].close | format_time }}
+          </span>
         </div>
       </div>
     </div>
