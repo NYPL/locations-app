@@ -21,10 +21,10 @@ nypl_locations.config(function ($routeProvider) {
       templateUrl: 'views/coordinates.html',
       controller: 'CoordsCtrl'
     })
-    .when('/location/:symbol', {
+    .when('/:symbol', {
       templateUrl: 'views/location.html'
     })
-    .when('/location/:symbol/events', {
+    .when('/:symbol/events', {
       templateUrl: '/views/events.html'
     })
     .otherwise({
