@@ -31,18 +31,18 @@
 
 
     <section class="grid one-whole">
-      <div class="h-card grid__item one-quarter " data-ng-click="sortBy('name')">Location</div><!--
+      <div class="h-card grid__item one-quarter" ng-click="predicate = 'name'; reverse=!reverse">Location</div><!--
 
-      --><div class="h-card grid__item one-quarter " data-ng-click="sortBy('distance')">Distance</div><!--
+      --><div class="h-card grid__item one-quarter" ng-click="predicate = 'distance'; reverse=!reverse">Distance</div><!--
 
-      --><div class="h-card grid__item one-quarter ">Hours</div><!--
+      --><div class="h-card grid__item one-quarter">Hours</div><!--
 
     --><div class="h-card grid__item one-quarter">Services</div>
     </section>
 
     <!-- Locations are in h-card microformat -->
     <!-- http://microformats.org/wiki/h-card -->
-    <section class="grid one-whole" data-ng-repeat="location in locations | filter:searchLocations | orderBy:sort:reverse" class="location {{location.id}}">
+    <section class="grid one-whole" data-ng-repeat="location in locations | filter:searchLocations | orderBy:predicate:reverse" class="location {{location.id}}">
         <div class="h-card grid__item one-quarter lap-and-up-one-quarter ">
           <div class="p-org"><b><a href='/#/{{location._id|lowercase}}'>{{location.name}}</a></b></div>
           <div class="p-adr">
