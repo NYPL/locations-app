@@ -16,7 +16,7 @@ angular.module('locationService', ['ngResource']).factory('nypl_locations_servic
 					hours = ((components[0] + 11) % 12) + 1;
 					minutes = components[1],
 					meridiem = components[0] > 11 ? 'pm' : 'am';
-			return hours + ":" minutes + " " + meridiem;
+			return hours + ":" + minutes + meridiem;
 		}
 	}
 });
