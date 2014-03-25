@@ -15,11 +15,11 @@ nypl_locations.filter('timeFormat', function() {
 			return console.log('String conversion loaded after http response');
 		}
 	}
-
 });
 
 // Coverts MYSQL Datetime stamp to ISO format
 nypl_locations.filter('dateToISO', function() {
+	
   return function(input) {
     input = new Date(input).toISOString();
     return input;
