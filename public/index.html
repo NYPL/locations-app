@@ -42,7 +42,6 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrIeVzBbK8NWCbWKsi_sj3N2T_EMWEAVY&sensor=false"></script>
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/sass-bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
@@ -51,15 +50,17 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/locations.js"></script>
-        <script src="scripts/controllers/coordinates.js"></script>
-        <script src="scripts/controllers/menu.js"></script>
-        <script src="scripts/services/nypl_coordinates_service.js"></script>
-        <script src="scripts/services/nypl_location_service.js"></script>
-        <script src="scripts/services/nypl_geocoder_service.js"></script>
-
-        <!-- endbuild -->
+    <!-- App Config -->
+    <script src="scripts/app.js"></script>
+    <!-- Filters -->
+    <script src="scripts/filters/nypl_filters.js"></script>
+    <!-- Controllers -->
+    <script src="scripts/controllers/locations.js"></script>
+    <script src="scripts/controllers/coordinates.js"></script>
+    <script src="scripts/controllers/menu.js"></script>
+    <!-- Services -->
+    <script src="scripts/services/nypl_coordinates_service.js"></script>
+    <script src="scripts/services/nypl_location_service.js"></script>
+    <script src="scripts/services/nypl_geocoder_service.js"></script>
 </body>
 </html>

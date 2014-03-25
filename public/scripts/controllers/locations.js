@@ -74,7 +74,6 @@ nypl_locations.controller('LocationCtrl', function ($scope, $routeParams, nypl_l
 		}
  	
 		console.log($scope.location);
-
 	});
 
 });
