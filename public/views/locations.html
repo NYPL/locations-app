@@ -44,7 +44,7 @@
     <!-- http://microformats.org/wiki/h-card -->
     <section class="grid one-whole" data-ng-repeat="location in locations | filter:searchLocations | orderBy:sort:reverse" class="location {{location.id}}">
         <div class="h-card grid__item one-quarter lap-and-up-one-quarter ">
-          <div class="p-org"><b><a href='/#/location/{{location.slug}}'>{{location.name}}</a></b></div>
+          <div class="p-org"><b><a href='/#/{{location._id|lowercase}}'>{{location.name}}</a></b></div>
           <div class="p-adr">
             <div class="p-street-address">{{location.street_address}}</div>
             <span class="p-locality">{{location.locality}}</span>, 
