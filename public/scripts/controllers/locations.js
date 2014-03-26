@@ -1,12 +1,12 @@
 'use strict';
-nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_locations_service, nypl_coordinates_service, nypl_geocoder_service) {
+nypl_locations.controller('LocationsCtrl', function ($scope, $timeout, $rootScope, nypl_locations_service, nypl_coordinates_service, nypl_geocoder_service) {
 	var userCoords;
 	$scope.predicate = 'name'; // Default sort upon DOM Load
 
 	// Display all branches regardless of user's location
 	nypl_locations_service.all_locations().get(function (data) {
 		$scope.locations = data.locations;
-		console.log($scope.locations);
+		// console.log($scope.locations);
 
 		// Extract user coordinates after locations data has been assigned to scope
 		if($scope.locations) {
@@ -37,17 +37,30 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
 
 
 	$scope.submitAddress = function (address) {
-		nypl_geocoder_service.get_coords(address).then(function (coords) {
+		$scope.searchTerm = address;
 
-      _.each($scope.locations, function (location) {
+		nypl_geocoder_service.get_coords(address).then(function (coords) {
+			var filteredLocations = $scope.filteredLocations;
+			var locations = $scope.locations;
+
+			$scope.searchTerm = '';
+
+			locations = _.difference(locations, filteredLocations);
+			_.each(locations, function (location) {
 	      location.distance =  nypl_coordinates_service.getDistance(coords.lat, coords.long, location.lat, location.long);
 	    });
+	    
+			locations = _.sortBy(locations, function (location) {
+				return location.distance;
+			});
 
-	    $scope.predicate = 'distance';
+			$scope.locations = _.union(filteredLocations, locations);
+	    $scope.predicate = '';
 
     }, function (error) {
     	console.log("geoCoder Service Error: " + error);
     });
+
   }
 
 });

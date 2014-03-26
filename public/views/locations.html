@@ -13,7 +13,6 @@
     Enter your Zip code: <input type="text" data-ng-model="zipcode" />
     <button data-ng-click="submitAddress(zipcode)">Submit</button>
   </form>
-  <p>Or <a href="/#/">view all branches</a></p>
 
   <section class="list">
   	<section class="filters">
@@ -24,11 +23,6 @@
   	</section>
   	
     <br />
-
-    <section>
-      <input type='text' data-ng-model='searchLocations' placeholder='Enter search term'/>
-    </section>
-
 
     <section class="grid one-whole">
       <div class="h-card grid__item one-quarter" ng-click="predicate = 'name'; reverse=!reverse">Location</div><!--
@@ -42,7 +36,7 @@
 
     <!-- Locations are in h-card microformat -->
     <!-- http://microformats.org/wiki/h-card -->
-    <section class="grid one-whole" data-ng-repeat="location in locations | filter:searchLocations | orderBy:predicate:reverse" class="location {{location.id}}">
+    <section class="grid one-whole" data-ng-repeat="location in (filteredLocations = (locations | filter:searchTerm | orderBy:predicate:reverse))" class="location {{location.id}}">
         <div class="h-card grid__item one-quarter lap-and-up-one-quarter ">
           <div class="p-org"><b><a href='/#/{{location._id|lowercase}}'>{{location.name}}</a></b></div>
           <div class="p-adr">
