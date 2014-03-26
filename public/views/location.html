@@ -148,12 +148,12 @@
 
   </div>
 
-  <div class="grid__item one-whole" id="blogs" data-ng-show="location.type == 'circulating'">
+  <div class="grid__item one-whole" id="blogs" data-ng-show="location.type == 'branch'">
     <h2 class="hdg">Blogs</h2>
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='blog in location.blogs'>
         <img class="img--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
-        <h3><a href="http://nypl.org/{{blog.path}}">{{blog.title}}</a></h3>
+        <h3><a href="http://nypl.org/{{blog.href}}">{{blog.title}}</a></h3>
         <div class="teaser">{{blog.body}}</div>
       </div>
     </div>
