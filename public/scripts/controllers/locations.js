@@ -15,17 +15,19 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
 	// Extract user coordinates
   nypl_coordinates_service.getCoordinates().then(function (position) {
 		userCoords = _.pick(position, 'latitude', 'longitude');
-
+		
 		nypl_geocoder_service.get_zipcode({lat: userCoords.latitude, lng: userCoords.longitude}).then(function (zipcode) {
 			$scope.zipcode = zipcode;
+
+			_.each($scope.locations, function(location) {
+				location.distance =  nypl_coordinates_service.getDistance(userCoords.latitude, userCoords.longitude, location.lat, location.long);
+			});
+
+			$scope.distanceSet = true;
+			$scope.predicate = 'distance';
+
 		});
 
-		_.each($scope.locations, function(location) {
-			location.distance =  nypl_coordinates_service.getDistance(userCoords.latitude, userCoords.longitude, location.lat, location.long);
-		});
-
-		$scope.distanceSet = true;
-		$scope.predicate = 'distance';
 	}, function (error) {
 		$scope.errors = error;
 	});

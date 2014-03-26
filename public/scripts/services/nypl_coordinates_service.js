@@ -13,25 +13,25 @@ nypl_locations.factory('nypl_coordinates_service', ['$q', '$window', '$rootScope
         });
       } else {
         $window.navigator.geolocation.getCurrentPosition(function (position) {
-          $rootScope.$apply(function () {
+          //$rootScope.$apply(function () {
             defer.resolve(position.coords); // Extract coordinates for geoPosition obj
-          });
+          //});
         }, function (error) {
           switch (error.code) {
             case 1:
-              $rootScope.$apply( function() {
+              $rootScope.$apply( function () {
                 defer.reject(new Error ("User denied permission"));
               });
               break;
 
             case 1:
-              $rootScope.$apply( function() {
+              $rootScope.$apply( function () {
                 defer.reject(new Error ("The position is currently unavailable"));
               });
               break;
 
             case 1:
-              $rootScope.$apply( function() {
+              $rootScope.$apply( function () {
                 defer.reject(new Error ("The request timed out"));
               });
               break;
