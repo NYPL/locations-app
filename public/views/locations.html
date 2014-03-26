@@ -10,8 +10,8 @@
 	<h3>Library Locator</h3>
 
   <form>
-    Enter your Zip code: <input type="text" data-ng-model="zipcode" />
-    <button data-ng-click="submitAddress(zipcode)">Submit</button>
+    Enter your Zip code: <input type="text" data-ng-model="searchTerm" />
+    <button data-ng-click="submitAddress(searchTerm)">Submit</button>
   </form>
 
   <section class="list">
@@ -36,7 +36,7 @@
 
     <!-- Locations are in h-card microformat -->
     <!-- http://microformats.org/wiki/h-card -->
-    <section class="grid one-whole" data-ng-repeat="location in (filteredLocations = (locations | filter:searchTerm | orderBy:predicate:reverse))" class="location {{location.id}}">
+    <section class="grid one-whole" data-ng-repeat="location in locations | orderBy:predicate:reverse" class="location {{location.id}}">
         <div class="h-card grid__item one-quarter lap-and-up-one-quarter ">
           <div class="p-org"><b><a href='/#/{{location._id|lowercase}}'>{{location.name}}</a></b></div>
           <div class="p-adr">
@@ -67,7 +67,7 @@
           <p>Services go here</p>
         </div>
 
-      </div>
+        <hr class="grid__item" data-ng-show='location.break' />
     </section>
   </section>
 </div>
