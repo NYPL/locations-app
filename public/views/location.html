@@ -65,14 +65,14 @@
       </div>
     </div>
 
-    <p class="color-block red whiteText" data-ng-show="location.type == 'research'">
+    <p class="color-block red whiteText" data-ng-if="location.type == 'research'">
       Note: See division pages for individual hours
     </p>
 
     <div id="catalog"><a class="icon-books" href="">Catalog Items Here</a></div>
   </div><!--
 
-  --><div class="grid__item one-whole" id="divisions" data-ng-show="location.type == 'research'">
+  --><div class="grid__item one-whole" id="divisions" data-ng-if="location.type == 'research'">
     <h2 class="hdg">Divisions</h2>
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-quarter">
@@ -117,8 +117,8 @@
 
     <ul class="grid">
       <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in location.events">
-        <h3>{{event.title}}</h3>
-        <p>{{event.title}} - no teaser just yet</p>
+        <h3><a href="{{'http://www.nypl.org' + event.href}}"</a>{{event.title}}</a></h3>
+        <p>{{event.body}}</p>
         <p>Start time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p>End time: {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
       </li>
@@ -148,7 +148,7 @@
 
   </div>
 
-  <div class="grid__item one-whole" id="blogs" data-ng-show="location.type == 'circulating'">
+  <div class="grid__item one-whole" id="blogs" data-ng-if="location.type != 'research'">
     <h2 class="hdg">Blogs</h2>
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='blog in location.blogs'>
@@ -159,7 +159,7 @@
     </div>
   </div>
 
-  <div class="grid__item one-whole" id="exhibitions" data-ng-show="location.type == 'research'">
+  <div class="grid__item one-whole" id="exhibitions" data-ng-if="location.type == 'research'">
     <h2 class="hdg">Exhibitions (need service data)</h2>
     <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='exhibition in location._embedded.exhibitions'>
       <img class="img--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />

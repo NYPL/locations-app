@@ -7,28 +7,34 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
 	nypl_locations_service.all_locations().get(function (data) {
 		$scope.locations = data.locations;
 		console.log($scope.locations);
- 	}, function (err, status) {
- 		console.log(err);
- 		console.log(status);
+
+		// Extract user coordinates after locations data has been assigned to scope
+		if($scope.locations) {
+		  nypl_coordinates_service.getCoordinates().then(function (position) {
+				userCoords = _.pick(position, 'latitude', 'longitude');
+				
+				// Fill in zipcode based on geo-location
+				nypl_geocoder_service.get_zipcode({lat: userCoords.latitude, lng: userCoords.longitude}).then(function (zipcode) {
+					$scope.zipcode = zipcode;
+
+					// Iterate through lon/lat and calculate distance
+					_.each($scope.locations, function(location) {
+						location.distance =  nypl_coordinates_service.getDistance(userCoords.latitude, userCoords.longitude, location.lat, location.long);
+					});
+
+					$scope.distanceSet = true;
+					$scope.predicate = 'distance';
+
+				});
+			}, function (error) {
+				$scope.errors = error;
+				console.log('Get Coordinates Error: ' + $scope.errors);
+			});
+		} // End If
+ 	}, function (error, status) {
+ 		console.log('All Locations Error: ' + error);
  	});
 
-	// Extract user coordinates
-  nypl_coordinates_service.getCoordinates().then(function (position) {
-		userCoords = _.pick(position, 'latitude', 'longitude');
-
-		nypl_geocoder_service.get_zipcode({lat: userCoords.latitude, lng: userCoords.longitude}).then(function (zipcode) {
-			$scope.zipcode = zipcode;
-		});
-
-		_.each($scope.locations, function(location) {
-			location.distance =  nypl_coordinates_service.getDistance(userCoords.latitude, userCoords.longitude, location.lat, location.long);
-		});
-
-		$scope.distanceSet = true;
-		$scope.predicate = 'distance';
-	}, function (error) {
-		$scope.errors = error;
-	});
 
 	$scope.submitAddress = function (address) {
 		nypl_geocoder_service.get_coords(address).then(function (coords) {
@@ -40,7 +46,7 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
 	    $scope.predicate = 'distance';
 
     }, function (error) {
-    	console.log("Failed: " + error);
+    	console.log("geoCoder Service Error: " + error);
     });
   }
 

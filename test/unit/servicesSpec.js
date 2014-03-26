@@ -2,102 +2,113 @@
 
 describe('NYPL Service Tests', function() {
 
-  describe('Utility: getDistance function', function() {
+  /* 
+  * nypl_coordinates_service
+  * Service that retrieves a browser's current location and coordinate distance utility method
+  */
+  describe('Utility: nypl_coordinates_service', function() {
+    
+    /* nypl_coordinates_service.getDistance */
+    describe('nypl_coordinates_service.getDistance', function () {
+      var nypl_coordinates_service;
 
-    var nypl_coordinates_service;
+      // excuted before each "it" is run.
+      beforeEach(function () {
+        
+        // load the module.
+        module('nypl_locations');
+        
+        // inject your service for testing.
+        // The _underscores_ are a convenience thing
+        // so you can have your variable name be the
+        // same as your injected service.
+        inject(function (_nypl_coordinates_service_) {
+          nypl_coordinates_service = _nypl_coordinates_service_;
+        });
+      });
 
-    // excuted before each "it" is run.
-    beforeEach(function (){
-      
-      // load the module.
-      module('nypl_locations');
-      
+      // check to see if it has the expected function
+      it('should have a getDistance() function', function () { 
+        expect(angular.isFunction(nypl_coordinates_service.getDistance)).toBe(true);
+      });
+
+      // check to see if it has the expected function
+      it('should calculate the distance from Schwarzman Bldg to 58th Street Library', function () { 
+        var result = nypl_coordinates_service.getDistance(40.75298660000001, -73.9821364, 40.7619, -73.9691);
+        expect(result).toBe(0.92);
+        expect(result).not.toBe(null);
+      });
+    });
+    
+    /* nypl_coordinates_service.getCoordinates */
+    describe('nypl_coordinates_service.getCoordinates', function () {
+      var nypl_coordinates_service_mock, geolocationMock, rootScope, geolocationOk;
+
+      // excuted before each "it" is run.
+      beforeEach(module('nypl_locations'));
+        
       // inject your service for testing.
       // The _underscores_ are a convenience thing
       // so you can have your variable name be the
       // same as your injected service.
-      inject(function(_nypl_coordinates_service_) {
-        nypl_coordinates_service = _nypl_coordinates_service_;
+      beforeEach(inject(function ($rootScope, nypl_coordinates_service) {
+        nypl_coordinates_service_mock = nypl_coordinates_service;
+        rootScope = $rootScope;
+
+        window.navigator = jasmine.createSpy('navigator');
+        geolocationMock = window.navigator.geolocation = jasmine.createSpy('geolocation');
+
+        geolocationOk = function (params, callback) {
+          callback(
+            {coords: {latitude: 40.75298660000001, longitude: -73.9821364}}
+          );
+        };
+      }));
+
+      // check to see if it has the expected function
+      it('should have an getCoordinates function', function () { 
+        expect(angular.isFunction(nypl_coordinates_service_mock.getCoordinates)).toBe(true);
+        expect(typeof nypl_coordinates_service_mock.getCoordinates).toBe('function');
       });
-    });
 
-    // check to see if it has the expected function
-    it('should have a getDistance() function', function () { 
-      expect(angular.isFunction(nypl_coordinates_service.getDistance)).toBe(true);
-    });
+      describe('get_coords function successful', function () {
+        beforeEach(function() {
+          geolocationMock.prototype.getCurrentPosition = 
+              window.navigator.geolocation.getCurrentPosition =
+              jasmine.createSpy('getCurrentPosition').and.callFake(geolocationOk);
+        });
 
-    // check to see if it has the expected function
-    it('should calculate the distance from Schwarzman Bldg to 58th Street Library', function () { 
-      var result = nypl_coordinates_service.getDistance(40.75298660000001, -73.9821364, 40.7619, -73.9691);
-      expect(result).toBe(0.92);
-      expect(result).not.toBe(null);
+        it('Should not be called', function () {
+          expect(geolocationMock.prototype.getCurrentPosition).not.toHaveBeenCalled();
+        });
+
+        it('Should call the geolocation function when calling the service', function () {
+          nypl_coordinates_service_mock.getCoordinates();
+          expect(geolocationMock.prototype.getCurrentPosition).toHaveBeenCalled();
+        });
+
+        it('Should return a promise', function () {
+          var promise = nypl_coordinates_service_mock.getCoordinates();
+          expect(typeof promise.then).toBe('function');
+        });
+
+        it('Should accept the promise when geolocation returns coordinates', function () {
+
+        });
+
+      });
+
     });
   });
 
-  describe('Utility: getCoordinates function', function() {
-    var nypl_coordinates_service;
 
-    // excuted before each "it" is run.
-    beforeEach(function (){
-      
-      // load the module.
-      module('nypl_locations');
-      
-      // inject your service for testing.
-      // The _underscores_ are a convenience thing
-      // so you can have your variable name be the
-      // same as your injected service.
-      inject(function(_nypl_coordinates_service_) {
-        nypl_coordinates_service = _nypl_coordinates_service_;
-      });
-    });
-
-    // check to see if it has the expected function
-    it('should have an getCoordinates function', function () { 
-      expect(angular.isFunction(nypl_coordinates_service.getCoordinates)).toBe(true);
-    });
-
-  });
-
-  describe('Utility: nypl_geocoder_service called from controller', function () {
-    var nypl_geocoder_mock, q, rootScope, scope, defer, geoSpy;
-
-    beforeEach(module('nypl_locations'));
-    beforeEach(inject(function ($q, $rootScope, nypl_geocoder_service) {
-      q = $q;
-      rootScope = $rootScope;
-    }));
-    beforeEach(inject(function ($controller) {
-      scope = rootScope.$new();
-      nypl_geocoder_mock = {
-        get_coords: function (address) {
-          defer = q.defer();
-          return defer.promise;
-        }
-      };
-
-      geoSpy = spyOn(nypl_geocoder_mock,'get_coords').and.callThrough();
-
-      $controller('LocationsCtrl', {
-        '$scope': scope,
-        'nypl_geocoder_service': nypl_geocoder_mock
-      });
-      scope.submitAddress('test');
-
-    }));
-
-    // Although this test works, I cannot seem to find a way to test for the 
-    // promise and returned value.  Working on that.
-    it('should get coordinates from a zipcode', inject(function (nypl_geocoder_service) {
-      expect(nypl_geocoder_mock.get_coords).toHaveBeenCalled();
-    }));
-
-  });
-
-  
-  describe('Utility: nypl_geocoder_service called directly', function () {
-    var GeoCoderMock, GeoCodingOK, GeoCodingError, 
-        LatLngMock, LatLngOk, LatLngError,
+  /* 
+  * nypl_geocoder_service 
+  * Queries Google Maps Javascript API to geocode addresses and reverse geocode coordinates.
+  */
+  describe('Utility: nypl_geocoder_service', function () {
+    var GeocoderMock, GeoCodingOK, GeoCodingError, 
+        LatLngMock, LatLngBoundsMock, LatLngOk, LatLngError,
         nypl_geocoder_mock, rootScope,
         get_coords_return_value, get_zipcode_return_value;
 
@@ -134,9 +145,9 @@ describe('NYPL Service Tests', function() {
         callback({result: 'Fake result'}, 'ERROR');
       };
 
-      GeoCoderMock = window.google.maps.Geocoder = jasmine.createSpy('Geocoder');
+      GeocoderMock = window.google.maps.Geocoder = jasmine.createSpy('Geocoder');
       LatLngMock = window.google.maps.LatLng = jasmine.createSpy('LatLng');
-
+      LatLngBoundsMock = window.google.maps.LatLngBounds = jasmine.createSpy('LatLngBounds');
     }));
 
     it('Should expose some functions', function(){
@@ -148,16 +159,16 @@ describe('NYPL Service Tests', function() {
     describe('nypl_geocoder_service.get_coords', function () {
       describe('get_coords function successful', function () {
         beforeEach(function() {
-          GeoCoderMock.prototype.geocode = jasmine.createSpy('geocode').and.callFake(GeoCodingOK);
+          GeocoderMock.prototype.geocode = jasmine.createSpy('geocode').and.callFake(GeoCodingOK);
         });
 
         it('Should not be called', function () {
-          expect(GeoCoderMock.prototype.geocode).not.toHaveBeenCalled();
+          expect(GeocoderMock.prototype.geocode).not.toHaveBeenCalled();
         });
 
         it('Should call the geocode api when calling the service', function () {
           nypl_geocoder_mock.get_coords('10018');
-          expect(GeoCoderMock.prototype.geocode).toHaveBeenCalled();
+          expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
         });
 
         it('Should return a promise', function () {
@@ -191,12 +202,12 @@ describe('NYPL Service Tests', function() {
 
       describe('get_coords function failed', function () {
         beforeEach(function() {
-          GeoCoderMock.prototype.geocode = jasmine.createSpy('geocode').and.callFake(GeoCodingError);
+          GeocoderMock.prototype.geocode = jasmine.createSpy('geocode').and.callFake(GeoCodingError);
         });
 
         it('Should be called', function () {
           nypl_geocoder_mock.get_coords();
-          expect(GeoCoderMock.prototype.geocode).toHaveBeenCalled();
+          expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
         });
 
         it('Should return a promise', function () {
@@ -221,16 +232,16 @@ describe('NYPL Service Tests', function() {
     describe('nypl_geocoder_service.get_zipcode', function () {
       describe('get_zipcode function successful', function () {
         beforeEach(function () {
-          GeoCoderMock.prototype.geocode = jasmine.createSpy('geocode').and.callFake(LatLngOk);
+          GeocoderMock.prototype.geocode = jasmine.createSpy('geocode').and.callFake(LatLngOk);
         });
 
         it('Should not be called', function () {
-          expect(GeoCoderMock.prototype.geocode).not.toHaveBeenCalled();
+          expect(GeocoderMock.prototype.geocode).not.toHaveBeenCalled();
         });
 
         it('Should be called', function () {
           nypl_geocoder_mock.get_zipcode({lat: 40.75298660000001, lng:-73.9821364});
-          expect(GeoCoderMock.prototype.geocode).toHaveBeenCalled();
+          expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
         });
 
         it('Should return a promise', function () {
@@ -265,12 +276,12 @@ describe('NYPL Service Tests', function() {
 
       describe('get_zipcode function failed', function () {
         beforeEach(function() {
-          GeoCoderMock.prototype.geocode = jasmine.createSpy('geocode').and.callFake(LatLngError);
+          GeocoderMock.prototype.geocode = jasmine.createSpy('geocode').and.callFake(LatLngError);
         });
 
         it('Should be called', function () {
           nypl_geocoder_mock.get_zipcode({lat: 40.75298660000001, lng:-73.9821364});
-          expect(GeoCoderMock.prototype.geocode).toHaveBeenCalled();
+          expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
         });
 
         it('Should return a promise', function () {
