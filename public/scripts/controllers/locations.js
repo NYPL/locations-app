@@ -46,6 +46,7 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
 
 			_.each(locations, function (location) {
 	      location.distance =  nypl_coordinates_service.getDistance(coords.lat, coords.long, location.lat, location.long);
+	      location.break = false;
 	    });
 
 			// Remove the distance from the libraries that match the search term
