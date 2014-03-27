@@ -25,9 +25,9 @@
   </section>
 
   <ul class="grid">
-    <li class="grid__item one-whole" data-ng-repeat="event in location._embedded.events">
+    <li class="grid__item one-whole" data-ng-repeat="event in location.events">
       <h3>{{event.title}}</h3>
-      <p>{{event.title}} - no teaser just yet</p>
+      <p>{{event.body}}</p>
       <p>Start time: {{event.start}}</p>
       <p>End time: {{event.end}}</p>
     </li>
