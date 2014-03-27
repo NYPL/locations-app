@@ -1,6 +1,8 @@
 'use strict';
 
 nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
+  var map;
+
   return {
     get_coords: function (address) {
       var defer = $q.defer();
@@ -24,7 +26,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
       return defer.promise;
     },
-    get_zipcode: function(coords) {
+    get_zipcode: function (coords) {
       var defer = $q.defer();
       var geocoder = new google.maps.Geocoder();
       var zipcode;
@@ -42,6 +44,26 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
       });
 
       return defer.promise;
+    },
+    draw_map: function (coords) {
+      var locationCoords = new google.maps.LatLng(coords.lat, coords.long);
+      var mapOptions = {
+        zoom: 15,
+        center: locationCoords
+      };
+      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    },
+    draw_marker: function (coords) {
+      var sw_bound = new google.maps.LatLng(40.49, -74.26);
+      var ne_bound = new google.maps.LatLng(40.91, -73.77);
+
+      var locationCoords = new google.maps.LatLng(coords.lat, coords.long);
+      var marker = new google.maps.Marker({
+        position: locationCoords,
+        map: map,
+        animation: google.maps.Animation.DROP
+      });
+
     }
   }
 }]);

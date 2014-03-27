@@ -1,0 +1,45 @@
+<div class="grid" data-ng-controller="mapCtrl">
+  <p>Go back <a href="/#/{{location._id|lowercase}}">{{location.name}}</a></p>
+
+  <section class="grid">
+    <div class="grid__item one-whole lap-and-up-two-thirds">
+      <h1>Directions to<br />{{location.name}}</h1>
+      <div class="grid">
+        <div class="grid__item one-whole lap-and-up-one-half">
+          <div class="p-adr">
+            <div class="p-street-address">{{location.street_address}}</div>
+            <span class="p-locality">{{location.locality}}</span>, 
+            <span class="p-region">{{location.region}}</span>, 
+            <span class="p-postal-code">{{location.postal_code}}</span>
+          </div>
+           <div class="p-tel">{{location.contacts[0].phone}}</div>
+        </div>
+      </div>
+    </div><!--
+
+    --><div class="grid__item one-whole lap-and-up-one-third">
+      <div class="h-event" id="hours-today">
+        <h2 class="p-name">Today’s Hours</h2>
+        <time datetime="2014-02-14T10:00-05:00" class="dt-start">{{hoursToday.open}}</time>–<time datetime="2014-02-14T17:00-05:00" class="dt-end">{{hoursToday.close}}</time>
+      </div>
+      <div>Get Directions</div>
+    </div>
+  </section>
+
+  <section class="grid locationMap">
+    <style> #map-canvas { height: 350px; width: 800px; } </style>
+    <div id="map-canvas" height='300' width='400'></div>
+  </section>
+
+  <section class="grid directions">
+
+  </section>
+
+  <div class="grid__item one-whole tablet-and-up-one-half" id="ask-nypl">
+    <div class="btn--friends">AskNYPL</div>
+  </div><!--
+
+  --><div class="grid__item one-whole tablet-and-up-one-half" id="donate">
+    <div class="btn--donate">Donate</div>
+  </div>
+</div>  
