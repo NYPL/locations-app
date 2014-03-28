@@ -1,11 +1,3 @@
-<div class="grid__item one-whole lap-and-up-two-thirds coordinates" data-ng-controller="CoordsCtrl">
-	<section data-ng-show="coordinates">
-		<h3>User coordinates via geo-location - Testing only</h3>
-		<p>Latitude: <strong>{{coordinates.latitude}}</strong> | Longitude: <strong>{{coordinates.longitude}}</strong></p>
-	</section>
-  <h1 data-ng-show="errors">{{errors.message}}</h1>
-</div>
-
 <div class="grid__item one-whole all-locations" data-ng-controller="LocationsCtrl">
 	<h3>Library Locator</h3>
 
@@ -57,7 +49,7 @@
 
         --><div class="h-card grid__item one-quarter lap-and-up-one-quarter">
           <div data-ng-show="location.distance"><strong>{{location.distance}} miles</strong></div>
-          <div><a href="">View on Map</a></div>
+          <div><a href="/#/{{location._id|lowercase}}/map">View on Map</a></div>
           <div><a href="">Get Directions</a></div>
         </div><!--
 

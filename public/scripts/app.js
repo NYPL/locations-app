@@ -17,15 +17,14 @@ nypl_locations.config(function ($routeProvider, $locationProvider) {
     .when('/menu', {
       templateUrl: 'views/menu.html',
     })
-    .when('/coordinates', {
-      templateUrl: 'views/coordinates.html',
-      controller: 'CoordsCtrl'
-    })
     .when('/:symbol', {
       templateUrl: 'views/location.html'
     })
     .when('/:symbol/events', {
       templateUrl: '/views/events.html'
+    })
+    .when('/:symbol/map', {
+      templateUrl: '/views/map.html'
     })
     .otherwise({
       redirectTo: '/'
