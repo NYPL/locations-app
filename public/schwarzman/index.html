@@ -12,15 +12,176 @@
     <div class="black whiteText">NYPL HEADER</div>
   </header>
 
-  <div class="grid">
-    <div class="grid__item one-whole lap-and-up-two-thirds">
-      <h1>Stephen A. Schwarzman Building</h1>
+  <!-- container -->
+  <div class="{{location.type}} grid" data-ng-controller="LocationCtrl">
+
+    <p><a href="/#/">All locations</a></p>
+
+    <!-- This is h-card microformat -->
+    <!-- http://microformats.org/wiki/h-card -->
+    <div class="h-card grid__item one-whole lap-and-up-two-thirds">
+      <h1 class="p-org">{{location.name}}</h1>
+      <div class="grid">
+        <div class="grid__item one-whole lap-and-up-one-half">
+
+          <div class="p-adr">
+            <div class="p-street-address">{{location.street_address}}</div>
+            <span class="p-locality">{{location.locality}}</span>, 
+            <span class="p-region">{{location.region}}</span>, 
+            <span class="p-postal-code">{{location.postal_code}}</span>
+          </div>
+
+          <div class="p-tel">{{location.contacts.phone}}</div>
+
+          <ul class="top-services flush">
+            <li class="icon-book inline">Books</li>
+            <li class="icon-accessibility inline">Wheelchair accessible</li>
+            <li class="icon-box-add inline">Bookdrop</li>
+          </ul>
+
+        </div><!--
+        
+        --><div class="grid__item one-whole lap-and-up-one-half">
+
+          <div class="maplink"><a href="/#/{{location._id|lowercase}}/map">Map</a></div>
+          <div><a href="">Get Directions</a></div>
+          <div class="nearby-branches"><a href="">Nearby branches</a></div>
+          <div>Library Manager: Frank Collerius</div>
+
+          <div class="social flush">
+            <a href="{{social.href}}" data-ng-repeat="social in location.social_media" class="inline">
+              <span class="icon-{{social.rel}}"></span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div><!--
+
+    --><div class="grid__item one-whole lap-and-up-one-third">
+      <div class="h-event" id="hours-today">
+        <h2 class="p-name flush--ends">Today’s Hours</h2>
+        <time class="dt-start">{{hoursToday.open | timeFormat}}</time>
+        –
+        <time class="dt-end">{{hoursToday.close | timeFormat}}</time>
+      </div>
+
+      <div id="location-hours">
+        <h2 class="flush--ends">Regular Hours</h2>
+
+        <div class="weekly-hours">
+          <div class="{{days[$index]}}" data-ng-repeat="day in location.hours" data-ng-if="$index != 7">
+            <span class="day">{{days[$index]}}</span>
+            <span class="time">
+              {{ location.hours[days[$index]].open | timeFormat }} - {{ location.hours[days[$index]].close | timeFormat }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <p class="color-block red whiteText">
+        Note: See division pages for individual hours
+      </p>
+
+      <div id="catalog"><a class="icon-books" href="">Catalog Items Here</a></div>
+    </div><!--
+
+    --><div class="grid__item one-whole" id="divisions" data-ng-if="location.type == 'research'">
+      <h2 class="hdg">Divisions</h2>
+      <div class="grid">
+        <div class="grid__item one-whole lap-and-up-one-quarter">
+          <img class="img" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
+          <h3>Division One</h3>
+          <p>Division content</p>
+        </div><!--
+        --><div class="grid__item one-whole lap-and-up-one-quarter">
+          <img class="img" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
+          <h3>Division Two</h3>
+          <p>Division content</p>
+        </div><!--
+        --><div class="grid__item one-whole lap-and-up-one-quarter">
+          <img class="img" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
+          <h3>Division Three</h3>
+          <p>Division content</p>
+        </div><!--
+        --><div class="grid__item one-whole lap-and-up-one-quarter">
+          <img class="img" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
+          <h3>Division Four</h3>
+          <p>Division content</p>
+        </div>
+      </div>
+    </div><!--
+
+    --><div id="features" class="grid__item one-whole">
+      <h2 class="hdg">Featured</h2>
+      <div class="grid">
+        <div class="grid__item one-whole lap-and-up-one-half">
+          <h3>Feature One</h3>
+          <p>Feature One</p>
+        </div><!--
+        --><div class="grid__item one-whole lap-and-up-one-half">
+          <h3>Feature Two</h3>
+          <p>Feature Two</p>
+        </div>
+      </div>
     </div>
 
-    <div class="grid__item one-whole lap-and-up-two-thirds">
-      <a href="manuscripts-archives">Manuscripts and Archives</a>
+    <div id="events" class="grid__item one-whole">
+      <h2 class="hdg">Events</h2>
+
+      <ul class="grid">
+        <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in location.events">
+          <h3><a href="{{'http://www.nypl.org' + event.href}}"</a>{{event.title}}</a></h3>
+          <p>{{event.body}}</p>
+          <p>Start time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+          <p>End time: {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        </li>
+      </ul>   
+        
+      <div><a class="read-more" href="/#/{{location._id}}/events">See more events at {{location.name}}</a></div>
     </div>
+
+    <div id="about-and-plan" class="grid">
+    
+      <div id="about" class="grid__item one-whole lap-and-up-one-half">
+        <h2 class="hdg">About</h2>
+        <p>This space is for the general blurb</p>
+        <div><a class="read-more" href="">More about {{location.name}}</a></div>
+      </div><!--
+
+      --><div id="plan-your-visit" class="grid__item one-whole lap-and-up-one-half">
+        <h2 class="hdg">Plan Your Visit</h2>
+          <ul>
+            <li>Reserve a Computer</li>
+            <li>Interlibrary Loan</li>
+            <li>Meeting Rooms</li>
+          </ul>
+
+          <div><a class="read-more" href="/services/jefferson-market">See all services at {{location.name}}</a></div>
+      </div>
+
+    </div>
+
+    <div class="grid__item one-whole" id="exhibitions">
+      <h2 class="hdg">Exhibitions (need service data)</h2>
+      <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='exhibition in location._embedded.exhibitions'>
+        <img class="img--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
+        <h3><a href="http://nypl.org/{{exhibition.path}}">{{exhibition.title}}</a></h3>
+        <div class="teaser">{{exhibition.blurb}}</div>
+      </div>
+    </div>
+
+    <div class="grid__item one-whole tablet-and-up-one-half" id="ask-nypl">
+      <div class="btn--friends">AskNYPL</div>
+    </div><!--
+
+    --><div class="grid__item one-whole tablet-and-up-one-half" id="donate">
+      <div class="btn--donate">Donate</div>
+    </div>
+    
+  <!--   end container -->  
   </div>
+
 
   <footer class="warmGray whiteText">
     <div>FOOTER</div>
