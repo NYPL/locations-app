@@ -43,9 +43,7 @@ describe('Locinator controllers', function() {
     });
 
     it('should call the branches api and fail', function () {
-      httpBackend.expectGET("http://evening-mesa-7447-160.herokuapp.com/locations").respond(404, {
-        'branches': '[{"name":"jmr"},{"name":"sasb"}]'
-      });
+      httpBackend.expectGET("http://evening-mesa-7447-160.herokuapp.com/locations").respond(404);
 
       httpBackend.flush();
 

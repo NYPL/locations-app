@@ -32,7 +32,7 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
 			});
 		} // End If
  	}, function (error, status) {
- 		console.log('All Locations Error: ' + error);
+ 		console.log('All Locations Error: ' + error.status);
  	});
 
 
