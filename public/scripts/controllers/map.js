@@ -8,13 +8,11 @@ nypl_locations.controller('mapCtrl', function ($scope, $routeParams, nypl_locati
     var today = new Date();
     $scope.days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var day = $scope.days[today.getDay()];  
-
+    
     $scope.hoursToday = {
       'open': data.location.hours[day].open,
       'close': data.location.hours[day].close
     }
-  
-    console.log($scope.location);
 
     nypl_geocoder_service.draw_map(locationCoords);
     nypl_geocoder_service.draw_marker(locationCoords);
