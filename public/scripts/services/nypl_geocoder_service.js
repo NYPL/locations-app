@@ -1,7 +1,8 @@
 'use strict';
 
 nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
-  var map;
+  var map,
+      bound;
 
   return {
     get_coords: function (address) {
@@ -52,13 +53,39 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         center: locationCoords
       };
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+      bound = new google.maps.LatLngBounds();
     },
-    draw_marker: function (coords) {
+    
+    // animation is temporary and is used as a visual cue
+    // to make your current location stand out
+    draw_marker: function (location, animation) {
+      var content;
+      var coords = _.pick(location, 'lat', 'long');
+      var animation = (animation == 'bounce') ? google.maps.Animation.BOUNCE : google.maps.Animation.DROP;
       var locationCoords = new google.maps.LatLng(coords.lat, coords.long);
       var marker = new google.maps.Marker({
         position: locationCoords,
         map: map,
-        animation: google.maps.Animation.DROP
+        animation: animation,
+      });
+
+      // bound.extend(marker.getPosition());
+      // map.fitBounds(bound);
+
+      // Temporary because not all locations have contacts and so contacts[0] throws an error
+      if (location.hasOwnProperty('contacts') && location.contacts !== null) {
+        content = location.name + '<br />' + location.street_address + '<br />' + 
+          location.locality + ', ' + location.region + ' ' + location.postal_code + '<br />' +location.contacts[0].phone;
+      } else {
+        content = "empty contacts";
+      } 
+
+      var infowindow = new google.maps.InfoWindow({
+        content: content
+      });
+
+      google.maps.event.addListener(marker, 'click', function () {
+        infowindow.open(map, marker);
       });
     }
   }

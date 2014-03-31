@@ -10,13 +10,15 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
 		$scope.locations = data.locations;
 
 		_.each($scope.locations, function (location) {
-			nypl_geocoder_service.draw_marker({'lat': location.lat, 'long': location.long});
+			nypl_geocoder_service.draw_marker(location, 'drop');
 		});
 
 		// Extract user coordinates after locations data has been assigned to scope
 		if($scope.locations) {
 		  nypl_coordinates_service.getCoordinates().then(function (position) {
 				userCoords = _.pick(position, 'latitude', 'longitude');
+
+				nypl_geocoder_service.draw_marker({'lat': position.latitude, 'long':position.longitude}, 'bounce');
 				
 				// Fill in zipcode based on geo-location
 				nypl_geocoder_service.get_zipcode({lat: userCoords.latitude, lng: userCoords.longitude}).then(function (zipcode) {

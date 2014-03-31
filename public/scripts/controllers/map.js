@@ -15,7 +15,7 @@ nypl_locations.controller('mapCtrl', function ($scope, $routeParams, nypl_locati
     }
 
     nypl_geocoder_service.draw_map(locationCoords, 15);
-    nypl_geocoder_service.draw_marker(locationCoords);
+    nypl_geocoder_service.draw_marker(data.location, 'drop');
     
   });
 
