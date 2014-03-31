@@ -45,25 +45,21 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
       return defer.promise;
     },
-    draw_map: function (coords) {
+    draw_map: function (coords, zoom) {
       var locationCoords = new google.maps.LatLng(coords.lat, coords.long);
       var mapOptions = {
-        zoom: 15,
+        zoom: zoom,
         center: locationCoords
       };
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     },
     draw_marker: function (coords) {
-      var sw_bound = new google.maps.LatLng(40.49, -74.26);
-      var ne_bound = new google.maps.LatLng(40.91, -73.77);
-
       var locationCoords = new google.maps.LatLng(coords.lat, coords.long);
       var marker = new google.maps.Marker({
         position: locationCoords,
         map: map,
         animation: google.maps.Animation.DROP
       });
-
     }
   }
 }]);

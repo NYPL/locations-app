@@ -14,7 +14,7 @@ nypl_locations.controller('mapCtrl', function ($scope, $routeParams, nypl_locati
       'close': data.location.hours[day].close
     }
 
-    nypl_geocoder_service.draw_map(locationCoords);
+    nypl_geocoder_service.draw_map(locationCoords, 15);
     nypl_geocoder_service.draw_marker(locationCoords);
     
   });

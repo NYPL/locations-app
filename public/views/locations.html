@@ -1,12 +1,15 @@
 <div class="grid__item one-whole all-locations" data-ng-controller="LocationsCtrl">
 	<h3>Library Locator</h3>
 
-  <form class="form--inline">
+  <form class="form--inline grid__item one-half">
     <label for="searchTerm">Enter your Zip code:</label>
     <input id="searchTerm" type="text" data-ng-model="zipcode" />
     <button data-ng-click="submitAddress(zipcode)">Submit</button>
-  </form>
-  <p>Or <a href="/#/">view all branches</a> by borough.</p>
+    <p>Or <a href="/#/">view all branches</a> by borough.</p>
+  </form><!--
+
+  --><div id="map-canvas" class="grid__item one-half"></div>
+
 
   <section class="list">
   	<section class="filters">
