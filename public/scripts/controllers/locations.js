@@ -54,13 +54,6 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
 	    	location.distance = '';
 	    });
 
-	    // Sort the locations array here instead of using the angular orderBy filter.
-	    // That way we can display the matched locations first and then display the 
-	    // results from the geocoder service
-	    locations = _.sortBy(locations, function (location) {
-				return location.distance;
-			});
-
 	    organizeLocations(locations, filteredLocations);
 
 
@@ -71,10 +64,17 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
     	organizeLocations(locations, filteredLocations);
     });
 
-    var organizeLocations =  function(locations, filteredLocations) {
+    var organizeLocations = function (locations, filteredLocations) {
     	// just to show a line break after the matched results
     	var filterlength = filteredLocations.length;
     	filteredLocations[filterlength-1].break = true;
+
+    	// Sort the locations array here instead of using the angular orderBy filter.
+	    // That way we can display the matched locations first and then display the 
+	    // results from the geocoder service
+	    locations = _.sortBy(locations, function (location) {
+				return location.distance;
+			});
 
     	// Remove the matched libraries from the filter search term
     	locations = _.difference(locations, filteredLocations);
