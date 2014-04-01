@@ -8,7 +8,7 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
 	// Display all branches regardless of user's location
 	nypl_locations_service.all_locations().get(function (data) {
 		$scope.locations = data.locations;
-		
+
 		_.each($scope.locations, function (location) {
 			nypl_geocoder_service.draw_marker(location, 'drop');
 		});
@@ -22,7 +22,7 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
 				
 				// Fill in zipcode based on geo-location
 				nypl_geocoder_service.get_zipcode({lat: userCoords.latitude, lng: userCoords.longitude}).then(function (zipcode) {
-					$scope.zipcode = zipcode;
+					$scope.searchTerm = zipcode;
 
 					// Iterate through lon/lat and calculate distance
 					_.each($scope.locations, function (location) {
@@ -65,33 +65,32 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
 
 
     }, function (error) {
-    	// If it fails, it should filter at least
     	console.log("geoCoder Service Error: " + error);
 
+    	// If geocoding fails, it should still filter
     	organizeLocations(locations, filteredLocations);
     });
+	}
 
-    var organizeLocations = function (locations, filteredLocations) {
-    	// just to show a line break after the matched results
-    	var filterlength = filteredLocations.length;
-    	filteredLocations[filterlength-1].break = true;
+  var organizeLocations = function (locations, filteredLocations) {
+  	// just to show a line break after the matched results
+  	var filterlength = filteredLocations.length;
+  	filteredLocations[filterlength-1].break = true;
 
-    	// Sort the locations array here instead of using the angular orderBy filter.
-	    // That way we can display the matched locations first and then display the 
-	    // results from the geocoder service
-	    locations = _.sortBy(locations, function (location) {
-				return location.distance;
-			});
+  	// Sort the locations array here instead of using the angular orderBy filter.
+    // That way we can display the matched locations first and then display the 
+    // results from the geocoder service
+    locations = _.sortBy(locations, function (location) {
+			return location.distance;
+		});
 
-    	// Remove the matched libraries from the filter search term
-    	locations = _.difference(locations, filteredLocations);
+  	// Remove the matched libraries from the filter search term
+  	locations = _.difference(locations, filteredLocations);
 
-    	// Use union to add the matched locations in front of the rest of the locations
-			$scope.locations = _.union(filteredLocations, locations);
-			// Don't sort by distance or the matched results will not display first
-	    $scope.predicate = '';
-    }
-
+  	// Use union to add the matched locations in front of the rest of the locations
+		$scope.locations = _.union(filteredLocations, locations);
+		// Don't sort by distance or the matched results will not display first
+    $scope.predicate = '';
   }
 
 });
