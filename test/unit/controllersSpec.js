@@ -2,24 +2,40 @@
 
 /* jasmine specs for controllers go here */
 describe('Locinator controllers', function() {
+  window.google = jasmine.createSpy('google');
+  window.google.maps = jasmine.createSpy('maps');
+  window.google.maps.InfoWindow = jasmine.createSpy('infoWindow');
+  window.google.maps.Geocoder = jasmine.createSpy('Geocoder');
+  window.google.maps.LatLng = jasmine.createSpy('LatLng');
+  window.google.maps.LatLngBounds = jasmine.createSpy('LatLngBounds');
+  window.google.maps.Map = jasmine.createSpy('Map');
+  window.google.maps.Marker = jasmine.createSpy('Marker');
+  window.google.maps.Animation = jasmine.createSpy('Animation');
+  window.google.maps.Animation.BOUNCE = jasmine.createSpy('Bounce');
+  window.google.maps.Animation.DROP = jasmine.createSpy('Drop');
+  window.google.maps.event = jasmine.createSpy('event');
+  window.google.maps.event.addListener = jasmine.createSpy('addListener');
 
  /* 
   * nypl_locations_service 
   * Service that makes the http request to the API.
   */
   describe('Utility: nypl_locations_service', function(){
-    var scope, locationsCtrl, service, httpBackend;
+    var scope, locationsCtrl, service, httpBackend, nypl_geocoder;
 
     beforeEach(module('nypl_locations'));
 
-    beforeEach(inject(function(nypl_locations_service, _$httpBackend_, _$rootScope_, $controller) {
+    beforeEach(inject(function(nypl_locations_service, nypl_geocoder_service, _$httpBackend_, _$rootScope_, $controller) {
+
       service = nypl_locations_service;
+      nypl_geocoder = nypl_geocoder_service;
       httpBackend = _$httpBackend_;
       scope = _$rootScope_.$new();
 
       locationsCtrl = $controller('LocationsCtrl', {
         $scope: scope,
-        nypl_locations_service: service
+        nypl_locations_service: service,
+        nypl_geocoder_service: nypl_geocoder
       });
     }));
 
@@ -70,6 +86,9 @@ describe('Locinator controllers', function() {
         get_coords: function (address) {
           defer = q.defer();
           return defer.promise;
+        },
+        draw_map: function (coords, zoom) {
+          return {};
         }
       };
 

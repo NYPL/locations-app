@@ -149,6 +149,12 @@ describe('NYPL Service Tests', function() {
 
       window.google = jasmine.createSpy('google');
       window.google.maps = jasmine.createSpy('maps');
+      window.google.maps.InfoWindow = jasmine.createSpy('InfoWindow');
+      window.google.maps.Map = jasmine.createSpy('Map');
+      window.google.maps.Marker = jasmine.createSpy('Marker');
+      window.google.maps.Animation = jasmine.createSpy('Animation');
+      window.google.maps.Animation.BOUNCE = jasmine.createSpy('Bounce');
+      window.google.maps.Animation.DROP = jasmine.createSpy('Drop');
       window.google.maps.GeocoderStatus = jasmine.createSpy('GeocoderStatus');
       window.google.maps.GeocoderStatus.OK = 'OK';
 

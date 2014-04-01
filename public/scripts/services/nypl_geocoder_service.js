@@ -67,7 +67,10 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
     // animation is temporary and is used as a visual cue
     // to make your current location stand out
     draw_marker: function (location, animation) {
-      var coords = _.pick(location, 'lat', 'long'),
+      var coords = {
+            lat: location.lat,
+            long: location.long
+          },
           _this = this,
           animation = (animation == 'bounce') ? google.maps.Animation.BOUNCE : google.maps.Animation.DROP,
           locationCoords = new google.maps.LatLng(coords.lat, coords.long),
