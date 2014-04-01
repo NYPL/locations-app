@@ -3,22 +3,29 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
 	var userCoords;
 	$scope.predicate = 'name'; // Default sort upon DOM Load
 
+	nypl_geocoder_service.draw_map({lat:40.7532, long:-73.9822}, 12);
+
 	// Display all branches regardless of user's location
 	nypl_locations_service.all_locations().get(function (data) {
 		$scope.locations = data.locations;
-		console.log($scope.locations);
+
+		_.each($scope.locations, function (location) {
+			nypl_geocoder_service.draw_marker(location, 'drop');
+		});
 
 		// Extract user coordinates after locations data has been assigned to scope
 		if($scope.locations) {
 		  nypl_coordinates_service.getCoordinates().then(function (position) {
 				userCoords = _.pick(position, 'latitude', 'longitude');
+
+				nypl_geocoder_service.draw_marker({'lat': position.latitude, 'long':position.longitude}, 'bounce');
 				
 				// Fill in zipcode based on geo-location
 				nypl_geocoder_service.get_zipcode({lat: userCoords.latitude, lng: userCoords.longitude}).then(function (zipcode) {
 					$scope.zipcode = zipcode;
 
 					// Iterate through lon/lat and calculate distance
-					_.each($scope.locations, function(location) {
+					_.each($scope.locations, function (location) {
 						location.distance =  nypl_coordinates_service.getDistance(userCoords.latitude, userCoords.longitude, location.lat, location.long);
 					});
 
@@ -67,7 +74,6 @@ nypl_locations.controller('LocationCtrl', function ($scope, $routeParams, nypl_l
 			'close': data.location.hours[day].close
 		}
  	
-		console.log($scope.location);
 	});
 
 });

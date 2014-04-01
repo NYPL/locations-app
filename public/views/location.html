@@ -117,7 +117,7 @@
 
     <ul class="grid">
       <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in location.events">
-        <h3><a href="{{'http://www.nypl.org' + event.href}}"</a>{{event.title}}</a></h3>
+        <h3><a href="{{'http://www.nypl.org' + event.href}}">{{event.title}}</a></h3>
         <p>{{event.body}}</p>
         <p>Start time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p>End time: {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
@@ -127,7 +127,7 @@
     <div><a class="read-more" href="/#/{{location._id}}/events">See more events at {{location.name}}</a></div>
   </div>
 
-  <div id="about-and-plan" class="grid">
+  <div id="about-and-plan" class="grid one-whole">
   
     <div id="about" class="grid__item one-whole lap-and-up-one-half">
       <h2 class="hdg">About</h2>
@@ -143,7 +143,7 @@
           <li>Meeting Rooms</li>
         </ul>
 
-        <div><a class="read-more" href="/services/jefferson-market">See all services at {{location.name}}</a></div>
+        <div><a class="read-more" href="">See all services at {{location.name}}</a></div>
     </div>
 
   </div>
