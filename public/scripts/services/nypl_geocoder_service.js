@@ -2,16 +2,17 @@
 
 nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
   var map,
-      bound;
+      bound, 
+      infowindow = new google.maps.InfoWindow();
 
   return {
     get_coords: function (address) {
-      var defer = $q.defer();
-      var coords = {};
-      var geocoder = new google.maps.Geocoder();
-      var sw_bound = new google.maps.LatLng(40.49, -74.26);
-      var ne_bound = new google.maps.LatLng(40.91, -73.77);
-      var bounds = new google.maps.LatLngBounds(sw_bound, ne_bound);
+      var defer = $q.defer(),
+          coords = {},
+          geocoder = new google.maps.Geocoder(),
+          sw_bound = new google.maps.LatLng(40.49, -74.26),
+          ne_bound = new google.maps.LatLng(40.91, -73.77),
+          bounds = new google.maps.LatLngBounds(sw_bound, ne_bound);
 
       geocoder.geocode({address: address, bounds: bounds}, function (result, status) {
         if (status == google.maps.GeocoderStatus.OK) {
@@ -32,10 +33,10 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
       return defer.promise;
     },
     get_zipcode: function (coords) {
-      var defer = $q.defer();
-      var geocoder = new google.maps.Geocoder();
-      var zipcode;
-      var latlng = new google.maps.LatLng(coords.lat, coords.lng);
+      var defer = $q.defer(),
+          geocoder = new google.maps.Geocoder(),
+          zipcode,
+          latlng = new google.maps.LatLng(coords.lat, coords.lng);
 
       geocoder.geocode({latLng: latlng}, function (result, status) {
         if (status == google.maps.GeocoderStatus.OK) {
@@ -51,11 +52,12 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
       return defer.promise;
     },
     draw_map: function (coords, zoom) {
-      var locationCoords = new google.maps.LatLng(coords.lat, coords.long);
-      var mapOptions = {
-        zoom: zoom,
-        center: locationCoords
-      };
+      var locationCoords = new google.maps.LatLng(coords.lat, coords.long),
+          mapOptions = {
+            zoom: zoom,
+            center: locationCoords
+          };
+
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
       bound = new google.maps.LatLngBounds();
     },
@@ -63,18 +65,27 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
     // animation is temporary and is used as a visual cue
     // to make your current location stand out
     draw_marker: function (location, animation) {
-      var content;
-      var coords = _.pick(location, 'lat', 'long');
-      var animation = (animation == 'bounce') ? google.maps.Animation.BOUNCE : google.maps.Animation.DROP;
-      var locationCoords = new google.maps.LatLng(coords.lat, coords.long);
-      var marker = new google.maps.Marker({
-        position: locationCoords,
-        map: map,
-        animation: animation,
+      var coords = _.pick(location, 'lat', 'long'),
+          _this = this,
+          animation = (animation == 'bounce') ? google.maps.Animation.BOUNCE : google.maps.Animation.DROP,
+          locationCoords = new google.maps.LatLng(coords.lat, coords.long),
+          marker = new google.maps.Marker({
+            position: locationCoords,
+            map: map,
+            animation: animation,
+          });
+
+      google.maps.event.addListener(marker, 'click', function () {
+        _this.show_infowindow(location, marker);
       });
 
+      // Bounds the map to display all the markers
       // bound.extend(marker.getPosition());
       // map.fitBounds(bound);
+
+    },
+    show_infowindow: function (location, marker) {
+      var content;
 
       // Temporary because not all locations have contacts and so contacts[0] throws an error
       if (location.hasOwnProperty('contacts') && location.contacts !== null) {
@@ -84,13 +95,10 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         content = "empty contacts";
       } 
 
-      var infowindow = new google.maps.InfoWindow({
-        content: content
-      });
-
-      google.maps.event.addListener(marker, 'click', function () {
-        infowindow.open(map, marker);
-      });
+      infowindow.close();
+      infowindow.setContent(content);
+      infowindow.open(map, marker);
     }
+
   }
 }]);
