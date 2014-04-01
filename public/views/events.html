@@ -21,11 +21,17 @@
     </div>
   </section>
 
-  <div class="grid__item one-whole">
+  <section class="grid__item one-whole">
     <div class="callout">
       <h3 class="flush">Exhibition: Title of exhibition</h3>
     </div>
-  </div>
+  </section>
+
+  <section class="grid__item one-whole">
+  <p data-ng-if="location.events.length > '1'">
+    Showing 1 of {{location.events.length}} upcoming events at {{location.name}}
+  </p>
+  </section>
 
   <section class="grid__item one-whole" data-ng-repeat="event in location.events">
     <h3><a href="">{{event.title}}</a></h3>
