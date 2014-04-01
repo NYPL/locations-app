@@ -11,7 +11,8 @@ module.exports = function(config){
       'public/bower_components/angular-route/*.js',
       'public/bower_components/angular/angular-*.js',
       'public/scripts/**/*.js',
-      'test/unit/**/*.js'
+      'test/unit/**/*.js',
+      'public/bower_components/underscore/underscore.js'
     ],
 
     exclude : [

@@ -20,6 +20,10 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
           defer.resolve(coords);
 
+          // var panCoords = new google.maps.LatLng(coords.lat, coords.long);
+          // map.panTo(panCoords);
+          // map.setZoom(13);
+
         } else {
           defer.reject(new Error (status));
         }
@@ -55,7 +59,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
       bound = new google.maps.LatLngBounds();
     },
-    
+
     // animation is temporary and is used as a visual cue
     // to make your current location stand out
     draw_marker: function (location, animation) {
