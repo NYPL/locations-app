@@ -85,18 +85,18 @@ describe('NYPL Service Tests', function() {
 
       describe('getCoordinates function successful', function () {
         beforeEach(function () {
-          geolocationMock.prototype.getCurrentPosition = 
+          geolocationMock.getCurrentPosition = 
               window.navigator.geolocation.getCurrentPosition =
               jasmine.createSpy('getCurrentPosition').and.callFake(geolocationOk);
         });
 
         it('Should not be called', function () {
-          expect(geolocationMock.prototype.getCurrentPosition).not.toHaveBeenCalled();
+          expect(geolocationMock.getCurrentPosition).not.toHaveBeenCalled();
         });
 
         it('Should call the geolocation function when calling the service', function () {
           nypl_coordinates_service_mock.getCoordinates();
-          expect(geolocationMock.prototype.getCurrentPosition).toHaveBeenCalled();
+          expect(geolocationMock.getCurrentPosition).toHaveBeenCalled();
         });
 
         it('Should return a promise', function () {
@@ -112,18 +112,18 @@ describe('NYPL Service Tests', function() {
 
       describe('getCoordinates function fails', function () {
         beforeEach(function () {
-          geolocationMock.prototype.getCurrentPosition = 
+          geolocationMock.getCurrentPosition = 
             window.navigator.geolocation.getCurrentPosition =
             jasmine.createSpy('getCurrentPosition').and.callFake(geolocationError);
         });
 
         it('Should not be called', function () {
-          expect(geolocationMock.prototype.getCurrentPosition).not.toHaveBeenCalled();
+          expect(geolocationMock.getCurrentPosition).not.toHaveBeenCalled();
         });
 
         it('Should call the geolocation function when calling the service', function () {
           nypl_coordinates_service_mock.getCoordinates();
-          expect(geolocationMock.prototype.getCurrentPosition).toHaveBeenCalled();
+          expect(geolocationMock.getCurrentPosition).toHaveBeenCalled();
         });
       });
 
