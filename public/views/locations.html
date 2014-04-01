@@ -3,13 +3,12 @@
 
   <form class="form--inline grid__item one-whole lap-and-up-one-half">
     <label for="searchTerm">Enter your Zip code:</label>
-    <input id="searchTerm" type="text" data-ng-model="zipcode" />
-    <button data-ng-click="submitAddress(zipcode)">Submit</button>
+    <input id="searchTerm" type="text" data-ng-model="searchTerm" />
+    <button data-ng-click="submitAddress(searchTerm)">Submit</button>
     <p>Or <a href="/#/">view all branches</a> by borough.</p>
   </form><!--
 
   --><div id="map-canvas" class="grid__item one-whole lap-and-up-one-half"></div>
-
 
   <section class="list">
   	<section class="filters">
@@ -20,7 +19,6 @@
   	</section>
   	
     <br />
-
 
     <section class="grid one-whole">
       <div class="h-card grid__item one-quarter" ng-click="predicate = 'name'; reverse=!reverse">Location</div><!--
@@ -34,7 +32,7 @@
 
     <!-- Locations are in h-card microformat -->
     <!-- http://microformats.org/wiki/h-card -->
-    <section class="grid one-whole location {{location._id}} row" data-ng-repeat="location in locations | filter:searchLocations | orderBy:predicate:reverse">
+    <section class="grid one-whole location {{location._id}} row" data-ng-repeat="location in locations | filter:location.library_type | orderBy:predicate:reverse">
         <div class="h-card grid__item one-quarter lap-and-up-one-quarter ">
           <div class="p-org"><b><a href='/#/{{location._id|lowercase}}'>{{location.name}}</a></b></div>
           <div class="p-adr">
@@ -65,7 +63,7 @@
           <p>Services go here</p>
         </div>
 
-      </div>
+        <hr class="grid__item" data-ng-show='location.break' />
     </section>
   </section>
 </div>
