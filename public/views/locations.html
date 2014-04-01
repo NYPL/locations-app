@@ -3,13 +3,12 @@
 
   <form class="form--inline grid__item one-whole lap-and-up-one-half">
     <label for="searchTerm">Enter your Zip code:</label>
-    <input id="searchTerm" type="text" data-ng-model="zipcode" />
-    <button data-ng-click="submitAddress(zipcode)">Submit</button>
+    <input id="searchTerm" type="text" data-ng-model="searchTerm" />
+    <button data-ng-click="submitAddress(searchTerm)">Submit</button>
     <p>Or <a href="/#/">view all branches</a> by borough.</p>
   </form><!--
 
   --><div id="map-canvas" class="grid__item one-whole lap-and-up-one-half"></div>
-
 
   <section class="list">
   	<section class="filters">
@@ -20,7 +19,6 @@
   	</section>
   	
     <br />
-
 
     <section class="grid one-whole">
       <div class="h-card grid__item one-quarter" ng-click="predicate = 'name'; reverse=!reverse">Location</div><!--
@@ -65,7 +63,7 @@
           <p>Services go here</p>
         </div>
 
-      </div>
+        <hr class="grid__item" data-ng-show='location.break' />
     </section>
   </section>
 </div>

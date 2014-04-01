@@ -16,6 +16,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
       geocoder.geocode({address: address, bounds: bounds}, function (result, status) {
         if (status == google.maps.GeocoderStatus.OK) {
+          console.log(result);
           coords.lat = result[0].geometry.location.k;
           coords.long = result[0].geometry.location.A;
 
@@ -40,6 +41,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
       geocoder.geocode({latLng: latlng}, function (result, status) {
         if (status == google.maps.GeocoderStatus.OK) {
+          console.log(result);
           var address_component = result[0].address_components;
           zipcode =  address_component[address_component.length-1].long_name;
 

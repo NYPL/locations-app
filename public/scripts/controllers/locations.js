@@ -1,5 +1,5 @@
 'use strict';
-nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_locations_service, nypl_coordinates_service, nypl_geocoder_service) {
+nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope, nypl_locations_service, nypl_coordinates_service, nypl_geocoder_service) {
 	var userCoords;
 	$scope.predicate = 'name'; // Default sort upon DOM Load
 
@@ -8,7 +8,7 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
 	// Display all branches regardless of user's location
 	nypl_locations_service.all_locations().get(function (data) {
 		$scope.locations = data.locations;
-
+		
 		_.each($scope.locations, function (location) {
 			nypl_geocoder_service.draw_marker(location, 'drop');
 		});
@@ -43,18 +43,55 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $rootScope, nypl_lo
  	});
 
 
-	$scope.submitAddress = function (address) {
-		nypl_geocoder_service.get_coords(address).then(function (coords) {
+	$scope.submitAddress = function (searchTerm) {
+		// Filter the locations by the searchterm
+		var filteredLocations = $filter('filter')($scope.locations, searchTerm);
+		var locations = $scope.locations;
 
-      _.each($scope.locations, function (location) {
+		// Still call the geocoder service
+		nypl_geocoder_service.get_coords(searchTerm).then(function (coords) {
+
+			_.each(locations, function (location) {
 	      location.distance =  nypl_coordinates_service.getDistance(coords.lat, coords.long, location.lat, location.long);
+	      location.break = false;
 	    });
 
-	    $scope.predicate = 'distance';
+			// Remove the distance from the libraries that match the search term
+	    _.each(filteredLocations, function (location) {
+	    	location.distance = '';
+	    });
+
+	    organizeLocations(locations, filteredLocations);
+
 
     }, function (error) {
+    	// If it fails, it should filter at least
     	console.log("geoCoder Service Error: " + error);
+
+    	organizeLocations(locations, filteredLocations);
     });
+
+    var organizeLocations = function (locations, filteredLocations) {
+    	// just to show a line break after the matched results
+    	var filterlength = filteredLocations.length;
+    	filteredLocations[filterlength-1].break = true;
+
+    	// Sort the locations array here instead of using the angular orderBy filter.
+	    // That way we can display the matched locations first and then display the 
+	    // results from the geocoder service
+	    locations = _.sortBy(locations, function (location) {
+				return location.distance;
+			});
+
+    	// Remove the matched libraries from the filter search term
+    	locations = _.difference(locations, filteredLocations);
+
+    	// Use union to add the matched locations in front of the rest of the locations
+			$scope.locations = _.union(filteredLocations, locations);
+			// Don't sort by distance or the matched results will not display first
+	    $scope.predicate = '';
+    }
+
   }
 
 });
