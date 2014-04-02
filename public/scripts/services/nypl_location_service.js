@@ -4,9 +4,9 @@ angular.module('locationService', ['ngResource']).factory('nypl_locations_servic
 
 	return {
 		all_locations: function() {
-			
+
 			var d = $q.defer();
-			$http.get('http://evening-mesa-7447-160.herokuapp.com/locations').success(function(data){
+			$http.get('http://evening-mesa-7447-160.herokuapp.com/locations', {cache: true}).success(function(data){
 				d.resolve(data);
 			}).error(function(){
 				d.reject();
