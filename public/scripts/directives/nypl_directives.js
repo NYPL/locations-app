@@ -1,4 +1,5 @@
 'use strict';
+// Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
 // declare the directive that will show and hide the loading widget
 nypl_locations.directive('loadingWidget', ['requestNotificationChannel', function (requestNotificationChannel) {
     return {
