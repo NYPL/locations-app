@@ -31,6 +31,7 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
 
 					$scope.distanceSet = true;
 					$scope.predicate = 'distance';
+					console.log($scope.locations);
 
 				});
 			}, function (error) {

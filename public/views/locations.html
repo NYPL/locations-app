@@ -32,8 +32,8 @@
 
     <!-- Locations are in h-card microformat -->
     <!-- http://microformats.org/wiki/h-card -->
-    <section class="grid one-whole location {{location._id}} row" data-ng-repeat="location in locations | filter:location.library_type | orderBy:predicate:reverse">
-        <div class="h-card grid__item one-quarter lap-and-up-one-quarter ">
+    <section class="grid one-whole location {{location._id}} row" data-ng-repeat="location in locations | filter:location.library_type | orderBy:predicate:reverse | limitTo: 5">
+        <div class="h-card grid__item one-whole lap-and-up-one-quarter ">
           <div class="p-org"><b><a href='/#/{{location._id|lowercase}}'>{{location.name}}</a></b></div>
           <div class="p-adr">
             <div class="p-street-address">{{location.street_address}}</div>
@@ -45,13 +45,13 @@
           <div class="u-email" data-ng-show="location.contacts.email">Email: {{location.contacts.email}}</div>
         </div><!--
 
-        --><div class="h-card grid__item one-quarter lap-and-up-one-quarter">
+        --><div class="h-card grid__item one-whole lap-and-up-one-quarter">
           <div data-ng-show="location.distance"><strong>{{location.distance}} miles</strong></div>
           <div><a href="/#/{{location._id|lowercase}}/map">View on Map</a></div>
           <div><a href="">Get Directions</a></div>
         </div><!--
 
-        --><div class="h-card grid__item one-quarter lap-and-up-one-quarter">
+        --><div class="h-card grid__item one-whole lap-and-up-one-quarter">
           <ul>
             <li data-ng-repeat='(day, hour) in location.hours' data-ng-if="day != 'exceptions'">
               {{day}} {{hour.open | timeFormat}} - {{hour.close | timeFormat}}
@@ -59,7 +59,7 @@
           </ul>
         </div><!-- 
 
-        --><div class="h-card grid__item one-quarter lap-and-up-one-quarter">
+        --><div class="h-card grid__item one-whole lap-and-up-one-quarter">
           <p>Services go here</p>
         </div>
 
