@@ -3,7 +3,7 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
 	var userCoords;
 	$scope.predicate = 'name'; // Default sort upon DOM Load
 
-	nypl_geocoder_service.draw_map({lat:40.7532, long:-73.9822}, 12);
+	nypl_geocoder_service.draw_map({lat:40.7532, long:-73.9822}, 12, 'all-locations-map');
 
 	// Display all branches regardless of user's location
 	nypl_locations_service.all_locations().get(function (data) {

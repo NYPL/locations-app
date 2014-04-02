@@ -53,14 +53,14 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
       return defer.promise;
     },
-    draw_map: function (coords, zoom) {
+    draw_map: function (coords, zoom, id) {
       var locationCoords = new google.maps.LatLng(coords.lat, coords.long),
           mapOptions = {
             zoom: zoom,
             center: locationCoords
           };
 
-      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+      map = new google.maps.Map(document.getElementById(id), mapOptions);
       bound = new google.maps.LatLngBounds();
     },
 
