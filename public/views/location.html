@@ -29,14 +29,14 @@
       
       --><div class="grid__item one-whole lap-and-up-one-half">
 
-        <div class="maplink"><a href="/#/{{location._id|lowercase}}/map">Map</a></div>
+        <div class="maplink"><a href="/#/{{location.id|lowercase}}/map">Map</a></div>
         <div><a href="">Get Directions</a></div>
         <div class="nearby-branches"><a href="">Nearby branches</a></div>
-        <div>Library Manager: Frank Collerius</div>
+        <div>Library Manager: {{location.contacts.manager}}</div>
 
         <div class="social flush">
           <a href="{{social.href}}" data-ng-repeat="social in location.social_media" class="inline">
-            <span class="icon-{{social.rel}}"></span>
+            <span class="icon-{{social.site}}"></span>
           </a>
         </div>
 
@@ -56,10 +56,10 @@
       <h2 class="flush--ends">Regular Hours</h2>
 
       <div class="weekly-hours">
-        <div class="{{days[$index]}}" data-ng-repeat="day in location.hours" data-ng-if="$index != 7">
-          <span class="day">{{days[$index]}}</span>
+        <div class="{{hours.day}}" data-ng-repeat="hours in location.hours.regular" data-ng-if="$index != 7">
+          <span class="day">{{hours.day}}</span>
           <span class="time">
-            {{ location.hours[days[$index]].open | timeFormat }} - {{ location.hours[days[$index]].close | timeFormat }}
+            {{ hours.open | timeFormat }} - {{ hours.close | timeFormat }}
           </span>
         </div>
       </div>
@@ -75,24 +75,9 @@
   --><div class="grid__item one-whole" id="divisions" data-ng-if="location.type == 'research'">
     <h2 class="hdg">Divisions</h2>
     <div class="grid">
-      <div class="grid__item one-whole lap-and-up-one-quarter">
+      <div class="grid__item one-whole lap-and-up-one-quarter" data-ng-repeat='division in location._embedded.divisions'>
         <img class="img" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
-        <h3>Division One</h3>
-        <p>Division content</p>
-      </div><!--
-      --><div class="grid__item one-whole lap-and-up-one-quarter">
-        <img class="img" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
-        <h3>Division Two</h3>
-        <p>Division content</p>
-      </div><!--
-      --><div class="grid__item one-whole lap-and-up-one-quarter">
-        <img class="img" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
-        <h3>Division Three</h3>
-        <p>Division content</p>
-      </div><!--
-      --><div class="grid__item one-whole lap-and-up-one-quarter">
-        <img class="img" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
-        <h3>Division Four</h3>
+        <h3>{{division.name}}</h3>
         <p>Division content</p>
       </div>
     </div>
@@ -116,15 +101,15 @@
     <h2 class="hdg">Events</h2>
 
     <ul class="grid">
-      <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in location.events">
-        <h3><a href="{{'http://www.nypl.org' + event.href}}">{{event.title}}</a></h3>
+      <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in location._embedded.events">
+        <h3><a href="{{event._links.self.href}}">{{event.title}}</a></h3>
         <p>{{event.body}}</p>
         <p>Start time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p>End time: {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
       </li>
     </ul>   
       
-    <div><a class="read-more" href="/#/{{location._id}}/events">See more events at {{location.name}}</a></div>
+    <div><a class="read-more" href="/#/{{location.id}}/events">See more events at {{location.name}}</a></div>
   </div>
 
   <div id="about-and-plan" class="grid one-whole">
@@ -151,9 +136,9 @@
   <div class="grid__item one-whole" id="blogs" data-ng-if="location.type != 'research'">
     <h2 class="hdg">Blogs</h2>
     <div class="grid">
-      <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='blog in location.blogs'>
-        <img class="img--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
-        <h3><a href="http://nypl.org{{blog.path}}">{{blog.title}}</a></h3>
+      <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='blog in location._embedded.blogs'>
+        <img data-ng-show="blog.image" class="img--left" src="{{blog.image}}" alt="" style="height: 100px;" />
+        <h3><a href="{{blog._links.self.href}}">{{blog.title}}</a></h3>
         <div class="teaser">{{blog.body}}</div>
       </div>
     </div>

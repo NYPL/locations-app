@@ -16,7 +16,6 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
       geocoder.geocode({address: address, bounds: bounds}, function (result, status) {
         if (status == google.maps.GeocoderStatus.OK) {
-          console.log(result);
           coords.lat = result[0].geometry.location.k;
           coords.long = result[0].geometry.location.A;
 
@@ -41,7 +40,6 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
       geocoder.geocode({latLng: latlng}, function (result, status) {
         if (status == google.maps.GeocoderStatus.OK) {
-          console.log(result);
           var address_component = result[0].address_components;
           zipcode =  address_component[address_component.length-1].long_name;
 
@@ -66,8 +64,13 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
     // animation is temporary and is used as a visual cue
     // to make your current location stand out
-    draw_marker: function (location, animation) {
-      var coords = {
+    draw_marker: function (location, animation, geojson) {
+      // locations are in geojson format but geolocation is not.
+      // Need a better solution.
+      var coords = (geojson) ? {
+            lat: location.geolocation.coordinates[1],
+            long: location.geolocation.coordinates[0]
+          } : {
             lat: location.lat,
             long: location.long
           },
@@ -79,6 +82,10 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             map: map,
             animation: animation,
           });
+
+      // This works but it seems to have to call an external file?
+      // doesn't work when location.geolocation is passed
+      // map.data.loadGeoJson('https://storage.googleapis.com/maps-devrel/google.json');
 
       google.maps.event.addListener(marker, 'click', function () {
         _this.show_infowindow(location, marker);
@@ -93,9 +100,9 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
       var content;
 
       // Temporary because not all locations have contacts and so contacts[0] throws an error
-      if (location.hasOwnProperty('contacts') && location.contacts !== null) {
+      if (location.hasOwnProperty('name')) {
         content = location.name + '<br />' + location.street_address + '<br />' + 
-          location.locality + ', ' + location.region + ' ' + location.postal_code + '<br />' +location.contacts[0].phone;
+          location.locality + ', ' + location.region + ' ' + location.postal_code + '<br />' +location.contacts.phone;
       } else {
         content = "empty contacts";
       } 

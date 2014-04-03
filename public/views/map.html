@@ -1,5 +1,5 @@
 <div class="grid" data-ng-controller="mapCtrl">
-  <p>Go back <a href="/#/{{location._id|lowercase}}">{{location.name}}</a></p>
+  <p>Go back <a href="/#/{{location.id|lowercase}}">{{location.name}}</a></p>
 
   <section class="grid">
     <div class="grid__item one-whole lap-and-up-two-thirds">
@@ -12,7 +12,7 @@
             <span class="p-region">{{location.region}}</span>, 
             <span class="p-postal-code">{{location.postal_code}}</span>
           </div>
-           <div class="p-tel">{{location.contacts[0].phone}}</div>
+           <div class="p-tel">{{location.contacts.phone}}</div>
         </div>
       </div>
     </div><!--
@@ -20,7 +20,9 @@
     --><div class="grid__item one-whole lap-and-up-one-third">
       <div class="h-event" id="hours-today">
         <h2 class="p-name">Today’s Hours</h2>
-        <time datetime="2014-02-14T10:00-05:00" class="dt-start">{{hoursToday.open}}</time>–<time datetime="2014-02-14T17:00-05:00" class="dt-end">{{hoursToday.close}}</time>
+        <time datetime="2014-02-14T10:00-05:00" class="dt-start">{{hoursToday.open | timeFormat}}</time>
+        –
+        <time datetime="2014-02-14T17:00-05:00" class="dt-end">{{hoursToday.close | timeFormat}}</time>
       </div>
       <div>Get Directions</div>
     </div>

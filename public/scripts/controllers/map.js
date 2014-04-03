@@ -3,19 +3,23 @@ nypl_locations.controller('mapCtrl', function ($scope, $routeParams, nypl_locati
   // Display all branches regardless of user's location
   nypl_locations_service.single_location($routeParams.symbol).get(function (data) {
     $scope.location = data.location;
-    var locationCoords = _.pick(data.location, 'lat', 'long');
 
-    var today = new Date();
-    $scope.days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    var day = $scope.days[today.getDay()];  
+    var date = new Date();
+    var today = date.getDay();  
     
     $scope.hoursToday = {
-      'open': data.location.hours[day].open,
-      'close': data.location.hours[day].close
-    }
+      'today': data.location.hours.regular[today].day,
+      'open': data.location.hours.regular[today].open,
+      'close': data.location.hours.regular[today].close
+    };
+
+    var locationCoords = {
+      'lat': data.location.geolocation.coordinates[1],
+      'long': data.location.geolocation.coordinates[0]
+    };
 
     nypl_geocoder_service.draw_map(locationCoords, 15, 'individual-map');
-    nypl_geocoder_service.draw_marker(data.location, 'drop');
+    nypl_geocoder_service.draw_marker(data.location, 'drop', true);
     
   });
 

@@ -1,5 +1,5 @@
 <div class="grid" data-ng-controller="LocationCtrl">
-  <p>Go back <a href="/#/{{location._id|lowercase}}">{{location.name}}</a></p>
+  <p>Go back <a href="/#/{{location.id|lowercase}}">{{location.name}}</a></p>
 
   <section class="grid">
     <div class="grid__item one-whole lap-and-up-two-thirds">
@@ -28,12 +28,12 @@
   </section>
 
   <section class="grid__item one-whole">
-  <p data-ng-if="location.events.length > '1'">
-    Showing 1 of {{location.events.length}} upcoming events at {{location.name}}
+  <p data-ng-if="location._embedded.events.length > '1'">
+    Showing 1 of {{location._embedded.events.length}} upcoming events at {{location.name}}
   </p>
   </section>
 
-  <section class="grid__item one-whole" data-ng-repeat="event in location.events">
+  <section class="grid__item one-whole" data-ng-repeat="event in location._embedded.events">
     <h3><a href="">{{event.title}}</a></h3>
       <div class="grid__item one-whole lap-and-up-two-thirds">
         <img class="img--outline img--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
