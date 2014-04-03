@@ -34,9 +34,11 @@
 		* ------------------------------------
 		*/
 
-.btn{
+.btn, a.btn{
  	@include button-color($beautons);
 	@extend %transition !optional;
+	
+	margin: $half-spacing-unit/2;
 }
 
 button{
@@ -76,23 +78,30 @@ button{
 
 .btn--donate {
 	@include button-f11y-context(donate);
+	
+	&:visited{
+		color: $white;	
+	}
 }
 .btn--friends {
 	@include button-f11y-context(friends);
 }
+.btn--sso {
+	@include button-f11y-context(sso);
+
+	&:visited{
+		color: $white;	
+	}	
+	&:hover{
+		color: $white;
+	}
+}
+.btn--catalog {
+	@include button-f11y-context(catalog);
+}
+.btn--nyplorg {
+	@include button-f11y-context(nyplorg);
+}
 
 
 
-
-
-/*
-alpha
-beta
-gamma
-delta
-epsilon
-big
-giga
-mega
-kilo
-*/

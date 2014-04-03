@@ -1,35 +1,48 @@
 <div class="grid" data-ng-controller="LocationCtrl">
-  <p>Go back <a href="/#/location/{{location.slug}}">{{location.name}}</a></p>
+  <p>Go back <a href="/#/{{location.id|lowercase}}">{{location.name}}</a></p>
 
   <section class="grid">
     <div class="grid__item one-whole lap-and-up-two-thirds">
       <h1>Events at {{location.name}}</h1>
     </div><!--
-
     --><div class="grid__item one-whole lap-and-up-one-third">
       <div class="h-event" id="hours-today">
-        <h2 class="p-name">Today’s Hours</h2>
-        <time datetime="2014-02-14T10:00-05:00" class="dt-start">{{hoursToday.open}}</time>–<time datetime="2014-02-14T17:00-05:00" class="dt-end">{{hoursToday.close}}</time>
+        <h2 class="p-name flush">Today’s Hours</h2>
+        <time class="dt-start">{{hoursToday.open | timeFormat}}</time>
+        –
+        <time class="dt-end">{{hoursToday.close | timeFormat}}</time>
       </div>
     </div>
-    <div class="grid__item">
-    This space is a couple of lines maximum with general stuff about what Events at a branch means.  Should be standard across all locations.
-    Examples of text type.  all events are free unless otherwise noted.
+    <div class="grid__item one-whole">
+      <p>
+        This space is a couple of lines maximum with general stuff about what Events at a branch means.  Should be standard across all locations.
+        Examples of text type.  all events are free unless otherwise noted.
+      </p>
     </div>
   </section>
 
-  <section class="grid">
-    <div class="grid__item one-whole ">
-      Exhibition: Title of exhibition
+  <section class="grid__item one-whole">
+    <div class="callout">
+      <h3 class="flush">Exhibition: Title of exhibition</h3>
     </div>
   </section>
 
-  <ul class="grid">
-    <li class="grid__item one-whole" data-ng-repeat="event in location._embedded.events">
-      <h3>{{event.title}}</h3>
-      <p>{{event.title}} - no teaser just yet</p>
-      <p>Start time: {{event.start}}</p>
-      <p>End time: {{event.end}}</p>
-    </li>
-  </ul>
+  <section class="grid__item one-whole">
+  <p data-ng-if="location._embedded.events.length > '1'">
+    Showing 1 of {{location._embedded.events.length}} upcoming events at {{location.name}}
+  </p>
+  </section>
+
+  <section class="grid__item one-whole" data-ng-repeat="event in location._embedded.events">
+    <h3><a href="">{{event.title}}</a></h3>
+      <div class="grid__item one-whole lap-and-up-two-thirds">
+        <img class="img--outline img--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
+        <p>Date/Time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}} - {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        <p>{{event.body}}</p>
+      </div><!--
+      --><div class="grid__item one-whole lap-and-up-one-third">
+          <p class="text--right"><a href="" class="btn gradient">Register</a></p>
+          <p class="text--right"><a href="">Google/iCal</a></p>
+      </div>
+  </section>
 </div>  

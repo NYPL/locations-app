@@ -85,6 +85,7 @@
  */
 @import "nyplbase/gui/buttons";
 @import "nyplbase/gui/forms";
+@import "nyplbase/gui/header";
 @import "nyplbase/gui/icons";
 @import "nyplbase/gui/images";
 @import "nyplbase/gui/nav";
@@ -108,4 +109,4 @@
  * This file contains styles that are just for the Style Guide,
  * which are the files in /demo.
  */
-// @import "nyplbase/styleguide";
+@import "nyplbase/styleguide";

@@ -42,7 +42,8 @@ describe('NYPL Service Tests', function() {
     
     /* nypl_coordinates_service.getCoordinates */
     describe('nypl_coordinates_service.getCoordinates', function () {
-      var nypl_coordinates_service_mock, geolocationMock, rootScope, geolocationOk;
+      var nypl_coordinates_service_mock, geolocationMock, rootScope, geolocationOk, geolocationError;
+      var errorBrowser;
 
       // excuted before each "it" is run.
       beforeEach(module('nypl_locations'));
@@ -59,10 +60,21 @@ describe('NYPL Service Tests', function() {
         geolocationMock = window.navigator.geolocation = jasmine.createSpy('geolocation');
 
         geolocationOk = function (params, callback) {
-          callback(
-            {coords: {latitude: 40.75298660000001, longitude: -73.9821364}}
-          );
+          callback({
+            coords: {
+              latitude: 40.75298660000001, 
+              longitude: -73.9821364
+            }
+          });
         };
+
+        errorBrowser = "Your browser does not support Geolocation";
+        geolocationError = function (params, callback) {
+          callback({
+            error: "Your browser does not support Geolocation"
+          });
+        };
+
       }));
 
       // check to see if it has the expected function
@@ -71,20 +83,20 @@ describe('NYPL Service Tests', function() {
         expect(typeof nypl_coordinates_service_mock.getCoordinates).toBe('function');
       });
 
-      describe('get_coords function successful', function () {
-        beforeEach(function() {
-          geolocationMock.prototype.getCurrentPosition = 
+      describe('getCoordinates function successful', function () {
+        beforeEach(function () {
+          geolocationMock.getCurrentPosition = 
               window.navigator.geolocation.getCurrentPosition =
               jasmine.createSpy('getCurrentPosition').and.callFake(geolocationOk);
         });
 
         it('Should not be called', function () {
-          expect(geolocationMock.prototype.getCurrentPosition).not.toHaveBeenCalled();
+          expect(geolocationMock.getCurrentPosition).not.toHaveBeenCalled();
         });
 
         it('Should call the geolocation function when calling the service', function () {
           nypl_coordinates_service_mock.getCoordinates();
-          expect(geolocationMock.prototype.getCurrentPosition).toHaveBeenCalled();
+          expect(geolocationMock.getCurrentPosition).toHaveBeenCalled();
         });
 
         it('Should return a promise', function () {
@@ -96,6 +108,23 @@ describe('NYPL Service Tests', function() {
 
         });
 
+      });
+
+      describe('getCoordinates function fails', function () {
+        beforeEach(function () {
+          geolocationMock.getCurrentPosition = 
+            window.navigator.geolocation.getCurrentPosition =
+            jasmine.createSpy('getCurrentPosition').and.callFake(geolocationError);
+        });
+
+        it('Should not be called', function () {
+          expect(geolocationMock.getCurrentPosition).not.toHaveBeenCalled();
+        });
+
+        it('Should call the geolocation function when calling the service', function () {
+          nypl_coordinates_service_mock.getCoordinates();
+          expect(geolocationMock.getCurrentPosition).toHaveBeenCalled();
+        });
       });
 
     });
@@ -120,6 +149,12 @@ describe('NYPL Service Tests', function() {
 
       window.google = jasmine.createSpy('google');
       window.google.maps = jasmine.createSpy('maps');
+      window.google.maps.InfoWindow = jasmine.createSpy('InfoWindow');
+      window.google.maps.Map = jasmine.createSpy('Map');
+      window.google.maps.Marker = jasmine.createSpy('Marker');
+      window.google.maps.Animation = jasmine.createSpy('Animation');
+      window.google.maps.Animation.BOUNCE = jasmine.createSpy('Bounce');
+      window.google.maps.Animation.DROP = jasmine.createSpy('Drop');
       window.google.maps.GeocoderStatus = jasmine.createSpy('GeocoderStatus');
       window.google.maps.GeocoderStatus.OK = 'OK';
 

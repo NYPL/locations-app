@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+
+# Reads CSV file of subway entrances provided by MTA and reformats it
+# as a JSON file.
+#
+# Usage:
+# parse-subway-entrances < [FILENAME]
+#
+# Data source: 
+# http://web.mta.info/developers/data/nyct/subway/StationEntrances.csv
+
+require "csv"
+require "json"
+
+stations = []
+csv_stations = []
+
+CSV($stdin, {:headers => :first_row, :row_sep=>"\r\n"}) {|csv|
+  # The source data has one line per subway ENTRANCE, so there are
+  # multiple lines per subway ENTRANCE. We need to pick out the fields
+  # we wnat and reduce the list to just the unique rows we need.
+  csv_stations = csv.map {|row| row.values_at(
+    'Station_Name', 'Station_Latitude', 'Station_Longitude', 'ADA', \
+    'North_South_Street', 'East_West_Street', 'Route_1', 'Route_2', \
+    'Route_3', 'Route_4', 'Route_5', 'Route_6', 'Route_7', 'Route_8', \
+    'Route_9', 'Route_10', 'Route_11'
+    
+  )}.uniq
+
+  # Create an array of where each item is the row converted to a hash,
+  # ready to be turned into JSON
+  csv_stations.each do |row|
+    stations << {
+      :name => row[0],
+      :lat => row[1],
+      :long => row[2],
+      :cross_streets => {
+        :north_south => row[4],
+        :east_west => row[5]
+      },
+      :accessible => row[3] == 'TRUE',
+      :lines => row[6..16].select{|v| v.nil? == false}
+    }
+  end
+}
+
+stations_json = {:stations => stations}.to_json
+puts stations_json
