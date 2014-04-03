@@ -1,49 +1,58 @@
 'use strict';
+
 nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope, nypl_locations_service, nypl_coordinates_service, nypl_geocoder_service) {
-	var userCoords;
+	var userCoords, locations;
 	$scope.predicate = 'name'; // Default sort upon DOM Load
 
 	nypl_geocoder_service.draw_map({lat:40.7532, long:-73.9822}, 12, 'all-locations-map');
 
-	// Display all branches regardless of user's location
-	nypl_locations_service.all_locations().get(function (data) {
-		$scope.locations = data.locations;
-    console.log(data.locations);
+  var loadLocations = function () {
+        return nypl_locations_service
+                .all_locations()
+                .then(function (data) {
+                  locations = data.locations;
+                  $scope.locations = locations;
+                  console.log($scope.locations);
+                  return locations;
+                });
+      },
+      loadCoords = function () {
+        return nypl_coordinates_service
+                .getCoordinates()
+                .then(function (position) {
+                  userCoords = _.pick(position, 'latitude', 'longitude');
 
-    // each location does not have geolocation coordinates yet
-		// _.each($scope.locations, function (location) {
-		// 	nypl_geocoder_service.draw_marker(location, 'drop', true);
-		// });
+                  // each location does not have geolocation coordinates yet
+                  // _.each($scope.locations, function (location) {
+                  //   nypl_geocoder_service.draw_marker(location, 'drop', true);
+                  // });
 
-		// Extract user coordinates after locations data has been assigned to scope
-		if($scope.locations) {
-		  nypl_coordinates_service.getCoordinates().then(function (position) {
-				userCoords = _.pick(position, 'latitude', 'longitude');
+                  nypl_geocoder_service.draw_marker({'lat': userCoords.latitude, 'long': userCoords.longitude}, 'bounce');
+                  return userCoords;
+                });
+      },
+      loadGeocoder = function (userCoords) {
+        return nypl_geocoder_service
+                .get_zipcode({lat: userCoords.latitude, lng: userCoords.longitude})
+                .then(function (zipcode) {
+                  $scope.searchTerm = zipcode;
 
-				nypl_geocoder_service.draw_marker({'lat': position.latitude, 'long':position.longitude}, 'bounce');
-				
-				// Fill in zipcode based on geo-location
-				nypl_geocoder_service.get_zipcode({lat: userCoords.latitude, lng: userCoords.longitude}).then(function (zipcode) {
-					$scope.searchTerm = zipcode;
+                  // Iterate through lon/lat and calculate distance
+                  _.each(locations, function(location) {
+                    location.distance =  nypl_coordinates_service.getDistance(userCoords.latitude, userCoords.longitude, location.lat, location.long);
+                  });
 
-					// Iterate through lon/lat and calculate distance
-					_.each($scope.locations, function (location) {
-						location.distance =  nypl_coordinates_service.getDistance(userCoords.latitude, userCoords.longitude, location.lat, location.long);
-					});
+                  // Scope assignment
+                  $scope.locations = locations;
+                  $scope.distanceSet = true;
+                  $scope.predicate = 'distance';
 
-					$scope.distanceSet = true;
-					$scope.predicate = 'distance';
+                  return searchTerm;
+                });
+      };
 
-				});
-			}, function (error) {
-				$scope.errors = error;
-				console.log('Get Coordinates Error: ' + $scope.errors);
-			});
-		} // End If
- 	}, function (error, status) {
- 		console.log('All Locations Error: ' + error.status);
- 	});
-
+  // Initialize chaining
+  loadLocations().then(loadCoords).then(loadGeocoder);
 
 	$scope.submitAddress = function (searchTerm) {
 		// Filter the locations by the searchterm
