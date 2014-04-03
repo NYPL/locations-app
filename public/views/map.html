@@ -18,11 +18,13 @@
     </div><!--
 
     --><div class="grid__item one-whole lap-and-up-one-third">
-      <div class="h-event" id="hours-today">
-        <h2 class="p-name">Today’s Hours</h2>
-        <time datetime="2014-02-14T10:00-05:00" class="dt-start">{{hoursToday.open | timeFormat}}</time>
-        –
-        <time datetime="2014-02-14T17:00-05:00" class="dt-end">{{hoursToday.close | timeFormat}}</time>
+      <div class="h-event callout" id="hours-today">
+        <h2 class="p-name flush--ends">Today’s Hours</h2>
+        <span class="blueText">
+          <time datetime="2014-02-14T10:00-05:00" class="dt-start">{{hoursToday.open | timeFormat}}</time>
+          –
+          <time datetime="2014-02-14T17:00-05:00" class="dt-end">{{hoursToday.close | timeFormat}}</time>
+        </span>
       </div>
       <div>Get Directions</div>
     </div>

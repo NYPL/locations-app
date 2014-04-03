@@ -45,11 +45,13 @@
   </div><!--
 
   --><div class="grid__item one-whole lap-and-up-one-third">
-    <div class="h-event" id="hours-today">
+    <div class="h-event callout" id="hours-today">
       <h2 class="p-name flush--ends">Today’s Hours</h2>
-      <time class="dt-start">{{hoursToday.open | timeFormat}}</time>
-      –
-      <time class="dt-end">{{hoursToday.close | timeFormat}}</time>
+      <span class="blueText">
+        <time class="dt-start">{{hoursToday.open | timeFormat}}</time>
+        –
+        <time class="dt-end">{{hoursToday.close | timeFormat}}</time>
+      </span>
     </div>
 
     <div id="location-hours">
