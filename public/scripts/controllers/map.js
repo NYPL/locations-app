@@ -1,7 +1,7 @@
 nypl_locations.controller('mapCtrl', function ($scope, $routeParams, nypl_locations_service, nypl_geocoder_service, nypl_coordinates_service) {
 
   // Display all branches regardless of user's location
-  nypl_locations_service.single_location($routeParams.symbol).get(function (data) {
+  nypl_locations_service.single_location($routeParams.symbol).then(function (data) {
     $scope.location = data.location;
 
     var date = new Date();

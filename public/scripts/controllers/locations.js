@@ -109,7 +109,7 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
 nypl_locations.controller('LocationCtrl', function ($scope, $routeParams, nypl_locations_service) {
 
 	// Display all branches regardless of user's location
-	nypl_locations_service.single_location($routeParams.symbol).get(function (data) {
+	nypl_locations_service.single_location($routeParams.symbol).then(function (data) {
 		$scope.location = data.location;
     console.log(data.location);
 
