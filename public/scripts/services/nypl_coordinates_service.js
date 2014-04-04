@@ -27,7 +27,7 @@ nypl_locations.factory(
                             defer.resolve(position.coords);
                         }, function (error) {
                             switch (error.code) {
-                            case 1:
+                            case error.PERMISSION_DENIED:
                                 $rootScope.$apply(function () {
                                     defer.reject(
                                         new Error("User denied permission")
@@ -35,7 +35,7 @@ nypl_locations.factory(
                                 });
                                 break;
 
-                            case 1:
+                            case error.POSITION_UNAVAILABLE:
                                 $rootScope.$apply(function () {
                                     defer.reject(
                                         new Error("The position is currently unavailable")
@@ -43,13 +43,20 @@ nypl_locations.factory(
                                 });
                                 break;
 
-                            case 1:
+                            case error.TIMEOUT:
                                 $rootScope.$apply(function () {
                                     defer.reject(
                                         new Error("The request timed out")
                                     );
                                 });
                                 break;
+
+                            default:
+                                $rootScope.$apply(function () {
+                                    defer.reject(
+                                        new Error("Unkown error")
+                                    );
+                                });
                             }
                         });
                 }
