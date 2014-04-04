@@ -4,54 +4,66 @@
   <form class="form--inline grid__item one-whole lap-and-up-one-half">
     <label for="searchTerm">Enter your Zip code:</label>
     <input id="searchTerm" type="text" data-ng-model="searchTerm" />
-    <button data-ng-click="submitAddress(searchTerm)">Submit</button>
-    <p>Or <a href="/#/">view all branches</a> by borough.</p>
+    <button class="btn--small" data-ng-click="submitAddress(searchTerm)">Submit</button>
+    <p>Or <a href="/#/">view all branches</a>by borough.</p>
   </form><!--
 
   --><div id="all-locations-map" class="grid__item one-whole lap-and-up-one-half"></div>
 
   <section class="list">
   	<section class="filters">
-      <div>Show me only 
-        <input type="checkbox" data-ng-model="location.library_type" data-ng-true-value="circulating" data-ng-false-value=""/>Lending Libraries 
-        <input type="checkbox" data-ng-model="location.library_type" data-ng-true-value="research" data-ng-false-value=""/>Research Libraries
-      </div>
+      <fieldset>
+        <legend>Show me only:</legend>
+        <ul class="filters__check check-list--inline">
+          <li>
+            <input id="lending" type="checkbox" data-ng-model="location.library_type" data-ng-true-value="circulating" data-ng-false-value=""/>
+            <label for="lending">Lending Libraries</label>
+          </li>
+          <li>
+            <input id="research" type="checkbox" data-ng-model="location.library_type" data-ng-true-value="research" data-ng-false-value=""/>
+            <label for="research">Research Libraries</label>
+          </li>
+        </ul>
+      </fieldset>
   	</section>
   	
     <br />
 
     <section class="grid one-whole">
-      <div class="h-card grid__item one-quarter" ng-click="predicate = 'name'; reverse=!reverse">Location</div><!--
+      <div class="h-card grid__item one-quarter gamma" ng-click="predicate = 'name'; reverse=!reverse">Location</div><!--
 
-      --><div class="h-card grid__item one-quarter" ng-click="predicate = 'distance'; reverse=!reverse">Distance</div><!--
+      --><div class="h-card grid__item one-quarter gamma" ng-click="predicate = 'distance'; reverse=!reverse">Distance</div><!--
 
-      --><div class="h-card grid__item one-quarter">Hours</div><!--
+      --><div class="h-card grid__item one-quarter gamma">Hours</div><!--
 
-    --><div class="h-card grid__item one-quarter">Services</div>
+    --><div class="h-card grid__item one-quarter gamma">Services</div>
     </section>
 
     <!-- Locations are in h-card microformat -->
     <!-- http://microformats.org/wiki/h-card -->
-    <section class="grid one-whole location {{location._id}} row" data-ng-repeat="location in locations | filter:location.library_type | orderBy:predicate:reverse">
-        <div class="h-card grid__item one-whole lap-and-up-one-quarter ">
-          <div class="p-org"><b><a href='/#/{{location.id|lowercase}}'>{{location.name}}</a></b></div>
-          <div class="p-adr">
-            <div class="p-street-address">{{location.street_address}}</div>
-            <span class="p-locality">{{location.locality}}</span>, 
-            <span class="p-region">{{location.region}}</span>, 
-            <span class="p-postal-code">{{location.postal_code}}</span>
-          </div>
-          <div class="p-tel" data-ng-show="location.contacts.phone">Phone: {{location.contacts.phone}}</div>
-          <div class="u-email" data-ng-show="location.contacts.email">Email: {{location.contacts.email}}</div>
-        </div><!--
+    <section class="grid one-whole location {{location._id}}" data-ng-repeat="location in locations | filter:location.library_type | orderBy:predicate:reverse | limitTo: 5">
 
-        --><div class="h-card grid__item one-whole lap-and-up-one-quarter">
+      <div class="results--location h-card grid__item one-half lap-and-up-one-quarter">
+        <div class="p-org"><b><a href='/#/{{location.id|lowercase}}'>{{location.name}}</a></b></div>
+        <div class="p-adr">
+          <div class="p-street-address">{{location.street_address}}</div>
+          <span class="p-locality">{{location.locality}}</span>, 
+          <span class="p-region">{{location.region}}</span>, 
+          <span class="p-postal-code">{{location.postal_code}}</span>
+        </div>
+        <div class="p-tel" data-ng-show="location.contacts.phone">Phone: {{location.contacts.phone}}</div>
+        <div class="u-email" data-ng-show="location.contacts.email">Email: {{location.contacts.email}}</div>
+      </div><!--
+
+      --><div class="results--more grid__item one-half lap-and-up-three-quarters">
+        
+        <div class="results--distance h-card grid__item one-whole lap-and-up-one-third">
           <div data-ng-show="location.distance"><strong>{{location.distance}} miles</strong></div>
-          <div><a href="/#/{{location.id|lowercase}}/map">View on Map</a></div>
-          <div><a href="">Get Directions</a></div>
+          <div><a class="icon-map" href="/#/{{location.id|lowercase}}/map">View on Map</a></div>
+          <div><a class="icon-compass" href="">Get Directions</a></div>
         </div><!--
 
-        --><div class="h-card grid__item one-whole lap-and-up-one-quarter">
+        --><div class="results--hours h-card grid__item one-whole lap-and-up-one-third">
           <ul>
             <li data-ng-repeat='hours in location.hours.regular'>
               {{hours.day}} {{hours.open | timeFormat}} - {{hours.close | timeFormat}}
@@ -59,11 +71,15 @@
           </ul>
         </div><!-- 
 
-        --><div class="h-card grid__item one-whole lap-and-up-one-quarter">
+        --><div class="results--services h-card grid__item one-whole lap-and-up-one-third">
           <p>Services go here</p>
         </div>
+      </div>
 
-        <hr class="grid__item" data-ng-show='location.break' />
-    </section>
+      <hr class="grid__item" data-ng-show='location.break' />
+
+    </section> 
+    <!-- End of ng-repeat -->
+
   </section>
 </div>

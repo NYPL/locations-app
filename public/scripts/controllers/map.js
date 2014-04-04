@@ -1,26 +1,45 @@
-nypl_locations.controller('mapCtrl', function ($scope, $routeParams, nypl_locations_service, nypl_geocoder_service, nypl_coordinates_service) {
+nypl_locations.controller('mapCtrl', function ($scope, $routeParams, nypl_locations_service, nypl_geocoder_service, nypl_coordinates_service, nypl_utility) {
+  var location,
+      loadLocation = function () {
+        return nypl_locations_service
+                .single_location($routeParams.symbol)
+                .then(function (data) {
+                  return data.location;
+                });
+      },
+      getUserCoords = function () {
+        return nypl_coordinates_service
+                .getCoordinates()
+                .then(function (position) {
+                  var userCoords = _.pick(position, 'latitude', 'longitude');
 
-  // Display all branches regardless of user's location
-  nypl_locations_service.single_location($routeParams.symbol).get(function (data) {
-    $scope.location = data.location;
+                  $scope.locationStart = userCoords.latitude + "," + userCoords.longitude;
+                })
+                .catch(function (error) {
+                  throw(error.message);
+                });
+      },
+      loadMapPage = function (location) {
+        $scope.location = location;
+        console.log(location);
 
-    var date = new Date();
-    var today = date.getDay();  
-    
-    $scope.hoursToday = {
-      'today': data.location.hours.regular[today].day,
-      'open': data.location.hours.regular[today].open,
-      'close': data.location.hours.regular[today].close
-    };
+        $scope.hoursToday = nypl_utility.hoursToday(location.hours);
+        $scope.locationDest = nypl_utility.getAddressString(location);
 
-    var locationCoords = {
-      'lat': data.location.geolocation.coordinates[1],
-      'long': data.location.geolocation.coordinates[0]
-    };
+        var locationCoords = {
+          'lat': location.geolocation.coordinates[1],
+          'long': location.geolocation.coordinates[0]
+        };
 
-    nypl_geocoder_service.draw_map(locationCoords, 15, 'individual-map');
-    nypl_geocoder_service.draw_marker(data.location, 'drop', true);
-    
-  });
+        nypl_geocoder_service.draw_map(locationCoords, 15, 'individual-map');
+        nypl_geocoder_service.draw_marker(location, 'drop', true);
+      };
+
+  loadLocation()
+    .then(loadMapPage)
+    .then(getUserCoords)
+      .catch(function(error) {
+        console.log(error)
+      });
 
 });

@@ -10,12 +10,19 @@
     <!--<base href="/">-->
   </head>
   <body data-ng-app="nypl_locations">
-    <header>
+    <header id="header--global">
       <div class="black whiteText">NYPL HEADER</div>
     </header>
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
+
+    <!-- Loading Directive -->
+    <div id="loadingWidget" loading-widget>
+        <div class="loadingContent">
+            <p>loading...</p>
+        </div>
+    </div>
 
     <!-- Add your site or application content here -->
     <div class="location grid" data-ng-view=""></div>
@@ -65,5 +72,8 @@
     <script src="scripts/services/nypl_coordinates_service.js"></script>
     <script src="scripts/services/nypl_location_service.js"></script>
     <script src="scripts/services/nypl_geocoder_service.js"></script>
+    <script src="scripts/services/nypl_utility_service.js"></script>
+    <!-- Directives -->
+    <script src="scripts/directives/nypl_directives.js"></script>
 </body>
 </html>

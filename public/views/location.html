@@ -29,8 +29,8 @@
       
       --><div class="grid__item one-whole lap-and-up-one-half">
 
-        <div class="maplink"><a href="/#/{{location.id|lowercase}}/map">Map</a></div>
-        <div><a href="">Get Directions</a></div>
+        <div class="maplink"><a class="icon-map" href="/#/{{location.id|lowercase}}/map">Map</a></div>
+        <div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
         <div class="nearby-branches"><a href="">Nearby branches</a></div>
         <div>Library Manager: {{location.contacts.manager}}</div>
 
@@ -44,18 +44,18 @@
     </div>
   </div><!--
 
-  --><div class="grid__item one-whole lap-and-up-one-third">
-    <div class="h-event" id="hours-today">
+  --><div class="grid__item one-whole lap-and-up-one-third container__hours-catalog">
+    <div class="h-event callout" id="hours-today">
       <h2 class="p-name flush--ends">Today’s Hours</h2>
-      <time class="dt-start">{{hoursToday.open | timeFormat}}</time>
-      –
-      <time class="dt-end">{{hoursToday.close | timeFormat}}</time>
+      <time class="dt-start alpha">{{hoursToday.open | timeFormat}}</time>
+      -
+      <time class="dt-end alpha">{{hoursToday.close | timeFormat}}</time>
     </div>
 
     <div id="location-hours">
       <h2 class="flush--ends">Regular Hours</h2>
 
-      <div class="weekly-hours">
+      <div class="weekly-hours zeta">
         <div class="{{hours.day}}" data-ng-repeat="hours in location.hours.regular" data-ng-if="$index != 7">
           <span class="day">{{hours.day}}</span>
           <span class="time">
@@ -74,66 +74,72 @@
 
   --><div class="grid__item one-whole" id="divisions" data-ng-if="location.type == 'research'">
     <h2 class="hdg">Divisions</h2>
-    <div class="grid">
-      <div class="grid__item one-whole lap-and-up-one-quarter" data-ng-repeat='division in location._embedded.divisions'>
-        <img class="img" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
-        <h3>{{division.name}}</h3>
+    <div class="grid chunk hard--left">
+      <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='division in location._embedded.divisions'>
+        <img class="grid__item one-third hard--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" /><!--
+        --><h3 class="grid__item two-thirds">{{division.name}}</h3>
         <p>Division content</p>
       </div>
     </div>
   </div><!--
 
-  --><div id="features" class="grid__item one-whole">
+  --><div id="features" class="chunk">
     <h2 class="hdg">Featured</h2>
-    <div class="grid">
-      <div class="grid__item one-whole lap-and-up-one-half">
-        <h3>Feature One</h3>
-        <p>Feature One</p>
-      </div><!--
-      --><div class="grid__item one-whole lap-and-up-one-half">
-        <h3>Feature Two</h3>
-        <p>Feature Two</p>
-      </div>
+
+    <div class="grid__item hard--left one-whole lap-and-up-one-half">
+      <img class="one-whole lap-and-up-one-half" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map"><!--
+
+      --><h3 class="grid__item one-whole lap-and-up-one-half">Feature One, Which Might Be an Event at Schwarzman</h3>
+      <p>description goes here</p>
+    </div><!--
+
+    --><div class="grid__item hard--left one-whole lap-and-up-one-half">
+      <img class="one-whole lap-and-up-one-half" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map"><!--
+
+      --><h3 class="grid__item one-whole lap-and-up-one-half">Feature One, Which Might Be an Event at Schwarzman</h3>
+      <p>description goes here</p>
     </div>
+
   </div>
 
-  <div id="events" class="grid__item one-whole">
+  <div id="events" class="chunk">
     <h2 class="hdg">Events</h2>
 
     <ul class="grid">
       <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in location._embedded.events">
         <h3><a href="{{event._links.self.href}}">{{event.title}}</a></h3>
         <p>{{event.body}}</p>
-        <p>Start time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
-        <p>End time: {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        <div class="callout">
+          <p>Start time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+          <p>End time: {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        </div>
       </li>
     </ul>   
       
     <div><a class="read-more" href="/#/{{location.id}}/events">See more events at {{location.name}}</a></div>
   </div>
 
-  <div id="about-and-plan" class="grid one-whole">
-  
-    <div id="about" class="grid__item one-whole lap-and-up-one-half">
-      <h2 class="hdg">About</h2>
-      <p>This space is for the general blurb</p>
-      <div><a class="read-more" href="">More about {{location.name}}</a></div>
-    </div><!--
-
-    --><div id="plan-your-visit" class="grid__item one-whole lap-and-up-one-half">
+  <div id="about-and-plan" class="chunk hard--left">
+    <div id="plan-your-visit" class="grid__item one-whole lap-and-up-one-half">
       <h2 class="hdg">Plan Your Visit</h2>
-        <ul>
-          <li>Reserve a Computer</li>
-          <li>Interlibrary Loan</li>
-          <li>Meeting Rooms</li>
+        <ul class="flush--left">
+          <li class="icon-screen">Reserve a Computer</li>
+          <li class="icon-library">Interlibrary Loan</li>
+          <li class="icon-users">Meeting Rooms</li>
         </ul>
 
         <div><a class="read-more" href="">See all services at {{location.name}}</a></div>
+    </div><!--
+
+    --><div id="about" class="grid__item one-whole lap-and-up-one-half">
+      <h2 class="hdg">About</h2>
+      <p>This space is for the general blurb</p>
+      <div><a class="read-more" href="">More about {{location.name}}</a></div>
     </div>
 
   </div>
 
-  <div class="grid__item one-whole" id="blogs" data-ng-if="location.type != 'research'">
+  <div class="chunk" id="blogs" data-ng-if="location.type != 'research'">
     <h2 class="hdg">Blogs</h2>
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='blog in location._embedded.blogs'>
@@ -144,7 +150,7 @@
     </div>
   </div>
 
-  <div class="grid__item one-whole" id="exhibitions" data-ng-if="location.type == 'research'">
+  <div class="chunk" id="exhibitions" data-ng-if="location.type == 'research'">
     <h2 class="hdg">Exhibitions (need service data)</h2>
     <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='exhibition in location._embedded.exhibitions'>
       <img class="img--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
@@ -153,12 +159,24 @@
     </div>
   </div>
 
-  <div class="grid__item one-whole tablet-and-up-one-half" id="ask-nypl">
-    <div class="btn--friends">AskNYPL</div>
-  </div><!--
-
-  --><div class="grid__item one-whole tablet-and-up-one-half" id="donate">
-    <div class="btn--donate">Donate</div>
+  <div class="chunk hard--left ask-donate">
+    <div class="grid__item one-whole tablet-and-up-one-half" id="ask-nypl">
+      <div class="callout">
+        <ul><h1><a href="">AskNYPL</a></h1>
+          <li class="asknum icon-phone">917-ASK-NYPL</li>
+          <li class="askchat icon-bubbles"><a href="">Chat with a librarian</a></li>
+          <li class="askemail icon-envelope"><a href="">Email us your question</a></li>
+        </ul>
+      </div>
+    </div><!--
+  
+    --><div class="grid__item one-whole tablet-and-up-one-half" id="donate">
+      <div class="appeal">
+        <p>This library is open 6 days a week!</p>
+        <p>Help us keep it that way!</p>
+        <button class="btn--donate">Donate now</button>
+      </div>
+    </div>
   </div>
   
 <!--   end container -->  
