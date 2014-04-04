@@ -20,13 +20,11 @@
     --><div class="grid__item one-whole lap-and-up-one-third">
       <div class="h-event callout" id="hours-today">
         <h2 class="p-name flush--ends">Today’s Hours</h2>
-        <span class="blueText">
-          <time datetime="2014-02-14T10:00-05:00" class="dt-start">{{hoursToday.open | timeFormat}}</time>
-          –
-          <time datetime="2014-02-14T17:00-05:00" class="dt-end">{{hoursToday.close | timeFormat}}</time>
-        </span>
+        <time datetime="2014-02-14T10:00-05:00" class="dt-start alpha">{{hoursToday.open | timeFormat}}</time>
+        –
+        <time datetime="2014-02-14T17:00-05:00" class="dt-end alpha">{{hoursToday.close | timeFormat}}</time>
       </div>
-      <div><a href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
+      <div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
     </div>
   </section>
 
@@ -34,15 +32,27 @@
     <div id="individual-map" class="grid__item"></div>
   </section>
 
-  <section class="grid directions">
+  <section class="chunk directions">
 
   </section>
 
-  <div class="grid__item one-whole tablet-and-up-one-half" id="ask-nypl">
-    <div class="btn--friends">AskNYPL</div>
-  </div><!--
-
-  --><div class="grid__item one-whole tablet-and-up-one-half" id="donate">
-    <div class="btn--donate">Donate</div>
+  <div class="chunk hard--left ask-donate">
+    <div class="grid__item one-whole tablet-and-up-one-half" id="ask-nypl">
+      <div class="callout">
+        <ul><h1><a href="">AskNYPL</a></h1>
+          <li class="asknum icon-phone">917-ASK-NYPL</li>
+          <li class="askchat icon-bubbles"><a href="">Chat with a librarian</a></li>
+          <li class="askemail icon-envelope"><a href="">Email us your question</a></li>
+        </ul>
+      </div>
+    </div><!--
+  
+    --><div class="grid__item one-whole tablet-and-up-one-half" id="donate">
+      <div class="appeal">
+        <p>This library is open 6 days a week!</p>
+        <p>Help us keep it that way!</p>
+        <button class="btn--donate">Donate now</button>
+      </div>
+    </div>
   </div>
 </div>  
