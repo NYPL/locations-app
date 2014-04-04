@@ -1,87 +1,109 @@
-'use strict';
-
+/*jslint indent: 4, maxlen: 80 */
+/*globals nypl_locations, google */
 nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
-  var map,
-      bound, 
-      infowindow = new google.maps.InfoWindow();
+    'use strict';
 
-  return {
-    get_coords: function (address) {
-      var defer = $q.defer(),
-          coords = {},
-          geocoder = new google.maps.Geocoder(),
-          sw_bound = new google.maps.LatLng(40.49, -74.26),
-          ne_bound = new google.maps.LatLng(40.91, -73.77),
-          bounds = new google.maps.LatLngBounds(sw_bound, ne_bound);
+    var map,
+        bound,
+        infowindow = new google.maps.InfoWindow();
 
-      geocoder.geocode({address: address, bounds: bounds}, function (result, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-          coords.lat = result[0].geometry.location.k;
-          coords.long = result[0].geometry.location.A;
+    return {
+        get_coords: function (address) {
+            var defer = $q.defer(),
+                coords = {},
+                geocoder = new google.maps.Geocoder(),
+                sw_bound = new google.maps.LatLng(40.49, -74.26),
+                ne_bound = new google.maps.LatLng(40.91, -73.77),
+                bounds = new google.maps.LatLngBounds(sw_bound, ne_bound);
 
-          defer.resolve(coords);
+            geocoder.geocode(
+                {address: address, bounds: bounds},
+                function (result, status) {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        coords.lat = result[0].geometry.location.k;
+                        coords.long = result[0].geometry.location.A;
 
-          // var panCoords = new google.maps.LatLng(coords.lat, coords.long);
-          // map.panTo(panCoords);
-          // map.setZoom(13);
+                        defer.resolve(coords);
 
-        } else {
-          defer.reject(new Error (status));
-        }
-      });
+                        // var panCoords = new google.maps.LatLng(coords.lat, coords.long);
+                        // map.panTo(panCoords);
+                        // map.setZoom(13);
 
-      return defer.promise;
-    },
-    get_zipcode: function (coords) {
-      var defer = $q.defer(),
-          geocoder = new google.maps.Geocoder(),
-          zipcode,
-          latlng = new google.maps.LatLng(coords.lat, coords.lng);
+                    } else {
+                        defer.reject(new Error(status));
+                    }
+                }
+            );
 
-      geocoder.geocode({latLng: latlng}, function (result, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-          var address_component = result[0].address_components;
-          zipcode =  address_component[address_component.length-1].long_name;
+            return defer.promise;
+        },
+        get_zipcode: function (coords) {
+            var defer = $q.defer(),
+                geocoder = new google.maps.Geocoder(),
+                zipcode,
+                latlng = new google.maps.LatLng(coords.lat, coords.lng);
 
-          defer.resolve(zipcode);
-        } else {
-          defer.reject(new Error (status));
-        }
-      });
+            geocoder.geocode({latLng: latlng}, function (result, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    var address_component = result[0].address_components;
+                    zipcode = address_component[address_component.length - 1]
+                        .long_name;
 
-      return defer.promise;
-    },
-    draw_map: function (coords, zoom, id) {
-      var locationCoords = new google.maps.LatLng(coords.lat, coords.long),
-          mapOptions = {
-            zoom: zoom,
-            center: locationCoords
-          };
+                    defer.resolve(zipcode);
+                } else {
+                    defer.reject(new Error(status));
+                }
+            });
 
-      map = new google.maps.Map(document.getElementById(id), mapOptions);
-      bound = new google.maps.LatLngBounds();
-    },
+            return defer.promise;
+        },
 
-    // animation is temporary and is used as a visual cue
-    // to make your current location stand out
-    draw_marker: function (location, animation, geojson) {
-      // locations are in geojson format but geolocation is not.
-      // Need a better solution.
-      var coords = (geojson) ? {
-            lat: location.geolocation.coordinates[1],
-            long: location.geolocation.coordinates[0]
-          } : {
-            lat: location.lat,
-            long: location.long
-          },
-          _this = this,
-          animation = (animation == 'bounce') ? google.maps.Animation.BOUNCE : google.maps.Animation.DROP,
-          locationCoords = new google.maps.LatLng(coords.lat, coords.long),
-          marker = new google.maps.Marker({
-            position: locationCoords,
-            map: map,
-            animation: animation,
-          });
+        draw_map: function (coords, zoom, id) {
+            var locationCoords = new google.maps
+                .LatLng(coords.lat, coords.long),
+                mapOptions = {
+                    zoom: zoom,
+                    center: locationCoords
+                };
+
+            map = new google.maps.Map(document.getElementById(id), mapOptions);
+            bound = new google.maps.LatLngBounds();
+        },
+
+        // animation is temporary and is used as a visual cue
+        // to make your current location stand out
+        draw_marker: function (location, animation, geojson) {
+            // locations are in geojson format but geolocation is not.
+            // Need a better solution.
+            var coords,
+                _this = this,
+                map_animation,
+                marker;
+
+            if (geojson) {
+                coords = {
+                    lat: location.geolocation.coordinates[1],
+                    long: location.geolocation.coordinates[0]
+                };
+            } else {
+                coords = {
+                    lat: location.lat,
+                    long: location.long
+                };
+            }
+
+            if (animation === 'bounce') {
+                map_animation = google.maps.Animation.BOUNCE;
+            } else {
+                map_animation = google.maps.Animation.DROP;
+            }
+
+            marker = new google.maps.Marker({
+                position: new google.maps
+                    .LatLng(coords.lat, coords.long),
+                map: map,
+                animation: map_animation,
+            });
 
       // This works but it seems to have to call an external file?
       // doesn't work when location.geolocation is passed
