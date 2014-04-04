@@ -106,22 +106,26 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
 
 });
 
-nypl_locations.controller('LocationCtrl', function ($scope, $routeParams, nypl_locations_service) {
+nypl_locations.controller('LocationCtrl', function ($scope, $routeParams, nypl_locations_service, nypl_coordinates_service, nypl_utility) {
 
-	// Display all branches regardless of user's location
 	nypl_locations_service.single_location($routeParams.symbol).then(function (data) {
-		$scope.location = data.location;
-    console.log(data.location);
-
-		var date = new Date();
-    var today = date.getDay();  
+    var location = data.location;
+		$scope.location = location;
     
-    $scope.hoursToday = {
-      'today': data.location.hours.regular[today].day,
-      'open': data.location.hours.regular[today].open,
-      'close': data.location.hours.regular[today].close
-    };
+    $scope.hoursToday = nypl_utility.hoursToday(location.hours);
  	
+    // Used for the Get Directions link to Google Maps
+    $scope.locationDest = nypl_utility.getAddressString(location);
 	});
+
+  nypl_coordinates_service.getCoordinates().then(function (position) {
+    var userCoords = _.pick(position, 'latitude', 'longitude');
+
+    // Used for the Get Directions link to Google Maps
+    // If the user rejected geolocation and $scope.locationStart is blank,
+    // the link will still work
+    $scope.locationStart = userCoords.latitude + "," + userCoords.longitude;
+  });
+
 
 });

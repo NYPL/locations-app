@@ -34,3 +34,31 @@ nypl_locations.factory('requestNotificationChannel', ['$rootScope', function($ro
     onRequestEnded: onRequestEnded
   };
 }]);
+
+nypl_locations.factory('nypl_utility', function () {
+  
+  return {
+    hoursToday: function (hours) {
+      var date = new Date(),
+          today = date.getDay(),
+          hoursToday = {
+            'today': hours.regular[today].day,
+            'open': hours.regular[today].open,
+            'close': hours.regular[today].close
+          };
+
+      return hoursToday;
+    },
+
+    getAddressString: function (location) {
+      var locationAddress = location.street_address + " " + 
+                            location.locality + ", " + 
+                            location.region + ", " + 
+                            location.postal_code;
+
+      return locationAddress;
+    }
+
+  }
+
+});
