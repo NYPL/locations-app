@@ -102,37 +102,38 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
                 position: new google.maps
                     .LatLng(coords.lat, coords.long),
                 map: map,
-                animation: map_animation,
+                animation: map_animation
             });
 
-      // This works but it seems to have to call an external file?
-      // doesn't work when location.geolocation is passed
-      // map.data.loadGeoJson('https://storage.googleapis.com/maps-devrel/google.json');
+            // This works but it seems to have to call an external file?
+            // doesn't work when location.geolocation is passed
+            // map.data.loadGeoJson('https://storage.googleapis.com/maps-devrel/google.json');
 
-      google.maps.event.addListener(marker, 'click', function () {
-        _this.show_infowindow(location, marker);
-      });
+            google.maps.event.addListener(marker, 'click', function () {
+                _this.show_infowindow(location, marker);
+            });
 
-      // Bounds the map to display all the markers
-      // bound.extend(marker.getPosition());
-      // map.fitBounds(bound);
+            // Bounds the map to display all the markers
+            // bound.extend(marker.getPosition());
+            // map.fitBounds(bound);
 
-    },
-    show_infowindow: function (location, marker) {
-      var content;
+        },
+        show_infowindow: function (location, marker) {
+            var content;
 
-      // Temporary because not all locations have contacts and so contacts[0] throws an error
-      if (location.hasOwnProperty('name')) {
-        content = location.name + '<br />' + location.street_address + '<br />' + 
-          location.locality + ', ' + location.region + ' ' + location.postal_code + '<br />' +location.contacts.phone;
-      } else {
-        content = "empty contacts";
-      } 
+            // Temporary because not all locations have contacts and so contacts[0] throws an error
+            if (location.hasOwnProperty('name')) {
+                content = location.name + '<br />' + location.street_address +
+                    '<br />' + location.locality + ', ' + location.region +
+                    ' ' + location.postal_code + '<br />' +
+                    location.contacts.phone;
+            } else {
+                content = "empty contacts";
+            }
 
-      infowindow.close();
-      infowindow.setContent(content);
-      infowindow.open(map, marker);
-    }
-
-  }
+            infowindow.close();
+            infowindow.setContent(content);
+            infowindow.open(map, marker);
+        }
+    };
 }]);
