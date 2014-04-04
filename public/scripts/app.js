@@ -4,7 +4,7 @@ var nypl_locations = angular.module('nypl_locations', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
-  'locationService',
+  'locationService'
 ]);
 
 nypl_locations.constant('_', window._);
