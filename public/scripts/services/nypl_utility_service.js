@@ -63,6 +63,18 @@ nypl_locations.factory('nypl_utility', function () {
                 location.locality + ", " +
                 location.region + ", " +
                 location.postal_code;
+        },
+
+        locationType: function(id) {
+            switch(id) {
+                case 'SASB':
+                case 'LPA':
+                case 'SCHOMBURG':
+                case 'SIBL':
+                    return 'research';
+                default:
+                    return 'circulating';
+            }
         }
     };
 });
