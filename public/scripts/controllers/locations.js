@@ -12,7 +12,11 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
                 .then(function (data) {
                   locations = data.locations;
                   $scope.locations = locations;
-                  console.log($scope.locations);
+
+                  _.each($scope.locations, function (location) {
+                    nypl_geocoder_service.draw_marker(location, 'drop', true);
+                  });
+
                   return locations;
                 });
       },
@@ -23,11 +27,6 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
                   var distanceArray = [];
 
                   userCoords = _.pick(position, 'latitude', 'longitude');
-
-                  // each location does not have geolocation coordinates yet
-                  // _.each($scope.locations, function (location) {
-                  //   nypl_geocoder_service.draw_marker(location, 'drop', true);
-                  // });
 
                   // Iterate through lon/lat and calculate distance
                   _.each(locations, function (location) {

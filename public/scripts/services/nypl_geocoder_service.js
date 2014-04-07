@@ -26,7 +26,6 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
                         coords.lat = result[0].geometry.location.k;
                         coords.long = result[0].geometry.location.A;
 
-                        //_this.searchTermMarker(coords);
                         defer.resolve(coords);
 
                     } else {

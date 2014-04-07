@@ -1,0 +1,16 @@
+// 'use strict';
+
+// angular.module('mockedAPI', [])
+//   .value('allLocations', {
+//     locations: [
+//       {
+//         id: 'AG',
+//         geolocation: {
+//           type: "Point",
+//           coordinates: [-73.9436, 40.7943]
+//         },
+//         name: 'Aguilar Library'
+//       }
+//     ]
+  
+//   });
