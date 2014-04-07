@@ -26,10 +26,30 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
         return nypl_coordinates_service
                 .getCoordinates()
                 .then(function (position) {
+                  var distanceArray = [];
+
                   userCoords = _.pick(position, 'latitude', 'longitude');
                   $scope.locationStart = userCoords.latitude + "," + userCoords.longitude;
 
+                  // Iterate through lon/lat and calculate distance
+                  _.each(locations, function (location) {
+                    location.distance = nypl_coordinates_service.getDistance(userCoords.latitude, userCoords.longitude, location.lat, location.long);
+                    distanceArray.push(location.distance);
+                  });
+
                   nypl_geocoder_service.draw_marker({'lat': userCoords.latitude, 'long': userCoords.longitude}, 'bounce');
+
+                  if (_.min(distanceArray) > 25) {
+                    // The user is too far away, don't change the display
+                    // of the locations and don't add the distance to each library.
+                    console.log('You are too far');
+                  } else {
+                    // Scope assignment
+                    $scope.locations = locations;
+                    $scope.distanceSet = true;
+                    $scope.predicate = 'distance';
+                  }
+
                   return userCoords;
                 });
       },
@@ -39,16 +59,6 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
                 .get_zipcode({lat: userCoords.latitude, lng: userCoords.longitude})
                 .then(function (zipcode) {
                   $scope.searchTerm = zipcode;
-
-                  // Iterate through lon/lat and calculate distance
-                  _.each(locations, function(location) {
-                    location.distance =  nypl_coordinates_service.getDistance(userCoords.latitude, userCoords.longitude, location.lat, location.long);
-                  });
-
-                  // Scope assignment
-                  $scope.locations = locations;
-                  $scope.distanceSet = true;
-                  $scope.predicate = 'distance';
 
                   return searchTerm;
                 });
@@ -65,12 +75,26 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
       },
       searchByCoordinates = function (coords) {
         var locations = $scope.locations;
+        var distanceArray = [];
 
         _.each(locations, function (location) {
-          location.distance =  nypl_coordinates_service.getDistance(coords.lat, coords.long, location.lat, location.long);
+          location.distance = nypl_coordinates_service.getDistance(coords.lat, coords.long, location.lat, location.long);
+          distanceArray.push(location.distance);
         });
 
-        return locations;
+        if (_.min(distanceArray) > 25) {
+          console.log("The search query is too far");
+          _.each(locations, function (location) {
+            location.distance = '';
+          });
+
+          return $scope.locations;
+        } else {
+          nypl_geocoder_service.searchTermMarker(coords);
+
+          return locations;
+        }
+
       };
 
   // Initialize chaining
