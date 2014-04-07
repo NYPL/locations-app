@@ -1,6 +1,6 @@
 'use strict';
 
-nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope, nypl_locations_service, nypl_coordinates_service, nypl_geocoder_service) {
+nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope, nypl_locations_service, nypl_coordinates_service, nypl_geocoder_service, nypl_utility) {
 	var userCoords, locations;
 	$scope.predicate = 'name'; // Default sort upon DOM Load
 
@@ -11,8 +11,14 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
                 .all_locations()
                 .then(function (data) {
                   locations = data.locations;
+
+                  _.each(locations, function (location) {
+                    location.locationDest = nypl_utility.getAddressString(location);
+                    nypl_geocoder_service.draw_marker(location, 'drop', true);
+                  });
+
                   $scope.locations = locations;
-                  console.log($scope.locations);
+
                   return locations;
                 });
       },
@@ -21,11 +27,7 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
                 .getCoordinates()
                 .then(function (position) {
                   userCoords = _.pick(position, 'latitude', 'longitude');
-
-                  // each location does not have geolocation coordinates yet
-                  // _.each($scope.locations, function (location) {
-                  //   nypl_geocoder_service.draw_marker(location, 'drop', true);
-                  // });
+                  $scope.locationStart = userCoords.latitude + "," + userCoords.longitude;
 
                   nypl_geocoder_service.draw_marker({'lat': userCoords.latitude, 'long': userCoords.longitude}, 'bounce');
                   return userCoords;

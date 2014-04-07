@@ -16,7 +16,7 @@
         <legend>Show me only:</legend>
         <ul class="filters__check check-list--inline">
           <li>
-            <input id="lending" type="checkbox" data-ng-model="location.library_type" data-ng-true-value="circulating" data-ng-false-value=""/>
+            <input id="lending" type="checkbox" data-ng-model="location.library_type" data-ng-true-value="branch" data-ng-false-value=""/>
             <label for="lending">Lending Libraries</label>
           </li>
           <li>
@@ -59,8 +59,8 @@
         
         <div class="results--distance h-card grid__item one-whole lap-and-up-one-third">
           <div data-ng-show="location.distance"><strong>{{location.distance}} miles</strong></div>
-          <div><a class="icon-map" href="/#/{{location.id|lowercase}}/map">View on Map</a></div>
-          <div><a class="icon-compass" href="">Get Directions</a></div>
+          <div><a class="icon-map" href="/#/{{location.id|lowercase}}/map">View on Map </a></div>
+          <div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">Get Directions</a></div>
         </div><!--
 
         --><div class="results--hours h-card grid__item one-whole lap-and-up-one-third">
