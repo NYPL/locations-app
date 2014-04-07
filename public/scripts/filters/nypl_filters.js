@@ -40,11 +40,18 @@ nypl_locations.filter('hoursTodayFormat', function() {
 				time = elem.open.split(':');
 				open_time = _.object(['hours', 'mins', 'meridian'], [String(((parseInt(time[0]) + 11) % 12 + 1)), time[1], (time[0] >= 12 ? 'pm' : 'am')]);
 			}
+			else {
+				throw new Error("Open object key is undefined");
+			}
 			// Assign closed time obj
 			if(elem.close) {
 				time = elem.close.split(':');
 				closed_time = _.object(['hours', 'mins', 'meridian'], [String(((parseInt(time[0]) + 11) % 12 + 1)), time[1], (time[0] >= 12 ? 'pm' : 'am')]);
 			}
+			else {
+				throw new Error("Closed object key is undefined");
+			}
+
 			// Multiple cases for args w/ default
   		switch(type) {
   			case 'short':
