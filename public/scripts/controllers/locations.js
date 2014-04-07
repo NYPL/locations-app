@@ -1,6 +1,6 @@
 'use strict';
 
-nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope, nypl_locations_service, nypl_coordinates_service, nypl_geocoder_service, nypl_utility) {
+nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope, nypl_locations_service, nypl_coordinates_service, nypl_geocoder_service) {
 	var userCoords, locations;
 	$scope.predicate = 'name'; // Default sort upon DOM Load
 
@@ -11,14 +11,8 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
                 .all_locations()
                 .then(function (data) {
                   locations = data.locations;
-
-                  _.each(locations, function (location) {
-                    location.locationDest = nypl_utility.getAddressString(location);
-                    nypl_geocoder_service.draw_marker(location, 'drop', true);
-                  });
-
                   $scope.locations = locations;
-
+                  console.log($scope.locations);
                   return locations;
                 });
       },
@@ -27,7 +21,11 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
                 .getCoordinates()
                 .then(function (position) {
                   userCoords = _.pick(position, 'latitude', 'longitude');
-                  $scope.locationStart = userCoords.latitude + "," + userCoords.longitude;
+
+                  // each location does not have geolocation coordinates yet
+                  // _.each($scope.locations, function (location) {
+                  //   nypl_geocoder_service.draw_marker(location, 'drop', true);
+                  // });
 
                   nypl_geocoder_service.draw_marker({'lat': userCoords.latitude, 'long': userCoords.longitude}, 'bounce');
                   return userCoords;
@@ -115,7 +113,7 @@ nypl_locations.controller('LocationCtrl', function ($scope, $routeParams, nypl_l
 		$scope.location = location;
     
     $scope.hoursToday = nypl_utility.hoursToday(location.hours);
- 	
+
     // Used for the Get Directions link to Google Maps
     $scope.locationDest = nypl_utility.getAddressString(location);
 	});
