@@ -45,9 +45,8 @@ describe('Locinator controllers', function() {
     });
 
     it('Should call the branches API and successfully get data back', function () {
-      httpBackend.expectGET("http://evening-mesa-7447-160.herokuapp.com/locations").respond(200, {
-        'locations': '[{"name":"jmr"},{"name":"sasb"}]'
-      });
+      jasmine.getJSONFixtures().fixturesPath='locations-prototype/test/json';
+      httpBackend.expectGET("http://evening-mesa-7447-160.herokuapp.com/locations").respond(200, getJSONFixture('locationsResponse.json'));
 
       expect(scope.locations).not.toBeDefined();
 

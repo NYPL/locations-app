@@ -12,7 +12,9 @@ module.exports = function(config){
       'public/bower_components/angular/angular-*.js',
       'public/scripts/**/*.js',
       'test/unit/**/*.js',
-      'public/bower_components/underscore/underscore.js'
+      'public/bower_components/underscore/underscore.js',
+
+      {pattern: '/test/json/*.json', watched: true, served: true, included: false}
     ],
 
     exclude : [

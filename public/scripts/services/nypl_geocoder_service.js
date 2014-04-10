@@ -5,29 +5,28 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
     var map,
         bound,
+        panCoords,
+        searchMarker = new google.maps.Marker({}),
         infowindow = new google.maps.InfoWindow();
 
     return {
         get_coords: function (address) {
             var defer = $q.defer(),
                 coords = {},
+                _this = this,
                 geocoder = new google.maps.Geocoder(),
                 sw_bound = new google.maps.LatLng(40.49, -74.26),
                 ne_bound = new google.maps.LatLng(40.91, -73.77),
                 bounds = new google.maps.LatLngBounds(sw_bound, ne_bound);
 
             geocoder.geocode(
-                {address: address, bounds: bounds},
+                {address: address, bounds: bounds, region: "US"},
                 function (result, status) {
                     if (status === google.maps.GeocoderStatus.OK) {
                         coords.lat = result[0].geometry.location.k;
                         coords.long = result[0].geometry.location.A;
 
                         defer.resolve(coords);
-
-                        // var panCoords = new google.maps.LatLng(coords.lat, coords.long);
-                        // map.panTo(panCoords);
-                        // map.setZoom(13);
 
                     } else {
                         defer.reject(new Error(status));
@@ -36,6 +35,14 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             );
 
             return defer.promise;
+        },
+        searchTermMarker: function (coords) {
+            panCoords = new google.maps.LatLng(coords.lat, coords.long);
+
+            searchMarker.setPosition(panCoords);
+            searchMarker.setMap(map);
+            map.panTo(panCoords);
+            map.setZoom(14);
         },
         get_zipcode: function (coords) {
             var defer = $q.defer(),

@@ -16,7 +16,7 @@
         <legend>Show me only:</legend>
         <ul class="filters__check check-list--inline">
           <li>
-            <input id="lending" type="checkbox" data-ng-model="location.library_type" data-ng-true-value="circulating" data-ng-false-value=""/>
+            <input id="lending" type="checkbox" data-ng-model="location.library_type" data-ng-true-value="branch" data-ng-false-value=""/>
             <label for="lending">Lending Libraries</label>
           </li>
           <li>
@@ -41,7 +41,7 @@
 
     <!-- Locations are in h-card microformat -->
     <!-- http://microformats.org/wiki/h-card -->
-    <section class="grid one-whole location {{location._id}}" data-ng-repeat="location in locations | filter:location.library_type | orderBy:predicate:reverse | limitTo: 5">
+    <section class="grid one-whole location {{location._id}} {{location.highlight}}" data-ng-repeat="location in locations | filter:location.library_type | orderBy:predicate:reverse | limitTo: 5">
 
       <div class="results--location h-card grid__item one-half lap-and-up-one-quarter">
         <div class="p-org"><b><a href='/#/{{location.id|lowercase}}'>{{location.name}}</a></b></div>
@@ -59,8 +59,8 @@
         
         <div class="results--distance h-card grid__item one-whole lap-and-up-one-third">
           <div data-ng-show="location.distance"><strong>{{location.distance}} miles</strong></div>
-          <div><a class="icon-map" href="/#/{{location.id|lowercase}}/map">View on Map</a></div>
-          <div><a class="icon-compass" href="">Get Directions</a></div>
+          <div><a class="icon-map" href="/#/{{location.id|lowercase}}/map">View on Map </a></div>
+          <div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">Get Directions</a></div>
         </div><!--
 
         --><div class="results--hours h-card grid__item one-whole lap-and-up-one-third">
