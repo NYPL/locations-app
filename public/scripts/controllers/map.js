@@ -25,6 +25,7 @@ nypl_locations.controller('mapCtrl', function ($scope, $routeParams, nypl_locati
 
         $scope.hoursToday = nypl_utility.hoursToday(location.hours);
         $scope.locationDest = nypl_utility.getAddressString(location);
+        var locationAddress = nypl_utility.getAddressString(location, true);
 
         var locationCoords = {
           'lat': location.geolocation.coordinates[1],
@@ -32,7 +33,7 @@ nypl_locations.controller('mapCtrl', function ($scope, $routeParams, nypl_locati
         };
 
         nypl_geocoder_service.draw_map(locationCoords, 15, 'individual-map');
-        nypl_geocoder_service.draw_marker(location, 'drop', true);
+        nypl_geocoder_service.draw_marker(locationCoords, locationAddress);
       };
 
   loadLocation()

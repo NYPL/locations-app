@@ -1,6 +1,6 @@
 'use strict';
 
-nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope, nypl_locations_service, nypl_coordinates_service, nypl_geocoder_service) {
+nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope, nypl_locations_service, nypl_coordinates_service, nypl_geocoder_service, nypl_utility) {
 	var userCoords, locations;
 	$scope.predicate = 'name'; // Default sort upon DOM Load
 
@@ -14,7 +14,15 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
                   $scope.locations = locations;
 
                   _.each($scope.locations, function (location) {
-                    nypl_geocoder_service.draw_marker(location, 'drop', true);
+                    var markerCoordinates = {
+                          'lat': location.geolocation.coordinates[1],
+                          'long': location.geolocation.coordinates[0],
+                        },
+                        locationAddress = nypl_utility.getAddressString(location, true);
+
+                    nypl_geocoder_service.draw_marker(markerCoordinates, locationAddress);
+
+                    location.locationDest = nypl_utility.getAddressString(location);
                   });
 
                   return locations;
@@ -24,9 +32,15 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
         return nypl_coordinates_service
                 .getCoordinates()
                 .then(function (position) {
-                  var distanceArray = [];
+                  var distanceArray = [],
+                      markerCoordinates;
 
                   userCoords = _.pick(position, 'latitude', 'longitude');
+                  $scope.locationStart = userCoords.latitude + "," + userCoords.longitude;
+                  markerCoordinates = {
+                    'lat': userCoords.latitude, 
+                    'long': userCoords.longitude
+                  };
 
                   // Iterate through lon/lat and calculate distance
                   _.each(locations, function (location) {
@@ -34,7 +48,7 @@ nypl_locations.controller('LocationsCtrl', function ($scope, $filter, $rootScope
                     distanceArray.push(location.distance);
                   });
 
-                  nypl_geocoder_service.draw_marker({'lat': userCoords.latitude, 'long': userCoords.longitude}, 'bounce');
+                  nypl_geocoder_service.draw_marker(markerCoordinates, "Your Current Location", true);
 
                   if (_.min(distanceArray) > 25) {
                     // The user is too far away, don't change the display

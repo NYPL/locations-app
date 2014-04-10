@@ -58,10 +58,13 @@ nypl_locations.factory('nypl_utility', function () {
             return hoursToday;
         },
 
-        getAddressString: function (location) {
-            return location.street_address + " " +
-                location.locality + ", " +
-                location.region + ", " +
+        getAddressString: function (location, nicePrint) {
+            var addressBreak = (nicePrint) ? "<br />" : " ";
+
+            return location.name + addressBreak + 
+                location.street_address + addressBreak + 
+                location.locality + ", " + 
+                location.region + ", " + 
                 location.postal_code;
         },
 
