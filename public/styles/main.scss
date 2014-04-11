@@ -9,6 +9,14 @@
   background: #fff;
 }
 
+.hide-legend {
+  display: none;
+}
+
+.show-legend {
+  display: block;
+}
+
 #individual-map { 
   height: 350px;
   width: 800px;
