@@ -58,10 +58,16 @@ nypl_locations.factory('nypl_utility', function () {
             return hoursToday;
         },
 
-        getAddressString: function (location) {
-            return location.street_address + " " +
-                location.locality + ", " +
-                location.region + ", " +
+        // Line breaks are needed when displaying the address on the marker
+        // for the map. Line breaks are not needed when we use the address 
+        // to get directions on Google Maps.
+        getAddressString: function (location, nicePrint) {
+            var addressBreak = (nicePrint) ? "<br />" : " ";
+
+            return location.name + addressBreak + 
+                location.street_address + addressBreak + 
+                location.locality + ", " + 
+                location.region + ", " + 
                 location.postal_code;
         },
 
@@ -69,7 +75,7 @@ nypl_locations.factory('nypl_utility', function () {
             switch(id) {
                 case 'SASB':
                 case 'LPA':
-                case 'SCHOMBURG':
+                case 'SC':
                 case 'SIBL':
                     return 'research';
                 default:

@@ -7,6 +7,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         bound,
         panCoords,
         searchMarker = new google.maps.Marker({}),
+        searchInfoWindow = new google.maps.InfoWindow(),
         infowindow = new google.maps.InfoWindow();
 
     return {
@@ -36,14 +37,6 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
             return defer.promise;
         },
-        searchTermMarker: function (coords) {
-            panCoords = new google.maps.LatLng(coords.lat, coords.long);
-
-            searchMarker.setPosition(panCoords);
-            searchMarker.setMap(map);
-            map.panTo(panCoords);
-            map.setZoom(14);
-        },
         get_zipcode: function (coords) {
             var defer = $q.defer(),
                 geocoder = new google.maps.Geocoder(),
@@ -70,54 +63,75 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
                 .LatLng(coords.lat, coords.long),
                 mapOptions = {
                     zoom: zoom,
-                    center: locationCoords
+                    center: locationCoords,
+                    mapTypeControl: false,
+                    panControl: false,
+                    zoomControl: false,
+                    scaleControl: false,
+                    streetViewControl: false
                 };
 
             map = new google.maps.Map(document.getElementById(id), mapOptions);
+
             bound = new google.maps.LatLngBounds();
         },
 
-        // animation is temporary and is used as a visual cue
-        // to make your current location stand out
-        draw_marker: function (location, animation, geojson) {
-            // locations are in geojson format but geolocation is not.
-            // Need a better solution.
-            var coords,
-                _this = this,
+        draw_legend: function (id) {
+            var mapLegend = document.getElementById(id);
+
+            map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(mapLegend);
+            mapLegend.className = "show-legend";
+        },
+
+        panMap: function (marker) {
+            map.panTo(marker.getPosition());
+            map.setZoom(14);
+        },
+
+        draw_searchMarker: function (coords, text) {
+            searchMarker.setMap(null);
+            panCoords = new google.maps.LatLng(coords.lat, coords.long);
+
+            searchMarker.setPosition(panCoords);
+            searchMarker.setMap(map);
+            this.panMap(searchMarker);
+            searchInfoWindow.setContent(text);
+            searchInfoWindow.open(map, searchMarker);
+        },
+
+        draw_marker: function (location, text, user, pan) {
+            var _this = this,
                 map_animation,
-                marker;
+                icon_url,
+                marker,
+                position = new google.maps
+                    .LatLng(location.lat, location.long),
+                markerOptions = {
+                    position: position,
+                    map: map
+                };
 
-            if (geojson) {
-                coords = {
-                    lat: location.geolocation.coordinates[1],
-                    long: location.geolocation.coordinates[0]
-                };
+            // show the user with a blue marker and it should show above the rest of the markers
+            if (user) {
+                markerOptions.icon = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+                markerOptions.zIndex = 1000;
+                markerOptions.animation = google.maps.Animation.DROP;
             } else {
-                coords = {
-                    lat: location.lat,
-                    long: location.long
-                };
+                markerOptions.icon = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
             }
 
-            if (animation === 'bounce') {
-                map_animation = google.maps.Animation.BOUNCE;
-            } else {
-                map_animation = google.maps.Animation.DROP;
-            }
+            marker = new google.maps.Marker(markerOptions);
 
-            marker = new google.maps.Marker({
-                position: new google.maps
-                    .LatLng(coords.lat, coords.long),
-                map: map,
-                animation: map_animation
-            });
+            if (pan) {
+               this.panMap(marker);
+            }
 
             // This works but it seems to have to call an external file?
             // doesn't work when location.geolocation is passed
             // map.data.loadGeoJson('https://storage.googleapis.com/maps-devrel/google.json');
 
             google.maps.event.addListener(marker, 'click', function () {
-                _this.show_infowindow(location, marker);
+                _this.show_infowindow(marker, text);
             });
 
             // Bounds the map to display all the markers
@@ -125,21 +139,9 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             // map.fitBounds(bound);
 
         },
-        show_infowindow: function (location, marker) {
-            var content;
-
-            // Temporary because not all locations have contacts and so contacts[0] throws an error
-            if (location.hasOwnProperty('name')) {
-                content = location.name + '<br />' + location.street_address +
-                    '<br />' + location.locality + ', ' + location.region +
-                    ' ' + location.postal_code + '<br />' +
-                    location.contacts.phone;
-            } else {
-                content = "empty contacts";
-            }
-
+        show_infowindow: function (marker, text) {
             infowindow.close();
-            infowindow.setContent(content);
+            infowindow.setContent(text);
             infowindow.open(map, marker);
         }
     };

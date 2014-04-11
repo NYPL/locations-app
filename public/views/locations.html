@@ -2,25 +2,28 @@
 	<h3>Library Locator</h3>
 
   <form class="form--inline grid__item one-whole lap-and-up-one-half">
-    <label for="searchTerm">Enter your Zip code:</label>
-    <input id="searchTerm" type="text" data-ng-model="searchTerm" />
+    <input id="searchTerm" type="text" placeholder="Search by branch, zipcode, or nearby address" data-ng-model="searchTerm"/>
     <button class="btn--small" data-ng-click="submitAddress(searchTerm)">Submit</button>
     <p>Or <a href="/#/">view all branches</a>by borough.</p>
   </form><!--
 
   --><div id="all-locations-map" class="grid__item one-whole lap-and-up-one-half"></div>
+  <div id="all-locations-map-legend" class="hide-legend">
+    <img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />NYPL Library<br />
+    <img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />Your Current Location
+  </div>
 
   <section class="list">
   	<section class="filters">
       <fieldset>
         <legend>Show me only:</legend>
         <ul class="filters__check check-list--inline">
-          <li>
-            <input id="lending" type="checkbox" data-ng-model="location.library_type" data-ng-true-value="branch" data-ng-false-value=""/>
+          <!-- <li>
+            <input id="lending" type="checkbox" data-ng-model="location.library_type" data-ng-true-value="circulating" data-ng-false-value="research"/>
             <label for="lending">Lending Libraries</label>
-          </li>
+          </li> -->
           <li>
-            <input id="research" type="checkbox" data-ng-model="location.library_type" data-ng-true-value="research" data-ng-false-value=""/>
+            <input id="research" type="checkbox" data-ng-model="location.library_type" data-ng-true-value="research" data-ng-false-value="circulating"/>
             <label for="research">Research Libraries</label>
           </li>
         </ul>
@@ -41,7 +44,7 @@
 
     <!-- Locations are in h-card microformat -->
     <!-- http://microformats.org/wiki/h-card -->
-    <section class="grid one-whole location {{location._id}} {{location.highlight}}" data-ng-repeat="location in locations | filter:location.library_type | orderBy:predicate:reverse | limitTo: 5">
+    <section class="grid one-whole location {{location._id}} {{location.highlight}}" data-ng-repeat="location in locations | filter:location.library_type | orderBy:predicate:reverse ">
 
       <div class="results--location h-card grid__item one-half lap-and-up-one-quarter">
         <div class="p-org"><b><a href='/#/{{location.id|lowercase}}'>{{location.name}}</a></b></div>

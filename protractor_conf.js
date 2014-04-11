@@ -4,7 +4,7 @@ exports.config = {
   // chromeOnly: true,
   // chromeDriver: './node_modules/protractor/selenium/chromedriver',
 
-  // if you do want a separate runnign selenium server, comment the two lines above
+  // if you do want a separate running selenium server, comment the two lines above
   // and uncomment this line:
   seleniumAddress: 'http://0.0.0.0:4444/wd/hub',
 
