@@ -167,7 +167,7 @@ nypl_locations.controller('LocationsCtrl', function (
         .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
 
     // Initialize chaining
-    loadLocations().then(loadCoords).then(loadReverseGeocoding);
+    loadLocations().then(loadCoords); //.then(loadReverseGeocoding);
 
     $scope.submitAddress = function (searchTerm) {
         // Filter the locations by the searchterm
