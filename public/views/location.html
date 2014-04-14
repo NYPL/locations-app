@@ -1,5 +1,5 @@
 <!-- container -->
-<div class="{{location.type}} grid" data-ng-controller="LocationCtrl">
+<div class="{{location.type}} grid">
 
   <p><a href="/#/">All locations</a></p>
 
@@ -75,7 +75,7 @@
     <div class="grid chunk hard--left">
       <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='division in location._embedded.divisions'>
         <img class="grid__item one-third hard--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" /><!--
-        --><h3 class="grid__item two-thirds">{{division.name}}</h3>
+        --><h3 class="grid__item two-thirds"><a href="/#/division/{{division.id|lowercase}}">{{division.name}}</a></h3>
         <p>Division content</p>
       </div>
     </div>
@@ -141,7 +141,7 @@
     <h2 class="hdg">Blogs</h2>
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='blog in location._embedded.blogs'>
-        <img data-ng-show="blog.image" class="img--left" src="{{blog.image}}" alt="" style="height: 100px;" />
+        <img data-ng-if="blog.image" class="img--left" src="{{blog.image}}" alt="" style="height: 100px;" />
         <h3><a href="{{blog._links.self.href}}">{{blog.title}}</a></h3>
         <div class="teaser">{{blog.body}}</div>
       </div>

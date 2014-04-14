@@ -1,10 +1,10 @@
-<div class="grid__item one-whole all-locations" data-ng-controller="LocationsCtrl">
+<div class="grid__item one-whole all-locations">
 	<h3>Library Locator</h3>
 
   <form class="form--inline grid__item one-whole lap-and-up-one-half">
     <input id="searchTerm" type="text" placeholder="Search by branch, zipcode, or nearby address" data-ng-model="searchTerm"/>
     <button class="btn--small" data-ng-click="submitAddress(searchTerm)">Submit</button>
-    <p>Or <a href="/#/">view all branches</a>by borough.</p>
+    <label for="searchTerm">Ex. Jefferson Market, 10018, 455 Fifth Avenue</label>
   </form><!--
 
   --><div id="all-locations-map" class="grid__item one-whole lap-and-up-one-half"></div>
@@ -14,6 +14,8 @@
   </div>
 
   <section class="list">
+    <div data-ng-if="searchError">No results for {{searchError}} within 25 miles of an NYPL Location. Showing all branches or</div>
+    <div data-ng-if="geolocationAddress">Showing search results near <a href="" data-ng-click="geolocationSearch()">{{geolocationAddress}}</a></div>
   	<section class="filters">
       <fieldset>
         <legend>Show me only:</legend>
@@ -44,7 +46,7 @@
 
     <!-- Locations are in h-card microformat -->
     <!-- http://microformats.org/wiki/h-card -->
-    <section class="grid one-whole location {{location._id}} {{location.highlight}}" data-ng-repeat="location in locations | filter:location.library_type | orderBy:predicate:reverse ">
+    <section class="grid one-whole location {{location._id}} {{location.highlight}}" data-ng-repeat="location in locations | filter:location.library_type | orderBy:predicate:reverse | limitTo: libraryLimit">
 
       <div class="results--location h-card grid__item one-half lap-and-up-one-quarter">
         <div class="p-org"><b><a href='/#/{{location.id|lowercase}}'>{{location.name}}</a></b></div>
@@ -54,14 +56,14 @@
           <span class="p-region">{{location.region}}</span>, 
           <span class="p-postal-code">{{location.postal_code}}</span>
         </div>
-        <div class="p-tel" data-ng-show="location.contacts.phone">Phone: {{location.contacts.phone}}</div>
-        <div class="u-email" data-ng-show="location.contacts.email">Email: {{location.contacts.email}}</div>
+        <div class="p-tel" data-ng-if="location.contacts.phone">Phone: {{location.contacts.phone}}</div>
+        <div class="u-email" data-ng-if="location.contacts.email">Email: {{location.contacts.email}}</div>
       </div><!--
 
       --><div class="results--more grid__item one-half lap-and-up-three-quarters">
         
         <div class="results--distance h-card grid__item one-whole lap-and-up-one-third">
-          <div data-ng-show="location.distance"><strong>{{location.distance}} miles</strong></div>
+          <div data-ng-if="location.distance"><strong>{{location.distance}} miles</strong></div>
           <div><a class="icon-map" href="/#/{{location.id|lowercase}}/map">View on Map </a></div>
           <div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">Get Directions</a></div>
         </div><!--
@@ -79,10 +81,13 @@
         </div>
       </div>
 
-      <hr class="grid__item" data-ng-show='location.break' />
+      <hr class="grid__item" data-ng-if='location.break' />
 
     </section> 
     <!-- End of ng-repeat -->
+    <section class="grid one-whole">
+      <div class="grid--center grid__item" data-ng-if="showMore"><a href="" class="btn" data-ng-click="viewMore()">Show {{increaseBy}}</a></div>
+    </section>
 
   </section>
 </div>

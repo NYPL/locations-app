@@ -6,6 +6,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
     var map,
         bound,
         panCoords,
+        markers = [],
         searchMarker = new google.maps.Marker({}),
         searchInfoWindow = new google.maps.InfoWindow(),
         infowindow = new google.maps.InfoWindow();
@@ -37,7 +38,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
             return defer.promise;
         },
-        get_zipcode: function (coords) {
+        get_address: function (coords) {
             var defer = $q.defer(),
                 geocoder = new google.maps.Geocoder(),
                 zipcode,
@@ -45,11 +46,13 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
             geocoder.geocode({latLng: latlng}, function (result, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
-                    var address_component = result[0].address_components;
-                    zipcode = address_component[address_component.length - 1]
-                        .long_name;
+                    // var address_component = result[0].address_components;
+                    // zipcode = address_component[address_component.length - 1]
+                    //     .long_name;
 
-                    defer.resolve(zipcode);
+                    var address = result[0].formatted_address;
+
+                    defer.resolve(address);
                 } else {
                     defer.reject(new Error(status));
                 }
@@ -99,7 +102,18 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             searchInfoWindow.open(map, searchMarker);
         },
 
-        draw_marker: function (location, text, user, pan) {
+        check_marker: function (id) {
+            var marker = _.where(markers, {id: id});
+            return marker !== undefined;
+        },
+
+        pan_existing_marker: function(id) {
+            var markerObj = _.where(markers, {id: id});
+            this.panMap(markerObj[0].marker);
+            this.show_infowindow(markerObj[0].marker, markerObj[0].text);
+        },
+
+        draw_marker: function (id, location, text, user, pan) {
             var _this = this,
                 map_animation,
                 icon_url,
@@ -121,6 +135,8 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             }
 
             marker = new google.maps.Marker(markerOptions);
+
+            markers.push({id: id, marker: marker, text: text});
 
             if (pan) {
                this.panMap(marker);

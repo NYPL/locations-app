@@ -48,7 +48,7 @@ nypl_locations.controller(
                 nypl_geocoder_service
                     .draw_map(locationCoords, 15, 'individual-map');
                 nypl_geocoder_service
-                    .draw_marker(locationCoords, locationAddress);
+                    .draw_marker(location.id, locationCoords, locationAddress);
             };
         loadLocation()
             .then(loadMapPage)

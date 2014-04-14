@@ -5,14 +5,14 @@ angular.module(
     ['ngResource']
 ).factory('nypl_locations_service', function ($http, $q) {
     'use strict';
-    var api = 'http://evening-mesa-7447-160.herokuapp.com/locations';
+    var api = 'http://evening-mesa-7447-160.herokuapp.com';
 
     return {
         all_locations: function () {
             var d = $q.defer();
 
             $http.get(
-                api, 
+                api + '/locations', 
                 {cache: true}
             ).success(function (data) {
                 d.resolve(data);
@@ -26,7 +26,21 @@ angular.module(
             var defer = $q.defer();
 
             $http.get(
-                api + '/' + symbol,
+                api + '/locations/' + symbol,
+                {cache: true}
+            ).success(function (data) {
+                defer.resolve(data);
+            }).error(function () {
+                defer.reject();
+            });
+            return defer.promise;
+        },
+
+        single_division: function (division) {
+            var defer = $q.defer();
+
+            $http.get(
+                api + '/divisions/' + division,
                 {cache: true}
             ).success(function (data) {
                 defer.resolve(data);
