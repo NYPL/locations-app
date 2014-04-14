@@ -10,7 +10,7 @@
 
         <div>{{division.location_id}}</div>
         <div>Floor and Room #</div>
-        <div>{{location.contacts.phone}}</div>
+        <div>{{division.contacts.phone}}</div>
 
         <ul class="top-services flush">
           <li class="icon-book inline">Books</li>
@@ -25,8 +25,8 @@
         <div>See more division contact info <a href="">here</a></div>
 
         <div class="social flush">
-          <a href="{{social.href}}" data-ng-repeat="social in location.social_media" class="inline">
-            <span class="icon-{{social.site}}"></span>
+          <a href="{{social.href}}" data-ng-repeat="social in division.social_media" class="inline">
+            <span class="icon-{{social.rel}}"></span>
           </a>
         </div>
 
@@ -40,11 +40,11 @@
       <time class="hours-today alpha">{{hoursToday | hoursTodayFormat:'short'}}</time>
     </div>
 
-    <div id="location-hours">
+    <div id="division-hours">
       <h2 class="flush--ends">Regular Hours</h2>
 
       <div class="weekly-hours zeta">
-        <div class="{{hours.day}}" data-ng-repeat="hours in location.hours.regular" data-ng-if="$index != 7">
+        <div class="{{hours.day}}" data-ng-repeat="hours in division.hours.regular" data-ng-if="$index != 7">
           <span class="day">{{hours.day}}</span>
           <span class="time">
             {{ hours.open | timeFormat }} - {{ hours.close | timeFormat }}
@@ -81,7 +81,7 @@
     <h2 class="hdg">Events</h2>
 
     <ul class="grid">
-      <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in location._embedded.events">
+      <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in division._embedded.events">
         <h3><a href="{{event._links.self.href}}">{{event.title}}</a></h3>
         <p>{{event.body}}</p>
         <div class="callout">
@@ -91,7 +91,7 @@
       </li>
     </ul>   
       
-    <div><a class="read-more" href="/#/{{location.id}}/events">See more events at {{location.name}}</a></div>
+    <div><a class="read-more" href="/#/{{division.location_id|lowercase}}/events">See more events at {{division.name}}</a></div>
   </div>
 
   <div id="events" class="chunk">
@@ -115,7 +115,7 @@
   <div class="chunk" id="blogs">
     <h2 class="hdg">Blogs</h2>
     <div class="grid">
-      <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='blog in location._embedded.blogs'>
+      <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='blog in division._embedded.blogs'>
         <img data-ng-if="blog.image" class="img--left" src="{{blog.image}}" alt="" style="height: 100px;" />
         <h3><a href="{{blog._links.self.href}}">{{blog.title}}</a></h3>
         <div class="teaser">{{blog.body}}</div>

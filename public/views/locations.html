@@ -5,6 +5,7 @@
     <input id="searchTerm" type="text" placeholder="Search by branch, zipcode, or nearby address" data-ng-model="searchTerm"/>
     <button class="btn--small" data-ng-click="submitAddress(searchTerm)">Submit</button>
     <label for="searchTerm">Ex. Jefferson Market, 10018, 455 Fifth Avenue</label>
+    <div>Search near <a href="" data-ng-click="useGeolocation()">your current location</a></div>
   </form><!--
 
   --><div id="all-locations-map" class="grid__item one-whole lap-and-up-one-half"></div>
