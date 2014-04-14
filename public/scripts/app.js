@@ -19,6 +19,14 @@ nypl_locations.config(function ($routeProvider, $locationProvider) {
       templateUrl: 'views/division.html',
       controller: 'DivisionCtrl'
     })
+    .when('/services', {
+      templateUrl: '/views/services.html',
+      controller: 'ServicesCtrl'
+    })
+    .when('/services/:symbol', {
+      templateUrl: 'views/services.html',
+      controller: 'ServiceLibraryCtrl'
+    })
     .when('/:symbol', {
       templateUrl: 'views/location.html',
       controller: 'LocationCtrl'

@@ -48,6 +48,35 @@ angular.module(
                 defer.reject();
             });
             return defer.promise;
-        }
+        },
+
+        services: function () {
+            var defer = $q.defer();
+
+            $http.get(
+                api + '/services',
+                {cache: true}
+            ).success(function (data) {
+                defer.resolve(data);
+            }).error(function () {
+                defer.reject();
+            });
+            return defer.promise;
+        },
+
+        library_services: function (symbol) {
+            var defer = $q.defer();
+
+            $http.get(
+                api + '/locations/' + symbol + '/services',
+                {cache: true}
+            ).success(function (data) {
+                defer.resolve(data);
+            }).error(function () {
+                defer.reject();
+            });
+            return defer.promise;
+        },
+
     };
 });
