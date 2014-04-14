@@ -1,0 +1,148 @@
+<!-- container -->
+<div class="grid">
+
+  <p>Go back <a href="/#/{{division.location_id|lowercase}}">{{division.location_id}}</a></p>
+
+  <div class="grid__item one-whole lap-and-up-two-thirds">
+    <h1>{{division.name}}</h1>
+    <div class="grid">
+      <div class="grid__item one-whole lap-and-up-one-half">
+
+        <div>{{division.location_id}}</div>
+        <div>Floor and Room #</div>
+        <div>{{location.contacts.phone}}</div>
+
+        <ul class="top-services flush">
+          <li class="icon-book inline">Books</li>
+          <li class="icon-accessibility inline">Wheelchair accessible</li>
+          <li class="icon-box-add inline">Bookdrop</li>
+        </ul>
+
+      </div><!--
+      
+      --><div class="grid__item one-whole lap-and-up-one-half">
+        <div>Division Manager: Edwin</div>
+        <div>See more division contact info <a href="">here</a></div>
+
+        <div class="social flush">
+          <a href="{{social.href}}" data-ng-repeat="social in location.social_media" class="inline">
+            <span class="icon-{{social.site}}"></span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div><!--
+
+  --><div class="grid__item one-whole lap-and-up-one-third container__hours-catalog">
+    <div class="h-event callout" id="hours-today">
+      <h2 class="p-name flush--ends">Today’s Hours</h2>
+      <time class="hours-today alpha">{{hoursToday | hoursTodayFormat:'short'}}</time>
+    </div>
+
+    <div id="location-hours">
+      <h2 class="flush--ends">Regular Hours</h2>
+
+      <div class="weekly-hours zeta">
+        <div class="{{hours.day}}" data-ng-repeat="hours in location.hours.regular" data-ng-if="$index != 7">
+          <span class="day">{{hours.day}}</span>
+          <span class="time">
+            {{ hours.open | timeFormat }} - {{ hours.close | timeFormat }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div id="catalog"><a class="icon-books" href="">Catalog Items Here</a></div>
+  </div>
+
+  <div id="about-and-plan" class="chunk hard--left">
+    <div id="about" class="grid__item one-whole lap-and-up-one-half">
+      <h2 class="hdg">About the Collection</h2>
+      <p>This space is for the general blurb or the history of the collection(s) and/or division, including reading rooms etc. It would only be the opening part of the blurb, you could then click to get more information.</p>
+      <div><a class="read-more" href="">More about {{division.name}}</a></div>
+    </div><!-- 
+
+    --><div id="plan-your-visit" class="grid__item one-whole lap-and-up-one-half">
+      <h2 class="hdg">Plan Your Visit</h2>
+      <button href="" class="btn--small">Make an Appt.</button>
+      <button href="" class="btn--small">Email a Librarian</button>
+
+      <ul class="flush--left">
+        <li class="icon-screen">Reserve a Computer</li>
+        <li class="icon-library">Interlibrary Loan</li>
+        <li class="icon-users">Meeting Rooms</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <div id="events" class="chunk">
+    <h2 class="hdg">Events</h2>
+
+    <ul class="grid">
+      <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in location._embedded.events">
+        <h3><a href="{{event._links.self.href}}">{{event.title}}</a></h3>
+        <p>{{event.body}}</p>
+        <div class="callout">
+          <p>Start time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+          <p>End time: {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        </div>
+      </li>
+    </ul>   
+      
+    <div><a class="read-more" href="/#/{{location.id}}/events">See more events at {{location.name}}</a></div>
+  </div>
+
+  <div id="events" class="chunk">
+    <h2 class="hdg">Special Projects</h2>
+
+    <ul class="grid">
+      <li class="grid__item one-half lap-and-up-one-half">
+        <h3><a href="{{}}">Special project title</a></h3>
+        <p>Ooh look, we are digitizing the dance videos! here is the second sentence in the blurb about us doing that.</p>
+      </li><!--
+
+      --><li class="grid__item one-half lap-and-up-one-half">
+        <h3><a href="{{}}">Special project title</a></h3>
+        <p>Ooh look, we are digitizing the dance videos! here is the second sentence in the blurb about us doing that.</p>
+      </li>
+    </ul>  
+    <div><a class="read-more hard--right" href="">See more special projects at {{division.name}}</a></div> 
+    
+  </div>
+
+  <div class="chunk" id="blogs">
+    <h2 class="hdg">Blogs</h2>
+    <div class="grid">
+      <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='blog in location._embedded.blogs'>
+        <img data-ng-if="blog.image" class="img--left" src="{{blog.image}}" alt="" style="height: 100px;" />
+        <h3><a href="{{blog._links.self.href}}">{{blog.title}}</a></h3>
+        <div class="teaser">{{blog.body}}</div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="chunk hard--left ask-donate">
+    <div class="grid__item one-whole tablet-and-up-one-half" id="ask-nypl">
+      <div class="callout">
+        <ul><h1><a href="">AskNYPL</a></h1>
+          <li class="asknum icon-phone">917-ASK-NYPL</li>
+          <li class="askchat icon-bubbles"><a href="">Chat with a librarian</a></li>
+          <li class="askemail icon-envelope"><a href="">Email us your question</a></li>
+        </ul>
+      </div>
+    </div><!--
+  
+    --><div class="grid__item one-whole tablet-and-up-one-half" id="donate">
+      <div class="appeal">
+        <p>This library is open 6 days a week!</p>
+        <p>Help us keep it that way!</p>
+        <button class="btn--donate">Donate now</button>
+      </div>
+    </div>
+  </div>
+  
+<!--   end container -->  
+</div>

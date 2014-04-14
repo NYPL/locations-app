@@ -136,7 +136,6 @@ nypl_locations.controller('LocationsCtrl', function (
                 distanceArray.push(location.distance);
             });
 
-
             if (filteredLocations.length) {
                 if (nypl_geocoder_service.check_marker(filteredLocations[0].id)) {
                     nypl_geocoder_service.pan_existing_marker(filteredLocations[0].id);

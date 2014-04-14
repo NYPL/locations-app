@@ -13,18 +13,23 @@ nypl_locations.config(function ($routeProvider, $locationProvider) {
   $routeProvider
     .when('/', {
       templateUrl: 'views/locations.html',
+      controller: 'LocationsCtrl'
     })
-    .when('/menu', {
-      templateUrl: 'views/menu.html',
+    .when('/division/:division', {
+      templateUrl: 'views/division.html',
+      controller: 'DivisionCtrl'
     })
     .when('/:symbol', {
-      templateUrl: 'views/location.html'
+      templateUrl: 'views/location.html',
+      controller: 'LocationCtrl'
     })
     .when('/:symbol/events', {
-      templateUrl: '/views/events.html'
+      templateUrl: '/views/events.html',
+      controller: 'LocationCtrl'
     })
     .when('/:symbol/map', {
-      templateUrl: '/views/map.html'
+      templateUrl: '/views/map.html',
+      controller: 'mapCtrl'
     })
     .otherwise({
       redirectTo: '/'
