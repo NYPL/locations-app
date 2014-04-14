@@ -95,12 +95,14 @@ nypl_locations.controller('LocationsCtrl', function (
         // convert coordinate into address
         loadReverseGeocoding = function (userCoords) {
             return nypl_geocoder_service
-                .get_zipcode(
+                .get_address(
                     {lat: userCoords.latitude, lng: userCoords.longitude}
                 )
-                .then(function (zipcode) {
-                    $scope.searchTerm = zipcode;
-                    return zipcode;
+                .then(function (address) {
+                    //$scope.searchTerm = zipcode;
+                    $scope.geolocationAddress = address;
+
+                    return address;
                 });
         },
         // convert address to geographic coordinate
@@ -190,7 +192,7 @@ nypl_locations.controller('LocationsCtrl', function (
         .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
 
     // Initialize chaining
-    loadLocations().then(loadCoords); //.then(loadReverseGeocoding);
+    loadLocations().then(loadCoords).then(loadReverseGeocoding);
 
   	$scope.submitAddress = function (searchTerm) {
     		// Filter the locations by the search term
@@ -219,6 +221,13 @@ nypl_locations.controller('LocationsCtrl', function (
         if ($scope.libraryLimit === 92) {
             $scope.showMore = false;
         }
+    };
+
+    $scope.geolocationSearch = function () {
+        // Make a user object to store the geolocation coords
+        // then use those to update distances and resort by distance
+        // then pan to those coords.
+        $scope.predicate = 'distance';
     };
 });
 // End LocationsCtrl

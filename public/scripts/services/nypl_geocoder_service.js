@@ -37,7 +37,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
             return defer.promise;
         },
-        get_zipcode: function (coords) {
+        get_address: function (coords) {
             var defer = $q.defer(),
                 geocoder = new google.maps.Geocoder(),
                 zipcode,
@@ -45,11 +45,13 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
             geocoder.geocode({latLng: latlng}, function (result, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
-                    var address_component = result[0].address_components;
-                    zipcode = address_component[address_component.length - 1]
-                        .long_name;
+                    // var address_component = result[0].address_components;
+                    // zipcode = address_component[address_component.length - 1]
+                    //     .long_name;
 
-                    defer.resolve(zipcode);
+                    var address = result[0].formatted_address;
+
+                    defer.resolve(address);
                 } else {
                     defer.reject(new Error(status));
                 }
