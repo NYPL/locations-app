@@ -4,7 +4,7 @@
   <form class="form--inline grid__item one-whole lap-and-up-one-half">
     <input id="searchTerm" type="text" placeholder="Search by branch, zipcode, or nearby address" data-ng-model="searchTerm"/>
     <button class="btn--small" data-ng-click="submitAddress(searchTerm)">Submit</button>
-    <p>Or <a href="/#/">view all branches</a>by borough.</p>
+    <label for="searchTerm">Ex. Jefferson Market, 10018, 455 Fifth Avenue</label>
   </form><!--
 
   --><div id="all-locations-map" class="grid__item one-whole lap-and-up-one-half"></div>
@@ -14,6 +14,7 @@
   </div>
 
   <section class="list">
+    <div data-ng-if="searchError">No results for {{searchError}} within 25 miles of an NYPL Location. Showing all branches or</div>
     <div data-ng-if="geolocationAddress">Showing search results near <a href="" data-ng-click="geolocationSearch()">{{geolocationAddress}}</a></div>
   	<section class="filters">
       <fieldset>

@@ -28,7 +28,7 @@ nypl_locations.controller('LocationsCtrl', function (
                             };
 
                         nypl_geocoder_service
-                            .draw_marker(markerCoordinates, locationAddress);
+                            .draw_marker(location.id, markerCoordinates, locationAddress);
 
                         location.library_type 
                             = nypl_utility.locationType(location.id);
@@ -71,6 +71,7 @@ nypl_locations.controller('LocationsCtrl', function (
 
                      nypl_geocoder_service
                         .draw_marker(
+                            'user',
                             markerCoordinates,
                             "Your Current Location",
                             true,
@@ -118,7 +119,7 @@ nypl_locations.controller('LocationsCtrl', function (
                     throw error;
                 });
         },
-        searchByCoordinates = function (searchObj) {
+        searchByCoordinates = function (searchObj, filteredLocations) {
             var locations = $scope.locations,
                 distanceArray = [],
                 coords = searchObj.coords,
@@ -135,15 +136,24 @@ nypl_locations.controller('LocationsCtrl', function (
                 distanceArray.push(location.distance);
             });
 
-            if (_.min(distanceArray) > 25) {
-                console.log("The search query is too far");
-                _.each(locations, function (location) {
-                    location.distance = '';
-                });
-                return $scope.locations;
-            } 
+
+            if (filteredLocations.length) {
+                if (nypl_geocoder_service.check_marker(filteredLocations[0].id)) {
+                    nypl_geocoder_service.pan_existing_marker(filteredLocations[0].id);
+                }
+            } else {
+                if (_.min(distanceArray) > 25) {
+                    console.log("The search query is too far");
+                    _.each(locations, function (location) {
+                        location.distance = '';
+                    });
+                    $scope.searchError = searchterm;
+                    return $scope.locations;
+                } 
+                nypl_geocoder_service.draw_searchMarker(coords, searchterm);
+            }
             
-            nypl_geocoder_service.draw_searchMarker(coords, searchterm);
+            $scope.searchError = '';
             return locations;
         },
         organizeLocations = function (locations, filteredLocations) {
@@ -201,13 +211,15 @@ nypl_locations.controller('LocationsCtrl', function (
             locations = $scope.locations;
 
         loadGeocoding(searchTerm)
-            .then(searchByCoordinates)
+            .then(function (searchObj) {
+                return searchByCoordinates(searchObj, filteredLocations);
+            })
             .then(function (locations) {
                 organizeLocations(locations, filteredLocations);
             })
         // if reverse geocoding is not available, we still want to filter
         // using angular
-            .catch(organizeLocations(locations, filteredLocations));
+            //.catch(organizeLocations(locations, filteredLocations));
   	};
 
     $scope.viewMore = function () {
