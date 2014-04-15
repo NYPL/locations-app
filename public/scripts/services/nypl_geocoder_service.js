@@ -98,8 +98,12 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             searchMarker.setPosition(panCoords);
             searchMarker.setMap(map);
             this.panMap(searchMarker);
+
             searchInfoWindow.setContent(text);
             searchInfoWindow.open(map, searchMarker);
+            google.maps.event.addListener(searchMarker, 'click', function () {
+                searchInfoWindow.open(map, searchMarker);
+            });
         },
 
         check_marker: function (id) {

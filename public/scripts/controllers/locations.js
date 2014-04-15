@@ -184,7 +184,26 @@ nypl_locations.controller('LocationsCtrl', function (
             // Don't sort by distance or the matched results will not display 
             // first
             $scope.predicate = '';
-        };
+        },
+        searchByUserGeolocation = function() {
+            $scope.searchTerm = '';
+            $scope.geolocationSearchText = "Showing search results near ";
+            $scope.predicate = 'distance';
+
+            if (nypl_geocoder_service.check_marker('user')) {
+                nypl_geocoder_service.pan_existing_marker('user');
+            }
+            // Iterate through lon/lat and calculate distance
+            _.each($scope.locations, function (location) {
+                location.distance = 
+                    nypl_coordinates_service.getDistance(
+                        userCoords.latitude,
+                        userCoords.longitude,
+                        location.lat,
+                        location.long
+                    );
+            });
+        }
 
     $scope.predicate = 'name'; // Default sort upon DOM Load
     // By default, show only 10 libraries
@@ -203,14 +222,20 @@ nypl_locations.controller('LocationsCtrl', function (
     loadLocations();
 
     $scope.useGeolocation = function () {
-        loadCoords().then(loadReverseGeocoding);
+        if (!userCoords) {
+            loadCoords().then(loadReverseGeocoding);
+            return;
+        }
+
+        searchByUserGeolocation();
     };
 
   	$scope.submitAddress = function (searchTerm) {
-    		// Filter the locations by the search term
-    		var filteredLocations = 
-                $filter('filter')($scope.locations, searchTerm),
-            locations = $scope.locations;
+		// Filter the locations by the search term
+		var filteredLocations = 
+            $filter('filter')($scope.locations, searchTerm),
+        locations = $scope.locations;
+        $scope.geolocationSearchText = "Search for results near ";
 
         loadGeocoding(searchTerm)
             .then(function (searchObj) {
@@ -238,10 +263,7 @@ nypl_locations.controller('LocationsCtrl', function (
     };
 
     $scope.geolocationSearch = function () {
-        // Make a user object to store the geolocation coords
-        // then use those to update distances and resort by distance
-        // then pan to those coords.
-        $scope.predicate = 'distance';
+        searchByUserGeolocation();
     };
 });
 // End LocationsCtrl
