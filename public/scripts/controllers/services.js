@@ -1,6 +1,7 @@
 nypl_locations.controller('ServicesCtrl', function (
     $scope,
-    $routeParams
+    $routeParams,
+    nypl_locations_service
 ) {
     'use strict';
     var services,
@@ -9,8 +10,8 @@ nypl_locations.controller('ServicesCtrl', function (
                 .services()
                 .then(function (data) {
                     services = data.services;
-                    $scope.services = services.name;
-                    console.log(services);
+
+                    $scope.services = services;
                 });
         };
 
@@ -25,13 +26,16 @@ nypl_locations.controller('ServiceLibraryCtrl', function (
 ) {
     'use strict';
     var services,
+        library_name,
         loadServices = function () {
             return nypl_locations_service
                 .library_services($routeParams.symbol)
                 .then(function (data) {
                     services = data.services;
-                    $scope.services = services;
-                    console.log(services);
+                    library_name = data.location.name;
+
+                    $scope.services = services.name;
+                    $scope.library_name = library_name;
                 });
         };
 
