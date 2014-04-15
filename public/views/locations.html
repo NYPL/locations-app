@@ -78,7 +78,11 @@
         </div><!-- 
 
         --><div class="results--services h-card grid__item one-whole lap-and-up-one-third">
-          <p>Services go here</p>
+          <ul>
+            <li data-ng-repeat="service in location._embedded.services | limitTo:3">
+              {{service.name}}
+            </li>
+          </ul>
         </div>
       </div>
 
