@@ -15,16 +15,12 @@
   </div>
 
   <section class="list">
-    <div data-ng-if="searchError">No results for {{searchError}} within 25 miles of an NYPL Location. Showing all branches or</div>
-    <div data-ng-if="geolocationAddress">Showing search results near <a href="" data-ng-click="geolocationSearch()">{{geolocationAddress}}</a></div>
+    <div data-ng-if="searchError">No results for {{searchError}} within 25 miles of an NYPL Location.  Showing all branches.</div>
+    <div data-ng-if="geolocationAddress">{{geolocationSearchText}} <a href="" data-ng-click="geolocationSearch()">{{geolocationAddress}}</a></div>
   	<section class="filters">
       <fieldset>
         <legend>Show me only:</legend>
         <ul class="filters__check check-list--inline">
-          <!-- <li>
-            <input id="lending" type="checkbox" data-ng-model="location.library_type" data-ng-true-value="circulating" data-ng-false-value="research"/>
-            <label for="lending">Lending Libraries</label>
-          </li> -->
           <li>
             <input id="research" type="checkbox" data-ng-model="location.library_type" data-ng-true-value="research" data-ng-false-value="circulating"/>
             <label for="research">Research Libraries</label>
@@ -78,7 +74,11 @@
         </div><!-- 
 
         --><div class="results--services h-card grid__item one-whole lap-and-up-one-third">
-          <p>Services go here</p>
+          <ul>
+            <li data-ng-repeat="service in location._embedded.services | limitTo:3">
+              {{service.name}}
+            </li>
+          </ul>
         </div>
       </div>
 
