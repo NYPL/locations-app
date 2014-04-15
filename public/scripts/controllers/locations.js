@@ -147,6 +147,7 @@ nypl_locations.controller('LocationsCtrl', function (
                         location.distance = '';
                     });
                     $scope.searchError = searchterm;
+                    $scope.predicate = 'name';
                     return $scope.locations;
                 } 
                 nypl_geocoder_service.draw_searchMarker(coords, searchterm);
@@ -233,8 +234,9 @@ nypl_locations.controller('LocationsCtrl', function (
   	$scope.submitAddress = function (searchTerm) {
 		// Filter the locations by the search term
 		var filteredLocations = 
-            $filter('filter')($scope.locations, searchTerm),
-        locations = $scope.locations;
+                $filter('filter')($scope.locations, searchTerm),
+            locations = $scope.locations;
+
         $scope.geolocationSearchText = "Search for results near ";
 
         loadGeocoding(searchTerm)
@@ -246,7 +248,7 @@ nypl_locations.controller('LocationsCtrl', function (
             })
         // if reverse geocoding is not available, we still want to filter
         // using angular
-            //.catch(organizeLocations(locations, filteredLocations));
+            .catch(organizeLocations(locations, filteredLocations));
   	};
 
     $scope.viewMore = function () {
