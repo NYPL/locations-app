@@ -1,7 +1,11 @@
 <div class="grid">
   <section class="grid">
 
-    <h2 data-ng-if="library_name">{{library_name}}</h2>
+    <div class="grid__item">
+      <h2 data-ng-if="library_name">{{library_name}}</h2>
+
+      <h2 data-ng-if="!library_name">All Services</h2>
+    </div>
     <ul>
       <li data-ng-repeat="service in services">
         {{service.name}}, Id: {{service._id}}
