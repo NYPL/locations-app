@@ -291,7 +291,7 @@ nypl_locations.controller('LocationCtrl', function (
                     // Used for the Get Directions link to Google Maps
                     $scope.locationDest =
                         nypl_utility.getAddressString(location);
-
+                    console.log($scope.location);
                 });
         },
         loadCoords = function () {
