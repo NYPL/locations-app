@@ -45,12 +45,12 @@
   </div><!--
 
   --><div class="grid__item one-whole lap-and-up-one-third container__hours-catalog">
-    <div class="h-event callout" id="hours-today">
+    <div class="h-event callout grid__item one-whole lap-and-up-one-half" id="hours-today">
       <h2 class="p-name flush--ends">Today’s Hours</h2>
-      <time class="hours-today alpha">{{hoursToday | hoursTodayFormat:'short'}}</time>
-    </div>
+      <time class="hours-today alpha orangeText"><strong>{{hoursToday | hoursTodayFormat:'short'}}</strong></time>
+    </div><!--
 
-    <div id="location-hours">
+    --><div id="location-hours  grid__item one-whole lap-and-up-one-half">
       <h2 class="flush--ends">Regular Hours</h2>
 
       <div class="weekly-hours zeta">
@@ -158,23 +158,20 @@
   </div>
 
   <div class="chunk hard--left ask-donate">
-    <div class="grid__item one-whole tablet-and-up-one-half" id="ask-nypl">
-      <div class="callout">
-        <ul><h1><a href="">AskNYPL</a></h1>
+  
+    <div class="grid__item one-whole tablet-and-up-one-half alpha blueDarkerText" id="ask-nypl">
+        <ul>
           <li class="asknum icon-phone">917-ASK-NYPL</li>
           <li class="askchat icon-bubbles"><a href="">Chat with a librarian</a></li>
           <li class="askemail icon-envelope"><a href="">Email us your question</a></li>
         </ul>
-      </div>
     </div><!--
   
-    --><div class="grid__item one-whole tablet-and-up-one-half" id="donate">
-      <div class="appeal">
-        <p>This library is open 6 days a week!</p>
-        <p>Help us keep it that way!</p>
+    --><div class="appeal grid__item one-whole tablet-and-up-one-half" id="donate">
+        <p>Help us keep this library open 6 days a week!</p>
         <button class="btn--donate">Donate now</button>
-      </div>
     </div>
+    
   </div>
   
 <!--   end container -->  
