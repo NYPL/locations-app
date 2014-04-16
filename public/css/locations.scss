@@ -1,0 +1,46 @@
+/*------------------------------------*\
+    LOCATIONS.CSS
+\*------------------------------------*/
+/** 
+ * This stylesheet lives on top of NYPLBase.
+ *
+ * Put styling/positioning/etc. that is 
+ * specific to NYPL.org Locations section.
+ *
+ */
+
+// larger search box
+input.searchbox--locinator{
+	font-size: 2rem;
+	height: 3.5rem;
+	width: 95%;
+}
+
+// color on alt searches buttons
+.filters__current,
+.filters__research{
+	& a{
+		background-color: darken(#0090c4, 15%);	
+	}
+}
+
+// nice border on map
+#all-locations-map{
+	border: 3px solid #e2dedb;
+	border-radius: 2px;
+}
+
+// add margin to results headings, location name
+.results--heds,
+.p-org{
+	margin-bottom: 16px;
+	margin-bottom: .5rem;
+}
+
+// remove margin on hours list
+.results--hours ul{
+	margin-left: 16px;
+	margin-left: 1rem;
+}
+
+ 
