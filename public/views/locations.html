@@ -8,7 +8,7 @@
 
     <div class="filters">
 	    <div class="filters__current">Search near <a class="btn btn--natural" href="" data-ng-click="useGeolocation()">your current location</a></div>
-	    <div class="filters__research">Show me only <a class="btn btn--natural blueLight" href=""  data-ng-model="location.library_type" data-ng-true-value="research" data-ng-false-value="circulating">research libraries</a></div>
+	    <div class="filters__research">Show me only <a class="btn btn--natural blueLight" href=""  data-ng-model="location.type" data-ng-true-value="research" data-ng-false-value="circulating">research libraries</a></div>
     </div>
     
   </form><!--
@@ -30,7 +30,7 @@
         <legend>Show me only:</legend>
         <ul class="filters__check check-list--inline">
           <li>
-            <input id="research" type="checkbox" data-ng-model="location.library_type" data-ng-true-value="research" data-ng-false-value="circulating"/>
+            <input id="research" type="checkbox" data-ng-model="location.type" data-ng-true-value="research" data-ng-false-value="circulating"/>
             <label for="research">Research Libraries</label>
           </li>
         </ul>
@@ -51,7 +51,7 @@
 
     <!-- Locations are in h-card microformat -->
     <!-- http://microformats.org/wiki/h-card -->
-    <section class="grid one-whole location {{location._id}} {{location.highlight}}" data-ng-repeat="location in locations | filter:location.library_type | orderBy:predicate:reverse | limitTo: libraryLimit">
+    <section class="grid one-whole location {{location._id}} {{location.highlight}}" data-ng-repeat="location in locations | filter:location.type | orderBy:predicate:reverse | limitTo: libraryLimit">
 
       <div class="results--location h-card grid__item one-half lap-and-up-one-quarter">
         <div class="p-org beta"><a href='/#/{{location.id|lowercase}}'>{{location.name}}</a></div>

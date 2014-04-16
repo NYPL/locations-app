@@ -101,6 +101,7 @@ nypl_locations.controller('LocationsCtrl', function (
                 )
                 .then(function (address) {
                     //$scope.searchTerm = zipcode;
+                    $scope.geolocationSearchText = "Showing search results near ";
                     $scope.geolocationAddress = address;
 
                     return address;
