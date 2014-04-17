@@ -5,6 +5,7 @@ nypl_locations.controller(
     function (
         $scope,
         $routeParams,
+        $rootScope,
         nypl_locations_service,
         nypl_geocoder_service,
         nypl_coordinates_service,
@@ -15,6 +16,7 @@ nypl_locations.controller(
                 return nypl_locations_service
                     .single_location($routeParams.symbol)
                     .then(function (data) {
+                        $rootScope.title = data.location.name;
                         return data.location;
                     });
             },

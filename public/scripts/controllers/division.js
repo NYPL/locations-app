@@ -1,9 +1,9 @@
 nypl_locations.controller('DivisionCtrl', function (
     $scope,
     $routeParams,
+    $rootScope,
     nypl_locations_service,
-    nypl_utility,
-    $sanitize
+    nypl_utility
 ) {
     'use strict';
     var division,
@@ -12,7 +12,8 @@ nypl_locations.controller('DivisionCtrl', function (
                 .single_division($routeParams.division)
                 .then(function (data) {
                     division = data.division;
-                   
+                    $rootScope.title = division.name;
+
                     $scope.hoursToday =
                         nypl_utility.hoursToday(division.hours);
 

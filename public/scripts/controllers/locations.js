@@ -207,6 +207,7 @@ nypl_locations.controller('LocationsCtrl', function (
             });
         }
 
+    $rootScope.title = "Locations";
     $scope.predicate = 'name'; // Default sort upon DOM Load
     // By default, show only 10 libraries
     $scope.libraryLimit = 10;
@@ -274,6 +275,7 @@ nypl_locations.controller('LocationsCtrl', function (
 nypl_locations.controller('LocationCtrl', function (
     $scope,
     $routeParams,
+    $rootScope,
     nypl_locations_service,
     nypl_coordinates_service,
     nypl_utility
@@ -286,6 +288,7 @@ nypl_locations.controller('LocationCtrl', function (
                 .single_location($routeParams.symbol)
                 .then(function (data) {
                     location = data.location;
+                    $rootScope.title = location.name;
                     $scope.location = location;
                     $scope.hoursToday =
                         nypl_utility.hoursToday(location.hours);

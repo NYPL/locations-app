@@ -1,6 +1,7 @@
 nypl_locations.controller('ServicesCtrl', function (
     $scope,
     $routeParams,
+    $rootScope,
     nypl_locations_service
 ) {
     'use strict';
@@ -15,13 +16,14 @@ nypl_locations.controller('ServicesCtrl', function (
                 });
         };
 
-
+    $rootScope.title = "Services";
     loadServices();
 });
 
 nypl_locations.controller('ServiceLibraryCtrl', function (
     $scope,
     $routeParams,
+    $rootScope,
     nypl_locations_service
 ) {
     'use strict';
@@ -34,11 +36,11 @@ nypl_locations.controller('ServiceLibraryCtrl', function (
                     services = data.services;
                     library_name = data.location.name;
 
+                    $rootScope.title = library_name;
                     $scope.services = services.name;
                     $scope.library_name = library_name;
                 });
         };
-
 
     loadServices();
 });
