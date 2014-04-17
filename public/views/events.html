@@ -6,10 +6,7 @@
       <h1>Events at {{location.name}}</h1>
     </div><!--
     --><div class="grid__item one-whole lap-and-up-one-third">
-      <div class="h-event callout" id="hours-today">
-        <h2 class="p-name flush">Today’s Hours</h2>
-        <time class="hours-today alpha">{{hoursToday | hoursTodayFormat:'short'}}</time>
-      </div>
+      <todayshours hours="{{hoursToday | hoursTodayFormat:'short'}}" />
     </div>
     <div class="grid__item one-whole">
       <p>

@@ -18,10 +18,7 @@
     </div><!--
 
     --><div class="grid__item one-whole lap-and-up-one-third">
-      <div class="h-event callout" id="hours-today">
-        <h2 class="p-name flush--ends">Today’s Hours</h2>
-        <time class="hours-today alpha">{{hoursToday | hoursTodayFormat:'short'}}</time>
-      </div>
+      <todayshours hours="{{hoursToday | hoursTodayFormat:'short'}}" />
       <div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
     </div>
   </section>

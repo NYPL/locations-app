@@ -35,10 +35,7 @@
   </div><!--
 
   --><div class="grid__item one-whole lap-and-up-one-third container__hours-catalog">
-    <div class="h-event callout" id="hours-today">
-      <h2 class="p-name flush--ends">Today’s Hours</h2>
-      <time class="hours-today alpha">{{hoursToday | hoursTodayFormat:'short'}}</time>
-    </div>
+    <todayshours hours="{{hoursToday | hoursTodayFormat:'short'}}" />
 
     <div id="division-hours">
       <h2 class="flush--ends">Regular Hours</h2>
