@@ -53,7 +53,6 @@ input.searchbox--locinator{
 // add margin to results headings, location name
 .results--heds,
 .p-org{
-	margin-bottom: 1rem;
 	margin-bottom: .5rem;
 }
 
@@ -63,3 +62,23 @@ input.searchbox--locinator{
 }
 
  
+/**
+ * AskNYPL
+ */
+.askNYPL{
+	li{
+		margin-bottom: .5rem;
+	}
+	
+	[data-icon]:before, [class^="icon-"]:before, [class*=" icon-"]:before {
+		vertical-align: baseline;
+	}
+/*
+	a{
+		text-decoration: none;
+		&:hover{
+			text-decoration: underline;
+		}
+	}
+*/
+}

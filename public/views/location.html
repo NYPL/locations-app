@@ -5,11 +5,11 @@
 
   <!-- This is h-card microformat -->
   <!-- http://microformats.org/wiki/h-card -->
-  <div class="h-card grid__item one-whole lap-and-up-two-thirds">
+  <div class="h-card grid__item one-whole lap-and-up-one-half">
     <h1 class="p-org">{{location.name}}</h1>
     <div class="grid">
-      <div class="grid__item one-whole lap-and-up-one-half">
-
+    
+      <div class="grid__item one-whole lap-and-up-one-third">
         <div class="p-adr">
           <div class="p-street-address">{{location.street_address}}</div>
           <span class="p-locality">{{location.locality}}</span>, 
@@ -18,49 +18,49 @@
         </div>
 
         <div class="p-tel">{{location.contacts.phone}}</div>
-
-        <ul class="top-services flush">
-          <li class="icon-book inline">Books</li>
-          <li class="icon-accessibility inline">Wheelchair accessible</li>
-          <li class="icon-box-add inline">Bookdrop</li>
-        </ul>
+        
+        <div class="maplink"><a class="icon-map" href="/#/{{location.id|lowercase}}/map">Map</a></div>
+        <div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
 
       </div><!--
       
-      --><div class="grid__item one-whole lap-and-up-one-half">
+      --><div class="grid__item one-whole lap-and-up-one-third">
+      
+	        <div class="nearby-branches"><a href="">Nearby branches</a></div>
+	        <div>Library Manager: {{location.contacts.manager}}</div>
 
-        <div class="maplink"><a class="icon-map" href="/#/{{location.id|lowercase}}/map">Map</a></div>
-        <div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
-        <div class="nearby-branches"><a href="">Nearby branches</a></div>
-        <div>Library Manager: {{location.contacts.manager}}</div>
-
-        <div class="social flush">
-          <a href="{{social.href}}" data-ng-repeat="social in location.social_media" class="inline">
-            <span class="icon-{{social.site}}"></span>
-          </a>
-        </div>
-
-      </div>
+	        <div class="social flush">
+	          <a class="icon-{{social.site}}" href="{{social.href}}" data-ng-repeat="social in location.social_media" class="inline"></a>
+	        </div>
+	        
+      </div><!--
+      
+      --><div class="grid__item one-whole lap-and-up-one-third"><ul class="top-services flush">
+          <li class="icon-book inline">Books</li>
+          <li class="icon-accessibility inline">Wheelchair accessible</li>
+          <li class="icon-box-add inline">Bookdrop</li>
+        </ul></div>
+      
     </div>
   </div><!--
 
-  --><div class="grid__item one-whole lap-and-up-one-third container__hours-catalog">
+  --><div class="grid__item one-whole lap-and-up-one-half container__hours-catalog">
     <todayshours hours="{{hoursToday | hoursTodayFormat:'short'}}" /><!--
 
     --><div id="location-hours  grid__item one-whole lap-and-up-one-half">
-      <h2 class="flush--ends">Regular Hours</h2>
+	      <h2 class="flush--ends">Regular Hours</h2>
 
-      <div class="weekly-hours zeta">
-        <div class="{{hours.day}}" data-ng-repeat="hours in location.hours.regular" data-ng-if="$index != 7">
-          <span class="day">{{hours.day}}</span>
-          <span class="time">
-            {{ hours.open | timeFormat }} - {{ hours.close | timeFormat }}
-          </span>
-        </div>
-      </div>
+	      <div class="weekly-hours zeta">
+	        <div class="{{hours.day}}" data-ng-repeat="hours in location.hours.regular" data-ng-if="$index != 7">
+	          <span class="day">{{hours.day}}</span>
+	          <span class="time">
+	            {{ hours.open | timeFormat }} - {{ hours.close | timeFormat }}
+	          </span>
+	        </div>
+	      </div>
     </div>
 
-    <p class="color-block red whiteText" data-ng-if="location.type == 'research'">
+    <p class="color-block callout" data-ng-if="location.type == 'research'">
       Note: See division pages for individual hours
     </p>
 
