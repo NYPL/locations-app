@@ -69,13 +69,14 @@
 
   --><div class="grid__item one-whole" id="divisions" data-ng-if="location.type == 'research'">
     <h2 class="hdg">Divisions</h2>
+    
     <div class="grid chunk hard--left">
       <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='division in location._embedded.divisions'>
-        <img class="grid__item one-third hard--left" src="http://nypl.org{{division.image}}" alt="" style="height: 100px;" /><!--
-        --><h3 class="grid__item two-thirds"><a href="/#/division/{{division.id|lowercase}}">{{division.name}}</a></h3>
-        <p>{{division.about}}</p>
-      </div>
-    </div>
+	        <img class="img--left" src="http://nypl.org{{division.image}}" alt="" style="height: 100px;" />
+	        <h3 class=""><a href="/#/division/{{division.id|lowercase}}">{{division.name}}</a></h3>
+	        <p>{{division.about}}</p>
+	      </div>
+      </div>    
   </div><!--
 
   --><div id="features" class="chunk">
@@ -117,7 +118,7 @@
   <div id="about-and-plan" class="chunk hard--left">
     <div id="plan-your-visit" class="grid__item one-whole lap-and-up-one-half">
       <h2 class="hdg">Plan Your Visit</h2>
-        <ul class="flush--left">
+        <ul class="flush--left gamma">
           <li class="icon-screen">Reserve a Computer</li>
           <li class="icon-library">Interlibrary Loan</li>
           <li class="icon-users">Meeting Rooms</li>
