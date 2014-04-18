@@ -35,10 +35,7 @@
   </div><!--
 
   --><div class="grid__item one-whole lap-and-up-one-third container__hours-catalog">
-    <div class="h-event callout" id="hours-today">
-      <h2 class="p-name flush--ends">Today’s Hours</h2>
-      <time class="hours-today alpha">{{hoursToday | hoursTodayFormat:'short'}}</time>
-    </div>
+    <todayshours hours="{{hoursToday | hoursTodayFormat:'short'}}" />
 
     <div id="division-hours">
       <h2 class="flush--ends">Regular Hours</h2>
@@ -65,8 +62,8 @@
 
     --><div id="plan-your-visit" class="grid__item one-whole lap-and-up-one-half">
       <h2 class="hdg">Plan Your Visit</h2>
-      <button href="" class="btn--small">Make an Appt.</button>
-      <button href="" class="btn--small">Email a Librarian</button>
+      <button href="" class="btn--small gamma">Make an Appointment</button>
+      <button href="" class="btn--small gamma">Email a Librarian</button>
 
       <ul class="flush--left">
         <li class="icon-screen">Reserve a Computer</li>
@@ -123,26 +120,7 @@
     </div>
   </div>
 
-
-  <div class="chunk hard--left ask-donate">
-    <div class="grid__item one-whole tablet-and-up-one-half" id="ask-nypl">
-      <div class="callout">
-        <ul><h1><a href="">AskNYPL</a></h1>
-          <li class="asknum icon-phone">917-ASK-NYPL</li>
-          <li class="askchat icon-bubbles"><a href="">Chat with a librarian</a></li>
-          <li class="askemail icon-envelope"><a href="">Email us your question</a></li>
-        </ul>
-      </div>
-    </div><!--
-  
-    --><div class="grid__item one-whole tablet-and-up-one-half" id="donate">
-      <div class="appeal">
-        <p>This library is open 6 days a week!</p>
-        <p>Help us keep it that way!</p>
-        <button class="btn--donate">Donate now</button>
-      </div>
-    </div>
-  </div>
+  <askdonatefooter chatHref="" emailHref="" donateHref="" />
   
 <!--   end container -->  
 </div>

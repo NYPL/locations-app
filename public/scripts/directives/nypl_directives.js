@@ -31,3 +31,30 @@ nypl_locations.directive('loadingWidget', [
             }
         };
     }]);
+
+nypl_locations.directive('todayshours', [
+    function () {
+        return {
+            restrict: 'E',
+            templateUrl: '/scripts/directives/templates/todaysHours.html',
+            replace: true,
+            scope: {
+                hours: '@'
+            }
+        };
+    }]);
+
+nypl_locations.directive('askdonatefooter', [
+    function () {
+        return {
+            restrict: 'E',
+            templateUrl: '/scripts/directives/templates/ask-donate-footer.html',
+            replace: true,
+            scope: {
+                chatHref: '@',
+                emailHref: '@',
+                donateHref: '@'
+            }
+
+        };
+    }]);
