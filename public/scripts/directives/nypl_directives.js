@@ -38,7 +38,6 @@ nypl_locations.directive('todayshours', [
             restrict: 'E',
             templateUrl: '/scripts/directives/templates/todaysHours.html',
             replace: true,
-            // pass these two names from attrs into the template scope
             scope: {
                 hours: '@'
             }
