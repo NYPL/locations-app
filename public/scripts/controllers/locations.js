@@ -11,6 +11,7 @@ nypl_locations.controller('LocationsCtrl', function (
 ) {
     'use strict';
     var userCoords,
+        userAddress,
         locations,
         loadLocations = function () {
             return nypl_locations_service
@@ -39,6 +40,8 @@ nypl_locations.controller('LocationsCtrl', function (
                     nypl_geocoder_service
                         .draw_legend('all-locations-map-legend');
 
+                    allLocationsInit();
+
                     return locations;
                 });
         },
@@ -50,6 +53,7 @@ nypl_locations.controller('LocationsCtrl', function (
                         markerCoordinates;
 
                     userCoords = _.pick(position, 'latitude', 'longitude');
+                    $scope.searchTerm = '';
                     $scope.locationStart = 
                         userCoords.latitude + "," + userCoords.longitude;
                     markerCoordinates = {
@@ -100,9 +104,9 @@ nypl_locations.controller('LocationsCtrl', function (
                     {lat: userCoords.latitude, lng: userCoords.longitude}
                 )
                 .then(function (address) {
-                    //$scope.searchTerm = zipcode;
+                    userAddress = address;
                     $scope.geolocationSearchText = "Showing search results near ";
-                    $scope.geolocationAddress = address;
+                    $scope.geolocationAddress = userAddress;
 
                     return address;
                 });
@@ -144,12 +148,11 @@ nypl_locations.controller('LocationsCtrl', function (
             } else {
                 if (_.min(distanceArray) > 25) {
                     console.log("The search query is too far");
-                    _.each(locations, function (location) {
-                        location.distance = '';
-                    });
+                    resetDistance();
                     $scope.searchError = searchterm;
                     $scope.predicate = 'name';
-                    return $scope.locations;
+                    throw (new Error('The search query is too far'));
+                    //return $scope.locations;
                 } 
                 nypl_geocoder_service.draw_searchMarker(coords, searchterm);
             }
@@ -190,10 +193,12 @@ nypl_locations.controller('LocationsCtrl', function (
         searchByUserGeolocation = function() {
             $scope.searchTerm = '';
             $scope.geolocationSearchText = "Showing search results near ";
+            $scope.geolocationAddress = userAddress;
             $scope.predicate = 'distance';
 
             if (nypl_geocoder_service.check_marker('user')) {
                 nypl_geocoder_service.pan_existing_marker('user');
+                nypl_geocoder_service.add_marker_to_map('user');
             }
             // Iterate through lon/lat and calculate distance
             _.each($scope.locations, function (location) {
@@ -205,19 +210,38 @@ nypl_locations.controller('LocationsCtrl', function (
                         location.long
                     );
             });
-        }
+        },
+        allLocationsInit = function () {
+            $scope.searchTerm = '';
+            $rootScope.title = "Locations";
+            $scope.predicate = 'name'; // Default sort upon DOM Load
+            // By default, show only 10 libraries
+            $scope.libraryLimit = 10;
+            // Increase the limit by 10, wording says 'Show 10 more'
+            // Once we show 80 libraries, we all the 12 remaining libraries
+            // and reword to say "Show All"
+            // Once all libraries are shown, we hide the "showMore" element
+            $scope.addLibraries = 10;
+            $scope.increaseBy = '10 more';
+            $scope.showMore = true;
+            $scope.geolocationAddress = '';
+            nypl_geocoder_service.remove_searchMarker();
+            nypl_geocoder_service.hide_infowindow();
+            if (nypl_geocoder_service.check_marker('user')) {
+                nypl_geocoder_service.remove_marker('user');
+            }
+            nypl_geocoder_service.panMap();
 
-    $rootScope.title = "Locations";
-    $scope.predicate = 'name'; // Default sort upon DOM Load
-    // By default, show only 10 libraries
-    $scope.libraryLimit = 10;
-    // Increase the limit by 10, wording says 'Show 10 more'
-    // Once we show 80 libraries, we all the 12 remaining libraries
-    // and reword to say "Show All"
-    // Once all libraries are shown, we hide the "showMore" element
-    $scope.addLibraries = 10;
-    $scope.increaseBy = '10 more';
-    $scope.showMore = true;
+
+            _.each(locations, function (location) {
+                location.distance = '';
+                location.highlight = '';
+            });
+        },
+
+        resetDistance = function () {
+
+        };
 
     nypl_geocoder_service
         .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
@@ -248,9 +272,18 @@ nypl_locations.controller('LocationsCtrl', function (
             .then(function (locations) {
                 organizeLocations(locations, filteredLocations);
             })
-        // if reverse geocoding is not available, we still want to filter
-        // using angular
-            .catch(organizeLocations(locations, filteredLocations));
+            // Catch any errors at any point
+            .catch(function (error) {
+                // google maps api is down and geocoding does not work,
+                // first see if there are any angularjs filtered results.
+                // if there are any, show results based on the angularjs filter.
+                // else, reset back to the start
+                if (filteredLocations.length) {
+                    organizeLocations(locations, filteredLocations)
+                } else {
+                    allLocationsInit();
+                }
+            });
   	};
 
     $scope.viewMore = function () {
@@ -269,6 +302,16 @@ nypl_locations.controller('LocationsCtrl', function (
     $scope.geolocationSearch = function () {
         searchByUserGeolocation();
     };
+
+    $scope.researchBranches = function () {
+        $scope.location_type = 'research';
+    };
+
+    $scope.allBranchesInit = function () {
+        $scope.location_type = '';
+        allLocationsInit();
+    };
+
 });
 // End LocationsCtrl
 

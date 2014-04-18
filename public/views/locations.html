@@ -8,7 +8,8 @@
 
     <div class="filters">
 	    <div class="filters__current">Search near <a class="btn btn--natural" href="" data-ng-click="useGeolocation()">your current location</a></div>
-	    <div class="filters__research">Show me only <a class="btn btn--natural blueLight" href=""  data-ng-model="location.type" data-ng-true-value="research" data-ng-false-value="circulating">research libraries</a></div>
+	    <div class="filters__research">Show me only <a class="btn btn--natural blueLight" href="" data-ng-click="researchBranches()">research libraries</a></div>
+      <div class="filters__">Show me <a class="btn btn--natural" href="" data-ng-click="allBranchesInit()">all branches</a></div>
     </div>
     
   </form><!--
@@ -25,7 +26,7 @@
     <div class="alpha" data-ng-if="geolocationAddress">{{geolocationSearchText}} <a href="" data-ng-click="geolocationSearch()">{{geolocationAddress}}</a></div>
 
 
-  	<section class="filters">
+  	<!-- <section class="filters">
       <fieldset>
         <legend>Show me only:</legend>
         <ul class="filters__check check-list--inline">
@@ -35,7 +36,7 @@
           </li>
         </ul>
       </fieldset>
-  	</section>
+  	</section> -->
   	
     <br />
 

@@ -7,6 +7,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         bound,
         panCoords,
         markers = [],
+        sasbLocation = new google.maps.LatLng(40.7532, -73.9822),
         searchMarker = new google.maps.Marker({}),
         searchInfoWindow = new google.maps.InfoWindow(),
         infowindow = new google.maps.InfoWindow();
@@ -87,12 +88,22 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         },
 
         panMap: function (marker) {
-            map.panTo(marker.getPosition());
-            map.setZoom(14);
+            var position, zoom;
+
+            // is no marker, go to default - SASB
+            if (!marker) {
+                position = sasbLocation;
+                zoom = 12;
+            } else {
+                position = marker.getPosition();
+                zoom = 14;
+            }
+            map.panTo(position);
+            map.setZoom(zoom);
         },
 
         draw_searchMarker: function (coords, text) {
-            searchMarker.setMap(null);
+            this.remove_searchMarker();
             panCoords = new google.maps.LatLng(coords.lat, coords.long);
 
             searchMarker.setPosition(panCoords);
@@ -106,9 +117,23 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             });
         },
 
+        remove_searchMarker: function (marker) {
+            searchMarker.setMap(null);
+        },
+
+        remove_marker: function (id) {
+            var markerObj = _.where(markers, {id: id});
+            markerObj[0].marker.setMap(null);
+        },
+
+        add_marker_to_map: function (id) {
+            var markerObj = _.where(markers, {id: id});
+            markerObj[0].marker.setMap(map);
+        },
+
         check_marker: function (id) {
-            var marker = _.where(markers, {id: id});
-            return marker !== undefined;
+            var markerObj = _.where(markers, {id: id});
+            return (markerObj[0] !== undefined);
         },
 
         pan_existing_marker: function(id) {
@@ -159,8 +184,13 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             // map.fitBounds(bound);
 
         },
-        show_infowindow: function (marker, text) {
+
+        hide_infowindow: function () {
             infowindow.close();
+        },
+
+        show_infowindow: function (marker, text) {
+            this.hide_infowindow();
             infowindow.setContent(text);
             infowindow.open(map, marker);
         }
