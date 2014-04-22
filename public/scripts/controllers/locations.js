@@ -214,17 +214,10 @@ nypl_locations.controller('LocationsCtrl', function (
         allLocationsInit = function () {
             $scope.searchTerm = '';
             $rootScope.title = "Locations";
-            $scope.predicate = 'name'; // Default sort upon DOM Load
-            // By default, show only 10 libraries
-            $scope.libraryLimit = 10;
-            // Increase the limit by 10, wording says 'Show 10 more'
-            // Once we show 80 libraries, we all the 12 remaining libraries
-            // and reword to say "Show All"
-            // Once all libraries are shown, we hide the "showMore" element
-            $scope.addLibraries = 10;
-            $scope.increaseBy = '10 more';
-            $scope.showMore = true;
             $scope.geolocationAddress = '';
+
+            ngRepeatInit('name');
+
             nypl_geocoder_service.remove_searchMarker();
             nypl_geocoder_service.hide_infowindow();
             if (nypl_geocoder_service.check_marker('user')) {
@@ -239,8 +232,25 @@ nypl_locations.controller('LocationsCtrl', function (
             });
         },
 
-        resetDistance = function () {
+        resetDistance = function () {},
 
+        ngRepeatInit = function (sortBy) {
+            $scope.predicate = sortBy; // Default sort upon DOM Load
+            
+            var locationsLen = $scope.locations.length;
+
+            // By default, show only 10 libraries
+            $scope.libraryLimit = 10;
+
+            // Increase the limit by 10, wording says 'Show 10 more'
+            // Once we show 80 libraries, we all the 12 remaining libraries
+            // and reword to say "Show All"
+            // Once all libraries are shown, we hide the "showMore" element
+            $scope.addLibraries = 10;
+            $scope.locationsListed = 10;
+            $scope.increaseBy = '10 more';
+            $scope.totalLocations = locationsLen;
+            $scope.showMore = true;
         };
 
     nypl_geocoder_service
@@ -287,6 +297,7 @@ nypl_locations.controller('LocationsCtrl', function (
   	};
 
     $scope.viewMore = function () {
+        $scope.locationsListed += $scope.addLibraries;
         $scope.libraryLimit += $scope.addLibraries;
 
         if ($scope.libraryLimit === 80) {
