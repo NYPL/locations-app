@@ -22,8 +22,11 @@
 
   <section class="list">
  
-    <div data-ng-if="searchError">No results for {{searchError}} within 25 miles of an NYPL Location.  Showing all branches.</div>
-    <div class="alpha" data-ng-if="geolocationAddress">{{geolocationSearchText}} <a href="" data-ng-click="geolocationSearch()">{{geolocationAddress}}</a></div>
+    <div class="search_result_text grid__item one-half">
+      <div data-ng-if="distanceError">You are not within 25 miles of any NYPL Location. You can still search for a location or Get Directions.</div>
+      <div data-ng-if="searchError">No results for <strong>{{searchError}}</strong> within 25 miles of an NYPL Location.  Showing all branches.</div>
+      <div class="alpha" data-ng-if="geolocationAddressOrSearchQuery">Showing search results near <a href="">{{geolocationAddressOrSearchQuery}}</a></div>
+    </div>
 
 
   	<!-- <section class="filters">
@@ -97,6 +100,7 @@
     </section> 
     <!-- End of ng-repeat -->
     <section class="grid one-whole">
+      <div class="grid--center grid__item">Showing {{locationsListed}} of {{totalLocations}} Locations</div>
       <div class="grid--center grid__item" data-ng-if="showMore"><a href="" class="btn" data-ng-click="viewMore()">Show {{increaseBy}}</a></div>
     </section>
 

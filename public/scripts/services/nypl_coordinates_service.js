@@ -24,7 +24,14 @@ nypl_locations.factory(
                     $window.navigator.geolocation
                         .getCurrentPosition(function (position) {
                             // Extract coordinates for geoPosition obj
-                            defer.resolve(position.coords);
+                            // defer.resolve(position.coords);
+                            // Testing a user's location that is more than 
+                            // 25miles of any NYPL location
+                            var coords = {
+                                'latitude': 42.3581,
+                                'longitude': -71.0636
+                            }
+                            defer.resolve(coords);
                         }, function (error) {
                             switch (error.code) {
                             case error.PERMISSION_DENIED:

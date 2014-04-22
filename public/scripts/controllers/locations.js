@@ -53,13 +53,8 @@ nypl_locations.controller('LocationsCtrl', function (
                         markerCoordinates;
 
                     userCoords = _.pick(position, 'latitude', 'longitude');
-                    $scope.searchTerm = '';
                     $scope.locationStart = 
-                        userCoords.latitude + "," + userCoords.longitude;
-                    markerCoordinates = {
-                        'lat': userCoords.latitude, 
-                        'long': userCoords.longitude
-                    };
+                            userCoords.latitude + "," + userCoords.longitude;
 
                     // Iterate through lon/lat and calculate distance
                     _.each(locations, function (location) {
@@ -73,28 +68,37 @@ nypl_locations.controller('LocationsCtrl', function (
                         distanceArray.push(location.distance);
                     });
 
-                     nypl_geocoder_service
-                        .draw_marker(
-                            'user',
-                            markerCoordinates,
-                            "Your Current Location",
-                            true,
-                            true
-                        );
-
                     if (_.min(distanceArray) > 25) {
-                        // The user is too far away, don't change the display
-                        // of the locations and don't add the distance to 
-                        //each library.
-                        console.log('You are too far');
+                        // The user is too far away, reset everything
+                        allLocationsInit();
+                        throw (new Error('User is too far'));
                     } else {
-                        // Scope assignment
-                        $scope.locations = locations;
-                        $scope.distanceSet = true;
-                        $scope.predicate = 'distance';
-                    }
+                        // Scope assignment:
+                        // - Clear the input search field
+                        // - Use the user's coordinates to create the link to
+                        // get directions on Google Maps.
+                        // - Draw the user's location marker
+                        // - Set the locations to the locations with distance
+                        // - Sort libraries by distance
+                        $scope.searchTerm = '';
+                        markerCoordinates = {
+                            'lat': userCoords.latitude, 
+                            'long': userCoords.longitude
+                        };
 
-                    return userCoords;
+                        nypl_geocoder_service
+                            .draw_marker(
+                                'user',
+                                markerCoordinates,
+                                "Your Current Location",
+                                true,
+                                true
+                            );
+
+                        $scope.locations = locations;
+                        $scope.predicate = 'distance';
+                        return userCoords;
+                    }
                 });
         },
         // convert coordinate into address
@@ -105,8 +109,7 @@ nypl_locations.controller('LocationsCtrl', function (
                 )
                 .then(function (address) {
                     userAddress = address;
-                    $scope.geolocationSearchText = "Showing search results near ";
-                    $scope.geolocationAddress = userAddress;
+                    $scope.geolocationAddressOrSearchQuery = userAddress;
 
                     return address;
                 });
@@ -192,8 +195,7 @@ nypl_locations.controller('LocationsCtrl', function (
         },
         searchByUserGeolocation = function() {
             $scope.searchTerm = '';
-            $scope.geolocationSearchText = "Showing search results near ";
-            $scope.geolocationAddress = userAddress;
+            $scope.geolocationAddressOrSearchQuery = userAddress;
             $scope.predicate = 'distance';
 
             if (nypl_geocoder_service.check_marker('user')) {
@@ -214,17 +216,10 @@ nypl_locations.controller('LocationsCtrl', function (
         allLocationsInit = function () {
             $scope.searchTerm = '';
             $rootScope.title = "Locations";
-            $scope.predicate = 'name'; // Default sort upon DOM Load
-            // By default, show only 10 libraries
-            $scope.libraryLimit = 10;
-            // Increase the limit by 10, wording says 'Show 10 more'
-            // Once we show 80 libraries, we all the 12 remaining libraries
-            // and reword to say "Show All"
-            // Once all libraries are shown, we hide the "showMore" element
-            $scope.addLibraries = 10;
-            $scope.increaseBy = '10 more';
-            $scope.showMore = true;
-            $scope.geolocationAddress = '';
+            $scope.geolocationAddressOrSearchQuery = '';
+
+            ngRepeatInit('name');
+
             nypl_geocoder_service.remove_searchMarker();
             nypl_geocoder_service.hide_infowindow();
             if (nypl_geocoder_service.check_marker('user')) {
@@ -240,7 +235,28 @@ nypl_locations.controller('LocationsCtrl', function (
         },
 
         resetDistance = function () {
+            _.each($scope.locations, function (location) {
+                location.distance = '';
+            });
+        },
 
+        ngRepeatInit = function (sortBy) {
+            $scope.predicate = sortBy; // Default sort upon DOM Load
+            
+            var locationsLen = $scope.locations.length;
+
+            // By default, show only 10 libraries
+            $scope.libraryLimit = 10;
+
+            // Increase the limit by 10, wording says 'Show 10 more'
+            // Once we show 80 libraries, we all the 12 remaining libraries
+            // and reword to say "Show All"
+            // Once all libraries are shown, we hide the "showMore" element
+            $scope.addLibraries = 10;
+            $scope.locationsListed = 10;
+            $scope.increaseBy = '10 more';
+            $scope.totalLocations = locationsLen;
+            $scope.showMore = true;
         };
 
     nypl_geocoder_service
@@ -250,11 +266,17 @@ nypl_locations.controller('LocationsCtrl', function (
 
     $scope.useGeolocation = function () {
         if (!userCoords) {
-            loadCoords().then(loadReverseGeocoding);
+            loadCoords()
+                .then(loadReverseGeocoding)
+                .catch(function (error) {
+                    console.log(error.message);
+                    $scope.distanceError = true;
+                });
             return;
         }
 
-        searchByUserGeolocation();
+        // Need to update or remove from page when user is too far.
+        //searchByUserGeolocation();
     };
 
   	$scope.submitAddress = function (searchTerm) {
@@ -263,7 +285,7 @@ nypl_locations.controller('LocationsCtrl', function (
                 $filter('filter')($scope.locations, searchTerm),
             locations = $scope.locations;
 
-        $scope.geolocationSearchText = "Search for results near ";
+        $scope.geolocationAddressOrSearchQuery = searchTerm;
 
         loadGeocoding(searchTerm)
             .then(function (searchObj) {
@@ -287,6 +309,7 @@ nypl_locations.controller('LocationsCtrl', function (
   	};
 
     $scope.viewMore = function () {
+        $scope.locationsListed += $scope.addLibraries;
         $scope.libraryLimit += $scope.addLibraries;
 
         if ($scope.libraryLimit === 80) {
@@ -300,11 +323,14 @@ nypl_locations.controller('LocationsCtrl', function (
     };
 
     $scope.geolocationSearch = function () {
-        searchByUserGeolocation();
+        //searchByUserGeolocation();
     };
 
     $scope.researchBranches = function () {
         $scope.location_type = 'research';
+        $scope.showMore = false;
+        $scope.locationsListed = 4;
+        $scope.totalLocations = 4;
     };
 
     $scope.allBranchesInit = function () {
@@ -338,7 +364,6 @@ nypl_locations.controller('LocationCtrl', function (
                     // Used for the Get Directions link to Google Maps
                     $scope.locationDest =
                         nypl_utility.getAddressString(location);
-                    console.log($scope.location);
                 });
         },
         loadCoords = function () {
