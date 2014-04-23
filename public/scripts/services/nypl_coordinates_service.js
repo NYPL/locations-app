@@ -16,7 +16,7 @@ nypl_locations.factory(
                     $rootScope.$apply(function () {
                         defer.reject(
                             new Error(
-                                "Your browser does not support Geolocation"
+                                "Your browser does not support Geolocation."
                             )
                         );
                     });
@@ -24,20 +24,20 @@ nypl_locations.factory(
                     $window.navigator.geolocation
                         .getCurrentPosition(function (position) {
                             // Extract coordinates for geoPosition obj
-                            // defer.resolve(position.coords);
+                            defer.resolve(position.coords);
                             // Testing a user's location that is more than 
                             // 25miles of any NYPL location
-                            var coords = {
-                                'latitude': 42.3581,
-                                'longitude': -71.0636
-                            }
-                            defer.resolve(coords);
+                            // var coords = {
+                            //     'latitude': 42.3581,
+                            //     'longitude': -71.0636
+                            // }
+                            // defer.resolve(coords);
                         }, function (error) {
                             switch (error.code) {
                             case error.PERMISSION_DENIED:
                                 $rootScope.$apply(function () {
                                     defer.reject(
-                                        new Error("User denied permission")
+                                        new Error("Permission denied.")
                                     );
                                 });
                                 break;
@@ -45,7 +45,7 @@ nypl_locations.factory(
                             case error.POSITION_UNAVAILABLE:
                                 $rootScope.$apply(function () {
                                     defer.reject(
-                                        new Error("The position is currently unavailable")
+                                        new Error("The position is currently unavailable. Please try again.")
                                     );
                                 });
                                 break;
@@ -53,7 +53,7 @@ nypl_locations.factory(
                             case error.TIMEOUT:
                                 $rootScope.$apply(function () {
                                     defer.reject(
-                                        new Error("The request timed out")
+                                        new Error("The request timed out. Please try again.")
                                     );
                                 });
                                 break;
@@ -61,7 +61,7 @@ nypl_locations.factory(
                             default:
                                 $rootScope.$apply(function () {
                                     defer.reject(
-                                        new Error("Unkown error")
+                                        new Error("Unknown error. Please try again.")
                                     );
                                 });
                             }

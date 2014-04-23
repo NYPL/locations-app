@@ -71,7 +71,7 @@ nypl_locations.controller('LocationsCtrl', function (
                     if (_.min(distanceArray) > 25) {
                         // The user is too far away, reset everything
                         allLocationsInit();
-                        throw (new Error('User is too far'));
+                        throw (new Error('You are not within 25 miles of any NYPL library.'));
                     } else {
                         // Scope assignment:
                         // - Clear the input search field
@@ -214,6 +214,7 @@ nypl_locations.controller('LocationsCtrl', function (
             });
         },
         allLocationsInit = function () {
+            $scope.researchBranches = false;
             $scope.searchTerm = '';
             $rootScope.title = "Locations";
             $scope.geolocationAddressOrSearchQuery = '';
@@ -270,7 +271,7 @@ nypl_locations.controller('LocationsCtrl', function (
                 .then(loadReverseGeocoding)
                 .catch(function (error) {
                     console.log(error.message);
-                    $scope.distanceError = true;
+                    $scope.distanceError1 = true;
                 });
             return;
         }
@@ -326,11 +327,19 @@ nypl_locations.controller('LocationsCtrl', function (
         //searchByUserGeolocation();
     };
 
-    $scope.researchBranches = function () {
-        $scope.location_type = 'research';
-        $scope.showMore = false;
-        $scope.locationsListed = 4;
-        $scope.totalLocations = 4;
+    $scope.showResearch = function () {
+        $scope.researchBranches = !$scope.researchBranches;
+        if ($scope.researchBranches) {
+            $scope.location_type = 'research';
+            $scope.showMore = false;
+            $scope.locationsListed = 4;
+            $scope.totalLocations = 4;
+        } else {
+            $scope.location_type = '';
+            $scope.showMore = true;
+            $scope.locationsListed = 10;
+            $scope.totalLocations = $scope.locations.length;
+        }
     };
 
     $scope.allBranchesInit = function () {
