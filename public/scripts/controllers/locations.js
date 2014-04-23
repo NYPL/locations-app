@@ -42,6 +42,14 @@ nypl_locations.controller('LocationsCtrl', function (
 
                     allLocationsInit();
 
+                    // After loading all locations, check if the browser
+                    // supports geolocation before the user actually tries to
+                    // geolocate their location. If available, the button to
+                    // geolocate appears.
+                    if (nypl_coordinates_service.checkGeolocation()) {
+                        $scope.geolocationOn = true;
+                    }
+
                     return locations;
                 });
         },
@@ -71,7 +79,7 @@ nypl_locations.controller('LocationsCtrl', function (
                     if (_.min(distanceArray) > 25) {
                         // The user is too far away, reset everything
                         allLocationsInit();
-                        throw (new Error('User is too far'));
+                        throw (new Error('You are not within 25 miles of any NYPL library.'));
                     } else {
                         // Scope assignment:
                         // - Clear the input search field
@@ -214,6 +222,7 @@ nypl_locations.controller('LocationsCtrl', function (
             });
         },
         allLocationsInit = function () {
+            $scope.researchBranches = false;
             $scope.searchTerm = '';
             $rootScope.title = "Locations";
             $scope.geolocationAddressOrSearchQuery = '';
@@ -241,7 +250,9 @@ nypl_locations.controller('LocationsCtrl', function (
         },
 
         ngRepeatInit = function (sortBy) {
-            $scope.predicate = sortBy; // Default sort upon DOM Load
+            if (sortBy !== undefined) {
+                $scope.predicate = sortBy; // Default sort upon DOM Load
+            }
             
             var locationsLen = $scope.locations.length;
 
@@ -257,6 +268,21 @@ nypl_locations.controller('LocationsCtrl', function (
             $scope.increaseBy = '10 more';
             $scope.totalLocations = locationsLen;
             $scope.showMore = true;
+        },
+
+        ngRepeatShowAllBranches = function () {
+            $scope.location_type = '';
+            $scope.showMore = true;
+            $scope.locationsListed = 10;
+            $scope.totalLocations = $scope.locations.length;
+            ngRepeatInit();
+        },
+
+        ngRepeatShowResearchBranches = function () {
+            $scope.location_type = 'research';
+            $scope.showMore = false;
+            $scope.locationsListed = 4;
+            $scope.totalLocations = 4;
         };
 
     nypl_geocoder_service
@@ -269,8 +295,7 @@ nypl_locations.controller('LocationsCtrl', function (
             loadCoords()
                 .then(loadReverseGeocoding)
                 .catch(function (error) {
-                    console.log(error.message);
-                    $scope.distanceError = true;
+                    $scope.distanceError = error.message;
                 });
             return;
         }
@@ -286,6 +311,8 @@ nypl_locations.controller('LocationsCtrl', function (
             locations = $scope.locations;
 
         $scope.geolocationAddressOrSearchQuery = searchTerm;
+        $scope.researchBranches = false;
+        ngRepeatShowAllBranches();
 
         loadGeocoding(searchTerm)
             .then(function (searchObj) {
@@ -322,15 +349,13 @@ nypl_locations.controller('LocationsCtrl', function (
         }
     };
 
-    $scope.geolocationSearch = function () {
-        //searchByUserGeolocation();
-    };
-
-    $scope.researchBranches = function () {
-        $scope.location_type = 'research';
-        $scope.showMore = false;
-        $scope.locationsListed = 4;
-        $scope.totalLocations = 4;
+    $scope.showResearch = function () {
+        $scope.researchBranches = !$scope.researchBranches;
+        if ($scope.researchBranches) {
+            ngRepeatShowResearchBranches();
+        } else {
+            ngRepeatShowAllBranches();
+        }
     };
 
     $scope.allBranchesInit = function () {
