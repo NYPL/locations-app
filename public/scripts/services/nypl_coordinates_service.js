@@ -73,11 +73,7 @@ nypl_locations.factory(
 
             // Check if the browser has geolocation on:
             checkGeolocation: function () {
-                if (!$window.navigator && !$window.navigator.geolocation) {
-                    return false;
-                }
-
-                return true;
+                return (!$window.navigator && !$window.navigator.geolocation) ? false : true;
             },
 
             // Calculate distance using coordinates

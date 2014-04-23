@@ -250,7 +250,9 @@ nypl_locations.controller('LocationsCtrl', function (
         },
 
         ngRepeatInit = function (sortBy) {
-            $scope.predicate = sortBy; // Default sort upon DOM Load
+            if (sortBy !== undefined) {
+                $scope.predicate = sortBy; // Default sort upon DOM Load
+            }
             
             var locationsLen = $scope.locations.length;
 
@@ -266,6 +268,21 @@ nypl_locations.controller('LocationsCtrl', function (
             $scope.increaseBy = '10 more';
             $scope.totalLocations = locationsLen;
             $scope.showMore = true;
+        },
+
+        ngRepeatShowAllBranches = function () {
+            $scope.location_type = '';
+            $scope.showMore = true;
+            $scope.locationsListed = 10;
+            $scope.totalLocations = $scope.locations.length;
+            ngRepeatInit();
+        },
+
+        ngRepeatShowResearchBranches = function () {
+            $scope.location_type = 'research';
+            $scope.showMore = false;
+            $scope.locationsListed = 4;
+            $scope.totalLocations = 4;
         };
 
     nypl_geocoder_service
@@ -278,8 +295,7 @@ nypl_locations.controller('LocationsCtrl', function (
             loadCoords()
                 .then(loadReverseGeocoding)
                 .catch(function (error) {
-                    console.log(error.message);
-                    $scope.distanceError1 = true;
+                    $scope.distanceError = error.message;
                 });
             return;
         }
@@ -295,6 +311,8 @@ nypl_locations.controller('LocationsCtrl', function (
             locations = $scope.locations;
 
         $scope.geolocationAddressOrSearchQuery = searchTerm;
+        $scope.researchBranches = false;
+        ngRepeatShowAllBranches();
 
         loadGeocoding(searchTerm)
             .then(function (searchObj) {
@@ -331,22 +349,12 @@ nypl_locations.controller('LocationsCtrl', function (
         }
     };
 
-    $scope.geolocationSearch = function () {
-        //searchByUserGeolocation();
-    };
-
     $scope.showResearch = function () {
         $scope.researchBranches = !$scope.researchBranches;
         if ($scope.researchBranches) {
-            $scope.location_type = 'research';
-            $scope.showMore = false;
-            $scope.locationsListed = 4;
-            $scope.totalLocations = 4;
+            ngRepeatShowResearchBranches();
         } else {
-            $scope.location_type = '';
-            $scope.showMore = true;
-            $scope.locationsListed = 10;
-            $scope.totalLocations = $scope.locations.length;
+            ngRepeatShowAllBranches();
         }
     };
 
