@@ -42,6 +42,14 @@ nypl_locations.controller('LocationsCtrl', function (
 
                     allLocationsInit();
 
+                    // After loading all locations, check if the browser
+                    // supports geolocation before the user actually tries to
+                    // geolocate their location. If available, the button to
+                    // geolocate appears.
+                    if (nypl_coordinates_service.checkGeolocation()) {
+                        $scope.geolocationOn = true;
+                    }
+
                     return locations;
                 });
         },

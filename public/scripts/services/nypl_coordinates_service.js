@@ -71,6 +71,15 @@ nypl_locations.factory(
                 return defer.promise; // Enables 'then' callback
             },
 
+            // Check if the browser has geolocation on:
+            checkGeolocation: function () {
+                if (!$window.navigator && !$window.navigator.geolocation) {
+                    return false;
+                }
+
+                return true;
+            },
+
             // Calculate distance using coordinates
             getDistance: function (lat1, lon1, lat2, lon2) {
                 var radlat1 = Math.PI * lat1 / 180,

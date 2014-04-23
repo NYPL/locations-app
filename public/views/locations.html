@@ -7,8 +7,8 @@
     <button class="btn--small alpha" data-ng-click="submitAddress(searchTerm)">Find it!</button>
 
     <div class="filters">
-	    <div class="filters__current">Search near <a class="btn btn--natural" href="" data-ng-click="useGeolocation()">your current location</a></div>
-	    <div class="filters__research">Show me<a class="btn btn--natural" ng-class="{false: '', true: 'blueLight'}[researchBranches]" href="" data-ng-click="showResearch()">{{researchBranches && 'all branches' || 'only research libraries'}}</a></div>
+	    <div class="filters__current" data-ng-if="geolocationOn">Search near <a class="btn btn--natural" href="" data-ng-click="useGeolocation()">your current location</a></div>
+	    <div class="filters__research">Show me<a class="btn btn--natural" data-ng-class="{false: '', true: 'blueLight'}[researchBranches]" href="" data-ng-click="showResearch()">{{researchBranches && 'all branches' || 'only research libraries'}}</a></div>
       <!-- <div class="filters__">Show me <a class="btn btn--natural" href="" data-ng-click="allBranchesInit()">all branches</a></div> -->
     </div>
     
