@@ -19,6 +19,8 @@ nypl_locations.controller('DivisionCtrl', function (
 
                     $scope.division = division;
 
+                    $scope.division.social_media =
+                        nypl_utility.socialMediaColor($scope.division.social_media);
                     console.log($scope.division);
                 });
         };

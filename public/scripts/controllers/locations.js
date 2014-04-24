@@ -305,6 +305,10 @@ nypl_locations.controller('LocationsCtrl', function (
     };
 
   	$scope.submitAddress = function (searchTerm) {
+        if (!searchTerm) {
+            return;
+        }
+
 		// Filter the locations by the search term
 		var filteredLocations = 
                 $filter('filter')($scope.locations, searchTerm),
