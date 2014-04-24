@@ -29,7 +29,7 @@
   </section>
 
   <section class="grid__item one-whole" data-ng-repeat="event in location._embedded.events">
-    <h3><a href="">{{event.title}}</a></h3>
+    <h3><a href="{{event._links.self.href}}">{{event.title}}</a></h3>
       <div class="grid__item one-whole lap-and-up-two-thirds">
         <img class="img--outline img--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
         <p>Date/Time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}} - {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>

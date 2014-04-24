@@ -19,7 +19,7 @@
 
         <div class="p-tel">{{location.contacts.phone}}</div>
         
-        <div class="maplink"><a class="icon-map" href="/#/{{location.id|lowercase}}/map">Map</a></div>
+        <div class="maplink"><a class="icon-map" href="/#/{{location.slug|lowercase}}/map">Map</a></div>
         <div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
 
       </div><!--
@@ -30,7 +30,7 @@
 	        <div>Library Manager: {{location.contacts.manager}}</div>
 
 	        <div class="social flush">
-	          <a class="icon-{{social.site}} {{social.color}}" href="{{social.href}}" data-ng-repeat="social in location.social_media" class="inline"></a>
+	          <a class="{{social.classes}}" href="{{social.href}}" data-ng-repeat="social in location.social_media" class="inline"></a>
 	        </div>
 	        
       </div><!--
@@ -112,7 +112,7 @@
       </li>
     </ul>   
       
-    <div><a class="read-more" href="/#/{{location.id}}/events">See more events at {{location.name}}</a></div>
+    <div><a class="read-more" href="/#/{{location.slug|lowercase}}/events">See more events at {{location.name}}</a></div>
   </div>
 
   <div id="about-and-plan" class="chunk hard--left">
@@ -130,7 +130,7 @@
     --><div id="about" class="grid__item one-whole lap-and-up-one-half">
       <h2 class="hdg">About</h2>
       <p>This space is for the general blurb</p>
-      <div><a class="read-more" href="">More about {{location.name}}</a></div>
+      <div><a class="read-more" href="http://nypl.org/locations/{{location.slug}}">More about {{location.name}}</a></div>
     </div>
 
   </div>

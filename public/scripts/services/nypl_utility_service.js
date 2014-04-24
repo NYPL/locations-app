@@ -85,25 +85,28 @@ nypl_locations.factory('nypl_utility', function () {
 
         socialMediaColor: function (social_media) {
             _.each(social_media, function (sc) {
+                sc.classes = 'icon-';
                 switch (sc.site) {
                 case 'facebook':
-                    sc.color = 'blueDarkerText';
+                    sc.classes += sc.site + ' blueDarkerText';
                     break;
                 case 'youtube':
                 case 'pinterest':
-                    sc.color = 'redText';
+                    sc.classes += sc.site + ' redText';
                     break;
+                // Twitter and Tumblr have a 2 in their icon class
+                // name: icon-twitter2, icon-tumblr2
                 case 'twitter':
-                    sc.color = 'blueText';
+                    sc.classes += sc.site + '2 blueText';
                     break;
                 case 'tumblr':
-                    sc.color = 'indigoText';
+                    sc.classes += sc.site + '2 indigoText';
                     break;
                 case 'foursquare':
-                    sc.color = 'blueText';
+                    sc.classes += sc.site + ' blueText';
                     break;
                 default:
-                    sc.color = '';
+                    sc.classes += sc.site + '';
                     break;
                 }
             });

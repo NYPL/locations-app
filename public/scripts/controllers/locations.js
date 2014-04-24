@@ -390,6 +390,7 @@ nypl_locations.controller('LocationCtrl', function (
                 .then(function (data) {
                     location = data.location;
                     $rootScope.title = location.name;
+                    console.log(location);
                     $scope.location = location;
                     $scope.hoursToday =
                         nypl_utility.hoursToday(location.hours);
