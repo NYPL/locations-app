@@ -62,3 +62,21 @@ nypl_locations.directive('askdonatefooter', [
 
         };
     }]);
+
+nypl_locations.directive('nyplalert', [
+    function () {
+        'use strict';
+
+        return {
+            restrict: 'E',
+            templateUrl: '/scripts/directives/templates/alerts.html',
+            replace: true,
+            link: function ($scope, element, attrs) {
+                attrs.$observe('alerts', function (value) {
+                    var alerts = JSON.parse(value);
+
+                    
+                });
+            }
+        };
+    }]);
