@@ -390,18 +390,6 @@ nypl_locations.controller('LocationCtrl', function (
                 .then(function (data) {
                     location = data.location;
                     $rootScope.title = location.name;
-                    console.log(location);
-
-                    var today = new Date();
-                    var alert_0 = location._embedded.alerts[0];
-                    var alert_date = new Date(alert_0.start);
-
-                    if (today < alert_date) {
-                        console.log(true);
-                    }
-
-                    console.log(today);
-                    console.log(alert_date);
 
                     $scope.location = location;
                     $scope.hoursToday =
