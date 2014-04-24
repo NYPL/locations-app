@@ -391,6 +391,22 @@ nypl_locations.controller('LocationCtrl', function (
                     location = data.location;
                     $rootScope.title = location.name;
 
+                    // Added for debugging purposes
+                    location._embedded.alerts.push({
+                        _id: 123456789,
+                        _links: {
+                            self: {
+                                href: "node/123456789"
+                            }
+                        },
+                        body: "This is a mocked alert for debugging.",
+                        end: "2014-04-26T01:00:00-04:00",
+                        id: "123456789",
+                        path: null,
+                        start: "2014-04-24T00:00:00-04:00",
+                        title: "Memorial Day"
+                    });
+
                     $scope.location = location;
                     $scope.hoursToday =
                         nypl_utility.hoursToday(location.hours);

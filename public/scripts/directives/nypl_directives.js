@@ -73,9 +73,21 @@ nypl_locations.directive('nyplalert', [
             replace: true,
             link: function ($scope, element, attrs) {
                 attrs.$observe('alerts', function (value) {
-                    var alerts = JSON.parse(value);
+                    var alerts = JSON.parse(value),
+                        today = new Date(),
+                        todaysAlert;
 
-                    
+                    _.each(alerts, function (alert) {
+                        var alert_start = new Date(alert.start);
+                        var alert_end = new Date(alert.end);
+
+                        if (today >= alert_start && today <= alert_end) {
+                            todaysAlert = alert;
+                        }
+                    });
+
+                    element.find('p').text(todaysAlert.body);
+
                 });
             }
         };
