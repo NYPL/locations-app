@@ -12,7 +12,7 @@ angular.module(
             var d = $q.defer();
 
             $http.get(
-                api + '/locations', 
+                api + '/locations',
                 {cache: true}
             ).success(function (data) {
                 d.resolve(data);
@@ -76,7 +76,6 @@ angular.module(
                 defer.reject();
             });
             return defer.promise;
-        },
-
+        }
     };
 });

@@ -1,8 +1,9 @@
 /*jslint indent: 4, maxlen: 80 */
 /*globals nypl_locations */
+
 nypl_locations.factory(
     'nypl_coordinates_service',
-    ['$q', '$window', '$rootScope', function ($q, $window, $rootScope) {
+    ['$q', '$window', function ($q, $window) {
         'use strict';
 
         return {
@@ -13,13 +14,11 @@ nypl_locations.factory(
 
                 // Verify the browser supports Geolocation
                 if (!$window.navigator && !$window.navigator.geolocation) {
-                    $rootScope.$apply(function () {
-                        defer.reject(
-                            new Error(
-                                "Your browser does not support Geolocation."
-                            )
-                        );
-                    });
+                    defer.reject(
+                        new Error(
+                            "Your browser does not support Geolocation."
+                        )
+                    );
                 } else {
                     $window.navigator.geolocation
                         .getCurrentPosition(function (position) {
@@ -35,35 +34,28 @@ nypl_locations.factory(
                         }, function (error) {
                             switch (error.code) {
                             case error.PERMISSION_DENIED:
-                                $rootScope.$apply(function () {
-                                    defer.reject(
-                                        new Error("Permission denied.")
-                                    );
-                                });
+                                defer.reject(
+                                    new Error("Permission denied.")
+                                );
                                 break;
 
                             case error.POSITION_UNAVAILABLE:
-                                $rootScope.$apply(function () {
-                                    defer.reject(
-                                        new Error("The position is currently unavailable. Please try again.")
-                                    );
-                                });
+                                defer.reject(
+                                    new Error("The position is currently unavailable.")
+                                );
                                 break;
 
                             case error.TIMEOUT:
-                                $rootScope.$apply(function () {
-                                    defer.reject(
-                                        new Error("The request timed out. Please try again.")
-                                    );
-                                });
+                                defer.reject(
+                                    new Error("The request timed out.")
+                                );
                                 break;
 
                             default:
-                                $rootScope.$apply(function () {
-                                    defer.reject(
-                                        new Error("Unknown error. Please try again.")
-                                    );
-                                });
+                                defer.reject(
+                                    new Error("Unknown error.")
+                                );
+                                break;
                             }
                         });
                 }
@@ -73,7 +65,9 @@ nypl_locations.factory(
 
             // Check if the browser has geolocation on:
             checkGeolocation: function () {
-                return (!$window.navigator && !$window.navigator.geolocation) ? false : true;
+                return (!$window.navigator && !$window.navigator.geolocation) ?
+                        false :
+                        true;
             },
 
             // Calculate distance using coordinates

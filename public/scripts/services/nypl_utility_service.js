@@ -62,49 +62,49 @@ nypl_locations.factory('nypl_utility', function () {
         // for the map. Line breaks are not needed when we use the address 
         // to get directions on Google Maps.
         getAddressString: function (location, nicePrint) {
-            var addressBreak = (nicePrint) ? "<br />" : " ";
+            var addressBreak = nicePrint ? "<br />" : " ";
 
-            return location.name + addressBreak + 
-                location.street_address + addressBreak + 
-                location.locality + ", " + 
-                location.region + ", " + 
+            return location.name + addressBreak +
+                location.street_address + addressBreak +
+                location.locality + ", " +
+                location.region + ", " +
                 location.postal_code;
         },
 
-        locationType: function(id) {
-            switch(id) {
-                case 'SASB':
-                case 'LPA':
-                case 'SC':
-                case 'SIBL':
-                    return 'research';
-                default:
-                    return 'circulating';
+        locationType: function (id) {
+            switch (id) {
+            case 'SASB':
+            case 'LPA':
+            case 'SC':
+            case 'SIBL':
+                return 'research';
+            default:
+                return 'circulating';
             }
         },
 
-        socialMediaColor: function(social_media) {
+        socialMediaColor: function (social_media) {
             _.each(social_media, function (sc) {
                 switch (sc.site) {
-                    case 'facebook':
-                        sc.color = 'blueDarkerText';
-                        break;
-                    case 'youtube':
-                    case 'pinterest':
-                        sc.color = 'redText';
-                        break;
-                    case 'twitter':
-                        sc.color = 'blueText';
-                        break;
-                    case 'tumblr':
-                        sc.color = 'indigoText';
-                        break;
-                    case 'foursquare':
-                        sc.color = 'blueText';
-                        break;
-                    default:
-                        sc.color = '';
-                        break;
+                case 'facebook':
+                    sc.color = 'blueDarkerText';
+                    break;
+                case 'youtube':
+                case 'pinterest':
+                    sc.color = 'redText';
+                    break;
+                case 'twitter':
+                    sc.color = 'blueText';
+                    break;
+                case 'tumblr':
+                    sc.color = 'indigoText';
+                    break;
+                case 'foursquare':
+                    sc.color = 'blueText';
+                    break;
+                default:
+                    sc.color = '';
+                    break;
                 }
             });
 

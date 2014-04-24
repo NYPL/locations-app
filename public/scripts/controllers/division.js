@@ -1,3 +1,6 @@
+/*jslint indent: 4, maxlen: 80 */
+/*globals nypl_locations */
+
 nypl_locations.controller('DivisionCtrl', function (
     $scope,
     $routeParams,
@@ -20,8 +23,7 @@ nypl_locations.controller('DivisionCtrl', function (
                     $scope.division = division;
 
                     $scope.division.social_media =
-                        nypl_utility.socialMediaColor($scope.division.social_media);
-                    console.log($scope.division);
+                        nypl_utility.socialMediaColor(division.social_media);
                 });
         };
 
