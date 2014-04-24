@@ -389,6 +389,9 @@ nypl_locations.controller('LocationCtrl', function (
                     // Used for the Get Directions link to Google Maps
                     $scope.locationDest =
                         nypl_utility.getAddressString(location);
+
+                    $scope.location.social_media =
+                        nypl_utility.socialMediaColor($scope.location.social_media);
                 });
         },
         loadCoords = function () {

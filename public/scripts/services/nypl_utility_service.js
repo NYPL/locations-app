@@ -81,6 +81,34 @@ nypl_locations.factory('nypl_utility', function () {
                 default:
                     return 'circulating';
             }
+        },
+
+        socialMediaColor: function(social_media) {
+            _.each(social_media, function (sc) {
+                switch (sc.site) {
+                    case 'facebook':
+                        sc.color = 'blueDarkerText';
+                        break;
+                    case 'youtube':
+                    case 'pinterest':
+                        sc.color = 'redText';
+                        break;
+                    case 'twitter':
+                        sc.color = 'blueText';
+                        break;
+                    case 'tumblr':
+                        sc.color = 'indigoText';
+                        break;
+                    case 'foursquare':
+                        sc.color = 'blueText';
+                        break;
+                    default:
+                        sc.color = '';
+                        break;
+                }
+            });
+
+            return social_media;
         }
     };
 });
