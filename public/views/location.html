@@ -1,5 +1,9 @@
 <!-- container -->
-<div class="{{location.type}} grid">
+<div class="{{location.type}} content grid">
+  <div class="grid__item grid--center one-whole callout" data-ng-if="siteWideAlert || libraryAlert">
+    <p data-ng-if="siteWideAlert">{{siteWideAlert}}</p>
+    <p data-ng-if="libraryAlert">{{libraryAlert}}</p>
+  </div>
 
   <p><a href="/#/">All locations</a></p>
 
@@ -19,7 +23,7 @@
 
         <div class="p-tel">{{location.contacts.phone}}</div>
         
-        <div class="maplink"><a class="icon-map" href="/#/{{location.id|lowercase}}/map">Map</a></div>
+        <div class="maplink"><a class="icon-map" href="/#/{{location.slug|lowercase}}/map">Map</a></div>
         <div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
 
       </div><!--
@@ -29,8 +33,8 @@
 	        <div class="nearby-branches"><a href="">Nearby branches</a></div>
 	        <div>Library Manager: {{location.contacts.manager}}</div>
 
-	        <div class="social flush">
-	          <a class="icon-{{social.site}} {{social.color}}" href="{{social.href}}" data-ng-repeat="social in location.social_media" class="inline"></a>
+	        <div class="social flush" data-ng-if="location.social_media">
+	          <a class="{{social.classes}}" href="{{social.href}}" data-ng-repeat="social in location.social_media" class="inline"></a>
 	        </div>
 	        
       </div><!--
@@ -67,7 +71,7 @@
     <div id="catalog"><a class="icon-books" href="">Catalog Items Here</a></div>
   </div><!--
 
-  --><div class="grid__item one-whole" id="divisions" data-ng-if="location.type == 'research'">
+  --><div class="grid__item one-whole" id="divisions" data-ng-if="location.type == 'research' && location._embedded.divisions">
     <h2 class="hdg">Divisions</h2>
     
     <div class="grid chunk hard--left">
@@ -98,7 +102,7 @@
 
   </div>
 
-  <div id="events" class="chunk">
+  <div id="events" class="chunk" data-ng-if="location._embedded.events">
     <h2 class="hdg">Events</h2>
 
     <ul class="grid">
@@ -112,7 +116,7 @@
       </li>
     </ul>   
       
-    <div><a class="read-more" href="/#/{{location.id}}/events">See more events at {{location.name}}</a></div>
+    <div><a class="read-more" href="/#/{{location.slug|lowercase}}/events">See more events at {{location.name}}</a></div>
   </div>
 
   <div id="about-and-plan" class="chunk hard--left">
@@ -129,13 +133,13 @@
 
     --><div id="about" class="grid__item one-whole lap-and-up-one-half">
       <h2 class="hdg">About</h2>
-      <p>This space is for the general blurb</p>
-      <div><a class="read-more" href="">More about {{location.name}}</a></div>
+      <p>{{location.about}}</p>
+      <div><a class="read-more" href="http://nypl.org/locations/{{location.slug}}">More about {{location.name}}</a></div>
     </div>
 
   </div>
 
-  <div class="chunk" id="blogs" data-ng-if="location.type != 'research'">
+  <div class="chunk" id="blogs" data-ng-if="location.type != 'research' && location._embedded.blogs">
     <h2 class="hdg">Blogs</h2>
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='blog in location._embedded.blogs'>
@@ -146,7 +150,7 @@
     </div>
   </div>
 
-  <div class="chunk" id="exhibitions" data-ng-if="location.type == 'research'">
+  <div class="chunk" id="exhibitions" data-ng-if="location.type == 'research' && location._embedded.exhibitions">
     <h2 class="hdg">Exhibitions (need service data)</h2>
     <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='exhibition in location._embedded.exhibitions'>
       <img class="img--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />

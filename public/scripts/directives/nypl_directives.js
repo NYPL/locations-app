@@ -34,6 +34,8 @@ nypl_locations.directive('loadingWidget', [
 
 nypl_locations.directive('todayshours', [
     function () {
+        'use strict';
+
         return {
             restrict: 'E',
             templateUrl: '/scripts/directives/templates/todaysHours.html',
@@ -46,6 +48,8 @@ nypl_locations.directive('todayshours', [
 
 nypl_locations.directive('askdonatefooter', [
     function () {
+        'use strict';
+
         return {
             restrict: 'E',
             templateUrl: '/scripts/directives/templates/ask-donate-footer.html',

@@ -25,7 +25,7 @@ nypl_locations.controller(
                     .getCoordinates()
                     .then(function (position) {
                         var userCoords =
-                                _.pick(position, 'latitude', 'longitude');
+                            _.pick(position, 'latitude', 'longitude');
 
                         $scope.locationStart =
                             userCoords.latitude + "," + userCoords.longitude;
@@ -36,7 +36,6 @@ nypl_locations.controller(
             },
             loadMapPage = function (location) {
                 $scope.location = location;
-                console.log(location);
 
                 $scope.hoursToday = nypl_utility.hoursToday(location.hours);
                 $scope.locationDest = nypl_utility.getAddressString(location);
@@ -52,6 +51,7 @@ nypl_locations.controller(
                 nypl_geocoder_service
                     .draw_marker(location.id, locationCoords, locationAddress);
             };
+
         loadLocation()
             .then(loadMapPage)
             .then(getUserCoords)

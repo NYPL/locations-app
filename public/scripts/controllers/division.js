@@ -1,3 +1,6 @@
+/*jslint indent: 4, maxlen: 80 */
+/*globals nypl_locations */
+
 nypl_locations.controller('DivisionCtrl', function (
     $scope,
     $routeParams,
@@ -14,12 +17,15 @@ nypl_locations.controller('DivisionCtrl', function (
                     division = data.division;
                     $rootScope.title = division.name;
 
-                    $scope.hoursToday =
-                        nypl_utility.hoursToday(division.hours);
+                    if (division.hours) {
+                        $scope.hoursToday =
+                            nypl_utility.hoursToday(division.hours);
+                    }
 
                     $scope.division = division;
 
-                    console.log($scope.division);
+                    $scope.division.social_media =
+                        nypl_utility.socialMediaColor(division.social_media);
                 });
         };
 

@@ -62,53 +62,73 @@ nypl_locations.factory('nypl_utility', function () {
         // for the map. Line breaks are not needed when we use the address 
         // to get directions on Google Maps.
         getAddressString: function (location, nicePrint) {
-            var addressBreak = (nicePrint) ? "<br />" : " ";
+            var addressBreak = nicePrint ? "<br />" : " ";
 
-            return location.name + addressBreak + 
-                location.street_address + addressBreak + 
-                location.locality + ", " + 
-                location.region + ", " + 
+            return location.name + addressBreak +
+                location.street_address + addressBreak +
+                location.locality + ", " +
+                location.region + ", " +
                 location.postal_code;
         },
 
-        locationType: function(id) {
-            switch(id) {
-                case 'SASB':
-                case 'LPA':
-                case 'SC':
-                case 'SIBL':
-                    return 'research';
-                default:
-                    return 'circulating';
+        locationType: function (id) {
+            switch (id) {
+            case 'SASB':
+            case 'LPA':
+            case 'SC':
+            case 'SIBL':
+                return 'research';
+            default:
+                return 'circulating';
             }
         },
 
-        socialMediaColor: function(social_media) {
+        socialMediaColor: function (social_media) {
             _.each(social_media, function (sc) {
+                sc.classes = 'icon-';
                 switch (sc.site) {
-                    case 'facebook':
-                        sc.color = 'blueDarkerText';
-                        break;
-                    case 'youtube':
-                    case 'pinterest':
-                        sc.color = 'redText';
-                        break;
-                    case 'twitter':
-                        sc.color = 'blueText';
-                        break;
-                    case 'tumblr':
-                        sc.color = 'indigoText';
-                        break;
-                    case 'foursquare':
-                        sc.color = 'blueText';
-                        break;
-                    default:
-                        sc.color = '';
-                        break;
+                case 'facebook':
+                    sc.classes += sc.site + ' blueDarkerText';
+                    break;
+                case 'youtube':
+                case 'pinterest':
+                    sc.classes += sc.site + ' redText';
+                    break;
+                // Twitter and Tumblr have a 2 in their icon class
+                // name: icon-twitter2, icon-tumblr2
+                case 'twitter':
+                    sc.classes += sc.site + '2 blueText';
+                    break;
+                case 'tumblr':
+                    sc.classes += sc.site + '2 indigoText';
+                    break;
+                case 'foursquare':
+                    sc.classes += sc.site + ' blueText';
+                    break;
+                default:
+                    sc.classes += sc.site + '';
+                    break;
                 }
             });
 
             return social_media;
+        },
+        
+        alerts: function (alerts) {
+            var today = new Date(),
+                todaysAlert;
+
+            _.each(alerts, function (alert) {
+                var alert_start = new Date(alert.start);
+                var alert_end = new Date(alert.end);
+
+                if (today >= alert_start && today <= alert_end) {
+                    todaysAlert = alert;
+                }
+            });
+
+            return todaysAlert.body;
         }
+
     };
 });

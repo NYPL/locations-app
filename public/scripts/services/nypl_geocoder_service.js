@@ -16,7 +16,6 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         get_coords: function (address) {
             var defer = $q.defer(),
                 coords = {},
-                _this = this,
                 geocoder = new google.maps.Geocoder(),
                 sw_bound = new google.maps.LatLng(40.49, -74.26),
                 ne_bound = new google.maps.LatLng(40.91, -73.77),
@@ -40,19 +39,14 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             return defer.promise;
         },
         get_address: function (coords) {
-            var defer = $q.defer(),
+            var address,
+                defer = $q.defer(),
                 geocoder = new google.maps.Geocoder(),
-                zipcode,
                 latlng = new google.maps.LatLng(coords.lat, coords.lng);
 
             geocoder.geocode({latLng: latlng}, function (result, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
-                    // var address_component = result[0].address_components;
-                    // zipcode = address_component[address_component.length - 1]
-                    //     .long_name;
-
-                    var address = result[0].formatted_address;
-
+                    address = result[0].formatted_address;
                     defer.resolve(address);
                 } else {
                     defer.reject(new Error(status));
@@ -83,7 +77,8 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         draw_legend: function (id) {
             var mapLegend = document.getElementById(id);
 
-            map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(mapLegend);
+            map.controls[google.maps.ControlPosition.RIGHT_BOTTOM]
+                .push(mapLegend);
             mapLegend.className = "show-legend";
         },
 
@@ -117,7 +112,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             });
         },
 
-        remove_searchMarker: function (marker) {
+        remove_searchMarker: function () {
             searchMarker.setMap(null);
         },
 
@@ -136,7 +131,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             return (markerObj[0] !== undefined);
         },
 
-        pan_existing_marker: function(id) {
+        pan_existing_marker: function (id) {
             var markerObj = _.where(markers, {id: id});
             this.panMap(markerObj[0].marker);
             this.show_infowindow(markerObj[0].marker, markerObj[0].text);
@@ -144,8 +139,6 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
         draw_marker: function (id, location, text, user, pan) {
             var _this = this,
-                map_animation,
-                icon_url,
                 marker,
                 position = new google.maps
                     .LatLng(location.lat, location.long),
@@ -154,13 +147,15 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
                     map: map
                 };
 
-            // show the user with a blue marker and it should show above the rest of the markers
+            // show the user with a blue marker above the rest of the markers
             if (user) {
-                markerOptions.icon = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+                markerOptions.icon =
+                    "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
                 markerOptions.zIndex = 1000;
                 markerOptions.animation = google.maps.Animation.DROP;
             } else {
-                markerOptions.icon = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+                markerOptions.icon =
+                    "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
             }
 
             marker = new google.maps.Marker(markerOptions);
@@ -168,12 +163,12 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             markers.push({id: id, marker: marker, text: text});
 
             if (pan) {
-               this.panMap(marker);
+                this.panMap(marker);
             }
 
             // This works but it seems to have to call an external file?
             // doesn't work when location.geolocation is passed
-            // map.data.loadGeoJson('https://storage.googleapis.com/maps-devrel/google.json');
+            // map.data.loadGeoJson();
 
             google.maps.event.addListener(marker, 'click', function () {
                 _this.show_infowindow(marker, text);

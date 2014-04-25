@@ -1,6 +1,8 @@
+/*jslint indent: 4, maxlen: 80 */
+/*global nypl_locations */
+
 nypl_locations.controller('ServicesCtrl', function (
     $scope,
-    $routeParams,
     $rootScope,
     nypl_locations_service
 ) {
