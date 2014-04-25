@@ -407,6 +407,8 @@ nypl_locations.controller('LocationCtrl', function (
                         title: "Memorial Day"
                     });
 
+                    $scope.siteWideAlert = nypl_utility.alerts(location._embedded.alerts);
+
                     $scope.location = location;
                     $scope.hoursToday =
                         nypl_utility.hoursToday(location.hours);

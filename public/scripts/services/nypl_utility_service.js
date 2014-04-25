@@ -112,6 +112,23 @@ nypl_locations.factory('nypl_utility', function () {
             });
 
             return social_media;
+        },
+        
+        alerts: function (alerts) {
+            var today = new Date(),
+                todaysAlert;
+
+            _.each(alerts, function (alert) {
+                var alert_start = new Date(alert.start);
+                var alert_end = new Date(alert.end);
+
+                if (today >= alert_start && today <= alert_end) {
+                    todaysAlert = alert;
+                }
+            });
+
+            return todaysAlert.body;
         }
+
     };
 });

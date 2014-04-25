@@ -1,6 +1,9 @@
 <!-- container -->
 <div class="{{location.type}} content grid">
-  <nyplalert alerts="{{location._embedded.alerts}}"/>
+  <div class="grid__item grid--center one-whole callout" data-ng-if="siteWideAlert || libraryAlert">
+    <p data-ng-if="siteWideAlert">{{siteWideAlert}}</p>
+    <p data-ng-if="libraryAlert">{{libraryAlert}}</p>
+  </div>
 
   <p><a href="/#/">All locations</a></p>
 
