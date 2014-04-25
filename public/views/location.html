@@ -6,10 +6,10 @@
   <!-- This is h-card microformat -->
   <!-- http://microformats.org/wiki/h-card -->
   <div class="h-card grid__item one-whole lap-and-up-one-half">
-    <h1 class="p-org">{{location.name}}</h1>
+    <h1 class="p-org big">{{location.name}}</h1>
     <div class="grid">
     
-      <div class="grid__item one-whole lap-and-up-one-third">
+      <div class="grid__item one-half lap-and-up-one-third">
         <div class="p-adr">
           <div class="p-street-address">{{location.street_address}}</div>
           <span class="p-locality">{{location.locality}}</span>, 
@@ -19,35 +19,36 @@
 
         <div class="p-tel">{{location.contacts.phone}}</div>
         
-        <div class="maplink"><a class="icon-map" href="/#/{{location.id|lowercase}}/map">Map</a></div>
-        <div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
-
       </div><!--
       
-      --><div class="grid__item one-whole lap-and-up-one-third">
-      
+      --><div class="grid__item one-half lap-and-up-one-third">
+      		<div class="maplink"><a class="icon-map" href="/#/{{location.id|lowercase}}/map">Map</a></div>
+      		<div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
 	        <div class="nearby-branches"><a href="">Nearby branches</a></div>
 	        <div>Library Manager: {{location.contacts.manager}}</div>
+	        
+      </div><!--
+      
+      --><div class="grid__item one-half lap-and-up-one-third">
+	      	<ul class="top-services flush">
+	          <li class="icon-book inline">Books</li>
+	          <li class="icon-accessibility inline">Wheelchair accessible</li>
+	          <li class="icon-box-add inline">Bookdrop</li>
+	        </ul>
 
 	        <div class="social flush">
 	          <a class="icon-{{social.site}}" href="{{social.href}}" data-ng-repeat="social in location.social_media" class="inline"></a>
 	        </div>
-	        
-      </div><!--
-      
-      --><div class="grid__item one-whole lap-and-up-one-third"><ul class="top-services flush">
-          <li class="icon-book inline">Books</li>
-          <li class="icon-accessibility inline">Wheelchair accessible</li>
-          <li class="icon-box-add inline">Bookdrop</li>
-        </ul></div>
+
+        </div>
       
     </div>
   </div><!--
 
-  --><div class="grid__item one-whole lap-and-up-one-half container__hours-catalog">
-    <todayshours hours="{{hoursToday | hoursTodayFormat:'short'}}" /><!--
+  --><div class="container__hours-catalog grid__item one-whole lap-and-up-one-half">
+    <todayshours class=" grid__item one-whole lap-and-up-one-half" hours="{{hoursToday | hoursTodayFormat:'short'}}" /><!--
 
-    --><div id="location-hours  grid__item one-whole lap-and-up-one-half">
+    --><div id="location-hours" class=" grid__item one-whole lap-and-up-one-half">
 	      <h2 class="flush--ends">Regular Hours</h2>
 
 	      <div class="weekly-hours zeta">
