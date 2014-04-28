@@ -15,6 +15,7 @@ nypl_locations.controller('DivisionCtrl', function (
                 .single_division($routeParams.division)
                 .then(function (data) {
                     division = data.division;
+                    console.log(data);
                     $rootScope.title = division.name;
 
                     if (division.hours) {

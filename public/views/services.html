@@ -2,7 +2,7 @@
   <section class="grid">
 
     <div class="grid__item">
-      <h2 data-ng-if="library_name"><a href="/#/{{library_href|lowercase}}">{{library_name}}</a></h2>
+      <h2 data-ng-if="library_name"><a href="/#/{{library_href}}">{{library_name}}</a></h2>
       <h2 data-ng-if="service_name">{{service_name}}</h2>
 
       <h2 data-ng-if="!library_name && !service_name">All Services</h2>
@@ -22,7 +22,7 @@
 
     <ul data-ng-if="locations">
       <li data-ng-repeat="location in locations">
-        <a href="/#/{{location.id}}">{{location.name}}</a>, Id: {{location.id}}
+        <a href="/#/services/location/{{location.id}}">{{location.name}}</a>, Id: {{location.id}}
       </li>
     </ul>
     

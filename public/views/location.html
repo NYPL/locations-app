@@ -78,7 +78,7 @@
     <div class="grid chunk hard--left">
       <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='division in location._embedded.divisions'>
 	        <img class="img--left" src="http://nypl.org{{division.image}}" alt="" style="height: 100px;" />
-	        <h3 class=""><a href="/#/division/{{division.id|lowercase}}">{{division.name}}</a></h3>
+	        <h3 class=""><a href="/#/division/{{division.slug}}">{{division.name}}</a></h3>
 	        <p>{{division.about}}</p>
 	      </div>
       </div>    
@@ -152,11 +152,15 @@
   </div>
 
   <div class="chunk" id="exhibitions" data-ng-if="location.type == 'research' && location._embedded.exhibitions">
-    <h2 class="hdg">Exhibitions (need service data)</h2>
+    <h2 class="hdg">Exhibitions</h2>
     <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='exhibition in location._embedded.exhibitions'>
-      <img class="img--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
-      <h3><a href="http://nypl.org/{{exhibition.path}}">{{exhibition.title}}</a></h3>
-      <div class="teaser">{{exhibition.blurb}}</div>
+      <img data-ng-if="exhibition.image" class="img--left" src="{{exhibition.image}}" alt="" style="height: 100px;" />
+      <h3><a href="{{exhibition._links.self.href}}">{{exhibition.title}}</a></h3>
+      <div class="teaser">{{exhibition.body}}</div>
+      <div class="callout">
+        <p>Start time: {{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        <p>End time: {{exhibition.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+      </div>
     </div>
   </div>
 

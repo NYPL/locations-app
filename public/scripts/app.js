@@ -29,7 +29,11 @@ nypl_locations.config(function ($routeProvider, $locationProvider) {
         })
         .when('/services/:symbol', {
             templateUrl: 'views/services.html',
-            controller: 'ServiceLibraryCtrl'
+            controller: 'OneServiceCtrl'
+        })
+        .when('/services/location/:symbol', {
+            templateUrl: 'views/services.html',
+            controller: 'ServicesAtLibraryCtrl'
         })
         .when('/:symbol', {
             templateUrl: 'views/location.html',

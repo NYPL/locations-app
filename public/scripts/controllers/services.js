@@ -22,38 +22,18 @@ nypl_locations.controller('ServicesCtrl', function (
     loadServices();
 });
 
-nypl_locations.controller('ServiceLibraryCtrl', function (
+nypl_locations.controller('OneServiceCtrl', function (
     $scope,
     $routeParams,
     $rootScope,
     nypl_locations_service
 ) {
     'use strict';
-    var service_route = +$routeParams.symbol;
-
-    if (isNaN(service_route)) {
-        console.log('NAN');
-    }
-
     var services,
         locations,
-        loadServicesByBranch = function () {
+        loadOneService = function() {
             return nypl_locations_service
-                .library_services($routeParams.symbol)
-                .then(function (data) {
-                    var location = data.location;
-                    services = data.services;
-
-                    $rootScope.title = location.name;
-
-                    $scope.services = services.name;
-                    $scope.library_href = location._id;
-                    $scope.library_name = location.name;
-                });
-        },
-        loadBranchesbyService = function() {
-            return nypl_locations_service
-                .service_branches($routeParams.symbol)
+                .one_service($routeParams.symbol)
                 .then(function (data) {
                     var service_name = data.service.name;
 
@@ -65,9 +45,35 @@ nypl_locations.controller('ServiceLibraryCtrl', function (
                 });
         }
 
-    if (isNaN(service_route)) {
-        loadServicesByBranch();
-    } else {
-        loadBranchesbyService();
-    }
+    loadOneService();
+
 });
+
+nypl_locations.controller('ServicesAtLibraryCtrl', function (
+    $scope,
+    $routeParams,
+    $rootScope,
+    nypl_locations_service
+) {
+    'use strict';
+    var service_route = +$routeParams.symbol,
+        services,
+        locations,
+        loadServicesAtBranch = function () {
+            return nypl_locations_service
+                .services_at_library($routeParams.symbol)
+                .then(function (data) {
+                    var location = data.location;
+                    services = data.services;
+
+                    $rootScope.title = location.name;
+
+                    $scope.services = services.name;
+                    $scope.library_href = location.slug;
+                    $scope.library_name = location.name;
+                });
+        };
+
+    loadServicesAtBranch();
+});
+
