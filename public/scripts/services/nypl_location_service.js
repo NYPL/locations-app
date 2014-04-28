@@ -64,7 +64,21 @@ angular.module(
             return defer.promise;
         },
 
-        library_services: function (symbol) {
+        one_service: function (symbol) {
+            var defer = $q.defer();
+
+            $http.get(
+                api + '/services/' + symbol,
+                {cache: true}
+            ).success(function (data) {
+                defer.resolve(data);
+            }).error(function () {
+                defer.reject();
+            });
+            return defer.promise;
+        },
+
+        services_at_library: function (symbol) {
             var defer = $q.defer();
 
             $http.get(
@@ -76,21 +90,7 @@ angular.module(
                 defer.reject();
             });
             return defer.promise;
-        },
-
-        service_branches: function (symbol) {
-            var defer = $q.defer();
-            console.log(symbol);
-
-            $http.get(
-                api + '/services/' + symbol,
-                {cache: true}
-            ).success(function (data) {
-                defer.resolve(data);
-            }).error(function () {
-                defer.reject();
-            });
-            return defer.promise;
         }
+
     };
 });
