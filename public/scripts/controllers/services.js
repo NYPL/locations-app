@@ -29,20 +29,45 @@ nypl_locations.controller('ServiceLibraryCtrl', function (
     nypl_locations_service
 ) {
     'use strict';
+    var service_route = +$routeParams.symbol;
+
+    if (isNaN(service_route)) {
+        console.log('NAN');
+    }
+
     var services,
-        library_name,
-        loadServices = function () {
+        locations,
+        loadServicesByBranch = function () {
             return nypl_locations_service
                 .library_services($routeParams.symbol)
                 .then(function (data) {
+                    var location = data.location;
                     services = data.services;
-                    library_name = data.location.name;
 
-                    $rootScope.title = library_name;
+                    $rootScope.title = location.name;
+
                     $scope.services = services.name;
-                    $scope.library_name = library_name;
+                    $scope.library_href = location._id;
+                    $scope.library_name = location.name;
                 });
-        };
+        },
+        loadBranchesbyService = function() {
+            return nypl_locations_service
+                .service_branches($routeParams.symbol)
+                .then(function (data) {
+                    var service_name = data.service.name;
 
-    loadServices();
+                    $scope.service = data.service;
+                    $scope.locations = data.locations;
+                    $scope.service_name = service_name;
+
+                    $rootScope.title = service_name;
+                });
+        }
+
+    if (isNaN(service_route)) {
+        loadServicesByBranch();
+    } else {
+        loadBranchesbyService();
+    }
 });

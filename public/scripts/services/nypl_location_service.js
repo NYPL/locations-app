@@ -76,6 +76,21 @@ angular.module(
                 defer.reject();
             });
             return defer.promise;
+        },
+
+        service_branches: function (symbol) {
+            var defer = $q.defer();
+            console.log(symbol);
+
+            $http.get(
+                api + '/services/' + symbol,
+                {cache: true}
+            ).success(function (data) {
+                defer.resolve(data);
+            }).error(function () {
+                defer.reject();
+            });
+            return defer.promise;
         }
     };
 });

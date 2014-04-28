@@ -2,13 +2,27 @@
   <section class="grid">
 
     <div class="grid__item">
-      <h2 data-ng-if="library_name">{{library_name}}</h2>
+      <h2 data-ng-if="library_name"><a href="/#/{{library_href|lowercase}}">{{library_name}}</a></h2>
+      <h2 data-ng-if="service_name">{{service_name}}</h2>
 
-      <h2 data-ng-if="!library_name">All Services</h2>
+      <h2 data-ng-if="!library_name && !service_name">All Services</h2>
     </div>
-    <ul>
+    <div data-nf-if="service_name" class="grid__item">
+      <p data-ng-if="service._links.reserve"><a href="{{service._links.reserve.href}}">Reserve</a></p>
+      <p data-ng-if="service._links.info"><a href="{{service._links.info.href}}">Information</a></p>
+    </div>
+
+    <ul data-ng-if="services">
       <li data-ng-repeat="service in services">
-        {{service.name}}, Id: {{service._id}}
+        <a href="/#/services/{{service._id}}">{{service.name}}</a>, Id: {{service._id}}
+        <p data-ng-if="service._links.reserve"><a href="{{service._links.reserve.href}}">Reserve</a></p>
+        <p data-ng-if="service._links.info"><a href="{{service._links.info.href}}">Information</a></p>
+      </li>
+    </ul>
+
+    <ul data-ng-if="locations">
+      <li data-ng-repeat="location in locations">
+        <a href="/#/{{location.id}}">{{location.name}}</a>, Id: {{location.id}}
       </li>
     </ul>
     
