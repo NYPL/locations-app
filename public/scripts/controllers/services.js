@@ -13,7 +13,6 @@ nypl_locations.controller('ServicesCtrl', function (
                 .services()
                 .then(function (data) {
                     services = data.services;
-
                     $scope.services = services;
                 });
         };
@@ -29,21 +28,19 @@ nypl_locations.controller('OneServiceCtrl', function (
     nypl_locations_service
 ) {
     'use strict';
-    var services,
-        locations,
-        loadOneService = function() {
+    var service_name,
+        loadOneService = function () {
             return nypl_locations_service
-                .one_service($routeParams.symbol)
+                .one_service($routeParams.service_id)
                 .then(function (data) {
-                    var service_name = data.service.name;
+                    service_name = data.service.name;
+                    $rootScope.title = service_name;
 
                     $scope.service = data.service;
                     $scope.locations = data.locations;
                     $scope.service_name = service_name;
-
-                    $rootScope.title = service_name;
                 });
-        }
+        };
 
     loadOneService();
 
@@ -56,21 +53,18 @@ nypl_locations.controller('ServicesAtLibraryCtrl', function (
     nypl_locations_service
 ) {
     'use strict';
-    var service_route = +$routeParams.symbol,
-        services,
-        locations,
+    var services,
+        location,
         loadServicesAtBranch = function () {
             return nypl_locations_service
-                .services_at_library($routeParams.symbol)
+                .services_at_library($routeParams.location_id)
                 .then(function (data) {
-                    var location = data.location;
+                    location = data.location;
                     services = data.services;
 
                     $rootScope.title = location.name;
-
+                    $scope.location = location;
                     $scope.services = services.name;
-                    $scope.library_href = location.slug;
-                    $scope.library_name = location.name;
                 });
         };
 

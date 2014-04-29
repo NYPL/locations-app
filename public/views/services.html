@@ -2,12 +2,13 @@
   <section class="grid">
 
     <div class="grid__item">
-      <h2 data-ng-if="library_name"><a href="/#/{{library_href}}">{{library_name}}</a></h2>
+      <h2 data-ng-if="location.name"><a href="/#/{{location.slug}}">{{location.name}}</a></h2>
       <p data-ng-if="service_name"><a href="/#/services/">All Services</a></p>
       <h2 data-ng-if="service_name">{{service_name}}</h2>
 
-      <h2 data-ng-if="!library_name && !service_name">All Services</h2>
+      <h2 data-ng-if="!location.name && !service_name">All Services</h2>
     </div>
+    
     <div data-nf-if="service_name" class="grid__item">
       <p data-ng-if="service._links.reserve"><a href="{{service._links.reserve.href}}">Reserve</a></p>
       <p data-ng-if="service._links.info"><a href="{{service._links.info.href}}">Information</a></p>

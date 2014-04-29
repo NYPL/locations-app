@@ -24,7 +24,7 @@
         <div>Division Manager: Edwin</div>
         <div>See more division contact info <a href="">here</a></div>
 
-        <div class="social flush">
+        <div class="social flush" data-ng-if="division.social_media">
           <a class="{{social.classes}}" href="{{social.href}}" data-ng-repeat="social in division.social_media" class="inline"></a>
         </div>
 
@@ -39,7 +39,7 @@
       <h2 class="flush--ends">Regular Hours</h2>
 
       <div class="weekly-hours zeta">
-        <div class="{{hours.day}}" data-ng-repeat="hours in division.hours.regular" data-ng-if="$index != 7">
+        <div class="{{hours.day}}" data-ng-repeat="hours in division.hours.regular">
           <span class="day">{{hours.day}}</span>
           <span class="time">
             {{ hours.open | timeFormat }} - {{ hours.close | timeFormat }}
