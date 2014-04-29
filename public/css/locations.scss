@@ -94,6 +94,10 @@ input.searchbox--locinator{
  * AskNYPL
  */
 .askNYPL{
+	ul{
+		margin-left: 24px;
+	}
+	
 	li{
 		list-style-type: none;
 		margin-bottom: .5rem;
@@ -115,8 +119,20 @@ input.searchbox--locinator{
 		background-repeat: no-repeat;
 		background-size: 40px;
 		padding-left: 64px;
+		
+		&:hover{
+			background-color: rgba(#0090c4, .1);
+		}
 	}
 	.askchat {background-image: url(../images/AskNYPL_bubbles.svg);}
 	.askemail{background-image: url(../images/AskNYPL_envelope.svg);}
+	
+/*
+	@media only screen and (max-width: 800px){
+		.askchat, .askemail, .asknum{
+			font-size: 24px;
+		}
+	}
+*/
 
 }
