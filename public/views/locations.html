@@ -13,7 +13,7 @@
         <a class="btn btn--natural" href="" data-ng-click="useGeolocation()">your current location</a>
       </div>
 	    <div class="filters__research">Show me
-        <a class="btn btn--natural" data-ng-class="{false: '', true: ''}[researchBranches]" href="" data-ng-click="showResearch()">{{researchBranches && 'all branches' || 'only research libraries'}}</a>
+        <a id="onlyresearch" class="btn btn--natural" data-ng-class="{false: '', true: ''}[researchBranches]" href="" data-ng-click="showResearch()">{{researchBranches && 'all branches' || 'only research libraries'}}</a>
       </div>
       <!-- <div class="filters__">Show me <a class="btn btn--natural" href="" data-ng-click="allBranchesInit()">all branches</a></div> -->
     </div>
@@ -53,7 +53,7 @@
       data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse | limitTo: libraryLimit">
 
       <div class="results--location h-card grid__item one-half lap-and-up-one-quarter">
-        <div class="p-org beta"><a href='/#/{{location.id|lowercase}}'>{{location.name}}</a></div>
+        <div class="p-org beta"><a href='/#/{{location.slug}}'>{{location.name}}</a></div>
         <div class="p-adr">
           <div class="p-street-address">{{location.street_address}}</div>
           <span class="p-locality">{{location.locality}}</span>, 
@@ -67,7 +67,7 @@
         
         <div class="results--distance h-card grid__item one-whole lap-and-up-one-third">
           <div data-ng-if="location.distance"><strong>{{location.distance}} miles</strong></div>
-          <div><a class="icon-map" href="/#/{{location.id|lowercase}}/map">View on Map </a></div>
+          <div><a class="icon-map" href="/#/{{location.slug}}/map">View on Map </a></div>
           <div>
             <a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">Get Directions</a>
           </div>
@@ -95,9 +95,9 @@
     </section> 
     <!-- End of ng-repeat -->
     <section class="grid one-whole" data-ng-if='locations'>
-      <div class="grid--center grid__item">Showing {{locationsListed}} of {{totalLocations}} Locations</div>
+      <div id="showing" class="grid--center grid__item">Showing {{locationsListed}} of {{totalLocations}} Locations</div>
       <div class="grid--center grid__item" data-ng-if="showMore">
-        <a href="" class="btn" data-ng-click="viewMore()">Show {{increaseBy}}</a>
+        <a href="" id="showmore" class="btn" data-ng-click="viewMore()">Show {{increaseBy}}</a>
       </div>
     </section>
 

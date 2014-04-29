@@ -6,7 +6,9 @@ var nypl_locations = angular.module('nypl_locations', [
     'ngResource',
     'ngSanitize',
     'ngRoute',
-    'locationService'
+    'locationService',
+    'angulartics',
+    'angulartics.google.analytics'
 ]);
 
 nypl_locations.constant('_', window._);
@@ -29,7 +31,11 @@ nypl_locations.config(function ($routeProvider, $locationProvider) {
         })
         .when('/services/:symbol', {
             templateUrl: 'views/services.html',
-            controller: 'ServiceLibraryCtrl'
+            controller: 'OneServiceCtrl'
+        })
+        .when('/services/location/:symbol', {
+            templateUrl: 'views/services.html',
+            controller: 'ServicesAtLibraryCtrl'
         })
         .when('/:symbol', {
             templateUrl: 'views/location.html',

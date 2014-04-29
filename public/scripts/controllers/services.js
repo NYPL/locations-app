@@ -22,7 +22,7 @@ nypl_locations.controller('ServicesCtrl', function (
     loadServices();
 });
 
-nypl_locations.controller('ServiceLibraryCtrl', function (
+nypl_locations.controller('OneServiceCtrl', function (
     $scope,
     $routeParams,
     $rootScope,
@@ -30,19 +30,50 @@ nypl_locations.controller('ServiceLibraryCtrl', function (
 ) {
     'use strict';
     var services,
-        library_name,
-        loadServices = function () {
+        locations,
+        loadOneService = function() {
             return nypl_locations_service
-                .library_services($routeParams.symbol)
+                .one_service($routeParams.symbol)
                 .then(function (data) {
-                    services = data.services;
-                    library_name = data.location.name;
+                    var service_name = data.service.name;
 
-                    $rootScope.title = library_name;
+                    $scope.service = data.service;
+                    $scope.locations = data.locations;
+                    $scope.service_name = service_name;
+
+                    $rootScope.title = service_name;
+                });
+        }
+
+    loadOneService();
+
+});
+
+nypl_locations.controller('ServicesAtLibraryCtrl', function (
+    $scope,
+    $routeParams,
+    $rootScope,
+    nypl_locations_service
+) {
+    'use strict';
+    var service_route = +$routeParams.symbol,
+        services,
+        locations,
+        loadServicesAtBranch = function () {
+            return nypl_locations_service
+                .services_at_library($routeParams.symbol)
+                .then(function (data) {
+                    var location = data.location;
+                    services = data.services;
+
+                    $rootScope.title = location.name;
+
                     $scope.services = services.name;
-                    $scope.library_name = library_name;
+                    $scope.library_href = location.slug;
+                    $scope.library_name = location.name;
                 });
         };
 
-    loadServices();
+    loadServicesAtBranch();
 });
+

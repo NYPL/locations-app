@@ -26,7 +26,7 @@
       </div><!--
       
       --><div class="grid__item one-half lap-and-up-one-third">
-      		<div class="maplink"><a class="icon-map" href="/#/{{location.id|lowercase}}/map">Map</a></div>
+      		<div class="maplink"><a class="icon-map" href="/#/{{location.slug}}/map">Map</a></div>
       		<div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
 	        <div class="nearby-branches"><a href="">Nearby branches</a></div>
 	        <div>Library Manager: {{location.contacts.manager}}</div>
@@ -78,7 +78,7 @@
     <div class="grid chunk hard--left">
       <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='division in location._embedded.divisions'>
 	        <img class="img--left" src="http://nypl.org{{division.image}}" alt="" style="height: 100px;" />
-	        <h3 class=""><a href="/#/division/{{division.id|lowercase}}">{{division.name}}</a></h3>
+	        <h3 class=""><a href="/#/division/{{division.slug}}">{{division.name}}</a></h3>
 	        <p>{{division.about}}</p>
 	      </div>
       </div>    
@@ -117,7 +117,7 @@
       </li>
     </ul>   
       
-    <div><a class="read-more" href="/#/{{location.slug|lowercase}}/events">See more events at {{location.name}}</a></div>
+    <div><a class="read-more" href="/#/{{location.slug}}/events">See more events at {{location.name}}</a></div>
   </div>
 
   <div id="about-and-plan" class="chunk hard--left">
@@ -129,7 +129,7 @@
           <li class="icon-users">Meeting Rooms</li>
         </ul>
 
-        <div><a class="read-more" href="/#/services/{{location.id}}">See all services at {{location.name}}</a></div>
+        <div><a class="read-more" href="/#/services/location/{{location.id}}">See all services at {{location.name}}</a></div>
     </div><!--
 
     --><div id="about" class="grid__item one-whole lap-and-up-one-half">
@@ -152,11 +152,15 @@
   </div>
 
   <div class="chunk" id="exhibitions" data-ng-if="location.type == 'research' && location._embedded.exhibitions">
-    <h2 class="hdg">Exhibitions (need service data)</h2>
+    <h2 class="hdg">Exhibitions</h2>
     <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='exhibition in location._embedded.exhibitions'>
-      <img class="img--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
-      <h3><a href="http://nypl.org/{{exhibition.path}}">{{exhibition.title}}</a></h3>
-      <div class="teaser">{{exhibition.blurb}}</div>
+      <img data-ng-if="exhibition.image" class="img--left" src="{{exhibition.image}}" alt="" style="height: 100px;" />
+      <h3><a href="{{exhibition._links.self.href}}">{{exhibition.title}}</a></h3>
+      <div class="teaser">{{exhibition.body}}</div>
+      <div class="callout">
+        <p>Start time: {{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        <p>End time: {{exhibition.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+      </div>
     </div>
   </div>
 

@@ -127,7 +127,11 @@ nypl_locations.factory('nypl_utility', function () {
                 }
             });
 
-            return todaysAlert.body;
+
+            if (!angular.isUndefined(todaysAlert)) {
+                return todaysAlert.body;
+            }
+            return null;
         }
 
     };
