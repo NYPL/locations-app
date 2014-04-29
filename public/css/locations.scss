@@ -104,11 +104,17 @@ input.searchbox--locinator{
 	}
 	
 	.askchat,.askemail{
+		// "button" style
+		background-color: rgba(#0090c4, .15);
+		border-radius: 2px;
+		padding: 6px;		
+		text-decoration: none;
+			
 		// put custom SVG icon
-			background-position: 3px;
-			background-repeat: no-repeat;
-			background-size: 40px;
-			padding-left: 64px;
+		background-position: 3px;
+		background-repeat: no-repeat;
+		background-size: 40px;
+		padding-left: 64px;
 	}
 	.askchat {background-image: url(../images/AskNYPL_bubbles.svg);}
 	.askemail{background-image: url(../images/AskNYPL_envelope.svg);}
