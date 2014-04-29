@@ -7,6 +7,17 @@ describe('Locations: homepage', function () {
     browser.waitForAngular();
   });
 
+  describe('Search box', function() {
+    it('should search by location name', function () {
+      landingPage.search('aguilar');
+      browser.sleep(1000); // must be a better way
+      expect(
+        element.all(by.repeater('location in locations'))
+          .first().findElement(by.css('.p-org')).getText()
+        ).toEqual('Aguilar Library');
+    });
+  });
+
   it('should show 10 items by default', function () {
     var locations = landingPage.locations;
     expect(locations.count()).toBe(10);
@@ -29,6 +40,7 @@ describe('Locations: homepage', function () {
       only_r.click();
       expect(landingPage.locations.count()).toBe(10);
   });
+
 
 });
 

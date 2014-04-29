@@ -1,5 +1,8 @@
 var LandingPage = function () {
-  this.searchInput = element(by.input('searchLocations'));
+  // Search Box
+  this.searchInput = element(by.id('searchTerm'));
+  // Submit search button
+  this.findIt = element(by.id('findit'));
 
   // Results list
   this.locations = element.all(by.repeater('location in locations'));
@@ -15,6 +18,7 @@ var LandingPage = function () {
 
   this.search = function (query) {
     this.searchInput.sendKeys(query);
+    this.findIt.click();
   };
 
 };
