@@ -7,34 +7,29 @@ describe('Locations: homepage', function () {
     browser.waitForAngular();
   });
 
-  // better tests are needed for coordinates
-  it('should display the coordinates', function () {
-    var ele = by.css('.coordinates');
-    expect(element(ele).isPresent()).toBe(true);
+  it('should show 10 items by default', function () {
+    var locations = landingPage.locations;
+    expect(locations.count()).toBe(10);
+    expect(landingPage.showing.getText()).toEqual('Showing 10 of 92 Locations')
   });
 
-  it('should have 91 items by default', function () {
+  it('should show the next 10 items', function () {
     var locations = landingPage.locations;
-    expect(locations.count()).toBe(91);
+    landingPage.showMore.click()
+    expect(landingPage.locations.count()).toBe(20);
+    expect(landingPage.showing.getText()).toEqual('Showing 20 of 92 Locations')
   });
 
-  it('should have one item after searching', function () {
-    landingPage.search('jefferson market');
-    var locations = landingPage.locations;
-    expect(locations.count()).toBe(1);
-  });
-
-  it('should search by zip code', function () {
-    landingPage.search('10018');
-    var locations = landingPage.locations;
-    expect(locations.count()).toBe(1);
+  it('should filter by research libraries', function () {
+      var only_r = landingPage.onlyResearch;
+      expect(only_r.getText()).toEqual('only research libraries');
+      only_r.click();
+      expect(landingPage.locations.count()).toBe(4);
+      expect(only_r.getText()).toEqual('all branches');
+      only_r.click();
+      expect(landingPage.locations.count()).toBe(10);
   });
 
 });
 
 
-// describe('Location Service', function () {
-//   beforeEach(module('locationService'));
-
-
-// });
