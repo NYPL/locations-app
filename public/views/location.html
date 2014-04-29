@@ -26,7 +26,7 @@
       </div><!--
       
       --><div class="grid__item one-half lap-and-up-one-third">
-      		<div class="maplink"><a class="icon-map" href="/#/{{location.id|lowercase}}/map">Map</a></div>
+      		<div class="maplink"><a class="icon-map" href="/#/{{location.slug}}/map">Map</a></div>
       		<div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
 	        <div class="nearby-branches"><a href="">Nearby branches</a></div>
 	        <div>Library Manager: {{location.contacts.manager}}</div>
@@ -117,7 +117,7 @@
       </li>
     </ul>   
       
-    <div><a class="read-more" href="/#/{{location.slug|lowercase}}/events">See more events at {{location.name}}</a></div>
+    <div><a class="read-more" href="/#/{{location.slug}}/events">See more events at {{location.name}}</a></div>
   </div>
 
   <div id="about-and-plan" class="chunk hard--left">
@@ -129,7 +129,7 @@
           <li class="icon-users">Meeting Rooms</li>
         </ul>
 
-        <div><a class="read-more" href="/#/services/{{location.id}}">See all services at {{location.name}}</a></div>
+        <div><a class="read-more" href="/#/services/location/{{location.id}}">See all services at {{location.name}}</a></div>
     </div><!--
 
     --><div id="about" class="grid__item one-whole lap-and-up-one-half">
