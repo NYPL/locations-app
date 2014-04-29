@@ -3,6 +3,7 @@
 
     <div class="grid__item">
       <h2 data-ng-if="library_name"><a href="/#/{{library_href}}">{{library_name}}</a></h2>
+      <p data-ng-if="service_name"><a href="/#/services/">All Services</a></p>
       <h2 data-ng-if="service_name">{{service_name}}</h2>
 
       <h2 data-ng-if="!library_name && !service_name">All Services</h2>
