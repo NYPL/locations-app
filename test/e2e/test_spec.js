@@ -8,14 +8,38 @@ describe('Locations: homepage', function () {
   });
 
   describe('Search box', function() {
-    it('should search by location name', function () {
+    beforeEach(function () {
       landingPage.search('aguilar');
       browser.sleep(1000); // must be a better way
+    });
+
+    it('should show what the search was', function () {
+      expect(landingPage.resultsNear.getText())
+        .toEqual('Showing search results near aguilar');
+    });
+
+    it('should search by location name', function () {
       expect(
         element.all(by.repeater('location in locations'))
           .first().findElement(by.css('.p-org')).getText()
         ).toEqual('Aguilar Library');
     });
+
+    it('should have one highlighted location', function () {
+      expect(element.all(by.css('.callout')).count()).toBe(1);
+      expect(
+        element.all(by.repeater('location in locations'))
+          .first().getAttribute('class')
+        ).toContain('callout');
+    });
+
+    it('should clear the input when you click the \'x\'', function () {
+      expect(landingPage.searchInput.getAttribute('value')).toEqual('aguilar');
+      landingPage.clearSearch.click();
+      expect(landingPage.searchInput.getAttribute('value')).toEqual('');
+    });
+
+        
   });
 
   it('should show 10 items by default', function () {

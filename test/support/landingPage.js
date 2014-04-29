@@ -3,6 +3,10 @@ var LandingPage = function () {
   this.searchInput = element(by.id('searchTerm'));
   // Submit search button
   this.findIt = element(by.id('findit'));
+  // Showing results near message
+  this.resultsNear = element(by.id('resultsnear'));
+  // Clear search link
+  this.clearSearch = element(by.id('clearsearch'));
 
   // Results list
   this.locations = element.all(by.repeater('location in locations'));
