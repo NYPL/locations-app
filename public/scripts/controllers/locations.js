@@ -308,6 +308,10 @@ nypl_locations.controller('LocationsCtrl', function (
         //searchByUserGeolocation();
     };
 
+    $scope.clearSearch = function () {
+        $scope.searchTerm = '';
+    };
+
   	$scope.submitAddress = function (searchTerm) {
         if (!searchTerm) {
             return;

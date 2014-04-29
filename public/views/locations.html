@@ -4,16 +4,16 @@
   <form class="form--locinator grid__item one-whole lap-and-up-one-half hard--left text--center">
     <span class="icon-search"></span>
     <input class="searchbox--locinator" id="searchTerm" type="text" data-ng-model="searchTerm"/>
-    <a href="" class="icon-cancel-circle"></a>
+    <a href="" id="clearsearch" class="icon-cancel-circle" data-ng-click="clearSearch()"></a>
     <label for="searchTerm">Ex. Jefferson Market, 10018, 455 Fifth Avenue</label>
-    <button class="btn--small alpha" data-ng-click="submitAddress(searchTerm)">Find it!</button>
+    <button id="findit" class="btn--small alpha" data-ng-click="submitAddress(searchTerm)">Find it!</button>
 
     <div class="filters" data-ng-if="locations">
 	    <div class="filters__current" data-ng-if="geolocationOn">Search near 
         <a class="btn btn--natural" href="" data-ng-click="useGeolocation()">your current location</a>
       </div>
 	    <div class="filters__research">Show me
-        <a class="btn btn--natural" data-ng-class="{false: '', true: ''}[researchBranches]" href="" data-ng-click="showResearch()">{{researchBranches && 'all branches' || 'only research libraries'}}</a>
+        <a id="onlyresearch" class="btn btn--natural" data-ng-class="{false: '', true: ''}[researchBranches]" href="" data-ng-click="showResearch()">{{researchBranches && 'all branches' || 'only research libraries'}}</a>
       </div>
       <!-- <div class="filters__">Show me <a class="btn btn--natural" href="" data-ng-click="allBranchesInit()">all branches</a></div> -->
     </div>
@@ -31,7 +31,7 @@
     <div class="search_result_text grid__item one-half">
       <div data-ng-if="distanceError">{{distanceError}} You can still search or get directions to an NYPL location.</div>
       <div data-ng-if="searchError">No results for <strong>{{searchError}}</strong> within 25 miles of an NYPL location.  Showing all locations.</div>
-      <div class="alpha" data-ng-if="geolocationAddressOrSearchQuery">Showing search results near <a href="">{{geolocationAddressOrSearchQuery}}</a></div>
+      <div id="resultsnear" class="alpha" data-ng-if="geolocationAddressOrSearchQuery">Showing search results near <a href="">{{geolocationAddressOrSearchQuery}}</a></div>
     </div>
   	
     <br />
@@ -95,9 +95,9 @@
     </section> 
     <!-- End of ng-repeat -->
     <section class="grid one-whole" data-ng-if='locations'>
-      <div class="grid--center grid__item">Showing {{locationsListed}} of {{totalLocations}} Locations</div>
+      <div id="showing" class="grid--center grid__item">Showing {{locationsListed}} of {{totalLocations}} Locations</div>
       <div class="grid--center grid__item" data-ng-if="showMore">
-        <a href="" class="btn" data-ng-click="viewMore()">Show {{increaseBy}}</a>
+        <a href="" id="showmore" class="btn" data-ng-click="viewMore()">Show {{increaseBy}}</a>
       </div>
     </section>
 

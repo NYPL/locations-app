@@ -13,6 +13,8 @@
 	margin: 0 16px !important;
 }
 
+
+
 /** 
  * Locinator 
  */
@@ -21,8 +23,30 @@
 input.searchbox--locinator{
 	font-size: 2rem;
 	height: 3.5rem;
+	padding-left: 3rem;
 	width: 95%;
 }
+
+// position icons in search box
+.form--locinator{
+	position: relative;
+
+	.icon-search, .icon-cancel-circle{
+		color: #c5c2bb;
+		font-size: 24px;
+		
+		// positioning
+		position: absolute;
+		top: 14px;
+	}
+	.icon-search{
+		left: 18px;
+	}		
+	.icon-cancel-circle{
+		right: 18px;
+	}	
+}
+
 
 // add margin above form
 .form--locinator {
@@ -41,6 +65,8 @@ input.searchbox--locinator{
 	border: 3px solid #e2dedb;
 	border-radius: 2px;
 }
+
+
 
 /**
  * Locations results
@@ -68,6 +94,10 @@ input.searchbox--locinator{
  * AskNYPL
  */
 .askNYPL{
+	ul{
+		margin-left: 24px;
+	}
+	
 	li{
 		list-style-type: none;
 		margin-bottom: .5rem;
@@ -78,13 +108,31 @@ input.searchbox--locinator{
 	}
 	
 	.askchat,.askemail{
+		// "button" style
+		background-color: rgba(#0090c4, .15);
+		border-radius: 2px;
+		padding: 6px;		
+		text-decoration: none;
+			
 		// put custom SVG icon
-			background-position: 3px;
-			background-repeat: no-repeat;
-			background-size: 40px;
-			padding-left: 64px;
+		background-position: 3px;
+		background-repeat: no-repeat;
+		background-size: 40px;
+		padding-left: 64px;
+		
+		&:hover{
+			background-color: rgba(#0090c4, .1);
+		}
 	}
 	.askchat {background-image: url(../images/AskNYPL_bubbles.svg);}
 	.askemail{background-image: url(../images/AskNYPL_envelope.svg);}
+	
+/*
+	@media only screen and (max-width: 800px){
+		.askchat, .askemail, .asknum{
+			font-size: 24px;
+		}
+	}
+*/
 
 }
