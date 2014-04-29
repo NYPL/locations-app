@@ -13,6 +13,8 @@
 	margin: 0 16px !important;
 }
 
+
+
 /** 
  * Locinator 
  */
@@ -21,8 +23,30 @@
 input.searchbox--locinator{
 	font-size: 2rem;
 	height: 3.5rem;
+	padding-left: 3rem;
 	width: 95%;
 }
+
+// position icons in search box
+.form--locinator{
+	position: relative;
+
+	.icon-search, .icon-cancel-circle{
+		color: #c5c2bb;
+		font-size: 24px;
+		
+		// positioning
+		position: absolute;
+		top: 14px;
+	}
+	.icon-search{
+		left: 18px;
+	}		
+	.icon-cancel-circle{
+		right: 18px;
+	}	
+}
+
 
 // add margin above form
 .form--locinator {
@@ -41,6 +65,8 @@ input.searchbox--locinator{
 	border: 3px solid #e2dedb;
 	border-radius: 2px;
 }
+
+
 
 /**
  * Locations results
