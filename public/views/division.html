@@ -72,7 +72,7 @@
     </div>
   </div>
 
-  <div id="events" class="chunk">
+  <div id="events" class="chunk" data-ng-if="division._embedded.events">
     <h2 class="hdg">Events</h2>
 
     <ul class="grid">
@@ -107,7 +107,7 @@
     
   </div>
 
-  <div class="chunk" id="blogs">
+  <div class="chunk" id="blogs" data-ng-if="division._embedded.blogs">
     <h2 class="hdg">Blogs</h2>
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='blog in division._embedded.blogs'>

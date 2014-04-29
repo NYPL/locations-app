@@ -60,6 +60,7 @@ nypl_locations.controller('LocationsCtrl', function (
                 .then(function (data) {
                     locations = data.locations;
                     $scope.locations = locations;
+                    console.log(locations);
 
                     _.each($scope.locations, function (location) {
                         var locationAddress = nypl_utility

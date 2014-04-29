@@ -53,7 +53,7 @@
       data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse | limitTo: libraryLimit">
 
       <div class="results--location h-card grid__item one-half lap-and-up-one-quarter">
-        <div class="p-org beta"><a href='/#/{{location.id|lowercase}}'>{{location.name}}</a></div>
+        <div class="p-org beta"><a href='/#/{{location.slug}}'>{{location.name}}</a></div>
         <div class="p-adr">
           <div class="p-street-address">{{location.street_address}}</div>
           <span class="p-locality">{{location.locality}}</span>, 
@@ -67,7 +67,7 @@
         
         <div class="results--distance h-card grid__item one-whole lap-and-up-one-third">
           <div data-ng-if="location.distance"><strong>{{location.distance}} miles</strong></div>
-          <div><a class="icon-map" href="/#/{{location.id|lowercase}}/map">View on Map </a></div>
+          <div><a class="icon-map" href="/#/{{location.slug}}/map">View on Map </a></div>
           <div>
             <a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">Get Directions</a>
           </div>
