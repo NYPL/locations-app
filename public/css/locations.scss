@@ -94,8 +94,18 @@ input.searchbox--locinator{
  * AskNYPL
  */
 .askNYPL{
+	// adjust padding from grid__item
+	@media only screen and (max-width: 600px){
+		padding-left: 0;
+		padding-top: 24px;
+	}
+
 	ul{
-		margin-left: 24px;
+		color: #5e564b;
+		margin-left: 0px;
+		
+		// positions elements
+		text-align: center;
 	}
 	
 	li{
@@ -107,25 +117,37 @@ input.searchbox--locinator{
 		vertical-align: baseline;
 	}
 	
+	.asknum{
+		@media only screen and (min-width: 568px){
+			font-size: 36px;
+		}
+	//	text-shadow: 2px 2px 0px #5e564b;
+	}
+	
 	.askchat,.askemail{
 		// "button" style
-		background-color: rgba(#0090c4, .15);
+		background-color: #ece94c;
 		border-radius: 2px;
+		color: #5e564b;
 		padding: 6px;		
 		text-decoration: none;
 			
 		// put custom SVG icon
+/*
 		background-position: 3px;
 		background-repeat: no-repeat;
 		background-size: 40px;
 		padding-left: 64px;
+*/
 		
 		&:hover{
-			background-color: rgba(#0090c4, .1);
+			background-color: lighten(#ece94c, 20%);
 		}
 	}
+/*
 	.askchat {background-image: url(../images/AskNYPL_bubbles.svg);}
 	.askemail{background-image: url(../images/AskNYPL_envelope.svg);}
+*/
 	
 /*
 	@media only screen and (max-width: 800px){

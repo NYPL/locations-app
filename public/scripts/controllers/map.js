@@ -20,6 +20,23 @@ nypl_locations.controller(
                         return data.location;
                     });
             },
+            loadMapPage = function (location) {
+                var locationAddress =
+                        nypl_utility.getAddressString(location, true),
+                    locationCoords = {
+                        'lat': location.geolocation.coordinates[1],
+                        'long': location.geolocation.coordinates[0]
+                    };
+
+                $scope.location = location;
+                $scope.hoursToday = nypl_utility.hoursToday(location.hours);
+                $scope.locationDest = nypl_utility.getAddressString(location);
+
+                nypl_geocoder_service
+                    .draw_map(locationCoords, 15, 'individual-map');
+                nypl_geocoder_service
+                    .draw_marker(location.id, locationCoords, locationAddress);
+            },
             getUserCoords = function () {
                 return nypl_coordinates_service
                     .getCoordinates()
@@ -33,30 +50,14 @@ nypl_locations.controller(
                     .catch(function (error) {
                         throw (error.message);
                     });
-            },
-            loadMapPage = function (location) {
-                $scope.location = location;
-
-                $scope.hoursToday = nypl_utility.hoursToday(location.hours);
-                $scope.locationDest = nypl_utility.getAddressString(location);
-                var locationAddress =
-                        nypl_utility.getAddressString(location, true),
-                    locationCoords = {
-                        'lat': location.geolocation.coordinates[1],
-                        'long': location.geolocation.coordinates[0]
-                    };
-
-                nypl_geocoder_service
-                    .draw_map(locationCoords, 15, 'individual-map');
-                nypl_geocoder_service
-                    .draw_marker(location.id, locationCoords, locationAddress);
             };
 
         loadLocation()
             .then(loadMapPage)
             .then(getUserCoords)
             .catch(function (error) {
-                console.log(error);
+                // Display to the user if geolocation error occurred
+                $scope.geolocation_error = error;
             });
     }
 );

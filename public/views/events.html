@@ -1,5 +1,5 @@
 <div class="content grid">
-  <p>Go back <a href="/#/{{location.id|lowercase}}">{{location.name}}</a></p>
+  <p>Go back <a href="/#/{{location.slug}}">{{location.name}}</a></p>
 
   <section class="grid">
     <div class="grid__item one-whole lap-and-up-two-thirds">
@@ -11,7 +11,7 @@
     <div class="grid__item one-whole">
       <p>
         This space is a couple of lines maximum with general stuff about what Events at a branch means.  Should be standard across all locations.
-        Examples of text type.  all events are free unless otherwise noted.
+        Examples of text type.  All events are free unless otherwise noted.
       </p>
     </div>
   </section>
@@ -28,10 +28,10 @@
   </p>
   </section>
 
-  <section class="grid__item one-whole" data-ng-repeat="event in location._embedded.events">
+  <section class="grid__item one-whole" data-ng-repeat="event in location._embedded.events" data-ng-if="location._embedded.events">
     <h3><a href="{{event._links.self.href}}">{{event.title}}</a></h3>
       <div class="grid__item one-whole lap-and-up-two-thirds">
-        <img class="img--outline img--left" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="" style="height: 100px;" />
+        <img data-ng-if="event.image" class="img--outline img--left" src="{{event.image}}" alt="" style="height: 100px;" />
         <p>Date/Time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}} - {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p>{{event.body}}</p>
       </div><!--
