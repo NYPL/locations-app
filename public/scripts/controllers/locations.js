@@ -298,17 +298,22 @@ nypl_locations.controller('LocationsCtrl', function (
     loadLocations();
 
     $scope.useGeolocation = function () {
+        nypl_geocoder_service.remove_searchMarker();
+        
         if (!userCoords) {
             loadCoords()
                 .then(loadReverseGeocoding)
                 .catch(function (error) {
                     $scope.distanceError = error.message;
+                    $scope.geolocationOn = false;
                 });
             return;
         }
 
-        // Need to update or remove from page when user is too far.
-        //searchByUserGeolocation();
+        if (!$scope.distanceError) {
+            // Need to update or remove from page when user is too far.
+            searchByUserGeolocation();
+        }
     };
 
     $scope.clearSearch = function () {
