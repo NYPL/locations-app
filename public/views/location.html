@@ -58,7 +58,8 @@
 	        <div class="{{hours.day}}" data-ng-repeat="hours in location.hours.regular" data-ng-if="$index != 7">
 	          <span class="day">{{hours.day}}</span>
 	          <span class="time">
-	            {{ hours.open | timeFormat }} - {{ hours.close | timeFormat }}
+                    {{ hours | timeFormat }}
+
 	          </span>
 	        </div>
 	      </div>
