@@ -57,8 +57,8 @@
 	      <div class="weekly-hours zeta">
 	        <div class="{{hours.day}}" data-ng-repeat="hours in location.hours.regular" data-ng-if="$index != 7">
 	          <span class="day">{{hours.day}}</span>
-	          <span class="time" data-ng-if='hours.open'>
-	            {{ hours.open | timeFormat }} - {{ hours.close | timeFormat }}
+	          <span class="time">
+                    {{ hours | timeFormat }}
 	          </span>
             <span class="time" data-ng-if='!hours.open'>
               Closed
