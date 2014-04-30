@@ -13,7 +13,7 @@
     <h1 class="p-org big">{{location.name}}</h1>
     <div class="grid">
     
-      <div class="grid__item one-half lap-and-up-one-third">
+      <div class="grid__item one-whole tablet-and-up-one-half">
         <div class="p-adr">
           <div class="p-street-address">{{location.street_address}}</div>
           <span class="p-locality">{{location.locality}}</span>, 
@@ -22,24 +22,23 @@
         </div>
 
         <div class="p-tel">{{location.contacts.phone}}</div>
+        <div class="maplink"><a class="icon-map" href="/#/{{location.slug}}/map">Map</a></div>
+        <div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
+        <div class="nearby-branches"><a href="">Nearby branches</a></div>
 
       </div><!--
       
-      --><div class="grid__item one-half lap-and-up-one-third">
-      		<div class="maplink"><a class="icon-map" href="/#/{{location.slug}}/map">Map</a></div>
-      		<div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
-	        <div class="nearby-branches"><a href="">Nearby branches</a></div>
-	        <div>Library Manager: {{location.contacts.manager}}</div>
-	        
-      </div><!--
-      
-      --><div class="grid__item one-half lap-and-up-one-third">
+      --><div class="grid__item one-whole tablet-and-up-one-half">
+      		<div>Library Manager: {{location.contacts.manager}}</div>
+      		
 	      	<ul class="top-services flush">
 	          <li class="icon-book inline">Books</li>
 	          <li class="icon-accessibility inline">Wheelchair accessible</li>
 	          <li class="icon-box-add inline">Bookdrop</li>
 	        </ul>
 
+	        <div id="catalog"><a class="icon-books" href="">Catalog Items Here</a></div>
+	        
 	        <div class="social flush beta" data-ng-if="location.social_media">
 	          <a class="{{social.classes}}" href="{{social.href}}" data-ng-repeat="social in location.social_media" class="inline"></a>
 	        </div>
@@ -69,14 +68,14 @@
       Note: See division pages for individual hours
     </p>
 
-    <div id="catalog"><a class="icon-books" href="">Catalog Items Here</a></div>
+    
   </div><!--
 
   --><div class="grid__item one-whole" id="divisions" data-ng-if="location.type == 'research' && location._embedded.divisions">
     <h2 class="hdg">Divisions</h2>
     
     <div class="grid chunk hard--left">
-      <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='division in location._embedded.divisions'>
+      <div class="grid__item one-whole desk-one-third" data-ng-repeat='division in location._embedded.divisions'>
 	        <img class="img--left" src="http://nypl.org{{division.image}}" alt="" style="height: 100px;" />
 	        <h3 class=""><a href="/#/division/{{division.slug}}">{{division.name}}</a></h3>
 	        <p>{{division.about}}</p>
@@ -107,7 +106,7 @@
     <h2 class="hdg">Events</h2>
 
     <ul class="grid">
-      <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in location._embedded.events">
+      <li class="grid__item one-whole desk-one-third" data-ng-repeat="event in location._embedded.events">
         <h3><a href="{{event._links.self.href}}">{{event.title}}</a></h3>
         <p>{{event.body}}</p>
         <div class="callout">
@@ -143,7 +142,7 @@
   <div class="chunk" id="blogs" data-ng-if="location.type != 'research' && location._embedded.blogs">
     <h2 class="hdg">Blogs</h2>
     <div class="grid">
-      <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='blog in location._embedded.blogs'>
+      <div class="grid__item one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
         <img data-ng-if="blog.image" class="img--left" src="{{blog.image}}" alt="" style="height: 100px;" />
         <h3><a href="{{blog._links.self.href}}">{{blog.title}}</a></h3>
         <div class="teaser">{{blog.body}}</div>
@@ -153,7 +152,7 @@
 
   <div class="chunk" id="exhibitions" data-ng-if="location.type == 'research' && location._embedded.exhibitions">
     <h2 class="hdg">Exhibitions</h2>
-    <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat='exhibition in location._embedded.exhibitions'>
+    <div class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='exhibition in location._embedded.exhibitions'>
       <img data-ng-if="exhibition.image" class="img--left" src="{{exhibition.image}}" alt="" style="height: 100px;" />
       <h3><a href="{{exhibition._links.self.href}}">{{exhibition.title}}</a></h3>
       <div class="teaser">{{exhibition.body}}</div>
