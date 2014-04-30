@@ -94,15 +94,18 @@ input.searchbox--locinator{
  * AskNYPL
  */
 .askNYPL{
+	// adjust padding from grid__item
 	@media only screen and (max-width: 600px){
 		padding-left: 0;
 		padding-top: 24px;
 	}
 
 	ul{
-//		background-color: #7d7872;
 		color: #5e564b;
 		margin-left: 0px;
+		
+		// positions elements
+		text-align: center;
 	}
 	
 	li{
@@ -115,7 +118,9 @@ input.searchbox--locinator{
 	}
 	
 	.asknum{
-		font-size: 36px;
+		@media only screen and (min-width: 568px){
+			font-size: 36px;
+		}
 	//	text-shadow: 2px 2px 0px #5e564b;
 	}
 	
