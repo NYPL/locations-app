@@ -41,9 +41,12 @@
       <div class="weekly-hours zeta">
         <div class="{{hours.day}}" data-ng-repeat="hours in division.hours.regular">
           <span class="day">{{hours.day}}</span>
-          <span class="time">
-            {{ hours.open | timeFormat }} - {{ hours.close | timeFormat }}
-          </span>
+          <span class="time" data-ng-if='hours.open'>
+              {{ hours.open | timeFormat }} - {{ hours.close | timeFormat }}
+            </span>
+            <span class="time" data-ng-if='!hours.open'>
+              Closed
+            </span>
         </div>
       </div>
     </div>

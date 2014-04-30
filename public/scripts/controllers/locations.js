@@ -403,6 +403,7 @@ nypl_locations.controller('LocationCtrl', function (
                 .then(function (data) {
                     location = data.location;
                     $rootScope.title = location.name;
+                    console.log(location);
 
                     // Added for debugging purposes
                     location._embedded.alerts.push({
