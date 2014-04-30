@@ -10,28 +10,32 @@
   <!-- This is h-card microformat -->
   <!-- http://microformats.org/wiki/h-card -->
   <div class="h-card grid__item one-whole lap-and-up-one-half">
-    <h1 class="p-org big">{{location.name}}</h1>
+    <h1 class="p-org ">{{location.name}}</h1>
     <div class="grid">
     
       <div class="grid__item one-whole tablet-and-up-one-half">
+      
         <div class="p-adr">
           <div class="p-street-address">{{location.street_address}}</div>
           <span class="p-locality">{{location.locality}}</span>, 
           <span class="p-region">{{location.region}}</span>, 
           <span class="p-postal-code">{{location.postal_code}}</span>
         </div>
-
         <div class="p-tel">{{location.contacts.phone}}</div>
-        <div class="maplink"><a class="icon-map" href="/#/{{location.slug}}/map">Map</a></div>
-        <div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
-        <div class="nearby-branches"><a href="">Nearby branches</a></div>
+        
+        <div class="social flush beta" data-ng-if="location.social_media">
+          <a class="{{social.classes}}" href="{{social.href}}" data-ng-repeat="social in location.social_media" class="inline"></a>
+        </div>
 
       </div><!--
       
       --><div class="grid__item one-whole tablet-and-up-one-half">
-      		<div>Library Manager: {{location.contacts.manager}}</div>
-      		
-	      	<ul class="top-services flush">
+      		<!-- <div>Library Manager: {{location.contacts.manager}}</div> -->
+      		<div class="maplink"><a class="icon-map" href="/#/{{location.slug}}/map">Map</a></div>
+	        <div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
+	        <div class="nearby-branches"><a href="">Nearby branches</a></div>
+
+	      	<ul class="top-services flush--sides">
 	          <li class="icon-book inline">Books</li>
 	          <li class="icon-accessibility inline">Wheelchair accessible</li>
 	          <li class="icon-box-add inline">Bookdrop</li>
@@ -39,9 +43,7 @@
 
 	        <div id="catalog"><a class="icon-books" href="">Catalog Items Here</a></div>
 	        
-	        <div class="social flush beta" data-ng-if="location.social_media">
-	          <a class="{{social.classes}}" href="{{social.href}}" data-ng-repeat="social in location.social_media" class="inline"></a>
-	        </div>
+	        
 
         </div>
       
@@ -49,27 +51,27 @@
   </div><!--
 
   --><div class="container__hours-catalog grid__item one-whole lap-and-up-one-half">
-    <todayshours class=" grid__item one-whole lap-and-up-one-half" hours="{{hoursToday | hoursTodayFormat:'short'}}" /><!--
+	    <todayshours class=" grid__item one-whole " hours="{{hoursToday | hoursTodayFormat:'short'}}" />
+	
+	    <div id="location-hours" class=" grid__item one-whole ">
+		      <h2 class="flush--ends hdg">Regular Hours</h2>
+	
+		      <div class="weekly-hours zeta">
+		        <div class="{{hours.day}}" data-ng-repeat="hours in location.hours.regular" data-ng-if="$index != 7">
+		          <span class="day">{{hours.day}}</span>
+		          <span class="time" data-ng-if='hours.open'>
+		            {{ hours.open | timeFormat }} - {{ hours.close | timeFormat }}
+		          </span>
+	            <span class="time" data-ng-if='!hours.open'>
+	              Closed
+	            </span>
+		        </div>
+		      </div>
+	    </div>
 
-    --><div id="location-hours" class=" grid__item one-whole lap-and-up-one-half">
-	      <h2 class="flush--ends">Regular Hours</h2>
-
-	      <div class="weekly-hours zeta">
-	        <div class="{{hours.day}}" data-ng-repeat="hours in location.hours.regular" data-ng-if="$index != 7">
-	          <span class="day">{{hours.day}}</span>
-	          <span class="time" data-ng-if='hours.open'>
-	            {{ hours.open | timeFormat }} - {{ hours.close | timeFormat }}
-	          </span>
-            <span class="time" data-ng-if='!hours.open'>
-              Closed
-            </span>
-	        </div>
-	      </div>
-    </div>
-
-    <p class="color-block callout" data-ng-if="location.type == 'research'">
-      Note: See division pages for individual hours
-    </p>
+	    <p class="color-block callout" data-ng-if="location.type == 'research'">
+	      Note: See division pages for individual hours
+	    </p>
 
     
   </div><!--
