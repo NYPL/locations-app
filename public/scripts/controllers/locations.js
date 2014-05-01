@@ -78,6 +78,8 @@ nypl_locations.controller('LocationsCtrl', function (
                             = nypl_utility.locationType(location.id);
                         location.locationDest
                             = nypl_utility.getAddressString(location);
+                        location.hoursToday =
+                           nypl_utility.hoursToday(location.hours);
                     });
 
                     nypl_geocoder_service
