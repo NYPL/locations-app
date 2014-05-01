@@ -41,7 +41,7 @@
 
       --><div class="h-card grid__item one-quarter" ng-click="predicate = 'distance'; reverse=!reverse">Distance</div><!--
 
-      --><div class="h-card grid__item one-quarter">Hours</div><!--
+      --><div class="h-card grid__item one-quarter">Hours Today</div><!--
 
     --><div class="h-card grid__item one-quarter">Services</div>
     </section>
@@ -74,11 +74,7 @@
         </div><!--
 
         --><div class="results--hours h-card grid__item one-whole lap-and-up-one-third">
-          <ul>
-            <li data-ng-repeat='hours in location.hours.regular'>
-              {{hours.day}} {{hours | timeFormat}}
-            </li>
-          </ul>
+            {{ location.hoursToday | timeFormat }}
         </div><!-- 
 
         --><div class="results--services h-card grid__item one-whole lap-and-up-one-third">
