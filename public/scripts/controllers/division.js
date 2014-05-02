@@ -16,7 +16,7 @@ nypl_locations.controller('DivisionCtrl', function (
                 .then(function (data) {
                     division = data.division;
                     $rootScope.title = division.name;
-
+console.log(division);
                     if (division.hours) {
                         $scope.hoursToday =
                             nypl_utility.hoursToday(division.hours);
