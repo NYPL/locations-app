@@ -147,7 +147,9 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
         show_research_libraries: function () {
             var _this = this,
-                list = ['SASB', 'LPA', 'SIBL', 'SC'];
+                // Add the 'user' marker. If it's available,
+                // we do not want to remove it at all.
+                list = ['SASB', 'LPA', 'SIBL', 'SC', 'user'];
 
             _.each(markers, function (marker) {
                 if (!_.contains(list, marker.id)) {
