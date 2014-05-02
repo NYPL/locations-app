@@ -20,10 +20,10 @@
     
   </form><!--
 
-  --><div id="all-locations-map" class="grid__item one-whole lap-and-up-one-half"></div>
+  --><div id="all-locations-map" class="grid__item one-whole lap-and-up-one-half nypl-map"></div>
   <div id="all-locations-map-legend" class="hide-legend">
-    <img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />NYPL Library<br />
-    <img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />Your Current Location
+    <span data-ng-if="locations"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />NYPL Library<br /></span>
+    <span data-ng-if="locationStart"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />Your Current Location</span>
   </div>
 
   <section class="list">
@@ -65,7 +65,7 @@
 
       --><div class="results--more grid__item one-half lap-and-up-three-quarters hard--left">
         
-        <div class="results--distance h-card grid__item one-whole lap-and-up-one-third">
+        <div class="results--distance grid__item one-whole lap-and-up-one-third">
           <div data-ng-if="location.distance"><strong>{{location.distance}} miles</strong></div>
           <div><a class="icon-map" href="/#/{{location.slug}}/map">View on Map </a></div>
           <div>

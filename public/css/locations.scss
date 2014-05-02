@@ -60,12 +60,46 @@ input.searchbox--locinator{
 	}
 }
 
-// nice border on map
-#all-locations-map{
+/**
+ * Map styles
+ */
+
+// nice border on maps
+.nypl-map {
 	border: 3px solid #e2dedb;
 	border-radius: 2px;
 }
 
+#all-locations-map{
+	height: 350px;
+}
+
+#individual-map { 
+  height: 350px;
+  width: 800px;
+}
+
+// Map legend for the homepage map
+#all-locations-map-legend {
+  padding: 10px;
+  font-size: 13px;
+  font-size: 1.3em;
+  background: #fff;
+}
+
+.hide-legend {
+  display: none;
+}
+
+.show-legend {
+  display: block;
+}
+
+// Fix to display the closing 'X' on marker's infowindow
+img[src*="gstatic.com/"], 
+img[src*="googleapis.com/"] {
+	max-width: none;
+}
 
 
 /**
@@ -92,11 +126,27 @@ input.searchbox--locinator{
  
  
 /**
- * Location: hours
+ * Location/Division
  */
 
-.container__hours-catalog{
-	margin-top: 18px;
+// spacing beneath each section 
+.container__address,
+.container__services,
+.container__hours{
+	margin-bottom: 24px;
+}
+
+#catalog a{
+	background-color: rgba(#0090c4, .2);
+	border-radius: 2px;
+	color: darken(#0090c4, 10%);
+	padding: 4px;
+	text-decoration: none;
+	
+	&:hover{
+		color: #0090c4;
+		text-decoration: underline;	
+	}
 }
 
 #hours-today{
@@ -106,7 +156,7 @@ input.searchbox--locinator{
 	}
 }
 
-#location-hours {
+#location-hours, #division-hours {
 	margin-top: 12px;
 	margin-bottom: 24px;
 	

@@ -69,10 +69,15 @@ nypl_locations.controller('LocationsCtrl', function (
                                 'long': location.geolocation.coordinates[0]
                             };
 
-                        nypl_geocoder_service
-                            .draw_marker(location.id,
-                                markerCoordinates,
-                                locationAddress);
+                        // Initially, when the map is drawn and markers are availble,
+                        // they will be drawn too. 
+                        // No need to draw them again if they exist.
+                        if (!nypl_geocoder_service.check_marker(location.slug)) {
+                            nypl_geocoder_service
+                                .draw_marker(location.slug,
+                                    markerCoordinates,
+                                    locationAddress);
+                        }
 
                         location.library_type
                             = nypl_utility.locationType(location.id);
@@ -142,14 +147,19 @@ nypl_locations.controller('LocationsCtrl', function (
                         'long': userCoords.longitude
                     };
 
-                    nypl_geocoder_service
-                        .draw_marker(
-                            'user',
-                            markerCoordinates,
-                            "Your Current Location",
-                            true,
-                            true
-                        );
+                    if (nypl_geocoder_service.check_marker('user')) {
+                        nypl_geocoder_service.pan_existing_marker('user');
+                        nypl_geocoder_service.add_marker_to_map('user');
+                    } else {
+                        nypl_geocoder_service
+                            .draw_marker(
+                                'user',
+                                markerCoordinates,
+                                "Your Current Location",
+                                true,
+                                true
+                            );
+                    }
 
                     $scope.locations = locations;
                     $scope.predicate = 'distance';
@@ -208,10 +218,10 @@ nypl_locations.controller('LocationsCtrl', function (
 
             if (filteredLocations.length) {
                 if (nypl_geocoder_service
-                        .check_marker(filteredLocations[0].id)) {
+                        .check_marker(filteredLocations[0].slug)) {
 
                     nypl_geocoder_service
-                        .pan_existing_marker(filteredLocations[0].id);
+                        .pan_existing_marker(filteredLocations[0].slug);
                 }
             } else {
                 if (_.min(distanceArray) > 25) {
@@ -296,6 +306,7 @@ nypl_locations.controller('LocationsCtrl', function (
 
     nypl_geocoder_service
         .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+    nypl_geocoder_service.load_markers();
 
     loadLocations();
 
@@ -319,7 +330,7 @@ nypl_locations.controller('LocationsCtrl', function (
     };
 
     $scope.clearSearch = function () {
-        $scope.searchTerm = '';
+        allLocationsInit();
     };
 
     $scope.submitAddress = function (searchTerm) {
@@ -372,17 +383,16 @@ nypl_locations.controller('LocationsCtrl', function (
     };
 
     $scope.showResearch = function () {
+        nypl_geocoder_service.hide_infowindow();
         $scope.researchBranches = !$scope.researchBranches;
+        
         if ($scope.researchBranches) {
+            nypl_geocoder_service.show_research_libraries();
             ngRepeatShowResearchBranches();
         } else {
+            nypl_geocoder_service.show_all_libraries();
             ngRepeatShowAllBranches();
         }
-    };
-
-    $scope.allBranchesInit = function () {
-        $scope.location_type = '';
-        allLocationsInit();
     };
 
 });
@@ -405,7 +415,6 @@ nypl_locations.controller('LocationCtrl', function (
                 .then(function (data) {
                     location = data.location;
                     $rootScope.title = location.name;
-                    console.log(location);
 
                     // Added for debugging purposes
                     location._embedded.alerts.push({

@@ -74,6 +74,16 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             bound = new google.maps.LatLngBounds();
         },
 
+        load_markers: function () {
+            var _this = this;
+            // if markers are available, draw them
+            if (markers) {
+                _.each(markers, function (marker) {
+                    _this.add_marker_to_map(marker.id);
+                });
+            }
+        },
+
         draw_legend: function (id) {
             var mapLegend = document.getElementById(id);
 
@@ -135,6 +145,27 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             var markerObj = _.where(markers, {id: id});
             this.panMap(markerObj[0].marker);
             this.show_infowindow(markerObj[0].marker, markerObj[0].text);
+        },
+
+        show_research_libraries: function () {
+            var _this = this,
+                // Add the 'user' marker. If it's available,
+                // we do not want to remove it at all. Use slug names
+                list = ['schwarzman', 'lpa', 'sibl', 'schomburg', 'user'];
+
+            _.each(markers, function (marker) {
+                if (!_.contains(list, marker.id)) {
+                    _this.remove_marker(marker.id);
+                }
+            });
+        },
+
+        show_all_libraries: function () {
+            var _this = this;
+
+            _.each(markers, function (marker) {
+                _this.add_marker_to_map(marker.id);
+            });
         },
 
         draw_marker: function (id, location, text, user, pan) {
