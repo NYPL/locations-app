@@ -147,14 +147,19 @@ nypl_locations.controller('LocationsCtrl', function (
                         'long': userCoords.longitude
                     };
 
-                    nypl_geocoder_service
-                        .draw_marker(
-                            'user',
-                            markerCoordinates,
-                            "Your Current Location",
-                            true,
-                            true
-                        );
+                    if (nypl_geocoder_service.check_marker('user')) {
+                        nypl_geocoder_service.pan_existing_marker('user');
+                        nypl_geocoder_service.add_marker_to_map('user');
+                    } else {
+                        nypl_geocoder_service
+                            .draw_marker(
+                                'user',
+                                markerCoordinates,
+                                "Your Current Location",
+                                true,
+                                true
+                            );
+                    }
 
                     $scope.locations = locations;
                     $scope.predicate = 'distance';

@@ -160,6 +160,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
         show_all_libraries: function () {
             var _this = this;
+
             _.each(markers, function (marker) {
                 _this.add_marker_to_map(marker.id);
             });
