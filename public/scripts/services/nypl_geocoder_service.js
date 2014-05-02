@@ -137,6 +137,24 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             this.show_infowindow(markerObj[0].marker, markerObj[0].text);
         },
 
+        show_research_libraries: function () {
+            var _this = this,
+                list = ['SASB', 'LPA', 'SIBL', 'SC'];
+                
+            _.each(markers, function (marker) {
+                if (!_.contains(list, marker.id)) {
+                    _this.remove_marker(marker.id);
+                }
+            });
+        },
+
+        show_all_libraries: function () {
+            var _this = this;
+            _.each(markers, function (marker) {
+                _this.add_marker_to_map(marker.id);
+            });
+        },
+
         draw_marker: function (id, location, text, user, pan) {
             var _this = this,
                 marker,

@@ -374,8 +374,10 @@ nypl_locations.controller('LocationsCtrl', function (
     $scope.showResearch = function () {
         $scope.researchBranches = !$scope.researchBranches;
         if ($scope.researchBranches) {
+            nypl_geocoder_service.show_research_libraries();
             ngRepeatShowResearchBranches();
         } else {
+            nypl_geocoder_service.show_all_libraries();
             ngRepeatShowAllBranches();
         }
     };
