@@ -275,7 +275,6 @@ nypl_locations.controller('LocationsCtrl', function (
 
             if (nypl_geocoder_service.check_marker('user')) {
                 nypl_geocoder_service.pan_existing_marker('user');
-                nypl_geocoder_service.add_marker_to_map('user');
             }
             // Iterate through lon/lat and calculate distance
             _.each($scope.locations, function (location) {

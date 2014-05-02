@@ -195,6 +195,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
             if (pan) {
                 this.panMap(marker);
+                this.show_infowindow(marker, text);
             }
 
             // This works but it seems to have to call an external file?
