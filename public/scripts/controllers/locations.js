@@ -330,7 +330,6 @@ nypl_locations.controller('LocationsCtrl', function (
     };
 
     $scope.clearSearch = function () {
-        $scope.searchTerm = '';
         allLocationsInit();
     };
 
@@ -392,14 +391,8 @@ nypl_locations.controller('LocationsCtrl', function (
             ngRepeatShowResearchBranches();
         } else {
             nypl_geocoder_service.show_all_libraries();
-            //nypl_geocoder_service.pan_existing_marker('schwarzman');
             ngRepeatShowAllBranches();
         }
-    };
-
-    $scope.allBranchesInit = function () {
-        $scope.location_type = '';
-        allLocationsInit();
     };
 
 });
