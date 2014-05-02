@@ -1,6 +1,7 @@
 /*jslint indent: 4, maxlen: 80 */
 /*global nypl_locations */
 
+// Load all the services available.
 nypl_locations.controller('ServicesCtrl', function (
     $scope,
     $rootScope,
@@ -21,6 +22,8 @@ nypl_locations.controller('ServicesCtrl', function (
     loadServices();
 });
 
+// Load one service and list all the locations
+// where the service can be found.
 nypl_locations.controller('OneServiceCtrl', function (
     $scope,
     $routeParams,
@@ -28,17 +31,19 @@ nypl_locations.controller('OneServiceCtrl', function (
     nypl_locations_service
 ) {
     'use strict';
-    var service_name,
+    var service,
+        locations,
         loadOneService = function () {
             return nypl_locations_service
                 .one_service($routeParams.service_id)
                 .then(function (data) {
-                    service_name = data.service.name;
-                    $rootScope.title = service_name;
+                    service = data.service;
+                    locations = data.locations;
 
-                    $scope.service = data.service;
-                    $scope.locations = data.locations;
-                    $scope.service_name = service_name;
+                    $rootScope.title = service.name;
+                    $scope.service = service;
+                    $scope.locations = locations;
+                    $scope.service_name = service.name;
                 });
         };
 
@@ -46,6 +51,8 @@ nypl_locations.controller('OneServiceCtrl', function (
 
 });
 
+// Load one location and list all the services
+// found in that location.
 nypl_locations.controller('ServicesAtLibraryCtrl', function (
     $scope,
     $routeParams,

@@ -19,7 +19,7 @@
       </div><!--
       
       --><div class="grid__item one-whole lap-and-up-one-half">
-        <div>Division Manager: Edwin</div>
+        <div>Division Manager: {{division.contacts.manager}}</div>
         <div>See more division contact info <a href="">here</a></div>
 
         <ul class="top-services flush">
@@ -43,12 +43,9 @@
       <div class="weekly-hours zeta">
         <div class="{{hours.day}}" data-ng-repeat="hours in division.hours.regular">
           <span class="day">{{hours.day}}</span>
-          <span class="time" data-ng-if='hours.open'>
-              {{ hours.open | timeFormat }} - {{ hours.close | timeFormat }}
-            </span>
-            <span class="time" data-ng-if='!hours.open'>
-              Closed
-            </span>
+          <span class="time">
+            {{ hours | timeFormat }}
+          </span>
         </div>
       </div>
     </div>
