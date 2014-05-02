@@ -9,7 +9,8 @@ nypl_locations.controller(
         nypl_locations_service,
         nypl_geocoder_service,
         nypl_coordinates_service,
-        nypl_utility
+        nypl_utility,
+        breadcrumbs
     ) {
         'use strict';
         var loadLocation = function () {
@@ -57,6 +58,7 @@ nypl_locations.controller(
                     });
             };
 
+        $scope.breadcrumbs = breadcrumbs;
         loadLocation()
             .then(loadMapPage)
             .then(getUserCoords)

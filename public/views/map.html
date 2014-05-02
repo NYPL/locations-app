@@ -1,5 +1,10 @@
 <div class="content grid">
-  <p>Go back <a href="/#/{{location.slug}}">{{location.name}}</a></p>
+  <ul class="inline breadcrumb">
+    <li ng-repeat="breadcrumb in breadcrumbs.get() track by breadcrumb.path" ng-class="{ active: $last }">
+      <a ng-if="!$last" ng-href="#{{ breadcrumb.path }}" ng-bind="breadcrumb.label | capitalize"></a>
+      <span ng-if="$last" ng-bind="breadcrumb.label | capitalize"></span>
+    </li>
+  </ul>
 
   <section class="grid">
     <div class="grid__item one-whole lap-and-up-two-thirds">

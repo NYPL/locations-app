@@ -4,7 +4,8 @@
 nypl_locations.controller('ServicesCtrl', function (
     $scope,
     $rootScope,
-    nypl_locations_service
+    nypl_locations_service,
+    breadcrumbs
 ) {
     'use strict';
     var services,
@@ -17,6 +18,7 @@ nypl_locations.controller('ServicesCtrl', function (
                 });
         };
 
+    $scope.breadcrumbs = breadcrumbs;
     $rootScope.title = "Services";
     loadServices();
 });
@@ -25,7 +27,8 @@ nypl_locations.controller('OneServiceCtrl', function (
     $scope,
     $routeParams,
     $rootScope,
-    nypl_locations_service
+    nypl_locations_service,
+    breadcrumbs
 ) {
     'use strict';
     var service_name,
@@ -35,10 +38,13 @@ nypl_locations.controller('OneServiceCtrl', function (
                 .then(function (data) {
                     service_name = data.service.name;
                     $rootScope.title = service_name;
-
+                    console.log(data);
                     $scope.service = data.service;
                     $scope.locations = data.locations;
                     $scope.service_name = service_name;
+
+                    breadcrumbs.options = { 'Service': service_name };
+                    $scope.breadcrumbs = breadcrumbs;
                 });
         };
 
@@ -50,7 +56,8 @@ nypl_locations.controller('ServicesAtLibraryCtrl', function (
     $scope,
     $routeParams,
     $rootScope,
-    nypl_locations_service
+    nypl_locations_service,
+    breadcrumbs
 ) {
     'use strict';
     var services,
@@ -61,10 +68,14 @@ nypl_locations.controller('ServicesAtLibraryCtrl', function (
                 .then(function (data) {
                     location = data.location;
                     services = data.services;
+                    console.log(data);
 
                     $rootScope.title = location.name;
                     $scope.location = location;
                     $scope.services = services.name;
+
+                    breadcrumbs.options = { 'Location': location.name };
+                    $scope.breadcrumbs = breadcrumbs;
                 });
         };
 

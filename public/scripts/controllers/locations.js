@@ -403,7 +403,8 @@ nypl_locations.controller('LocationCtrl', function (
     $rootScope,
     nypl_locations_service,
     nypl_coordinates_service,
-    nypl_utility
+    nypl_utility,
+    breadcrumbs
 ) {
     'use strict';
     var location,
@@ -415,6 +416,9 @@ nypl_locations.controller('LocationCtrl', function (
                     location = data.location;
                     $rootScope.title = location.name;
 
+                    breadcrumbs.options = { 'Location': location.name };
+                    $scope.breadcrumbs = breadcrumbs;
+                    
                     // Added for debugging purposes
                     location._embedded.alerts.push({
                         _id: 123456789,

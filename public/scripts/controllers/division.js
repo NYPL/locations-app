@@ -6,7 +6,8 @@ nypl_locations.controller('DivisionCtrl', function (
     $routeParams,
     $rootScope,
     nypl_locations_service,
-    nypl_utility
+    nypl_utility,
+    breadcrumbs
 ) {
     'use strict';
     var division,
@@ -16,6 +17,14 @@ nypl_locations.controller('DivisionCtrl', function (
                 .then(function (data) {
                     division = data.division;
                     $rootScope.title = division.name;
+
+                    breadcrumbs.options = {
+                        "Home": division.location_id,
+                        "Division": division.name
+                    };
+                    // This seems a bit hacky:
+                    breadcrumbs.breadcrumbs[0].path = "/" + division.location_id;
+                    $scope.breadcrumbs = breadcrumbs;
 
                     if (division.hours) {
                         $scope.hoursToday =

@@ -39,6 +39,14 @@ nypl_locations.filter('dateToISO', function () {
     };
 });
 
+nypl_locations.filter('capitalize', function () {
+    return function (input, scope) {
+        return input.replace(/(^|\s)([a-z])/g, function (str) {
+            return str.toUpperCase();
+        })
+    };
+});
+
 nypl_locations.filter('hoursTodayFormat', function () {
     'use strict';
 
