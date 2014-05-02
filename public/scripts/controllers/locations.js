@@ -90,19 +90,23 @@ nypl_locations.controller('LocationsCtrl', function (
                     nypl_geocoder_service
                         .draw_legend('all-locations-map-legend');
 
+                    checkGeolocation();
                     allLocationsInit();
-
-                    // After loading all locations, check if the browser
-                    // supports geolocation before the user actually tries to
-                    // geolocate their location. If available, the button to
-                    // geolocate appears.
-                    if (nypl_coordinates_service.checkGeolocation()) {
-                        $scope.geolocationOn = true;
-                    }
 
                     return locations;
                 });
         },
+
+        checkGeolocation = function () {
+            // After loading all locations, check if the browser
+            // supports geolocation before the user actually tries to
+            // geolocate their location. If available, the button to
+            // geolocate appears.
+            if (nypl_coordinates_service.checkGeolocation()) {
+                $scope.geolocationOn = true;
+            }
+        },
+
         loadCoords = function () {
             return nypl_coordinates_service
                 .getCoordinates()
@@ -310,6 +314,7 @@ nypl_locations.controller('LocationsCtrl', function (
     loadLocations();
 
     $scope.useGeolocation = function () {
+        // Remove any existing search markers on the map.
         nypl_geocoder_service.remove_searchMarker();
         
         if (!userCoords) {
@@ -397,6 +402,8 @@ nypl_locations.controller('LocationsCtrl', function (
 });
 // End LocationsCtrl
 
+
+// Load one individual location for locations and events pages
 nypl_locations.controller('LocationCtrl', function (
     $scope,
     $routeParams,
@@ -424,7 +431,7 @@ nypl_locations.controller('LocationCtrl', function (
                             }
                         },
                         body: "This is a mocked alert for debugging.",
-                        end: "2014-04-30T01:00:00-04:00",
+                        end: "2014-05-25T01:00:00-04:00",
                         id: "123456789",
                         path: null,
                         start: "2014-04-24T00:00:00-04:00",
@@ -460,6 +467,8 @@ nypl_locations.controller('LocationCtrl', function (
                 });
         };
 
+    // Load the location and user's geolocation coordinates
+    // as separate events.
     loadLocation();
     loadCoords();
 });
