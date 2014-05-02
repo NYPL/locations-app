@@ -18,6 +18,9 @@ nypl_locations.controller(
                     .single_location($routeParams.symbol)
                     .then(function (data) {
                         $rootScope.title = data.location.name;
+
+                        breadcrumbs.options = { 'Location': data.location.name };
+                        $scope.breadcrumbs = breadcrumbs;
                         return data.location;
                     });
             },
@@ -58,7 +61,6 @@ nypl_locations.controller(
                     });
             };
 
-        $scope.breadcrumbs = breadcrumbs;
         loadLocation()
             .then(loadMapPage)
             .then(getUserCoords)

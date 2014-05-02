@@ -22,7 +22,9 @@ nypl_locations.controller('DivisionCtrl', function (
                         "Home": division.location_id,
                         "Division": division.name
                     };
-                    // This seems a bit hacky:
+                    // This seems a bit hacky but it's because we need to override
+                    // the home link to go to the location where the division
+                    // is located.
                     breadcrumbs.breadcrumbs[0].path = "/" + division.location_id;
                     $scope.breadcrumbs = breadcrumbs;
 
