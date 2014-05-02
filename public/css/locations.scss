@@ -60,12 +60,46 @@ input.searchbox--locinator{
 	}
 }
 
-// nice border on map
-#all-locations-map{
+/**
+ * Map styles
+ */
+
+// nice border on maps
+.nypl-map {
 	border: 3px solid #e2dedb;
 	border-radius: 2px;
 }
 
+#all-locations-map{
+	height: 350px;
+}
+
+#individual-map { 
+  height: 350px;
+  width: 800px;
+}
+
+// Map legend for the homepage map
+#all-locations-map-legend {
+  padding: 10px;
+  font-size: 13px;
+  font-size: 1.3em;
+  background: #fff;
+}
+
+.hide-legend {
+  display: none;
+}
+
+.show-legend {
+  display: block;
+}
+
+// Fix to display the closing 'X' on marker's infowindow
+img[src*="gstatic.com/"], 
+img[src*="googleapis.com/"] {
+	max-width: none;
+}
 
 
 /**

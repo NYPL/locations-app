@@ -72,9 +72,9 @@ nypl_locations.controller('LocationsCtrl', function (
                         // Initially, when the map is drawn and markers are availble,
                         // they will be drawn too. 
                         // No need to draw them again if they exist.
-                        if (!nypl_geocoder_service.check_marker(location.id)) {
+                        if (!nypl_geocoder_service.check_marker(location.slug)) {
                             nypl_geocoder_service
-                                .draw_marker(location.id,
+                                .draw_marker(location.slug,
                                     markerCoordinates,
                                     locationAddress);
                         }
@@ -218,10 +218,10 @@ nypl_locations.controller('LocationsCtrl', function (
 
             if (filteredLocations.length) {
                 if (nypl_geocoder_service
-                        .check_marker(filteredLocations[0].id)) {
+                        .check_marker(filteredLocations[0].slug)) {
 
                     nypl_geocoder_service
-                        .pan_existing_marker(filteredLocations[0].id);
+                        .pan_existing_marker(filteredLocations[0].slug);
                 }
             } else {
                 if (_.min(distanceArray) > 25) {
@@ -306,6 +306,7 @@ nypl_locations.controller('LocationsCtrl', function (
 
     nypl_geocoder_service
         .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+    nypl_geocoder_service.load_markers();
 
     loadLocations();
 
@@ -330,6 +331,7 @@ nypl_locations.controller('LocationsCtrl', function (
 
     $scope.clearSearch = function () {
         $scope.searchTerm = '';
+        allLocationsInit();
     };
 
     $scope.submitAddress = function (searchTerm) {
@@ -382,12 +384,15 @@ nypl_locations.controller('LocationsCtrl', function (
     };
 
     $scope.showResearch = function () {
+        nypl_geocoder_service.hide_infowindow();
         $scope.researchBranches = !$scope.researchBranches;
+        
         if ($scope.researchBranches) {
             nypl_geocoder_service.show_research_libraries();
             ngRepeatShowResearchBranches();
         } else {
             nypl_geocoder_service.show_all_libraries();
+            //nypl_geocoder_service.pan_existing_marker('schwarzman');
             ngRepeatShowAllBranches();
         }
     };

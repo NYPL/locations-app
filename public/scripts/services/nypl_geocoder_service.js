@@ -59,7 +59,6 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         draw_map: function (coords, zoom, id) {
             var locationCoords = new google.maps
                 .LatLng(coords.lat, coords.long),
-                _this = this,
                 mapOptions = {
                     zoom: zoom,
                     center: locationCoords,
@@ -73,7 +72,10 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             map = new google.maps.Map(document.getElementById(id), mapOptions);
 
             bound = new google.maps.LatLngBounds();
+        },
 
+        load_markers: function () {
+            var _this = this;
             // if markers are available, draw them
             if (markers) {
                 _.each(markers, function (marker) {
@@ -148,8 +150,8 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         show_research_libraries: function () {
             var _this = this,
                 // Add the 'user' marker. If it's available,
-                // we do not want to remove it at all.
-                list = ['SASB', 'LPA', 'SIBL', 'SC', 'user'];
+                // we do not want to remove it at all. Use slug names
+                list = ['schwarzman', 'lpa', 'sibl', 'schomburg', 'user'];
 
             _.each(markers, function (marker) {
                 if (!_.contains(list, marker.id)) {

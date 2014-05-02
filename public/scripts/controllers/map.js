@@ -34,8 +34,13 @@ nypl_locations.controller(
 
                 nypl_geocoder_service
                     .draw_map(locationCoords, 15, 'individual-map');
-                nypl_geocoder_service
-                    .draw_marker(location.id, locationCoords, locationAddress);
+
+                if (nypl_geocoder_service.check_marker($routeParams.symbol)) {
+                    nypl_geocoder_service.add_marker_to_map($routeParams.symbol);
+                } else {
+                    nypl_geocoder_service
+                        .draw_marker($routeParams.symbol, locationCoords, locationAddress);
+                }
             },
             getUserCoords = function () {
                 return nypl_coordinates_service
