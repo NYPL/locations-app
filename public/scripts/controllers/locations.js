@@ -69,10 +69,15 @@ nypl_locations.controller('LocationsCtrl', function (
                                 'long': location.geolocation.coordinates[0]
                             };
 
-                        nypl_geocoder_service
-                            .draw_marker(location.id,
-                                markerCoordinates,
-                                locationAddress);
+                        // Initially, when the map is drawn and markers are availble,
+                        // they will be drawn too. 
+                        // No need to draw them again if they exist.
+                        if (!nypl_geocoder_service.check_marker(location.id)) {
+                            nypl_geocoder_service
+                                .draw_marker(location.id,
+                                    markerCoordinates,
+                                    locationAddress);
+                        }
 
                         location.library_type
                             = nypl_utility.locationType(location.id);
@@ -407,7 +412,6 @@ nypl_locations.controller('LocationCtrl', function (
                 .then(function (data) {
                     location = data.location;
                     $rootScope.title = location.name;
-                    console.log(location);
 
                     // Added for debugging purposes
                     location._embedded.alerts.push({

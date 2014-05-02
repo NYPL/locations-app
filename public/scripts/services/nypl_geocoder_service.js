@@ -59,6 +59,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         draw_map: function (coords, zoom, id) {
             var locationCoords = new google.maps
                 .LatLng(coords.lat, coords.long),
+                _this = this,
                 mapOptions = {
                     zoom: zoom,
                     center: locationCoords,
@@ -72,6 +73,13 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             map = new google.maps.Map(document.getElementById(id), mapOptions);
 
             bound = new google.maps.LatLngBounds();
+
+            // if markers are available, draw them
+            if (markers) {
+                _.each(markers, function (marker) {
+                    _this.add_marker_to_map(marker.id);
+                });
+            }
         },
 
         draw_legend: function (id) {
@@ -140,7 +148,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         show_research_libraries: function () {
             var _this = this,
                 list = ['SASB', 'LPA', 'SIBL', 'SC'];
-                
+
             _.each(markers, function (marker) {
                 if (!_.contains(list, marker.id)) {
                     _this.remove_marker(marker.id);
