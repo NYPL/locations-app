@@ -7,6 +7,9 @@ var LandingPage = function () {
   this.resultsNear = element(by.id('resultsnear'));
   // Clear search link
   this.clearSearch = element(by.id('clearsearch'));
+  // Current Location button
+  this.currLoc = element(by.id('currentloc'));
+
 
   // Results list
   this.locations = element.all(by.repeater('location in locations'));
@@ -18,7 +21,8 @@ var LandingPage = function () {
   this.showMore = element(by.id('showmore'));
   // Results list showing X of Y message
   this.showing = element(by.id('showing'));
-
+  // Problem with Geolocation error
+  this.distanceError = element(by.id('distanceerror'));
 
   this.search = function (query) {
     this.searchInput.sendKeys(query);

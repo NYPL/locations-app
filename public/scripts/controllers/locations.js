@@ -243,8 +243,11 @@ nypl_locations.controller('LocationsCtrl', function (
             return locationsCopy;
         },
         organizeLocations = function (locations, filteredLocations) {
+            var distanceArray = [], sortByFilter = 'distance';
+
             _.each(locations, function (location) {
                 location.highlight = '';
+                distanceArray.push(location.distance);
             });
 
             _.each(filteredLocations, function (location) {
@@ -254,11 +257,15 @@ nypl_locations.controller('LocationsCtrl', function (
                 location.distance = '';
             });
 
+            if (_.min(distanceArray) > 25) {
+                sortByFilter = 'name';
+            }
+
             // Sort the locations array here instead of using the angular
             // orderBy filter. That way we can display the matched locations 
             // first and then display the results from the geocoder service
             locations = _.sortBy(locations, function (location) {
-                return location.distance;
+                return location[sortByFilter];
             });
 
             // Remove the matched libraries from the filter search term
@@ -267,6 +274,12 @@ nypl_locations.controller('LocationsCtrl', function (
             // Use union to add the matched locations in front of the rest 
             // of the locations
             $scope.locations = _.union(filteredLocations, locations);
+
+            // If there is an angularjs filter match, then sort by the matches
+            // first and then by the rest of the locations
+            if (_.min(distanceArray) > 25) {
+                resetDistance();
+            }
 
             // Don't sort by distance or the matched results will not display 
             // first
