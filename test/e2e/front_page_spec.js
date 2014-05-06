@@ -24,11 +24,53 @@ describe('Locations: homepage', function () {
                 '       }';
         }
 
+        function mockGeoError(code) {
+            return 'window.navigator.geolocation.getCurrentPosition = ' +
+                '       function (success, error) {' +
+                '           var err = {' +
+                '               code: ' + code + ',' +
+                '               PERMISSION_DENIED: 1,' +
+                '               POSITION_UNAVAILABLE: 2,' +
+                '               TIMEOUT: 3' +
+                '           };' +
+                '           error(err);' +
+                '       }';
+        }
+        
+
         it('should not geolocate if you are too far away', function () {
             browser.executeScript(mockGeo(36.149674, -86.813347));
             landingPage.currLoc.click();
             expect(landingPage.distanceError.getText())
                 .toContain('You are not within 25 miles of any NYPL library');
+        });
+
+        it('should report when permission is denied', function () {
+            browser.executeScript(mockGeoError(1));
+            landingPage.currLoc.click();
+            expect(landingPage.distanceError.getText())
+                .toContain('Permission denied.');
+        });
+
+        it('should report when location is unavailable', function () {
+            browser.executeScript(mockGeoError(2));
+            landingPage.currLoc.click();
+            expect(landingPage.distanceError.getText())
+                .toContain('The position is currently unavailable.');
+        });
+
+        it('should report when geolocation times out', function () {
+            browser.executeScript(mockGeoError(3));
+            landingPage.currLoc.click();
+            expect(landingPage.distanceError.getText())
+                .toContain('The request timed out.');
+        });
+
+        it('should report unknown errors', function () {
+            browser.executeScript(mockGeoError(100));
+            landingPage.currLoc.click();
+            expect(landingPage.distanceError.getText())
+                .toContain('Unknown error.');
         });
     });
 
