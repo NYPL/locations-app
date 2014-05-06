@@ -7,6 +7,30 @@ describe('Locations: homepage', function () {
     browser.waitForAngular();
   });
 
+  describe('Geolocation', function () {
+      function mockGeo(lat, lon) {
+          return '\
+              window.navigator.geolocation.getCurrentPosition =\
+                  function (success, error) {\
+                      var position = {\
+                          "coords" : {\
+                              "latitude": "' + lat + '",\
+                              "longitude": "' + lon + '"\
+                          }\
+                      };\
+                      success(position);\
+                  }';
+      }
+
+      it('should not geolocate if you are too far away', function () {
+          browser.executeScript(mockGeo(36.149674, -86.813347));
+          landingPage.currLoc.click();
+          expect(landingPage.distanceError.getText())
+              .toContain('You are not within 25 miles of any NYPL library');
+      });
+      
+  });
+
   describe('Search box', function() {
     beforeEach(function () {
       landingPage.search('aguilar');
@@ -64,8 +88,6 @@ describe('Locations: homepage', function () {
       only_r.click();
       expect(landingPage.locations.count()).toBe(10);
   });
-
-
 });
 
 
