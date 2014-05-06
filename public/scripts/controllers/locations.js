@@ -36,6 +36,7 @@ nypl_locations.controller('LocationsCtrl', function (
         allLocationsInit = function () {
             $scope.researchBranches = false;
             $scope.searchTerm = '';
+            $scope.filteredResults = '';
             $rootScope.title = "Locations";
             $scope.geolocationAddressOrSearchQuery = '';
 
@@ -207,7 +208,8 @@ nypl_locations.controller('LocationsCtrl', function (
             var locationsCopy = $scope.locations,
                 distanceArray = [],
                 coords = searchObj.coords,
-                searchterm = searchObj.searchTerm;
+                searchterm = searchObj.searchTerm,
+                filteredResults = "1 match for ";
 
             _.each(locationsCopy, function (location) {
                 location.distance =
@@ -227,6 +229,12 @@ nypl_locations.controller('LocationsCtrl', function (
                     nypl_geocoder_service
                         .pan_existing_marker(filteredLocations[0].slug);
                 }
+                if (filteredLocations.length > 1) {
+                    filteredResults = filteredLocations.length +  
+                        " matches for ";
+                }
+
+                $scope.filteredResults = filteredResults + searchterm;
             } else {
                 if (_.min(distanceArray) > 25) {
                     // The search query is too far
@@ -327,6 +335,9 @@ nypl_locations.controller('LocationsCtrl', function (
     loadLocations();
 
     $scope.useGeolocation = function () {
+        $scope.filteredResults = '';
+        $scope.geolocationAddressOrSearchQuery = '';
+        
         // Remove any existing search markers on the map.
         nypl_geocoder_service.remove_searchMarker();
         
@@ -354,6 +365,9 @@ nypl_locations.controller('LocationsCtrl', function (
         if (!searchTerm) {
             return;
         }
+
+        $scope.filteredResults = '';
+        $scope.geolocationAddressOrSearchQuery = '';
 
         // Filter the locations by the search term
         var filteredLocations =
