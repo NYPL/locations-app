@@ -143,7 +143,13 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
         pan_existing_marker: function (id) {
             var markerObj = _.where(markers, {id: id});
-            this.panMap(markerObj[0].marker);
+            var marker = markerObj[0].marker; 
+            
+            if (marker.getMap() === null) {
+                this.add_marker_to_map(id);
+            }
+
+            this.panMap(marker);
             this.show_infowindow(markerObj[0].marker, markerObj[0].text);
         },
 
