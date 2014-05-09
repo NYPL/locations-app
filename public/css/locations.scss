@@ -118,6 +118,10 @@ img[src*="googleapis.com/"] {
 	margin-bottom: .5rem;
 }
 
+.location-sorter {
+	cursor: pointer;
+}
+
 // remove margin on hours list
 .results--more ul{
 	margin-left: 1rem;

@@ -44,9 +44,9 @@ nypl_locations.controller('LocationsCtrl', function (
 
             nypl_geocoder_service.remove_searchMarker();
             nypl_geocoder_service.hide_infowindow();
-            if (nypl_geocoder_service.check_marker('user')) {
-                nypl_geocoder_service.remove_marker('user');
-            }
+            // if (nypl_geocoder_service.check_marker('user')) {
+            //     nypl_geocoder_service.remove_marker('user');
+            // }
             nypl_geocoder_service.panMap();
 
 
@@ -333,6 +333,13 @@ nypl_locations.controller('LocationsCtrl', function (
     nypl_geocoder_service.load_markers();
 
     loadLocations();
+
+    $scope.distanceSort = function () {
+        if ($scope.locations[0].distance) {
+            $scope.predicate = 'distance';
+            $scope.reverse = !$scope.reverse;
+        }
+    };
 
     $scope.useGeolocation = function () {
         $scope.filteredResults = '';
