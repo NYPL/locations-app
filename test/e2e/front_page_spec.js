@@ -36,7 +36,22 @@ describe('Locations: homepage', function () {
                 '           error(err);' +
                 '       }';
         }
-        
+
+        it('should location you and show the blue marker on the map legend', function () {
+            browser.executeScript(mockGeo(40.7529, -73.9821));
+
+            // Only the 'NYPL Library' key should be in the map legend
+            expect(landingPage.mapMarkers.count()).toEqual(1);
+
+            landingPage.currLoc.click();
+            // It seems you need to give it some time for the text to render
+            browser.sleep(1500);
+
+            // "Showing search results near ...."
+            expect(landingPage.resultsNear.isPresent()).toBe(true);
+            // The "Your Current Location" key should show up in the map legend
+            expect(landingPage.mapMarkers.count()).toEqual(2);
+        });
 
         it('should not geolocate if you are too far away', function () {
             browser.executeScript(mockGeo(36.149674, -86.813347));
@@ -106,6 +121,18 @@ describe('Locations: homepage', function () {
             landingPage.clearSearch.click();
             expect(landingPage.searchInput.getAttribute('value')).toEqual('');
         });
+
+        it('should list the locations by name after clicking the \'x\'', function () {
+            expect(
+                element.all(by.repeater('location in locations'))
+                    .first().findElement(by.css('.p-org')).getText()
+            ).toEqual('Aguilar Library');
+            landingPage.clearSearch.click();
+            expect(
+                element.all(by.repeater('location in locations'))
+                    .first().findElement(by.css('.p-org')).getText()
+            ).toEqual('115th Street Library');
+        });
     });
 
     it('should show 10 items by default', function () {
@@ -130,7 +157,9 @@ describe('Locations: homepage', function () {
         expect(only_r.getText()).toEqual('all branches');
         only_r.click();
         expect(landingPage.locations.count()).toBe(10);
+        expect(only_r.getText()).toEqual('only research libraries');
     });
+
 });
 
 

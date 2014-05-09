@@ -24,6 +24,8 @@ var LandingPage = function () {
   // Problem with Geolocation error
   this.distanceError = element(by.id('distanceerror'));
 
+  this.mapMarkers = element.all(by.css('#all-locations-map-legend span'));
+
   this.search = function (query) {
     this.searchInput.sendKeys(query);
     this.findIt.click();
