@@ -208,8 +208,8 @@ nypl_locations.controller('LocationsCtrl', function (
             var locationsCopy = $scope.locations,
                 distanceArray = [],
                 coords = searchObj.coords,
-                searchterm = searchObj.searchTerm,
-                filteredResults = "1 match for ";
+                searchterm = searchObj.searchTerm;
+                // filteredResults = "1 match for ";
 
             _.each(locationsCopy, function (location) {
                 location.distance =
@@ -229,12 +229,13 @@ nypl_locations.controller('LocationsCtrl', function (
                     nypl_geocoder_service
                         .pan_existing_marker(filteredLocations[0].slug);
                 }
-                if (filteredLocations.length > 1) {
-                    filteredResults = filteredLocations.length +  
-                        " matches for ";
-                }
+                $scope.geolocationAddressOrSearchQuery = searchterm;
+                // if (filteredLocations.length > 1) {
+                //     filteredResults = filteredLocations.length +  
+                //         " matches for ";
+                // }
 
-                $scope.filteredResults = filteredResults + searchterm;
+                // $scope.filteredResults = filteredResults + searchterm;
             } else {
                 if (_.min(distanceArray) > 25) {
                     // The search query is too far
@@ -375,6 +376,7 @@ nypl_locations.controller('LocationsCtrl', function (
 
         $scope.filteredResults = '';
         $scope.geolocationAddressOrSearchQuery = '';
+        nypl_geocoder_service.remove_searchMarker();
 
         // Filter the locations by the search term
         var filteredLocations =
