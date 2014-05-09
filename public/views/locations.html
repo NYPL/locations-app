@@ -38,13 +38,13 @@
     <br />
 
     <section class="results--heds grid one-whole push-half--left epsilon orangeDarkerText">
-      <div class="h-card grid__item one-quarter" ng-click="predicate = 'name'; reverse=!reverse">Location</div><!--
+      <div class="grid__item one-quarter location-sorter" ng-click="predicate = 'name'; reverse=!reverse">Location</div><!--
 
-      --><div class="h-card grid__item one-quarter" ng-click="predicate = 'distance'; reverse=!reverse">Distance</div><!--
+      --><div class="grid__item one-quarter" data-ng-class="{false: '', true: 'location-sorter'}[predicate=='distance']" ng-click="distanceSort()">Distance</div><!--
 
-      --><div class="h-card grid__item one-quarter">Hours Today</div><!--
+      --><div class="grid__item one-quarter">Hours Today</div><!--
 
-    --><div class="h-card grid__item one-quarter">Services</div>
+    --><div class="grid__item one-quarter">Services</div>
     </section>
 
     <!-- Locations are in h-card microformat -->
