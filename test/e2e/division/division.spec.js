@@ -37,7 +37,7 @@ describe('Locations: division', function () {
   });
 
   it('should display hours for today', function () {
-    expect(divisionPage.hoursToday.getText()).toEqual('Open until 5:45pm');
+    expect(divisionPage.hoursToday.getText()).not.toEqual('');
   });
 
   it('should display hours for all seven days', function () {
