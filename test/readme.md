@@ -28,9 +28,17 @@ copy the config file for protractor
 
 In the root directory with the webdriver-manager running in the background, run
 
-  protractor protractor_conf.js
+  protractor protractor_chrome_conf.js
 
-to run the tests.  A new browser window should popup and all the tests should run automatically on that new window. The results can be seen in the terminal window where the protractor command was performed.
+or
+
+  protractor protractor_ff_conf.js
+
+to run all the tests in Chrome and Firefox, respectively. Tests for different pages are broken up into suites in the configuration file.  To run, for example, just the tests for the division page run:
+
+  protractor protractor_chrome_conf.js --suite division
+
+A new browser window should popup and all the tests should run automatically on that new window. The results can be seen in the terminal window where the protractor command was performed.
 
 ## Unit tests with Karma
 
