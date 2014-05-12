@@ -67,11 +67,11 @@ nypl_locations.controller('ServicesAtLibraryCtrl', function (
                 .services_at_library($routeParams.location_id)
                 .then(function (data) {
                     location = data.location;
-                    services = data.services;
+                    services = location._embedded.services;
 
                     $rootScope.title = location.name;
                     $scope.location = location;
-                    $scope.services = services.name;
+                    $scope.services = services;
                 });
         };
 

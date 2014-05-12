@@ -8,7 +8,8 @@ var mapPage = function () {
   this.region = element(by.binding('location.region'));
   this.postal_code = element(by.binding('location.postal_code'));
 
-  this.locationDest = element(by.binding('locationDest'));
+  // The element that holds the Google map
+  this.map = element(by.css('.gm-style'));
 };
 
 module.exports = new mapPage();

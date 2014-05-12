@@ -70,7 +70,7 @@ nypl_locations.controller(
         // Load the map and get the user's geolocation coordinates 
         // as separate events.
         loadLocation()
-            .then(loadMapPage)
+            .then(loadMapPage);
         getUserCoords()
             .catch(function (error) {
                 // Display to the user if geolocation error occurred

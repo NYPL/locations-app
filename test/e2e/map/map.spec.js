@@ -22,7 +22,12 @@ describe('Locations: map', function () {
   });
 
   it('should display hours for today', function () {
+    // Hours change everyday
     expect(mapPage.hoursToday.getText()).not.toEqual('');
   });
+
+  it('should load the map', function () {
+    expect(mapPage.map.isPresent()).toBe(true);
+  })
 
 });
