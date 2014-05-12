@@ -37,7 +37,7 @@ describe('Locations: homepage', function () {
                 '       }';
         }
 
-        it('should location you and show the blue marker on the map legend', function () {
+        it('should locate you and show the blue marker on the map legend', function () {
             browser.executeScript(mockGeo(40.7529, -73.9821));
 
             // Only the 'NYPL Library' key should be in the map legend
@@ -51,6 +51,41 @@ describe('Locations: homepage', function () {
             expect(landingPage.resultsNear.isPresent()).toBe(true);
             // The "Your Current Location" key should show up in the map legend
             expect(landingPage.mapMarkers.count()).toEqual(2);
+        });
+
+        it('should locate you and sort the list of locations by distance', function () {
+            expect(
+                landingPage.locations
+                    .first().findElement(by.css('.p-org')).getText()
+            ).toEqual('115th Street Library');
+
+            browser.executeScript(mockGeo(40.7529, -73.9821));
+            landingPage.currLoc.click();
+            // It seems you need to give it some time for the text to render
+            browser.sleep(1500);
+
+            // The closest location to you
+            expect(
+                landingPage.locations
+                    .first().findElement(by.css('.distance')).getText()
+            ).toEqual('0.03 miles');
+            expect(
+                landingPage.locations
+                    .first().findElement(by.css('.p-org')).getText()
+            ).toEqual('Stephen A. Schwarzman Building');
+
+            // Click the header to reverse the distance sorter
+            element(by.id('distanceSorter')).click();
+
+            // The closest farthest away from you
+            expect(
+                landingPage.locations
+                    .first().findElement(by.css('.distance')).getText()
+            ).toEqual('21.7 miles');
+            expect(
+                landingPage.locations
+                    .first().findElement(by.css('.p-org')).getText()
+            ).toEqual('Tottenville Library');
         });
 
         it('should not geolocate if you are too far away', function () {
@@ -87,6 +122,7 @@ describe('Locations: homepage', function () {
             expect(landingPage.distanceError.getText())
                 .toContain('Unknown error.');
         });
+
     });
 
     describe('Search box', function () {
@@ -102,7 +138,7 @@ describe('Locations: homepage', function () {
 
         it('should search by location name', function () {
             expect(
-                element.all(by.repeater('location in locations'))
+                landingPage.locations
                     .first().findElement(by.css('.p-org')).getText()
             ).toEqual('Aguilar Library');
         });
@@ -110,7 +146,7 @@ describe('Locations: homepage', function () {
         it('should have one highlighted location', function () {
             expect(element.all(by.css('.callout')).count()).toBe(1);
             expect(
-                element.all(by.repeater('location in locations'))
+                landingPage.locations
                     .first().getAttribute('class')
             ).toContain('callout');
         });
@@ -124,13 +160,11 @@ describe('Locations: homepage', function () {
 
         it('should list the locations by name after clicking the \'x\'', function () {
             expect(
-                element.all(by.repeater('location in locations'))
-                    .first().findElement(by.css('.p-org')).getText()
+                landingPage.locations.first().findElement(by.css('.p-org')).getText()
             ).toEqual('Aguilar Library');
             landingPage.clearSearch.click();
             expect(
-                element.all(by.repeater('location in locations'))
-                    .first().findElement(by.css('.p-org')).getText()
+                landingPage.locations.first().findElement(by.css('.p-org')).getText()
             ).toEqual('115th Street Library');
         });
     });

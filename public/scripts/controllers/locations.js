@@ -384,8 +384,8 @@ nypl_locations.controller('LocationsCtrl', function (
             locations = $scope.locations;
 
         // $scope.geolocationAddressOrSearchQuery = searchTerm;
-        $scope.researchBranches = false;
-        ngRepeatShowAllBranches();
+        //$scope.researchBranches = false;
+        //ngRepeatShowAllBranches();
 
         loadGeocoding(searchTerm)
             .then(function (searchObj) {
