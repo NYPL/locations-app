@@ -6,6 +6,7 @@ angular.module(
 ).factory('nypl_locations_service', function ($http, $q) {
     'use strict';
     var api = 'http://evening-mesa-7447-160.herokuapp.com';
+    var apiError = "Could not reach API";
 
     return {
         all_locations: function () {
@@ -17,7 +18,7 @@ angular.module(
             ).success(function (data) {
                 d.resolve(data);
             }).error(function () {
-                d.reject();
+                d.reject(apiError);
             });
             return d.promise;
         },
@@ -31,7 +32,7 @@ angular.module(
             ).success(function (data) {
                 defer.resolve(data);
             }).error(function () {
-                defer.reject();
+                defer.reject(apiError);
             });
             return defer.promise;
         },
@@ -45,7 +46,7 @@ angular.module(
             ).success(function (data) {
                 defer.resolve(data);
             }).error(function () {
-                defer.reject();
+                defer.reject(apiError);
             });
             return defer.promise;
         },
@@ -59,7 +60,7 @@ angular.module(
             ).success(function (data) {
                 defer.resolve(data);
             }).error(function () {
-                defer.reject();
+                defer.reject(apiError);
             });
             return defer.promise;
         },
@@ -73,7 +74,7 @@ angular.module(
             ).success(function (data) {
                 defer.resolve(data);
             }).error(function () {
-                defer.reject();
+                defer.reject(apiError);
             });
             return defer.promise;
         },
@@ -87,7 +88,7 @@ angular.module(
             ).success(function (data) {
                 defer.resolve(data);
             }).error(function () {
-                defer.reject();
+                defer.reject(apiError);
             });
             return defer.promise;
         }

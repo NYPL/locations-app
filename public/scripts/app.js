@@ -21,6 +21,9 @@ nypl_locations.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'views/locations.html',
             controller: 'LocationsCtrl'
         })
+        .when('/division', {
+            redirectTo: '/'
+        })
         .when('/division/:division', {
             templateUrl: 'views/division.html',
             controller: 'DivisionCtrl'

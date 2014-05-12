@@ -444,6 +444,7 @@ nypl_locations.controller('LocationCtrl', function (
     $scope,
     $routeParams,
     $rootScope,
+    $location,
     nypl_locations_service,
     nypl_coordinates_service,
     nypl_utility
@@ -487,6 +488,9 @@ nypl_locations.controller('LocationCtrl', function (
                     $scope.location.social_media =
                         nypl_utility
                             .socialMediaColor($scope.location.social_media);
+                })
+                .catch(function (err) {
+                    throw err;
                 });
         },
         loadCoords = function () {
@@ -505,6 +509,10 @@ nypl_locations.controller('LocationCtrl', function (
 
     // Load the location and user's geolocation coordinates
     // as separate events.
-    loadLocation();
+    loadLocation()
+        .catch(function (err) {
+            console.log(err);
+            $location.path('/');
+        });
     loadCoords();
 });
