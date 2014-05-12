@@ -16,7 +16,7 @@ exports.config = {
   // Spec patterns are relative to the current working directly when
   // protractor is called.
   suites: {
-    homepage: ['test/e2e/*_spec.js'],
+    homepage: ['test/e2e/homepage/homepage.spec.js'],
     division: ['test/e2e/division/division.spec.js'],
     map: ['test/e2e/map/map.spec.js']
   },
