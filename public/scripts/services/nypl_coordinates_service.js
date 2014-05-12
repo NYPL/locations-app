@@ -5,13 +5,12 @@ nypl_locations.factory(
     'nypl_coordinates_service',
     ['$q', '$window', function ($q, $window) {
         'use strict';
-
+        var geoCoords = null;
         return {
             // Geolocation extraction of coordinates
             getCoordinates: function () {
                 // Object containing success/failure conditions
                 var defer = $q.defer();
-
                 // Verify the browser supports Geolocation
                 if (!$window.navigator && !$window.navigator.geolocation) {
                     defer.reject(
@@ -20,10 +19,19 @@ nypl_locations.factory(
                         )
                     );
                 } else {
-                    $window.navigator.geolocation
+                    // Use stored coords, FF bug fix
+                    if (geoCoords) {
+                        defer.resolve(geoCoords);
+                    }
+                    else {
+       
+                        $window.navigator.geolocation
                         .getCurrentPosition(function (position) {
+
                             // Extract coordinates for geoPosition obj
-                            defer.resolve(position.coords);
+                            geoCoords = position.coords;
+                            defer.resolve(geoCoords);
+
                             // Testing a user's location that is more than 
                             // 25miles of any NYPL location
                             // var coords = {
@@ -58,6 +66,7 @@ nypl_locations.factory(
                                 break;
                             }
                         });
+                    }
                 }
 
                 return defer.promise; // Enables 'then' callback

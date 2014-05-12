@@ -90,7 +90,7 @@ nypl_locations.filter('hoursTodayFormat', function () {
                             closed_time.meridian;
                 }
 
-                return 'Open until ' + closed_time.hours +
+                return 'Open today until ' + closed_time.hours +
                         (parseInt(closed_time.mins, 10) !== 0 ?
                             ':' + closed_time.mins :
                             '')
