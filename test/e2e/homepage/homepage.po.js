@@ -5,6 +5,8 @@ var LandingPage = function () {
   this.findIt = element(by.id('findit'));
   // Showing results near message
   this.resultsNear = element(by.id('resultsnear'));
+  // Showing no resutls near search query
+  this.searchError = element(by.id('searchError'));
   // Clear search link
   this.clearSearch = element(by.id('clearsearch'));
   // Current Location button
