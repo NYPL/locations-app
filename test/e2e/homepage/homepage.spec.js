@@ -3,7 +3,7 @@
 describe('Locations: homepage', function () {
     "use strict";
     // Check ../support/landingPage.js for code
-    var landingPage = require('../support/landingPage.js');
+    var landingPage = require('./homepage.po.js');
 
     beforeEach(function () {
         browser.get('/');
