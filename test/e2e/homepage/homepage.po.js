@@ -28,6 +28,10 @@ var LandingPage = function () {
 
   this.mapMarkers = element.all(by.css('#all-locations-map-legend span'));
 
+  this.clear = function () {
+    this.searchInput.clear();
+  };
+
   this.search = function (query) {
     this.searchInput.sendKeys(query);
     this.findIt.click();

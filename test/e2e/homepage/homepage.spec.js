@@ -132,7 +132,7 @@ describe('Locations: homepage', function () {
     });
 
     describe('Search box', function () {
-        describe('A library name was searched', function () {
+        describe('A library name was searched that is not an NYC area', function () {
             beforeEach(function () {
                 landingPage.search('aguilar');
                 browser.sleep(1000); // must be a better way
@@ -158,6 +158,19 @@ describe('Locations: homepage', function () {
                 ).toContain('callout');
             });
 
+            // Since Aguilar matches a library name and not an area,
+            // the rest of the list should be sorted by name.
+            it('should sort the rest of the libraries by name', function () {
+                expect(
+                    landingPage.locations
+                        .get(1).findElement(by.css('.p-org')).getText()
+                ).toEqual('115th Street Library');
+                expect(
+                    landingPage.locations
+                        .get(2).findElement(by.css('.p-org')).getText()
+                ).toEqual('125th Street Library');
+            });
+
             it('should clear the input when you click the \'x\'', function () {
                 expect(landingPage.searchInput.getAttribute('value'))
                     .toEqual('aguilar');
@@ -176,6 +189,51 @@ describe('Locations: homepage', function () {
             });
         });
 
+        describe('A library name was searched that is also an NYC area', function () {
+            beforeEach(function () {
+                landingPage.search('battery park');
+                browser.sleep(1000);
+            });
+
+            it('should show what the search was', function () {
+                expect(landingPage.resultsNear.getText())
+                    .toEqual('Showing search results near battery park');
+            });
+
+            it('should search by location name and be the first result', function () {
+                expect(
+                    landingPage.locations
+                        .first().findElement(by.css('.p-org')).getText()
+                ).toEqual('Battery Park City Library');
+                expect(
+                    landingPage.locations
+                        .first().getAttribute('class')
+                ).toContain('callout');
+            });
+
+            it('should also search by area and give distance values ' +
+                'to the rest of the locations', function () {
+                expect(
+                    landingPage.locations
+                        .get(1).findElement(by.css('.p-org')).getText()
+                ).toEqual('New Amsterdam Library');
+                expect(
+                    landingPage.locations
+                        .get(1).findElement(by.css('.distance')).getText()
+                ).toEqual('0.86 miles');
+
+
+                expect(
+                    landingPage.locations
+                        .get(2).findElement(by.css('.p-org')).getText()
+                ).toEqual('Chatham Square Library');
+                expect(
+                    landingPage.locations
+                        .get(2).findElement(by.css('.distance')).getText()
+                ).toEqual('1.29 miles');
+            });
+        });
+
         describe('A location in NYC was searched', function () {
             beforeEach(function () {
                 landingPage.search('bronx zoo');
@@ -191,52 +249,321 @@ describe('Locations: homepage', function () {
                 expect(element.all(by.css('.callout')).count()).toBe(0);
             });
 
+            it('should organize the locations by distance', function () {
+                // There is a probably a better way to test this
+                // The first location that should appear
+                expect(
+                    landingPage.locations.first().findElement(by.css('.p-org')).getText()
+                ).toEqual('West Farms Library');
+
+                expect(
+                    landingPage.locations
+                        .first().findElement(by.css('.distance')).getText()
+                ).toEqual('0.51 miles');
+
+                // The last location that should appear on the page
+                expect(
+                    landingPage.locations
+                        .get(1).findElement(by.css('.p-org')).getText()
+                ).toEqual('Belmont Library and Enrico Fermi Cultural Center');
+
+                expect(
+                    landingPage.locations
+                        .get(1).findElement(by.css('.distance')).getText()
+                ).toEqual('0.62 miles');
+            });
         });
 
-        describe('A location outside of NYC was searched', function () {
+        describe('A zipcode in NYC was searched', function () {
             beforeEach(function () {
-                landingPage.search('boston');
+                landingPage.search('10016');
                 browser.sleep(1000);
             });
 
+            it('should show what the search was', function () {
+                expect(landingPage.resultsNear.getText())
+                    .toEqual('Showing search results near 10016');
+            });
+
+            it('should show libraries in the searched zip code first', function () {
+                expect(element.all(by.css('.callout')).count()).toBe(3);
+                expect(
+                    landingPage.locations
+                        .get(0).findElement(by.css('.p-postal-code')).getText()
+                ).toEqual('10016');
+                expect(
+                    landingPage.locations
+                        .get(1).findElement(by.css('.p-postal-code')).getText()
+                ).toEqual('10016');
+                expect(
+                    landingPage.locations
+                        .get(2).findElement(by.css('.p-postal-code')).getText()
+                ).toEqual('10016');
+            });
+
+            it('should then search for libraries near the searched zip code', function () {
+                expect(
+                    landingPage.locations
+                        .get(3).findElement(by.css('.p-postal-code')).getText()
+                ).toEqual('10018');
+                expect(
+                    landingPage.locations
+                        .get(3).findElement(by.css('.p-org')).getText()
+                ).toEqual('Stephen A. Schwarzman Building');
+                expect(
+                    landingPage.locations
+                        .get(3).findElement(by.css('.distance')).getText()
+                ).toEqual('0.43 miles');
+            });
+        });
+
+        describe('A location outside of NYC was searched', function () {
             it('should tell you that your query was too ' + 
                 'far from any NYPL location', function () {
+                landingPage.search('boston');
+                browser.sleep(1000);
+
                 expect(landingPage.searchError.getText())
                     .toEqual('No results for boston within 25 miles of' +
                         ' an NYPL location. Showing all locations.');
             });
 
-            // it('should refresh the list of locations', function () {
+            it('should clear the search field', function () {
+                landingPage.search('boston');
+                browser.sleep(1000);
 
-            // });
+               expect(landingPage.searchInput.getAttribute('value')).toEqual('');
+            });
+
+            it('should refresh the list of locations after a previous search', function () {
+                // User searches for a location:
+                landingPage.search('city island');
+                browser.sleep(1000);
+
+                // The location list is organized
+                expect(
+                    landingPage.locations
+                        .first().findElement(by.css('.p-org')).getText()
+                ).toEqual('City Island Library');
+
+                expect(
+                    landingPage.locations
+                        .get(1).findElement(by.css('.p-org')).getText()
+                ).toEqual('Pelham Bay Library');
+
+                landingPage.clear();
+                landingPage.search('boston');
+                browser.sleep(1000);
+
+                expect(
+                    landingPage.locations
+                        .first().findElement(by.css('.p-org')).getText()
+                ).toEqual('115th Street Library');
+                expect(
+                    landingPage.locations
+                        .get(1).findElement(by.css('.p-org')).getText()
+                ).toEqual('125th Street Library');
+            });
         });
     });
 
-    it('should show 10 items by default', function () {
-        var locations = landingPage.locations;
-        expect(locations.count()).toBe(10);
-        expect(landingPage.showing.getText())
-            .toEqual('Showing 10 of 92 Locations');
+    describe('Research and Circulating libraries', function () {
+        it('should filter by research libraries when clicked', function () {
+            var only_r = landingPage.onlyResearch;
+            expect(landingPage.locations.count()).toBe(10);
+            expect(only_r.getText()).toEqual('only research libraries');
+
+            only_r.click();
+            
+            expect(landingPage.locations.count()).toBe(4);
+            expect(only_r.getText()).toEqual('all branches');
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 4 of 4 Locations');
+        });
+
+        it('should revert back to all libraries when the search input \'x\' is clicked', function () {
+            var only_r = landingPage.onlyResearch;
+            only_r.click();
+            
+            expect(landingPage.locations.count()).toBe(4);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 4 of 4 Locations');
+
+            landingPage.clearSearch.click();
+
+            expect(landingPage.locations.count()).toBe(10);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 10 of 92 Locations');
+        });
+
+        it('should show all locations when the button is clicked again', function () {
+            var only_r = landingPage.onlyResearch;
+            only_r.click();
+            expect(landingPage.locations.count()).toBe(4);
+            expect(only_r.getText()).toEqual('all branches');
+
+            only_r.click();
+            expect(landingPage.locations.count()).toBe(10);
+            expect(only_r.getText()).toEqual('only research libraries');
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 10 of 92 Locations');
+        });
+
+        it('should list the four research libraries', function () {
+            var only_r = landingPage.onlyResearch,
+                research_libraries;
+
+            only_r.click();
+
+            research_libraries = landingPage.locations.map(function (elm, index) {
+                return {
+                    index: index,
+                    text: elm.findElement(by.css('.p-org')).getText()
+                };
+            });
+
+            expect(research_libraries).toEqual([
+                {
+                    index: 0,
+                    text: 'New York Public Library for the Performing ' +
+                            'Arts, Dorothy and Lewis B. Cullman Center'
+                },
+                {
+                    index: 1,
+                    text: 'Schomburg Center for Research in Black Culture'
+                },
+                {
+                    index: 2,
+                    text: 'Science, Industry and Business Library (SIBL)'
+                },
+                {
+                    index: 3,
+                    text: 'Stephen A. Schwarzman Building'
+                }
+            ]);
+        });
+
+        it('should revert back to all branches when performing a search', function () {
+            var only_r = landingPage.onlyResearch;
+
+            only_r.click();
+            expect(landingPage.locations.count()).toBe(4);
+            expect(only_r.getText()).toEqual('all branches');
+
+            landingPage.search('parkchester');
+            browser.sleep(1000);
+
+            expect(landingPage.locations.count()).toBe(10);
+            expect(only_r.getText()).toEqual('only research libraries');
+            expect(
+                landingPage.locations
+                    .first().findElement(by.css('.p-org')).getText()
+            ).toEqual('Parkchester Library');
+        });
+
+        it('should sort by distance after a search', function () {
+            var only_r = landingPage.onlyResearch,
+                research_libraries;
+
+            landingPage.search('parkchester');
+            browser.sleep(1000);
+
+            only_r.click();
+
+            research_libraries = landingPage.locations.map(function (elm, index) {
+                return {
+                    text: elm.findElement(by.css('.p-org')).getText(),
+                    distance: elm.findElement(by.css('.distance')).getText()
+                };
+            });
+
+            expect(landingPage.locations.count()).toBe(4);
+            expect(research_libraries).toEqual([
+                {
+                    text: 'Schomburg Center for Research in Black Culture',
+                    distance: '4.71 miles'
+                },
+                {
+                    text: 'New York Public Library for the Performing ' +
+                            'Arts, Dorothy and Lewis B. Cullman Center',
+                    distance: '8.06 miles'
+                },
+                {
+                    text: 'Stephen A. Schwarzman Building',
+                    distance: '8.82 miles'
+                },
+                {
+                    text: 'Science, Industry and Business Library (SIBL)',
+                    distance: '9.09 miles'
+                }
+            ]);
+        });
+
     });
 
-    it('should show the next 10 items', function () {
-        landingPage.showMore.click();
-        expect(landingPage.locations.count()).toBe(20);
-        expect(landingPage.showing.getText())
-            .toEqual('Showing 20 of 92 Locations');
-    });
+    describe('Location list tracker', function () {
+        it('should show 10 items by default', function () {
+            expect(landingPage.locations.count()).toBe(10);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 10 of 92 Locations');
+            expect(landingPage.showMore.getText()).toEqual('Show 10 more');
+        });
 
-    it('should filter by research libraries', function () {
-        var only_r = landingPage.onlyResearch;
-        expect(only_r.getText()).toEqual('only research libraries');
-        only_r.click();
-        expect(landingPage.locations.count()).toBe(4);
-        expect(only_r.getText()).toEqual('all branches');
-        only_r.click();
-        expect(landingPage.locations.count()).toBe(10);
-        expect(only_r.getText()).toEqual('only research libraries');
+        it('should show the next 10 items', function () {
+            landingPage.showMore.click();
+            expect(landingPage.locations.count()).toBe(20);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 20 of 92 Locations');
+        });
+
+        it('should say "Show All" after showing 80 locations', function () {
+            for(var i = 0; i < 7; i++) {
+                landingPage.showMore.click();
+            }
+
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 80 of 92 Locations');
+            expect(landingPage.showMore.getText()).toEqual('Show All');
+        });
+
+        it('should say show all 92 locations and remove the button', function () {
+            for(var i = 0; i < 8; i++) {
+                landingPage.showMore.click();
+            }
+
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 92 of 92 Locations');
+            expect(landingPage.showMore.isPresent()).toBe(false);
+        });
+
+        it('should list only four for research libraries', function () {
+            var only_r = landingPage.onlyResearch;
+            only_r.click();
+            
+            expect(landingPage.locations.count()).toBe(4);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 4 of 4 Locations');
+        });
+
+        it('should revert back to showing 10 locations after toggling ' +
+            'research and all libraries button', function () {
+            var only_r = landingPage.onlyResearch;
+
+            landingPage.showMore.click();
+            expect(landingPage.locations.count()).toBe(20);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 20 of 92 Locations');
+
+            only_r.click();
+
+            expect(landingPage.locations.count()).toBe(4);
+
+            only_r.click();
+
+            expect(landingPage.locations.count()).toBe(10);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 10 of 92 Locations');
+        });
     });
 
 });
-
-

@@ -34,10 +34,9 @@ nypl_locations.controller('LocationsCtrl', function (
             $scope.showMore = true;
         },
         allLocationsInit = function () {
-            $scope.researchBranches = false;
+            $scope.reverse = false;
             $scope.searchTerm = '';
             $scope.filteredResults = '';
-            $rootScope.title = "Locations";
             $scope.geolocationAddressOrSearchQuery = '';
 
             ngRepeatInit('name');
@@ -222,7 +221,7 @@ nypl_locations.controller('LocationsCtrl', function (
                 distanceArray.push(location.distance);
             });
 
-            if (filteredLocations.length) {
+            if (filteredLocations !== null && filteredLocations.length) {
                 if (nypl_geocoder_service
                         .check_marker(filteredLocations[0].slug)) {
 
@@ -230,6 +229,8 @@ nypl_locations.controller('LocationsCtrl', function (
                         .pan_existing_marker(filteredLocations[0].slug);
                 }
                 $scope.geolocationAddressOrSearchQuery = searchterm;
+                ngRepeatShowAllBranches();
+                $scope.researchBranches = false;
                 // if (filteredLocations.length > 1) {
                 //     filteredResults = filteredLocations.length +  
                 //         " matches for ";
@@ -242,6 +243,7 @@ nypl_locations.controller('LocationsCtrl', function (
                     resetDistance();
                     $scope.searchError = searchterm;
                     $scope.predicate = 'name';
+                    $scope.reverse = false;
                     throw (new Error('The search query is too far'));
                 }
                 $scope.geolocationAddressOrSearchQuery = searchterm;
@@ -329,6 +331,7 @@ nypl_locations.controller('LocationsCtrl', function (
             $scope.totalLocations = 4;
         };
 
+    $rootScope.title = "Locations";
     nypl_geocoder_service
         .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
     nypl_geocoder_service.load_markers();
@@ -367,6 +370,8 @@ nypl_locations.controller('LocationsCtrl', function (
 
     $scope.clearSearch = function () {
         allLocationsInit();
+        $scope.researchBranches = false;
+        ngRepeatShowAllBranches();
     };
 
     $scope.submitAddress = function (searchTerm) {

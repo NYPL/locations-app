@@ -18,7 +18,8 @@ exports.config = {
   suites: {
     homepage: ['test/e2e/homepage/homepage.spec.js'],
     division: ['test/e2e/division/division.spec.js'],
-    map: ['test/e2e/map/map.spec.js']
+    map: ['test/e2e/map/map.spec.js'],
+    events: ['test/e2e/events/events.spec.js']
   },
 
   baseUrl: 'http://localhost:9292/',
