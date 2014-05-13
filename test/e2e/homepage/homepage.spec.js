@@ -274,6 +274,49 @@ describe('Locations: homepage', function () {
             });
         });
 
+        describe('A zipcode in NYC was searched', function () {
+            beforeEach(function () {
+                landingPage.search('10016');
+                browser.sleep(1000);
+            });
+
+            it('should show what the search was', function () {
+                expect(landingPage.resultsNear.getText())
+                    .toEqual('Showing search results near 10016');
+            });
+
+            it('should show libraries in the searched zip code first', function () {
+                expect(element.all(by.css('.callout')).count()).toBe(3);
+                expect(
+                    landingPage.locations
+                        .get(0).findElement(by.css('.p-postal-code')).getText()
+                ).toEqual('10016');
+                expect(
+                    landingPage.locations
+                        .get(1).findElement(by.css('.p-postal-code')).getText()
+                ).toEqual('10016');
+                expect(
+                    landingPage.locations
+                        .get(2).findElement(by.css('.p-postal-code')).getText()
+                ).toEqual('10016');
+            });
+
+            it('should then search for libraries near the searched zip code', function () {
+                expect(
+                    landingPage.locations
+                        .get(3).findElement(by.css('.p-postal-code')).getText()
+                ).toEqual('10018');
+                expect(
+                    landingPage.locations
+                        .get(3).findElement(by.css('.p-org')).getText()
+                ).toEqual('Stephen A. Schwarzman Building');
+                expect(
+                    landingPage.locations
+                        .get(3).findElement(by.css('.distance')).getText()
+                ).toEqual('0.43 miles');
+            });
+        });
+
         describe('A location outside of NYC was searched', function () {
             it('should tell you that your query was too ' + 
                 'far from any NYPL location', function () {
