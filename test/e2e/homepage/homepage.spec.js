@@ -132,7 +132,7 @@ describe('Locations: homepage', function () {
     });
 
     describe('Search box', function () {
-        describe('A library name was searched', function () {
+        describe('A library name was searched that is not an NYC area', function () {
             beforeEach(function () {
                 landingPage.search('aguilar');
                 browser.sleep(1000); // must be a better way
@@ -158,6 +158,19 @@ describe('Locations: homepage', function () {
                 ).toContain('callout');
             });
 
+            // Since Aguilar matches a library name and not an area,
+            // the rest of the list should be sorted by name.
+            it('should sort the rest of the libraries by name', function () {
+                expect(
+                    landingPage.locations
+                        .get(1).findElement(by.css('.p-org')).getText()
+                ).toEqual('115th Street Library');
+                expect(
+                    landingPage.locations
+                        .get(2).findElement(by.css('.p-org')).getText()
+                ).toEqual('125th Street Library');
+            });
+
             it('should clear the input when you click the \'x\'', function () {
                 expect(landingPage.searchInput.getAttribute('value'))
                     .toEqual('aguilar');
@@ -173,6 +186,51 @@ describe('Locations: homepage', function () {
                 expect(
                     landingPage.locations.first().findElement(by.css('.p-org')).getText()
                 ).toEqual('115th Street Library');
+            });
+        });
+
+        describe('A library name was searched that is also an NYC area', function () {
+            beforeEach(function () {
+                landingPage.search('battery park');
+                browser.sleep(1000);
+            });
+
+            it('should show what the search was', function () {
+                expect(landingPage.resultsNear.getText())
+                    .toEqual('Showing search results near battery park');
+            });
+
+            it('should search by location name and be the first result', function () {
+                expect(
+                    landingPage.locations
+                        .first().findElement(by.css('.p-org')).getText()
+                ).toEqual('Battery Park City Library');
+                expect(
+                    landingPage.locations
+                        .first().getAttribute('class')
+                ).toContain('callout');
+            });
+
+            it('should also search by area and give distance values ' +
+                'to the rest of the locations', function () {
+                expect(
+                    landingPage.locations
+                        .get(1).findElement(by.css('.p-org')).getText()
+                ).toEqual('New Amsterdam Library');
+                expect(
+                    landingPage.locations
+                        .get(1).findElement(by.css('.distance')).getText()
+                ).toEqual('0.86 miles');
+
+
+                expect(
+                    landingPage.locations
+                        .get(2).findElement(by.css('.p-org')).getText()
+                ).toEqual('Chatham Square Library');
+                expect(
+                    landingPage.locations
+                        .get(2).findElement(by.css('.distance')).getText()
+                ).toEqual('1.29 miles');
             });
         });
 
@@ -205,15 +263,15 @@ describe('Locations: homepage', function () {
 
                 // The last location that should appear on the page
                 expect(
-                    landingPage.locations.last().findElement(by.css('.p-org')).getText()
-                ).toEqual('Mosholu Library');
+                    landingPage.locations
+                        .get(1).findElement(by.css('.p-org')).getText()
+                ).toEqual('Belmont Library and Enrico Fermi Cultural Center');
 
                 expect(
                     landingPage.locations
-                        .last().findElement(by.css('.distance')).getText()
-                ).toEqual('1.65 miles');
+                        .get(1).findElement(by.css('.distance')).getText()
+                ).toEqual('0.62 miles');
             });
-
         });
 
         describe('A location outside of NYC was searched', function () {
@@ -225,6 +283,13 @@ describe('Locations: homepage', function () {
                 expect(landingPage.searchError.getText())
                     .toEqual('No results for boston within 25 miles of' +
                         ' an NYPL location. Showing all locations.');
+            });
+
+            it('should clear the search field', function () {
+                landingPage.search('boston');
+                browser.sleep(1000);
+
+               expect(landingPage.searchInput.getAttribute('value')).toEqual('');
             });
 
             it('should refresh the list of locations after a previous search', function () {
@@ -251,7 +316,10 @@ describe('Locations: homepage', function () {
                     landingPage.locations
                         .first().findElement(by.css('.p-org')).getText()
                 ).toEqual('115th Street Library');
-
+                expect(
+                    landingPage.locations
+                        .get(1).findElement(by.css('.p-org')).getText()
+                ).toEqual('125th Street Library');
             });
         });
     });
