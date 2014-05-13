@@ -35,7 +35,6 @@ nypl_locations.controller('LocationsCtrl', function (
         },
         allLocationsInit = function () {
             $scope.reverse = false;
-            $scope.researchBranches = false;
             $scope.searchTerm = '';
             $scope.filteredResults = '';
             $scope.geolocationAddressOrSearchQuery = '';
@@ -371,6 +370,8 @@ nypl_locations.controller('LocationsCtrl', function (
 
     $scope.clearSearch = function () {
         allLocationsInit();
+        $scope.researchBranches = false;
+        ngRepeatShowAllBranches();
     };
 
     $scope.submitAddress = function (searchTerm) {

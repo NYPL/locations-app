@@ -381,6 +381,21 @@ describe('Locations: homepage', function () {
                 .toEqual('Showing 4 of 4 Locations');
         });
 
+        it('should revert back to all libraries when the search input \'x\' is clicked', function () {
+            var only_r = landingPage.onlyResearch;
+            only_r.click();
+            
+            expect(landingPage.locations.count()).toBe(4);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 4 of 4 Locations');
+
+            landingPage.clearSearch.click();
+
+            expect(landingPage.locations.count()).toBe(10);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 10 of 92 Locations');
+        });
+
         it('should show all locations when the button is clicked again', function () {
             var only_r = landingPage.onlyResearch;
             only_r.click();
@@ -486,18 +501,69 @@ describe('Locations: homepage', function () {
 
     });
 
-    it('should show 10 items by default', function () {
-        var locations = landingPage.locations;
-        expect(locations.count()).toBe(10);
-        expect(landingPage.showing.getText())
-            .toEqual('Showing 10 of 92 Locations');
-    });
+    describe('Location list tracker', function () {
+        it('should show 10 items by default', function () {
+            expect(landingPage.locations.count()).toBe(10);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 10 of 92 Locations');
+            expect(landingPage.showMore.getText()).toEqual('Show 10 more');
+        });
 
-    it('should show the next 10 items', function () {
-        landingPage.showMore.click();
-        expect(landingPage.locations.count()).toBe(20);
-        expect(landingPage.showing.getText())
-            .toEqual('Showing 20 of 92 Locations');
+        it('should show the next 10 items', function () {
+            landingPage.showMore.click();
+            expect(landingPage.locations.count()).toBe(20);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 20 of 92 Locations');
+        });
+
+        it('should say "Show All" after showing 80 locations', function () {
+            for(var i = 0; i < 7; i++) {
+                landingPage.showMore.click();
+            }
+
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 80 of 92 Locations');
+            expect(landingPage.showMore.getText()).toEqual('Show All');
+        });
+
+        it('should say show all 92 locations and remove the button', function () {
+            for(var i = 0; i < 8; i++) {
+                landingPage.showMore.click();
+            }
+
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 92 of 92 Locations');
+            expect(landingPage.showMore.isPresent()).toBe(false);
+        });
+
+        it('should list only four for research libraries', function () {
+            var only_r = landingPage.onlyResearch;
+            only_r.click();
+            
+            expect(landingPage.locations.count()).toBe(4);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 4 of 4 Locations');
+        });
+
+        it('should revert back to showing 10 locations after toggling ' +
+            'research and all libraries button', function () {
+            var only_r = landingPage.onlyResearch;
+
+            landingPage.showMore.click();
+            expect(landingPage.locations.count()).toBe(20);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 20 of 92 Locations');
+
+            only_r.click();
+
+            expect(landingPage.locations.count()).toBe(4);
+
+            only_r.click();
+
+            expect(landingPage.locations.count()).toBe(10);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 10 of 92 Locations');
+        });
     });
 
 });
