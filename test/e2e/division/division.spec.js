@@ -26,14 +26,14 @@ describe('Locations: division', function () {
     expect(divisionPage.room.getText()).toEqual('Third Floor and Room #328');
   });
 
-  it('should have a manager', function () {
-    expect(divisionPage.division_manager.getText())
-      .not.toBe('');
-  });
-
   it('should display two social media icons', function () {
     var social_media = divisionPage.social_media;
     expect(social_media.count()).toBe(2);
+  });
+  
+  it('should have a manager', function () {
+    expect(divisionPage.division_manager.getText())
+      .not.toBe('');
   });
 
   it('should display hours for today', function () {
