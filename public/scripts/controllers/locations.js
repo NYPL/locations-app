@@ -34,7 +34,7 @@ nypl_locations.controller('LocationsCtrl', function (
             $scope.showMore = true;
         },
         allLocationsInit = function () {
-            $scope.reverse = ($scope.reverse) ? !$scope.reverse : $scope.reverse;
+            $scope.reverse = false;
             $scope.researchBranches = false;
             $scope.searchTerm = '';
             $scope.filteredResults = '';
@@ -230,6 +230,8 @@ nypl_locations.controller('LocationsCtrl', function (
                         .pan_existing_marker(filteredLocations[0].slug);
                 }
                 $scope.geolocationAddressOrSearchQuery = searchterm;
+                ngRepeatShowAllBranches();
+                $scope.researchBranches = false;
                 // if (filteredLocations.length > 1) {
                 //     filteredResults = filteredLocations.length +  
                 //         " matches for ";
@@ -242,7 +244,7 @@ nypl_locations.controller('LocationsCtrl', function (
                     resetDistance();
                     $scope.searchError = searchterm;
                     $scope.predicate = 'name';
-                    $scope.reverse = ($scope.reverse) ? !$scope.reverse : $scope.reverse;
+                    $scope.reverse = false;
                     throw (new Error('The search query is too far'));
                 }
                 $scope.geolocationAddressOrSearchQuery = searchterm;

@@ -367,6 +367,125 @@ describe('Locations: homepage', function () {
         });
     });
 
+    describe('Research and Circulating libraries', function () {
+        it('should filter by research libraries when clicked', function () {
+            var only_r = landingPage.onlyResearch;
+            expect(landingPage.locations.count()).toBe(10);
+            expect(only_r.getText()).toEqual('only research libraries');
+
+            only_r.click();
+            
+            expect(landingPage.locations.count()).toBe(4);
+            expect(only_r.getText()).toEqual('all branches');
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 4 of 4 Locations');
+        });
+
+        it('should show all locations when the button is clicked again', function () {
+            var only_r = landingPage.onlyResearch;
+            only_r.click();
+            expect(landingPage.locations.count()).toBe(4);
+            expect(only_r.getText()).toEqual('all branches');
+
+            only_r.click();
+            expect(landingPage.locations.count()).toBe(10);
+            expect(only_r.getText()).toEqual('only research libraries');
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 10 of 92 Locations');
+        });
+
+        it('should list the four research libraries', function () {
+            var only_r = landingPage.onlyResearch,
+                research_libraries;
+
+            only_r.click();
+
+            research_libraries = landingPage.locations.map(function (elm, index) {
+                return {
+                    index: index,
+                    text: elm.findElement(by.css('.p-org')).getText()
+                };
+            });
+
+            expect(research_libraries).toEqual([
+                {
+                    index: 0,
+                    text: 'New York Public Library for the Performing ' +
+                            'Arts, Dorothy and Lewis B. Cullman Center'
+                },
+                {
+                    index: 1,
+                    text: 'Schomburg Center for Research in Black Culture'
+                },
+                {
+                    index: 2,
+                    text: 'Science, Industry and Business Library (SIBL)'
+                },
+                {
+                    index: 3,
+                    text: 'Stephen A. Schwarzman Building'
+                }
+            ]);
+        });
+
+        it('should revert back to all branches when performing a search', function () {
+            var only_r = landingPage.onlyResearch;
+
+            only_r.click();
+            expect(landingPage.locations.count()).toBe(4);
+            expect(only_r.getText()).toEqual('all branches');
+
+            landingPage.search('parkchester');
+            browser.sleep(1000);
+
+            expect(landingPage.locations.count()).toBe(10);
+            expect(only_r.getText()).toEqual('only research libraries');
+            expect(
+                landingPage.locations
+                    .first().findElement(by.css('.p-org')).getText()
+            ).toEqual('Parkchester Library');
+        });
+
+        it('should sort by distance after a search', function () {
+            var only_r = landingPage.onlyResearch,
+                research_libraries;
+
+            landingPage.search('parkchester');
+            browser.sleep(1000);
+
+            only_r.click();
+
+            research_libraries = landingPage.locations.map(function (elm, index) {
+                return {
+                    text: elm.findElement(by.css('.p-org')).getText(),
+                    distance: elm.findElement(by.css('.distance')).getText()
+                };
+            });
+
+            expect(landingPage.locations.count()).toBe(4);
+            expect(research_libraries).toEqual([
+                {
+                    text: 'Schomburg Center for Research in Black Culture',
+                    distance: '4.71 miles'
+                },
+                {
+                    text: 'New York Public Library for the Performing ' +
+                            'Arts, Dorothy and Lewis B. Cullman Center',
+                    distance: '8.06 miles'
+                },
+                {
+                    text: 'Stephen A. Schwarzman Building',
+                    distance: '8.82 miles'
+                },
+                {
+                    text: 'Science, Industry and Business Library (SIBL)',
+                    distance: '9.09 miles'
+                }
+            ]);
+        });
+
+    });
+
     it('should show 10 items by default', function () {
         var locations = landingPage.locations;
         expect(locations.count()).toBe(10);
@@ -381,17 +500,4 @@ describe('Locations: homepage', function () {
             .toEqual('Showing 20 of 92 Locations');
     });
 
-    it('should filter by research libraries', function () {
-        var only_r = landingPage.onlyResearch;
-        expect(only_r.getText()).toEqual('only research libraries');
-        only_r.click();
-        expect(landingPage.locations.count()).toBe(4);
-        expect(only_r.getText()).toEqual('all branches');
-        only_r.click();
-        expect(landingPage.locations.count()).toBe(10);
-        expect(only_r.getText()).toEqual('only research libraries');
-    });
-
 });
-
-
