@@ -191,24 +191,68 @@ describe('Locations: homepage', function () {
                 expect(element.all(by.css('.callout')).count()).toBe(0);
             });
 
+            it('should organize the locations by distance', function () {
+                // There is a probably a better way to test this
+                // The first location that should appear
+                expect(
+                    landingPage.locations.first().findElement(by.css('.p-org')).getText()
+                ).toEqual('West Farms Library');
+
+                expect(
+                    landingPage.locations
+                        .first().findElement(by.css('.distance')).getText()
+                ).toEqual('0.51 miles');
+
+                // The last location that should appear on the page
+                expect(
+                    landingPage.locations.last().findElement(by.css('.p-org')).getText()
+                ).toEqual('Mosholu Library');
+
+                expect(
+                    landingPage.locations
+                        .last().findElement(by.css('.distance')).getText()
+                ).toEqual('1.65 miles');
+            });
+
         });
 
         describe('A location outside of NYC was searched', function () {
-            beforeEach(function () {
-                landingPage.search('boston');
-                browser.sleep(1000);
-            });
-
             it('should tell you that your query was too ' + 
                 'far from any NYPL location', function () {
+                landingPage.search('boston');
+                browser.sleep(1000);
+
                 expect(landingPage.searchError.getText())
                     .toEqual('No results for boston within 25 miles of' +
                         ' an NYPL location. Showing all locations.');
             });
 
-            // it('should refresh the list of locations', function () {
+            it('should refresh the list of locations after a previous search', function () {
+                // User searches for a location:
+                landingPage.search('city island');
+                browser.sleep(1000);
 
-            // });
+                // The location list is organized
+                expect(
+                    landingPage.locations
+                        .first().findElement(by.css('.p-org')).getText()
+                ).toEqual('City Island Library');
+
+                expect(
+                    landingPage.locations
+                        .get(1).findElement(by.css('.p-org')).getText()
+                ).toEqual('Pelham Bay Library');
+
+                landingPage.clear();
+                landingPage.search('boston');
+                browser.sleep(1000);
+
+                expect(
+                    landingPage.locations
+                        .first().findElement(by.css('.p-org')).getText()
+                ).toEqual('115th Street Library');
+
+            });
         });
     });
 
