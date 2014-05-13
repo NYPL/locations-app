@@ -1,3 +1,5 @@
+/*jslint indent: 2, maxlen: 80 */
+/*global describe, require, beforeEach, browser, it, expect, element, by */
 describe('Locations: division', function () {
   'use strict';
 
@@ -30,7 +32,7 @@ describe('Locations: division', function () {
     var social_media = divisionPage.social_media;
     expect(social_media.count()).toBe(2);
   });
-  
+
   it('should have a manager', function () {
     expect(divisionPage.division_manager.getText())
       .not.toBe('');

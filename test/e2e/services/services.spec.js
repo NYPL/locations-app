@@ -1,3 +1,5 @@
+/*jslint indent: 2, maxlen: 80 */
+/*global describe, require, beforeEach, browser, it, expect, element, by */
 // Basic test template - services pages are not done
 describe('Locations: services', function () {
   'use strict';
@@ -37,7 +39,8 @@ describe('Locations: services', function () {
     });
 
     it('should display the name of the service', function () {
-      expect(servicesPage.locationName.getText()).toEqual('Chatham Square Library');
+      expect(servicesPage.locationName.getText())
+        .toEqual('Chatham Square Library');
     });
 
     it('should display a list of services', function () {

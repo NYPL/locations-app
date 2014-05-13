@@ -1,3 +1,5 @@
+/*jslint indent: 2, maxlen: 80 */
+/*global describe, require, beforeEach, browser, it, expect, element, by */
 describe('Locations: library', function () {
   'use strict';
 
@@ -14,14 +16,16 @@ describe('Locations: library', function () {
     });
 
     it('should have a complete address', function () {
-      expect(locationPage.street_address.getText()).toEqual('135 East 46th Street');
+      expect(locationPage.street_address.getText())
+        .toEqual('135 East 46th Street');
       expect(locationPage.locality.getText()).toEqual('New York');
       expect(locationPage.region.getText()).toEqual('NY');
       expect(locationPage.postal_code.getText()).toEqual('10017');
     });
 
     it('should have a library manager', function () {
-      expect(locationPage.manager.getText()).toEqual('Library Manager: Genoveve Stowell');
+      expect(locationPage.manager.getText())
+        .toEqual('Library Manager: Genoveve Stowell');
     });
 
     it('should display three social media icons', function () {
@@ -59,11 +63,13 @@ describe('Locations: library', function () {
     });
 
     it('should display the name', function () {
-      expect(locationPage.name.getText()).toEqual('Stephen A. Schwarzman Building');
+      expect(locationPage.name.getText())
+        .toEqual('Stephen A. Schwarzman Building');
     });
 
     it('should have a complete address', function () {
-      expect(locationPage.street_address.getText()).toEqual('Fifth Avenue at 42nd Street');
+      expect(locationPage.street_address.getText())
+        .toEqual('Fifth Avenue at 42nd Street');
       expect(locationPage.locality.getText()).toEqual('New York');
       expect(locationPage.region.getText()).toEqual('NY');
       expect(locationPage.postal_code.getText()).toEqual('10018');

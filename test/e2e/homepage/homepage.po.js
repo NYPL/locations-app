@@ -1,4 +1,8 @@
+/*jslint indent: 2, maxlen: 80 */
+/* globals: element, by, module */
 var LandingPage = function () {
+  'use strict';
+
   // Search Box
   this.searchInput = element(by.id('searchTerm'));
   // Submit search button

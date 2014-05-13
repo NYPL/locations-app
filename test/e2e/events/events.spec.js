@@ -1,3 +1,5 @@
+/*jslint indent: 2, maxlen: 80 */
+/*global describe, require, beforeEach, browser, it, expect, element, by */
 describe('Locations: events', function () {
   'use strict';
 

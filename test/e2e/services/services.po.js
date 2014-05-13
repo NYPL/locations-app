@@ -1,4 +1,8 @@
-var servicesPage = function () {
+/*jslint indent: 2, maxlen: 80 */
+/* globals: element, by, module */
+var ServicesPage = function () {
+  'use strict';
+
   this.serviceName = element(by.binding('service_name'));
   this.locationName = element(by.binding('location.name'));
 
@@ -6,4 +10,4 @@ var servicesPage = function () {
   this.locations = element.all(by.repeater('location in locations'));
 };
 
-module.exports = new servicesPage();
+module.exports = new ServicesPage();
