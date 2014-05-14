@@ -39,6 +39,7 @@ describe('Locations: homepage', function () {
 
         describe('Geolocation Successful', function () {
             beforeEach(function () {
+                // Coordinates based on SASB
                 browser.executeScript(mockGeo(40.7529, -73.9821));
             });
 
@@ -107,7 +108,7 @@ describe('Locations: homepage', function () {
                     // Click the header to reverse the distance sorter
                     element(by.id('distanceSorter')).click();
 
-                    // The closest farthest away from you
+                    // The farthest location away from you
                     expect(
                         landingPage.locations
                             .first().findElement(by.css('.distance')).getText()
@@ -202,6 +203,24 @@ describe('Locations: homepage', function () {
                         ).toEqual('125th Street Library');
                     });
 
+                it('should not sort by distance', function () {
+                    // The list is initially sorted by name - there is
+                    // no distance set for any location
+                    expect(
+                        landingPage.locations
+                            .first().findElement(by.css('.p-org')).getText()
+                    ).toEqual('Aguilar Library');
+
+                    // Click the header to reverse the distance sorter
+                    element(by.id('distanceSorter')).click();
+
+                    // Nothing should change
+                    expect(
+                        landingPage.locations
+                            .first().findElement(by.css('.p-org')).getText()
+                    ).toEqual('Aguilar Library');
+                });
+
                 describe('Clicking searchbox \'x\'', function () {
                     it('should clear the input',
                         function () {
@@ -249,6 +268,9 @@ describe('Locations: homepage', function () {
                             landingPage.locations
                                 .first().findElement(by.css('.p-org')).getText()
                         ).toEqual('Battery Park City Library');
+
+                        // It should be the only match for that search
+                        expect(element.all(by.css('.callout')).count()).toBe(1);
                         expect(
                             landingPage.locations
                                 .first().getAttribute('class')
@@ -274,6 +296,32 @@ describe('Locations: homepage', function () {
                         landingPage.locations
                             .get(2).findElement(by.css('.distance')).getText()
                     ).toEqual('1.29 miles');
+                });
+
+                describe('Clicking searchbox \'x\'', function () {
+                    it('should clear the input',
+                        function () {
+                            expect(
+                                landingPage.searchInput.getAttribute('value')
+                            ).toEqual('battery park');
+                            landingPage.clearSearch.click();
+                            expect(
+                                landingPage.searchInput.getAttribute('value')
+                            ).toEqual('');
+                        });
+
+                    it('should reset the list of locations by name',
+                        function () {
+                            expect(
+                                landingPage.locations.first().
+                                    findElement(by.css('.p-org')).getText()
+                            ).toEqual('Battery Park City Library');
+                            landingPage.clearSearch.click();
+                            expect(
+                                landingPage.locations.first().
+                                    findElement(by.css('.p-org')).getText()
+                            ).toEqual('115th Street Library');
+                        });
                 });
             }
         );
@@ -305,7 +353,7 @@ describe('Locations: homepage', function () {
                         .first().findElement(by.css('.distance')).getText()
                 ).toEqual('0.51 miles');
 
-                // The last location that should appear on the page
+                // The next location that should appear on the page
                 expect(
                     landingPage.locations
                         .get(1).findElement(by.css('.p-org')).getText()
@@ -315,6 +363,67 @@ describe('Locations: homepage', function () {
                     landingPage.locations
                         .get(1).findElement(by.css('.distance')).getText()
                 ).toEqual('0.62 miles');
+
+                // The last of 10 locations that should appear on the page
+                expect(
+                    landingPage.locations
+                        .last.findElement(by.css('.p-org')).getText()
+                ).toEqual('Mosholu Library');
+
+                expect(
+                    landingPage.locations
+                        .last.findElement(by.css('.distance')).getText()
+                ).toEqual('1.65 miles');
+            });
+
+            it('should be able to sort by distance', function () {
+                expect(
+                    landingPage.locations.first().findElement(by.css('.p-org')).getText()
+                ).toEqual('West Farms Library');
+
+                expect(
+                    landingPage.locations
+                        .first().findElement(by.css('.distance')).getText()
+                ).toEqual('0.51 miles');
+
+                // Click the header to reverse the distance sorter
+                element(by.id('distanceSorter')).click();
+
+                    // Nothing should change
+                expect(
+                    landingPage.locations.first().findElement(by.css('.p-org')).getText()
+                ).toEqual('Tottenville Library');
+
+                expect(
+                    landingPage.locations
+                        .first().findElement(by.css('.distance')).getText()
+                ).toEqual('30.4 miles');
+            });
+
+            describe('Clicking searchbox \'x\'', function () {
+                it('should clear the input',
+                    function () {
+                        expect(
+                            landingPage.searchInput.getAttribute('value')
+                        ).toEqual('bronx zoo');
+                        landingPage.clearSearch.click();
+                        expect(
+                            landingPage.searchInput.getAttribute('value')
+                        ).toEqual('');
+                    });
+
+                it('should reset the list of locations by name',
+                    function () {
+                        expect(
+                            landingPage.locations.first().
+                                findElement(by.css('.p-org')).getText()
+                        ).toEqual('West Farms Library');
+                        landingPage.clearSearch.click();
+                        expect(
+                            landingPage.locations.first().
+                                findElement(by.css('.p-org')).getText()
+                        ).toEqual('115th Street Library');
+                    });
             });
         });
 
@@ -358,6 +467,32 @@ describe('Locations: homepage', function () {
                     landingPage.locations
                         .get(3).findElement(by.css('.distance')).getText()
                 ).toEqual('0.43 miles');
+            });
+
+            describe('Clicking searchbox \'x\'', function () {
+                it('should clear the input',
+                    function () {
+                        expect(
+                            landingPage.searchInput.getAttribute('value')
+                        ).toEqual('10016');
+                        landingPage.clearSearch.click();
+                        expect(
+                            landingPage.searchInput.getAttribute('value')
+                        ).toEqual('');
+                    });
+
+                it('should reset the list of locations by name',
+                    function () {
+                        expect(
+                            landingPage.locations.first().
+                                findElement(by.css('.p-org')).getText()
+                        ).toEqual('Mid-Manhattan Library');
+                        landingPage.clearSearch.click();
+                        expect(
+                            landingPage.locations.first().
+                                findElement(by.css('.p-org')).getText()
+                        ).toEqual('115th Street Library');
+                    });
             });
         });
 

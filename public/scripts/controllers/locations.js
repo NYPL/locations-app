@@ -372,6 +372,7 @@ nypl_locations.controller('LocationsCtrl', function (
         allLocationsInit();
         $scope.researchBranches = false;
         ngRepeatShowAllBranches();
+        nypl_geocoder_service.show_all_libraries();
     };
 
     $scope.submitAddress = function (searchTerm) {
