@@ -42,21 +42,22 @@ describe('Locations: homepage', function () {
                 browser.executeScript(mockGeo(40.7529, -73.9821));
             });
 
-            it('should locate you and show the blue marker on the map legend', function () {
-                // Only the 'NYPL Library' key should be in the map legend
-                expect(landingPage.mapMarkers.count()).toEqual(1);
+            it('should locate you and show the blue marker on the map legend',
+               function () {
+                   // Only the 'NYPL Library' key should be in the map legend
+                   expect(landingPage.mapMarkers.count()).toEqual(1);
 
-                // It seems you need to give it some time for the text
-                // to render
-                landingPage.currLoc.click();
-                browser.sleep(1500);
+                   // It seems you need to give it some time for the text
+                   // to render
+                   landingPage.currLoc.click();
+                   browser.sleep(1500);
 
-                // "Showing search results near ...."
-                expect(landingPage.resultsNear.isPresent()).toBe(true);
-                // The "Your Current Location" key should show up in
-                // the map legend
-                expect(landingPage.mapMarkers.count()).toEqual(2);
-            });
+                   // "Showing search results near ...."
+                   expect(landingPage.resultsNear.isPresent()).toBe(true);
+                   // The "Your Current Location" key should show up in
+                   // the map legend
+                   expect(landingPage.mapMarkers.count()).toEqual(2);
+               });
 
             it('should not sort by distance without your location', 
                function () {
