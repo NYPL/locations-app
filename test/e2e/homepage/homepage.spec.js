@@ -46,15 +46,39 @@ describe('Locations: homepage', function () {
                 // Only the 'NYPL Library' key should be in the map legend
                 expect(landingPage.mapMarkers.count()).toEqual(1);
 
-                // It seems you need to give it some time for the text to render
+                // It seems you need to give it some time for the text
+                // to render
                 landingPage.currLoc.click();
                 browser.sleep(1500);
 
                 // "Showing search results near ...."
                 expect(landingPage.resultsNear.isPresent()).toBe(true);
-                // The "Your Current Location" key should show up in the map legend
+                // The "Your Current Location" key should show up in
+                // the map legend
                 expect(landingPage.mapMarkers.count()).toEqual(2);
             });
+
+            it('should not sort by distance without your location', 
+               function () {
+                   // The list is initially sorted by name - there is
+                   // no distance set for any location
+                   expect(
+                       landingPage.locations
+                           .first().findElement(by.css('.p-org')).getText()
+                   ).toEqual('115th Street Library');
+
+                   // Do NOT click "current location";
+                
+                   // Click the header to reverse the distance sorter
+                   element(by.id('distanceSorter')).click();
+                   
+                   // Nothing should change
+                   expect(
+                       landingPage.locations
+                           .first().findElement(by.css('.p-org')).getText()
+                   ).toEqual('115th Street Library');
+               });
+
 
             it('should locate you and sort the list of locations by distance', function () {
                 // The list is initially sorted by name - there is no distance
@@ -64,7 +88,8 @@ describe('Locations: homepage', function () {
                         .first().findElement(by.css('.p-org')).getText()
                 ).toEqual('115th Street Library');
 
-                // It seems you need to give it some time for the text to render
+                // It seems you need to give it some time for the text
+                // to render
                 landingPage.currLoc.click();
                 browser.sleep(1500);
 
