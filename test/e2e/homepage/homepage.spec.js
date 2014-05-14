@@ -211,8 +211,7 @@ describe('Locations: homepage', function () {
                 ).toContain('callout');
             });
 
-            it('should also search by area and give distance values ' +
-                'to the rest of the locations', function () {
+            it('should also search by area and give distance values to the rest of the locations', function () {
                 expect(
                     landingPage.locations
                         .get(1).findElement(by.css('.p-org')).getText()
@@ -318,8 +317,7 @@ describe('Locations: homepage', function () {
         });
 
         describe('A location outside of NYC was searched', function () {
-            it('should tell you that your query was too ' + 
-                'far from any NYPL location', function () {
+            it('should tell you that your query was too far from any NYPL location', function () {
                 landingPage.search('boston');
                 browser.sleep(1000);
 
@@ -374,7 +372,7 @@ describe('Locations: homepage', function () {
             expect(only_r.getText()).toEqual('only research libraries');
 
             only_r.click();
-            
+
             expect(landingPage.locations.count()).toBe(4);
             expect(only_r.getText()).toEqual('all branches');
             expect(landingPage.showing.getText())
@@ -384,7 +382,7 @@ describe('Locations: homepage', function () {
         it('should revert back to all libraries when the search input \'x\' is clicked', function () {
             var only_r = landingPage.onlyResearch;
             only_r.click();
-            
+
             expect(landingPage.locations.count()).toBe(4);
             expect(landingPage.showing.getText())
                 .toEqual('Showing 4 of 4 Locations');
@@ -470,7 +468,7 @@ describe('Locations: homepage', function () {
 
             only_r.click();
 
-            research_libraries = landingPage.locations.map(function (elm, index) {
+            research_libraries = landingPage.locations.map(function (elm) {
                 return {
                     text: elm.findElement(by.css('.p-org')).getText(),
                     distance: elm.findElement(by.css('.distance')).getText()
@@ -484,8 +482,7 @@ describe('Locations: homepage', function () {
                     distance: '4.71 miles'
                 },
                 {
-                    text: 'New York Public Library for the Performing ' +
-                            'Arts, Dorothy and Lewis B. Cullman Center',
+                    text: 'New York Public Library for the Performing Arts, Dorothy and Lewis B. Cullman Center',
                     distance: '8.06 miles'
                 },
                 {
@@ -517,7 +514,8 @@ describe('Locations: homepage', function () {
         });
 
         it('should say "Show All" after showing 80 locations', function () {
-            for(var i = 0; i < 7; i++) {
+            var i = 0;
+            for (i = 0; i < 7; i++) {
                 landingPage.showMore.click();
             }
 
@@ -527,7 +525,8 @@ describe('Locations: homepage', function () {
         });
 
         it('should say show all 92 locations and remove the button', function () {
-            for(var i = 0; i < 8; i++) {
+            var i = 0;
+            for (i = 0; i < 8; i++) {
                 landingPage.showMore.click();
             }
 
@@ -539,14 +538,13 @@ describe('Locations: homepage', function () {
         it('should list only four for research libraries', function () {
             var only_r = landingPage.onlyResearch;
             only_r.click();
-            
+
             expect(landingPage.locations.count()).toBe(4);
             expect(landingPage.showing.getText())
                 .toEqual('Showing 4 of 4 Locations');
         });
 
-        it('should revert back to showing 10 locations after toggling ' +
-            'research and all libraries button', function () {
+        it('should revert back to showing 10 locations after toggling research button', function () {
             var only_r = landingPage.onlyResearch;
 
             landingPage.showMore.click();

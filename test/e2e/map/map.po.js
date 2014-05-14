@@ -1,4 +1,8 @@
-var mapPage = function () {
+/*jslint indent: 2, maxlen: 80 */
+/* globals: element, by, module */
+var MapPage = function () {
+  'use strict';
+
   this.name = element(by.binding('location.name'));
 
   this.hoursToday = element(by.css('.hours-today'));
@@ -12,4 +16,4 @@ var mapPage = function () {
   this.map = element(by.css('.gm-style'));
 };
 
-module.exports = new mapPage();
+module.exports = new MapPage();
