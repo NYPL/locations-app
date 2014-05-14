@@ -64,8 +64,7 @@ describe('Locations: homepage', function () {
                     // The list is initially sorted by name - there is
                     // no distance set for any location
                     expect(
-                        landingPage.locations
-                            .first().findElement(by.css('.p-org')).getText()
+                        landingPage.firstLocName()
                     ).toEqual('115th Street Library');
 
                     // Do NOT click "current location";
@@ -75,8 +74,7 @@ describe('Locations: homepage', function () {
 
                     // Nothing should change
                     expect(
-                        landingPage.locations
-                            .first().findElement(by.css('.p-org')).getText()
+                        landingPage.firstLocName()
                     ).toEqual('115th Street Library');
                 });
 
@@ -85,8 +83,7 @@ describe('Locations: homepage', function () {
                     // The list is initially sorted by name - there is
                     // no distance set for any location
                     expect(
-                        landingPage.locations
-                            .first().findElement(by.css('.p-org')).getText()
+                        landingPage.firstLocName()
                     ).toEqual('115th Street Library');
 
                     // It seems you need to give it some time for the text
@@ -100,8 +97,7 @@ describe('Locations: homepage', function () {
                             .first().findElement(by.css('.distance')).getText()
                     ).toEqual('0.03 miles');
                     expect(
-                        landingPage.locations
-                            .first().findElement(by.css('.p-org')).getText()
+                        landingPage.firstLocName()
                     ).toEqual('Stephen A. Schwarzman Building');
 
                     // Click the header to reverse the distance sorter
@@ -113,8 +109,7 @@ describe('Locations: homepage', function () {
                             .first().findElement(by.css('.distance')).getText()
                     ).toEqual('21.7 miles');
                     expect(
-                        landingPage.locations
-                            .first().findElement(by.css('.p-org')).getText()
+                        landingPage.firstLocName()
                     ).toEqual('Tottenville Library');
                 });
         });
@@ -175,8 +170,7 @@ describe('Locations: homepage', function () {
 
                 it('should search by location name', function () {
                     expect(
-                        landingPage.locations
-                            .first().findElement(by.css('.p-org')).getText()
+                        landingPage.firstLocName()
                     ).toEqual('Aguilar Library');
                 });
 
@@ -193,12 +187,10 @@ describe('Locations: homepage', function () {
                 it('should sort the rest of the libraries by name',
                     function () {
                         expect(
-                            landingPage.locations
-                                .get(1).findElement(by.css('.p-org')).getText()
+                            landingPage.nthLocName(1)
                         ).toEqual('115th Street Library');
                         expect(
-                            landingPage.locations
-                                .get(2).findElement(by.css('.p-org')).getText()
+                            landingPage.nthLocName(2)
                         ).toEqual('125th Street Library');
                     });
 
@@ -217,13 +209,11 @@ describe('Locations: homepage', function () {
                     it('should reset the list of locations by name',
                         function () {
                             expect(
-                                landingPage.locations.first().
-                                    findElement(by.css('.p-org')).getText()
+                                landingPage.firstLocName()
                             ).toEqual('Aguilar Library');
                             landingPage.clearSearch.click();
                             expect(
-                                landingPage.locations.first().
-                                    findElement(by.css('.p-org')).getText()
+                                landingPage.firstLocName()
                             ).toEqual('115th Street Library');
                         });
                 });
@@ -246,8 +236,7 @@ describe('Locations: homepage', function () {
                 it('should search by location name and be the first result',
                     function () {
                         expect(
-                            landingPage.locations
-                                .first().findElement(by.css('.p-org')).getText()
+                            landingPage.firstLocName()
                         ).toEqual('Battery Park City Library');
                         expect(
                             landingPage.locations
@@ -257,8 +246,7 @@ describe('Locations: homepage', function () {
 
                 it('should show other results with distances', function () {
                     expect(
-                        landingPage.locations
-                            .get(1).findElement(by.css('.p-org')).getText()
+                        landingPage.nthLocName(1)
                     ).toEqual('New Amsterdam Library');
                     expect(
                         landingPage.locations
@@ -267,8 +255,7 @@ describe('Locations: homepage', function () {
 
 
                     expect(
-                        landingPage.locations
-                            .get(2).findElement(by.css('.p-org')).getText()
+                        landingPage.nthLocName(2)
                     ).toEqual('Chatham Square Library');
                     expect(
                         landingPage.locations
@@ -297,8 +284,7 @@ describe('Locations: homepage', function () {
                 // There is a probably a better way to test this
                 // The first location that should appear
                 expect(
-                    landingPage.locations.first().
-                        findElement(by.css('.p-org')).getText()
+                    landingPage.firstLocName()
                 ).toEqual('West Farms Library');
 
                 expect(
@@ -308,8 +294,7 @@ describe('Locations: homepage', function () {
 
                 // The last location that should appear on the page
                 expect(
-                    landingPage.locations
-                        .get(1).findElement(by.css('.p-org')).getText()
+                    landingPage.nthLocName(1)
                 ).toEqual('Belmont Library and Enrico Fermi Cultural Center');
 
                 expect(
@@ -362,8 +347,7 @@ describe('Locations: homepage', function () {
                     ).toEqual('10018');
 
                     expect(
-                        landingPage.locations
-                            .get(3).findElement(by.css('.p-org')).getText()
+                        landingPage.nthLocName(3)
                     ).toEqual('Stephen A. Schwarzman Building');
 
                     expect(
@@ -400,13 +384,11 @@ describe('Locations: homepage', function () {
 
                     // The location list is organized
                     expect(
-                        landingPage.locations
-                            .first().findElement(by.css('.p-org')).getText()
+                        landingPage.firstLocName()
                     ).toEqual('City Island Library');
 
                     expect(
-                        landingPage.locations
-                            .get(1).findElement(by.css('.p-org')).getText()
+                        landingPage.nthLocName(1)
                     ).toEqual('Pelham Bay Library');
 
                     landingPage.clear();
@@ -414,12 +396,10 @@ describe('Locations: homepage', function () {
                     browser.sleep(1000);
 
                     expect(
-                        landingPage.locations
-                            .first().findElement(by.css('.p-org')).getText()
+                        landingPage.firstLocName()
                     ).toEqual('115th Street Library');
                     expect(
-                        landingPage.locations
-                            .get(1).findElement(by.css('.p-org')).getText()
+                        landingPage.nthLocName(1)
                     ).toEqual('125th Street Library');
                 });
         });
@@ -519,8 +499,7 @@ describe('Locations: homepage', function () {
                 expect(landingPage.locations.count()).toBe(10);
                 expect(only_r.getText()).toEqual('only research libraries');
                 expect(
-                    landingPage.locations
-                        .first().findElement(by.css('.p-org')).getText()
+                    landingPage.firstLocName()
                 ).toEqual('Parkchester Library');
             });
 
