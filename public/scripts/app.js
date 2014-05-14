@@ -8,13 +8,19 @@ var nypl_locations = angular.module('nypl_locations', [
     'ngRoute',
     'locationService',
     'angulartics',
-    'angulartics.google.analytics'
+    'angulartics.google.analytics',
+    'pascalprecht.translate'
 ]);
 
 nypl_locations.constant('_', window._);
 
-nypl_locations.config(function ($routeProvider, $locationProvider) {
+nypl_locations.config(function ($routeProvider, $locationProvider, $translateProvider) {
     'use strict';
+
+    $translateProvider.translations('en', en);
+    $translateProvider.translations('es', es);
+
+    $translateProvider.preferredLanguage('en');
 
     $routeProvider
         .when('/', {
