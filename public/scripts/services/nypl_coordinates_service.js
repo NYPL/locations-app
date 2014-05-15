@@ -1,9 +1,10 @@
 /*jslint indent: 4, maxlen: 80 */
 /*globals nypl_locations */
 
-nypl_locations.factory(
-    'nypl_coordinates_service',
-    ['$q', '$window', function ($q, $window) {
+nypl_locations.factory('nypl_coordinates_service', [
+    '$q',
+    '$window',
+    function ($q, $window) {
         'use strict';
         var geoCoords = null;
         return {
@@ -95,5 +96,4 @@ nypl_locations.factory(
                 return Math.ceil(distance * 100) / 100;
             }
         };
-    }]
-);
+    }]);

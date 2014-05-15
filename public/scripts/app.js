@@ -13,52 +13,55 @@ var nypl_locations = angular.module('nypl_locations', [
 
 nypl_locations.constant('_', window._);
 
-nypl_locations.config(function ($routeProvider, $locationProvider) {
-    'use strict';
+nypl_locations.config([
+    '$routeProvider',
+    '$locationProvider',
+    function ($routeProvider, $locationProvider) {
+        'use strict';
 
-    $routeProvider
-        .when('/', {
-            templateUrl: 'views/locations.html',
-            controller: 'LocationsCtrl'
-        })
-        .when('/division', {
-            redirectTo: '/'
-        })
-        .when('/division/:division', {
-            templateUrl: 'views/division.html',
-            controller: 'DivisionCtrl'
-        })
-        .when('/services', {
-            templateUrl: '/views/services.html',
-            controller: 'ServicesCtrl'
-        })
-        .when('/services/:service_id', {
-            templateUrl: 'views/services.html',
-            controller: 'OneServiceCtrl'
-        })
-        .when('/services/location/:location_id', {
-            templateUrl: 'views/services.html',
-            controller: 'ServicesAtLibraryCtrl'
-        })
-        .when('/:symbol', {
-            templateUrl: 'views/location.html',
-            controller: 'LocationCtrl'
-        })
-        .when('/:symbol/events', {
-            templateUrl: '/views/events.html',
-            controller: 'LocationCtrl'
-        })
-        .when('/:symbol/map', {
-            templateUrl: '/views/map.html',
-            controller: 'mapCtrl'
-        })
-        .otherwise({
-            redirectTo: '/'
-        });
+        $routeProvider
+            .when('/', {
+                templateUrl: 'views/locations.html',
+                controller: 'LocationsCtrl'
+            })
+            .when('/division', {
+                redirectTo: '/'
+            })
+            .when('/division/:division', {
+                templateUrl: 'views/division.html',
+                controller: 'DivisionCtrl'
+            })
+            .when('/services', {
+                templateUrl: '/views/services.html',
+                controller: 'ServicesCtrl'
+            })
+            .when('/services/:service_id', {
+                templateUrl: 'views/services.html',
+                controller: 'OneServiceCtrl'
+            })
+            .when('/services/location/:location_id', {
+                templateUrl: 'views/services.html',
+                controller: 'ServicesAtLibraryCtrl'
+            })
+            .when('/:symbol', {
+                templateUrl: 'views/location.html',
+                controller: 'LocationCtrl'
+            })
+            .when('/:symbol/events', {
+                templateUrl: '/views/events.html',
+                controller: 'LocationCtrl'
+            })
+            .when('/:symbol/map', {
+                templateUrl: '/views/map.html',
+                controller: 'mapCtrl'
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
 
-    // uses the HTML5 History API, remove hash (need to test)
-    // $locationProvider.html5Mode(true);
-});
+        // uses the HTML5 History API, remove hash (need to test)
+        // $locationProvider.html5Mode(true);
+    }]);
 
 // Declare an http interceptor that will signal the start and end of each request
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
