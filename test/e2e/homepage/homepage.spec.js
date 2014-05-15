@@ -254,17 +254,12 @@ describe('Locations: homepage', function () {
                 it('should show other results with distances', function () {
                     expect(landingPage.nthLocName(1))
                         .toEqual('New Amsterdam Library');
-                    expect(
-                        landingPage.nthLoc(1).findElement(by.css('.distance')).getText()
-                    ).toEqual('0.86 miles');
+                    expect(landingPage.nthLocDist(1)).toEqual('0.86 miles');
 
 
                     expect(landingPage.nthLocName(2))
                         .toEqual('Chatham Square Library');
-                    expect(
-                        landingPage.nthLoc(2)
-                            .findElement(by.css('.distance')).getText()
-                    ).toEqual('1.29 miles');
+                    expect(landingPage.nthLocDist(2)).toEqual('1.29 miles');
                 });
 
                 describe('Clicking searchbox \'x\'', function () {
@@ -312,10 +307,7 @@ describe('Locations: homepage', function () {
                 expect(landingPage.firstLocName())
                     .toEqual('West Farms Library');
 
-                expect(
-                    landingPage.locations
-                        .first().findElement(by.css('.distance')).getText()
-                ).toEqual('0.51 miles');
+                expect(landingPage.firstLocDist()).toEqual('0.51 miles');
 
                 // The next location that should appear on the page
                 expect(landingPage.nthLocName(1))
@@ -323,10 +315,7 @@ describe('Locations: homepage', function () {
                         'Belmont Library and Enrico Fermi Cultural Center'
                     );
 
-                expect(
-                    landingPage.nthLoc(1)
-                        .findElement(by.css('.distance')).getText()
-                ).toEqual('0.62 miles');
+                expect(landingPage.nthLocDist(1)).toEqual('0.62 miles');
 
                 // The last of 10 locations that should appear on the page
                 expect(
@@ -344,10 +333,7 @@ describe('Locations: homepage', function () {
                 expect(landingPage.firstLocName())
                     .toEqual('West Farms Library');
 
-                expect(
-                    landingPage.locations
-                        .first().findElement(by.css('.distance')).getText()
-                ).toEqual('0.51 miles');
+                expect(landingPage.firstLocDist()).toEqual('0.51 miles');
 
                 // Click the header to reverse the distance sorter
                 element(by.id('distanceSorter')).click();
@@ -356,10 +342,7 @@ describe('Locations: homepage', function () {
                 expect(landingPage.firstLocName())
                     .toEqual('Tottenville Library');
 
-                expect(
-                    landingPage.locations
-                        .first().findElement(by.css('.distance')).getText()
-                ).toEqual('30.4 miles');
+                expect(landingPage.firstLocDist()).toEqual('30.4 miles');
             });
 
             describe('Clicking searchbox \'x\'', function () {
@@ -425,10 +408,7 @@ describe('Locations: homepage', function () {
                 expect(landingPage.nthLocName(3))
                     .toEqual('Stephen A. Schwarzman Building');
 
-                expect(
-                    landingPage.nthLoc(3)
-                        .findElement(by.css('.distance')).getText()
-                ).toEqual('0.43 miles');
+                expect(landingPage.nthLocDist(3)).toEqual('0.43 miles');
             });
 
             describe('Clicking searchbox \'x\'', function () {

@@ -52,6 +52,14 @@ var LandingPage = function () {
   this.nthLocName = function (n) {
     return this.nthLoc(n).findElement(by.css('.p-org')).getText();
   };
+
+  this.nthLocDist = function (n) {
+    return this.nthLoc(n).findElement(by.css('.distance')).getText();
+  };
+
+  this.firstLocDist = function (n) {
+    return this.nthLocDist(0);
+  };
       
 };
 
