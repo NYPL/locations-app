@@ -1,7 +1,13 @@
 /*jslint indent: 4, maxlen: 80 */
 /*globals nypl_locations */
-nypl_locations.controller(
-    'mapCtrl',
+nypl_locations.controller('mapCtrl', [
+    '$scope',
+    '$routeParams',
+    '$rootScope',
+    'nypl_locations_service',
+    'nypl_geocoder_service',
+    'nypl_coordinates_service',
+    'nypl_utility',
     function (
         $scope,
         $routeParams,
@@ -77,4 +83,4 @@ nypl_locations.controller(
                 $scope.geolocation_error = error;
             });
     }
-);
+]);

@@ -2,7 +2,7 @@
   "name": "Locations",
   "version": "0.0.1",
   "dependencies": {
-    "protractor": "^0.20.1"
+    "protractor": "^0.22.0"
   },
   "devDependencies": {
       "karma": "~0.12",
