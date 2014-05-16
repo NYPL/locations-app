@@ -16,13 +16,16 @@ nypl_locations.constant('_', window._);
 nypl_locations.config(function ($routeProvider, $locationProvider) {
     'use strict';
 
+    // uses the HTML5 History API, remove hash (need to test)
+    $locationProvider.html5Mode(true);
+
     $routeProvider
+        .when('/404', {
+            templateUrl: '/views/404.html',
+        })
         .when('/', {
             templateUrl: 'views/locations.html',
             controller: 'LocationsCtrl'
-        })
-        .when('/division', {
-            redirectTo: '/'
         })
         .when('/division/:division', {
             templateUrl: 'views/division.html',
@@ -53,18 +56,16 @@ nypl_locations.config(function ($routeProvider, $locationProvider) {
             controller: 'mapCtrl'
         })
         .otherwise({
-            redirectTo: '/'
+            redirectTo: '/404'
         });
 
-    // uses the HTML5 History API, remove hash (need to test)
-    // $locationProvider.html5Mode(true);
 });
 
 // Declare an http interceptor that will signal the start and end of each request
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
 nypl_locations.config(['$httpProvider', function ($httpProvider) {
     var $http,
-        interceptor = ['$q', '$injector', function ($q, $injector) {
+        interceptor = ['$q', '$injector', '$location', function ($q, $injector, $location) {
             var notificationChannel;
 
             function success(response) {
@@ -81,6 +82,8 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
             }
 
             function error(response) {
+                var status = response.status;
+
                 // get $http via $injector because of circular dependency problem
                 $http = $http || $injector.get('$http');
                 // don't send notification until all requests are complete
@@ -90,6 +93,13 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
                     // send a notification requests are complete
                     notificationChannel.requestEnded();
                 }
+                // Intercept 404 error code from server
+                if (status == 404) {
+                    console.log('Error code: ' + status);
+                    $location.path('/404');
+                    return $q.reject(response);
+                }
+
                 return $q.reject(response);
             }
 

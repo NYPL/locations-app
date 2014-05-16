@@ -514,10 +514,6 @@ nypl_locations.controller('LocationCtrl', function (
 
     // Load the location and user's geolocation coordinates
     // as separate events.
-    loadLocation()
-        .catch(function (err) {
-            console.log(err);
-            $location.path('/');
-        });
-    loadCoords();
+    loadLocation().then(loadCoords);
+    //loadCoords();
 });
