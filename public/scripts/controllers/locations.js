@@ -502,8 +502,8 @@ nypl_locations.controller('LocationCtrl', [
                             nypl_utility.alerts(location._embedded.alerts);
 
                         $scope.location = location;
-                        $scope.hoursToday =
-                            nypl_utility.hoursToday(location.hours);
+                        $scope.hoursToday = nypl_utility.hoursToday;
+
                         // Used for the Get Directions link to Google Maps
                         $scope.locationDest =
                             nypl_utility.getAddressString(location);
