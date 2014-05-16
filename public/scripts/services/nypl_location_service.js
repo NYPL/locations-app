@@ -94,6 +94,6 @@ angular.module('locationService', ['ngResource'])
                     });
                     return defer.promise;
                 }
-
             };
-        }]);
+        }
+    ]);

@@ -515,28 +515,22 @@ nypl_locations.controller('LocationCtrl', [
                     .catch(function (err) {
                         throw err;
                     });
-            },
-            loadCoords = function () {
-                return nypl_coordinates_service
-                    .getCoordinates()
-                    .then(function (position) {
-                        userCoords = _.pick(position, 'latitude', 'longitude');
+        },
+        loadCoords = function () {
+            return nypl_coordinates_service
+                .getCoordinates()
+                .then(function (position) {
+                    userCoords = _.pick(position, 'latitude', 'longitude');
 
-                        // Used for the Get Directions link to Google Maps
-                        // If the user rejected geolocation and
-                        // $scope.locationStart is blank, the link will still work
-                        $scope.locationStart =
-                            userCoords.latitude + "," + userCoords.longitude;
-                    });
-            };
+                    // Used for the Get Directions link to Google Maps
+                    // If the user rejected geolocation and
+                    // $scope.locationStart is blank, the link will still work
+                    $scope.locationStart =
+                        userCoords.latitude + "," + userCoords.longitude;
+                });
+        };
 
-        // Load the location and user's geolocation coordinates
-        // as separate events.
-        loadLocation()
-            .catch(function (err) {
-                console.log(err);
-                $location.path('/');
-            });
-        loadCoords();
+        // Load the location and user's geolocation coordinates as chained events
+        loadLocation().then(loadCoords);
     }
 ]);
