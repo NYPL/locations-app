@@ -1,7 +1,13 @@
 /*jslint indent: 4, maxlen: 80 */
 /*globals nypl_locations */
-nypl_locations.controller(
-    'mapCtrl',
+nypl_locations.controller('mapCtrl', [
+    '$scope',
+    '$routeParams',
+    '$rootScope',
+    'nypl_locations_service',
+    'nypl_geocoder_service',
+    'nypl_coordinates_service',
+    'nypl_utility',
     function (
         $scope,
         $routeParams,
@@ -70,11 +76,11 @@ nypl_locations.controller(
         // Load the map and get the user's geolocation coordinates 
         // as separate events.
         loadLocation()
-            .then(loadMapPage)
+            .then(loadMapPage);
         getUserCoords()
             .catch(function (error) {
                 // Display to the user if geolocation error occurred
                 $scope.geolocation_error = error;
             });
     }
-);
+]);

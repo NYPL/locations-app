@@ -46,8 +46,6 @@
 
 	        <div id="catalog"><a class="icon-books" href="">Catalog Items Here</a></div>
 	        
-	        
-
         </div>
       
     </div>
@@ -56,7 +54,7 @@
 
   --><div class="container__hours grid__item one-whole tablet-and-up-one-half desk-one-third">
 
-    <todayshours class=" grid__item one-whole " hours="{{hoursToday | hoursTodayFormat:'short'}}" /><!--
+    <todayshours class=" grid__item one-whole " hours="{{hoursToday(location.hours) | hoursTodayFormat:'short'}}" /><!--
 
     --><div id="location-hours" class=" grid__item one-whole ">
 	      <h2 class="flush--ends hdg">Regular Hours</h2>
@@ -85,7 +83,7 @@
       <div class="grid__item one-whole desk-one-third" data-ng-repeat='division in location._embedded.divisions'>
 	        <img class="img--left" src="http://nypl.org{{division.image}}" alt="" style="height: 100px;" />
 	        <h3 class=""><a href="/#/division/{{division.slug}}">{{division.name}}</a></h3>
-	        <p>{{division.about}}</p>
+	        <p>{{hoursToday(division.hours) | hoursTodayFormat:'short'}}</p>
 	      </div>
       </div>    
   </div><!--
