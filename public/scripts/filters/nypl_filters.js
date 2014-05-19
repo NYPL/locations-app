@@ -142,4 +142,26 @@ nypl_locations.filter('hoursTodayFormat', [
 
             }
         };
-    }]);
+    }
+]);
+
+/* Truncates string text with proper arguments [length (number), end(string)] */
+nypl_locations.filter('truncate', [
+    function () {
+        return function (text, length, end) {
+            if (isNaN(length)) {
+                length = 200; // Default length
+            }
+            if (end === undefined) {
+                end = "..."; // Default ending characters
+            }
+            if (text.length <= length || text.length - end.length <= length) {
+                return text;
+            }
+            else {
+                return String(text).substring(0, length-end.length) + end;
+            }
+
+        };
+    }
+]);

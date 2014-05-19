@@ -150,7 +150,7 @@
       <div class="grid__item one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
         <img data-ng-if="blog.image" class="img--left" src="{{blog.image}}" alt="" style="height: 100px;" />
         <h3><a href="{{blog._links.self.href}}">{{blog.title}}</a></h3>
-        <div class="teaser">{{blog.body}}</div>
+        <div class="teaser">{{blog.body | truncate}}</div>
       </div>
     </div>
   </div>
@@ -160,7 +160,7 @@
     <div class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='exhibition in location._embedded.exhibitions'>
       <img data-ng-if="exhibition.image" class="img--left" src="{{exhibition.image}}" alt="" style="height: 100px;" />
       <h3><a href="{{exhibition._links.self.href}}">{{exhibition.title}}</a></h3>
-      <div class="teaser">{{exhibition.body}}</div>
+      <div class="teaser">{{exhibition.body | truncate}}</div>
       <div class="callout">
         <p>Start time: {{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p>End time: {{exhibition.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
