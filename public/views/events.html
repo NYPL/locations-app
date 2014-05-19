@@ -6,7 +6,7 @@
       <h1>Events at {{location.name}}</h1>
     </div><!--
     --><div class="grid__item one-whole lap-and-up-one-third">
-      <todayshours hours="{{hoursToday | hoursTodayFormat:'short'}}" />
+      <todayshours hours="{{hoursToday(location.hours) | hoursTodayFormat:'short'}}" />
     </div>
     <div class="grid__item one-whole">
       <p>

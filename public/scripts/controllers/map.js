@@ -37,7 +37,7 @@ nypl_locations.controller('mapCtrl', [
                     };
 
                 $scope.location = location;
-                $scope.hoursToday = nypl_utility.hoursToday(location.hours);
+                $scope.hoursToday = nypl_utility.hoursToday;
                 $scope.locationDest = nypl_utility.getAddressString(location);
 
                 nypl_geocoder_service
