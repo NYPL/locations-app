@@ -20,7 +20,7 @@ nypl_locations.config([
     'use strict';
 
         // uses the HTML5 History API, remove hash (need to test)
-        $locationProvider.html5Mode(true);
+        //$locationProvider.html5Mode(true);
 
         $routeProvider
             .when('/404', {
@@ -29,6 +29,10 @@ nypl_locations.config([
             .when('/', {
                 templateUrl: 'views/locations.html',
                 controller: 'LocationsCtrl'
+            })
+            .when('/full-page-map', {
+                templateUrl: '/views/large-map.html',
+                controller: 'LargeMapCtrl'
             })
             .when('/division/:division', {
                 templateUrl: 'views/division.html',

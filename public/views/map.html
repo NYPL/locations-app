@@ -18,7 +18,7 @@
     </div><!--
 
     --><div class="grid__item one-whole lap-and-up-one-third">
-      <todayshours hours="{{hoursToday | hoursTodayFormat:'short'}}" />
+      <todayshours hours="{{hoursToday(location.hours) | hoursTodayFormat:'short'}}" />
       <div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
     </div>
   </section>

@@ -61,10 +61,7 @@ nypl_locations.filter('hoursTodayFormat', [
                             time[1],
                             (time[0] >= 12 ? 'pm' : 'am')]
                     );
-                } else {
-                    throw new Error("Open object key is undefined");
                 }
-
                 // Assign closed time obj
                 if (elem.close) {
                     time = elem.close.split(':');
@@ -74,14 +71,20 @@ nypl_locations.filter('hoursTodayFormat', [
                             time[1],
                             (time[0] >= 12 ? 'pm' : 'am')]
                     );
-                } else {
-                    throw new Error("Closed object key is undefined");
+                }
+
+                if (!elem.open || !elem.close) {
+                    time = 'closed'
+                    console.log("Returned object is null for open/closed elems");
                 }
 
                 // Multiple cases for args w/ default
                 switch (type) {
                 case 'short':
-                    if (hour_now > closed_time.hour) {
+                    if (time === 'closed') {
+                        return 'Closed today';
+                    }
+                    else if (hour_now > closed_time.hour) {
                         return 'Open tomorrow ' + open_time.hours +
                                 (parseInt(open_time.mins, 10) !== 0 ?
                                     ':' + open_time.mins :
@@ -92,14 +95,19 @@ nypl_locations.filter('hoursTodayFormat', [
                                     '') +
                                 closed_time.meridian;
                     }
-
-                    return 'Open today until ' + closed_time.hours +
+                    else {
+                        return 'Open today until ' + closed_time.hours +
                             (parseInt(closed_time.mins, 10) !== 0 ?
                                 ':' + closed_time.mins :
                                 '')
                             + closed_time.meridian;
+                    }
+
                 case 'long':
-                    if (hour_now > closed_time.hour) {
+                    if (time === 'closed') {
+                        return 'Closed today';
+                    }
+                    else if (hour_now > closed_time.hour) {
                         return 'Open tomorrow ' + open_time.hours +
                                 (parseInt(open_time.mins, 10) !== 0 ?
                                     ':' + open_time.mins :
@@ -110,8 +118,8 @@ nypl_locations.filter('hoursTodayFormat', [
                                     '')
                                 + closed_time.meridian;
                     }
-
-                    return 'Open today ' + open_time.hours +
+                    else {
+                        return 'Open today ' + open_time.hours +
                             (parseInt(open_time.mins, 10) !== 0 ?
                                 ':' + open_time.mins :
                                 '') +
@@ -120,12 +128,40 @@ nypl_locations.filter('hoursTodayFormat', [
                                 ':' + closed_time.mins :
                                 '')
                             + closed_time.meridian;
+                    }
                 default:
-                    return open_time.hours + ':' + open_time.mins +
+                    if (time === 'closed') {
+                        return "Closed";
+                    }
+                    else {
+                        return open_time.hours + ':' + open_time.mins +
                             open_time.meridian + '-' + closed_time.hours +
                             ':' + closed_time.mins + closed_time.meridian;
+                    }
                 }
 
             }
         };
-    }]);
+    }
+]);
+
+/* Truncates string text with proper arguments [length (number), end(string)] */
+nypl_locations.filter('truncate', [
+    function () {
+        return function (text, length, end) {
+            if (isNaN(length)) {
+                length = 200; // Default length
+            }
+            if (end === undefined) {
+                end = "..."; // Default ending characters
+            }
+            if (text.length <= length || text.length - end.length <= length) {
+                return text;
+            }
+            else {
+                return String(text).substring(0, length-end.length) + end;
+            }
+
+        };
+    }
+]);
