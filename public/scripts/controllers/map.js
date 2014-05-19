@@ -84,3 +84,59 @@ nypl_locations.controller('mapCtrl', [
             });
     }
 ]);
+nypl_locations.controller('LargeMapCtrl', [
+    '$scope',
+    '$rootScope',
+    'nypl_locations_service',
+    'nypl_geocoder_service',
+    'nypl_utility',
+    function (
+        $scope,
+        $rootScope,
+        nypl_locations_service,
+        nypl_geocoder_service,
+        nypl_utility
+    ) {
+        'use strict';
+        var locations,
+            loadLocations = function () {
+                return nypl_locations_service
+                    .all_locations()
+                    .then(function (data) {
+                        locations = data.locations;
+                        $scope.locations = locations;
+
+                        _.each($scope.locations, function (location) {
+                            var locationAddress = nypl_utility
+                                    .getAddressString(location, true),
+                                markerCoordinates = {
+                                    'lat': location.geolocation.coordinates[1],
+                                    'long': location.geolocation.coordinates[0]
+                                };
+
+                            // Initially, when the map is drawn and markers are availble,
+                            // they will be drawn too. 
+                            // No need to draw them again if they exist.
+                            if (!nypl_geocoder_service.check_marker(location.slug)) {
+                                nypl_geocoder_service
+                                    .draw_marker(location.slug,
+                                        markerCoordinates,
+                                        locationAddress);
+                            }
+                        });
+
+
+                        return locations;
+                    });
+            };
+
+        $rootScope.title = "Locations";
+        nypl_geocoder_service
+            .draw_map({lat: 40.7532, long: -73.9822}, 12, 'full-page-map');
+        loadLocations();
+    }
+]);
+
+
+
+

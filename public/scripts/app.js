@@ -30,6 +30,10 @@ nypl_locations.config([
                 templateUrl: 'views/locations.html',
                 controller: 'LocationsCtrl'
             })
+            .when('/full-page-map', {
+                templateUrl: '/views/large-map.html',
+                controller: 'LargeMapCtrl'
+            })
             .when('/division/:division', {
                 templateUrl: 'views/division.html',
                 controller: 'DivisionCtrl'
