@@ -20,7 +20,7 @@ nypl_locations.controller('DivisionCtrl', [
                 return nypl_locations_service
                     .single_division($routeParams.division)
                     .then(function (data) {
-                        division = data.division;
+                        division = data.division;console.log(division);
                         $rootScope.title = division.name;
 
                         if (division.hours) {

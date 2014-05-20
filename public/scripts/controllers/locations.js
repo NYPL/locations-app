@@ -481,6 +481,9 @@ nypl_locations.controller('LocationCtrl', [
                         location = data.location;
                         $rootScope.title = location.name;
 
+                        $scope.calendar_link =
+                            nypl_utility.google_calendar_link;
+
                         // Added for debugging purposes
                         location._embedded.alerts.push({
                             _id: 123456789,

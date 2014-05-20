@@ -112,7 +112,7 @@
 
     <ul class="grid">
       <li class="grid__item one-whole desk-one-third" data-ng-repeat="event in location._embedded.events">
-        <h3><a href="{{event._links.self.href}}">{{event.title}}</a></h3>
+        <h3><a href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h3>
         <p>{{event.body}}</p>
         <div class="callout">
           <p>Start time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
@@ -149,7 +149,7 @@
     <div class="grid">
       <div class="grid__item one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
         <img data-ng-if="blog.image" class="img--left" src="{{blog.image}}" alt="" style="height: 100px;" />
-        <h3><a href="{{blog._links.self.href}}">{{blog.title}}</a></h3>
+        <h3><a href="http://nypl.org/{{blog._links.self.href}}">{{blog.title}}</a></h3>
         <div class="teaser">{{blog.body | truncate}}</div>
       </div>
     </div>
