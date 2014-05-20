@@ -180,6 +180,20 @@ nypl_locations.factory('nypl_utility', [
                     var popUp_h = parseInt(h);
                     popUp.moveTo(screen.width/2-popUp_w/2, screen.height/2-popUp_h/2);
                 }
+            },
+
+            google_calendar_link: function (event, address) {
+                var base = "https://www.google.com/calendar/render?action=template",
+                    text = "&text=" + event.title,
+                    date = "&dates=",
+                    start_date = event.start.replace(/[-:]/g, ''),
+                    end_date = event.end.replace(/[-:]/g, ''),
+                    details = "&details=" + event.body,
+                    location = "&location=" + address,
+                    other_params = "&pli=1&uid=&sf=true&output=xml";
+
+                return base + text + date + start_date + "/" +
+                    end_date + details + location + other_params;
             }
         };
     }
