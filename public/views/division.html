@@ -1,7 +1,7 @@
 <!-- container -->
 <div class="content grid">
 
-  <p>Go back <a href="/#/{{division.location_id|lowercase}}">{{division.location_name}}</a></p>
+  <p>Go back <a href="/#/{{division.location_slug}}">{{division.location_name}}</a></p>
 
   <div class="grid__item one-whole lap-and-up-two-thirds">
     <h1>{{division.name}}</h1>
@@ -20,7 +20,7 @@
       
       --><div class="grid__item one-whole lap-and-up-one-half">
         <div data-ng-if="division.contacts.manager">Division Manager: <span>{{division.contacts.manager}}</span></div>
-        <div>See more division contact info <a href="http://nypl.org/locations/{{division.location_id}}/{{division.slug}}">here</a></div>
+        <div>See more division contact info <a href="http://nypl.org/locations/{{division.location_slug}}/{{division.slug}}">here</a></div>
 
         <ul class="top-services flush">
           <li class="icon-book inline">Books</li>
@@ -57,7 +57,7 @@
     <div id="about" class="grid__item one-whole lap-and-up-one-half">
       <h2 class="hdg">About the Collection</h2>
       <p>{{division.about}}</p>
-      <div><a class="read-more" href="http://nypl.org/locations/{{division.location_id}}/{{division.slug}}">More about {{division.name}}</a></div>
+      <div><a class="read-more" href="http://nypl.org/locations/{{division.location_slug}}/{{division.slug}}">More about {{division.name}}</a></div>
     </div><!-- 
 
     --><div id="plan-your-visit" class="grid__item one-whole lap-and-up-one-half">
@@ -88,7 +88,7 @@
       </li>
     </ul>   
       
-    <div><a class="read-more" href="/#/{{division.location_id|lowercase}}/events">See more events at {{division.name}}</a></div>
+    <div><a class="read-more" href="/#/{{division.location_slug}}/events">See more events at {{division.name}}</a></div>
   </div>
 
   <div id="special_project" class="chunk">
