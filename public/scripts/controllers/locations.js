@@ -514,7 +514,7 @@ nypl_locations.controller('LocationCtrl', [
                             nypl_utility
                                 .socialMediaColor($scope.location.social_media);
 
-                        console.log($scope.location); //Debugging
+                        //console.log($scope.location); //Debugging
                     })
                     .catch(function (err) {
                         throw err;
