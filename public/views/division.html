@@ -1,14 +1,14 @@
 <!-- container -->
 <div class="content grid">
 
-  <p>Go back <a href="/#/{{division.location_id|lowercase}}">{{division.location_id}}</a></p>
+  <p>Go back <a href="/#/{{division.location_id|lowercase}}">{{division.location_name}}</a></p>
 
   <div class="grid__item one-whole lap-and-up-two-thirds">
     <h1>{{division.name}}</h1>
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-half">
 
-        <div>{{division.location_id}}</div>
+        <div>{{division.location_name}}</div>
         <div>{{division.floor}} <span data-ng-if="division.room">and Room #{{division.room}}</span></div>
         <div>{{division.contacts.phone}}</div>
 
