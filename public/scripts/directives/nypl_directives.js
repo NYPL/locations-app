@@ -47,17 +47,24 @@ nypl_locations.directive('todayshours', [
     }]);
 
 nypl_locations.directive('askdonatefooter', [
-    function () {
+    'nypl_utility',
+    function (nypl_utility) {
         'use strict';
 
         return {
-            restrict: 'E',
+            restrict: 'EA',
             templateUrl: '/scripts/directives/templates/ask-donate-footer.html',
             replace: true,
             scope: {
-                chatHref: '@',
                 emailHref: '@',
                 donateHref: '@'
+            },
+            link: function(scope, element, attrs, window) {
+                scope.openChat = function() {
+                    // Utilize service in directive to fire off the new window.
+                    // Arguments: link (req), title (optional), width (optional), height (optional)
+                    nypl_utility.popup_window('http://www.nypl.org/ask-librarian', 'NYPL Chat', 210, 450);
+                }
             }
 
         };
