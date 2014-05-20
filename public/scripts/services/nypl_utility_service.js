@@ -50,12 +50,19 @@ nypl_locations.factory('nypl_utility', [
         return {
             hoursToday: function (hours) {
                 var date = new Date(),
-                    today = date.getDay(),
+                today = date.getDay(),
+                hoursToday;
+
+                if (hours) {
                     hoursToday = {
                         'today': hours.regular[today].day,
                         'open': hours.regular[today].open,
                         'close': hours.regular[today].close
                     };
+                }
+                else {
+                    hoursToday = undefined;
+                }
                 return hoursToday;
             },
 
