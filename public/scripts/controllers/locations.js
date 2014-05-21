@@ -484,22 +484,6 @@ nypl_locations.controller('LocationCtrl', [
                         $scope.calendar_link =
                             nypl_utility.google_calendar_link;
 
-                        // Added for debugging purposes
-                        location._embedded.alerts.push({
-                            _id: 123456789,
-                            _links: {
-                                self: {
-                                    href: "node/123456789"
-                                }
-                            },
-                            body: "This is a mocked alert for debugging.",
-                            end: "2014-05-25T01:00:00-04:00",
-                            id: "123456789",
-                            path: null,
-                            start: "2014-04-24T00:00:00-04:00",
-                            title: "Memorial Day"
-                        });
-
                         $scope.siteWideAlert =
                             nypl_utility.alerts(location._embedded.alerts);
 
