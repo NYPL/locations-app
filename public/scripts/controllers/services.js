@@ -17,7 +17,7 @@ nypl_locations.controller('ServicesCtrl', [
                 return nypl_locations_service
                     .services()
                     .then(function (data) {
-                        services = data.services;
+                        services = data.services;console.log(data);
                         $scope.services = services;
                     });
             };

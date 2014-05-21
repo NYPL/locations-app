@@ -124,20 +124,19 @@ nypl_locations.factory('nypl_utility', [
 
             alerts: function (alerts) {
                 var today = new Date(),
-                    todaysAlert;
+                    todaysAlert = '';
 
                 _.each(alerts, function (alert) {
                     var alert_start = new Date(alert.start),
                         alert_end = new Date(alert.end);
 
-                    if (today >= alert_start && today <= alert_end) {
-                        todaysAlert = alert;
+                    if (alert_start <= today && today <= alert_end) {
+                        todaysAlert += "\n" + alert.body;
                     }
                 });
 
-
                 if (!angular.isUndefined(todaysAlert)) {
-                    return todaysAlert.body;
+                    return todaysAlert;
                 }
                 return null;
             },

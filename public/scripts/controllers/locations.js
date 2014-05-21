@@ -478,7 +478,7 @@ nypl_locations.controller('LocationCtrl', [
                 return nypl_locations_service
                     .single_location($routeParams.symbol)
                     .then(function (data) {
-                        location = data.location;
+                        location = data.location;console.log(location);
                         $rootScope.title = location.name;
 
                         $scope.calendar_link =

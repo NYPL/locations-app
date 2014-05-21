@@ -1,4 +1,6 @@
 <div class="content grid">
+  <nyplalerts data-ng-if="siteWideAlert || libraryAlert" sitewidealert='{{siteWideAlert}}'
+  libraryalert='{{libraryAlert}}'></nyplalerts>
   <p>Go back <a href="/#/{{location.slug}}">{{location.name}}</a></p>
 
   <section class="grid h-card">
