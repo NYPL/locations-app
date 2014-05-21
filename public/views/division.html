@@ -1,5 +1,7 @@
 <!-- container -->
 <div class="content grid">
+  <nyplalerts data-ng-if="siteWideAlert || libraryAlert" sitewidealert='{{siteWideAlert}}'
+  libraryAlert='{{libraryAlert}}'></nyplalerts>
 
   <p>Go back <a href="/#/{{division.location_slug}}">{{division.location_name}}</a></p>
 

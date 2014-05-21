@@ -20,7 +20,7 @@ nypl_locations.controller('DivisionCtrl', [
                 return nypl_locations_service
                     .single_division($routeParams.division)
                     .then(function (data) {
-                        division = data.division;console.log(division);
+                        division = data.division;
                         $rootScope.title = division.name;
 
                         if (division.hours) {
@@ -28,6 +28,9 @@ nypl_locations.controller('DivisionCtrl', [
                         }
 
                         $scope.division = division;
+
+                        $scope.siteWideAlert =
+                            nypl_utility.alerts(division._embedded.alerts);
 
                         $scope.division.social_media =
                             nypl_utility.socialMediaColor(division.social_media);

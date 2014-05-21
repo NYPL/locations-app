@@ -37,6 +37,8 @@ nypl_locations.controller('mapCtrl', [
                     };
 
                 $scope.location = location;
+                $scope.siteWideAlert =
+                            nypl_utility.alerts(location._embedded.alerts);
                 $scope.hoursToday = nypl_utility.hoursToday;
                 $scope.locationDest = nypl_utility.getAddressString(location);
 
@@ -114,9 +116,6 @@ nypl_locations.controller('LargeMapCtrl', [
                                     'long': location.geolocation.coordinates[0]
                                 };
 
-                            // Initially, when the map is drawn and markers are availble,
-                            // they will be drawn too. 
-                            // No need to draw them again if they exist.
                             if (!nypl_geocoder_service.check_marker(location.slug)) {
                                 nypl_geocoder_service
                                     .draw_marker(location.slug,
@@ -124,7 +123,6 @@ nypl_locations.controller('LargeMapCtrl', [
                                         locationAddress);
                             }
                         });
-
 
                         return locations;
                     });

@@ -1,9 +1,7 @@
 <!-- container -->
 <div class="{{location.type}} h-card content grid">
-  <div class="grid__item grid--center one-whole callout" data-ng-if="siteWideAlert || libraryAlert">
-    <p data-ng-if="siteWideAlert">{{siteWideAlert}}</p>
-    <p data-ng-if="libraryAlert">{{libraryAlert}}</p>
-  </div>
+  <nyplalerts data-ng-if="siteWideAlert || libraryAlert" sitewidealert='{{siteWideAlert}}'
+  libraryalert='{{libraryAlert}}'></nyplalerts>
 
   <p><a href="/#/">All locations</a></p>
   
