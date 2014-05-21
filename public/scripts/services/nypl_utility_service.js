@@ -126,14 +126,22 @@ nypl_locations.factory('nypl_utility', [
                 var today = new Date(),
                     todaysAlert = '';
 
-                _.each(alerts, function (alert) {
-                    var alert_start = new Date(alert.start),
-                        alert_end = new Date(alert.end);
+                if (Array.isArray(alerts)) {
+                    _.each(alerts, function (alert) {
+                        var alert_start = new Date(alert.start),
+                            alert_end = new Date(alert.end);
+                        if (alert_start <= today && today <= alert_end) {
+                            todaysAlert += "\n" + alert.body;
+                        }
+                    });
+                } else {
+                    var alert_start = new Date(alerts.start),
+                        alert_end = new Date(alerts.end);
 
                     if (alert_start <= today && today <= alert_end) {
-                        todaysAlert += "\n" + alert.body;
+                        todaysAlert += alerts.description;
                     }
-                });
+                }
 
                 if (!angular.isUndefined(todaysAlert)) {
                     return todaysAlert;
