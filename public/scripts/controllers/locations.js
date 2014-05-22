@@ -478,7 +478,7 @@ nypl_locations.controller('LocationCtrl', [
                 return nypl_locations_service
                     .single_location($routeParams.symbol)
                     .then(function (data) {
-                        location = data.location;console.log(location);
+                        location = data.location;
                         $rootScope.title = location.name;
 
                         $scope.calendar_link =
@@ -487,8 +487,10 @@ nypl_locations.controller('LocationCtrl', [
                         $scope.siteWideAlert =
                             nypl_utility.alerts(location._embedded.alerts);
 
-                        $scope.libraryAlert = 
-                            nypl_utility.alerts(location.hours.exceptions);
+                        if (location.hours.exceptions) {
+                            $scope.libraryAlert = 
+                                nypl_utility.alerts(location.hours.exceptions);
+                        }
 
                         $scope.location = location;
                         $scope.hoursToday = nypl_utility.hoursToday;
