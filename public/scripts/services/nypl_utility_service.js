@@ -138,11 +138,11 @@ nypl_locations.factory('nypl_utility', [
                     var alert_start = new Date(alerts.start),
                         alert_end = new Date(alerts.end);
 
-                    if (alert_start <= today && today <= alert_end) {
+                    console.log(alert_end);
+                    if (today >= alert_start) {
                         todaysAlert += alerts.description;
                     }
                 }
-
                 if (!angular.isUndefined(todaysAlert)) {
                     return todaysAlert;
                 }
