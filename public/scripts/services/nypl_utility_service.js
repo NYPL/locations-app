@@ -137,9 +137,9 @@ nypl_locations.factory('nypl_utility', [
                 } else {
                     var alert_start = new Date(alerts.start),
                         alert_end = new Date(alerts.end);
-
-                    console.log(alert_end);
-                    if (today >= alert_start) {
+                    
+                    console.log("End date for library date: " + alert_end);
+                    if (today >= alert_start && today <= alert_end) {
                         todaysAlert += alerts.description;
                     }
                 }
