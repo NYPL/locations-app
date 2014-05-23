@@ -70,9 +70,15 @@ nypl_locations.factory('nypl_utility', [
             // for the map. Line breaks are not needed when we use the address 
             // to get directions on Google Maps.
             getAddressString: function (location, nicePrint) {
-                var addressBreak = nicePrint ? "<br />" : " ";
+                var addressBreak = " ",
+                    linkedName = location.name;
 
-                return location.name + addressBreak +
+                if (nicePrint) {
+                    addressBreak = "<br />";
+                    linkedName = "<a href='/#/" + location.slug + "'>"+location.name+"</a>";
+                }
+
+                return linkedName + addressBreak +
                     location.street_address + addressBreak +
                     location.locality + ", " +
                     location.region + ", " +
