@@ -15,6 +15,9 @@ describe('Locinator controllers', function() {
   window.google.maps.Animation.DROP = jasmine.createSpy('Drop');
   window.google.maps.event = jasmine.createSpy('event');
   window.google.maps.event.addListener = jasmine.createSpy('addListener');
+  // window.google.maps.prototype.controls = jasmine.createSpy('map.controls');
+  window.google.maps.ControlPosition = jasmine.createSpy('ControlPosition');
+  // window.google.maps.ControlPosition.RIGHT_BOTTOM = jasmine.createSpy('RIGHT_BOTTOM');
 
  /* 
   * nypl_locations_service 
@@ -45,8 +48,9 @@ describe('Locinator controllers', function() {
     });
 
     it('Should call the branches API and successfully get data back', function () {
-      jasmine.getJSONFixtures().fixturesPath='locations-prototype/test/json';
-      httpBackend.expectGET("http://evening-mesa-7447-160.herokuapp.com/locations").respond(200, getJSONFixture('locationsResponse.json'));
+      httpBackend
+        .expectGET("http://evening-mesa-7447-160.herokuapp.com/locations")
+        .respond(200, '[{"name":"jmr"},{"name":"sasb"}]');
 
       expect(scope.locations).not.toBeDefined();
 
