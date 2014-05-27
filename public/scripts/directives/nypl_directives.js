@@ -38,7 +38,7 @@ nypl_locations.directive('todayshours', [
 
         return {
             restrict: 'E',
-            templateUrl: '/scripts/directives/templates/todaysHours.html',
+            templateUrl: 'scripts/directives/templates/todaysHours.html',
             replace: true,
             scope: {
                 hours: '@'
@@ -53,7 +53,7 @@ nypl_locations.directive('askdonatefooter', [
 
         return {
             restrict: 'EA',
-            templateUrl: '/scripts/directives/templates/ask-donate-footer.html',
+            templateUrl: 'scripts/directives/templates/ask-donate-footer.html',
             replace: true,
             scope: {
                 emailHref: '@',
@@ -87,7 +87,7 @@ nypl_locations.directive('nyplalerts', [
 
         return {
             restrict: 'E',
-            templateUrl: '/scripts/directives/templates/alerts.html',
+            templateUrl: 'scripts/directives/templates/alerts.html',
             replace: true,
             scope: {
                 sitewidealert: '@',
