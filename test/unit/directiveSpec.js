@@ -90,8 +90,8 @@ describe('NYPL Directive Tests', function() {
 
     it('should display a site wide alert', function () {
       siteWideAlert = "This is a site wide alert and just a test.";
-      element = angular.element('<nyplalerts sitewidealert=\'' + siteWideAlert + '\' ' +
-        'libraryalert=\'{{libraryAlert}}\'></nyplalerts>');
+      element = angular.element("<nyplalerts sitewidealert='" + siteWideAlert + "' " +
+        "libraryalert='{{libraryAlert}}'></nyplalerts>");
       $compile(element)($rootScope);
       $rootScope.$digest();
 
@@ -99,10 +99,10 @@ describe('NYPL Directive Tests', function() {
       expect(element.find('p').text()).toBe('This is a site wide alert and just a test.');
     });
 
-    it('should display a site wide alert', function () {
+    it('should display a library specific alert', function () {
       libraryAlert = "This is an alert for just one library.";
-      element = angular.element('<nyplalerts sitewidealert=\'{{siteWideAlert}}\' ' +
-        'libraryalert=\'' + libraryAlert + '\'></nyplalerts>');
+      element = angular.element("<nyplalerts sitewidealert='{{siteWideAlert}}' " +
+        "libraryalert='" + libraryAlert + "'></nyplalerts>");
       $compile(element)($rootScope);
       $rootScope.$digest();
 
