@@ -7,26 +7,23 @@ describe('NYPL Service Tests', function() {
   * Service that retrieves a browser's current location and coordinate distance utility method
   */
   describe('Utility: nypl_coordinates_service', function() {
-    
+    var nypl_coordinates_service;
+
+    beforeEach(function () {
+      // load the module.
+      module('nypl_locations');
+      
+      // inject your service for testing.
+      // The _underscores_ are a convenience thing
+      // so you can have your variable name be the
+      // same as your injected service.
+      inject(function (_nypl_coordinates_service_, _$rootScope_) {
+        nypl_coordinates_service = _nypl_coordinates_service_;
+      });
+    });
+
     /* nypl_coordinates_service.getDistance */
     describe('nypl_coordinates_service.getDistance', function () {
-      var nypl_coordinates_service;
-
-      // excuted before each "it" is run.
-      beforeEach(function () {
-        
-        // load the module.
-        module('nypl_locations');
-        
-        // inject your service for testing.
-        // The _underscores_ are a convenience thing
-        // so you can have your variable name be the
-        // same as your injected service.
-        inject(function (_nypl_coordinates_service_) {
-          nypl_coordinates_service = _nypl_coordinates_service_;
-        });
-      });
-
       // check to see if it has the expected function
       it('should have a getDistance() function', function () { 
         expect(angular.isFunction(nypl_coordinates_service.getDistance)).toBe(true);
@@ -39,42 +36,56 @@ describe('NYPL Service Tests', function() {
         expect(result).not.toBe(null);
       });
     });
+
+    /* nypl_coordinates_service.checkGeolocation */
+    describe('nypl_coordinates_service.checkGeolocation', function () {
+      it('should have a checkGeolocation function', function () {
+        // The checkGeolocation function checks to see if geolocation is available on the user's browser
+        expect(angular.isFunction(nypl_coordinates_service.checkGeolocation)).toBe(true);
+      });
+
+      it('should return false due to old browser', function () {
+        // Old browsers don't have the navigator api
+        window.navigator = false;
+        window.navigator.geolocation = false;
+
+        expect(nypl_coordinates_service.checkGeolocation()).toBe(false);
+      });
+
+      it('should return true for modern browsers', function () {
+        // Modern browsers have the navigator api
+        window.navigator = true;
+        window.navigator.geolocation = true;
+
+        expect(nypl_coordinates_service.checkGeolocation()).toBe(true);
+      });
+    });
     
     /* nypl_coordinates_service.getCoordinates */
     describe('nypl_coordinates_service.getCoordinates', function () {
-      var nypl_coordinates_service, geolocationMock, rootScope, geolocationOk, geolocationError;
-      var errorBrowser;
+      var geolocationMock, geolocationOk, geolocationError, scope;
 
-      // excuted before each "it" is run.
-      beforeEach(module('nypl_locations'));
-        
-      // inject your service for testing.
-      // The _underscores_ are a convenience thing
-      // so you can have your variable name be the
-      // same as your injected service.
-      beforeEach(inject(function ($rootScope, _nypl_coordinates_service_) {
-        nypl_coordinates_service = _nypl_coordinates_service_;
-        rootScope = $rootScope;
-
+      beforeEach(inject(function (_$rootScope_) {
+        scope = _$rootScope_.$new();
         window.navigator = jasmine.createSpy('navigator');
         geolocationMock = window.navigator.geolocation = jasmine.createSpy('geolocation');
 
         geolocationOk = function (params, callback) {
           callback({
-            coords: {
-              latitude: 40.75298660000001, 
-              longitude: -73.9821364
+            position: {
+              coords: {
+                latitude: 40.75298660000001, 
+                longitude: -73.9821364
+              }
             }
           });
         };
 
-        errorBrowser = "Your browser does not support Geolocation";
         geolocationError = function (params, callback) {
           callback({
             error: "Your browser does not support Geolocation"
           });
         };
-
       }));
 
       // check to see if it has the expected function
@@ -102,10 +113,6 @@ describe('NYPL Service Tests', function() {
         it('Should return a promise', function () {
           var promise = nypl_coordinates_service.getCoordinates();
           expect(typeof promise.then).toBe('function');
-        });
-
-        it('Should accept the promise when geolocation returns coordinates', function () {
-
         });
 
       });

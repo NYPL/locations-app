@@ -23,50 +23,48 @@ nypl_locations.factory('nypl_coordinates_service', [
                     // Use stored coords, FF bug fix
                     if (geoCoords) {
                         defer.resolve(geoCoords);
-                    }
-                    else {
-       
-                        $window.navigator.geolocation
-                        .getCurrentPosition(function (position) {
+                    } else {
+                        $window.navigator.geolocation.getCurrentPosition(
+                            function (position) {
+                                // Extract coordinates for geoPosition obj
+                                geoCoords = position.coords;
+                                defer.resolve(geoCoords);
 
-                            // Extract coordinates for geoPosition obj
-                            geoCoords = position.coords;
-                            defer.resolve(geoCoords);
+                                // Testing a user's location that is more than 
+                                // 25miles of any NYPL location
+                                // var coords = {
+                                //     'latitude': 42.3581,
+                                //     'longitude': -71.0636
+                                // }
+                                // defer.resolve(coords);
+                            }, function (error) {
+                                switch (error.code) {
+                                case error.PERMISSION_DENIED:
+                                    defer.reject(
+                                        new Error("Permission denied.")
+                                    );
+                                    break;
 
-                            // Testing a user's location that is more than 
-                            // 25miles of any NYPL location
-                            // var coords = {
-                            //     'latitude': 42.3581,
-                            //     'longitude': -71.0636
-                            // }
-                            // defer.resolve(coords);
-                        }, function (error) {
-                            switch (error.code) {
-                            case error.PERMISSION_DENIED:
-                                defer.reject(
-                                    new Error("Permission denied.")
-                                );
-                                break;
+                                case error.POSITION_UNAVAILABLE:
+                                    defer.reject(
+                                        new Error("The position is " +
+                                            "currently unavailable.")
+                                    );
+                                    break;
 
-                            case error.POSITION_UNAVAILABLE:
-                                defer.reject(
-                                    new Error("The position is currently unavailable.")
-                                );
-                                break;
+                                case error.TIMEOUT:
+                                    defer.reject(
+                                        new Error("The request timed out.")
+                                    );
+                                    break;
 
-                            case error.TIMEOUT:
-                                defer.reject(
-                                    new Error("The request timed out.")
-                                );
-                                break;
-
-                            default:
-                                defer.reject(
-                                    new Error("Unknown error.")
-                                );
-                                break;
-                            }
-                        });
+                                default:
+                                    defer.reject(
+                                        new Error("Unknown error.")
+                                    );
+                                    break;
+                                }
+                            });
                     }
                 }
 
