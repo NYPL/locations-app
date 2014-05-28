@@ -60,16 +60,18 @@ nypl_locations.factory('nypl_utility', [
                         'close': hours.regular[today].close
                     };
                 }
-                else {
-                    hoursToday = undefined;
-                }
                 return hoursToday;
             },
 
             // Line breaks are needed when displaying the address on the marker
-            // for the map. Line breaks are not needed when we use the address 
+            // for the map. The name is also a link to the location's page.
+            // Line breaks are not needed when we use the address 
             // to get directions on Google Maps.
             getAddressString: function (location, nicePrint) {
+                if (!location) {
+                    return '';
+                }
+
                 var addressBreak = " ",
                     linkedName = location.name;
 
@@ -132,12 +134,16 @@ nypl_locations.factory('nypl_utility', [
                 var today = new Date(),
                     todaysAlert = '';
 
+                if (!alerts) {
+                    return null;
+                }
+
                 if (Array.isArray(alerts)) {
                     _.each(alerts, function (alert) {
                         var alert_start = new Date(alert.start),
                             alert_end = new Date(alert.end);
                         if (alert_start <= today && today <= alert_end) {
-                            todaysAlert += "\n" + alert.body;
+                            todaysAlert += alert.body + "\n";
                         }
                     });
                 } else {
@@ -152,7 +158,6 @@ nypl_locations.factory('nypl_utility', [
                 if (!angular.isUndefined(todaysAlert)) {
                     return todaysAlert;
                 }
-                return null;
             },
             /*
             * Desc: Utility service function that opens a new window given a URL
@@ -203,6 +208,10 @@ nypl_locations.factory('nypl_utility', [
             },
 
             google_calendar_link: function (event, address) {
+                if (!event) {
+                    return '';
+                };
+                
                 var base = "https://www.google.com/calendar/render?action=template",
                     text = "&text=" + event.title,
                     date = "&dates=",

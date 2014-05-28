@@ -79,7 +79,7 @@ describe('Locinator controllers', function() {
       expect(scope.locations).toBeDefined();
       // The controller adds extra properties to the locations model.
       // Converted to strings since it's hard to compare since some properties are objects.
-      expect(JSON.stringify(scope.locations)).toBe(locations_reponse);      
+      expect(JSON.stringify(scope.locations)).toEqual(locations_reponse);      
     });
 
     it('should call the branches api and fail', function () {
