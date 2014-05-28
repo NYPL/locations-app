@@ -351,6 +351,76 @@ describe('NYPL Service Tests', function() {
   });
   /* end nypl_geocoder_service called directly */
 
+  describe('Utility: nypl_locations_service', function() {
+    var nypl_locations_service, httpBackend;
+
+    beforeEach(function () {
+      // load the module.
+      module('nypl_locations');
+      
+      // inject your service for testing.
+      // The _underscores_ are a convenience thing
+      // so you can have your variable name be the
+      // same as your injected service.
+      inject(function (_nypl_locations_service_, _$rootScope_, _$httpBackend_) {
+        nypl_locations_service = _nypl_locations_service_;
+        httpBackend = _$httpBackend_;
+      });
+    });
+
+    afterEach(function () {
+      httpBackend.verifyNoOutstandingExpectation();
+      httpBackend.verifyNoOutstandingRequest();
+    });
+
+    it('should get all locations', function () {
+      var locations,
+          service_result,
+          // The actual API call has 90 locations, this is a mocked version
+          mocked_all_locations_API_call = {
+            locations: [
+              {id:"sasb", name:"Stephen A. Schwarzman", slug:"schwarzman"},
+              {id:"ag", name:"Aguilar", slug:"aguilar"}
+            ]
+          };
+
+      httpBackend.expectGET('http://evening-mesa-7447-160.herokuapp.com/locations')
+        .respond(mocked_all_locations_API_call);
+
+      locations = nypl_locations_service.all_locations(),
+      locations.then(function (data) {
+        service_result = data;
+      });
+
+      httpBackend.flush();
+
+      expect(service_result).toEqual(mocked_all_locations_API_call);
+    });
+
+    it('should return one specific location', function () {
+      var locations,
+          service_result,
+          // The actual API call has many properties for one location
+          mocked_one_location_API_call = {
+            locations: {
+              id: "HP", name: "Hudson Park Library", slug: "hudson-park"
+            }
+          };
+
+      httpBackend.expectGET('http://evening-mesa-7447-160.herokuapp.com/locations/hudson-park')
+        .respond(mocked_one_location_API_call);
+
+      locations = nypl_locations_service.single_location('hudson-park');
+      locations.then(function (data) {
+        service_result = data;
+      });
+
+      httpBackend.flush();
+
+      expect(service_result).toEqual(mocked_one_location_API_call);
+    });
+
+  });
 
   describe('Utility: nypl_utility service', function() {
     var nypl_utility;
