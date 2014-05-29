@@ -63,22 +63,22 @@ describe('NYPL Filter Tests', function() {
         expect(hoursTodayFormatFilter('')).toBeFalsy();
       });
 
-      it('should say "Closed" when there is no open or close data and no format', function () {
-        expect(hoursTodayFormatFilter({'open': '', 'close': ''})).toBe('Closed');
+      it('should say "Closed today" when there is no open or close data and no format', function () {
+        expect(hoursTodayFormatFilter({'today':{'open': '', 'close': ''}})).toBe('Closed today');
       });
 
       it('should say "Closed today" when there is no open or close data and short format', function () {
-        expect(hoursTodayFormatFilter({'open': '', 'close': ''}, 'short')).toBe('Closed today');
+        expect(hoursTodayFormatFilter({'today':{'open': '', 'close': ''}}, 'short')).toBe('Closed today');
       });
 
       it('should say "Closed today" when there is no open or close data and long format', function () {
-        expect(hoursTodayFormatFilter({'open': '', 'close': ''}, 'long')).toBe('Closed today');
+        expect(hoursTodayFormatFilter({'today':{'open': '', 'close': ''}}, 'long')).toBe('Closed today');
       });
     });
 
     describe('when opened and using the "short" format', function () {
       it('should display the open times for today', function () {
-        expect(hoursTodayFormatFilter({'open': '10:00', 'close': '18:00'}, 'short'))
+        expect(hoursTodayFormatFilter({'today':{'open': '10:00', 'close': '18:00'}}, 'short'))
           .toBe('Open today until 6pm');
       });
 
@@ -86,14 +86,14 @@ describe('NYPL Filter Tests', function() {
       // with the closing time of the library. The current time is generated in the filter function.
       // Commenting out until a way is found to test successfully.
       // it('should display the open times for tomorrow', function () {
-      //   expect(hoursTodayFormatFilter({'open': '10:00', 'close': '18:00'}, 'short'))
+      //   expect(hoursTodayFormatFilter({'today':{'open': '10:00', 'close': '18:00'}}, 'short'))
       //     .toBe('Open tomorrow 10am-6pm');
       // });
     });
 
     describe('when opened and using the "long" format', function () {
       it('should display the open times for tomorrow', function () {
-        expect(hoursTodayFormatFilter({'open': '10:00', 'close': '18:00'}, 'long'))
+        expect(hoursTodayFormatFilter({'today':{'open': '10:00', 'close': '18:00'}}, 'long'))
           .toBe('Open today 10am-6pm');
       });
 
@@ -101,7 +101,7 @@ describe('NYPL Filter Tests', function() {
       // with the closing time of the library. The current time is generated in the filter function.
       // Commenting out until a way is found to test successfully.
       // it('should display the open times for tomorrow', function () {
-      //   expect(hoursTodayFormatFilter({'open': '10:00', 'close': '18:00'}, 'short'))
+      //   expect(hoursTodayFormatFilter({'today':{'open': '10:00', 'close': '18:00'}}, 'short'))
       //     .toBe('Open tomorrow 10am-6pm');
       // });
     });

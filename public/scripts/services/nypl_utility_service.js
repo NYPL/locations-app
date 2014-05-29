@@ -55,11 +55,18 @@ nypl_locations.factory('nypl_utility', [
 
                 if (hours) {
                     hoursToday = {
-                        'today': hours.regular[today].day,
-                        'open': hours.regular[today].open,
-                        'close': hours.regular[today].close
+                        'today': {
+                            'day': hours.regular[today].day,
+                            'open': hours.regular[today].open,
+                            'close': hours.regular[today].close
+                        },
+                        'tomorrow': {
+                            'day': hours.regular[today + 1 % 7].day,
+                            'open': hours.regular[today + 1 % 7].open,
+                            'close': hours.regular[today + 1 % 7].close
+                        }
                     };
-                }
+                }console.log(hoursToday);
                 return hoursToday;
             },
 

@@ -21,11 +21,8 @@ nypl_locations.filter('timeFormat', [
                 if (time.open === null) {
                     return 'Closed';
                 }
-                
                 return clockTime(time.open) + ' - ' + clockTime(time.close);
-
-            }
-            else {
+            } else {
                 console.log('timeFormat() filter function error: Argument is not defined or empty, verify API response for time');
                 return '';
             }
@@ -50,14 +47,25 @@ nypl_locations.filter('hoursTodayFormat', [
         return function (elem, type) {
             var open_time, closed_time, time, formatted_time,
                 now = new Date(),
+                today, tomorrow,
+                tomorrow_open_time, tomorrow_close_time,
                 hour_now = (parseInt(now.getHours() + 11, 10) % 12 + 1);
 
             // If truthy async check
             if (elem) {
+                today = elem.today;
+                tomorrow = elem.tomorrow;
                 // Assign open time obj
-                if (elem.open) {
-                    time = elem.open.split(':');
+                if (today.open) {
+                    time = today.open.split(':');
                     open_time = _.object(
+                        ['hours', 'mins', 'meridian'],
+                        [String(((parseInt(time[0], 10) + 11) % 12 + 1)),
+                            time[1],
+                            (time[0] >= 12 ? 'pm' : 'am')]
+                    );
+                    time = tomorrow.open.split(':');
+                    tomorrow_open_time = _.object(
                         ['hours', 'mins', 'meridian'],
                         [String(((parseInt(time[0], 10) + 11) % 12 + 1)),
                             time[1],
@@ -65,9 +73,16 @@ nypl_locations.filter('hoursTodayFormat', [
                     );
                 }
                 // Assign closed time obj
-                if (elem.close) {
-                    time = elem.close.split(':');
+                if (today.close) {
+                    time = today.close.split(':');
                     closed_time = _.object(
+                        ['hours', 'mins', 'meridian'],
+                        [String(((parseInt(time[0], 10) + 11) % 12 + 1)),
+                            time[1],
+                            (time[0] >= 12 ? 'pm' : 'am')]
+                    );
+                    time = tomorrow.close.split(':');
+                    tomorrow_close_time = _.object(
                         ['hours', 'mins', 'meridian'],
                         [String(((parseInt(time[0], 10) + 11) % 12 + 1)),
                             time[1],
@@ -75,79 +90,54 @@ nypl_locations.filter('hoursTodayFormat', [
                     );
                 }
 
-                if (!elem.open || !elem.close) {
-                    time = 'closed'
+                if (!today.open || !today.close) {
                     console.log("Returned object is undefined for open/closed elems");
+                    return 'Closed today';
+                }
+
+                if (hour_now > closed_time.hours) {
+                    return 'Open tomorrow ' + tomorrow_open_time.hours +
+                        (parseInt(tomorrow_open_time.mins, 10) !== 0 ?
+                            ':' + tomorrow_open_time.mins :
+                            '') + tomorrow_close_time.meridian +
+                        '-' + tomorrow_close_time.hours +
+                        (parseInt(tomorrow_close_time.mins, 10) !== 0 ?
+                            ':' + tomorrow_close_time.mins :
+                            '') +
+                        tomorrow_close_time.meridian;
                 }
 
                 // Multiple cases for args w/ default
                 switch (type) {
                 case 'short':
-                    if (time === 'closed') {
-                        formatted_time = 'Closed today';
-                    }
-                    else if (hour_now > closed_time.hour) {
-                        formatted_time = 'Open tomorrow ' + open_time.hours +
-                                (parseInt(open_time.mins, 10) !== 0 ?
-                                    ':' + open_time.mins :
-                                    '') +
-                                '-' + closed_time.hours +
-                                (parseInt(closed_time.mins, 10) !== 0 ?
-                                    ':' + closed_time.mins :
-                                    '') +
-                                closed_time.meridian;
-                    }
-                    else {
-                        formatted_time = 'Open today until ' + closed_time.hours +
-                            (parseInt(closed_time.mins, 10) !== 0 ?
-                                ':' + closed_time.mins :
-                                '')
-                            + closed_time.meridian;
-                    }
+                    formatted_time = 'Open today until ' + closed_time.hours +
+                        (parseInt(closed_time.mins, 10) !== 0 ?
+                            ':' + closed_time.mins :
+                            '')
+                        + closed_time.meridian;
                     break;
 
                 case 'long':
-                    if (time === 'closed') {
-                        formatted_time = 'Closed today';
-                    }
-                    else if (hour_now > closed_time.hour) {
-                        formatted_time = 'Open tomorrow ' + open_time.hours +
-                                (parseInt(open_time.mins, 10) !== 0 ?
-                                    ':' + open_time.mins :
-                                    '') +
-                                open_time.meridian + '-' + closed_time.hours +
-                                (parseInt(closed_time.mins, 10) !== 0 ?
-                                    ':' + closed_time.mins :
-                                    '')
-                                + closed_time.meridian;
-                    }
-                    else {
-                        formatted_time = 'Open today ' + open_time.hours +
-                            (parseInt(open_time.mins, 10) !== 0 ?
-                                ':' + open_time.mins :
-                                '') +
-                            open_time.meridian + '-' + closed_time.hours +
-                            (parseInt(closed_time.mins, 10) !== 0 ?
-                                ':' + closed_time.mins :
-                                '')
-                            + closed_time.meridian;
-                    }
+                    formatted_time = 'Open today ' + open_time.hours +
+                        (parseInt(open_time.mins, 10) !== 0 ?
+                            ':' + open_time.mins :
+                            '') +
+                        open_time.meridian + '-' + closed_time.hours +
+                        (parseInt(closed_time.mins, 10) !== 0 ?
+                            ':' + closed_time.mins :
+                            '')
+                        + closed_time.meridian;
                     break;
+
                 default:
-                    if (time === 'closed') {
-                        formatted_time = "Closed";
-                    }
-                    else {
-                        formatted_time = open_time.hours + ':' + open_time.mins +
-                            open_time.meridian + '-' + closed_time.hours +
-                            ':' + closed_time.mins + closed_time.meridian;
-                    }
+                    formatted_time = open_time.hours + ':' + open_time.mins +
+                        open_time.meridian + '-' + closed_time.hours +
+                        ':' + closed_time.mins + closed_time.meridian;
                     break;
                 }
 
                 return formatted_time;
-            }
-            else {
+            } else {
                 console.log('hoursTodayFormat() filter function error: Argument is not defined or empty, verify API response');
                 return '';
             }
@@ -165,13 +155,12 @@ nypl_locations.filter('truncate', [
             if (end === undefined) {
                 end = "..."; // Default ending characters
             }
+
             if (text.length <= length || text.length - end.length <= length) {
                 return text;
-            }
-            else {
+            } else {
                 return String(text).substring(0, length-end.length) + end;
             }
-
         };
     }
 ]);

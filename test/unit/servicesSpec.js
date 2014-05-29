@@ -461,7 +461,8 @@ describe('NYPL Service Tests', function() {
         var today = nypl_utility.hoursToday(hours);
 
         // This varies on a day-to-day basis since it the current day that you are checking
-        expect(today).toEqual({today:'Wed',open:'10:00',close:'18:00'});
+        expect(JSON.stringify(today)).toEqual('{"today":{"day":"Wed","open":"10:00","close":"18:00"},' +
+          '"tomorrow":{"day":"Thu","open":"10:00","close":"18:00"}}');
       });
 
       it('should return undefined if no input was given', function () {
@@ -495,7 +496,7 @@ describe('NYPL Service Tests', function() {
         expect(marker_address).toEqual("115th Street Library 203 West 115th Street New York, NY, 10026");
       });
 
-      it('should return an empty string if no input was given', function () {
+      it('should return an empty string if no input is given', function () {
         expect(nypl_utility.getAddressString()).toEqual('');
       });
 
@@ -505,6 +506,7 @@ describe('NYPL Service Tests', function() {
       var library_type;
 
       it('should return circulating for a regular branch', function () {
+        // BAR = Baychester Library
         library_type = nypl_utility.locationType('BAR');
 
         expect(library_type).toEqual('circulating');
@@ -514,6 +516,10 @@ describe('NYPL Service Tests', function() {
         library_type = nypl_utility.locationType('SIBL');
 
         expect(library_type).toEqual('research');
+      });
+
+      it('should return circulating when no input is given', function () {
+        expect(nypl_utility.locationType()).toEqual('circulating');
       });
 
     });
@@ -555,7 +561,7 @@ describe('NYPL Service Tests', function() {
           body:"The New York Public Library will be closed August 30th through September 1st in observance of Labor Day"},
       ];
 
-      it('should display the Independence day alert', function () {
+      it('should display the Independence Day alert', function () {
         // The Independence Day alert dates have been modified so it can display
         // for testing purposes
         var display_alert = nypl_utility.alerts(alerts);
@@ -564,7 +570,7 @@ describe('NYPL Service Tests', function() {
         expect(display_alert).toEqual("All units of the NYPL are closed July 4 - July 5.\n");
       });
 
-      it('should return null if no input was given', function () {
+      it('should return null if no input is given', function () {
         expect(nypl_utility.alerts()).toEqual(null);
       });
     });
@@ -597,7 +603,7 @@ describe('NYPL Service Tests', function() {
           "66 Leroy Street&pli=1&uid=&sf=true&output=xml");
       });
 
-      it('should return an empty string if no event was given', function () {
+      it('should return an empty string if no event is given', function () {
         expect(nypl_utility.google_calendar_link()).toEqual('');
       });
     });
