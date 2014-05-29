@@ -446,9 +446,9 @@ describe('NYPL Service Tests', function() {
             {close: "18:00", day: "Mon", open: "10:00" },
             {close: "18:00", day: "Tue", open: "10:00" },
             {close: "18:00", day: "Wed", open: "10:00" },
-            {close: "18:00", day: "Thu", open: "10:00" },
+            {close: "17:00", day: "Thu", open: "11:00" },
             {close: "18:00", day: "Fri", open: "10:00" },
-            {close: "18:00", day: "Sat", open: "10:00" }
+            {close: "17:00", day: "Sat", open: "09:00" }
           ]
       };
 
@@ -457,12 +457,26 @@ describe('NYPL Service Tests', function() {
         expect(angular.isFunction(nypl_utility.hoursToday)).toBe(true);
       });
 
-      it('should have an hoursToday() function', function () { 
+      it('should return today\'s and tomorrow\'s open and close times', function () {
+        // getDay() returns 3 to mock that today is Wednesday
+        Date.prototype.getDay = function () {return 3;};
+
         var today = nypl_utility.hoursToday(hours);
 
         // This varies on a day-to-day basis since it the current day that you are checking
         expect(JSON.stringify(today)).toEqual('{"today":{"day":"Wed","open":"10:00","close":"18:00"},' +
-          '"tomorrow":{"day":"Thu","open":"10:00","close":"18:00"}}');
+          '"tomorrow":{"day":"Thu","open":"11:00","close":"17:00"}}');
+      });
+
+      it('should return today\'s and tomorrow\'s open and close times', function () {
+        // getDay() returns 5 to mock that today is Friday
+        Date.prototype.getDay = function () {return 5;};
+
+        var today = nypl_utility.hoursToday(hours);
+
+        // This varies on a day-to-day basis since it the current day that you are checking
+        expect(JSON.stringify(today)).toEqual('{"today":{"day":"Fri","open":"10:00","close":"18:00"},' +
+          '"tomorrow":{"day":"Sat","open":"09:00","close":"17:00"}}');
       });
 
       it('should return undefined if no input was given', function () {

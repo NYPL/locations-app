@@ -51,7 +51,7 @@ nypl_locations.filter('hoursTodayFormat', [
         function getHoursObject(time) {
             return _.object(
                         ['hours', 'mins', 'meridian'],
-                        [String(((parseInt(time[0], 10) + 11) % 12 + 1)),
+                        [((parseInt(time[0], 10) + 11) % 12 + 1),
                         time[1],
                         (time[0] >= 12 ? 'pm' : 'am')]
                     );
@@ -62,7 +62,8 @@ nypl_locations.filter('hoursTodayFormat', [
                 now = new Date(),
                 today, tomorrow,
                 tomorrow_open_time, tomorrow_close_time,
-                hour_now = (parseInt(now.getHours() + 11, 10) % 12 + 1);
+                hour_now = ((parseInt(now.getHours(), 10) + 11) % 12 + 1),
+                hour_now_meridian = now.getHours() >= 12 ? 'pm' : 'am';
 
             // If truthy async check
             if (elem) {
@@ -85,18 +86,22 @@ nypl_locations.filter('hoursTodayFormat', [
                     tomorrow_close_time = getHoursObject(time);
                 }
 
+                // If there are no open or close times, then it's closed today
                 if (!today.open || !today.close) {
                     console.log("Returned object is undefined for open/closed elems");
                     return 'Closed today';
                 }
 
-                if (hour_now < open_time.hours 
-                    && hour_now > closed_time.hours
-                    && hour_now < 6) {
+                // If the current time is past the closing time but earlier than 
+                // tomorrow's open time and also earlier than 6am, display that 
+                // it will be open 'tomorrow'
+                if (hour_now > closed_time.hours &&
+                    hour_now < tomorrow_open_time.hours &&
+                    hour_now_meridian === 'pm') {
                         return 'Open tomorrow ' + tomorrow_open_time.hours +
                             (parseInt(tomorrow_open_time.mins, 10) !== 0 ?
                                 ':' + tomorrow_open_time.mins :
-                                '') + tomorrow_close_time.meridian +
+                                '') + tomorrow_open_time.meridian +
                             '-' + tomorrow_close_time.hours +
                             (parseInt(tomorrow_close_time.mins, 10) !== 0 ?
                                 ':' + tomorrow_close_time.mins :
@@ -104,7 +109,11 @@ nypl_locations.filter('hoursTodayFormat', [
                             tomorrow_close_time.meridian;
                 }
 
-                if (hour_now > 6 && hour_now < open_time.hours) {
+                // If it's after 6am but before today's open time,
+                // then display that it will be "open today ...",
+                // instead of "open until ..."
+                if (hour_now > 6 && hour_now < open_time.hours &&
+                    hour_now_meridian === 'am') {
                     type = 'long';
                 }
 

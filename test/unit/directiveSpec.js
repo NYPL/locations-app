@@ -13,7 +13,7 @@ describe('NYPL Directive Tests', function() {
   beforeEach(module('nypl_locations'));
   beforeEach(module('directiveTemplates'));
 
-  // Not that testing directives means also testing the 'hoursTodayformat'
+  // Note that testing directives means also testing the 'hoursTodayformat'
   // since the output text depends on that filter and the data being passed
   describe('todayshours', function () {
     beforeEach(inject(function (_$compile_, _$rootScope_) {
@@ -22,8 +22,12 @@ describe('NYPL Directive Tests', function() {
     }));
 
     it('should tell you "Open today until ..." with short filter format', function () {
+      // Returns 12 for 12pm when a library is open.
+      Date.prototype.getHours = function () {return 12;};
+
       element = angular.element('<todayshours class="' +
-        'grid__item one-whole " hours="{{{\'today\':{\'open\': \'10:00\', \'close\': \'18:00\'} }' +
+        'grid__item one-whole " hours="{{{\'today\':{\'open\': \'10:00\', \'close\': \'18:00\'},'+
+        '\'tomorrow\':{\'open\': \'10:00\', \'close\': \'18:00\'} }' +
         '| hoursTodayFormat:\'short\'}}" />');
       $compile(element)($rootScope);
       $rootScope.$digest();
@@ -38,26 +42,13 @@ describe('NYPL Directive Tests', function() {
       expect(timeElement.text()).toBe('Open today until 6pm');
     });
 
-    it('should tell you "Open tomorrow ..."', function () {
-      element = angular.element('<todayshours class="' +
-        'grid__item one-whole " hours="{{{\'today\':{\'open\': \'10:00\', \'close\': \'18:00\'} }' +
-        '| hoursTodayFormat:\'short\'}}" />');
-      $compile(element)($rootScope);
-      $rootScope.$digest();
-
-      timeElement = element.find('time');
-
-      expect(element.attr('id')).toBe('hours-today');
-      // The time element can have many classes but these are important
-      expect(timeElement.attr('class')).toContain('hours-today');
-      expect(timeElement.attr('class')).toContain('icon-clock');
-
-      expect(timeElement.text()).toBe('Open tomorrow 10pm-6pm');
-    });
-
     it('should tell you "Open today ..." with long filter format', function () {
+      // Returns 12 for 12pm when a library is open.
+      Date.prototype.getHours = function () {return 12;};
+
       element = angular.element('<todayshours class="' +
-        'grid__item one-whole " hours="{{{\'today\':{\'open\': \'10:00\', \'close\': \'18:00\'} }' +
+        'grid__item one-whole " hours="{{{\'today\':{\'open\': \'10:00\', \'close\': \'18:00\'},'+
+        '\'tomorrow\':{\'open\': \'10:00\', \'close\': \'18:00\'} }' +
         '| hoursTodayFormat:\'long\'}}" />');
       $compile(element)($rootScope);
       $rootScope.$digest();
@@ -69,7 +60,49 @@ describe('NYPL Directive Tests', function() {
       expect(timeElement.attr('class')).toContain('hours-today');
       expect(timeElement.attr('class')).toContain('icon-clock');
 
-      // expect(timeElement.text()).toBe('Open today 10am-6pm');
+      expect(timeElement.text()).toBe('Open today 10am-6pm');
+    });
+
+    it('should tell you "Open tomorrow ..." when checking at night', function () {
+      // Returns 19 for 7pm after a library has closed.
+      Date.prototype.getHours = function () {return 19;};
+
+      element = angular.element('<todayshours class="' +
+        'grid__item one-whole " hours="{{{\'today\':{\'open\': \'10:00\', \'close\': \'18:00\'},'+
+        '\'tomorrow\':{\'open\': \'10:00\', \'close\': \'18:00\'} }' +
+        '| hoursTodayFormat:\'short\'}}" />');
+      $compile(element)($rootScope);
+      $rootScope.$digest();
+
+      timeElement = element.find('time');
+
+      expect(element.attr('id')).toBe('hours-today');
+      // The time element can have many classes but these are important
+      expect(timeElement.attr('class')).toContain('hours-today');
+      expect(timeElement.attr('class')).toContain('icon-clock');
+
+      expect(timeElement.text()).toBe('Open tomorrow 10am-6pm');
+    });
+
+    it('should tell you "Open today ..." when checking in the morning', function () {
+      // Returns 7 for 7am before a library has opened.
+      Date.prototype.getHours = function () {return 7;};
+
+      element = angular.element('<todayshours class="' +
+        'grid__item one-whole " hours="{{{\'today\':{\'open\': \'10:00\', \'close\': \'18:00\'},'+
+        '\'tomorrow\':{\'open\': \'10:00\', \'close\': \'18:00\'} }' +
+        '| hoursTodayFormat:\'short\'}}" />');
+      $compile(element)($rootScope);
+      $rootScope.$digest();
+
+      timeElement = element.find('time');
+
+      expect(element.attr('id')).toBe('hours-today');
+      // The time element can have many classes but these are important
+      expect(timeElement.attr('class')).toContain('hours-today');
+      expect(timeElement.attr('class')).toContain('icon-clock');
+
+      expect(timeElement.text()).toBe('Open today 10am-6pm');
     });
   });
 
