@@ -15,7 +15,7 @@ describe('Locinator controllers', function() {
   window.google.maps.Animation.DROP = jasmine.createSpy('Drop');
   window.google.maps.event = jasmine.createSpy('event');
   window.google.maps.event.addListener = jasmine.createSpy('addListener');
-  // window.google.maps.prototype.controls = jasmine.createSpy('map.controls');
+  window.google.maps.prototype.controls = jasmine.createSpy('map.controls');
   window.google.maps.ControlPosition = jasmine.createSpy('ControlPosition');
   window.google.maps.ControlPosition.RIGHT_BOTTOM = jasmine.createSpy('RIGHT_BOTTOM');
 

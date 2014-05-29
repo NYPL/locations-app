@@ -161,6 +161,9 @@ describe('NYPL Service Tests', function() {
       window.google.maps.Animation.DROP = jasmine.createSpy('Drop');
       window.google.maps.GeocoderStatus = jasmine.createSpy('GeocoderStatus');
       window.google.maps.GeocoderStatus.OK = 'OK';
+      window.google.maps.prototype.controls = jasmine.createSpy('map.controls');
+      window.google.maps.ControlPosition = jasmine.createSpy('ControlPosition');
+      window.google.maps.ControlPosition.RIGHT_BOTTOM = jasmine.createSpy('RIGHT_BOTTOM');
 
       GeoCodingOK = function (params, callback) {
         callback(
@@ -347,6 +350,22 @@ describe('NYPL Service Tests', function() {
       });
     });
     /* end nypl_geocoder_service.get_address */
+
+    describe('draw_map function', function () {
+      it('should call the Google Maps', function () {
+        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+
+        expect(window.google.maps.Map).toHaveBeenCalled();
+      });
+    });
+
+    describe('draw_legend function', function () {
+      it('should call the controls function in the Maps API', function () {
+        // nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        // nypl_geocoder_service.draw_legend('test');
+        // expect(window.google.maps.ControlPosition).toHaveBeenCalled();
+      });
+    });
 
   });
   /* end nypl_geocoder_service called directly */
