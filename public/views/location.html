@@ -81,7 +81,7 @@
       <div class="grid__item one-whole desk-one-third" data-ng-repeat='division in location._embedded.divisions'>
 	        <img class="img--left" src="http://nypl.org{{division.image}}" alt="" style="height: 100px;" />
 	        <h3 class=""><a href="/#/division/{{division.slug}}">{{division.name}}</a></h3>
-	        <p>Hours today: {{hoursToday(division.hours) | timeFormat}}</p>
+	        <p data-ng-if="division.hours">Hours today: {{hoursToday(division.hours) | timeFormat}}</p>
 	      </div>
       </div>    
   </div><!--
