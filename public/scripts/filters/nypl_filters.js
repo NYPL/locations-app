@@ -18,7 +18,7 @@ nypl_locations.filter('timeFormat', [
         return function (time) {
             // The time object may have just today's hours
             // or be an object with today's and tomorrow's hours
-            var time = time.today ? time.today : time;
+            var time = time !== undefined && time.today !== undefined ? time.today : time;
 
             // Checking if thruthy needed for async calls
             if (time) {
