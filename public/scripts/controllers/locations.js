@@ -77,10 +77,11 @@ nypl_locations.controller('LocationsCtrl', [
                                     'long': location.geolocation.coordinates[0]
                                 };
 
-                            // Initially, when the map is drawn and markers are availble,
-                            // they will be drawn too. 
+                            // Initially, when the map is drawn and 
+                            // markers are availble, they will be drawn too. 
                             // No need to draw them again if they exist.
-                            if (!nypl_geocoder_service.check_marker(location.slug)) {
+                            if (!nypl_geocoder_service
+                                    .check_marker(location.slug)) {
                                 nypl_geocoder_service
                                     .draw_marker(location.slug,
                                         markerCoordinates,
@@ -123,7 +124,8 @@ nypl_locations.controller('LocationsCtrl', [
 
                         userCoords = _.pick(position, 'latitude', 'longitude');
                         $scope.locationStart =
-                                userCoords.latitude + "," + userCoords.longitude;
+                                userCoords.latitude + "," +
+                                userCoords.longitude;
 
                         // Iterate through lon/lat and calculate distance
                         _.each(locations, function (location) {
@@ -280,8 +282,9 @@ nypl_locations.controller('LocationsCtrl', [
                 }
 
                 // Sort the locations array here instead of using the angular
-                // orderBy filter. That way we can display the matched locations 
-                // first and then display the results from the geocoder service
+                // orderBy filter. That way we can display the matched
+                // locations first and then display the results from
+                // the geocoder service
                 locations = _.sortBy(locations, function (location) {
                     return location[sortByFilter];
                 });
@@ -293,14 +296,15 @@ nypl_locations.controller('LocationsCtrl', [
                 // of the locations
                 $scope.locations = _.union(filteredLocations, locations);
 
-                // If there is an angularjs filter match, then sort by the matches
-                // first and then by the rest of the locations
+                // If there is an angularjs filter match,
+                // then sort by the matches first and 
+                // then by the rest of the locations
                 if (_.min(distanceArray) > 25) {
                     resetDistance();
                 }
 
-                // Don't sort by distance or the matched results will not display 
-                // first
+                // Don't sort by distance or
+                // the matched results will not display first
                 $scope.predicate = '';
             },
             searchByUserGeolocation = function () {
@@ -355,10 +359,10 @@ nypl_locations.controller('LocationsCtrl', [
         $scope.useGeolocation = function () {
             $scope.filteredResults = '';
             $scope.geolocationAddressOrSearchQuery = '';
-            
+
             // Remove any existing search markers on the map.
             nypl_geocoder_service.remove_searchMarker();
-            
+
             if (!userCoords) {
                 loadCoords()
                     .then(loadReverseGeocoding)
@@ -411,7 +415,7 @@ nypl_locations.controller('LocationsCtrl', [
                 .catch(function (error) {
                     // google maps api is down and geocoding does not work,
                     // first see if there are any angularjs filtered results.
-                    // if there are any, show results based on the angularjs filter.
+                    // if there are, show results based on the angularjs filter.
                     // else, reset back to the start
                     if (filteredLocations.length) {
                         organizeLocations(locations, filteredLocations);
@@ -438,7 +442,7 @@ nypl_locations.controller('LocationsCtrl', [
         $scope.showResearch = function () {
             nypl_geocoder_service.hide_infowindow();
             $scope.researchBranches = !$scope.researchBranches;
-            
+
             if ($scope.researchBranches) {
                 nypl_geocoder_service.show_research_libraries();
                 ngRepeatShowResearchBranches();
@@ -488,7 +492,7 @@ nypl_locations.controller('LocationCtrl', [
                             nypl_utility.alerts(location._embedded.alerts);
 
                         if (location.hours.exceptions) {
-                            $scope.libraryAlert = 
+                            $scope.libraryAlert =
                                 nypl_utility.alerts(location.hours.exceptions);
                         }
 
@@ -508,22 +512,24 @@ nypl_locations.controller('LocationCtrl', [
                     .catch(function (err) {
                         throw err;
                     });
-        },
-        loadCoords = function () {
-            return nypl_coordinates_service
-                .getCoordinates()
-                .then(function (position) {
-                    userCoords = _.pick(position, 'latitude', 'longitude');
+            },
+            loadCoords = function () {
+                return nypl_coordinates_service
+                    .getCoordinates()
+                    .then(function (position) {
+                        userCoords = _.pick(position, 'latitude', 'longitude');
 
-                    // Used for the Get Directions link to Google Maps
-                    // If the user rejected geolocation and
-                    // $scope.locationStart is blank, the link will still work
-                    $scope.locationStart =
-                        userCoords.latitude + "," + userCoords.longitude;
-                });
-        };
+                        // Used for the Get Directions link to Google Maps
+                        // If the user rejected geolocation and
+                        // $scope.locationStart is blank,
+                        // the link will still work
+                        $scope.locationStart =
+                            userCoords.latitude + "," + userCoords.longitude;
+                    });
+            };
 
-        // Load the location and user's geolocation coordinates as chained events
+        // Load the location and user's geolocation coordinates
+        // as chained events
         loadLocation().then(loadCoords);
     }
 ]);

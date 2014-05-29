@@ -37,7 +37,8 @@ nypl_locations.factory('nypl_coordinates_service', [
                                 //     'longitude': -71.0636
                                 // }
                                 // defer.resolve(coords);
-                            }, function (error) {
+                            },
+                            function (error) {
                                 switch (error.code) {
                                 case error.PERMISSION_DENIED:
                                     defer.reject(
@@ -64,7 +65,8 @@ nypl_locations.factory('nypl_coordinates_service', [
                                     );
                                     break;
                                 }
-                            });
+                            }
+                        );
                     }
                 }
 

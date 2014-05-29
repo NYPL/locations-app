@@ -1,5 +1,5 @@
 /*jslint nomen: true, indent: 4, maxlen: 80 */
-/*globals nypl_locations, angular */
+/*globals nypl_locations, angular, console, window */
 
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
 nypl_locations.factory('requestNotificationChannel', [
@@ -50,8 +50,9 @@ nypl_locations.factory('nypl_utility', [
         return {
             hoursToday: function (hours) {
                 var date = new Date(),
-                today = date.getDay(),
-                hoursToday;
+                    today = date.getDay(),
+                    tomorrow = today + 1,
+                    hoursToday;
 
                 if (hours) {
                     hoursToday = {
@@ -61,9 +62,9 @@ nypl_locations.factory('nypl_utility', [
                             'close': hours.regular[today].close
                         },
                         'tomorrow': {
-                            'day': hours.regular[today + 1 % 7].day,
-                            'open': hours.regular[today + 1 % 7].open,
-                            'close': hours.regular[today + 1 % 7].close
+                            'day': hours.regular[tomorrow % 7].day,
+                            'open': hours.regular[tomorrow % 7].open,
+                            'close': hours.regular[tomorrow % 7].close
                         }
                     };
                 }
@@ -84,7 +85,8 @@ nypl_locations.factory('nypl_utility', [
 
                 if (nicePrint) {
                     addressBreak = "<br />";
-                    linkedName = "<a href='/#/" + location.slug + "'>"+location.name+"</a>";
+                    linkedName = "<a href='/#/" + location.slug +
+                        "'>" + location.name + "</a>";
                 }
 
                 return linkedName + addressBreak +
@@ -139,7 +141,9 @@ nypl_locations.factory('nypl_utility', [
 
             alerts: function (alerts) {
                 var today = new Date(),
-                    todaysAlert = '';
+                    todaysAlert = '',
+                    alert_start,
+                    alert_end;
 
                 if (!alerts) {
                     return null;
@@ -147,16 +151,17 @@ nypl_locations.factory('nypl_utility', [
 
                 if (Array.isArray(alerts)) {
                     _.each(alerts, function (alert) {
-                        var alert_start = new Date(alert.start),
-                            alert_end = new Date(alert.end);
+                        alert_start = new Date(alert.start);
+                        alert_end = new Date(alert.end);
+
                         if (alert_start <= today && today <= alert_end) {
                             todaysAlert += alert.body + "\n";
                         }
                     });
                 } else {
-                    var alert_start = new Date(alerts.start),
-                        alert_end = new Date(alerts.end);
-                    
+                    alert_start = new Date(alerts.start);
+                    alert_end = new Date(alerts.end);
+
                     console.log("End date for library date: " + alert_end);
                     if (today >= alert_start && today <= alert_end) {
                         todaysAlert += alerts.description;
@@ -168,42 +173,40 @@ nypl_locations.factory('nypl_utility', [
             },
             /*
             * Desc: Utility service function that opens a new window given a URL
-            * Arguments: link (URL), title (String), width (Int or String), height (Int or String)
+            * Arguments:
+            * link (URL), title (String), 
+            * width (Int or String), height (Int or String)
             */
-            popup_window: function(link, title, width, height) {
+            popup_window: function (link, title, width, height) {
                 var w, h, t, popUp;
                 // Set width from args, defaults 300px
                 if (width === undefined) {
                     w = '300';
-                }
-                else if (typeof width == 'string' || width instanceof String) {
+                } else if (typeof width === 'string' ||
+                        width instanceof String) {
                     w = width;
-                }
-                else {
+                } else {
                     w = width.toString(); // convert to string
                 }
 
                 // Set height from args, default 500px;
                 if (height === undefined) {
                     h = '500';
-                }
-                else if (typeof width == 'string' || width instanceof String) {
+                } else if (typeof width === 'string' ||
+                        width instanceof String) {
                     h = height;
-                }
-                else {
+                } else {
                     h = height.toString(); // convert to string
                 }
 
                 // Check if link and title are set and assign attributes
                 if (link && title) {
                     popUp = window.open(link, title, "menubar=1,resizable=1,width="+w+",height="+h+"");
-                }
-                // Only if link is set, default title: ''
-                else if (link) {
+                } else if (link) {
+                    // Only if link is set, default title: ''
                     popUp = window.open(link,"","menubar=1,resizable=1,width="+w+",height="+h+"");
                     
-                }
-                else {
+                } else {
                     console.log('No link set, cannot initialize the popup window');
                 }
                 // Once the popup is set, center window
@@ -217,9 +220,10 @@ nypl_locations.factory('nypl_utility', [
             google_calendar_link: function (event, address) {
                 if (!event) {
                     return '';
-                };
-                
-                var base = "https://www.google.com/calendar/render?action=template",
+                }
+
+                var base = "https://www.google.com/calendar" +
+                        "/render?action=template",
                     text = "&text=" + event.title,
                     date = "&dates=",
                     start_date = event.start.replace(/[-:]/g, ''),

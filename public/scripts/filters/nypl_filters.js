@@ -1,5 +1,5 @@
 /*jslint indent: 4, maxlen: 80 */
-/*globals nypl_locations */
+/*globals nypl_locations, console */
 
 // Filter formats military time to standard time
 nypl_locations.filter('timeFormat', [
@@ -15,10 +15,12 @@ nypl_locations.filter('timeFormat', [
             return hours + ":" + minutes + meridiem;
         }
 
-        return function (time) {
+        return function (timeObj) {
             // The time object may have just today's hours
             // or be an object with today's and tomorrow's hours
-            var time = time !== undefined && time.today !== undefined ? time.today : time;
+            var time = timeObj !== undefined && timeObj.today !== undefined ?
+                    timeObj.today :
+                    timeObj;
 
             // Checking if thruthy needed for async calls
             if (time) {
@@ -26,10 +28,11 @@ nypl_locations.filter('timeFormat', [
                     return 'Closed';
                 }
                 return clockTime(time.open) + ' - ' + clockTime(time.close);
-            } else {
-                console.log('timeFormat() filter function error: Argument is not defined or empty, verify API response for time');
-                return '';
             }
+
+            console.log('timeFormat() filter function error: Argument is' +
+                ' not defined or empty, verify API response for time');
+            return '';
         };
     }]);
 
@@ -50,11 +53,11 @@ nypl_locations.filter('hoursTodayFormat', [
 
         function getHoursObject(time) {
             return _.object(
-                        ['hours', 'mins', 'meridian'],
-                        [((parseInt(time[0], 10) + 11) % 12 + 1),
-                        time[1],
-                        (time[0] >= 12 ? 'pm' : 'am')]
-                    );
+                ['hours', 'mins', 'meridian'],
+                [((parseInt(time[0], 10) + 11) % 12 + 1),
+                    time[1],
+                    (time[0] >= 12 ? 'pm' : 'am')]
+            );
         }
 
         return function (elem, type) {
@@ -81,39 +84,40 @@ nypl_locations.filter('hoursTodayFormat', [
                 if (today.close) {
                     time = today.close.split(':');
                     closed_time = getHoursObject(time);
-                    
+
                     time = tomorrow.close.split(':');
                     tomorrow_close_time = getHoursObject(time);
                 }
 
                 // If there are no open or close times, then it's closed today
                 if (!today.open || !today.close) {
-                    console.log("Returned object is undefined for open/closed elems");
+                    console.log(
+                        "Returned object is undefined for open/closed elems"
+                    );
                     return 'Closed today';
                 }
 
-                // If the current time is past the closing time but earlier than 
-                // tomorrow's open time and also earlier than 6am, display that 
-                // it will be open 'tomorrow'
+                // If the current time is past the closing time but earlier
+                // than tomorrow's open time and also earlier than 6am,
+                // display that it will be open 'tomorrow'
                 if (hour_now > closed_time.hours &&
-                    hour_now < tomorrow_open_time.hours &&
-                    hour_now_meridian === 'pm') {
-                        return 'Open tomorrow ' + tomorrow_open_time.hours +
-                            (parseInt(tomorrow_open_time.mins, 10) !== 0 ?
-                                ':' + tomorrow_open_time.mins :
-                                '') + tomorrow_open_time.meridian +
-                            '-' + tomorrow_close_time.hours +
-                            (parseInt(tomorrow_close_time.mins, 10) !== 0 ?
-                                ':' + tomorrow_close_time.mins :
-                                '') +
-                            tomorrow_close_time.meridian;
+                        hour_now < tomorrow_open_time.hours &&
+                        hour_now_meridian === 'pm') {
+                    return 'Open tomorrow ' + tomorrow_open_time.hours +
+                        (parseInt(tomorrow_open_time.mins, 10) !== 0 ?
+                                ':' + tomorrow_open_time.mins : '') +
+                        tomorrow_open_time.meridian +
+                        '-' + tomorrow_close_time.hours +
+                        (parseInt(tomorrow_close_time.mins, 10) !== 0 ?
+                                ':' + tomorrow_close_time.mins : '') +
+                        tomorrow_close_time.meridian;
                 }
 
                 // If it's after 6am but before today's open time,
                 // then display that it will be "open today ...",
                 // instead of "open until ..."
                 if (hour_now > 6 && hour_now < open_time.hours &&
-                    hour_now_meridian === 'am') {
+                        hour_now_meridian === 'am') {
                     type = 'long';
                 }
 
@@ -122,20 +126,17 @@ nypl_locations.filter('hoursTodayFormat', [
                 case 'short':
                     formatted_time = 'Open today until ' + closed_time.hours +
                         (parseInt(closed_time.mins, 10) !== 0 ?
-                            ':' + closed_time.mins :
-                            '')
+                                ':' + closed_time.mins : '')
                         + closed_time.meridian;
                     break;
 
                 case 'long':
                     formatted_time = 'Open today ' + open_time.hours +
                         (parseInt(open_time.mins, 10) !== 0 ?
-                            ':' + open_time.mins :
-                            '') +
+                                ':' + open_time.mins : '') +
                         open_time.meridian + '-' + closed_time.hours +
                         (parseInt(closed_time.mins, 10) !== 0 ?
-                            ':' + closed_time.mins :
-                            '')
+                                ':' + closed_time.mins : '')
                         + closed_time.meridian;
                     break;
 
@@ -147,10 +148,11 @@ nypl_locations.filter('hoursTodayFormat', [
                 }
 
                 return formatted_time;
-            } else {
-                console.log('hoursTodayFormat() filter function error: Argument is not defined or empty, verify API response');
-                return '';
             }
+
+            console.log('hoursTodayFormat() filter function error: Argument' +
+                ' is not defined or empty, verify API response');
+            return '';
         };
     }
 ]);
@@ -158,6 +160,8 @@ nypl_locations.filter('hoursTodayFormat', [
 /* Truncates string text with proper arguments [length (number), end(string)] */
 nypl_locations.filter('truncate', [
     function () {
+        'use strict';
+
         return function (text, length, end) {
             if (isNaN(length)) {
                 length = 200; // Default length
@@ -168,9 +172,9 @@ nypl_locations.filter('truncate', [
 
             if (text.length <= length || text.length - end.length <= length) {
                 return text;
-            } else {
-                return String(text).substring(0, length-end.length) + end;
             }
+
+            return String(text).substring(0, length - end.length) + end;
         };
     }
 ]);

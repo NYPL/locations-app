@@ -1,5 +1,5 @@
 /*jslint indent: 4, maxlen: 80 */
-/*globals nypl_locations */
+/*globals nypl_locations, window */
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
 // declare the directive that will show and hide the loading widget
 nypl_locations.directive('loadingWidget', [
@@ -59,12 +59,19 @@ nypl_locations.directive('askdonatefooter', [
                 emailHref: '@',
                 donateHref: '@'
             },
-            link: function(scope, element, attrs, window) {
-                scope.openChat = function() {
+            link: function (scope, element, attrs, window) {
+                scope.openChat = function () {
                     // Utilize service in directive to fire off the new window.
-                    // Arguments: link (req), title (optional), width (optional), height (optional)
-                    nypl_utility.popup_window('http://www.nypl.org/ask-librarian', 'NYPL Chat', 210, 450);
-                }
+                    // Arguments: 
+                    // link (req),
+                    // title (optional), width (optional), height (optional)
+                    nypl_utility.popup_window(
+                        'http://www.nypl.org/ask-librarian',
+                        'NYPL Chat',
+                        210,
+                        450
+                    );
+                };
             }
 
         };
@@ -74,11 +81,11 @@ nypl_locations.directive('scrolltop', [
     function () {
         'use strict';
 
-        return function (scope, element, attrs) {
+        return function (scope) {
             scope.$on('$routeChangeStart', function () {
                 window.scrollTo(0, 0);
             });
-        }
+        };
     }]);
 
 nypl_locations.directive('nyplalerts', [
