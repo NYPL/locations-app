@@ -66,7 +66,7 @@ nypl_locations.factory('nypl_utility', [
                             'close': hours.regular[today + 1 % 7].close
                         }
                     };
-                }console.log(hoursToday);
+                }
                 return hoursToday;
             },
 
