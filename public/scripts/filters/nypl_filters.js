@@ -8,14 +8,18 @@ nypl_locations.filter('timeFormat', [
 
         function clockTime(time) {
             var components = time.split(':'),
-            hours = ((parseInt(components[0], 10) + 11) % 12 + 1),
-            minutes = components[1],
-            meridiem = components[0] >= 12 ? 'pm' : 'am';
+                hours = ((parseInt(components[0], 10) + 11) % 12 + 1),
+                minutes = components[1],
+                meridiem = components[0] >= 12 ? 'pm' : 'am';
 
             return hours + ":" + minutes + meridiem;
         }
 
         return function (time) {
+            // The time object may have just today's hours
+            // or be an object with today's and tomorrow's hours
+            var time = time.today ? time.today : time;
+
             // Checking if thruthy needed for async calls
             if (time) {
                 if (time.open === null) {
@@ -44,6 +48,15 @@ nypl_locations.filter('hoursTodayFormat', [
     function () {
         'use strict';
 
+        function getHoursObject(time) {
+            return _.object(
+                        ['hours', 'mins', 'meridian'],
+                        [String(((parseInt(time[0], 10) + 11) % 12 + 1)),
+                        time[1],
+                        (time[0] >= 12 ? 'pm' : 'am')]
+                    );
+        }
+
         return function (elem, type) {
             var open_time, closed_time, time, formatted_time,
                 now = new Date(),
@@ -58,36 +71,18 @@ nypl_locations.filter('hoursTodayFormat', [
                 // Assign open time obj
                 if (today.open) {
                     time = today.open.split(':');
-                    open_time = _.object(
-                        ['hours', 'mins', 'meridian'],
-                        [String(((parseInt(time[0], 10) + 11) % 12 + 1)),
-                            time[1],
-                            (time[0] >= 12 ? 'pm' : 'am')]
-                    );
+                    open_time = getHoursObject(time);
+
                     time = tomorrow.open.split(':');
-                    tomorrow_open_time = _.object(
-                        ['hours', 'mins', 'meridian'],
-                        [String(((parseInt(time[0], 10) + 11) % 12 + 1)),
-                            time[1],
-                            (time[0] >= 12 ? 'pm' : 'am')]
-                    );
+                    tomorrow_open_time = getHoursObject(time);
                 }
                 // Assign closed time obj
                 if (today.close) {
                     time = today.close.split(':');
-                    closed_time = _.object(
-                        ['hours', 'mins', 'meridian'],
-                        [String(((parseInt(time[0], 10) + 11) % 12 + 1)),
-                            time[1],
-                            (time[0] >= 12 ? 'pm' : 'am')]
-                    );
+                    closed_time = getHoursObject(time);
+                    
                     time = tomorrow.close.split(':');
-                    tomorrow_close_time = _.object(
-                        ['hours', 'mins', 'meridian'],
-                        [String(((parseInt(time[0], 10) + 11) % 12 + 1)),
-                            time[1],
-                            (time[0] >= 12 ? 'pm' : 'am')]
-                    );
+                    tomorrow_close_time = getHoursObject(time);
                 }
 
                 if (!today.open || !today.close) {
@@ -95,16 +90,22 @@ nypl_locations.filter('hoursTodayFormat', [
                     return 'Closed today';
                 }
 
-                if (hour_now > closed_time.hours) {
-                    return 'Open tomorrow ' + tomorrow_open_time.hours +
-                        (parseInt(tomorrow_open_time.mins, 10) !== 0 ?
-                            ':' + tomorrow_open_time.mins :
-                            '') + tomorrow_close_time.meridian +
-                        '-' + tomorrow_close_time.hours +
-                        (parseInt(tomorrow_close_time.mins, 10) !== 0 ?
-                            ':' + tomorrow_close_time.mins :
-                            '') +
-                        tomorrow_close_time.meridian;
+                if (hour_now < open_time.hours 
+                    && hour_now > closed_time.hours
+                    && hour_now < 6) {
+                        return 'Open tomorrow ' + tomorrow_open_time.hours +
+                            (parseInt(tomorrow_open_time.mins, 10) !== 0 ?
+                                ':' + tomorrow_open_time.mins :
+                                '') + tomorrow_close_time.meridian +
+                            '-' + tomorrow_close_time.hours +
+                            (parseInt(tomorrow_close_time.mins, 10) !== 0 ?
+                                ':' + tomorrow_close_time.mins :
+                                '') +
+                            tomorrow_close_time.meridian;
+                }
+
+                if (hour_now > 6 && hour_now < open_time.hours) {
+                    type = 'long';
                 }
 
                 // Multiple cases for args w/ default
