@@ -11,10 +11,13 @@ module.exports = function(config){
       'public/bower_components/angular-route/*.js',
       'public/bower_components/angular/angular-*.js',
       'public/scripts/**/*.js',
+      'public/scripts/directives/templates/*.html',
       'test/unit/**/*.js',
       'public/bower_components/underscore/underscore.js',
+      'public/bower_components/angularitics/src/angulartics.js',
+      'public/bower_components/angularitics/src/angulartics-ga.js',
 
-      {pattern: '/test/json/*.json', watched: true, served: true, included: false}
+      // {pattern: '/test/json/*.json', watched: true, served: true, included: false}
     ],
 
     exclude : [
@@ -34,12 +37,26 @@ module.exports = function(config){
             'karma-chrome-launcher',
             'karma-firefox-launcher',
             'karma-script-launcher',
-            'karma-jasmine'
+            'karma-jasmine',
+            'karma-ng-html2js-preprocessor'
             ],
 
     junitReporter : {
       outputFile: 'test_out/unit.xml',
       suite: 'unit'
+    },
+
+    preprocessors : {
+      'public/scripts/directives/templates/*.html': ['ng-html2js']
+    },
+
+    ngHtml2JsPreprocessor: {
+      stripPrefix: 'public/',
+      // cacheIdFromPath: function (filepath) {
+      //   return filepath.substr(filepath.indexOf('locations-prototype')+8);
+      // },
+
+      moduleName: 'directiveTemplates'
     }
   });
 };
