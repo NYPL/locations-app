@@ -15,7 +15,7 @@
     "angular-animate": "~1.2.15",
     "angularitics": "~0.15",
     "angular-translate": "~2.1.0",
-    "ng-breadcrumbs": "~0.1.0"
+    "ng-breadcrumbs": "latest"
   },
   "devDependencies": {
     "angular-mocks": "1.2.14",
