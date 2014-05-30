@@ -146,24 +146,43 @@ describe('NYPL Service Tests', function() {
     var GeocoderMock, GeoCodingOK, GeoCodingError, 
         LatLngMock, LatLngBoundsMock, LatLngOk, LatLngError,
         nypl_geocoder_service, rootScope,
-        get_coords_return_value, get_address_return_value;
+        get_coords_return_value, get_address_return_value,
+        map_controls_push_mock,
+        infowindow_open_mock, infowindow_close_mock, infowindow_setContent_mock;
 
     beforeEach(function() {
       module('nypl_locations');
 
-      window.google = jasmine.createSpy('google');
-      window.google.maps = jasmine.createSpy('maps');
-      window.google.maps.InfoWindow = jasmine.createSpy('InfoWindow');
-      window.google.maps.Map = jasmine.createSpy('Map');
-      window.google.maps.Marker = jasmine.createSpy('Marker');
-      window.google.maps.Animation = jasmine.createSpy('Animation');
-      window.google.maps.Animation.BOUNCE = jasmine.createSpy('Bounce');
-      window.google.maps.Animation.DROP = jasmine.createSpy('Drop');
-      window.google.maps.GeocoderStatus = jasmine.createSpy('GeocoderStatus');
-      window.google.maps.GeocoderStatus.OK = 'OK';
-      window.google.maps.prototype.controls = jasmine.createSpy('map.controls');
-      window.google.maps.ControlPosition = jasmine.createSpy('ControlPosition');
-      window.google.maps.ControlPosition.RIGHT_BOTTOM = jasmine.createSpy('RIGHT_BOTTOM');
+      google = jasmine.createSpy('google');
+      google.maps = jasmine.createSpy('maps');
+      google.maps.InfoWindow = jasmine.createSpy('InfoWindow');
+      infowindow_close_mock =
+        google.maps.InfoWindow.prototype.close = jasmine.createSpy('InfoWindow.close');
+      infowindow_setContent_mock =
+        google.maps.InfoWindow.prototype.setContent = jasmine.createSpy('InfoWindow.setcontent');
+      infowindow_open_mock =
+        google.maps.InfoWindow.prototype.open = jasmine.createSpy('InfoWindow.open');
+      google.maps.Map = jasmine.createSpy('Map');
+      google.maps.Marker = jasmine.createSpy('Marker');
+      google.maps.Animation = jasmine.createSpy('Animation');
+      google.maps.Animation.BOUNCE = jasmine.createSpy('Bounce');
+      google.maps.Animation.DROP = jasmine.createSpy('Drop');
+      google.maps.GeocoderStatus = jasmine.createSpy('GeocoderStatus');
+      google.maps.GeocoderStatus.OK = 'OK';
+      google.maps.ControlPosition = jasmine.createSpy('ControlPosition');
+      google.maps.ControlPosition.RIGHT_BOTTOM = jasmine.createSpy('RIGHT_BOTTOM');
+      google.maps.event = jasmine.createSpy('maps.events');
+      google.maps.event.addListener = jasmine.createSpy('maps.event.addListener');
+      google.maps.Map.prototype.controls = jasmine.createSpy('map.controls');
+      google.maps.Map.prototype.controls[google.maps.ControlPosition.RIGHT_BOTTOM] = jasmine.createSpy('map.controls.position');
+      map_controls_push_mock =
+        google.maps.Map.prototype.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push =
+        jasmine.createSpy('map.controls.push');
+      google.maps.Map.prototype.panTo = jasmine.createSpy('map.panTo');
+      google.maps.Map.prototype.setZoom = jasmine.createSpy('map.setZoom');
+      google.maps.Marker.prototype.setMap = jasmine.createSpy('marker.setMap');
+      google.maps.Marker.prototype.getMap = jasmine.createSpy('marker.getMap');
+      google.maps.Marker.prototype.getPosition = jasmine.createSpy('marker.getPosition');
 
       GeoCodingOK = function (params, callback) {
         callback(
@@ -359,13 +378,90 @@ describe('NYPL Service Tests', function() {
       });
     });
 
-    describe('draw_legend function', function () {
-      it('should call the controls function in the Maps API', function () {
-        // nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-        // nypl_geocoder_service.draw_legend('test');
-        // expect(window.google.maps.ControlPosition).toHaveBeenCalled();
+    describe('load_markers function', function () {
+      // First we draw a marker, then when the load_markers function is called
+      // it should call the add_marker_to_map function
+      it('should call the add_marker_to_map function from the service', function () {
+        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        nypl_geocoder_service.draw_marker("schwarzman", { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
+
+        nypl_geocoder_service.load_markers();
+        // if there are markers, the load_markers function adds markers to the map
+        // using the add_marker_to_map function, which in turn
+        // calls the google maps api and the setMap function to add the marker to the map:
+        expect(google.maps.Marker.prototype.setMap).toHaveBeenCalled();
+      });
+
+      // no markers are set so it shouldn't do anything
+      it('should NOT call the add_marker_to_map function from the service', function () {
+        nypl_geocoder_service.load_markers();
+        expect(google.maps.Marker.prototype.setMap).not.toHaveBeenCalled();
       });
     });
+
+    describe('draw_legend function', function () {
+      it('should call the controls function in the Maps API', function () {
+        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        document.getElementById = function () {
+          return '<div id="all-locations-map-legend" class="show-legend" style="z-index: 0; position: absolute; bottom: 15px; right: 0px;">'+
+                '<!-- ngIf: locations --><span data-ng-if="locations" class="ng-scope"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png">NYPL Library<br></span><!-- end ngIf: locations -->'+
+                '<!-- ngIf: locationStart -->'+
+              '</div>';
+        }
+        nypl_geocoder_service.draw_legend('test');
+        expect(map_controls_push_mock).toHaveBeenCalled();
+      });
+    });
+
+    describe('panMap function', function () {
+      it('should call the google maps api functions to pan and zoom on the map', function () {
+        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        nypl_geocoder_service.panMap();
+        // When we call the panMap function, we expect to call the
+        // google maps panTo and setZoom functions avaible in the API
+        // for the map
+
+        expect(google.maps.Map.prototype.panTo).toHaveBeenCalled();
+        expect(google.maps.Map.prototype.setZoom).toHaveBeenCalled();
+      });
+    });
+
+    describe('check_marker function', function () {
+      it('should return false because no markers exist', function () {
+        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        var marker = nypl_geocoder_service.check_marker('schwarzman');
+
+        expect(marker).toBe(false);
+      });
+
+      it('should return true because the marker exists and was drawn', function () {
+        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        nypl_geocoder_service.draw_marker("schwarzman", { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
+        var marker = nypl_geocoder_service.check_marker('schwarzman');
+
+        expect(marker).toBe(true);
+      });
+    });
+
+    describe('pan_existing_marker', function () {
+      it('should pan to a marker that is already on the map and open the infowindow', function () {
+        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        nypl_geocoder_service.draw_marker("schwarzman", { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
+
+        // Must make sure it's an existing marker
+        if (nypl_geocoder_service.check_marker('schwarzman')) {
+          nypl_geocoder_service.pan_existing_marker('schwarzman');
+        }
+
+        // When we call it, we pan to that marker and open the infowindow with text
+        expect(google.maps.Map.prototype.panTo).toHaveBeenCalled();
+        expect(google.maps.Map.prototype.setZoom).toHaveBeenCalled();
+        expect(infowindow_close_mock).toHaveBeenCalled();
+        expect(infowindow_setContent_mock).toHaveBeenCalledWith("5th Avenue at 42nd St");
+        expect(infowindow_open_mock).toHaveBeenCalled();
+      });
+    });
+
 
   });
   /* end nypl_geocoder_service called directly */
