@@ -33,7 +33,9 @@ nypl_locations.controller('DivisionCtrl', [
                             nypl_utility.alerts(division._embedded.alerts);
 
                         $scope.division.social_media =
-                            nypl_utility.socialMediaColor(division.social_media);
+                            nypl_utility.socialMediaColor(
+                                division.social_media
+                            );
                     });
             };
 

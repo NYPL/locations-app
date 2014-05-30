@@ -161,6 +161,9 @@ describe('NYPL Service Tests', function() {
       window.google.maps.Animation.DROP = jasmine.createSpy('Drop');
       window.google.maps.GeocoderStatus = jasmine.createSpy('GeocoderStatus');
       window.google.maps.GeocoderStatus.OK = 'OK';
+      window.google.maps.prototype.controls = jasmine.createSpy('map.controls');
+      window.google.maps.ControlPosition = jasmine.createSpy('ControlPosition');
+      window.google.maps.ControlPosition.RIGHT_BOTTOM = jasmine.createSpy('RIGHT_BOTTOM');
 
       GeoCodingOK = function (params, callback) {
         callback(
@@ -348,6 +351,22 @@ describe('NYPL Service Tests', function() {
     });
     /* end nypl_geocoder_service.get_address */
 
+    describe('draw_map function', function () {
+      it('should call the Google Maps', function () {
+        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+
+        expect(window.google.maps.Map).toHaveBeenCalled();
+      });
+    });
+
+    describe('draw_legend function', function () {
+      it('should call the controls function in the Maps API', function () {
+        // nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        // nypl_geocoder_service.draw_legend('test');
+        // expect(window.google.maps.ControlPosition).toHaveBeenCalled();
+      });
+    });
+
   });
   /* end nypl_geocoder_service called directly */
 
@@ -398,11 +417,11 @@ describe('NYPL Service Tests', function() {
     });
 
     it('should return one specific location', function () {
-      var locations,
+      var location,
           service_result,
           // The actual API call has many properties for one location
           mocked_one_location_API_call = {
-            locations: {
+            location: {
               id: "HP", name: "Hudson Park Library", slug: "hudson-park"
             }
           };
@@ -410,14 +429,129 @@ describe('NYPL Service Tests', function() {
       httpBackend.expectGET('http://evening-mesa-7447-160.herokuapp.com/locations/hudson-park')
         .respond(mocked_one_location_API_call);
 
-      locations = nypl_locations_service.single_location('hudson-park');
-      locations.then(function (data) {
+      location = nypl_locations_service.single_location('hudson-park');
+      location.then(function (data) {
         service_result = data;
       });
 
       httpBackend.flush();
 
       expect(service_result).toEqual(mocked_one_location_API_call);
+    });
+
+    it('should return one division', function () {
+      var division,
+          service_result,
+          // The actual API call has many properties for one location
+          mocked_one_division_API_call = {
+            division: {
+              id: "MAP", name: "Lionel Pincus and Princess Firyal Map Division", slug: "map-division"
+            }
+          };
+
+      httpBackend.expectGET('http://evening-mesa-7447-160.herokuapp.com/divisions/map-division')
+        .respond(mocked_one_division_API_call);
+
+      division = nypl_locations_service.single_division('map-division');
+      division.then(function (data) {
+        service_result = data;
+      });
+
+      httpBackend.flush();
+
+      expect(service_result).toEqual(mocked_one_division_API_call);
+    });
+
+    it('should return a list of services', function () {
+      var services,
+          service_result,
+          // The actual API call has many properties for one location
+          mocked_services_API_call = {
+            services: [
+              {id: 4, name: "Computers for Public Use", _links: {}},
+              {id: 6, name: "Wireless Internet Access", _links: {}},
+              {id: 7, name: "Printing (from PC)", _links: {}},
+              {id: 8, name: "Wheelchair Accessible Computers", _links: {}},
+            ]
+          };
+
+      httpBackend.expectGET('http://evening-mesa-7447-160.herokuapp.com/services')
+        .respond(mocked_services_API_call);
+
+      services = nypl_locations_service.services();
+      services.then(function (data) {
+        service_result = data;
+      });
+
+      httpBackend.flush();
+
+      expect(service_result.services.length).toBe(4);
+      expect(service_result).toEqual(mocked_services_API_call);
+    });
+
+    it('should return a list of locations for one service', function () {
+      var locations,
+          service_result,
+          // The actual API call has many properties for one location
+          mocked_one_service_API_call = {
+            services: {
+              id: 36,
+              name: "Bicycle Rack"
+            },
+            locations: [
+              {id: "BAR", name: "Baychester Library", _links: {}},
+              {id: "CHR", name: "Chatham Square Library", _links: {}},
+              {id: "CI", name: "City Island Library", _links: {}},
+              {id: "DH", name: "Dongan Hills Library", _links: {}},
+            ]
+          };
+
+      httpBackend.expectGET('http://evening-mesa-7447-160.herokuapp.com/services/36')
+        .respond(mocked_one_service_API_call);
+
+      locations = nypl_locations_service.one_service(36);
+      locations.then(function (data) {
+        service_result = data;
+      });
+
+      httpBackend.flush();
+
+      expect(service_result.services.name).toEqual('Bicycle Rack');
+      expect(service_result.locations.length).toBe(4);
+      expect(service_result).toEqual(mocked_one_service_API_call);
+    });
+
+    it('should return a list of services at a specific location', function () {
+      var services,
+          service_result,
+          // The actual API call has many properties for one location
+          mocked_location_services_API_call = {
+            locations: {
+              name: 'Science, Industry and Business Library (SIBL)',
+              _embedded: {
+                services: [
+                  {id: 4, name: "Computers for Public Use", _links: {}},
+                  {id: 6, name: "Wireless Internet Access", _links: {}},
+                  {id: 7, name: "Printing (from PC)", _links: {}},
+                  {id: 8, name: "Wheelchair Accessible Computers", _links: {}},
+                ]
+              }
+            }
+          };
+
+      httpBackend.expectGET('http://evening-mesa-7447-160.herokuapp.com/locations/sibl/services')
+        .respond(mocked_location_services_API_call);
+
+      services = nypl_locations_service.services_at_library('sibl');
+      services.then(function (data) {
+        service_result = data;
+      });
+
+      httpBackend.flush();
+
+      expect(service_result.locations.name).toEqual('Science, Industry and Business Library (SIBL)');
+      expect(service_result.locations._embedded.services.length).toBe(4);
+      expect(service_result).toEqual(mocked_location_services_API_call);
     });
 
   });
@@ -446,9 +580,9 @@ describe('NYPL Service Tests', function() {
             {close: "18:00", day: "Mon", open: "10:00" },
             {close: "18:00", day: "Tue", open: "10:00" },
             {close: "18:00", day: "Wed", open: "10:00" },
-            {close: "18:00", day: "Thu", open: "10:00" },
+            {close: "17:00", day: "Thu", open: "11:00" },
             {close: "18:00", day: "Fri", open: "10:00" },
-            {close: "18:00", day: "Sat", open: "10:00" }
+            {close: "17:00", day: "Sat", open: "09:00" }
           ]
       };
 
@@ -457,12 +591,26 @@ describe('NYPL Service Tests', function() {
         expect(angular.isFunction(nypl_utility.hoursToday)).toBe(true);
       });
 
-      it('should have an hoursToday() function', function () { 
+      it('should return today\'s and tomorrow\'s open and close times', function () {
+        // getDay() returns 3 to mock that today is Wednesday
+        Date.prototype.getDay = function () {return 3;};
+
         var today = nypl_utility.hoursToday(hours);
 
         // This varies on a day-to-day basis since it the current day that you are checking
         expect(JSON.stringify(today)).toEqual('{"today":{"day":"Wed","open":"10:00","close":"18:00"},' +
-          '"tomorrow":{"day":"Thu","open":"10:00","close":"18:00"}}');
+          '"tomorrow":{"day":"Thu","open":"11:00","close":"17:00"}}');
+      });
+
+      it('should return today\'s and tomorrow\'s open and close times', function () {
+        // getDay() returns 5 to mock that today is Friday
+        Date.prototype.getDay = function () {return 5;};
+
+        var today = nypl_utility.hoursToday(hours);
+
+        // This varies on a day-to-day basis since it the current day that you are checking
+        expect(JSON.stringify(today)).toEqual('{"today":{"day":"Fri","open":"10:00","close":"18:00"},' +
+          '"tomorrow":{"day":"Sat","open":"09:00","close":"17:00"}}');
       });
 
       it('should return undefined if no input was given', function () {

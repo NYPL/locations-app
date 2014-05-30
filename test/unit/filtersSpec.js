@@ -25,6 +25,16 @@ describe('NYPL Filter Tests', function() {
       expect(timeFormatFilter({'open': '00:00', 'close': '2:00'})).toBe('12:00am - 2:00am');
     });
 
+    it('should also accept an object with today\'s and tomorrow\'s hours', function () {
+      var time; 
+
+      time = timeFormatFilter({'today': {'open': '00:00', 'close': '2:00'}});
+      expect(time).toBe('12:00am - 2:00am');
+
+      time = timeFormatFilter({'today': {'open': '10:00', 'close': '18:00'}});
+      expect(time).toBe('10:00am - 6:00pm');
+    });
+
     // The API returns null
     it('should say Closed if there is no open time', function () {
       expect(timeFormatFilter({'open': null, 'close': null})).toBe('Closed');
@@ -76,34 +86,71 @@ describe('NYPL Filter Tests', function() {
       });
     });
 
+    // The only big difference between short and long is the wording when the library
+    // is currently opened. Short says "Open today until ..." and long says
+    // "Open today ...".
     describe('when opened and using the "short" format', function () {
       it('should display the open times for today', function () {
-        expect(hoursTodayFormatFilter({'today':{'open': '10:00', 'close': '18:00'}}, 'short'))
-          .toBe('Open today until 6pm');
+        // Returns 13 for 1pm in the afternoon when a library is open.
+        Date.prototype.getHours = function () {return 13;};
+
+        expect(hoursTodayFormatFilter({
+          'today':{'open': '10:00', 'close': '18:00'},
+          'tomorrow':{'open': '10:00', 'close': '18:00'}}, 'short'))
+            .toBe('Open today until 6pm');
       });
 
-      // This is hard to test because there's a check that compares the current time
-      // with the closing time of the library. The current time is generated in the filter function.
-      // Commenting out until a way is found to test successfully.
-      // it('should display the open times for tomorrow', function () {
-      //   expect(hoursTodayFormatFilter({'today':{'open': '10:00', 'close': '18:00'}}, 'short'))
-      //     .toBe('Open tomorrow 10am-6pm');
-      // });
+      it('should display the open times for tomorrow', function () {
+        // Returns 19 for 7pm after a library has closed.
+        Date.prototype.getHours = function () {return 19;};
+
+        expect(hoursTodayFormatFilter({
+          'today':{'open': '10:00', 'close': '18:00'},
+          'tomorrow':{'open': '10:00', 'close': '18:00'}}, 'short'))
+          .toBe('Open tomorrow 10am-6pm');
+      });
+
+      it('should display the open times for later today', function () {
+        // Returns 7 for 7am in the morning before a library has opened.
+        Date.prototype.getHours = function () {return 7;};
+
+        expect(hoursTodayFormatFilter({
+          'today':{'open': '10:00', 'close': '18:00'},
+          'tomorrow':{'open': '10:00', 'close': '18:00'}}, 'short'))
+          .toBe('Open today 10am-6pm');
+      });
     });
 
     describe('when opened and using the "long" format', function () {
       it('should display the open times for tomorrow', function () {
-        expect(hoursTodayFormatFilter({'today':{'open': '10:00', 'close': '18:00'}}, 'long'))
-          .toBe('Open today 10am-6pm');
+        // Returns 13 for 1pm in the afternoon when a library is open.
+        Date.prototype.getHours = function () {return 13;};
+
+        expect(hoursTodayFormatFilter({
+          'today':{'open': '10:00', 'close': '18:00'},
+          'tomorrow':{'open': '10:00', 'close': '18:00'}}, 'long'))
+            .toBe('Open today 10am-6pm');
       });
 
-      // This is hard to test because there's a check that compares the current time
-      // with the closing time of the library. The current time is generated in the filter function.
-      // Commenting out until a way is found to test successfully.
-      // it('should display the open times for tomorrow', function () {
-      //   expect(hoursTodayFormatFilter({'today':{'open': '10:00', 'close': '18:00'}}, 'short'))
-      //     .toBe('Open tomorrow 10am-6pm');
-      // });
+      it('should display the open times for tomorrow', function () {
+        // Returns 19 for 7pm after a library has closed.
+        Date.prototype.getHours = function () {return 19;};
+
+        expect(hoursTodayFormatFilter({
+          'today':{'open': '10:00', 'close': '18:00'},
+          'tomorrow':{'open': '10:00', 'close': '18:00'}}, 'long'))
+          .toBe('Open tomorrow 10am-6pm');
+      });
+
+      it('should display the open times for later today', function () {
+        // Returns 7 for 7am in the morning before a library has opened.
+        Date.prototype.getHours = function () {return 7;};
+
+        expect(hoursTodayFormatFilter({
+          'today':{'open': '10:00', 'close': '18:00'},
+          'tomorrow':{'open': '10:00', 'close': '18:00'}}, 'short'))
+          .toBe('Open today 10am-6pm');
+      });
     });
   });
 

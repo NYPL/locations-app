@@ -116,7 +116,8 @@ nypl_locations.controller('LargeMapCtrl', [
                                     'long': location.geolocation.coordinates[0]
                                 };
 
-                            if (!nypl_geocoder_service.check_marker(location.slug)) {
+                            if (!nypl_geocoder_service
+                                    .check_marker(location.slug)) {
                                 nypl_geocoder_service
                                     .draw_marker(location.slug,
                                         markerCoordinates,

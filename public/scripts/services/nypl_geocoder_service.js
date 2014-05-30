@@ -1,5 +1,5 @@
 /*jslint indent: 4, maxlen: 80 */
-/*globals nypl_locations, google */
+/*globals nypl_locations, google, document */
 nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
     'use strict';
 
@@ -142,9 +142,9 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         },
 
         pan_existing_marker: function (id) {
-            var markerObj = _.where(markers, {id: id});
-            var marker = markerObj[0].marker; 
-            
+            var markerObj = _.where(markers, {id: id}),
+                marker = markerObj[0].marker;
+
             if (marker.getMap() === null) {
                 this.add_marker_to_map(id);
             }

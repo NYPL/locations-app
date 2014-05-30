@@ -7,8 +7,8 @@ angular.module('locationService', ['ngResource'])
         function ($http, $q) {
             'use strict';
 
-            var api = 'http://evening-mesa-7447-160.herokuapp.com';
-            var apiError = "Could not reach API";
+            var api = 'http://evening-mesa-7447-160.herokuapp.com',
+                apiError = "Could not reach API";
 
             return {
                 all_locations: function () {
