@@ -476,6 +476,18 @@ describe('NYPL Service Tests', function() {
       });
     });
 
+    // This differs from the search marker so that it will not be in the same
+    // set as the location markers when manipulating them
+    describe('remove_marker function', function () {
+      it('should remove a marker that was on the map', function () {
+        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        nypl_geocoder_service.draw_marker("schwarzman", { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
+
+        nypl_geocoder_service.remove_marker("schwarzman");
+
+        expect(google.maps.Marker.prototype.setMap).toHaveBeenCalledWith(null);
+      });
+    });
 
     describe('check_marker function', function () {
       it('should return false because no markers exist', function () {
