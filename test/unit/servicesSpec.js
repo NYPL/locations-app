@@ -183,6 +183,7 @@ describe('NYPL Service Tests', function() {
       google.maps.Marker.prototype.setMap = jasmine.createSpy('marker.setMap');
       google.maps.Marker.prototype.getMap = jasmine.createSpy('marker.getMap');
       google.maps.Marker.prototype.getPosition = jasmine.createSpy('marker.getPosition');
+      google.maps.Marker.prototype.setPosition = jasmine.createSpy('marker.setPosition');
 
       GeoCodingOK = function (params, callback) {
         callback(
@@ -388,7 +389,7 @@ describe('NYPL Service Tests', function() {
         nypl_geocoder_service.load_markers();
         // if there are markers, the load_markers function adds markers to the map
         // using the add_marker_to_map function, which in turn
-        // calls the google maps api and the setMap function to add the marker to the map:
+        // calls the setMap function from the google maps api to add the marker to the map:
         expect(google.maps.Marker.prototype.setMap).toHaveBeenCalled();
       });
 
@@ -416,6 +417,7 @@ describe('NYPL Service Tests', function() {
     describe('panMap function', function () {
       it('should call the google maps api functions to pan and zoom on the map', function () {
         nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        // the panMap function pans to SASB by default
         nypl_geocoder_service.panMap();
         // When we call the panMap function, we expect to call the
         // google maps panTo and setZoom functions avaible in the API
@@ -424,7 +426,56 @@ describe('NYPL Service Tests', function() {
         expect(google.maps.Map.prototype.panTo).toHaveBeenCalled();
         expect(google.maps.Map.prototype.setZoom).toHaveBeenCalled();
       });
+
+      it('should pan to a specific marker', function () {
+        var marker = new google.maps.Marker({});
+        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        nypl_geocoder_service.draw_marker("schwarzman", { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
+
+        nypl_geocoder_service.panMap(marker);
+
+        expect(google.maps.Marker.prototype.getPosition).toHaveBeenCalled();
+        expect(google.maps.Map.prototype.panTo).toHaveBeenCalled();
+        expect(google.maps.Map.prototype.setZoom).toHaveBeenCalled();
+      });
     });
+
+    // The search marker is the marker that is drawn when a user searches for 'Bronx Zoo',
+    // 'Chelsea Piers', 'Empire State Building', etc.
+    // There is only one search marker on the map at a time so it just simply
+    // gets its coordinates and text updated
+    describe('draw_searchMarker function', function () {
+      it('should remove the existing search marker and draw another one with updated coordinates and text', function () {
+        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+
+
+        nypl_geocoder_service.draw_searchMarker({lat: 40.8505949, long: -73.8769982} , 'bronx zoo');
+
+        // First remove the existing search marker from the map (if there is one)
+        expect(google.maps.Marker.prototype.setMap).toHaveBeenCalledWith(null);
+        // Create new google maps coordinates
+        expect(google.maps.LatLng).toHaveBeenCalledWith(40.8505949, -73.8769982);
+        // Update the search marker with the new coordinates
+        expect(google.maps.Marker.prototype.setPosition).toHaveBeenCalled();
+        // Set the search marker on the map
+        expect(google.maps.Marker.prototype.setMap).toHaveBeenCalled();
+        // Set the content on the infowindow and open it
+        expect(google.maps.InfoWindow.prototype.setContent).toHaveBeenCalledWith('bronx zoo');
+        expect(google.maps.InfoWindow.prototype.open).toHaveBeenCalled();
+      });
+    });
+
+    describe('remove_searchMarker function', function () {
+      it('should set the search marker map to null to remove it', function () {
+        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        nypl_geocoder_service.draw_searchMarker({lat: 40.8505949, long: -73.8769982} , 'chelsea piers');
+
+        nypl_geocoder_service.remove_searchMarker();
+
+        expect(google.maps.Marker.prototype.setMap).toHaveBeenCalledWith(null);
+      });
+    });
+
 
     describe('check_marker function', function () {
       it('should return false because no markers exist', function () {
