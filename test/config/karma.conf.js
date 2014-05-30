@@ -16,6 +16,9 @@ module.exports = function(config){
       'public/bower_components/underscore/underscore.js',
       'public/bower_components/angularitics/src/angulartics.js',
       'public/bower_components/angularitics/src/angulartics-ga.js',
+      'public/bower_components/angular-translate/angular-translate.min.js',
+      'public/bower_components/ng-breadcrumbs/dist/ng-breadcrumbs.min.js',
+      'public/json/translate.js'
 
       // {pattern: '/test/json/*.json', watched: true, served: true, included: false}
     ],

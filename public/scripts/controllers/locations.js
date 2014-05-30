@@ -466,6 +466,7 @@ nypl_locations.controller('LocationCtrl', [
     'nypl_locations_service',
     'nypl_coordinates_service',
     'nypl_utility',
+    'breadcrumbs',
     function (
         $scope,
         $routeParams,
@@ -473,7 +474,8 @@ nypl_locations.controller('LocationCtrl', [
         $location,
         nypl_locations_service,
         nypl_coordinates_service,
-        nypl_utility
+        nypl_utility,
+        breadcrumbs
     ) {
         'use strict';
         var location,
@@ -484,6 +486,9 @@ nypl_locations.controller('LocationCtrl', [
                     .then(function (data) {
                         location = data.location;
                         $rootScope.title = location.name;
+
+                        breadcrumbs.options = { 'Location': location.name };
+                        $scope.breadcrumbs = breadcrumbs;
 
                         $scope.calendar_link =
                             nypl_utility.google_calendar_link;

@@ -8,7 +8,9 @@ var nypl_locations = angular.module('nypl_locations', [
     'ngRoute',
     'locationService',
     'angulartics',
-    'angulartics.google.analytics'
+    'angulartics.google.analytics',
+    'pascalprecht.translate',
+    'ng-breadcrumbs'
 ]);
 
 nypl_locations.constant('_', window._);
@@ -16,11 +18,18 @@ nypl_locations.constant('_', window._);
 nypl_locations.config([
     '$routeProvider',
     '$locationProvider',
-    function ($routeProvider, $locationProvider) {
-    'use strict';
+    '$translateProvider',
+    function ($routeProvider, $locationProvider, $translateProvider) {
+        'use strict';
 
         // uses the HTML5 History API, remove hash (need to test)
         //$locationProvider.html5Mode(true);
+
+        $translateProvider.translations('en', en);
+        $translateProvider.translations('es', es);
+
+        $translateProvider.preferredLanguage('en');
+
 
         $routeProvider
             .when('/404', {
@@ -28,7 +37,8 @@ nypl_locations.config([
             })
             .when('/', {
                 templateUrl: 'views/locations.html',
-                controller: 'LocationsCtrl'
+                controller: 'LocationsCtrl',
+                label: 'Home'
             })
             .when('/full-page-map', {
                 templateUrl: '/views/large-map.html',
@@ -36,31 +46,38 @@ nypl_locations.config([
             })
             .when('/division/:division', {
                 templateUrl: 'views/division.html',
-                controller: 'DivisionCtrl'
+                controller: 'DivisionCtrl',
+                label: 'Division'
             })
             .when('/services', {
                 templateUrl: '/views/services.html',
-                controller: 'ServicesCtrl'
+                controller: 'ServicesCtrl',
+                label: 'Services'
             })
             .when('/services/:service_id', {
                 templateUrl: 'views/services.html',
-                controller: 'OneServiceCtrl'
+                controller: 'OneServiceCtrl',
+                label: 'Service'
             })
             .when('/services/location/:location_id', {
                 templateUrl: 'views/services.html',
-                controller: 'ServicesAtLibraryCtrl'
+                controller: 'ServicesAtLibraryCtrl',
+                label: 'Location'
             })
             .when('/:symbol', {
                 templateUrl: 'views/location.html',
-                controller: 'LocationCtrl'
+                controller: 'LocationCtrl',
+                label: 'Location'
             })
             .when('/:symbol/events', {
                 templateUrl: '/views/events.html',
-                controller: 'LocationCtrl'
+                controller: 'LocationCtrl',
+                label: 'Events'
             })
             .when('/:symbol/map', {
                 templateUrl: '/views/map.html',
-                controller: 'mapCtrl'
+                controller: 'mapCtrl',
+                label: 'Map'
             })
             .otherwise({
                 redirectTo: '/404'
