@@ -60,7 +60,7 @@ nypl_locations.controller('OneServiceCtrl', [
                         $scope.locations = locations;
                         $scope.service_name = service.name;
 
-                        breadcrumbs.options = { 'Service': service_name };
+                        breadcrumbs.options = { 'Service': service.name };
                         $scope.breadcrumbs = breadcrumbs;
                     });
             };

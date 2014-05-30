@@ -8,6 +8,7 @@ nypl_locations.controller('mapCtrl', [
     'nypl_geocoder_service',
     'nypl_coordinates_service',
     'nypl_utility',
+    'breadcrumbs',
     function (
         $scope,
         $routeParams,
