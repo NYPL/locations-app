@@ -8,7 +8,8 @@ var nypl_locations = angular.module('nypl_locations', [
     'ngRoute',
     'locationService',
     'angulartics',
-    'angulartics.google.analytics'
+    'angulartics.google.analytics',
+    'pascalprecht.translate'
 ]);
 
 nypl_locations.constant('_', window._);
@@ -16,11 +17,18 @@ nypl_locations.constant('_', window._);
 nypl_locations.config([
     '$routeProvider',
     '$locationProvider',
-    function ($routeProvider, $locationProvider) {
-    'use strict';
+    '$translateProvider',
+    function ($routeProvider, $locationProvider, $translateProvider) {
+        'use strict';
 
         // uses the HTML5 History API, remove hash (need to test)
         //$locationProvider.html5Mode(true);
+
+        $translateProvider.translations('en', en);
+        $translateProvider.translations('es', es);
+
+        $translateProvider.preferredLanguage('en');
+
 
         $routeProvider
             .when('/404', {

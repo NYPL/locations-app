@@ -32,6 +32,22 @@ nypl_locations.directive('loadingWidget', [
         };
     }]);
 
+nypl_locations.directive('translatebuttons', [
+    function () {
+        'use strict';
+
+        return {
+            restrict: 'E',
+            templateUrl: '/scripts/directives/templates/translatebuttons.html',
+            replace: true,
+            controller: function ($scope, $translate) {
+                $scope.translate = function (language) {
+                    $translate.use(language);
+                }
+            }
+        };
+    }]);
+
 nypl_locations.directive('todayshours', [
     function () {
         'use strict';
