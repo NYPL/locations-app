@@ -15,7 +15,8 @@ nypl_locations.controller('mapCtrl', [
         nypl_locations_service,
         nypl_geocoder_service,
         nypl_coordinates_service,
-        nypl_utility
+        nypl_utility,
+        breadcrumbs
     ) {
         'use strict';
         var location_id = $routeParams.symbol,
@@ -24,6 +25,9 @@ nypl_locations.controller('mapCtrl', [
                     .single_location(location_id)
                     .then(function (data) {
                         $rootScope.title = data.location.name;
+
+                        breadcrumbs.options = { 'Location': data.location.name };
+                        $scope.breadcrumbs = breadcrumbs;
                         return data.location;
                     });
             },

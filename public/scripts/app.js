@@ -9,7 +9,8 @@ var nypl_locations = angular.module('nypl_locations', [
     'locationService',
     'angulartics',
     'angulartics.google.analytics',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'ng-breadcrumbs'
 ]);
 
 nypl_locations.constant('_', window._);

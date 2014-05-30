@@ -6,10 +6,12 @@ nypl_locations.controller('ServicesCtrl', [
     '$scope',
     '$rootScope',
     'nypl_locations_service',
+    'breadcrumbs',
     function (
         $scope,
         $rootScope,
-        nypl_locations_service
+        nypl_locations_service,
+        breadcrumbs
     ) {
         'use strict';
         var services,
@@ -22,6 +24,7 @@ nypl_locations.controller('ServicesCtrl', [
                     });
             };
 
+        $scope.breadcrumbs = breadcrumbs;
         $rootScope.title = "Services";
         loadServices();
     }
@@ -34,11 +37,13 @@ nypl_locations.controller('OneServiceCtrl', [
     '$routeParams',
     '$rootScope',
     'nypl_locations_service',
+    'breadcrumbs',
     function (
         $scope,
         $routeParams,
         $rootScope,
-        nypl_locations_service
+        nypl_locations_service,
+        breadcrumbs
     ) {
         'use strict';
         var service,
@@ -54,6 +59,9 @@ nypl_locations.controller('OneServiceCtrl', [
                         $scope.service = service;
                         $scope.locations = locations;
                         $scope.service_name = service.name;
+
+                        breadcrumbs.options = { 'Service': service_name };
+                        $scope.breadcrumbs = breadcrumbs;
                     });
             };
 
@@ -68,11 +76,13 @@ nypl_locations.controller('ServicesAtLibraryCtrl', [
     '$routeParams',
     '$rootScope',
     'nypl_locations_service',
+    'breadcrumbs',
     function (
         $scope,
         $routeParams,
         $rootScope,
-        nypl_locations_service
+        nypl_locations_service,
+        breadcrumbs
     ) {
         'use strict';
         var services,
@@ -87,10 +97,12 @@ nypl_locations.controller('ServicesAtLibraryCtrl', [
                         $rootScope.title = location.name;
                         $scope.location = location;
                         $scope.services = services;
+
+                        breadcrumbs.options = { 'Location': location.name };
+                        $scope.breadcrumbs = breadcrumbs;
                     });
             };
 
         loadServicesAtBranch();
     }
 ]);
-
