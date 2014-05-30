@@ -4,6 +4,7 @@ describe('NYPL Filter Tests', function() {
 	// Load App dependency
   var timeFormatFilter,
       dateToISOFilter,
+      capitalizeFilter,
       hoursTodayFormatFilter,
       truncateFilter;
 
@@ -60,6 +61,20 @@ describe('NYPL Filter Tests', function() {
 
     it('Should convert MYSQL DATETIME stamp to ISO', function () {
       expect(dateToISOFilter('2014-04-22 15:00:00')).toBe('2014-04-22T19:00:00.000Z');
+    });
+  });
+
+  describe('capitalize', function() {
+    beforeEach(inject(function (_capitalizeFilter_){
+      capitalizeFilter = _capitalizeFilter_;
+    }));
+
+    it('should have a dateToISOFilter function', function () {
+      expect(angular.isFunction(capitalizeFilter)).toBe(true);
+    });
+
+    it('Should capitalize a word', function () {
+      expect(capitalizeFilter('schwarzman')).toEqual('Schwarzman');
     });
   });
 
