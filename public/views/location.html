@@ -126,6 +126,9 @@
         <div class="callout">
           <p>{{ 'START_TIME' | translate }}: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
           <p>{{ 'END_TIME' | translate }}: {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+          <p>
+            <a href="{{calendar_link(event, location.street_address)}}" target="_blank" rel="nofollow">Google/iCal</a>
+          </p>
         </div>
       </li>
     </ul>   
