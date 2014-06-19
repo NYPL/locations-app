@@ -27,24 +27,26 @@
           <span class="p-postal-code">{{location.postal_code}}</span>
         </div>
         <div class="p-tel">{{location.contacts.phone}}</div>
-        <div>Library Manager: {{location.contacts.manager}}</div> 
+        <div>{{ 'LIBRARY_MANAGER' | translate }}: {{location.contacts.manager}}</div> 
         
         <div class="social flush beta" data-ng-if="location.social_media">
-          <a class="{{social.classes}}" href="{{social.href}}" data-ng-repeat="social in location.social_media" class="inline"></a>
+          <a class="{{social.classes}}" href="{{social.href}}" 
+            data-ng-repeat="social in location.social_media" class="inline"></a>
         </div>
 
       </div><!--
       
       --><div class="container__services grid__item one-whole desk-one-half">
       		
-      		<div class="maplink"><a class="icon-map" href="/#/{{location.slug}}/map">Map</a></div>
-	        <div><a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">Get Directions</a></div>
-	        <div class="nearby-branches"><a class="icon-library" href="">Nearby branches</a></div>
+      		<div class="maplink"><a class="icon-map" href="/#/{{location.slug}}/map">{{ 'MAP' | translate }}</a></div>
+	        <div><a class="icon-compass" 
+            href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">{{ 'DIRECTIONS' | translate }}</a></div>
+	        <div class="nearby-branches"><a class="icon-library" href="">{{ 'NEARBY_BRANCHES' | translate }}</a></div>
 
 	      	<ul class="top-services flush--sides">
-	          <li class="icon-book inline">Books</li>
-	          <li class="icon-accessibility inline">Wheelchair accessible</li>
-	          <li class="icon-box-add inline">Bookdrop</li>
+	          <li class="icon-book inline">{{ 'BOOKS' | translate }}</li>
+	          <li class="icon-accessibility inline">{{ 'WHEELCHAIR' | translate }}</li>
+	          <li class="icon-box-add inline">{{ 'BOOKDROP' | translate }}</li>
 	        </ul>
 
 	        <div id="catalog"><a class="icon-books" href="">Catalog Items Here</a></div>
@@ -57,10 +59,11 @@
 
   --><div class="container__hours grid__item one-whole tablet-and-up-one-half desk-one-third">
 
-    <todayshours class=" grid__item one-whole " hours="{{hoursToday(location.hours) | hoursTodayFormat:'short'}}" /><!--
+    <todayshours class=" grid__item one-whole " 
+      hours="{{hoursToday(location.hours) | hoursTodayFormat:'short'}}" /><!--
 
     --><div id="location-hours" class=" grid__item one-whole ">
-	      <h2 class="flush--ends hdg">Regular Hours</h2>
+	      <h2 class="flush--ends hdg">{{ 'REGULAR_HOURS' | translate }}</h2>
 
 	      <div class="weekly-hours zeta">
 	        <div class="{{hours.day}}" data-ng-repeat="hours in location.hours.regular" data-ng-if="$index != 7">
@@ -73,14 +76,15 @@
     </div>
 
     <p class="color-block callout" data-ng-if="location.type == 'research'">
-      Note: See division pages for individual hours
+      {{ 'IDV_DIVISION_HOURS' | translate }}
     </p>
 
     
   </div><!--
 
-  --><div class="grid__item one-whole" id="divisions" data-ng-if="location.type == 'research' && location._embedded.divisions">
-    <h2 class="hdg">Divisions</h2>
+  --><div class="grid__item one-whole" id="divisions" 
+    data-ng-if="location.type == 'research' && location._embedded.divisions">
+    <h2 class="hdg">{{ 'DIVISION_HEADER' | translate }}</h2>
     
     <div class="grid chunk hard--left">
       <div class="grid__item one-whole desk-one-third" data-ng-repeat='division in location._embedded.divisions'>
@@ -92,17 +96,19 @@
   </div><!--
 
   --><div id="features" class="chunk">
-    <h2 class="hdg">Featured</h2>
+    <h2 class="hdg">{{ 'FEATURED' | translate }}</h2>
 
     <div class="grid__item hard--left one-whole lap-and-up-one-half">
-      <img class="one-whole lap-and-up-one-half" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map"><!--
+      <img class="one-whole lap-and-up-one-half" 
+        src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map"><!--
 
       --><h3 class="grid__item one-whole lap-and-up-one-half">Feature One, Which Might Be an Event at Schwarzman</h3>
       <p>description goes here</p>
     </div><!--
 
     --><div class="grid__item hard--left one-whole lap-and-up-one-half">
-      <img class="one-whole lap-and-up-one-half" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map"><!--
+      <img class="one-whole lap-and-up-one-half"
+        src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map"><!--
 
       --><h3 class="grid__item one-whole lap-and-up-one-half">Feature One, Which Might Be an Event at Schwarzman</h3>
       <p>description goes here</p>
@@ -111,44 +117,46 @@
   </div>
 
   <div id="events" class="chunk" data-ng-if="location._embedded.events">
-    <h2 class="hdg">Events</h2>
+    <h2 class="hdg">{{ 'EVENTS' | translate }}</h2>
 
     <ul class="grid">
       <li class="grid__item one-whole desk-one-third" data-ng-repeat="event in location._embedded.events">
         <h3><a href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h3>
         <p>{{event.body}}</p>
         <div class="callout">
-          <p>Start time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
-          <p>End time: {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+          <p>{{ 'START_TIME' | translate }}: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+          <p>{{ 'END_TIME' | translate }}: {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         </div>
       </li>
     </ul>   
       
-    <div><a class="read-more" href="/#/{{location.slug}}/events">See more events at {{location.name}}</a></div>
+    <div><a class="read-more" href="/#/{{location.slug}}/events">{{ 'MORE_EVENTS' | translate }} {{location.name}}</a></div>
   </div>
 
   <div id="about-and-plan" class="chunk hard--left">
     <div id="plan-your-visit" class="grid__item one-whole lap-and-up-one-half">
-      <h2 class="hdg">Plan Your Visit</h2>
+      <h2 class="hdg">{{ 'PLAN_YOUR_VISIT' | translate }}</h2>
         <ul class="flush--left gamma">
-          <li class="icon-screen">Reserve a Computer</li>
-          <li class="icon-library">Interlibrary Loan</li>
-          <li class="icon-users">Meeting Rooms</li>
+          <li class="icon-screen">{{ 'RESERVE_COMPUTER' | translate }}</li>
+          <li class="icon-library">{{ 'ILL' | translate }}</li>
+          <li class="icon-users">{{ 'MEETING_ROOMS' | translate }}</li>
         </ul>
 
-        <div><a class="read-more" href="/#/services/location/{{location.id}}">See all services at {{location.name}}</a></div>
+        <div><a class="read-more" href="/#/services/location/{{location.id}}">
+          {{ 'ALL_SERVICES' | translate }} {{location.name}}</a></div>
     </div><!--
 
     --><div id="about" class="grid__item one-whole lap-and-up-one-half">
-      <h2 class="hdg">About</h2>
+      <h2 class="hdg">{{ 'ABOUT' | translate }}</h2>
       <p>{{location.about}}</p>
-      <div><a class="read-more" href="http://nypl.org/locations/{{location.slug}}">More about {{location.name}}</a></div>
+      <div><a class="read-more" href="http://nypl.org/locations/{{location.slug}}">
+        {{ 'ABOUT_MORE' | translate }} {{location.name}}</a></div>
     </div>
 
   </div>
 
   <div class="chunk" id="blogs" data-ng-if="location.type != 'research' && location._embedded.blogs">
-    <h2 class="hdg">Blogs</h2>
+    <h2 class="hdg">{{ 'BLOGS' |translate }}</h2>
     <div class="grid">
       <div class="grid__item one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
         <img data-ng-if="blog.image" class="img--left" src="{{blog.image}}" alt="" style="height: 100px;" />
@@ -159,14 +167,14 @@
   </div>
 
   <div class="chunk" id="exhibitions" data-ng-if="location.type == 'research' && location._embedded.exhibitions">
-    <h2 class="hdg">Exhibitions</h2>
+    <h2 class="hdg">{{ 'EXHIBITION' | translate }}</h2>
     <div class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='exhibition in location._embedded.exhibitions'>
       <img data-ng-if="exhibition.image" class="img--left" src="{{exhibition.image}}" alt="" style="height: 100px;" />
       <h3><a href="{{exhibition._links.self.href}}">{{exhibition.title}}</a></h3>
       <div class="teaser">{{exhibition.body | truncate}}</div>
       <div class="callout">
-        <p>Start time: {{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
-        <p>End time: {{exhibition.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        <p>{{ 'START_TIME' | translate }}: {{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        <p>{{ 'END_TIME' | translate }}: {{exhibition.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
       </div>
     </div>
   </div>

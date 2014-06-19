@@ -1,4 +1,5 @@
 var en = {
+        // HOMEPAGE
         'MAIN_SEARCH_BTN': 'Find it!',
         'SEARCH_NEAR': 'Search near',
         'USER_LOCATION': 'your current location',
@@ -21,10 +22,27 @@ var en = {
         'SHOWING': 'Showing',
         'OF': 'of',
         'LOCATIONS': 'Location',
+        // LIBRARY PAGE
+        'LIBRARY_MANAGER': 'Library Manager',
+        'NEARBY_BRANCHES': 'Nearby branches',
+        'MAP': 'Map',
+        'IDV_DIVISION_HOURS': 'Note: See division pages for individual hours',
+        'DIVISION_HEADER': 'Divisions',
+        'FEATURED': 'Featured',
+        'START_TIME': 'Start time',
+        'END_TIME': 'End time',
+        'MORE_EVENTS': 'See more events at',
+        'PLAN_YOUR_VISIT': 'Plan Your Visit',
+        'ALL_SERVICES': 'See all services at',
+        'ABOUT': 'About',
+        'ABOUT_MORE': 'More about',
+
+
         // Division
         'ROOM': 'and Room',
         'DIVISION_MANAGER': 'Division Manager: ',
         'DIVISION_INFO': 'See more division contact info',
+        'HERE': 'here',
         'BOOKS': 'Books',
         'WHEELCHAIR': 'Wheelchair accessible',
         'BOOKDROP': 'Bookdrop',
@@ -38,9 +56,17 @@ var en = {
         'MEETING_ROOMS': 'Meeting Rooms',
         'EVENTS': 'EVENTS',
         'SPECIAL_PROJECTS': 'SPECIAL PROJECTS',
-        'BLOGS': 'BLOGS'
+        'MORE_SPECIAL_PROJECTS': 'See more special projects at',
+        'BLOGS': 'BLOGS',
+        // EVENTS
+        'EVENTS_AT': 'Events at',
+        'EXHIBITION': 'Exhibition',
+        'REGISTER': 'Register',
+        // MAP
+        'DIRECTIONS_TO': 'Directions to',
     },
     es = {
+        // HOMEPAGE
         'MAIN_SEARCH_BTN': 'Buscalo!',
         'SEARCH_NEAR': 'Buscar cerca de',
         'USER_LOCATION': 'su ubicación actual',
@@ -63,10 +89,26 @@ var en = {
         'SHOWING': 'Mostrando',
         'OF': 'de',
         'LOCATIONS': 'lugares',
+        // LIBRARY PAGE
+        'LIBRARY_MANAGER': 'Director de la biblioteca',
+        'NEARBY_BRANCHES': 'Nearby branches',
+        'MAP': 'Mapa',
+        'IDV_DIVISION_HOURS': 'Note: Sver pagina de División para horas individuales',
+        'DIVISION_HEADER': 'Divisiónes',
+        'FEATURED': 'Destacado',
+        'START_TIME': 'Hora de inicio',
+        'END_TIME': 'Hora que finaliza',
+        'MORE_EVENTS': 'Ver mas eventos en',
+        'PLAN_YOUR_VISIT': 'Planifique su visita',
+        'ALL_SERVICES': 'Ver todos los servicios en',
+        'ABOUT': 'Sobre',
+        'ABOUT_MORE': 'Mas informacion sobre',
+
         // Division
         'ROOM': 'y cuarto',
         'DIVISION_MANAGER': 'Director de la Division: ',
         'DIVISION_INFO': 'Ver mas informacion sobre las division ',
+        'HERE': 'aqui',
         'BOOKS': 'Libros',
         'WHEELCHAIR': 'Para personas minusválidas',
         'BOOKDROP': 'Bookdrop',
@@ -80,5 +122,13 @@ var en = {
         'MEETING_ROOMS': 'Cuartos para reuniones',
         'EVENTS': 'EVENTOS',
         'SPECIAL_PROJECTS': 'PROJECTOS ESPECIALES',
-        'BLOGS': 'BLOGS'
+        'MORE_SPECIAL_PROJECTS': 'Ver mas projectos especiales en',
+        'BLOGS': 'BLOGS',
+        // EVENTS
+        'EVENTS_AT': 'Eventos en',
+        'EXHIBITION': 'Exhibición',
+        'REGISTER': 'Registrar',
+        // MAP
+        'DIRECTIONS_TO': 'Direcciónes a',
+
     };
