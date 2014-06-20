@@ -5,16 +5,19 @@
     <input class="searchbox--locinator" id="searchTerm" type="text" data-ng-model="searchTerm"/>
     <a href="" id="clearsearch" class="icon-cancel-circle" data-ng-click="clearSearch()"></a>
     <label for="searchTerm">Ex. Jefferson Market, 10018, 455 Fifth Avenue</label>
-    <button id="findit" class="btn--small alpha" data-ng-click="submitAddress(searchTerm)">{{ 'MAIN_SEARCH_BTN' | translate }}</button>
+    <button id="findit" class="btn--small alpha" data-ng-click="submitAddress(searchTerm)">
+      {{ 'MAIN_SEARCH_BTN' | translate }}</button>
 
     <div class="filters" data-ng-if="locations">
 	    <div class="filters__current" data-ng-if="geolocationOn">{{ 'SEARCH_NEAR' | translate }}
-        <a id="currentloc" class="btn btn--natural" href="" data-ng-click="useGeolocation()">{{ 'USER_LOCATION' | translate }}</a>
+        <a id="currentloc" class="btn btn--natural" href="" data-ng-click="useGeolocation()">
+          {{ 'USER_LOCATION' | translate }}</a>
       </div>
 	    <div class="filters__research">{{ 'RESEARCH_TEXT' | translate}}
-        <a id="onlyresearch" class="btn btn--natural" data-ng-class="{false: '', true: ''}[researchBranches]" href="" data-ng-click="showResearch()">{{researchBranches && 'ALL_LOCATIONS' || 'RESEARCH_LOCATIONS' | translate}}</a>
+        <a id="onlyresearch" class="btn btn--natural" 
+          data-ng-class="{false: '', true: ''}[researchBranches]" href="" data-ng-click="showResearch()">
+          {{researchBranches && 'ALL_LOCATIONS' || 'RESEARCH_LOCATIONS' | translate}}</a>
       </div>
-      <!-- <div class="filters__">Show me <a class="btn btn--natural" href="" data-ng-click="allBranchesInit()">all branches</a></div> -->
     </div>
     
   </form><!--
@@ -30,10 +33,12 @@
   <section class="list">
  
     <div class="search_result_text grid__item one-half">
-      <div id="distanceerror" data-ng-if="distanceError">{{distanceError}} {{ 'STILL_SEARCH_DIRECTIONS' | translate }}</div>
-      <div id="searchError" data-ng-if="searchError">{{ 'NO_RESULTS' | translate }} <strong>{{searchError}}</strong> {{ 'WITHIN_25_MILES' | translate }}</div>
-      <!-- <div id="filteredresults" data-ng-if="filteredResults">Found {{filteredResults}}</div> -->
-      <div id="resultsnear" class="alpha" data-ng-if="geolocationAddressOrSearchQuery">{{ 'SHOWING_RESULTS_NEAR' | translate }} <a href="">{{geolocationAddressOrSearchQuery}}</a></div>
+      <div id="distanceerror" data-ng-if="distanceError">
+        {{distanceError}} {{ 'STILL_SEARCH_DIRECTIONS' | translate }}</div>
+      <div id="searchError" data-ng-if="searchError">
+        {{ 'NO_RESULTS' | translate }} <strong>{{searchError}}</strong> {{ 'WITHIN_25_MILES' | translate }}</div>
+      <div id="resultsnear" class="alpha" data-ng-if="geolocationAddressOrSearchQuery">
+        {{ 'SHOWING_RESULTS_NEAR' | translate }} <a href="">{{geolocationAddressOrSearchQuery}}</a></div>
     </div>
   	
     <br />
@@ -43,7 +48,8 @@
         {{ 'LOCATION_HEADER' | translate }}
       </div><!--
 
-      --><div id="distanceSorter" class="grid__item one-quarter" data-ng-class="{false: '', true: 'location-sorter'}[predicate=='distance']" ng-click="distanceSort()">
+      --><div id="distanceSorter" class="grid__item one-quarter"
+        data-ng-class="{false: '', true: 'location-sorter'}[predicate=='distance']" ng-click="distanceSort()">
         {{ 'DISTANCE_HEADER' | translate }}
       </div><!--
 
@@ -75,7 +81,9 @@
           <div class="distance" data-ng-if="location.distance"><strong>{{location.distance}} {{ 'MILES' | translate}}</strong></div>
           <div><a class="icon-map" href="/#/{{location.slug}}/map">{{ 'VIEW_MAP' | translate}}</a></div>
           <div>
-            <a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">{{ 'DIRECTIONS' | translate }}</a>
+            <a class="icon-compass" 
+              href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
+              {{ 'DIRECTIONS' | translate }}</a>
           </div>
         </div><!--
 
@@ -95,7 +103,8 @@
     <!-- End of ng-repeat -->
 
     <section class="grid one-whole" data-ng-if='locations'>
-      <div id="showing" class="grid--center grid__item">{{ 'SHOWING' | translate }} {{locationsListed}} {{ 'OF' | translate }} {{totalLocations}} {{ 'LOCATIONS' | translate }}</div>
+      <div id="showing" class="grid--center grid__item">
+        {{ 'SHOWING' | translate }} {{locationsListed}} {{ 'OF' | translate }} {{totalLocations}} {{ 'LOCATIONS' | translate }}</div>
       <div class="grid--center grid__item" data-ng-if="showMore">
         <a href="" id="showmore" class="btn" data-ng-click="viewMore()">Show {{increaseBy}}</a>
       </div>

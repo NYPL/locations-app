@@ -25,11 +25,15 @@ nypl_locations.config([
         // uses the HTML5 History API, remove hash (need to test)
         //$locationProvider.html5Mode(true);
 
-        $translateProvider.translations('en', en);
-        $translateProvider.translations('es', es);
-
+        // Lazy loads static files with English being
+        // the first language that gets loaded.
+        $translateProvider.useStaticFilesLoader({
+            prefix: '/languages/',
+            suffix: '.json'
+        });
+        $translateProvider.translations('en');
+        $translateProvider.translations('es');
         $translateProvider.preferredLanguage('en');
-
 
         $routeProvider
             .when('/404', {

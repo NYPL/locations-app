@@ -8,7 +8,7 @@
 
   <section class="grid">
     <div class="grid__item one-whole lap-and-up-two-thirds">
-      <h1>Events at {{location.name}}</h1>
+      <h1>{{ 'EVENTS_AT' | translate }} {{location.name}}</h1>
     </div><!--
     --><div class="grid__item one-whole lap-and-up-one-third">
       <todayshours hours="{{hoursToday(location.hours) | hoursTodayFormat:'short'}}" />
@@ -23,7 +23,7 @@
 
   <section class="grid__item one-whole">
     <div class="callout">
-      <h3 class="flush">Exhibition: Title of exhibition</h3>
+      <h3 class="flush">{{ 'EXHIBITION' | translate }}: Title of exhibition</h3>
     </div>
   </section>
 
@@ -33,15 +33,17 @@
   </p>
   </section>
 
-  <section class="grid__item one-whole" data-ng-repeat="event in location._embedded.events" data-ng-if="location._embedded.events">
+  <section class="grid__item one-whole" data-ng-repeat="event in location._embedded.events" 
+    data-ng-if="location._embedded.events">
     <h3><a href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h3>
       <div class="grid__item one-whole lap-and-up-two-thirds">
-        <img data-ng-if="event.image" class="img--outline img--left" src="{{event.image}}" alt="" style="height: 100px;" />
+        <img data-ng-if="event.image" class="img--outline img--left" 
+          src="{{event.image}}" alt="" style="height: 100px;" />
         <p>Date/Time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}} - {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p>{{event.body}}</p>
       </div><!--
       --><div class="grid__item one-whole lap-and-up-one-third">
-          <p class="text--right"><a href="" class="btn gradient">Register</a></p>
+          <p class="text--right"><a href="" class="btn gradient">{{ 'REGISTER' | translate }}</a></p>
           <p class="text--right">
             <a href="{{calendar_link(event, location.street_address)}}" target="_blank" rel="nofollow">Google/iCal</a>
           </p>
