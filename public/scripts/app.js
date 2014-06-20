@@ -29,10 +29,10 @@ nypl_locations.config([
         // the first language that gets loaded.
         $translateProvider.useStaticFilesLoader({
             prefix: '/languages/',
-            suffic: '.json'
+            suffix: '.json'
         });
-        $translateProvider.translations('en', en);
-        $translateProvider.translations('es', es);
+        $translateProvider.translations('en');
+        $translateProvider.translations('es');
         $translateProvider.preferredLanguage('en');
 
         $routeProvider
