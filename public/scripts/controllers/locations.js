@@ -396,13 +396,39 @@ nypl_locations.controller('LocationsCtrl', [
             nypl_geocoder_service.remove_searchMarker();
 
             // Filter the locations by the search term
-            var filteredLocations =
+            var filteredLocations = [],
+                IDFilter = [],
+                lazyFilter =
                     $filter('filter')($scope.locations, searchTerm),
+                strictFilter =
+                    $filter('filter')($scope.locations, searchTerm, true),
                 locations = $scope.locations;
 
             // $scope.geolocationAddressOrSearchQuery = searchTerm;
             //$scope.researchBranches = false;
             //ngRepeatShowAllBranches();
+
+            // search for ID
+            // This is a priority.
+            // If 'sibl' is searched, then it should display it first before anything else.
+            if (searchTerm.length >= 2 && searchTerm.length <= 4) {
+                IDFilter = _.where(locations, { 'id':searchTerm.toUpperCase() });
+            }
+
+            // If there's no ID search, then check the strict and 'lazy' filter
+            // The strict filter has a higher priority since it's a better
+            // match. The 'lazy' filter matches anything, even part of a word
+            // so 'sibl' would match with 'accesSIBLe'.
+            if (IDFilter.length !== 0) {
+                filteredLocations = IDFilter;
+            } else {
+                if (strictFilter.length !== 0) {
+                    // Rarely occurs but just in case there are results for
+                    // both filters, the strict match should appear first
+                    filteredLocations = _.union(strictFilter, lazyFilter);
+                }
+                filteredLocations = lazyFilter;
+            }
 
             loadGeocoding(searchTerm)
                 .then(function (searchObj) {
