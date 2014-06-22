@@ -38,6 +38,7 @@
       
       --><div class="container__services grid__item one-whole desk-one-half">
       		
+
       		<div class="maplink"><a class="icon-map" href="/#/{{location.slug}}/map">{{ 'MAP' | translate }}</a></div>
 	        <div><a class="icon-compass" 
             href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">{{ 'DIRECTIONS' | translate }}</a></div>
@@ -49,7 +50,7 @@
 	          <li class="icon-box-add inline">{{ 'BOOKDROP' | translate }}</li>
 	        </ul>
 
-	        <div id="catalog"><a class="icon-books" href="">Catalog Items Here</a></div>
+	        <div id="catalog"><a class="icon-books" href="{{ location.catalog }}">Catalog Items Here</a></div>
 	        
         </div>
       
