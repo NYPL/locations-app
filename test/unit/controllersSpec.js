@@ -56,6 +56,10 @@ describe('Locinator controllers', function() {
         nypl_locations_service: nypl_locations_service,
         nypl_geocoder_service: nypl_geocoder_mock
       });
+
+      httpBackend
+        .expectGET('/languages/en.json')
+        .respond('public/languages/en.json');
     }));
 
     it('Should expose nypl_locations_service functions', function () {

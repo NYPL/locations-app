@@ -422,7 +422,7 @@ nypl_locations.controller('LocationsCtrl', [
             if (IDFilter.length !== 0) {
                 filteredLocations = IDFilter;
             } else {
-                if (strictFilter.length !== 0) {
+                if (strictFilter !== undefined && strictFilter.length !== 0) {
                     // Rarely occurs but just in case there are results for
                     // both filters, the strict match should appear first
                     filteredLocations = _.union(strictFilter, lazyFilter);

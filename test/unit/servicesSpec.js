@@ -148,6 +148,7 @@ describe('NYPL Service Tests', function() {
         nypl_geocoder_service, rootScope,
         get_coords_return_value, get_address_return_value,
         map_controls_push_mock,
+        httpBackend,
         infowindow_open_mock, infowindow_close_mock, infowindow_setContent_mock;
 
     beforeEach(function() {
@@ -211,9 +212,14 @@ describe('NYPL Service Tests', function() {
       LatLngMock = window.google.maps.LatLng = jasmine.createSpy('LatLng');
       LatLngBoundsMock = window.google.maps.LatLngBounds = jasmine.createSpy('LatLngBounds');
 
-      inject(function ($rootScope, _nypl_geocoder_service_) {
+      inject(function ($rootScope, _nypl_geocoder_service_, _$httpBackend_) {
         nypl_geocoder_service = _nypl_geocoder_service_;
         rootScope = $rootScope;
+        httpBackend = _$httpBackend_;
+
+        httpBackend
+          .expectGET('/languages/en.json')
+          .respond('public/languages/en.json');
       });
     });
 
@@ -543,6 +549,10 @@ describe('NYPL Service Tests', function() {
       inject(function (_nypl_locations_service_, _$rootScope_, _$httpBackend_) {
         nypl_locations_service = _nypl_locations_service_;
         httpBackend = _$httpBackend_;
+
+        httpBackend
+          .expectGET('/languages/en.json')
+          .respond('public/languages/en.json');
       });
     });
 

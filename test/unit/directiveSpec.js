@@ -8,10 +8,18 @@ describe('NYPL Directive Tests', function() {
       donateBlock,
       askNYPLBlock,
       siteWideAlert,
+      httpBackend,
       libraryAlert;
 
   beforeEach(module('nypl_locations'));
   beforeEach(module('directiveTemplates'));
+  beforeEach(inject(function (_$httpBackend_) {
+    httpBackend = _$httpBackend_;
+
+    httpBackend
+        .expectGET('/languages/en.json')
+        .respond('public/languages/en.json');
+  }));
 
   // Note that testing directives means also testing the 'hoursTodayformat'
   // since the output text depends on that filter and the data being passed
