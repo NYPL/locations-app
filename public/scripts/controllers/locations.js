@@ -67,8 +67,8 @@ nypl_locations.controller('LocationsCtrl', [
                             var locationAddress = nypl_utility
                                     .getAddressString(location, true),
                                 markerCoordinates = {
-                                    'lat': location.geolocation.coordinates[1],
-                                    'long': location.geolocation.coordinates[0]
+                                    'latitude': location.geolocation.coordinates[1],
+                                    'longitude': location.geolocation.coordinates[0]
                                 };
 
                             // Initially, when the map is drawn and 
@@ -113,8 +113,6 @@ nypl_locations.controller('LocationsCtrl', [
                 return nypl_coordinates_service
                     .getCoordinates()
                     .then(function (position) {
-                        var markerCoordinates;
-
                         userCoords = _.pick(position, 'latitude', 'longitude');
                         $scope.locationStart =
                                 userCoords.latitude + "," +
@@ -124,6 +122,7 @@ nypl_locations.controller('LocationsCtrl', [
                         // from that location to the user's coordinates
                        locations = nypl_utility.add_distance(locations, userCoords);
 
+                        // Must be within 25 miles
                         if (nypl_utility.check_distance(locations)) {
                             // The user is too far away, reset everything
                             allLocationsInit();
@@ -140,10 +139,6 @@ nypl_locations.controller('LocationsCtrl', [
                         // - Set the locations to the locations with distance
                         // - Sort libraries by distance
                         $scope.searchTerm = '';
-                        markerCoordinates = {
-                            'lat': userCoords.latitude,
-                            'long': userCoords.longitude
-                        };
 
                         if (nypl_geocoder_service.check_marker('user')) {
                             nypl_geocoder_service.pan_existing_marker('user');
@@ -152,7 +147,7 @@ nypl_locations.controller('LocationsCtrl', [
                             nypl_geocoder_service
                                 .draw_marker(
                                     'user',
-                                    markerCoordinates,
+                                    userCoords,
                                     "Your Current Location",
                                     true,
                                     true
