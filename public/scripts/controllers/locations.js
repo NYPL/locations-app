@@ -117,8 +117,7 @@ nypl_locations.controller('LocationsCtrl', [
                 return nypl_coordinates_service
                     .getCoordinates()
                     .then(function (position) {
-                        var distanceArray = [],
-                            markerCoordinates;
+                        var markerCoordinates;
 
                         userCoords = _.pick(position, 'latitude', 'longitude');
                         $scope.locationStart =
@@ -134,10 +133,9 @@ nypl_locations.controller('LocationsCtrl', [
                                     location.lat,
                                     location.long
                                 );
-                            distanceArray.push(location.distance);
                         });
 
-                        if (_.min(distanceArray) > 25) {
+                        if (nypl_utility.check_distance(locations)) {
                             // The user is too far away, reset everything
                             allLocationsInit();
                             throw (new Error(
@@ -212,7 +210,6 @@ nypl_locations.controller('LocationsCtrl', [
 
             searchByCoordinates = function (searchObj, filteredLocations) {
                 var locationsCopy = $scope.locations,
-                    distanceArray = [],
                     coords = searchObj.coords,
                     searchterm = searchObj.searchTerm;
                     // filteredResults = "1 match for ";
@@ -225,7 +222,6 @@ nypl_locations.controller('LocationsCtrl', [
                             location.lat,
                             location.long
                         );
-                    distanceArray.push(location.distance);
                 });
 
                 if (filteredLocations !== null && filteredLocations.length) {
@@ -245,7 +241,7 @@ nypl_locations.controller('LocationsCtrl', [
 
                     // $scope.filteredResults = filteredResults + searchterm;
                 } else {
-                    if (_.min(distanceArray) > 25) {
+                    if (nypl_utility.check_distance(locations)) {
                         // The search query is too far
                         resetDistance();
                         $scope.searchError = searchterm;
@@ -394,6 +390,7 @@ nypl_locations.controller('LocationsCtrl', [
             nypl_geocoder_service.remove_searchMarker();
 
             // Filter the locations by the search term
+            // using Angularjs
             var filteredLocations =
                 nypl_utility.location_search($scope.locations, searchTerm);
 

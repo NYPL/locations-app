@@ -46,7 +46,8 @@ nypl_locations.factory('requestNotificationChannel', [
 
 nypl_locations.factory('nypl_utility', [
     '$filter',
-    function ($filter) {
+    'nypl_coordinates_service',
+    function ($filter, nypl_coordinates_service) {
         'use strict';
         return {
             hoursToday: function (hours) {
@@ -268,6 +269,15 @@ nypl_locations.factory('nypl_utility', [
                 }
 
                 return result;
+            },
+
+            check_distance: function (locations) {
+                var distanceArray = _.pluck(locations, 'distance');
+
+                if (_.min(distanceArray) > 25) {
+                    return true;
+                }
+                return false;
             },
 
     	    // Generate link to the books available at a particular branch
