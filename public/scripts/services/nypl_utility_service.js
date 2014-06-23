@@ -271,6 +271,26 @@ nypl_locations.factory('nypl_utility', [
                 return result;
             },
 
+            // Iterate through lon/lat and calculate distance
+            add_distance: function (locations, coords) {
+                var search = {
+                    latitude: coords.latitude || coords.lat,
+                    longitude: coords.longitude || coords.long
+                };
+
+                _.each(locations, function (location) {
+                    location.distance =
+                        nypl_coordinates_service.getDistance(
+                            search.latitude,
+                            search.longitude,
+                            location.lat,
+                            location.long
+                        );
+                });
+
+                return locations;
+            },
+
             check_distance: function (locations) {
                 var distanceArray = _.pluck(locations, 'distance');
 

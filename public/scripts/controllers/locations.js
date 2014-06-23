@@ -49,13 +49,9 @@ nypl_locations.controller('LocationsCtrl', [
 
                 nypl_geocoder_service.remove_searchMarker();
                 nypl_geocoder_service.hide_infowindow();
-                // if (nypl_geocoder_service.check_marker('user')) {
-                //     nypl_geocoder_service.remove_marker('user');
-                // }
                 nypl_geocoder_service.panMap();
 
-
-                _.each(locations, function (location) {
+                _.each($scope.locations, function (location) {
                     location.distance = '';
                     location.highlight = '';
                 });
@@ -124,16 +120,9 @@ nypl_locations.controller('LocationsCtrl', [
                                 userCoords.latitude + "," +
                                 userCoords.longitude;
 
-                        // Iterate through lon/lat and calculate distance
-                        _.each(locations, function (location) {
-                            location.distance =
-                                nypl_coordinates_service.getDistance(
-                                    userCoords.latitude,
-                                    userCoords.longitude,
-                                    location.lat,
-                                    location.long
-                                );
-                        });
+                        // add a distance property to every location
+                        // from that location to the user's coordinates
+                       locations = nypl_utility.add_distance(locations, userCoords);
 
                         if (nypl_utility.check_distance(locations)) {
                             // The user is too far away, reset everything
@@ -214,15 +203,7 @@ nypl_locations.controller('LocationsCtrl', [
                     searchterm = searchObj.searchTerm;
                     // filteredResults = "1 match for ";
 
-                _.each(locationsCopy, function (location) {
-                    location.distance =
-                        nypl_coordinates_service.getDistance(
-                            coords.lat,
-                            coords.long,
-                            location.lat,
-                            location.long
-                        );
-                });
+                locationsCopy = nypl_utility.add_distance(locationsCopy, coords);
 
                 if (filteredLocations !== null && filteredLocations.length) {
                     if (nypl_geocoder_service
@@ -232,7 +213,8 @@ nypl_locations.controller('LocationsCtrl', [
                             .pan_existing_marker(filteredLocations[0].slug);
                     }
                     $scope.geolocationAddressOrSearchQuery = searchterm;
-                    ngRepeatShowAllBranches();
+                    // ngRepeatShowAllBranches();
+                    show_libraries_type_of('all');
                     $scope.researchBranches = false;
                     // if (filteredLocations.length > 1) {
                     //     filteredResults = filteredLocations.length +  
@@ -309,31 +291,24 @@ nypl_locations.controller('LocationsCtrl', [
                 if (nypl_geocoder_service.check_marker('user')) {
                     nypl_geocoder_service.pan_existing_marker('user');
                 }
-                // Iterate through lon/lat and calculate distance
-                _.each($scope.locations, function (location) {
-                    location.distance =
-                        nypl_coordinates_service.getDistance(
-                            userCoords.latitude,
-                            userCoords.longitude,
-                            location.lat,
-                            location.long
-                        );
-                });
+
+                $scope.locations =
+                    nypl_utility.add_distance($scope.locations, userCoords);
             },
 
-            ngRepeatShowAllBranches = function () {
-                $scope.location_type = '';
-                $scope.showMore = true;
-                $scope.locationsListed = 10;
-                $scope.totalLocations = $scope.locations.length;
-                ngRepeatInit();
-            },
-
-            ngRepeatShowResearchBranches = function () {
-                $scope.location_type = 'research';
-                $scope.showMore = false;
-                $scope.locationsListed = 4;
-                $scope.totalLocations = 4;
+            show_libraries_type_of = function (type) {
+                if (type === 'research') {
+                    $scope.location_type = 'research';
+                    $scope.showMore = false;
+                    $scope.locationsListed = 4;
+                    $scope.totalLocations = 4;
+                } else {
+                    $scope.location_type = '';
+                    $scope.showMore = true;
+                    // $scope.locationsListed = 10;
+                    // $scope.totalLocations = $scope.locations.length;
+                    ngRepeatInit();
+                }
             };
 
         $rootScope.title = "Locations";
@@ -376,7 +351,7 @@ nypl_locations.controller('LocationsCtrl', [
         $scope.clearSearch = function () {
             allLocationsInit();
             $scope.researchBranches = false;
-            ngRepeatShowAllBranches();
+            show_libraries_type_of('all');
             nypl_geocoder_service.show_all_libraries();
         };
 
@@ -439,10 +414,11 @@ nypl_locations.controller('LocationsCtrl', [
 
             if ($scope.researchBranches) {
                 nypl_geocoder_service.show_research_libraries();
-                ngRepeatShowResearchBranches();
+                // ngRepeatShowResearchBranches();
+                show_libraries_type_of('research');
             } else {
                 nypl_geocoder_service.show_all_libraries();
-                ngRepeatShowAllBranches();
+                show_libraries_type_of('all');
             }
         };
 
@@ -505,8 +481,8 @@ nypl_locations.controller('LocationCtrl', [
                         $scope.location.social_media =
                             nypl_utility
                                 .socialMediaColor($scope.location.social_media);
-			$scope.location.catalog =
-			    nypl_utility.catalog_items_link($scope.location.name);
+            			$scope.location.catalog =
+            			    nypl_utility.catalog_items_link($scope.location.name);
 
 
                         //console.log($scope.location); //Debugging
