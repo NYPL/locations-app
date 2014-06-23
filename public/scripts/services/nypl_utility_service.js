@@ -24,14 +24,14 @@ nypl_locations.factory('requestNotificationChannel', [
             // subscribe to start request notification
             onRequestStarted = function ($scope, handler) {
                 $scope.$on(_START_REQUEST_, function (event) {
-                    handler();
+                    handler(event);
                 });
             },
 
             // subscribe to end request notification
             onRequestEnded = function ($scope, handler) {
                 $scope.$on(_END_REQUEST_, function (event) {
-                    handler();
+                    handler(event);
                 });
             };
 
