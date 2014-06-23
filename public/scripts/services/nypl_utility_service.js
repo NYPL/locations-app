@@ -45,7 +45,8 @@ nypl_locations.factory('requestNotificationChannel', [
 ]);
 
 nypl_locations.factory('nypl_utility', [
-    function () {
+    '$filter',
+    function ($filter) {
         'use strict';
         return {
             hoursToday: function (hours) {
@@ -236,31 +237,64 @@ nypl_locations.factory('nypl_utility', [
                     end_date + details + location + other_params;
             },
 
-	    // Generate link to the books available at a particular branch
-	    // in Bibliocommons
-	    catalog_items_link: function(branch) {
-		var base = "http://nypl.bibliocommons.com/search?" +
-			"custom_query=available%3A\"",
-		    bc_branch;
+            location_search: function (locations, searchTerm) {
+                var IDFilter = [],
+                    lazyFilter =
+                        $filter('filter')(locations, searchTerm),
+                    strictFilter =
+                        $filter('filter')(locations, searchTerm, true),
+                    result;
 
-		// TODO: Instead of handling these exceptions here, the 
-		// API should just return a catalog link
-		if (branch.indexOf("Andrew Heiskel") == 0) {
-		    bc_branch = "Andrew%20Heiskell%20Braille%20%26%20Talking%20Book%20Library";
-		} else if (branch.indexOf("Belmont Library") == 0) {
-		    bc_branch = "Belmont";
-		} else if (branch == "Bronx Library Center") {
-		    bc_branch = branch;
-		} else if (branch.indexOf(" Library Center") != -1) {
-		    bc_branch = branch.replace(" Library Center", "");
-		} else {
-		    bc_branch = branch
-			.replace(" Library", "")
-			.replace(/ /g, "%20");
-		}
+                // search for ID
+                // This is a priority.
+                // If 'sibl' is searched, then it should display it first before anything else.
+                if (searchTerm.length >= 2 && searchTerm.length <= 4) {
+                    IDFilter = _.where(locations, { 'id':searchTerm.toUpperCase() });
+                }
 
-		return base + bc_branch + "\"";
-	    }
+                // If there's no ID search, then check the strict and 'lazy' filter
+                // The strict filter has a higher priority since it's a better
+                // match. The 'lazy' filter matches anything, even part of a word
+                // so 'sibl' would match with 'accesSIBLe'.
+                if (IDFilter.length !== 0) {
+                    result = IDFilter;
+                } else {
+                    if (strictFilter !== undefined && strictFilter.length !== 0) {
+                        // Rarely occurs but just in case there are results for
+                        // both filters, the strict match should appear first
+                        result = _.union(strictFilter, lazyFilter);
+                    }
+                    result = lazyFilter;
+                }
+
+                return result;
+            },
+
+    	    // Generate link to the books available at a particular branch
+    	    // in Bibliocommons
+    	    catalog_items_link: function(branch) {
+    		var base = "http://nypl.bibliocommons.com/search?" +
+    			"custom_query=available%3A\"",
+    		    bc_branch;
+
+        		// TODO: Instead of handling these exceptions here, the 
+        		// API should just return a catalog link
+        		if (branch.indexOf("Andrew Heiskel") == 0) {
+        		    bc_branch = "Andrew%20Heiskell%20Braille%20%26%20Talking%20Book%20Library";
+        		} else if (branch.indexOf("Belmont Library") == 0) {
+        		    bc_branch = "Belmont";
+        		} else if (branch == "Bronx Library Center") {
+        		    bc_branch = branch;
+        		} else if (branch.indexOf(" Library Center") != -1) {
+        		    bc_branch = branch.replace(" Library Center", "");
+        		} else {
+        		    bc_branch = branch
+            			.replace(" Library", "")
+            			.replace(/ /g, "%20");
+        		}
+
+        		return base + bc_branch + "\"";
+    	    }
         };
     }
 ]);

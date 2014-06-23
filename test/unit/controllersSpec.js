@@ -20,8 +20,7 @@ describe('Locinator controllers', function() {
   window.google.maps.ControlPosition.RIGHT_BOTTOM = jasmine.createSpy('RIGHT_BOTTOM');
 
   /* 
-  * nypl_locations_service 
-  * Service that makes the http request to the API.
+  * Calling the nypl_locations_service from a controller
   */
   describe('Utility: nypl_locations_service', function(){
     var scope, locationsCtrl, nypl_locations_service, httpBackend, nypl_geocoder_service, http, nypl_geocoder_mock;
@@ -97,8 +96,7 @@ describe('Locinator controllers', function() {
   });
   
   /* 
-  * nypl_geocoder_service 
-  * Queries Google Maps Javascript API to geocode addresses and reverse geocode coordinates.
+  * Calling the nypl_geocoder_service from a controller
   */
   describe('Utility: nypl_geocoder_service called from controller', function () {
     var nypl_geocoder_mock, $q, rootScope, scope, defer;
