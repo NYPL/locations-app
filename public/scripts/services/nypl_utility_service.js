@@ -1,5 +1,5 @@
-/*jslint nomen: true, indent: 4, maxlen: 80 */
-/*globals nypl_locations, angular, console, window */
+/*jslint nomen: true, indent: 4, maxlen: 80, browser: true */
+/*globals nypl_locations, angular, console, window, _ */
 
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
 nypl_locations.factory('requestNotificationChannel', [
@@ -133,7 +133,7 @@ nypl_locations.factory('nypl_utility', [
                         sc.classes += sc.site + ' blueText';
                         break;
                     default:
-                        sc.classes += sc.site + '';
+                        sc.classes += sc.site;
                         break;
                     }
                 });
@@ -180,7 +180,7 @@ nypl_locations.factory('nypl_utility', [
             * width (Int or String), height (Int or String)
             */
             popup_window: function (link, title, width, height) {
-                var w, h, t, popUp;
+                var w, h, popUp, popUp_h, popUp_w;
                 // Set width from args, defaults 300px
                 if (width === undefined) {
                     w = '300';
@@ -203,19 +203,32 @@ nypl_locations.factory('nypl_utility', [
 
                 // Check if link and title are set and assign attributes
                 if (link && title) {
-                    popUp = window.open(link, title, "menubar=1,resizable=1,width="+w+",height="+h+"");
+                    popUp = window.open(
+                        link,
+                        title,
+                        "menubar=1,resizable=1,width=" + w + ",height=" + h
+                    );
                 } else if (link) {
                     // Only if link is set, default title: ''
-                    popUp = window.open(link,"","menubar=1,resizable=1,width="+w+",height="+h+"");
-                    
+                    popUp = window.open(
+                        link,
+                        "",
+                        "menubar=1,resizable=1,width=" + w + ",height=" + h
+                    );
                 } else {
-                    console.log('No link set, cannot initialize the popup window');
+                    console.log(
+                        'No link set, cannot initialize the popup window'
+                    );
                 }
                 // Once the popup is set, center window
                 if (popUp) {
-                    var popUp_w = parseInt(w);
-                    var popUp_h = parseInt(h);
-                    popUp.moveTo(screen.width/2-popUp_w/2, screen.height/2-popUp_h/2);
+                    popUp_w = parseInt(w, 10);
+                    popUp_h = parseInt(h, 10);
+
+                    popUp.moveTo(
+                        screen.width / 2 - popUp_w / 2,
+                        screen.height / 2 - popUp_h / 2
+                    );
                 }
             },
 
@@ -228,8 +241,8 @@ nypl_locations.factory('nypl_utility', [
                         "/render?action=template",
                     text = "&text=" + event.title,
                     date = "&dates=",
-                    start_date = event.start.replace(/[-:]/g, ''),
-                    end_date = event.end.replace(/[-:]/g, ''),
+                    start_date = event.start.replace(/[\-:]/g, ''),
+                    end_date = event.end.replace(/[\-:]/g, ''),
                     details = "&details=" + event.body,
                     location = "&location=" + address,
                     other_params = "&pli=1&uid=&sf=true&output=xml";
@@ -248,19 +261,26 @@ nypl_locations.factory('nypl_utility', [
 
                 // search for ID
                 // This is a priority.
-                // If 'sibl' is searched, then it should display it first before anything else.
+                // If 'sibl' is searched, then it should display it
+                // first before anything else.
                 if (searchTerm.length >= 2 && searchTerm.length <= 4) {
-                    IDFilter = _.where(locations, { 'id':searchTerm.toUpperCase() });
+                    IDFilter = _.where(
+                        locations,
+                        { 'id' : searchTerm.toUpperCase() }
+                    );
                 }
 
-                // If there's no ID search, then check the strict and 'lazy' filter
-                // The strict filter has a higher priority since it's a better
-                // match. The 'lazy' filter matches anything, even part of a word
-                // so 'sibl' would match with 'accesSIBLe'.
+                // If there's no ID search, then check the strict and
+                // 'lazy' filter.
+                // The strict filter has a higher priority since it's
+                // a better match. The 'lazy' filter matches anything,
+                // even part of a word so 'sibl' would match with
+                // 'accesSIBLe'.
                 if (IDFilter.length !== 0) {
                     result = IDFilter;
                 } else {
-                    if (strictFilter !== undefined && strictFilter.length !== 0) {
+                    if (strictFilter !== undefined
+                            && strictFilter.length !== 0) {
                         // Rarely occurs but just in case there are results for
                         // both filters, the strict match should appear first
                         result = _.union(strictFilter, lazyFilter);
@@ -280,31 +300,32 @@ nypl_locations.factory('nypl_utility', [
                 return false;
             },
 
-    	    // Generate link to the books available at a particular branch
-    	    // in Bibliocommons
-    	    catalog_items_link: function(branch) {
-    		var base = "http://nypl.bibliocommons.com/search?" +
-    			"custom_query=available%3A\"",
-    		    bc_branch;
+            // Generate link to the books available at a particular branch
+            // in Bibliocommons
+            catalog_items_link: function (branch) {
+                var base = "http://nypl.bibliocommons.com/search?" +
+                    "custom_query=available%3A\"",
+                    bc_branch;
 
-        		// TODO: Instead of handling these exceptions here, the 
-        		// API should just return a catalog link
-        		if (branch.indexOf("Andrew Heiskel") == 0) {
-        		    bc_branch = "Andrew%20Heiskell%20Braille%20%26%20Talking%20Book%20Library";
-        		} else if (branch.indexOf("Belmont Library") == 0) {
-        		    bc_branch = "Belmont";
-        		} else if (branch == "Bronx Library Center") {
-        		    bc_branch = branch;
-        		} else if (branch.indexOf(" Library Center") != -1) {
-        		    bc_branch = branch.replace(" Library Center", "");
-        		} else {
-        		    bc_branch = branch
-            			.replace(" Library", "")
-            			.replace(/ /g, "%20");
-        		}
-
-        		return base + bc_branch + "\"";
-    	    }
+                // TODO: Instead of handling these exceptions here, the 
+                // API should just return a catalog link
+                if (branch.indexOf("Andrew Heiskel") === 0) {
+                    bc_branch =
+                        "Andrew%20Heiskell%20Braille%20%26%20Talking" +
+                        "%20Book%20Library";
+                } else if (branch.indexOf("Belmont Library") === 0) {
+                    bc_branch = "Belmont";
+                } else if (branch === "Bronx Library Center") {
+                    bc_branch = branch;
+                } else if (branch.indexOf(" Library Center") !== -1) {
+                    bc_branch = branch.replace(" Library Center", "");
+                } else {
+                    bc_branch = branch
+                        .replace(" Library", "")
+                        .replace(/ /g, "%20");
+                }
+                return base + bc_branch + "\"";
+            }
         };
     }
 ]);
