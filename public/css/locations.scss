@@ -4,20 +4,83 @@
 /** 
  * This stylesheet lives on top of NYPLBase.
  *
- * Put styling/positioning/etc. that is 
- * specific to NYPL.org Locations section.
- *
- */
+**/
 
-.content{
-	margin: 0 16px !important;
+// Main page wrapper
+// (Necessary for centering grid items)
+.wrapper {
+	margin: 0 auto;
+	padding: 0 24px;
+	max-width: 1200px;
 }
 
+// Individual Location's page
+// spacing beneath each section 
+#container__address,
+#container__image,
+#container__hours,
+#container__top_services,
+#container__events,
+#container__about,
+#container__blogs,
+#container__exhibitions {
+	margin-bottom: 24px;
+}
 
+// Individual containers for all sections
+#container__image {
+	float: left; // Fix for proper positioning on desktop
+	display: none;
 
-/** 
- * Locinator 
- */
+	// Hidden on mobile
+	@media only screen and (min-width: 601px) {
+		display: inline-block;
+	}
+}
+
+#container__hours {
+	float: right;
+
+}
+
+#container__address {
+
+	.p-adr {
+		margin: 0 .35em;
+
+		.p-street-address, .p-manager {
+			margin-bottom: .25em;
+		}
+
+		.p-tel {
+			margin: .25em 0;
+		}
+	}
+}
+
+// Events section
+#container__events {
+
+	h4 {
+		margin-bottom: .05em;
+	}
+	.callout {
+		margin-bottom: .5em;
+		
+		p {
+			margin: 0;
+		}
+	}
+} 
+
+// Highlighted Services section
+#container__top_services {
+	.callout {
+		* {
+			display: inline;
+		}
+	}
+}
  
 // larger search box
 input.searchbox--locinator{
@@ -132,27 +195,20 @@ img[src*="googleapis.com/"] {
 	margin-left: 1rem;
 }
 
- 
- 
-/**
- * Location/Division
- */
 
-// spacing beneath each section 
-.container__address,
-.container__services,
-.container__hours{
-	margin-bottom: 24px;
-}
-
-#catalog a{
+#catalog-link {
 	background-color: rgba(#0090c4, .2);
 	border-radius: 2px;
 	color: darken(#0090c4, 10%);
 	padding: 4px;
 	text-decoration: none;
+	margin-left: 0;
+
+	@media only screen and (min-width: 601px){
+		margin-left: 52px;
+	}
 	
-	&:hover{
+	&:hover {
 		color: #0090c4;
 		text-decoration: underline;	
 	}
@@ -170,20 +226,13 @@ img[src*="googleapis.com/"] {
 	margin-bottom: 24px;
 	
 	// line up under today's hours
-	margin-left: 30px;
-	@media only screen and (min-width: 600px){
-		margin-left: 54px;
-	}
-	
-	
+	margin-left: 52px;
+
 	// no border for this hdg
 	.hdg{
 		border-width: 0;
 	}
 }
-
- 
- 
  
 /**
  * AskNYPL

@@ -10,11 +10,11 @@ nypl_locations.directive('loadingWidget', [
             restrict: "A",
             link: function (scope, element) {
                 var
-                    startRequestHandler = function () {
+                    startRequestHandler = function (event) {
                         // got the request start notification, show the element
                         element.show();
                     },
-                    endRequestHandler = function () {
+                    endRequestHandler = function (event) {
                         // got the request start notification, show the element
                         element.hide();
                     };

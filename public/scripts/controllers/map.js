@@ -37,8 +37,8 @@ nypl_locations.controller('mapCtrl', [
                 var locationAddress =
                         nypl_utility.getAddressString(location, true),
                     locationCoords = {
-                        'lat': location.geolocation.coordinates[1],
-                        'long': location.geolocation.coordinates[0]
+                        'latitude': location.geolocation.coordinates[1],
+                        'longitude': location.geolocation.coordinates[0]
                     };
 
                 $scope.location = location;
@@ -117,8 +117,8 @@ nypl_locations.controller('LargeMapCtrl', [
                             var locationAddress = nypl_utility
                                     .getAddressString(location, true),
                                 markerCoordinates = {
-                                    'lat': location.geolocation.coordinates[1],
-                                    'long': location.geolocation.coordinates[0]
+                                    'latitude': location.geolocation.coordinates[1],
+                                    'longitude': location.geolocation.coordinates[0]
                                 };
 
                             if (!nypl_geocoder_service
