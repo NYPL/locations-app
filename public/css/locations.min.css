@@ -122,15 +122,16 @@ img[src*="googleapis.com/"] {
 .results--more ul {
   margin-left: 1rem; }
 
-/**
- * Location/Division
- */
 #catalog-link {
   background-color: rgba(0, 144, 196, 0.2);
   border-radius: 2px;
   color: #006b91;
   padding: 4px;
-  text-decoration: none; }
+  text-decoration: none;
+  margin-left: 0; }
+  @media only screen and (min-width: 601px) {
+    #catalog-link {
+      margin-left: 52px; } }
   #catalog-link:hover {
     color: #0090c4;
     text-decoration: underline; }
@@ -142,10 +143,7 @@ img[src*="googleapis.com/"] {
 #location-hours, #division-hours {
   margin-top: 12px;
   margin-bottom: 24px;
-  margin-left: 30px; }
-  @media only screen and (min-width: 600px) {
-    #location-hours, #division-hours {
-      margin-left: 54px; } }
+  margin-left: 52px; }
   #location-hours .hdg, #division-hours .hdg {
     border-width: 0; }
 

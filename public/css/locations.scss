@@ -195,12 +195,6 @@ img[src*="googleapis.com/"] {
 	margin-left: 1rem;
 }
 
- 
- 
-/**
- * Location/Division
- */
-
 
 #catalog-link {
 	background-color: rgba(#0090c4, .2);
@@ -208,6 +202,11 @@ img[src*="googleapis.com/"] {
 	color: darken(#0090c4, 10%);
 	padding: 4px;
 	text-decoration: none;
+	margin-left: 0;
+
+	@media only screen and (min-width: 601px){
+		margin-left: 52px;
+	}
 	
 	&:hover {
 		color: #0090c4;
@@ -227,12 +226,8 @@ img[src*="googleapis.com/"] {
 	margin-bottom: 24px;
 	
 	// line up under today's hours
-	margin-left: 30px;
-	@media only screen and (min-width: 600px){
-		margin-left: 54px;
-	}
-	
-	
+	margin-left: 52px;
+
 	// no border for this hdg
 	.hdg{
 		border-width: 0;
