@@ -178,7 +178,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             var _this = this,
                 marker,
                 position = new google.maps
-                    .LatLng(location.lat, location.long),
+                    .LatLng(location.latitude, location.longitude),
                 markerOptions = {
                     position: position,
                     map: map
