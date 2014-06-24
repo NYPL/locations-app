@@ -30,11 +30,10 @@ nypl_locations.controller('LocationsCtrl', [
                 $scope.libraryLimit = 10;
 
                 // Increase the limit by 10, wording says 'Show 10 more'
-                // Once we show 80 libraries, we all the 12 remaining libraries
+                // Once we show 80 libraries, show the 12 remaining libraries
                 // and reword to say "Show All"
                 // Once all libraries are shown, we hide the "showMore" element
                 $scope.addLibraries = 10;
-                $scope.locationsListed = 10;
                 $scope.increaseBy = '10 more';
                 $scope.totalLocations = locationsLen;
                 $scope.showMore = true;
@@ -295,13 +294,12 @@ nypl_locations.controller('LocationsCtrl', [
                 if (type === 'research') {
                     $scope.location_type = 'research';
                     $scope.showMore = false;
-                    $scope.locationsListed = 4;
+
                     $scope.totalLocations = 4;
+                    $scope.libraryLimit = 4;
                 } else {
                     $scope.location_type = '';
                     $scope.showMore = true;
-                    // $scope.locationsListed = 10;
-                    // $scope.totalLocations = $scope.locations.length;
                     ngRepeatInit();
                 }
             };
@@ -390,7 +388,6 @@ nypl_locations.controller('LocationsCtrl', [
         };
 
         $scope.viewMore = function () {
-            $scope.locationsListed += $scope.addLibraries;
             $scope.libraryLimit += $scope.addLibraries;
 
             if ($scope.libraryLimit === 80) {
