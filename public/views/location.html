@@ -10,16 +10,14 @@
     </li>
   </ul>-->
 
-  <!-- This is h-card microformat -->
-  <!-- http://microformats.org/wiki/h-card -->
+  <!-- Location hours, address and image -->
   <div id="container__location_info">
     <h1 class="p-org">{{location.name}}</h1>
     <div class="grid">
       <div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
-
           <todayshours class="todays-hours" hours="{{hoursToday(location.hours) | hoursTodayFormat:'short'}}" />
           <div id="location-hours" class="location-hours">
-            <h2 class="flush--ends hdg">{{ 'REGULAR_HOURS' | translate }}</h2>
+            <h2 class="flush--ends hdg">{{ 'REGULAR_HOURS' | translate }} <span id="toggleHours"></span></h2>
 
             <div class="weekly-hours zeta">
               <div class="{{hours.day}}" data-ng-repeat="hours in location.hours.regular" data-ng-if="$index != 7">
@@ -39,6 +37,8 @@
       </div><!--
         
       --><div id="container__address" class="grid__item one-whole lap-one-half desk-one-third">
+          <!-- This is h-card microformat -->
+          <!-- http://microformats.org/wiki/h-card -->
           <div class="p-adr">
             <div class="p-street-address">{{location.street_address}}</div>
             <span class="p-locality">{{location.locality}}</span>, 
@@ -47,7 +47,7 @@
             <div class="p-tel">{{location.contacts.phone}}</div>
             <div class="p-manager">{{ 'LIBRARY_MANAGER' | translate }}: {{location.contacts.manager}}</div>
           </div>
-          <div class="accessibility icon-accessibility inline">{{ 'WHEELCHAIR' | translate }}</div>
+          <div class="wheelchair icon-accessibility icon-color-blue">{{ 'WHEELCHAIR' | translate }}</div>
 
           <div class="map-directions">
             <a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">
@@ -68,16 +68,16 @@
     </div>
   </div>
 
+  <!-- Highlighted Services -->
   <div id="container__top_services">
     <div class="grid">
       <div class="grid__item one-whole">
         <div class="callout">
-          <p>Highlighted Services: </p>
           <ul class="flush">
-            <li class="icon-book"></li>
-            <li class="icon-box-add"></li>
+            <li class="icon-book"><span>Lending</span></li>
+            <li class="icon-box-add"><span>Book drop</span></li>
           </ul> 
-          <a href="" class="read-more float--right">See all </a> 
+          <a href="" class="read-more">See all services</a> 
         </div>
       </div>
     </div>
@@ -127,12 +127,12 @@
         <p>{{event.body}}</p>
         <div class="callout">
           <p class="grid__item one-whole desk-one-half">
-            <a href="" class="btn gradient">
+            <a href="" class="btn gradient whiteText">
               {{ 'REGISTER' | translate }}
             </a>
           </p><!--
           --><p class="grid__item one-whole desk-one-half">
-            <a href="{{calendar_link(event, location.street_address)}}" target="_blank" rel="nofollow" class="btn red whiteText">
+            <a href="{{calendar_link(event, location.street_address)}}" target="_blank" rel="nofollow" class="btn indigo whiteText">
               Google/iCal
             </a>
           </p>
@@ -142,7 +142,7 @@
       
     <div>
       <a class="read-more" href="/#/{{location.slug}}/events">
-        {{ 'MORE_EVENTS' | translate }} {{location.name}}
+        {{ 'MORE_EVENTS' | translate }} <span>{{location.name}}</span>
       </a>
     </div>
   </div>
@@ -168,7 +168,7 @@
         </div>
 
         <div id="location-secondary-img" data-ng-if="location.type == 'circulating'">
-          <img class="one-whole lap-and-up-three-quarters" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map">
+          <img class="one-whole lap-and-up-one-whole" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map">
         </div>
       </div><!--
 
