@@ -23,7 +23,7 @@
 #container__image {
   float: left;
   display: none; }
-  @media only screen and (min-width: 601px) {
+  @media only screen and (min-width: 769px) {
     #container__image {
       display: inline-block; } }
 
@@ -36,16 +36,35 @@
     margin-bottom: .25em; }
   #container__address .p-adr .p-tel {
     margin: .25em 0; }
+#container__address .wheelchair {
+  margin: .25em 0; }
 
 #container__events h4 {
   margin-bottom: .05em; }
 #container__events .callout {
-  margin-bottom: .5em; }
+  margin-bottom: 24px; }
   #container__events .callout p {
     margin: 0; }
 
-#container__top_services .callout * {
-  display: inline; }
+#container__top_services .callout {
+  position: relative; }
+  #container__top_services .callout ul li {
+    display: block; }
+    @media only screen and (min-width: 601px) {
+      #container__top_services .callout ul li {
+        margin-right: .35em;
+        display: inline; } }
+    #container__top_services .callout ul li span {
+      vertical-align: -2px; }
+  #container__top_services .callout .read-more {
+    display: inline-block !important;
+    margin: .35em 0; }
+    @media only screen and (min-width: 601px) {
+      #container__top_services .callout .read-more {
+        margin: 0;
+        position: absolute;
+        right: 7px;
+        top: 7px; } }
 
 input.searchbox--locinator {
   font-size: 2rem;
@@ -128,7 +147,7 @@ img[src*="googleapis.com/"] {
   color: #006b91;
   padding: 4px;
   text-decoration: none;
-  margin-left: 0; }
+  margin-left: .35em; }
   @media only screen and (min-width: 601px) {
     #catalog-link {
       margin-left: 52px; } }
@@ -136,21 +155,35 @@ img[src*="googleapis.com/"] {
     color: #0090c4;
     text-decoration: underline; }
 
-@media only screen and (max-width: 599px) {
-  #hours-today {
-    padding-left: 0px; } }
+#hours-today {
+  margin-left: -.35em; }
+  @media only screen and (min-width: 601px) {
+    #hours-today {
+      margin-left: 0; } }
+  #hours-today .hours-today {
+    font-size: 14px;
+    font-size: 1.4rem; }
+    @media only screen and (min-width: 601px) {
+      #hours-today .hours-today {
+        font-size: 16px;
+        font-size: 1.6rem; } }
+    #hours-today .hours-today span {
+      vertical-align: -2px; }
 
 #location-hours, #division-hours {
   margin-top: 12px;
   margin-bottom: 24px;
-  margin-left: 52px; }
+  margin-left: .35em; }
+  @media only screen and (min-width: 601px) {
+    #location-hours, #division-hours {
+      margin-left: 52px; } }
   #location-hours .hdg, #division-hours .hdg {
     border-width: 0; }
 
 /**
  * AskNYPL
  */
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 601px) {
   .askNYPL {
     padding-left: 0;
     padding-top: 24px; } }

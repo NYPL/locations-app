@@ -104,7 +104,7 @@
 
     <section class="grid one-whole" data-ng-if='locations'>
       <div id="showing" class="grid--center grid__item">
-        {{ 'SHOWING' | translate }} {{locationsListed}} {{ 'OF' | translate }} {{totalLocations}} {{ 'LOCATIONS' | translate }}</div>
+        {{ 'SHOWING' | translate }} {{libraryLimit}} {{ 'OF' | translate }} {{totalLocations}} {{ 'LOCATIONS' | translate }}</div>
       <div class="grid--center grid__item" data-ng-if="showMore">
         <a href="" id="showmore" class="btn" data-ng-click="viewMore()">Show {{increaseBy}}</a>
       </div>
