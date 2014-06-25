@@ -45,6 +45,10 @@
   margin-bottom: 24px; }
   #container__events .callout p {
     margin: 0; }
+#container__events .event-buttons {
+  text-align: center;
+  margin: 0;
+  padding: 0; }
 
 #container__top_services .callout {
   position: relative; }

@@ -126,16 +126,15 @@
         <p>{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p>{{event.body}}</p>
         <div class="callout">
-          <p class="grid__item one-whole desk-one-half">
+          <aside class="event-buttons">
             <a href="" class="btn gradient whiteText">
               {{ 'REGISTER' | translate }}
             </a>
-          </p><!--
-          --><p class="grid__item one-whole desk-one-half">
+
             <a href="{{calendar_link(event, location.street_address)}}" target="_blank" rel="nofollow" class="btn indigo whiteText">
               Google/iCal
             </a>
-          </p>
+          </aside>
         </div>
       </li>
     </ul>   
