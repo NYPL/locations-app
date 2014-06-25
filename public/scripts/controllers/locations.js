@@ -47,7 +47,6 @@ nypl_locations.controller('LocationsCtrl', [
             allLocationsInit = function () {
                 $scope.reverse = false;
                 $scope.searchTerm = '';
-                $scope.filteredResults = '';
                 $scope.geolocationAddressOrSearchQuery = '';
 
                 ngRepeatInit('name');
@@ -201,7 +200,6 @@ nypl_locations.controller('LocationsCtrl', [
                 var locationsCopy = $scope.locations,
                     coords = searchObj.coords,
                     searchterm = searchObj.searchTerm;
-                    // filteredResults = "1 match for ";
 
                 locationsCopy = nypl_utility.add_distance(locationsCopy, coords);
 
@@ -213,14 +211,8 @@ nypl_locations.controller('LocationsCtrl', [
                             .pan_existing_marker(filteredLocations[0].slug);
                     }
                     $scope.geolocationAddressOrSearchQuery = searchterm;
-                    show_libraries_type_of('circulating');
+                    show_libraries_type_of();
                     $scope.researchBranches = false;
-                    // if (filteredLocations.length > 1) {
-                    //     filteredResults = filteredLocations.length +  
-                    //         " matches for ";
-                    // }
-
-                    // $scope.filteredResults = filteredResults + searchterm;
                 } else {
                     if (nypl_utility.check_distance(locations)) {
                         // The search query is too far
@@ -322,7 +314,6 @@ nypl_locations.controller('LocationsCtrl', [
         };
 
         $scope.useGeolocation = function () {
-            $scope.filteredResults = '';
             $scope.geolocationAddressOrSearchQuery = '';
 
             // Remove any existing search markers on the map.
@@ -347,7 +338,7 @@ nypl_locations.controller('LocationsCtrl', [
         $scope.clearSearch = function () {
             allLocationsInit();
             $scope.researchBranches = false;
-            show_libraries_type_of('circulating');
+            show_libraries_type_of();
             nypl_geocoder_service.show_all_libraries();
         };
 
@@ -356,7 +347,6 @@ nypl_locations.controller('LocationsCtrl', [
                 return;
             }
 
-            $scope.filteredResults = '';
             $scope.geolocationAddressOrSearchQuery = '';
             nypl_geocoder_service.remove_searchMarker();
 
@@ -367,7 +357,6 @@ nypl_locations.controller('LocationsCtrl', [
 
             // $scope.geolocationAddressOrSearchQuery = searchTerm;
             // $scope.researchBranches = false;
-            // ngRepeatShowAllBranches();
 
             loadGeocoding(searchTerm)
                 .then(function (searchObj) {
@@ -404,18 +393,16 @@ nypl_locations.controller('LocationsCtrl', [
 
             if ($scope.researchBranches) {
                 nypl_geocoder_service.show_research_libraries();
-                // ngRepeatShowResearchBranches();
                 show_libraries_type_of('research');
             } else {
                 nypl_geocoder_service.show_all_libraries();
-                show_libraries_type_of('circulating');
+                show_libraries_type_of();
             }
         };
 
     }
 ]);
 // End LocationsCtrl
-
 
 // Load one individual location for locations and events pages
 nypl_locations.controller('LocationCtrl', [
