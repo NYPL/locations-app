@@ -349,3 +349,40 @@ nypl_locations.factory('nypl_utility', [
         };
     }
 ]);
+
+nypl_locations.factory('nypl_location_list', [
+    function () {
+        'use strict';
+
+        var config = {
+            showMore: true,
+            add_amount: 10,
+            libraryLimit: 10,
+            increaseBy: "10 more"
+        };
+
+        return {
+            init: function (options) {
+                _.extend(config, options);
+
+                return config;
+            },
+
+            view_more: function () {
+                config.libraryLimit += config.add_amount;
+
+                if (config.libraryLimit === 80) {
+                    config.add_amount = 12;
+                    config.increaseBy = "All";
+                }
+
+                if (config.libraryLimit === 92) {
+                    config.showMore = false;
+                    // config.libraryLimit = 10;
+                }
+
+                return config;
+            }
+        };
+    }
+]);

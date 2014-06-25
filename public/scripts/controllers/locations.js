@@ -7,13 +7,15 @@ nypl_locations.controller('LocationsCtrl', [
     'nypl_coordinates_service',
     'nypl_geocoder_service',
     'nypl_utility',
+    'nypl_location_list',
     function (
         $scope,
         $rootScope,
         nypl_locations_service,
         nypl_coordinates_service,
         nypl_geocoder_service,
-        nypl_utility
+        nypl_utility,
+        nypl_location_list
     ) {
         'use strict';
         var userCoords,
@@ -24,19 +26,23 @@ nypl_locations.controller('LocationsCtrl', [
                     $scope.predicate = sortBy; // Default sort upon DOM Load
                 }
 
-                var locationsLen = $scope.locations.length;
-
-                // By default, show only 10 libraries
-                $scope.libraryLimit = 10;
-
                 // Increase the limit by 10, wording says 'Show 10 more'
                 // Once we show 80 libraries, show the 12 remaining libraries
                 // and reword to say "Show All"
                 // Once all libraries are shown, we hide the "showMore" element
-                $scope.addLibraries = 10;
-                $scope.increaseBy = '10 more';
-                $scope.totalLocations = locationsLen;
-                $scope.showMore = true;
+                var location_list = nypl_location_list.init({
+                    libraryLimit: 10,
+                    showMore: true,
+                    add_amount: 10,
+                    increaseBy: '10 more',
+                });
+
+                $scope.libraryLimit = location_list.libraryLimit;
+                $scope.addLibraries = location_list.add_amount;
+                $scope.increaseBy = location_list.increaseBy;
+                $scope.showMore = location_list.showMore;
+
+                $scope.totalLocations = $scope.locations.length;
             },
             allLocationsInit = function () {
                 $scope.reverse = false;
@@ -207,8 +213,7 @@ nypl_locations.controller('LocationsCtrl', [
                             .pan_existing_marker(filteredLocations[0].slug);
                     }
                     $scope.geolocationAddressOrSearchQuery = searchterm;
-                    // ngRepeatShowAllBranches();
-                    show_libraries_type_of('all');
+                    show_libraries_type_of('circulating');
                     $scope.researchBranches = false;
                     // if (filteredLocations.length > 1) {
                     //     filteredResults = filteredLocations.length +  
@@ -291,15 +296,13 @@ nypl_locations.controller('LocationsCtrl', [
             },
 
             show_libraries_type_of = function (type) {
-                if (type === 'research') {
-                    $scope.location_type = 'research';
-                    $scope.showMore = false;
+                $scope.location_type = type;
 
+                if (type === 'research') {
+                    $scope.showMore = false;
                     $scope.totalLocations = 4;
                     $scope.libraryLimit = 4;
                 } else {
-                    $scope.location_type = '';
-                    $scope.showMore = true;
                     ngRepeatInit();
                 }
             };
@@ -344,7 +347,7 @@ nypl_locations.controller('LocationsCtrl', [
         $scope.clearSearch = function () {
             allLocationsInit();
             $scope.researchBranches = false;
-            show_libraries_type_of('all');
+            show_libraries_type_of('circulating');
             nypl_geocoder_service.show_all_libraries();
         };
 
@@ -388,16 +391,11 @@ nypl_locations.controller('LocationsCtrl', [
         };
 
         $scope.viewMore = function () {
-            $scope.libraryLimit += $scope.addLibraries;
+            var viewMore = nypl_location_list.view_more();
 
-            if ($scope.libraryLimit === 80) {
-                $scope.addLibraries = 12;
-                $scope.increaseBy = "All";
-            }
-
-            if ($scope.libraryLimit === 92) {
-                $scope.showMore = false;
-            }
+            $scope.libraryLimit = viewMore.libraryLimit;
+            $scope.increaseBy = viewMore.increaseBy;
+            $scope.showMore = viewMore.showMore;
         };
 
         $scope.showResearch = function () {
@@ -410,7 +408,7 @@ nypl_locations.controller('LocationsCtrl', [
                 show_libraries_type_of('research');
             } else {
                 nypl_geocoder_service.show_all_libraries();
-                show_libraries_type_of('all');
+                show_libraries_type_of('circulating');
             }
         };
 
