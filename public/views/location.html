@@ -17,9 +17,9 @@
       <div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
           <todayshours class="todays-hours" hours="{{hoursToday(location.hours) | hoursTodayFormat:'short'}}" />
           <div id="location-hours" class="location-hours">
-            <h2 class="flush--ends hdg">{{ 'REGULAR_HOURS' | translate }} <span id="toggleHours"></span></h2>
+            <h2 class="flush--ends hdg">{{ 'REGULAR_HOURS' | translate }} <span id="toggle-hours" ng-click="expand = !expand" ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span></h2>
 
-            <div class="weekly-hours zeta">
+            <div class="weekly-hours zeta collapse" ng-show="expand">
               <div class="{{hours.day}}" data-ng-repeat="hours in location.hours.regular" data-ng-if="$index != 7">
                 <span class="day">{{hours.day}}</span>
                 <span class="time">
@@ -83,6 +83,7 @@
     </div>
   </div>
 
+  <!-- Divisions (API Dependent) -->
   <div id="container__divisions" data-ng-if="location.type == 'research' && location._embedded.divisions">
     <h2 class="hdg">{{ 'DIVISION_HEADER' | translate }}</h2>
     <div class="grid">
@@ -94,6 +95,7 @@
     </div>
   </div>
 
+  <!-- Features -->
   <div id="container__features">
     <h2 class="hdg">{{ 'FEATURED' | translate }}</h2>
     <div class="grid">
@@ -118,6 +120,7 @@
     </div>
   </div>
 
+  <!-- Events -->
   <div id="container__events" data-ng-if="location._embedded.events">
     <h2 class="hdg">{{ 'EVENTS' | translate }}</h2>
     <ul class="grid">
@@ -152,6 +155,7 @@
     </div>
   </div>
 
+  <!-- About (multi-view conditional) -->
   <div id="container__about">
     <h2 class="hdg" data-ng-if="location.type == 'circulating'">{{ 'ABOUT' | translate }}</h2>
     <div class="grid">
@@ -186,6 +190,7 @@
     </div>
   </div>
 
+  <!-- Blogs (conditonal) -->
   <div id="container__blogs" data-ng-if="location.type != 'research' && location._embedded.blogs">
     <h2 class="hdg">{{ 'BLOGS' |translate }}</h2>
     <div class="grid">
@@ -197,6 +202,7 @@
     </div>
   </div>
 
+  <!-- Exhibitions (conditional) -->
   <div id="container__exhibitions" data-ng-if="location.type == 'research' && location._embedded.exhibitions">
     <h2 class="hdg">{{ 'EXHIBITION' | translate }}</h2>
     <div class="grid">
@@ -212,7 +218,7 @@
     </div>
   </div>
 
+  <!-- Ask/Donate Directive -->
   <askdonatefooter chatHref="" emailHref="" donateHref="" />
-  
-<!--   end container -->  
 </div>
+<!-- END Location Content -->
