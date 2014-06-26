@@ -6,6 +6,7 @@ var nypl_locations = angular.module('nypl_locations', [
     'ngResource',
     'ngSanitize',
     'ngRoute',
+    'ngAnimate',
     'locationService',
     'angulartics',
     'angulartics.google.analytics',
@@ -127,6 +128,8 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
                     $location.path('/404');
                     return $q.reject(response);
                 }
+
+                console.log(response);
 
                 return $q.reject(response);
             }
