@@ -166,9 +166,10 @@ nypl_locations.controller('LocationsCtrl', [
             // convert coordinate into address
             loadReverseGeocoding = function (userCoords) {
                 return nypl_geocoder_service
-                    .get_address(
-                        {lat: userCoords.latitude, lng: userCoords.longitude}
-                    )
+                    .get_address({
+                        lat: userCoords.latitude,
+                        lng: userCoords.longitude
+                    })
                     .then(function (address) {
                         userAddress = address;
                         $scope.geolocationAddressOrSearchQuery = userAddress;
@@ -203,17 +204,18 @@ nypl_locations.controller('LocationsCtrl', [
 
                 locationsCopy = nypl_utility.add_distance(locationsCopy, coords);
 
-                if (filteredLocations !== null && filteredLocations.length) {
-                    if (nypl_geocoder_service
-                            .check_marker(filteredLocations[0].slug)) {
+                // if (filteredLocations !== null && filteredLocations.length) {
+                //     if (nypl_geocoder_service
+                //             .check_marker(filteredLocations[0].slug)) {
 
-                        nypl_geocoder_service
-                            .pan_existing_marker(filteredLocations[0].slug);
-                    }
-                    $scope.geolocationAddressOrSearchQuery = searchterm;
-                    show_libraries_type_of();
-                    $scope.researchBranches = false;
-                } else {
+                //         nypl_geocoder_service
+                //             .pan_existing_marker(filteredLocations[0].slug);
+                //     }
+                //     $scope.geolocationAddressOrSearchQuery = searchterm;
+                //     show_libraries_type_of();
+                //     $scope.researchBranches = false;
+                // } 
+                if (!filteredLocations) {
                     if (nypl_utility.check_distance(locations)) {
                         // The search query is too far
                         resetDistance();
@@ -275,14 +277,14 @@ nypl_locations.controller('LocationsCtrl', [
                 $scope.predicate = '';
             },
             searchByUserGeolocation = function () {
-                $scope.searchTerm = '';
-                $scope.geolocationAddressOrSearchQuery = userAddress;
-                $scope.predicate = 'distance';
-
+                // Pan to the user's marker on the map
                 if (nypl_geocoder_service.check_marker('user')) {
                     nypl_geocoder_service.pan_existing_marker('user');
                 }
-
+                // Display the user address, add distance to every library
+                // relative to the user's location and sort by distance
+                $scope.geolocationAddressOrSearchQuery = userAddress;
+                $scope.predicate = 'distance';
                 $scope.locations =
                     nypl_utility.add_distance($scope.locations, userCoords);
             },
@@ -314,11 +316,13 @@ nypl_locations.controller('LocationsCtrl', [
         };
 
         $scope.useGeolocation = function () {
+            $scope.searchTerm = '';
             $scope.geolocationAddressOrSearchQuery = '';
 
             // Remove any existing search markers on the map.
             nypl_geocoder_service.remove_searchMarker();
 
+            // Use cached user coordinates if available
             if (!userCoords) {
                 loadCoords()
                     .then(loadReverseGeocoding)
@@ -348,15 +352,27 @@ nypl_locations.controller('LocationsCtrl', [
             }
 
             $scope.geolocationAddressOrSearchQuery = '';
+            // Remove previous search marker from the map
             nypl_geocoder_service.remove_searchMarker();
 
+            var IDfilteredLocations =
+                nypl_utility.id_location_search($scope.locations, searchTerm);
             // Filter the locations by the search term
             // using Angularjs
             var filteredLocations =
                 nypl_utility.location_search($scope.locations, searchTerm);
 
-            // $scope.geolocationAddressOrSearchQuery = searchTerm;
-            // $scope.researchBranches = false;
+            if (filteredLocations !== null && filteredLocations.length) {
+                if (nypl_geocoder_service
+                        .check_marker(filteredLocations[0].slug)) {
+
+                    nypl_geocoder_service
+                        .pan_existing_marker(filteredLocations[0].slug);
+                }
+                $scope.geolocationAddressOrSearchQuery = searchTerm;
+                show_libraries_type_of();
+                $scope.researchBranches = false;
+            }
 
             loadGeocoding(searchTerm)
                 .then(function (searchObj) {

@@ -306,6 +306,7 @@ nypl_locations.factory('nypl_utility', [
                         $filter('filter')(locations, searchTerm),
                     strictFilter =
                         $filter('filter')(locations, searchTerm, true),
+                    nameFilter = [],
                     result;
 
                 // search for ID
@@ -318,6 +319,12 @@ nypl_locations.factory('nypl_utility', [
                         { 'id' : searchTerm.toUpperCase() }
                     );
                 }
+
+                _.each(locations, function (location) {
+                    if (location.name.toLowerCase()).indexOf(searchTerm) !== -1) {
+                        nameFilter.push(location);
+                    }
+                });
 
                 // If there's no ID search, then check the strict and
                 // 'lazy' filter.
