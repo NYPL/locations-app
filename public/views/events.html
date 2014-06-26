@@ -45,9 +45,13 @@
       --><div class="grid__item one-whole lap-and-up-one-third">
           <p class="text--right"><a href="" class="btn gradient">{{ 'REGISTER' | translate }}</a></p>
           <p class="text--right">
-            <a href="{{calendar_link(event, location.street_address)}}" target="_blank" rel="nofollow">Google</a>
-            <a href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" rel="nofollow">
-              iCal</a>
+            <a href="{{calendar_link('google', event, location)}}"
+              target="_blank" rel="nofollow">Google</a>
+            <a href="{{calendar_link('yahoo', event, location)}}"
+              target="_blank" rel="nofollow">yahoo</a>
+            <a href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" download="nypl_event.ics" rel="nofollow">
+              iCal
+            </a>
           </p>
       </div>
   </section>

@@ -232,32 +232,62 @@ nypl_locations.factory('nypl_utility', [
                 }
             },
 
-            google_calendar_link: function (event, address) {
-                if (!event) {
+            calendar_link: function (type, event, location) {
+                if (!type || !event) {
                     return '';
                 }
-
-                var base = "https://www.google.com/calendar" +
-                        "/render?action=template",
-                    text = "&text=" + event.title,
-                    date = "&dates=",
+                var base,
+                    title = event.title,
                     start_date = event.start.replace(/[\-:]/g, ''),
                     end_date = event.end.replace(/[\-:]/g, ''),
-                    details = "&details=" + event.body,
-                    location = "&location=" + address,
-                    other_params = "&pli=1&uid=&sf=true&output=xml";
+                    body = event.body,
+                    url = event._links.self.href,
+                    address = location.name + " - " +
+                        location.street_address + " " +
+                        location.locality + ", " + location.region +
+                        " " + location.postal_code,
+                    calendar_link;
 
-                return base + text + date + start_date + "/" +
-                    end_date + details + location + other_params;
+                switch (type) {
+                case 'google':
+                    calendar_link = "https://www.google.com/calendar" +
+                        "/render?action=template" +
+                        "&text=" + title +
+                        "&dates=" + start_date + "/" + end_date +
+                        "&details=" + body +
+                        "&location=" + address +
+                        "&pli=1&uid=&sf=true&output=xml";
+                    break;
+                case 'yahoo':
+                    calendar_link = "https://calendar.yahoo.com/?v=60" +
+                        "&TITLE=" + title +
+                        "&ST=" + start_date +
+                        "&in_loc=" + address +
+                        "&in_st=" + address +
+                        // "&in_csz=" + "New York, NY 10018" +
+                        "&DESC=" + body +
+                        "&URL=" + url;
+                    break;
+                default:
+                    break;
+                }
+
+                return calendar_link;
             },
 
             ical_link: function (event, address) {
+                if (!event || !address) {
+                    return '';
+                }
                 var currentTime = new Date().toJSON()
                         .toString().replace(/[\-.:]/g, ''),
                     url = "http://nypl.org/" + event._links.self.href,
                     icsMSG = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//NYPL//" +
-                        "NONSGML v1.0//EN\nBEGIN:VEVENT\n" +
-                        "DTSTAMP:" + currentTime + "\nATTENDEE;CN=My Self ;" +
+                        "NONSGML v1.0//EN\n" +
+                        "METHOD:PUBLISH\n" +
+                        "BEGIN:VEVENT\n" +
+                        "UID:" + new Date().getTime() +
+                        "\nDTSTAMP:" + currentTime + "\nATTENDEE;CN=My Self ;" +
                         "\nORGANIZER;CN=NYPL:" +
                         "\nDTSTART:" + event.start.replace(/[\-:]/g, '') +
                         "\nDTEND:" + event.end.replace(/[\-:]/g, '') +
@@ -267,8 +297,7 @@ nypl_locations.factory('nypl_utility', [
                         "\nSUMMARY:" + event.title +
                         "\nEND:VEVENT\nEND:VCALENDAR";
 
-                window.open("data:text/calendar;charset=utf-8," +
-                    encodeURI(icsMSG));
+                window.open('data:text/calendar;chartset=utf-8,' + encodeURI(icsMSG));
             },
 
             location_search: function (locations, searchTerm) {
