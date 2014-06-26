@@ -1,0 +1,150 @@
+/* 
+** All Locations Landing Page
+*/
+
+.container__all-locations {
+
+	// Search Area
+	.search-locations {
+
+		.search-box-label {
+			text-align: center;
+
+			@media only screen and (min-width: 601px) {
+				text-align: left;
+			}
+		}
+
+		.search-box-area {
+			position: relative;
+			height: 45px;
+			display: block;
+
+			@media only screen and (min-width: 601px) {
+				width: 80%;
+				display: inline-block;
+			}
+
+			// Search Input Field
+			.search-box {
+				height: 45px;
+				padding: 0 30px;
+			}
+
+			// Search magnyfing glass icon
+			.icon-search {
+				position: absolute;
+				left: 0px;
+				top: 12px;
+				font-size: 20px;
+				color: #c5c2bb;
+			}
+
+			// Clear Search icon
+			#clear-search {
+				position: absolute;
+				right: 0px;
+				top: 12px;
+				font-size: 20px;
+				color: #c5c2bb;
+
+				&:hover {
+					cursor: pointer;
+				}
+			}
+		}
+
+		.search-button-area {
+			height: 60px;
+
+			@media only screen and (min-width: 601px) {
+				height: auto;
+				display: inline-block;
+				width: 19.5%;
+				vertical-align: 1px;
+				margin-left: -2.61px;
+			}
+
+			// Button for Location Search
+			#find-location {
+				margin: 15px auto 0;
+				position: absolute;
+				left: 0;
+				right: 0;
+				width: 45%;
+				height: 45px;
+
+				@media only screen and (min-width: 601px) {
+					position: relative;
+					left: inherit;
+					right: inherit;
+					width: 99%;
+					margin: 0;
+					border-radius: 0;
+				}
+
+				@media only screen and (min-width: 980px) {
+					width: 70%
+				}
+			}
+		}
+	}
+
+	// Filters Section
+	.search-filters {
+		margin: 1em 0;
+
+		.filters__current {
+			margin: 0;
+
+			@media only screen and (min-width: 601px) {
+				display: inline-block;
+			}
+
+			p {
+				text-align: center;
+				margin: 0;
+				max-width: none;
+
+				@media only screen and (min-width: 601px) {
+					text-align: left;
+				}
+
+				.current-location-container {
+					display: block; 
+
+					@media only screen and (min-width: 601px) {
+						display: inline;
+					}
+				}
+			}
+		}
+
+		.filters__research {
+
+			@media only screen and (min-width: 601px) {
+				display: inline-block;
+			}
+
+			p {
+				text-align: center;
+				margin: 0;
+				max-width: none;
+
+				@media only screen and (min-width: 601px) {
+					text-align: left;
+				}
+
+				.only-research-container {
+					display: block; 
+
+					@media only screen and (min-width: 601px) {
+						display: inline;
+					}
+				}
+			}
+		}
+
+	}
+
+}

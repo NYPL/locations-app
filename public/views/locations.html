@@ -1,28 +1,52 @@
-<div class="grid__item content one-whole all-locations">
+<div class="container__all-locations">
 
-  <form class="form--locinator grid__item one-whole lap-and-up-one-half hard--left text--center">
-    <span class="icon-search"></span>
-    <input class="searchbox--locinator" id="searchTerm" type="text" data-ng-model="searchTerm"/>
-    <a href="" id="clearsearch" class="icon-cancel-circle" data-ng-click="clearSearch()"></a>
-    <label for="searchTerm">Ex. Jefferson Market, 10018, 455 Fifth Avenue</label>
-    <button id="findit" class="btn--small alpha" data-ng-click="submitAddress(searchTerm)">
-      {{ 'MAIN_SEARCH_BTN' | translate }}</button>
+  <section class="search-locations">
+    <div class="grid">
 
-    <div class="filters" data-ng-if="locations">
-	    <div class="filters__current" data-ng-if="geolocationOn">{{ 'SEARCH_NEAR' | translate }}
-        <a id="currentloc" class="btn btn--natural" href="" data-ng-click="useGeolocation()">
-          {{ 'USER_LOCATION' | translate }}</a>
-      </div>
-	    <div class="filters__research">{{ 'RESEARCH_TEXT' | translate}}
-        <a id="onlyresearch" class="btn btn--natural" 
-          data-ng-class="{false: '', true: ''}[researchBranches]" href="" data-ng-click="showResearch()">
-          {{researchBranches && 'ALL_LOCATIONS' || 'RESEARCH_LOCATIONS' | translate}}</a>
-      </div>
+      <form class="locations-search-form grid__item one-whole">
+
+        <label for="searchTerm" class="search-box-label">Example: Jefferson Market, 10018, 455 Fifth Avenue</label>
+        <div class="search-box-area">
+          <input class="search-box" id="searchTerm" type="text" placeholder="Example: Jefferson Market, 10018, 455 Fifth Avenue" data-ng-model="searchTerm"/>
+          <span class="icon-search"></span>
+          <span id="clear-search" class="icon-cancel-circle" data-ng-click="clearSearch()"></span>
+        </div>
+
+        <div class="search-button-area">
+          <button id="find-location" class="btn--small" data-ng-click="submitAddress(searchTerm)">
+            {{ 'MAIN_SEARCH_BTN' | translate }}
+          </button>
+        </div>
+
+        <div class="search-filters" data-ng-if="locations">
+    	    <div class="filters__current" data-ng-if="geolocationOn">
+            <p>
+              <span>{{ 'SHOW_ME' | translate }}:</span>
+              <span class="current-location-container">
+                <a id="currentloc" class="btn btn--natural whiteText" href="" data-ng-click="useGeolocation()">
+                {{ 'USER_LOCATION' | translate }}
+                </a>
+              </span>
+            </p>
+          </div>
+    	    <div class="filters__research">
+            <p>
+              <span>{{ 'RESEARCH_TEXT' | translate}}</span>
+              <span class="only-research-container">
+                <a id="onlyresearch" class="btn btn--natural whiteText" 
+                  data-ng-class="{false: '', true: ''}[researchBranches]" href="" data-ng-click="showResearch()">
+                  {{researchBranches && 'ALL_LOCATIONS' || 'RESEARCH_LOCATIONS' | translate}}
+                </a>
+              </span>
+            </p>
+          </div>
+        </div>
+        
+      </form>
     </div>
-    
-  </form><!--
+  </section>
 
-  --><div id="all-locations-map" class="grid__item one-whole lap-and-up-one-half nypl-map"></div>
+  <div id="all-locations-map" class="grid__item one-whole lap-and-up-one-half nypl-map"></div>
   <div id="all-locations-map-legend" class="hide-legend">
     <span data-ng-if="locations"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
       {{ 'NYPL_MARKER' | translate }}<br /></span>
@@ -30,18 +54,11 @@
       {{ 'USER_MARKER' | translate }}</span>
   </div>
 
+
+
+
   <section class="list">
  
-    <div class="search_result_text grid__item one-half">
-      <div id="distanceerror" data-ng-if="distanceError">
-        {{distanceError}} {{ 'STILL_SEARCH_DIRECTIONS' | translate }}</div>
-      <div id="searchError" data-ng-if="searchError">
-        {{ 'NO_RESULTS' | translate }} <strong>{{searchError}}</strong> {{ 'WITHIN_25_MILES' | translate }}</div>
-      <div id="resultsnear" class="alpha" data-ng-if="geolocationAddressOrSearchQuery">
-        {{ 'SHOWING_RESULTS_NEAR' | translate }} <a href="">{{geolocationAddressOrSearchQuery}}</a></div>
-    </div>
-  	
-    <br />
 
     <section class="results--heds grid one-whole push-half--left epsilon orangeDarkerText">
       <div id="nameSorter" class="grid__item one-quarter location-sorter" ng-click="predicate = 'name'; reverse=!reverse">
