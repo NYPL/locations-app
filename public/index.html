@@ -1,17 +1,19 @@
 <!doctype html>
-<html data-ng-app="nypl_locations">
+<html xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="nypl_locations">
   <head>
     <meta charset="utf-8">
     <title data-ng-bind="'NYPL | ' + $root.title">NYPL |</title>
     <meta name="fragment" content="!" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
     <link rel="shortcut icon" type="image/png" href="/images/favicon.ico">
     <link rel="stylesheet" href="https://dl.dropboxusercontent.com/u/116776/nyplbase/css/nyplbase.min.css">
     <link rel="stylesheet" href="/css/locations.min.css">
-    
+
     <!-- Angular Hash fallback (need to test on heroku) -->
-    <base href="/">
+    <!--<base href="/">-->
   </head>
   <body>
     <header id="header--global__top" style="height: 200px">
@@ -277,6 +279,7 @@
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angularitics/src/angulartics.js"></script>
     <script src="bower_components/angularitics/src/angulartics-ga.js"></script>
     <script src="bower_components/angular-translate/angular-translate.min.js"></script>

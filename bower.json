@@ -12,7 +12,7 @@
     "angular-sanitize": "1.2.14",
     "angular-route": "1.2.14",
     "underscore": "~1.6.0",
-    "angular-animate": "~1.2.15",
+    "angular-animate": "~1.2.18",
     "angularitics": "~0.15",
     "angular-translate": "~2.1.0",
     "ng-breadcrumbs": "latest"

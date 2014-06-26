@@ -29,6 +29,19 @@
 
 #container__hours {
   float: right; }
+  #container__hours #toggle-hours {
+    display: inline;
+    vertical-align: 1px; }
+    #container__hours #toggle-hours:hover {
+      cursor: pointer; }
+    @media only screen and (min-width: 601px) {
+      #container__hours #toggle-hours {
+        display: none; } }
+  #container__hours .weekly-hours {
+    display: none; }
+    @media only screen and (min-width: 601px) {
+      #container__hours .weekly-hours {
+        display: block !important; } }
 
 #container__address .p-adr {
   margin: 0 .35em; }
