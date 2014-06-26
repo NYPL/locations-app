@@ -437,10 +437,8 @@ nypl_locations.controller('LocationCtrl', [
                         breadcrumbs.options = { 'Location': location.name };
                         $scope.breadcrumbs = breadcrumbs;
 
-                        $scope.calendar_link =
-                            nypl_utility.google_calendar_link;
-                        $scope.ical_link =
-                            nypl_utility.ical_link;
+                        $scope.calendar_link = nypl_utility.calendar_link;
+                        $scope.ical_link = nypl_utility.ical_link;
 
                         $scope.siteWideAlert =
                             nypl_utility.alerts(location._embedded.alerts);

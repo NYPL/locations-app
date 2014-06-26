@@ -1,0 +1,57 @@
+/*
+** Main page wrapper
+*/
+
+// (Necessary for centering grid items)
+.wrapper {
+	margin: 0 auto;
+	padding: 0 24px;
+	max-width: 1200px;
+}
+
+// AskNYPL
+.askNYPL {
+	// adjust padding from grid__item
+	@media only screen and (max-width: 601px) {
+		padding-left: 0;
+		padding-top: 24px;
+	}
+
+	ul {
+		color: #5e564b;
+		
+		// override default margin
+		margin-left: 0px;
+		
+		// positions elements
+		text-align: center;
+	}
+	
+	li {
+		list-style-type: none;
+		margin-bottom: .5rem;
+	}
+	
+	[data-icon]:before, [class^="icon-"]:before, [class*=" icon-"]:before {
+		vertical-align: baseline;
+	}
+	
+	.asknum {
+		@media only screen and (min-width: 568px) {
+			font-size: 36px;
+		}
+	}
+	
+	.askchat,.askemail {
+		// "button" style
+		background-color: #ece94c;
+		border-radius: 2px;
+		color: #5e564b;
+		padding: 6px;		
+		text-decoration: none;
+		
+		&:hover {
+			background-color: lighten(#ece94c, 20%);
+		}
+	}
+}

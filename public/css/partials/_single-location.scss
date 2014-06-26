@@ -1,0 +1,181 @@
+/* 
+** Individual Location's page
+*/
+
+// Spacing for each container
+#container__address,
+#container__image,
+#container__hours,
+#container__top_services,
+#container__events,
+#container__about,
+#container__blogs,
+#container__exhibitions {
+	margin-bottom: 24px;
+}
+
+// Image section on top container
+#container__image {
+	float: left; // Fix for proper positioning on desktop
+	display: none; // Hidden on mobile
+
+	@media only screen and (min-width: 769px) {
+		display: inline-block;
+	}
+}
+
+// Hours section on top container
+#container__hours {
+	float: right;
+
+	#hours-today {
+		margin-left: -.35em;
+
+		@media only screen and (min-width: 601px) {
+			margin-left: 0;
+		}
+
+		.hours-today {
+			font-size: 14px;
+			font-size: 1.4rem;
+
+			@media only screen and (min-width: 601px) {
+				font-size: 16px;
+				font-size: 1.6rem;
+			}		
+
+			span {
+				vertical-align: -2px;
+			}
+		}
+	}
+
+	#toggle-hours {
+		display: inline;
+		vertical-align: 1px;
+
+		&:hover {
+			cursor: pointer;
+		}
+
+		@media only screen and (min-width: 601px) {
+			display: none;
+		} 
+	}
+
+	#location-hours {
+		margin: .75em 0 .75em .35em;
+
+		@media only screen and (min-width: 601px) {
+			margin-left: 52px;
+		}
+
+		.hdg {
+			border: none;
+		}
+
+		.weekly-hours {
+			display: none;
+
+			@media only screen and (min-width: 601px) {
+				display: block !important;
+			} 
+		}
+	}
+
+	#catalog-link {
+		background-color: rgba(#0090c4, .2);
+		border-radius: 2px;
+		color: darken(#0090c4, 10%);
+		padding: 4px;
+		text-decoration: none;
+		margin-left: .35em;
+
+		@media only screen and (min-width: 601px) {
+			margin-left: 52px;
+		}
+		
+		&:hover {
+			color: #0090c4;
+			text-decoration: underline;	
+		}
+	}
+}
+
+// Address section on top container
+#container__address {
+
+	.p-adr {
+		margin: 0 .35em;
+
+		.p-street-address, .p-manager {
+			margin-bottom: .25em;
+		}
+
+		.p-tel {
+			margin: .25em 0;
+		}
+	}
+
+	.wheelchair {
+		margin: .25em 0;
+	}
+}
+
+// Events section
+#container__events {
+
+	h4 {
+		margin-bottom: .05em;
+	}
+	.callout {
+		margin-bottom: 24px;
+		
+		p {
+			margin: 0;
+		}
+	}
+
+	.event-buttons {
+		text-align: center;
+		margin: 0; 
+		padding: 0;
+	}
+} 
+
+// Highlighted Services section
+#container__top_services {
+
+	.callout {
+		position: relative;
+
+		ul {
+
+			li {
+				display: block;
+
+				@media only screen and (min-width: 601px) {
+					margin-right: .35em;
+					display: inline;
+				}
+
+				span {
+					vertical-align: -2px;
+				}
+			}
+		}
+
+		.read-more {
+
+			display: inline-block !important;
+			margin: .35em 0;
+
+			@media only screen and (min-width: 601px) {
+				margin: 0;
+				position: absolute;
+				right: 7px;
+				top: 7px;
+			}
+		}
+	}
+}
