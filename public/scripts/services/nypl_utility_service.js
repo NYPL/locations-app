@@ -251,6 +251,26 @@ nypl_locations.factory('nypl_utility', [
                     end_date + details + location + other_params;
             },
 
+            ical_link: function (event, address) {
+                var currentTime = new Date().toJSON()
+                        .toString().replace(/[\-.:]/g, ''),
+                    url = "http://nypl.org/" + event._links.self.href,
+                    icsMSG = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//NYPL//" +
+                        "NONSGML v1.0//EN\nBEGIN:VEVENT\n" +
+                        "DTSTAMP:" + currentTime + "\nATTENDEE;CN=My Self ;" +
+                        "\nORGANIZER;CN=NYPL:" +
+                        "\nDTSTART:" + event.start.replace(/[\-:]/g, '') +
+                        "\nDTEND:" + event.end.replace(/[\-:]/g, '') +
+                        "\nLOCATION:" + address +
+                        "\nDESCRIPTION:" + event.body +
+                        "\nURL;VALUE=URI:" + url +
+                        "\nSUMMARY:" + event.title +
+                        "\nEND:VEVENT\nEND:VCALENDAR";
+
+                window.open("data:text/calendar;charset=utf-8," +
+                    encodeURI(icsMSG));
+            },
+
             location_search: function (locations, searchTerm) {
                 var IDFilter = [],
                     lazyFilter =
