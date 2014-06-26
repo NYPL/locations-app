@@ -45,7 +45,9 @@
       --><div class="grid__item one-whole lap-and-up-one-third">
           <p class="text--right"><a href="" class="btn gradient">{{ 'REGISTER' | translate }}</a></p>
           <p class="text--right">
-            <a href="{{calendar_link(event, location.street_address)}}" target="_blank" rel="nofollow">Google/iCal</a>
+            <a href="{{calendar_link(event, location.street_address)}}" target="_blank" rel="nofollow">Google</a>
+            <a href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" rel="nofollow">
+              iCal</a>
           </p>
       </div>
   </section>
