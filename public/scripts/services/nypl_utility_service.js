@@ -300,13 +300,8 @@ nypl_locations.factory('nypl_utility', [
                 window.open('data:text/calendar;chartset=utf-8,' + encodeURI(icsMSG));
             },
 
-            location_search: function (locations, searchTerm) {
-                var IDFilter = [],
-                    lazyFilter =
-                        $filter('filter')(locations, searchTerm),
-                    strictFilter =
-                        $filter('filter')(locations, searchTerm, true),
-                    result;
+            id_location_search: function (locations, searchTerm) {
+                var IDFilter = [];
 
                 // search for ID
                 // This is a priority.
@@ -319,23 +314,27 @@ nypl_locations.factory('nypl_utility', [
                     );
                 }
 
-                // If there's no ID search, then check the strict and
-                // 'lazy' filter.
+                return IDFilter;
+            },
+
+            location_search: function (locations, searchTerm) {
+                var lazyFilter =
+                        $filter('filter')(locations, searchTerm),
+                    strictFilter =
+                        $filter('filter')(locations, searchTerm, true),
+                    result;
+
+                // Check the strict and 'lazy' filter.
                 // The strict filter has a higher priority since it's
                 // a better match. The 'lazy' filter matches anything,
                 // even part of a word so 'sibl' would match with
                 // 'accesSIBLe'.
-                if (IDFilter.length !== 0) {
-                    result = IDFilter;
-                } else {
-                    if (strictFilter !== undefined
-                            && strictFilter.length !== 0) {
-                        // Rarely occurs but just in case there are results for
-                        // both filters, the strict match should appear first
-                        result = _.union(strictFilter, lazyFilter);
-                    }
-                    result = lazyFilter;
+                if (strictFilter !== undefined && strictFilter.length !== 0) {
+                    // Rarely occurs but just in case there are results for
+                    // both filters, the strict match should appear first
+                    result = _.union(strictFilter, lazyFilter);
                 }
+                result = lazyFilter;
 
                 return result;
             },

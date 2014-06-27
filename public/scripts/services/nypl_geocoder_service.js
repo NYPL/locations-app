@@ -8,7 +8,9 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         panCoords,
         markers = [],
         sasbLocation = new google.maps.LatLng(40.7532, -73.9822),
-        searchMarker = new google.maps.Marker({}),
+        searchMarker = new google.maps.Marker({
+            icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+        }),
         searchInfoWindow = new google.maps.InfoWindow(),
         infowindow = new google.maps.InfoWindow();
 
@@ -20,6 +22,10 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
                 sw_bound = new google.maps.LatLng(40.49, -74.26),
                 ne_bound = new google.maps.LatLng(40.91, -73.77),
                 bounds = new google.maps.LatLngBounds(sw_bound, ne_bound);
+
+            if (address.length < 3) {
+                defer.reject({msg: "query too short"});
+            }
 
             geocoder.geocode(
                 {address: address, bounds: bounds, region: "US"},
@@ -151,6 +157,13 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
             this.panMap(marker);
             this.show_infowindow(markerObj[0].marker, markerObj[0].text);
+        },
+
+        search_result_marker: function (locations) {
+            var location_id = locations[0].slug;
+            if (this.check_marker(location_id)) {
+                this.pan_existing_marker(location_id);
+            }
         },
 
         show_research_libraries: function () {

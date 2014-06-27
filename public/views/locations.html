@@ -4,6 +4,28 @@
     <div class="grid">
 
       <form class="locations-search-form grid__item one-whole">
+<!--
+<div id="all-locations-map" class="grid__item one-whole lap-and-up-one-half nypl-map"></div>
+  <div id="all-locations-map-legend" class="hide-legend">
+    <div data-ng-if="locations"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
+      {{ 'NYPL_MARKER' | translate }}</div>
+    <div data-ng-if="locationStart"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
+      {{ 'USER_MARKER' | translate }}</div>
+      <div data-ng-if="searchMarker"><img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png" />
+      {{ 'SEARCH_MARKER' | translate }}</div>
+  </div>
+
+ 
+    <div class="search_result_text grid__item one-half">
+      <div id="distanceerror" data-ng-if="distanceError">
+        {{distanceError}} {{ 'STILL_SEARCH_DIRECTIONS' | translate }}</div>
+      <div id="searchError" data-ng-if="searchError">
+        {{ 'NO_RESULTS' | translate }} <strong>{{searchError}}</strong> {{ 'WITHIN_25_MILES' | translate }}</div>
+      <div id="resultsnear" class="alpha" data-ng-if="geolocationAddressOrSearchQuery">
+        {{ 'SHOWING_RESULTS_NEAR' | translate }} <a href="">{{geolocationAddressOrSearchQuery}}</a></div>
+    </div>
+
+-->
 
         <label for="searchTerm" class="search-box-label">Example: Jefferson Market, 10018, 455 Fifth Avenue</label>
         <div class="search-box-area">
@@ -23,7 +45,8 @@
             <p>
               <span>{{ 'SHOW_ME' | translate }}:</span>
               <span class="current-location-container">
-                <a id="currentloc" class="btn btn--natural whiteText" href="" data-ng-click="useGeolocation()">
+                <a id="currentloc" class="btn btn--natural whiteText" 
+                  href="" data-ng-if="geolocationOn" data-ng-click="useGeolocation()">
                 {{ 'USER_LOCATION' | translate }}
                 </a>
               </span>
