@@ -51,9 +51,9 @@ nypl_locations.controller('LocationsCtrl', [
 
                 ngRepeatInit('name');
 
-                nypl_geocoder_service.remove_searchMarker();
-                nypl_geocoder_service.hide_infowindow();
-                nypl_geocoder_service.panMap();
+                // nypl_geocoder_service.remove_searchMarker();
+                // nypl_geocoder_service.hide_infowindow();
+                // nypl_geocoder_service.panMap();
 
                 _.each($scope.locations, function (location) {
                     location.distance = '';
@@ -69,22 +69,22 @@ nypl_locations.controller('LocationsCtrl', [
 
                         _.each($scope.locations, function (location) {
                             var locationAddress = nypl_utility
-                                    .getAddressString(location, true),
-                                markerCoordinates = {
-                                    'latitude': location.geolocation.coordinates[1],
-                                    'longitude': location.geolocation.coordinates[0]
-                                };
+                                    .getAddressString(location, true);
+                                // markerCoordinates = {
+                                //     'latitude': location.geolocation.coordinates[1],
+                                //     'longitude': location.geolocation.coordinates[0]
+                                // };
 
                             // Initially, when the map is drawn and 
                             // markers are availble, they will be drawn too. 
                             // No need to draw them again if they exist.
-                            if (!nypl_geocoder_service
-                                    .check_marker(location.slug)) {
-                                nypl_geocoder_service
-                                    .draw_marker(location.slug,
-                                        markerCoordinates,
-                                        locationAddress);
-                            }
+                            // if (!nypl_geocoder_service
+                            //         .check_marker(location.slug)) {
+                            //     nypl_geocoder_service
+                            //         .draw_marker(location.slug,
+                            //             markerCoordinates,
+                            //             locationAddress);
+                            // }
 
                             location.library_type
                                 = nypl_utility.locationType(location.id);
@@ -93,8 +93,8 @@ nypl_locations.controller('LocationsCtrl', [
                             location.hoursToday = nypl_utility.hoursToday;
                         });
 
-                        nypl_geocoder_service
-                            .draw_legend('all-locations-map-legend');
+                        // nypl_geocoder_service
+                        //     .draw_legend('all-locations-map-legend');
 
                         checkGeolocation();
                         allLocationsInit();
@@ -300,9 +300,9 @@ nypl_locations.controller('LocationsCtrl', [
             };
 
         $rootScope.title = "Locations";
-        nypl_geocoder_service
-            .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-        nypl_geocoder_service.load_markers();
+        // nypl_geocoder_service
+        //     .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        // nypl_geocoder_service.load_markers();
 
         loadLocations();
 
