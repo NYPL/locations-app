@@ -357,42 +357,46 @@ nypl_locations.controller('LocationsCtrl', [
 
             var IDfilteredLocations =
                 nypl_utility.id_location_search($scope.locations, searchTerm);
+
+            if (IDfilteredLocations) {
+                organizeLocations(locations, filteredLocations);
+            }
             // Filter the locations by the search term
             // using Angularjs
-            var filteredLocations =
-                nypl_utility.location_search($scope.locations, searchTerm);
+            // var filteredLocations =
+            //     nypl_utility.location_search($scope.locations, searchTerm);
 
-            if (filteredLocations !== null && filteredLocations.length) {
-                if (nypl_geocoder_service
-                        .check_marker(filteredLocations[0].slug)) {
+            // if (filteredLocations !== null && filteredLocations.length) {
+            //     if (nypl_geocoder_service
+            //             .check_marker(filteredLocations[0].slug)) {
 
-                    nypl_geocoder_service
-                        .pan_existing_marker(filteredLocations[0].slug);
-                }
-                $scope.geolocationAddressOrSearchQuery = searchTerm;
-                show_libraries_type_of();
-                $scope.researchBranches = false;
-            }
+            //         nypl_geocoder_service
+            //             .pan_existing_marker(filteredLocations[0].slug);
+            //     }
+            //     $scope.geolocationAddressOrSearchQuery = searchTerm;
+            //     show_libraries_type_of();
+            //     $scope.researchBranches = false;
+            // }
 
-            loadGeocoding(searchTerm)
-                .then(function (searchObj) {
-                    return searchByCoordinates(searchObj, filteredLocations);
-                })
-                .then(function (locations) {
-                    organizeLocations(locations, filteredLocations);
-                })
-                // Catch any errors at any point
-                .catch(function (error) {
-                    // google maps api is down and geocoding does not work,
-                    // first see if there are any angularjs filtered results.
-                    // if there are, show results based on the angularjs filter.
-                    // else, reset back to the start
-                    if (filteredLocations.length) {
-                        organizeLocations(locations, filteredLocations);
-                    } else {
-                        allLocationsInit();
-                    }
-                });
+            // loadGeocoding(searchTerm)
+            //     .then(function (searchObj) {
+            //         return searchByCoordinates(searchObj, filteredLocations);
+            //     })
+            //     .then(function (locations) {
+            //         organizeLocations(locations, filteredLocations);
+            //     })
+            //     // Catch any errors at any point
+            //     .catch(function (error) {
+            //         // google maps api is down and geocoding does not work,
+            //         // first see if there are any angularjs filtered results.
+            //         // if there are, show results based on the angularjs filter.
+            //         // else, reset back to the start
+            //         if (filteredLocations.length) {
+            //             organizeLocations(locations, filteredLocations);
+            //         } else {
+            //             allLocationsInit();
+            //         }
+            //     });
         };
 
         $scope.viewMore = function () {

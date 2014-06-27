@@ -300,6 +300,19 @@ nypl_locations.factory('nypl_utility', [
                 window.open('data:text/calendar;chartset=utf-8,' + encodeURI(icsMSG));
             },
 
+            id_location_search: function (locations, searchTerm) {
+                var IDFilter = [];
+
+                if (searchTerm.length >= 2 && searchTerm.length <= 4) {
+                    IDFilter = _.where(
+                        locations,
+                        { 'id' : searchTerm.toUpperCase() }
+                    );
+                }
+
+                return IDFilter;
+            },
+
             location_search: function (locations, searchTerm) {
                 var IDFilter = [],
                     lazyFilter =
@@ -313,18 +326,18 @@ nypl_locations.factory('nypl_utility', [
                 // This is a priority.
                 // If 'sibl' is searched, then it should display it
                 // first before anything else.
-                if (searchTerm.length >= 2 && searchTerm.length <= 4) {
-                    IDFilter = _.where(
-                        locations,
-                        { 'id' : searchTerm.toUpperCase() }
-                    );
-                }
+                // if (searchTerm.length >= 2 && searchTerm.length <= 4) {
+                //     IDFilter = _.where(
+                //         locations,
+                //         { 'id' : searchTerm.toUpperCase() }
+                //     );
+                // }
 
-                _.each(locations, function (location) {
-                    if (location.name.toLowerCase()).indexOf(searchTerm) !== -1) {
-                        nameFilter.push(location);
-                    }
-                });
+                // _.each(locations, function (location) {
+                //     if (location.name.toLowerCase().indexOf(searchTerm) !== -1) {
+                //         nameFilter.push(location);
+                //     }
+                // });
 
                 // If there's no ID search, then check the strict and
                 // 'lazy' filter.
@@ -332,9 +345,9 @@ nypl_locations.factory('nypl_utility', [
                 // a better match. The 'lazy' filter matches anything,
                 // even part of a word so 'sibl' would match with
                 // 'accesSIBLe'.
-                if (IDFilter.length !== 0) {
-                    result = IDFilter;
-                } else {
+                // if (IDFilter.length !== 0) {
+                //     result = IDFilter;
+                // } else {
                     if (strictFilter !== undefined
                             && strictFilter.length !== 0) {
                         // Rarely occurs but just in case there are results for
@@ -342,7 +355,7 @@ nypl_locations.factory('nypl_utility', [
                         result = _.union(strictFilter, lazyFilter);
                     }
                     result = lazyFilter;
-                }
+                // }
 
                 return result;
             },
