@@ -46,122 +46,86 @@
     </div>
   </section>
 
-<!--   <div id="all-locations-map" class="grid__item one-whole lap-and-up-one-half nypl-map"></div>
-  <div id="all-locations-map-legend" class="hide-legend">
-    <span data-ng-if="locations"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
-      {{ 'NYPL_MARKER' | translate }}<br /></span>
-    <span data-ng-if="locationStart"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
-      {{ 'USER_MARKER' | translate }}</span>
-  </div>
- -->
-
-
+  <!-- Locations Results List -->
   <section class="locations-results-list">
     <div class="grid">
+      <div class="grid__item">
+        <!-- Responsive Table w/ Location data -->
+        <table class="locations-list-view">
+          <thead>
+            <tr>
+              <th class="location-title" ng-click="predicate = 'name'; reverse=!reverse">
+                {{ 'LOCATION_HEADER' | translate }}
+              </th>
+              <th class="services-title">
+                {{ 'SERVICES_HEADER' | translate }}
+              </th>
+              <th class="hours-title">
+                {{ 'HOURS_HEADER' | translate }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Repeated location row data -->
+            <tr class="locations-row {{location._id}} {{location.highlight}}" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse | limitTo: libraryLimit">
+              <td class="location-info h-card">
+                <!-- Library Info -->
+                <div class="p-org"><a href='/#/{{location.slug}}'>{{location.name}}</a></div>
+                <div class="p-adr">
+                  <div class="p-street-address">{{location.street_address}}</div>
+                  <span class="p-locality">{{location.locality}}</span>, 
+                  <span class="p-region">{{location.region}}</span>, 
+                  <span class="p-postal-code">{{location.postal_code}}</span>
+                </div>
+                <div class="p-tel" data-ng-if="location.contacts.phone">
+                  Phone: {{location.contacts.phone}}
+                </div>
 
-      <table class="grid__item">
-        <thead>
-          <tr>
-            <th class="location-title" ng-click="predicate = 'name'; reverse=!reverse">
-              {{ 'LOCATION_HEADER' | translate }}
-            </th>
-            <th class="services-title">
-              {{ 'SERVICES_HEADER' | translate }}
-            </th>
-            <th class="hours-title">
-              {{ 'HOURS_HEADER' | translate }}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Repeated location row data -->
-          <tr class="locations-row {{location._id}} {{location.highlight}}" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse | limitTo: libraryLimit">
-            <td class="location-info h-card">
-              <!-- Library Info -->
-              <div class="p-org"><a href='/#/{{location.slug}}'>{{location.name}}</a></div>
-              <div class="p-adr">
-                <div class="p-street-address">{{location.street_address}}</div>
-                <span class="p-locality">{{location.locality}}</span>, 
-                <span class="p-region">{{location.region}}</span>, 
-                <span class="p-postal-code">{{location.postal_code}}</span>
-              </div>
-              <div class="p-tel" data-ng-if="location.contacts.phone">
-                Phone: {{location.contacts.phone}}
-              </div>
+                <!-- Map/Directions Links -->
+                <span class="map-link">
+                  <a class="icon-map" href="/#/{{location.slug}}/map">{{ 'VIEW_MAP' | translate}}</a>
+                </span>
+                <span class="directions-link">
+                  <a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
+                  {{ 'DIRECTIONS' | translate }}
+                  </a>
+                </span>
 
-              <!-- Map/Directions Links -->
-              <span>
-                <a class="icon-map" href="/#/{{location.slug}}/map">{{ 'VIEW_MAP' | translate}}</a>
-              </span>
-              <span>
-                <a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
-                {{ 'DIRECTIONS' | translate }}
-                </a>
-              </span>
+                <!-- Distance -->
+                <div class="distance" data-ng-if="location.distance">
+                  Distance: <strong>{{location.distance}} {{ 'MILES' | translate}}</strong>
+                </div>  
+              </td>
 
-              <!-- Distance -->
-              <div class="distance" data-ng-if="location.distance">
-                Distance: <strong>{{location.distance}} {{ 'MILES' | translate}}</strong>
-              </div>  
-            </td>
+              <!-- Highlighted Services -->
+              <td class="services-info">
+                <ul class="highlighted-services-list">
+                  <li data-ng-repeat="service in location._embedded.services | limitTo:3">
+                    {{service.name}}
+                  </li>
+                </ul>
+              </td>
 
-            <td class="services-info">
-              
-            </td>
-            <td class="hours-info">
-              <div>
-                </p>{{ location.hoursToday(location.hours) | timeFormat }}</p>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-
-
-      </table>
-
+              <!-- Today's Hours -->
+              <td class="hours-info">
+                <div>
+                  </p>{{ location.hoursToday(location.hours) | timeFormat }}</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <section class="grid one-whole location push-half--left {{location._id}} {{location.highlight}}" 
-      data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse | limitTo: libraryLimit">
-
-      <div class="results--location h-card grid__item one-half lap-and-up-one-quarter">
-
-      </div><!--
-
-      --><div class="results--more grid__item one-half lap-and-up-three-quarters hard--left">
-        
-        <div class="results--distance grid__item one-whole lap-and-up-one-third">
-          <div class="distance" data-ng-if="location.distance"><strong>{{location.distance}} {{ 'MILES' | translate}}</strong></div>
-          <div><a class="icon-map" href="/#/{{location.slug}}/map">{{ 'VIEW_MAP' | translate}}</a></div>
-          <div>
-            <a class="icon-compass" 
-              href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
-              {{ 'DIRECTIONS' | translate }}</a>
-          </div>
-        </div><!--
-
-        --><div class="results--hours h-card grid__item one-whole lap-and-up-one-third">
-            {{ location.hoursToday(location.hours) | timeFormat }}
-        </div><!-- 
-
-        --><div class="results--services h-card grid__item one-whole lap-and-up-one-third">
-          <ul>
-            <li data-ng-repeat="service in location._embedded.services | limitTo:3">
-              {{service.name}}
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section> 
-    <!-- End of ng-repeat -->
-
-    <section class="grid one-whole" data-ng-if='locations'>
+    <!-- Pagination -->
+    <div data-ng-if='locations'>
       <div id="showing" class="grid--center grid__item">
         {{ 'SHOWING' | translate }} {{libraryLimit}} {{ 'OF' | translate }} {{totalLocations}} {{ 'LOCATIONS' | translate }}</div>
       <div class="grid--center grid__item" data-ng-if="showMore">
-        <a href="" id="showmore" class="btn" data-ng-click="viewMore()">Show {{increaseBy}}</a>
+        <span id="showmore" class="btn" data-ng-click="viewMore()">Show {{increaseBy}}</span>
       </div>
-    </section>
+    </div>
 
   </section>
 </div>

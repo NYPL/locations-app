@@ -4,7 +4,7 @@
 
 .container__all-locations {
 
-	// Search Area
+	/** Search Area **/
 	.search-locations {
 
 		.search-box-label {
@@ -84,13 +84,13 @@
 				}
 
 				@media only screen and (min-width: 980px) {
-					width: 70%
+					width: 80%
 				}
 			}
 		}
 	}
 
-	// Filters Section
+	/** Filters Section **/
 	.search-filters {
 		margin: 1em 0;
 
@@ -144,7 +144,146 @@
 				}
 			}
 		}
-
 	}
 
+	/** Locations List View (no-map) **/
+	.locations-results-list {
+		margin-top: 10px;
+
+		table.locations-list-view {
+			display: block;
+			width: 100%; 
+			border-collapse: collapse;
+
+			@media only screen and (min-width: 601px) {
+				display: table;
+			}
+
+			thead {
+				display: block;
+
+				@media only screen and (min-width: 601px) {
+					display: table-header-group;
+				}
+
+				tr {
+					display: block;
+					position: absolute;
+					top: -9999px;
+					left: -9999px;
+
+					@media only screen and (min-width: 601px) {
+						display: table-row;
+						position: relative;
+						top: inherit;
+						left: inherit;
+					}
+
+					th {
+						display: block;
+						background: #eee;
+
+						@media only screen and (min-width: 601px) {
+							display: table-cell;
+						}
+					}
+				}
+			}
+
+			tbody {
+				display: block;
+
+				@media only screen and (min-width: 601px) {
+					display: table-row-group;
+				}
+
+				tr {
+					display: block;
+					border: 1px solid #eee;
+
+					@media only screen and (min-width: 601px) {
+						display: table-row;
+						border-bottom: 1px solid #eee;
+					}
+
+					td {
+						border: none;
+						position: relative;
+						padding-left: 50%;
+						display: block;
+						font-size: 13.5px;
+
+						@media only screen and (min-width: 420px) {
+							font-size: inherit;
+						}
+
+						@media only screen and (min-width: 601px) {
+							display: table-cell;
+							padding-left: 12px;
+						}
+
+						&:before {
+							font-weight: bold;
+							position: absolute;
+							top: 37.5%;
+							left: 6px;
+							width: 45%;
+							padding-right: 10px;
+							white-space: nowrap;
+
+							@media only screen and (min-width: 601px) {
+								position: relative;
+								top: inherit;
+								left: inherit;
+								width: auto;
+								padding-left: initial;
+								white-space: nowrap;
+							}
+						}
+
+						&:nth-of-type(1):before {
+							@media only screen and (max-width: 601px) {
+								content: "Location";
+							}
+						}
+
+						&:nth-of-type(2):before {
+							@media only screen and (max-width: 601px) {
+								content: "Highlighted Services";
+							}
+						}
+
+						&:nth-of-type(3):before {
+							@media only screen and (max-width: 601px) {
+								content: "Today's Hours";
+							}
+						}
+
+					}
+				}
+			}
+
+			td {
+
+				&.location-info {
+
+					.map-link, .directions-link {
+						display: block; 
+
+						@media only screen and (min-width: 769px) {
+							display: inline;
+						}
+
+					}
+				}
+
+				&.services-info {
+					ul {
+						margin: 0 0 0 .5em;
+					}
+				}
+			}
+		}
+	}
+	
 }
