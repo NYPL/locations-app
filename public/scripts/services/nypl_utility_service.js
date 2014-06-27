@@ -303,6 +303,10 @@ nypl_locations.factory('nypl_utility', [
             id_location_search: function (locations, searchTerm) {
                 var IDFilter = [];
 
+                // search for ID
+                // This is a priority.
+                // If 'sibl' is searched, then it should display it
+                // first before anything else.
                 if (searchTerm.length >= 2 && searchTerm.length <= 4) {
                     IDFilter = _.where(
                         locations,
@@ -314,48 +318,23 @@ nypl_locations.factory('nypl_utility', [
             },
 
             location_search: function (locations, searchTerm) {
-                var IDFilter = [],
-                    lazyFilter =
+                var lazyFilter =
                         $filter('filter')(locations, searchTerm),
                     strictFilter =
                         $filter('filter')(locations, searchTerm, true),
-                    nameFilter = [],
                     result;
 
-                // search for ID
-                // This is a priority.
-                // If 'sibl' is searched, then it should display it
-                // first before anything else.
-                // if (searchTerm.length >= 2 && searchTerm.length <= 4) {
-                //     IDFilter = _.where(
-                //         locations,
-                //         { 'id' : searchTerm.toUpperCase() }
-                //     );
-                // }
-
-                // _.each(locations, function (location) {
-                //     if (location.name.toLowerCase().indexOf(searchTerm) !== -1) {
-                //         nameFilter.push(location);
-                //     }
-                // });
-
-                // If there's no ID search, then check the strict and
-                // 'lazy' filter.
+                // Check the strict and 'lazy' filter.
                 // The strict filter has a higher priority since it's
                 // a better match. The 'lazy' filter matches anything,
                 // even part of a word so 'sibl' would match with
                 // 'accesSIBLe'.
-                // if (IDFilter.length !== 0) {
-                //     result = IDFilter;
-                // } else {
-                    if (strictFilter !== undefined
-                            && strictFilter.length !== 0) {
-                        // Rarely occurs but just in case there are results for
-                        // both filters, the strict match should appear first
-                        result = _.union(strictFilter, lazyFilter);
-                    }
-                    result = lazyFilter;
-                // }
+                if (strictFilter !== undefined && strictFilter.length !== 0) {
+                    // Rarely occurs but just in case there are results for
+                    // both filters, the strict match should appear first
+                    result = _.union(strictFilter, lazyFilter);
+                }
+                result = lazyFilter;
 
                 return result;
             },

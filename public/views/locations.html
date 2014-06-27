@@ -24,10 +24,12 @@
 
   --><div id="all-locations-map" class="grid__item one-whole lap-and-up-one-half nypl-map"></div>
   <div id="all-locations-map-legend" class="hide-legend">
-    <span data-ng-if="locations"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
-      {{ 'NYPL_MARKER' | translate }}<br /></span>
-    <span data-ng-if="locationStart"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
-      {{ 'USER_MARKER' | translate }}</span>
+    <div data-ng-if="locations"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
+      {{ 'NYPL_MARKER' | translate }}</div>
+    <div data-ng-if="locationStart"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
+      {{ 'USER_MARKER' | translate }}</div>
+      <div data-ng-if="searchMarker"><img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png" />
+      {{ 'SEARCH_MARKER' | translate }}</div>
   </div>
 
   <section class="list">

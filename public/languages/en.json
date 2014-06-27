@@ -5,6 +5,7 @@
   "RESEARCH_TEXT": "Show me",
   "NYPL_MARKER": "NYPL Library",
   "USER_MARKER": "Your Current Location",
+  "SEARCH_MARKER": "Your Search",
   "ALL_LOCATIONS": "all branches",
   "RESEARCH_LOCATIONS": "only research libraries",
   "STILL_SEARCH_DIRECTIONS": "You can still search or get directions to an NYPL location.",
