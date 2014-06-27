@@ -21,6 +21,7 @@ nypl_locations.controller('LocationsCtrl', [
         var userCoords,
             userAddress,
             locations,
+            mapview = false,
             ngRepeatInit = function (sortBy) {
                 if (sortBy !== undefined) {
                     $scope.predicate = sortBy; // Default sort upon DOM Load
@@ -72,11 +73,8 @@ nypl_locations.controller('LocationsCtrl', [
                             location.hoursToday = nypl_utility.hoursToday;
                         });
 
-                        // loadMapMarkers();
-
                         checkGeolocation();
                         allLocationsInit();
-                        // mapInit();
 
                         return locations;
                     });
@@ -106,9 +104,6 @@ nypl_locations.controller('LocationsCtrl', [
                         = nypl_utility.getAddressString(location);
                     location.hoursToday = nypl_utility.hoursToday;
                 });
-
-                nypl_geocoder_service
-                    .draw_legend('all-locations-map-legend');
             },
 
             checkGeolocation = function () {
@@ -138,7 +133,6 @@ nypl_locations.controller('LocationsCtrl', [
                         if (nypl_utility.check_distance(locations)) {
                             // The user is too far away, reset everything
                             allLocationsInit();
-                            // mapInit();
                             throw (new Error(
                                 'You are not within 25 miles of any NYPL library.'
                             ));
@@ -155,7 +149,9 @@ nypl_locations.controller('LocationsCtrl', [
 
                         $scope.locations = locations;
                         $scope.predicate = 'distance';
-                        // draw_user_marker();
+                        if (mapview) {
+                            draw_user_marker();
+                        }
 
                         return userCoords;
                     });
@@ -261,7 +257,7 @@ nypl_locations.controller('LocationsCtrl', [
                 $scope.predicate = '';
             },
             searchByUserGeolocation = function () {
-                // draw_user_marker();
+                draw_user_marker();
                 // Display the user address, add distance to every library
                 // relative to the user's location and sort by distance
                 $scope.geolocationAddressOrSearchQuery = userAddress;
@@ -283,9 +279,18 @@ nypl_locations.controller('LocationsCtrl', [
             };
 
         $rootScope.title = "Locations";
-        // nypl_geocoder_service
-        //     .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-        // nypl_geocoder_service.load_markers();
+
+        $scope.drawMap = function () {
+            nypl_geocoder_service
+                .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+            nypl_geocoder_service
+                    .draw_legend('all-locations-map-legend');
+            nypl_geocoder_service.load_markers();
+
+            loadMapMarkers();
+            mapInit();
+            mapview = true;
+        }
 
         loadLocations();
 
@@ -323,7 +328,7 @@ nypl_locations.controller('LocationsCtrl', [
 
         $scope.clearSearch = function () {
             allLocationsInit();
-            // mapInit();
+            mapInit();
             $scope.searchMarker = false;
             $scope.researchBranches = false;
             show_libraries_type_of();
@@ -367,7 +372,7 @@ nypl_locations.controller('LocationsCtrl', [
                     if (filteredLocations.length) {
                         nypl_geocoder_service.search_result_marker(filteredLocations);
                     } else {
-                        // nypl_geocoder_service.draw_searchMarker(searchObj.coords, searchObj.searchTerm);
+                        nypl_geocoder_service.draw_searchMarker(searchObj.coords, searchObj.searchTerm);
                         $scope.searchMarker = true;
                     }
 
@@ -391,7 +396,7 @@ nypl_locations.controller('LocationsCtrl', [
                         organizeLocations(locations, filteredLocations, 'name');
                     } else {
                         allLocationsInit();
-                        // mapInit();
+                        mapInit();
                     }
                 });
         };

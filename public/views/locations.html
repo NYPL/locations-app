@@ -58,7 +58,7 @@
     </div>
 
     <div data-ng-switch-when="map">
-      <ng-include src="'views/location-map-view.html'"></ng-include>
+      <ng-include src="'views/location-map-view.html'" onLoad="drawMap()"></ng-include>
     </div>
 
     <div data-ng-switch-default>
