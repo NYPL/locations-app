@@ -367,7 +367,7 @@ nypl_locations.controller('LocationsCtrl', [
                     if (filteredLocations.length) {
                         nypl_geocoder_service.search_result_marker(filteredLocations);
                     } else {
-                        nypl_geocoder_service.draw_searchMarker(searchObj.coords, searchObj.searchTerm);
+                        // nypl_geocoder_service.draw_searchMarker(searchObj.coords, searchObj.searchTerm);
                         $scope.searchMarker = true;
                     }
 
