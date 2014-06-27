@@ -46,50 +46,86 @@
     </div>
   </section>
 
-  <div id="all-locations-map" class="grid__item one-whole lap-and-up-one-half nypl-map"></div>
-  <div id="all-locations-map-legend" class="hide-legend">
-    <span data-ng-if="locations"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
-      {{ 'NYPL_MARKER' | translate }}<br /></span>
-    <span data-ng-if="locationStart"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
-      {{ 'USER_MARKER' | translate }}</span>
-  </div>
+  <section class="locations-map">
+    <div id="all-locations-map" class="grid__item one-whole lap-and-up-one-half nypl-map"></div>
+    <div id="all-locations-map-legend" class="hide-legend">
+      <span data-ng-if="locations"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
+        {{ 'NYPL_MARKER' | translate }}<br /></span>
+      <span data-ng-if="locationStart"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
+        {{ 'USER_MARKER' | translate }}</span>
+    </div>
+  </section>
+
+  <section class="locations-results-list">
+    <div class="grid">
+
+      <table class="grid__item">
+        <thead>
+          <tr>
+            <th class="location-title" ng-click="predicate = 'name'; reverse=!reverse">
+              {{ 'LOCATION_HEADER' | translate }}
+            </th>
+            <th class="services-title">
+              {{ 'SERVICES_HEADER' | translate }}
+            </th>
+            <th class="hours-title">
+              {{ 'HOURS_HEADER' | translate }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Repeated location row data -->
+          <tr class="locations-row {{location._id}} {{location.highlight}}" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse | limitTo: libraryLimit">
+            <td class="location-info h-card">
+              <!-- Library Info -->
+              <div class="p-org"><a href='/#/{{location.slug}}'>{{location.name}}</a></div>
+              <div class="p-adr">
+                <div class="p-street-address">{{location.street_address}}</div>
+                <span class="p-locality">{{location.locality}}</span>, 
+                <span class="p-region">{{location.region}}</span>, 
+                <span class="p-postal-code">{{location.postal_code}}</span>
+              </div>
+              <div class="p-tel" data-ng-if="location.contacts.phone">
+                Phone: {{location.contacts.phone}}
+              </div>
+
+              <!-- Map/Directions Links -->
+              <span>
+                <a class="icon-map" href="/#/{{location.slug}}/map">{{ 'VIEW_MAP' | translate}}</a>
+              </span>
+              <span>
+                <a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
+                {{ 'DIRECTIONS' | translate }}
+                </a>
+              </span>
+
+              <!-- Distance -->
+              <div class="distance" data-ng-if="location.distance">
+                Distance: <strong>{{location.distance}} {{ 'MILES' | translate}}</strong>
+              </div>  
+            </td>
+
+            <td class="services-info">
+              
+            </td>
+            <td class="hours-info">
+              <div>
+                </p>{{ location.hoursToday(location.hours) | timeFormat }}</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
 
 
+      </table>
 
-
-  <section class="list">
- 
-
-    <section class="results--heds grid one-whole push-half--left epsilon orangeDarkerText">
-      <div id="nameSorter" class="grid__item one-quarter location-sorter" ng-click="predicate = 'name'; reverse=!reverse">
-        {{ 'LOCATION_HEADER' | translate }}
-      </div><!--
-
-      --><div id="distanceSorter" class="grid__item one-quarter"
-        data-ng-class="{false: '', true: 'location-sorter'}[predicate=='distance']" ng-click="distanceSort()">
-        {{ 'DISTANCE_HEADER' | translate }}
-      </div><!--
-
-      --><div class="grid__item one-quarter">{{ 'HOURS_HEADER' | translate }}</div><!--
-
-    --><div class="grid__item one-quarter">{{ 'SERVICES_HEADER' | translate }}</div>
-    </section>
-
-    <!-- Locations are in h-card microformat -->
-    <!-- http://microformats.org/wiki/h-card -->
+    </div>
 
     <section class="grid one-whole location push-half--left {{location._id}} {{location.highlight}}" 
       data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse | limitTo: libraryLimit">
 
       <div class="results--location h-card grid__item one-half lap-and-up-one-quarter">
-        <div class="p-org beta"><a href='/#/{{location.slug}}'>{{location.name}}</a></div>
-        <div class="p-adr">
-          <div class="p-street-address">{{location.street_address}}</div>
-          <span class="p-locality">{{location.locality}}</span>, 
-          <span class="p-region">{{location.region}}</span>, 
-          <span class="p-postal-code">{{location.postal_code}}</span>
-        </div>
-        <div class="p-tel" data-ng-if="location.contacts.phone">Phone: {{location.contacts.phone}}</div>
+
       </div><!--
 
       --><div class="results--more grid__item one-half lap-and-up-three-quarters hard--left">
