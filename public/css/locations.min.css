@@ -213,6 +213,8 @@
             @media only screen and (max-width: 601px) {
               .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(3):before {
                 content: "Today's Hours"; } }
+      .container__all-locations .locations-results-list table.locations-list-view td.location-info .p-org {
+        font-weight: bold; }
       .container__all-locations .locations-results-list table.locations-list-view td.location-info .map-link, .container__all-locations .locations-results-list table.locations-list-view td.location-info .directions-link {
         display: block; }
         @media only screen and (min-width: 769px) {

@@ -1,0 +1,34 @@
+<!-- Map View w/ Locations Data -->
+<!-- Locations Results - List View -->
+<section class="locations-results-map">
+  <div class="grid">
+  	<div class="grid__item one-whole lap-and-up-one-half">
+  		<!-- Google Map -->
+	    <div class="map-wrapper">
+	    	<!-- Edwin needs to integrate map here, temporary placeholder -->
+				<img src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map" />
+	    </div>
+	  </div><!--
+
+	  --><div class="grid__item one-whole lap-and-up-one-half">
+	  	<!-- Locations List Data -->
+	  	<div class="locations-data-wrapper scrollable">
+
+	  		<div class="location-data" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse">
+
+					<div class="p-org"><a href='/#/{{location.slug}}'>{{location.name}}</a></div>
+					<div class="p-adr">
+						<div class="p-street-address">{{location.street_address}}</div>
+						<span class="p-locality">{{location.locality}}</span>, 
+						<span class="p-region">{{location.region}}</span>, 
+						<span class="p-postal-code">{{location.postal_code}}</span>
+					</div>
+					<div class="p-tel" data-ng-if="location.contacts.phone">
+						Phone: {{location.contacts.phone}}
+					</div>
+	  		</div>
+
+	    </div>
+	  </div>
+  </div>
+</section>
