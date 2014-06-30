@@ -20,6 +20,17 @@
 	}
 }
 
+.nypl-alerts {
+	background-color: #ECE94C;
+	padding: 12px;
+
+	p {
+		margin: .5em 0;
+		text-align: center;
+		max-width: none;
+	}
+}
+
 // AskNYPL
 .askNYPL {
 	// adjust padding from grid__item
