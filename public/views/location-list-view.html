@@ -38,8 +38,9 @@
                 <a class="icon-map" href="" data-ng-click="viewMapLibrary(location.slug)">{{ 'VIEW_MAP' | translate}}</a>
               </span>
               <span class="directions-link">
-                <a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
-                {{ 'DIRECTIONS' | translate }}
+                <a class="icon-compass" target="_blank"
+                  href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
+                  {{ 'DIRECTIONS' | translate }}
                 </a>
               </span>
 

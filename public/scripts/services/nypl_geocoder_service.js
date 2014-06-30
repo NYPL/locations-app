@@ -7,7 +7,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         bound,
         panCoords,
         markers = [],
-        sasbLocation = new google.maps.LatLng(40.7532, -73.9822),
+        sasbLocation = new google.maps.LatLng(40.7632, -73.9822),
         searchMarker = new google.maps.Marker({
             icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
         }),
@@ -182,6 +182,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
                 // we do not want to remove it at all. Use slug names
                 list = ['schwarzman', 'lpa', 'sibl', 'schomburg', 'user'];
 
+            this.panMap();
             _.each(markers, function (marker) {
                 if (!_.contains(list, marker.id)) {
                     _this.remove_marker(marker.id);
