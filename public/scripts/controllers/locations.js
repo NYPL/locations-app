@@ -73,6 +73,10 @@ nypl_locations.controller('LocationsCtrl', [
                             location.hoursToday = nypl_utility.hoursToday;
                         });
 
+                        if (mapview) {
+                            loadMapMarkers();
+                        }
+
                         checkGeolocation();
                         allLocationsInit();
 
@@ -288,7 +292,12 @@ nypl_locations.controller('LocationsCtrl', [
             nypl_geocoder_service.load_markers();
 
             loadMapMarkers();
-            mapInit();
+            nypl_geocoder_service.load_markers();
+            if (nypl_geocoder_service.check_searchMarker()) {
+                nypl_geocoder_service.draw_searchMarker();
+            } else {
+                mapInit();
+            }
             mapview = true;
         }
 
@@ -372,7 +381,10 @@ nypl_locations.controller('LocationsCtrl', [
                     if (filteredLocations.length) {
                         nypl_geocoder_service.search_result_marker(filteredLocations);
                     } else {
-                        nypl_geocoder_service.draw_searchMarker(searchObj.coords, searchObj.searchTerm);
+                        nypl_geocoder_service.create_searchMarker(searchObj.coords, searchObj.searchTerm);
+                        if (mapview) {
+                            nypl_geocoder_service.draw_searchMarker();
+                        }
                         $scope.searchMarker = true;
                     }
 

@@ -113,15 +113,21 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             map.setZoom(zoom);
         },
 
-        draw_searchMarker: function (coords, text) {
-            this.remove_searchMarker();
+        create_searchMarker: function (coords, text) {
             panCoords = new google.maps.LatLng(coords.lat, coords.long);
-
             searchMarker.setPosition(panCoords);
+            searchInfoWindow.setContent(text);
+        },
+
+        draw_searchMarker: function () {
+            this.remove_searchMarker();
+            // panCoords = new google.maps.LatLng(coords.lat, coords.long);
+
+            // searchMarker.setPosition(panCoords);
             searchMarker.setMap(map);
             this.panMap(searchMarker);
 
-            searchInfoWindow.setContent(text);
+            // searchInfoWindow.setContent(text);
             searchInfoWindow.open(map, searchMarker);
             google.maps.event.addListener(searchMarker, 'click', function () {
                 searchInfoWindow.open(map, searchMarker);
@@ -140,6 +146,10 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         add_marker_to_map: function (id) {
             var markerObj = _.where(markers, {id: id});
             markerObj[0].marker.setMap(map);
+        },
+
+        check_searchMarker: function() {
+            return searchMarker.getPosition() !== undefined;
         },
 
         check_marker: function (id) {
