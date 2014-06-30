@@ -73,6 +73,8 @@ nypl_locations.controller('LocationsCtrl', [
 
                         _.each($scope.locations, function (location) {
                             location.hoursToday = nypl_utility.hoursToday;
+                            location.locationDest
+                                = nypl_utility.getAddressString(location);
                         });
 
                         if ($scope.view === 'map') {
@@ -105,10 +107,6 @@ nypl_locations.controller('LocationsCtrl', [
                                 markerCoordinates,
                                 locationAddress);
                     }
-
-                    location.locationDest
-                        = nypl_utility.getAddressString(location);
-                    location.hoursToday = nypl_utility.hoursToday;
                 });
             },
 
@@ -299,10 +297,14 @@ nypl_locations.controller('LocationsCtrl', [
                 nypl_geocoder_service.add_marker_to_map('user');
             }
 
-            if (nypl_geocoder_service.check_searchMarker()) {
+            if (nypl_geocoder_service.check_searchMarker() && $scope.searchMarker) {
                 nypl_geocoder_service.draw_searchMarker();
             } else {
                 mapInit();
+            }
+
+            if ($scope.researchBranches) {
+                nypl_geocoder_service.show_research_libraries();
             }
 
             if ($scope.select_library_for_map) {
@@ -351,12 +353,15 @@ nypl_locations.controller('LocationsCtrl', [
         };
 
         $scope.clearSearch = function () {
-            allLocationsInit();
-            mapInit();
             $scope.searchMarker = false;
             $scope.researchBranches = false;
             show_libraries_type_of();
             nypl_geocoder_service.show_all_libraries();
+            nypl_geocoder_service.remove_searchMarker();
+            if ($scope.view !== 'map') {
+                allLocationsInit();
+            }
+            mapInit();
         };
 
         $scope.submitAddress = function (searchTerm) {
@@ -443,6 +448,9 @@ nypl_locations.controller('LocationsCtrl', [
             if ($scope.researchBranches) {
                 nypl_geocoder_service.show_research_libraries();
                 show_libraries_type_of('research');
+                if ($scope.view === 'map') {
+                    nypl_geocoder_service.panMap();
+                }
             } else {
                 nypl_geocoder_service.show_all_libraries();
                 show_libraries_type_of();
@@ -509,9 +517,6 @@ nypl_locations.controller('LocationCtrl', [
                                 .socialMediaColor($scope.location.social_media);
             			$scope.location.catalog =
             			    nypl_utility.catalog_items_link($scope.location.name);
-
-
-                        //console.log($scope.location); //Debugging
                     })
                     .catch(function (err) {
                         throw err;

@@ -18,20 +18,20 @@
         </div>
 
         <div class="search-filters" data-ng-if="locations">
+          <span>{{ 'SHOW_ME' | translate }}:</span>
     	    <div class="filters__current" data-ng-if="geolocationOn">
             <p>
-              <span>{{ 'SHOW_ME' | translate }}:</span>
               <span class="current-location-container">
                 <a id="currentloc" class="btn btn--natural whiteText" 
                   href="" data-ng-if="geolocationOn" data-ng-click="useGeolocation()">
                 {{ 'USER_LOCATION' | translate }}
                 </a>
               </span>
+              <span>{{ 'RESEARCH_TEXT' | translate}}</span>
             </p>
           </div>
     	    <div class="filters__research">
             <p>
-              <span>{{ 'RESEARCH_TEXT' | translate}}</span>
               <span class="only-research-container">
                 <a id="onlyresearch" class="btn btn--natural whiteText" 
                   data-ng-class="{false: '', true: ''}[researchBranches]" href="" data-ng-click="showResearch()">
@@ -42,6 +42,16 @@
           </div>
         </div>
       </form>
+
+      <div class="search_result_text grid__item">
+        <div id="distanceerror" data-ng-if="distanceError">
+          {{distanceError}} {{ 'STILL_SEARCH_DIRECTIONS' | translate }}</div>
+        <div id="searchError" data-ng-if="searchError">
+          {{ 'NO_RESULTS' | translate }} <strong>{{searchError}}</strong> {{ 'WITHIN_25_MILES' | translate }}</div>
+        <div id="resultsnear" data-ng-if="geolocationAddressOrSearchQuery">
+          {{ 'SHOWING_RESULTS_NEAR' | translate }} <a href="">{{geolocationAddressOrSearchQuery}}</a></div>
+      </div>
+
     </div>
   </section>
 
