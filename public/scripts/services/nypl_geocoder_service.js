@@ -7,8 +7,16 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         bound,
         panCoords,
         markers = [],
-        sasbLocation = new google.maps.LatLng(40.7532, -73.9822),
-        searchMarker = new google.maps.Marker({}),
+        filteredLocation,
+        sasbLocation = new google.maps.LatLng(40.7632, -73.9822),
+        searchMarker = new google.maps.Marker({
+            icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+        }),
+        userMarker = new google.maps.Marker({
+            icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+            zIndex: 1000,
+            animation: google.maps.Animation.DROP
+        }),
         searchInfoWindow = new google.maps.InfoWindow(),
         infowindow = new google.maps.InfoWindow();
 
@@ -20,6 +28,10 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
                 sw_bound = new google.maps.LatLng(40.49, -74.26),
                 ne_bound = new google.maps.LatLng(40.91, -73.77),
                 bounds = new google.maps.LatLngBounds(sw_bound, ne_bound);
+
+            if (address.length < 3) {
+                defer.reject({msg: "query too short"});
+            }
 
             geocoder.geocode(
                 {address: address, bounds: bounds, region: "US"},
@@ -107,15 +119,28 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             map.setZoom(zoom);
         },
 
-        draw_searchMarker: function (coords, text) {
-            this.remove_searchMarker();
-            panCoords = new google.maps.LatLng(coords.lat, coords.long);
+        create_userMarker: function (coords, text) {
+            panCoords = new google.maps.LatLng(coords.latitude, coords.longitude);
+            userMarker.setPosition(panCoords);
+            this.show_infowindow(userMarker, text);
+            markers.push({id: 'user', marker: userMarker, text: text});
+        },
 
+        create_searchMarker: function (coords, text) {
+            panCoords = new google.maps.LatLng(coords.lat, coords.long);
             searchMarker.setPosition(panCoords);
+            searchInfoWindow.setContent(text);
+        },
+
+        draw_searchMarker: function () {
+            this.remove_searchMarker();
+            // panCoords = new google.maps.LatLng(coords.lat, coords.long);
+
+            // searchMarker.setPosition(panCoords);
             searchMarker.setMap(map);
             this.panMap(searchMarker);
 
-            searchInfoWindow.setContent(text);
+            // searchInfoWindow.setContent(text);
             searchInfoWindow.open(map, searchMarker);
             google.maps.event.addListener(searchMarker, 'click', function () {
                 searchInfoWindow.open(map, searchMarker);
@@ -136,6 +161,10 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             markerObj[0].marker.setMap(map);
         },
 
+        check_searchMarker: function() {
+            return searchMarker.getPosition() !== undefined;
+        },
+
         check_marker: function (id) {
             var markerObj = _.where(markers, {id: id});
             return (markerObj[0] !== undefined);
@@ -151,6 +180,18 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
             this.panMap(marker);
             this.show_infowindow(markerObj[0].marker, markerObj[0].text);
+        },
+
+        search_result_marker: function (locations) {
+            var location_id = locations[0].slug;
+            filteredLocation = location_id;
+            if (this.check_marker(location_id)) {
+                this.pan_existing_marker(location_id);
+            }
+        },
+
+        get_filtered_location: function () {
+            return filteredLocation;
         },
 
         show_research_libraries: function () {

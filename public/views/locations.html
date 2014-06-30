@@ -2,9 +2,8 @@
 
   <section class="search-locations">
     <div class="grid">
-
+      <!-- Search Section: Search Box/Filters -->
       <form class="locations-search-form grid__item one-whole">
-
         <label for="searchTerm" class="search-box-label">Example: Jefferson Market, 10018, 455 Fifth Avenue</label>
         <div class="search-box-area">
           <input class="search-box" id="searchTerm" type="text" placeholder="Example: Jefferson Market, 10018, 455 Fifth Avenue" data-ng-model="searchTerm"/>
@@ -19,19 +18,20 @@
         </div>
 
         <div class="search-filters" data-ng-if="locations">
+          <span>{{ 'SHOW_ME' | translate }}:</span>
     	    <div class="filters__current" data-ng-if="geolocationOn">
             <p>
-              <span>{{ 'SHOW_ME' | translate }}:</span>
               <span class="current-location-container">
-                <a id="currentloc" class="btn btn--natural whiteText" href="" data-ng-click="useGeolocation()">
+                <a id="currentloc" class="btn btn--natural whiteText" 
+                  href="" data-ng-if="geolocationOn" data-ng-click="useGeolocation()">
                 {{ 'USER_LOCATION' | translate }}
                 </a>
               </span>
+              <span>{{ 'RESEARCH_TEXT' | translate}}</span>
             </p>
           </div>
     	    <div class="filters__research">
             <p>
-              <span>{{ 'RESEARCH_TEXT' | translate}}</span>
               <span class="only-research-container">
                 <a id="onlyresearch" class="btn btn--natural whiteText" 
                   data-ng-class="{false: '', true: ''}[researchBranches]" href="" data-ng-click="showResearch()">
@@ -41,91 +41,38 @@
             </p>
           </div>
         </div>
-        
       </form>
+
+      <div class="search_result_text grid__item">
+        <div id="distanceerror" data-ng-if="distanceError">
+          {{distanceError}} {{ 'STILL_SEARCH_DIRECTIONS' | translate }}</div>
+        <div id="searchError" data-ng-if="searchError">
+          {{ 'NO_RESULTS' | translate }} <strong>{{searchError}}</strong> {{ 'WITHIN_25_MILES' | translate }}</div>
+        <div id="resultsnear" data-ng-if="geolocationAddressOrSearchQuery">
+          {{ 'SHOWING_RESULTS_NEAR' | translate }} <a href="">{{geolocationAddressOrSearchQuery}}</a></div>
+      </div>
+
     </div>
   </section>
 
-  <div id="all-locations-map" class="grid__item one-whole lap-and-up-one-half nypl-map"></div>
-  <div id="all-locations-map-legend" class="hide-legend">
-    <span data-ng-if="locations"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
-      {{ 'NYPL_MARKER' | translate }}<br /></span>
-    <span data-ng-if="locationStart"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
-      {{ 'USER_MARKER' | translate }}</span>
-  </div>
-
-
-
-
-  <section class="list">
- 
-
-    <section class="results--heds grid one-whole push-half--left epsilon orangeDarkerText">
-      <div id="nameSorter" class="grid__item one-quarter location-sorter" ng-click="predicate = 'name'; reverse=!reverse">
-        {{ 'LOCATION_HEADER' | translate }}
-      </div><!--
-
-      --><div id="distanceSorter" class="grid__item one-quarter"
-        data-ng-class="{false: '', true: 'location-sorter'}[predicate=='distance']" ng-click="distanceSort()">
-        {{ 'DISTANCE_HEADER' | translate }}
-      </div><!--
-
-      --><div class="grid__item one-quarter">{{ 'HOURS_HEADER' | translate }}</div><!--
-
-    --><div class="grid__item one-quarter">{{ 'SERVICES_HEADER' | translate }}</div>
-    </section>
-
-    <!-- Locations are in h-card microformat -->
-    <!-- http://microformats.org/wiki/h-card -->
-
-    <section class="grid one-whole location push-half--left {{location._id}} {{location.highlight}}" 
-      data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse | limitTo: libraryLimit">
-
-      <div class="results--location h-card grid__item one-half lap-and-up-one-quarter">
-        <div class="p-org beta"><a href='/#/{{location.slug}}'>{{location.name}}</a></div>
-        <div class="p-adr">
-          <div class="p-street-address">{{location.street_address}}</div>
-          <span class="p-locality">{{location.locality}}</span>, 
-          <span class="p-region">{{location.region}}</span>, 
-          <span class="p-postal-code">{{location.postal_code}}</span>
-        </div>
-        <div class="p-tel" data-ng-if="location.contacts.phone">Phone: {{location.contacts.phone}}</div>
-      </div><!--
-
-      --><div class="results--more grid__item one-half lap-and-up-three-quarters hard--left">
-        
-        <div class="results--distance grid__item one-whole lap-and-up-one-third">
-          <div class="distance" data-ng-if="location.distance"><strong>{{location.distance}} {{ 'MILES' | translate}}</strong></div>
-          <div><a class="icon-map" href="/#/{{location.slug}}/map">{{ 'VIEW_MAP' | translate}}</a></div>
-          <div>
-            <a class="icon-compass" 
-              href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
-              {{ 'DIRECTIONS' | translate }}</a>
-          </div>
-        </div><!--
-
-        --><div class="results--hours h-card grid__item one-whole lap-and-up-one-third">
-            {{ location.hoursToday(location.hours) | timeFormat }}
-        </div><!-- 
-
-        --><div class="results--services h-card grid__item one-whole lap-and-up-one-third">
-          <ul>
-            <li data-ng-repeat="service in location._embedded.services | limitTo:3">
-              {{service.name}}
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section> 
-    <!-- End of ng-repeat -->
-
-    <section class="grid one-whole" data-ng-if='locations'>
-      <div id="showing" class="grid--center grid__item">
-        {{ 'SHOWING' | translate }} {{libraryLimit}} {{ 'OF' | translate }} {{totalLocations}} {{ 'LOCATIONS' | translate }}</div>
-      <div class="grid--center grid__item" data-ng-if="showMore">
-        <a href="" id="showmore" class="btn" data-ng-click="viewMore()">Show {{increaseBy}}</a>
-      </div>
-    </section>
-
+  <!-- Views Control Section -->
+  <section class="views-tab-controls">
+    <div class="list-view-btn" data-ng-click="view='list'" ng-class="{'active': view=='list'}">List View</div>
+    <div class="map-view-btn" data-ng-click="view='map'" ng-class="{'active': view=='map'}">Map View</div>
   </section>
+
+  <!-- Conditional | List/Map Views -->
+  <div data-ng-switch on="view">
+    <div data-ng-switch-when="list">
+      <ng-include src="'views/location-list-view.html'"></ng-include>
+    </div>
+
+    <div data-ng-switch-when="map">
+      <ng-include src="'views/location-map-view.html'" onLoad="drawMap()"></ng-include>
+    </div>
+
+    <div data-ng-switch-default>
+      <ng-include src="'views/location-list-view.html'"></ng-include>
+    </div>
+  </div>
 </div>

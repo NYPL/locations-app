@@ -33,7 +33,7 @@
             {{ 'IDV_DIVISION_HOURS' | translate }}
           </p>
 
-          <a id="catalog-link" class="icon-books" href="{{ location.catalog }}">Catalog Items Here</a>
+          
       </div><!--
         
       --><div id="container__address" class="grid__item one-whole lap-one-half desk-one-third">
@@ -56,14 +56,17 @@
             <a class="icon-map" href="/#/{{location.slug}}/map">{{ 'MAP' | translate }}</a>
           </div>
 
-          <div class="social flush beta" data-ng-if="location.social_media">
+		  <a id="catalog-link" class="icon-books" href="{{ location.catalog }}">Catalog Items Here</a>
+
+          <div class="social beta" data-ng-if="location.social_media">
             <a class="{{social.classes}}" href="{{social.href}}" 
               data-ng-repeat="social in location.social_media" class="inline"></a>
           </div>
+          
         </div><!--
 
         --><div id="container__image" class="grid__item desk-one-third">
-            <img class="" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map">
+            <img class="" data-ng-src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map">
         </div>
     </div>
   </div>
@@ -74,6 +77,7 @@
       <div class="grid__item one-whole">
         <div class="callout">
           <ul class="flush">
+            <li class="title">Highlighted Services: </li>
             <li class="icon-book"><span>Lending</span></li>
             <li class="icon-box-add"><span>Book drop</span></li>
           </ul> 
@@ -88,7 +92,7 @@
     <h2 class="hdg">{{ 'DIVISION_HEADER' | translate }}</h2>
     <div class="grid">
       <div class="grid__item one-whole desk-one-third" data-ng-repeat='division in location._embedded.divisions'>
-        <img class="one-half tablet-and-up-one-third desk-one-half img--left img--outline" src="http://nypl.org{{division.image}}" alt="" style="height: 100px;" />
+        <img class="one-half tablet-and-up-one-third desk-one-half img--left img--outline" data-ng-src="http://nypl.org{{division.image}}" alt="" style="height: 100px;" />
         <h4 class=""><a href="/#/division/{{division.slug}}">{{division.name}}</a></h4>
         <p data-ng-if="division.hours">Hours today: {{hoursToday(division.hours) | timeFormat}}</p>
       </div>
@@ -100,22 +104,22 @@
     <h2 class="hdg">{{ 'FEATURED' | translate }}</h2>
     <div class="grid">
 
-      <div class="grid__item one-whole lap-and-up-one-third">
-        <img class="one-half tablet-and-up-one-third desk-one-half img--left img--outline" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map">
-        <h4 class="">Feature One, Which Might Be an Event at Schwarzman</h4>
-        <p>Bring your yarn, crochet hook or knitting needles. Enjoy an afternoon of conversation and stay afterwards to enjoy the movie.</p>
+      <div class="chunk one-whole lap-and-up-one-third">
+        <img class="one-whole   img--left img--outline" data-ng-src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map">
+        <h3 class="">Feature One, Which Might Be an Event at Schwarzman</h3>
+        <p class="desc">Bring your yarn, crochet hook or knitting needles. Enjoy an afternoon of conversation and stay afterwards to enjoy the movie.</p>
       </div><!--
 
-      --><div class="grid__item one-whole lap-and-up-one-third">
-        <img class="one-half tablet-and-up-one-third desk-one-half img--left img--outline" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map">
-        <h4 class="">Feature One, Which Might Be an Event at Schwarzman</h4>
-        <p>Bring your yarn, crochet hook or knitting needles. Enjoy an afternoon of conversation and stay afterwards to enjoy the movie.</p>
+      --><div class="chunk one-whole lap-and-up-one-third">
+        <img class="one-whole   img--left img--outline" data-ng-src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map">
+        <h3 class="">Feature One, Which Might Be an Event at Schwarzman</h3>
+        <p class="desc">Bring your yarn, crochet hook or knitting needles. Enjoy an afternoon of conversation and stay afterwards to enjoy the movie.</p>
       </div><!--
 
-      --><div class="grid__item one-whole lap-and-up-one-third">
-        <img class="one-half tablet-and-up-one-third desk-one-half img--left img--outline" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map">
-        <h4 class="">Feature One, Which Might Be an Event at Schwarzman</h4>
-        <p>Bring your yarn, crochet hook or knitting needles. Enjoy an afternoon of conversation and stay afterwards to enjoy the movie.</p>
+      --><div class="chunk one-whole lap-and-up-one-third">
+        <img class="one-whole   img--left img--outline" data-ng-src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map">
+        <h3 class="">Feature One, Which Might Be an Event at Schwarzman</h3>
+        <p class="desc">Bring your yarn, crochet hook or knitting needles. Enjoy an afternoon of conversation and stay afterwards to enjoy the movie.</p>
       </div> 
     </div>
   </div>
@@ -124,23 +128,24 @@
   <div id="container__events" data-ng-if="location._embedded.events">
     <h2 class="hdg">{{ 'EVENTS' | translate }}</h2>
     <ul class="grid">
-      <li class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="event in location._embedded.events">
-        <h4><a href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h4>
-        <p>{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
-        <p>{{event.body}}</p>
-        <div class="callout">
-          <aside class="event-buttons">
-            <a href="" class="btn gradient whiteText">
-              {{ 'REGISTER' | translate }}
-            </a>
+      <li class="chunk one-whole lap-and-up-one-third" data-ng-repeat="event in location._embedded.events">
+        <h3><a href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h3>
+        <p class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        <p class="desc">{{event.body}}</p>
 
-            <a href="{{calendar_link('google', event, location)}}" target="_blank" rel="nofollow" class="btn indigo whiteText">
+        <div class="">
+          <aside class="event-buttons">
+	        <a href="" class="btn btn--natural gradient whiteText">
+	          {{ 'REGISTER' | translate }}
+	        </a>
+
+            <a href="{{calendar_link('google', event, location)}}" target="_blank" rel="nofollow" class="icon-calendar">
               Google
             </a>
-            <a href="{{calendar_link('yahoo', event, location)}}" target="_blank" rel="nofollow" class="btn indigo whiteText">
+            <a href="{{calendar_link('yahoo', event, location)}}" target="_blank" rel="nofollow" class="icon-calendar">
               Yahoo
             </a>
-            <a href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" download="nypl_event.ics" rel="nofollow" class="btn indigo whiteText">
+            <a href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" download="nypl_event.ics" rel="nofollow" class="icon-calendar">
               iCal
             </a>
           </aside>
@@ -177,7 +182,7 @@
         </div>
 
         <div id="location-secondary-img" data-ng-if="location.type == 'circulating'">
-          <img class="one-whole lap-and-up-one-whole" src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map">
+          <img class="one-whole lap-and-up-one-whole" data-ng-src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map">
         </div>
       </div><!--
 
@@ -194,10 +199,10 @@
   <div id="container__blogs" data-ng-if="location.type != 'research' && location._embedded.blogs">
     <h2 class="hdg">{{ 'BLOGS' |translate }}</h2>
     <div class="grid">
-      <div class="grid__item one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
-        <img data-ng-if="blog.image" class="img--left" src="{{blog.image}}" alt="" style="height: 100px;" />
-        <h4><a href="http://nypl.org/{{blog._links.self.href}}">{{blog.title}}</a></h4>
-        <div class="teaser">{{blog.body | truncate}}</div>
+      <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
+        <h3><a href="http://nypl.org/{{blog._links.self.href}}">{{blog.title}}</a></h3>
+        <img data-ng-if="blog.image" class="img--left" data-ng-src="{{blog.image}}" alt="" style="height: 100px;" />
+        <div class="teaser desc">{{blog.body | truncate}}</div>
       </div>
     </div>
   </div>
@@ -207,7 +212,7 @@
     <h2 class="hdg">{{ 'EXHIBITION' | translate }}</h2>
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='exhibition in location._embedded.exhibitions'>
-        <img data-ng-if="exhibition.image" class="img--left" src="{{exhibition.image}}" alt="" style="height: 100px;" />
+        <img data-ng-if="exhibition.image" class="img--left" data-ng-src="{{exhibition.image}}" alt="" style="height: 100px;" />
         <h4><a href="{{exhibition._links.self.href}}">{{exhibition.title}}</a></h4>
         <div class="teaser">{{exhibition.body | truncate}}</div>
         <div class="callout">
