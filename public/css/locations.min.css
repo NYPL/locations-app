@@ -1,6 +1,15 @@
 /*------------------------------------*\
   NYPL LOCATIONS
 \*------------------------------------*/
+/* Viewports */
+/*
+** Usage:
+** @include breakpoint($min, $tablet) {...}
+** OR
+** @include breakpoint($max, $desktop) {...}
+** OR
+** @include breakpoint(null, $palm, $tablet) {...}
+*/
 /*
 ** Main page wrapper
 */
@@ -44,14 +53,14 @@
   /** Locations Map View **/ }
   .container__all-locations .search-locations .search-box-label {
     text-align: center; }
-    @media only screen and (min-width: 601px) {
+    @media screen and (min-width: 600.1px) {
       .container__all-locations .search-locations .search-box-label {
         text-align: left; } }
   .container__all-locations .search-locations .search-box-area {
     position: relative;
     height: 45px;
     display: block; }
-    @media only screen and (min-width: 601px) {
+    @media screen and (min-width: 600.1px) {
       .container__all-locations .search-locations .search-box-area {
         width: 80%;
         display: inline-block; } }
@@ -74,7 +83,7 @@
         cursor: pointer; }
   .container__all-locations .search-locations .search-button-area {
     height: 60px; }
-    @media only screen and (min-width: 601px) {
+    @media screen and (min-width: 600.1px) {
       .container__all-locations .search-locations .search-button-area {
         height: auto;
         display: inline-block;
@@ -88,7 +97,7 @@
       right: 0;
       width: 45%;
       height: 45px; }
-      @media only screen and (min-width: 601px) {
+      @media screen and (min-width: 600.1px) {
         .container__all-locations .search-locations .search-button-area #find-location {
           position: relative;
           left: inherit;
@@ -96,41 +105,41 @@
           width: 99%;
           margin: 0;
           border-radius: 0; } }
-      @media only screen and (min-width: 980px) {
+      @media screen and (min-width: 980px) {
         .container__all-locations .search-locations .search-button-area #find-location {
           width: 80%; } }
   .container__all-locations .search-filters {
     margin: 1em 0; }
     .container__all-locations .search-filters .filters__current {
       margin: 0; }
-      @media only screen and (min-width: 601px) {
+      @media screen and (min-width: 600.1px) {
         .container__all-locations .search-filters .filters__current {
           display: inline-block; } }
       .container__all-locations .search-filters .filters__current p {
         text-align: center;
         margin: 0;
         max-width: none; }
-        @media only screen and (min-width: 601px) {
+        @media screen and (min-width: 600.1px) {
           .container__all-locations .search-filters .filters__current p {
             text-align: left; } }
         .container__all-locations .search-filters .filters__current p .current-location-container {
           display: block; }
-          @media only screen and (min-width: 601px) {
+          @media screen and (min-width: 600.1px) {
             .container__all-locations .search-filters .filters__current p .current-location-container {
               display: inline; } }
-    @media only screen and (min-width: 601px) {
+    @media screen and (min-width: 600.1px) {
       .container__all-locations .search-filters .filters__research {
         display: inline-block; } }
     .container__all-locations .search-filters .filters__research p {
       text-align: center;
       margin: 0;
       max-width: none; }
-      @media only screen and (min-width: 601px) {
+      @media screen and (min-width: 600.1px) {
         .container__all-locations .search-filters .filters__research p {
           text-align: left; } }
       .container__all-locations .search-filters .filters__research p .only-research-container {
         display: block; }
-        @media only screen and (min-width: 601px) {
+        @media screen and (min-width: 600.1px) {
           .container__all-locations .search-filters .filters__research p .only-research-container {
             display: inline; } }
   .container__all-locations .locations-results-list {
@@ -139,12 +148,12 @@
       display: block;
       width: 100%;
       border-collapse: collapse; }
-      @media only screen and (min-width: 601px) {
+      @media screen and (min-width: 600.1px) {
         .container__all-locations .locations-results-list table.locations-list-view {
           display: table; } }
       .container__all-locations .locations-results-list table.locations-list-view thead {
         display: block; }
-        @media only screen and (min-width: 601px) {
+        @media screen and (min-width: 600.1px) {
           .container__all-locations .locations-results-list table.locations-list-view thead {
             display: table-header-group; } }
         .container__all-locations .locations-results-list table.locations-list-view thead tr {
@@ -152,7 +161,7 @@
           position: absolute;
           top: -9999px;
           left: -9999px; }
-          @media only screen and (min-width: 601px) {
+          @media screen and (min-width: 600.1px) {
             .container__all-locations .locations-results-list table.locations-list-view thead tr {
               display: table-row;
               position: relative;
@@ -161,31 +170,31 @@
           .container__all-locations .locations-results-list table.locations-list-view thead tr th {
             display: block;
             background: #eee; }
-            @media only screen and (min-width: 601px) {
+            @media screen and (min-width: 600.1px) {
               .container__all-locations .locations-results-list table.locations-list-view thead tr th {
                 display: table-cell; } }
       .container__all-locations .locations-results-list table.locations-list-view tbody {
         display: block; }
-        @media only screen and (min-width: 601px) {
+        @media screen and (min-width: 600.1px) {
           .container__all-locations .locations-results-list table.locations-list-view tbody {
             display: table-row-group; } }
         .container__all-locations .locations-results-list table.locations-list-view tbody tr {
           display: block;
           border: 1px solid #eee; }
-          @media only screen and (min-width: 601px) {
+          @media screen and (min-width: 600.1px) {
             .container__all-locations .locations-results-list table.locations-list-view tbody tr {
               display: table-row;
               border-bottom: 1px solid #eee; } }
           .container__all-locations .locations-results-list table.locations-list-view tbody tr td {
             border: none;
             position: relative;
-            padding-left: 50%;
+            padding-left: 27%;
             display: block;
             font-size: 13.5px; }
-            @media only screen and (min-width: 420px) {
+            @media screen and (min-width: 480px) {
               .container__all-locations .locations-results-list table.locations-list-view tbody tr td {
                 font-size: inherit; } }
-            @media only screen and (min-width: 601px) {
+            @media screen and (min-width: 600.1px) {
               .container__all-locations .locations-results-list table.locations-list-view tbody tr td {
                 display: table-cell;
                 padding-left: 12px; } }
@@ -197,7 +206,7 @@
               width: 45%;
               padding-right: 10px;
               white-space: nowrap; }
-              @media only screen and (min-width: 601px) {
+              @media screen and (min-width: 600.1px) {
                 .container__all-locations .locations-results-list table.locations-list-view tbody tr td:before {
                   position: relative;
                   top: inherit;
@@ -205,20 +214,20 @@
                   width: auto;
                   padding-left: initial;
                   white-space: nowrap; } }
-            @media only screen and (max-width: 601px) {
+            @media screen and (max-width: 600.1px) {
               .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(1):before {
                 content: "Location"; } }
-            @media only screen and (max-width: 601px) {
+            @media screen and (max-width: 600.1px) {
               .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(2):before {
-                content: "Highlighted Services"; } }
-            @media only screen and (max-width: 601px) {
+                content: ""; } }
+            @media screen and (max-width: 600.1px) {
               .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(3):before {
                 content: "Today's Hours"; } }
       .container__all-locations .locations-results-list table.locations-list-view td.location-info .p-org {
         font-weight: bold; }
       .container__all-locations .locations-results-list table.locations-list-view td.location-info .map-link, .container__all-locations .locations-results-list table.locations-list-view td.location-info .directions-link {
         display: block; }
-        @media only screen and (min-width: 769px) {
+        @media screen and (min-width: 768px) {
           .container__all-locations .locations-results-list table.locations-list-view td.location-info .map-link, .container__all-locations .locations-results-list table.locations-list-view td.location-info .directions-link {
             display: inline; } }
       .container__all-locations .locations-results-list table.locations-list-view td.services-info ul {
@@ -242,7 +251,7 @@
           margin: 0; }
           .container__all-locations .locations-results-map .locations-data-wrapper .location-data .highlighted-services-list li {
             display: block; }
-            @media only screen and (max-width: 601px) {
+            @media screen and (min-width: 600.1px) {
               .container__all-locations .locations-results-map .locations-data-wrapper .location-data .highlighted-services-list li {
                 display: inline; } }
 

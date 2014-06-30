@@ -1,0 +1,63 @@
+// ==================================================
+// Media Query Mixin: Breakpoint(args)
+// supports mobile first approach as well as non-mobile
+// first; utilize constraints.
+// ==================================================
+
+
+/* Viewports */
+
+// Differential increment
+$viewport-increment: 0.1px;
+
+// Desktop
+$desktop: 1024px;
+$pre-desktop: $desktop - $viewport-increment;
+
+// Tablet
+$tablet: 768px;
+$pre-tablet: $tablet - $viewport-increment;
+
+// Palm
+$palm: 600px;
+$post-palm: $palm + $viewport-increment;
+
+// Mobile Phone
+$mobile-phone: 480px;
+
+// Small Mobile Phone
+$sm-mobile-phone: 320px;
+
+// Constraints:
+$min: min-width;
+$max: max-width;
+
+/*
+** Usage:
+** @include breakpoint($min, $tablet) {...}
+** OR
+** @include breakpoint($max, $desktop) {...}
+** OR
+** @include breakpoint(null, $palm, $tablet) {...}
+*/
+@mixin breakpoint($constraint, $viewport1, $viewport2: null) {
+
+  @if $constraint == $min {
+
+    @media screen and ($min: $viewport1) {
+      @content;
+    }
+  }
+  @else if $constraint == $max {
+
+    @media screen and ($max: $viewport1) {
+      @content;
+    }
+  }
+  @else {
+
+    @media screen and ($min: $viewport1) and ($max: $viewport2) {
+      @content;
+    }
+  }
+}

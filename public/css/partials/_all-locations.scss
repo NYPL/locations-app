@@ -10,7 +10,7 @@
 		.search-box-label {
 			text-align: center;
 
-			@media only screen and (min-width: 601px) {
+			@include breakpoint($min, $post-palm) {
 				text-align: left;
 			}
 		}
@@ -20,7 +20,7 @@
 			height: 45px;
 			display: block;
 
-			@media only screen and (min-width: 601px) {
+			@include breakpoint($min, $post-palm) {
 				width: 80%;
 				display: inline-block;
 			}
@@ -57,7 +57,7 @@
 		.search-button-area {
 			height: 60px;
 
-			@media only screen and (min-width: 601px) {
+			@include breakpoint($min, $post-palm) {
 				height: auto;
 				display: inline-block;
 				width: 19.5%;
@@ -74,7 +74,7 @@
 				width: 45%;
 				height: 45px;
 
-				@media only screen and (min-width: 601px) {
+				@include breakpoint($min, $post-palm) {
 					position: relative;
 					left: inherit;
 					right: inherit;
@@ -83,7 +83,7 @@
 					border-radius: 0;
 				}
 
-				@media only screen and (min-width: 980px) {
+				@include breakpoint($min, 980px) {
 					width: 80%
 				}
 			}
@@ -97,7 +97,7 @@
 		.filters__current {
 			margin: 0;
 
-			@media only screen and (min-width: 601px) {
+			@include breakpoint($min, $post-palm) {
 				display: inline-block;
 			}
 
@@ -106,14 +106,14 @@
 				margin: 0;
 				max-width: none;
 
-				@media only screen and (min-width: 601px) {
+				@include breakpoint($min, $post-palm) {
 					text-align: left;
 				}
 
 				.current-location-container {
 					display: block; 
 
-					@media only screen and (min-width: 601px) {
+					@include breakpoint($min, $post-palm) {
 						display: inline;
 					}
 				}
@@ -122,7 +122,7 @@
 
 		.filters__research {
 
-			@media only screen and (min-width: 601px) {
+			@include breakpoint($min, $post-palm) {
 				display: inline-block;
 			}
 
@@ -131,14 +131,14 @@
 				margin: 0;
 				max-width: none;
 
-				@media only screen and (min-width: 601px) {
+				@include breakpoint($min, $post-palm) {
 					text-align: left;
 				}
 
 				.only-research-container {
 					display: block; 
 
-					@media only screen and (min-width: 601px) {
+					@include breakpoint($min, $post-palm) {
 						display: inline;
 					}
 				}
@@ -155,14 +155,14 @@
 			width: 100%; 
 			border-collapse: collapse;
 
-			@media only screen and (min-width: 601px) {
+			@include breakpoint($min, $post-palm) {
 				display: table;
 			}
 
 			thead {
 				display: block;
 
-				@media only screen and (min-width: 601px) {
+				@include breakpoint($min, $post-palm) {
 					display: table-header-group;
 				}
 
@@ -172,7 +172,7 @@
 					top: -9999px;
 					left: -9999px;
 
-					@media only screen and (min-width: 601px) {
+					@include breakpoint($min, $post-palm) {
 						display: table-row;
 						position: relative;
 						top: inherit;
@@ -183,7 +183,7 @@
 						display: block;
 						background: #eee;
 
-						@media only screen and (min-width: 601px) {
+						@include breakpoint($min, $post-palm) {
 							display: table-cell;
 						}
 					}
@@ -193,7 +193,7 @@
 			tbody {
 				display: block;
 
-				@media only screen and (min-width: 601px) {
+				@include breakpoint($min, $post-palm) {
 					display: table-row-group;
 				}
 
@@ -201,7 +201,7 @@
 					display: block;
 					border: 1px solid #eee;
 
-					@media only screen and (min-width: 601px) {
+					@include breakpoint($min, $post-palm) {
 						display: table-row;
 						border-bottom: 1px solid #eee;
 					}
@@ -209,15 +209,15 @@
 					td {
 						border: none;
 						position: relative;
-						padding-left: 50%;
+						padding-left: 27%;
 						display: block;
 						font-size: 13.5px;
 
-						@media only screen and (min-width: 420px) {
+						@include breakpoint($min, $mobile-phone) {
 							font-size: inherit;
 						}
 
-						@media only screen and (min-width: 601px) {
+						@include breakpoint($min, $post-palm) {
 							display: table-cell;
 							padding-left: 12px;
 						}
@@ -231,7 +231,7 @@
 							padding-right: 10px;
 							white-space: nowrap;
 
-							@media only screen and (min-width: 601px) {
+							@include breakpoint($min, $post-palm) {
 								position: relative;
 								top: inherit;
 								left: inherit;
@@ -242,19 +242,19 @@
 						}
 
 						&:nth-of-type(1):before {
-							@media only screen and (max-width: 601px) {
+							@include breakpoint($max, $post-palm) {
 								content: "Location";
 							}
 						}
 
 						&:nth-of-type(2):before {
-							@media only screen and (max-width: 601px) {
-								content: "Highlighted Services";
+							@include breakpoint($max, $post-palm) {
+								content: "";
 							}
 						}
 
 						&:nth-of-type(3):before {
-							@media only screen and (max-width: 601px) {
+							@include breakpoint($max, $post-palm) {
 								content: "Today's Hours";
 							}
 						}
@@ -274,7 +274,7 @@
 					.map-link, .directions-link {
 						display: block; 
 
-						@media only screen and (min-width: 769px) {
+						@include breakpoint($min, $tablet) {
 							display: inline;
 						}
 
@@ -316,8 +316,8 @@
 
 					li {
 						display: block;
-						
-						@media only screen and (max-width: 601px) {
+
+						@include breakpoint($min, $post-palm) {
 							display: inline;
 						}
 					}
