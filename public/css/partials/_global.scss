@@ -9,10 +9,21 @@
 	max-width: 1200px;
 }
 
+// general "chunk" styling
+.chunk{
+	.desc{
+		color: #7d7872;
+	}
+	
+	.date{
+		font-style: italic;
+	}
+}
+
 // AskNYPL
 .askNYPL {
 	// adjust padding from grid__item
-	@media only screen and (max-width: 601px) {
+	@include breakpoint($min, $post-palm) {
 		padding-left: 0;
 		padding-top: 24px;
 	}
@@ -37,7 +48,7 @@
 	}
 	
 	.asknum {
-		@media only screen and (min-width: 568px) {
+		@include breakpoint($min, $post-palm) {
 			font-size: 36px;
 		}
 	}

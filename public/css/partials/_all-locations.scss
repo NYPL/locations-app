@@ -83,7 +83,7 @@
 					border-radius: 0;
 				}
 
-				@include breakpoint($min, 980px) {
+				@include breakpoint($min, $pre-laptop) {
 					width: 80%
 				}
 			}
