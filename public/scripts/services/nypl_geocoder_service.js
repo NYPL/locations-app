@@ -190,6 +190,10 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             }
         },
 
+        clear_filtered_location: function () {
+            filteredLocation = undefined;
+        },
+
         get_filtered_location: function () {
             return filteredLocation;
         },

@@ -409,6 +409,7 @@ nypl_locations.controller('LocationsCtrl', [
                     if (filteredLocations.length) {
                         nypl_geocoder_service.search_result_marker(filteredLocations);
                     } else {
+                        nypl_geocoder_service.clear_filtered_location();
                         nypl_geocoder_service.create_searchMarker(searchObj.coords, searchObj.searchTerm);
                         if ($scope.view === 'map') {
                             nypl_geocoder_service.draw_searchMarker();
