@@ -35,18 +35,6 @@
 						Phone: {{location.contacts.phone}}
 					</div>
 
-          <!-- Distance -->
-          <div class="distance" data-ng-if="location.distance">
-            Distance: <strong>{{location.distance}} {{ 'MILES' | translate}}</strong>
-          </div>  
-
-          <!-- Map/Directions Links -->
-          <span class="directions-link">
-            <a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
-            {{ 'DIRECTIONS' | translate }}
-            </a>
-          </span>
-
           <!-- Highlighted Services -->
 					<div class="loc-services">
             <ul class="highlighted-services-list">
@@ -56,6 +44,18 @@
             </ul>
 					</div>
 	  		</div>
+
+          <!-- Distance -->
+          <div class="distance" data-ng-if="location.distance">
+            Distance: <strong>{{location.distance}} {{ 'MILES' | translate}}</strong>
+          </div>  
+
+          <!-- Map/Directions Links -->
+          <div class="directions-link">
+            <a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
+            {{ 'DIRECTIONS' | translate }}
+            </a>
+          </div>
 
 	    </div>
 	  </div>
