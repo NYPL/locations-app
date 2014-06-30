@@ -283,7 +283,7 @@ nypl_locations.controller('LocationsCtrl', [
             };
 
         $rootScope.title = "Locations";
-
+        $scope.view = 'list';
         $scope.drawMap = function () {
             nypl_geocoder_service
                 .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
@@ -299,6 +299,10 @@ nypl_locations.controller('LocationsCtrl', [
                 mapInit();
             }
             mapview = true;
+
+            if ($scope.select_library_for_map) {
+                nypl_geocoder_service.pan_existing_marker($scope.select_library_for_map);
+            }
         }
 
         loadLocations();
@@ -308,6 +312,11 @@ nypl_locations.controller('LocationsCtrl', [
                 $scope.predicate = 'distance';
                 $scope.reverse = !$scope.reverse;
             }
+        };
+
+        $scope.viewMapLibrary = function (library_id) {
+            $scope.view = 'map';
+            $scope.select_library_for_map = library_id;
         };
 
         $scope.useGeolocation = function () {
