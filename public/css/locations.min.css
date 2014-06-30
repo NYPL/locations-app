@@ -155,6 +155,8 @@
       color: #ffffff;
       opacity: .65;
       margin-bottom: -1px; }
+      .container__all-locations .views-tab-controls div.list-view-btn {
+        margin-right: 5px; }
       .container__all-locations .views-tab-controls div.active {
         opacity: 1; }
       .container__all-locations .views-tab-controls div:hover {
