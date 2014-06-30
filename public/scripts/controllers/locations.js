@@ -317,6 +317,9 @@ nypl_locations.controller('LocationsCtrl', [
         $scope.viewMapLibrary = function (library_id) {
             $scope.view = 'map';
             $scope.select_library_for_map = library_id;
+
+            var location = _.where($scope.locations, { 'slug' : library_id });
+            organizeLocations($scope.locations, location, 'name');
         };
 
         $scope.useGeolocation = function () {
