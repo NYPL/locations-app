@@ -153,6 +153,7 @@ nypl_locations.controller('LocationsCtrl', [
 
                         $scope.locations = locations;
                         $scope.predicate = 'distance';
+                        nypl_geocoder_service.create_userMarker(userCoords, "Your Current Location");
                         draw_user_marker();
 
                         return userCoords;
@@ -165,14 +166,14 @@ nypl_locations.controller('LocationsCtrl', [
                         nypl_geocoder_service.pan_existing_marker('user');
                         nypl_geocoder_service.add_marker_to_map('user');
                     } else {
-                        nypl_geocoder_service
-                            .draw_marker(
-                                'user',
-                                userCoords,
-                                "Your Current Location",
-                                true,
-                                true
-                            );
+                        // nypl_geocoder_service
+                        //     .draw_marker(
+                        //         'user',
+                        //         userCoords,
+                        //         "Your Current Location",
+                        //         true,
+                        //         true
+                        //     );
                     }
                 }
             },
@@ -310,6 +311,11 @@ nypl_locations.controller('LocationsCtrl', [
             if ($scope.select_library_for_map) {
                 nypl_geocoder_service.pan_existing_marker($scope.select_library_for_map);
             }
+
+            var filteredLocation = nypl_geocoder_service.get_filtered_location();
+            if (filteredLocation) {
+                nypl_geocoder_service.pan_existing_marker(filteredLocation);
+            }
         }
 
         $scope.distanceSort = function () {
@@ -355,6 +361,8 @@ nypl_locations.controller('LocationsCtrl', [
         $scope.clearSearch = function () {
             $scope.searchMarker = false;
             $scope.researchBranches = false;
+            $scope.searchTerm = '';
+
             show_libraries_type_of();
             nypl_geocoder_service.show_all_libraries();
             nypl_geocoder_service.remove_searchMarker();
