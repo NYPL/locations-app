@@ -448,6 +448,9 @@ nypl_locations.controller('LocationsCtrl', [
             if ($scope.researchBranches) {
                 nypl_geocoder_service.show_research_libraries();
                 show_libraries_type_of('research');
+                if ($scope.view === 'map') {
+                    nypl_geocoder_service.panMap();
+                }
             } else {
                 nypl_geocoder_service.show_all_libraries();
                 show_libraries_type_of();
@@ -514,9 +517,6 @@ nypl_locations.controller('LocationCtrl', [
                                 .socialMediaColor($scope.location.social_media);
             			$scope.location.catalog =
             			    nypl_utility.catalog_items_link($scope.location.name);
-
-
-                        //console.log($scope.location); //Debugging
                     })
                     .catch(function (err) {
                         throw err;

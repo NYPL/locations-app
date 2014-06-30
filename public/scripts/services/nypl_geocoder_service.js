@@ -182,7 +182,6 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
                 // we do not want to remove it at all. Use slug names
                 list = ['schwarzman', 'lpa', 'sibl', 'schomburg', 'user'];
 
-            this.panMap();
             _.each(markers, function (marker) {
                 if (!_.contains(list, marker.id)) {
                     _this.remove_marker(marker.id);
