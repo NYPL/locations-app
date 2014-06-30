@@ -4,13 +4,13 @@
 
 .container__all-locations {
 
-	// Search Area
+	/** Search Area **/
 	.search-locations {
 
 		.search-box-label {
 			text-align: center;
 
-			@media only screen and (min-width: 601px) {
+			@include breakpoint($min, $post-palm) {
 				text-align: left;
 			}
 		}
@@ -20,7 +20,7 @@
 			height: 45px;
 			display: block;
 
-			@media only screen and (min-width: 601px) {
+			@include breakpoint($min, $post-palm) {
 				width: 80%;
 				display: inline-block;
 			}
@@ -57,7 +57,7 @@
 		.search-button-area {
 			height: 60px;
 
-			@media only screen and (min-width: 601px) {
+			@include breakpoint($min, $post-palm) {
 				height: auto;
 				display: inline-block;
 				width: 19.5%;
@@ -74,7 +74,7 @@
 				width: 45%;
 				height: 45px;
 
-				@media only screen and (min-width: 601px) {
+				@include breakpoint($min, $post-palm) {
 					position: relative;
 					left: inherit;
 					right: inherit;
@@ -83,21 +83,21 @@
 					border-radius: 0;
 				}
 
-				@media only screen and (min-width: 980px) {
-					width: 70%
+				@include breakpoint($min, 980px) {
+					width: 80%
 				}
 			}
 		}
 	}
 
-	// Filters Section
+	/** Filters Section **/
 	.search-filters {
 		margin: 1em 0;
 
 		.filters__current {
 			margin: 0;
 
-			@media only screen and (min-width: 601px) {
+			@include breakpoint($min, $post-palm) {
 				display: inline-block;
 			}
 
@@ -106,14 +106,14 @@
 				margin: 0;
 				max-width: none;
 
-				@media only screen and (min-width: 601px) {
+				@include breakpoint($min, $post-palm) {
 					text-align: left;
 				}
 
 				.current-location-container {
 					display: block; 
 
-					@media only screen and (min-width: 601px) {
+					@include breakpoint($min, $post-palm) {
 						display: inline;
 					}
 				}
@@ -122,7 +122,7 @@
 
 		.filters__research {
 
-			@media only screen and (min-width: 601px) {
+			@include breakpoint($min, $post-palm) {
 				display: inline-block;
 			}
 
@@ -131,20 +131,225 @@
 				margin: 0;
 				max-width: none;
 
-				@media only screen and (min-width: 601px) {
+				@include breakpoint($min, $post-palm) {
 					text-align: left;
 				}
 
 				.only-research-container {
 					display: block; 
 
-					@media only screen and (min-width: 601px) {
+					@include breakpoint($min, $post-palm) {
 						display: inline;
 					}
 				}
 			}
 		}
-
 	}
 
+	/** Locations List View (no-map) **/
+	.locations-results-list {
+		margin-top: 10px;
+
+		table.locations-list-view {
+			display: block;
+			width: 100%; 
+			border-collapse: collapse;
+
+			@include breakpoint($min, $post-palm) {
+				display: table;
+			}
+
+			thead {
+				display: block;
+
+				@include breakpoint($min, $post-palm) {
+					display: table-header-group;
+				}
+
+				tr {
+					display: block;
+					position: absolute;
+					top: -9999px;
+					left: -9999px;
+
+					@include breakpoint($min, $post-palm) {
+						display: table-row;
+						position: relative;
+						top: inherit;
+						left: inherit;
+					}
+
+					th {
+						display: block;
+						background: #eee;
+
+						@include breakpoint($min, $post-palm) {
+							display: table-cell;
+						}
+					}
+				}
+			}
+
+			tbody {
+				display: block;
+
+				@include breakpoint($min, $post-palm) {
+					display: table-row-group;
+				}
+
+				tr {
+					display: block;
+					border: 1px solid #eee;
+
+					@include breakpoint($min, $post-palm) {
+						display: table-row;
+						border-bottom: 1px solid #eee;
+					}
+
+					td {
+						border: none;
+						position: relative;
+						padding-left: 27%;
+						display: block;
+						font-size: 13.5px;
+
+						@include breakpoint($min, $mobile-phone) {
+							font-size: inherit;
+						}
+
+						@include breakpoint($min, $post-palm) {
+							display: table-cell;
+							padding-left: 12px;
+						}
+
+						&:before {
+							font-weight: bold;
+							position: absolute;
+							top: 37.5%;
+							left: 6px;
+							width: 45%;
+							padding-right: 10px;
+							white-space: nowrap;
+
+							@include breakpoint($min, $post-palm) {
+								position: relative;
+								top: inherit;
+								left: inherit;
+								width: auto;
+								padding-left: initial;
+								white-space: nowrap;
+							}
+						}
+
+						&:nth-of-type(1):before {
+							@include breakpoint($max, $post-palm) {
+								content: "Location";
+							}
+						}
+
+						&:nth-of-type(2):before {
+							@include breakpoint($max, $post-palm) {
+								content: "";
+							}
+						}
+
+						&:nth-of-type(3):before {
+							@include breakpoint($max, $post-palm) {
+								content: "Today's Hours";
+							}
+						}
+
+					}
+				}
+			}
+
+			td {
+
+				&.location-info {
+
+					.p-org {
+						font-weight: bold;
+					}
+
+					.map-link, .directions-link {
+						display: block; 
+
+						@include breakpoint($min, $tablet) {
+							display: inline;
+						}
+
+					}
+				}
+
+				&.services-info {
+					ul {
+						margin: 0 0 0 .5em;
+					}
+				}
+			}
+		}
+	}
+
+	/** Locations Map View **/
+	.locations-results-map {
+		padding-top: 10px;
+		margin: 10px 0px;
+		border-top: 1px solid #eee;
+
+		.locations-data-wrapper { 
+			border: 1px solid #eee;
+			padding: 7px;
+			height: 500px;
+			overflow-x: scroll;
+			overflow-x: hidden;
+
+			.location-data {
+				border-bottom: 1px solid #eee;
+				padding: 5px 0px;
+
+				.p-org {
+					font-weight: bold;
+				}
+
+				.highlighted-services-list {
+					margin: 0;
+
+					li {
+						display: block;
+
+						@include breakpoint($min, $post-palm) {
+							display: inline;
+						}
+					}
+				}
+
+			}
+		}
+
+		#all-locations-map {
+			height: 500px;
+			width: 100%;
+		}
+
+		#all-locations-map-legend {
+			padding: 10px;
+		  font-size: 13px;
+		  font-size: 1.3em;
+		  background: #fff;
+		}
+
+		.hide-legend {
+		  display: none;
+		}
+
+		.show-legend {
+		  display: block;
+		}
+		// Fix to display the closing 'X' on marker's infowindow
+		img[src*="gstatic.com/"], 
+		img[src*="googleapis.com/"] {
+			max-width: none;
+		}
+	}
+	
 }
