@@ -46,9 +46,9 @@
   </section>
 
   <!-- Views Control Section -->
-  <section class="map-list-controls">
-    <div class="list-view-btn btn" data-ng-click="view='list'">List View</div>
-    <div class="map-view-btn btn" data-ng-click="view='map'">Map View</div>
+  <section class="views-tab-controls">
+    <div class="list-view-btn" data-ng-click="view='list'" ng-class="{'active': view=='list'}">List View</div>
+    <div class="map-view-btn" data-ng-click="view='map'" ng-class="{'active': view=='map'}">Map View</div>
   </section>
 
   <!-- Conditional | List/Map Views -->

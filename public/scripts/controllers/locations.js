@@ -46,6 +46,7 @@ nypl_locations.controller('LocationsCtrl', [
                 $scope.totalLocations = $scope.locations.length;
             },
             allLocationsInit = function () {
+                $scope.view = 'list'; // used for active control tabs
                 $scope.reverse = false;
                 $scope.searchTerm = '';
                 $scope.geolocationAddressOrSearchQuery = '';
@@ -283,7 +284,6 @@ nypl_locations.controller('LocationsCtrl', [
             };
 
         $rootScope.title = "Locations";
-        $scope.view = 'list';
         $scope.drawMap = function () {
             nypl_geocoder_service
                 .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
