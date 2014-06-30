@@ -2,6 +2,18 @@
 ** Individual Location's page
 */
 
+
+// general "chunk" styling
+.chunk{
+	.desc{
+		color: #7d7872;
+	}
+	
+	.date{
+		font-style: italic;
+	}
+}
+
 // Spacing for each container
 #container__address,
 #container__image,
@@ -49,6 +61,10 @@
 			}
 		}
 	}
+	
+	.day{
+		font-style: italic;
+	}
 
 	#toggle-hours {
 		display: inline;
@@ -82,50 +98,45 @@
 			} 
 		}
 	}
+}
 
-	#catalog-link {
-		background-color: rgba(#0090c4, .2);
-		border-radius: 2px;
-		color: darken(#0090c4, 10%);
-		padding: 4px;
-		text-decoration: none;
-		margin-left: .35em;
 
-		@media only screen and (min-width: 601px) {
-			margin-left: 52px;
-		}
-		
-		&:hover {
-			color: #0090c4;
-			text-decoration: underline;	
-		}
+#catalog-link {
+	background-color: rgba(#0090c4, .2);
+	border-radius: 2px;
+	color: darken(#0090c4, 10%);
+	padding: 4px;
+	text-decoration: none;
+	margin-left: .35em;
+
+/*
+	@media only screen and (min-width: 601px) {
+		margin-left: 52px;
+	}
+*/
+	
+	&:hover {
+		color: #0090c4;
+		text-decoration: underline;	
 	}
 }
 
 // Address section on top container
 #container__address {
 
-	.p-adr {
-		margin: 0 .35em;
-
-		.p-street-address, .p-manager {
-			margin-bottom: .25em;
-		}
-
-		.p-tel {
-			margin: .25em 0;
-		}
+	.p-adr,
+	.wheelchair,
+	.map-directions,
+	.social {
+		margin-bottom: 1rem;
 	}
 
-	.wheelchair {
-		margin: .25em 0;
-	}
 }
 
 // Events section
 #container__events {
 
-	h4 {
+	h3 {
 		margin-bottom: .05em;
 	}
 	.callout {
@@ -137,7 +148,6 @@
 	}
 
 	.event-buttons {
-		text-align: center;
 		margin: 0; 
 		padding: 0;
 	}
