@@ -325,6 +325,31 @@
 
 			}
 		}
+
+		#all-locations-map {
+			height: 500px;
+			width: 100%;
+		}
+
+		#all-locations-map-legend {
+			padding: 10px;
+		  font-size: 13px;
+		  font-size: 1.3em;
+		  background: #fff;
+		}
+
+		.hide-legend {
+		  display: none;
+		}
+
+		.show-legend {
+		  display: block;
+		}
+		// Fix to display the closing 'X' on marker's infowindow
+		img[src*="gstatic.com/"], 
+		img[src*="googleapis.com/"] {
+			max-width: none;
+		}
 	}
 	
 }

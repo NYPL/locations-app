@@ -22,7 +22,8 @@
             <p>
               <span>{{ 'SHOW_ME' | translate }}:</span>
               <span class="current-location-container">
-                <a id="currentloc" class="btn btn--natural whiteText" href="" data-ng-click="useGeolocation()">
+                <a id="currentloc" class="btn btn--natural whiteText" 
+                  href="" data-ng-if="geolocationOn" data-ng-click="useGeolocation()">
                 {{ 'USER_LOCATION' | translate }}
                 </a>
               </span>
@@ -53,11 +54,11 @@
   <!-- Conditional | List/Map Views -->
   <div data-ng-switch on="view">
     <div data-ng-switch-when="list">
-      <ng-include src="'views/location-list-view.html'"></ng-include>
+      <ng-include src="'views/location-list-view.html'" data-ng-click="map=false"></ng-include>
     </div>
 
     <div data-ng-switch-when="map">
-      <ng-include src="'views/location-map-view.html'"></ng-include>
+      <ng-include src="'views/location-map-view.html'" onLoad="drawMap()"  data-ng-click="map=true"></ng-include>
     </div>
 
     <div data-ng-switch-default>
