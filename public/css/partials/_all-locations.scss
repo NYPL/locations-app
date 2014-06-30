@@ -83,7 +83,7 @@
 					border-radius: 0;
 				}
 
-				@include breakpoint($min, 980px) {
+				@include breakpoint($min, $pre-laptop) {
 					width: 80%
 				}
 			}
@@ -326,7 +326,7 @@
 	/** Locations Map View **/
 	.locations-results-map {
 		padding-top: 10px;
-		margin: 0px 0px 10px 0px;
+		margin: 0px 0px 20px 0px;
 
 		.locations-data-wrapper {
 			border: 1px solid #eee;

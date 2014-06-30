@@ -2,22 +2,9 @@
 ** Individual Location's page
 */
 
-
-// general "chunk" styling
-.chunk{
-	.desc{
-		color: #7d7872;
-	}
-	
-	.date{
-		font-style: italic;
-	}
-}
-
 // Spacing for each container
 #container__address,
 #container__image,
-#container__hours,
 #container__top_services,
 #container__events,
 #container__about,
@@ -31,7 +18,7 @@
 	float: left; // Fix for proper positioning on desktop
 	display: none; // Hidden on mobile
 
-	@media only screen and (min-width: 769px) {
+	@include breakpoint($min, $post-tablet) {
 		display: inline-block;
 	}
 }
@@ -43,7 +30,7 @@
 	#hours-today {
 		margin-left: -.35em;
 
-		@media only screen and (min-width: 601px) {
+		@include breakpoint($min, $post-palm) {
 			margin-left: 0;
 		}
 
@@ -51,7 +38,7 @@
 			font-size: 14px;
 			font-size: 1.4rem;
 
-			@media only screen and (min-width: 601px) {
+			@include breakpoint($min, $post-palm) {
 				font-size: 16px;
 				font-size: 1.6rem;
 			}		
@@ -74,7 +61,7 @@
 			cursor: pointer;
 		}
 
-		@media only screen and (min-width: 601px) {
+		@include breakpoint($min, $post-palm) {
 			display: none;
 		} 
 	}
@@ -82,8 +69,8 @@
 	#location-hours {
 		margin: .75em 0 .75em .35em;
 
-		@media only screen and (min-width: 601px) {
-			margin-left: 52px;
+		@include breakpoint($min, $post-palm) {
+			margin-left: 48px;
 		}
 
 		.hdg {
@@ -93,7 +80,7 @@
 		.weekly-hours {
 			display: none;
 
-			@media only screen and (min-width: 601px) {
+			@include breakpoint($min, $post-palm) {
 				display: block !important;
 			} 
 		}
@@ -108,12 +95,6 @@
 	padding: 4px;
 	text-decoration: none;
 	margin-left: .35em;
-
-/*
-	@media only screen and (min-width: 601px) {
-		margin-left: 52px;
-	}
-*/
 	
 	&:hover {
 		color: #0090c4;
@@ -126,9 +107,14 @@
 
 	.p-adr,
 	.wheelchair,
-	.map-directions,
+	.map-directions {
+		margin-bottom: .75rem;
+		margin-left: .35em;
+	}
+
 	.social {
-		margin-bottom: 1rem;
+		margin-top: .5rem;
+		margin-left: 0;
 	}
 
 }
@@ -163,8 +149,14 @@
 
 			li {
 				display: block;
+				margin-bottom: .35em;
 
-				@media only screen and (min-width: 601px) {
+				&.title {
+					font-weight: bold;
+				}
+
+				@include breakpoint($min, $post-palm) {
+					margin-bottom: 0;
 					margin-right: .35em;
 					display: inline;
 				}
@@ -180,7 +172,7 @@
 			display: inline-block !important;
 			margin: .35em 0;
 
-			@media only screen and (min-width: 601px) {
+			@include breakpoint($min, $post-palm) {
 				margin: 0;
 				position: absolute;
 				right: 7px;
