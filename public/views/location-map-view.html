@@ -6,7 +6,7 @@
   		<!-- Google Map -->
 	    <div class="map-wrapper">
 	    	<!-- Edwin needs to integrate map here, temporary placeholder -->
-				<div id="all-locations-map" class="grid__item one-whole lap-and-up-one-half nypl-map"></div>
+				<div id="all-locations-map" class="nypl-map"></div>
 			  <div id="all-locations-map-legend" class="hide-legend">
 			    <div data-ng-if="locations"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
 			      {{ 'NYPL_MARKER' | translate }}</div>
@@ -43,12 +43,18 @@
               </li>
             </ul>
 					</div>
-	  		</div>
 
           <!-- Distance -->
           <div class="distance" data-ng-if="location.distance">
-            Distance: <strong>{{location.distance}} {{ 'MILES' | translate}}</strong>
-          </div>  
+            <span>Distance</span>:
+            <strong>{{location.distance}} {{ 'MILES' | translate}}</strong>
+          </div>
+
+          <!-- Today's Hours -->
+					<div class="todays-hours">
+							<span>Today's Hours</span>:
+							<strong>{{ location.hoursToday(location.hours) | timeFormat }}</strong>
+					</div>
 
           <!-- Map/Directions Links -->
           <div class="directions-link">
@@ -57,6 +63,7 @@
             </a>
           </div>
 
+	  		</div>
 	    </div>
 	  </div>
   </div>

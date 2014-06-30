@@ -146,6 +146,36 @@
 		}
 	}
 
+	.views-tab-controls {
+		display: none;
+		border-bottom: 2px solid #eee;
+
+		@include breakpoint($min, $post-palm) {
+			display: block;
+		}
+
+		div {
+			display: inline-block;
+			padding: 10px;
+			background-color: #0090c4;
+			color: #ffffff;
+			opacity: .65;
+			margin-bottom: -1px;
+
+			&.list-view-btn {
+				margin-right: 5px;
+			}
+			&.active {
+				opacity: 1;
+			}
+
+			&:hover {
+				cursor: pointer;
+			}
+		}
+
+	}
+
 	/** Locations List View (no-map) **/
 	.locations-results-list {
 		margin-top: 10px;
@@ -209,7 +239,7 @@
 					td {
 						border: none;
 						position: relative;
-						padding-left: 27%;
+						padding-left: 30%;
 						display: block;
 						font-size: 13.5px;
 
@@ -283,7 +313,10 @@
 
 				&.services-info {
 					ul {
-						margin: 0 0 0 .5em;
+						margin: 0 0 0 1.5em;
+						@include breakpoint($min, $post-palm) {
+							margin: 0 0 0 .5em;
+						}
 					}
 				}
 			}
@@ -293,10 +326,9 @@
 	/** Locations Map View **/
 	.locations-results-map {
 		padding-top: 10px;
-		margin: 10px 0px;
-		border-top: 1px solid #eee;
+		margin: 0px 0px 10px 0px;
 
-		.locations-data-wrapper { 
+		.locations-data-wrapper {
 			border: 1px solid #eee;
 			padding: 7px;
 			height: 500px;
@@ -312,43 +344,65 @@
 				}
 
 				.highlighted-services-list {
-					margin: 0;
+					margin: .5em 0 .5em 1.25em;
+					list-style-type: disc;
 
 					li {
-						display: block;
-
-						@include breakpoint($min, $post-palm) {
-							display: inline;
-						}
+						display: list-item;
 					}
+				}
+
+				.todays-hours, .distance {
+					margin: .35em 0;
+
+					span {
+						text-decoration: underline;
+						margin-right: .05em;
+					}
+					strong {
+						margin-left: .1em;
+					}
+				}
+
+				.directions-link {
+					margin: .35em 0 .5em;
 				}
 
 			}
 		}
 
-		#all-locations-map {
-			height: 500px;
-			width: 100%;
-		}
+		// Google Map
+		.map-wrapper {
+			display: none; // Hide on mobile
 
-		#all-locations-map-legend {
-			padding: 10px;
-		  font-size: 13px;
-		  font-size: 1.3em;
-		  background: #fff;
-		}
+			@include breakpoint($min, $post-palm) {
+				display: block; // Display on palm devices and up
+			}
 
-		.hide-legend {
-		  display: none;
-		}
+			#all-locations-map {
+				height: 500px;
+				width: 100%;
+			}
 
-		.show-legend {
-		  display: block;
-		}
-		// Fix to display the closing 'X' on marker's infowindow
-		img[src*="gstatic.com/"], 
-		img[src*="googleapis.com/"] {
-			max-width: none;
+			#all-locations-map-legend {
+				padding: 10px;
+			  font-size: 13px;
+			  font-size: 1.3em;
+			  background: #fff;
+			}
+
+			.hide-legend {
+			  display: none;
+			}
+
+			.show-legend {
+			  display: block;
+			}
+			// Fix to display the closing 'X' on marker's infowindow
+			img[src*="gstatic.com/"], 
+			img[src*="googleapis.com/"] {
+				max-width: none;
+			}
 		}
 	}
 	
