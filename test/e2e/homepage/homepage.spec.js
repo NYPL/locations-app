@@ -10,193 +10,193 @@ describe('Locations: homepage', function () {
         browser.waitForAngular();
     });
 
-    describe('Geolocation', function () {
-        function mockGeo(lat, lon) {
-            return 'window.navigator.geolocation.getCurrentPosition = ' +
-                '       function (success, error) {' +
-                '           var position = {' +
-                '               "coords" : {' +
-                '                   "latitude": "' + lat + '",' +
-                '                   "longitude": "' + lon + '"' +
-                '               }' +
-                '           };' +
-                '           success(position);' +
-                '       }';
-        }
+    // describe('Geolocation', function () {
+    //     function mockGeo(lat, lon) {
+    //         return 'window.navigator.geolocation.getCurrentPosition = ' +
+    //             '       function (success, error) {' +
+    //             '           var position = {' +
+    //             '               "coords" : {' +
+    //             '                   "latitude": "' + lat + '",' +
+    //             '                   "longitude": "' + lon + '"' +
+    //             '               }' +
+    //             '           };' +
+    //             '           success(position);' +
+    //             '       }';
+    //     }
 
-        function mockGeoError(code) {
-            return 'window.navigator.geolocation.getCurrentPosition = ' +
-                '       function (success, error) {' +
-                '           var err = {' +
-                '               code: ' + code + ',' +
-                '               PERMISSION_DENIED: 1,' +
-                '               POSITION_UNAVAILABLE: 2,' +
-                '               TIMEOUT: 3' +
-                '           };' +
-                '           error(err);' +
-                '       }';
-        }
+    //     function mockGeoError(code) {
+    //         return 'window.navigator.geolocation.getCurrentPosition = ' +
+    //             '       function (success, error) {' +
+    //             '           var err = {' +
+    //             '               code: ' + code + ',' +
+    //             '               PERMISSION_DENIED: 1,' +
+    //             '               POSITION_UNAVAILABLE: 2,' +
+    //             '               TIMEOUT: 3' +
+    //             '           };' +
+    //             '           error(err);' +
+    //             '       }';
+    //     }
 
-        describe('Geolocation Successful', function () {
-            beforeEach(function () {
-                // Coordinates based on SASB
-                browser.executeScript(mockGeo(40.7529, -73.9821));
-            });
+    //     describe('Geolocation Successful', function () {
+    //         beforeEach(function () {
+    //             // Coordinates based on SASB
+    //             browser.executeScript(mockGeo(40.7529, -73.9821));
+    //         });
 
-            describe('List View', function () {
-                it('should locate you and show your estimated address',
-                    function () {
-                        landingPage.currLoc.click();
-                        browser.sleep(1000);
-                        // "Showing search results near ...."
-                        expect(landingPage.resultsNear.isPresent()).toBe(true);
-                    });
+    //         describe('List View', function () {
+    //             it('should locate you and show your estimated address',
+    //                 function () {
+    //                     landingPage.currLoc.click();
+    //                     browser.sleep(1000);
+    //                     // "Showing search results near ...."
+    //                     expect(landingPage.resultsNear.isPresent()).toBe(true);
+    //                 });
 
-                it('should locate you and sort the list of locations by distance',
-                    function () {
-                        // The list is initially sorted by name - there is
-                        // no distance set for any location
-                        expect(landingPage.firstLocName())
-                            .toEqual('115th Street Library');
+    //             it('should locate you and sort the list of locations by distance',
+    //                 function () {
+    //                     // The list is initially sorted by name - there is
+    //                     // no distance set for any location
+    //                     expect(landingPage.firstLocName())
+    //                         .toEqual('115th Street Library');
 
-                        // It seems you need to give it some time for the text
-                        // to render
-                        landingPage.currLoc.click();
-                        browser.sleep(1500);
+    //                     // It seems you need to give it some time for the text
+    //                     // to render
+    //                     landingPage.currLoc.click();
+    //                     browser.sleep(1500);
 
-                        // The closest location to you
-                        expect(landingPage.firstLocDist())
-                            .toEqual('Distance: 0.03 miles');
-                        expect(landingPage.firstLocName())
-                            .toEqual('Stephen A. Schwarzman Building');
+    //                     // The closest location to you
+    //                     expect(landingPage.firstLocDist())
+    //                         .toEqual('Distance: 0.03 miles');
+    //                     expect(landingPage.firstLocName())
+    //                         .toEqual('Stephen A. Schwarzman Building');
 
-                        expect(landingPage.nthLocDist(1))
-                            .toEqual('Distance: 0.08 miles');
-                        expect(landingPage.nthLocName(1))
-                            .toEqual('Mid-Manhattan Library');
-                    });
+    //                     expect(landingPage.nthLocDist(1))
+    //                         .toEqual('Distance: 0.08 miles');
+    //                     expect(landingPage.nthLocName(1))
+    //                         .toEqual('Mid-Manhattan Library');
+    //                 });
     
-                it('should reset the location list' + 
-                    ' when the searchbox \'x\' is clicked',
-                    function () {
-                        landingPage.currLoc.click();
-                        browser.sleep(1000);
+    //             it('should reset the location list' + 
+    //                 ' when the searchbox \'x\' is clicked',
+    //                 function () {
+    //                     landingPage.currLoc.click();
+    //                     browser.sleep(1000);
 
-                        expect(landingPage.resultsNear.isPresent()).toBe(true);
-                        expect(landingPage.firstLocName())
-                            .toEqual('Stephen A. Schwarzman Building');
+    //                     expect(landingPage.resultsNear.isPresent()).toBe(true);
+    //                     expect(landingPage.firstLocName())
+    //                         .toEqual('Stephen A. Schwarzman Building');
 
-                        // Click the 'X'
-                        landingPage.clearSearch.click();
+    //                     // Click the 'X'
+    //                     landingPage.clearSearch.click();
 
-                        expect(landingPage.resultsNear.isPresent()).toBe(false);
-                        expect(landingPage.firstLocName())
-                            .toEqual('115th Street Library');
-                    });
-            });
+    //                     expect(landingPage.resultsNear.isPresent()).toBe(false);
+    //                     expect(landingPage.firstLocName())
+    //                         .toEqual('115th Street Library');
+    //                 });
+    //         });
 
-            describe('Map View', function () {
-                beforeEach(function () {
-                    // Go to map view
-                    landingPage.mapViewBtn.click();
-                    // browser.sleep(1500);
-                });
+    //         describe('Map View', function () {
+    //             beforeEach(function () {
+    //                 // Go to map view
+    //                 landingPage.mapViewBtn.click();
+    //                 // browser.sleep(1500);
+    //             });
 
-                it('should locate you and show the blue marker on the map and legend',
-                    function () {
-                        // Only the 'NYPL Library' key should be in the map legend
-                        expect(landingPage.mapMarkers.count()).toEqual(1);
-                        landingPage.currLoc.click();
-                        browser.sleep(1000);
+    //             it('should locate you and show the blue marker on the map and legend',
+    //                 function () {
+    //                     // Only the 'NYPL Library' key should be in the map legend
+    //                     expect(landingPage.mapMarkers.count()).toEqual(1);
+    //                     landingPage.currLoc.click();
+    //                     browser.sleep(1000);
 
-                        // "Showing search results near ...."
-                        expect(landingPage.resultsNear.isPresent()).toBe(true);
-                        // The "Your Current Location" key should show up in
-                        // the map legend
-                        expect(landingPage.mapMarkers.count()).toEqual(2);
-                    });
+    //                     // "Showing search results near ...."
+    //                     expect(landingPage.resultsNear.isPresent()).toBe(true);
+    //                     // The "Your Current Location" key should show up in
+    //                     // the map legend
+    //                     expect(landingPage.mapMarkers.count()).toEqual(2);
+    //                 });
 
-                it('should locate you and sort the list of locations by distance',
-                    function () {
-                        // The list is initially sorted by name
-                        expect(landingPage.firstLocName())
-                            .toEqual('115th Street Library');
+    //             it('should locate you and sort the list of locations by distance',
+    //                 function () {
+    //                     // The list is initially sorted by name
+    //                     expect(landingPage.firstLocName())
+    //                         .toEqual('115th Street Library');
 
-                        landingPage.currLoc.click();
-                        browser.sleep(1500);
+    //                     landingPage.currLoc.click();
+    //                     browser.sleep(1500);
 
-                        // The closest location to you
-                        expect(landingPage.firstLocDist())
-                            .toEqual('Distance: 0.03 miles');
-                        expect(landingPage.firstLocName())
-                            .toEqual('Stephen A. Schwarzman Building');
+    //                     // The closest location to you
+    //                     expect(landingPage.firstLocDist())
+    //                         .toEqual('Distance: 0.03 miles');
+    //                     expect(landingPage.firstLocName())
+    //                         .toEqual('Stephen A. Schwarzman Building');
 
-                        expect(landingPage.nthLocDist(1))
-                            .toEqual('Distance: 0.08 miles');
-                        expect(landingPage.nthLocName(1))
-                            .toEqual('Mid-Manhattan Library');
-                    });
+    //                     expect(landingPage.nthLocDist(1))
+    //                         .toEqual('Distance: 0.08 miles');
+    //                     expect(landingPage.nthLocName(1))
+    //                         .toEqual('Mid-Manhattan Library');
+    //                 });
 
-                it('should reset the location list' + 
-                    ' when the searchbox \'x\' is clicked',
-                    function () {
-                        landingPage.currLoc.click();
-                        browser.sleep(1000);
+    //             it('should reset the location list' + 
+    //                 ' when the searchbox \'x\' is clicked',
+    //                 function () {
+    //                     landingPage.currLoc.click();
+    //                     browser.sleep(1000);
 
-                        expect(landingPage.resultsNear.isPresent()).toBe(true);
-                        expect(landingPage.firstLocName())
-                            .toEqual('Stephen A. Schwarzman Building');
+    //                     expect(landingPage.resultsNear.isPresent()).toBe(true);
+    //                     expect(landingPage.firstLocName())
+    //                         .toEqual('Stephen A. Schwarzman Building');
 
-                        // Click the 'X'
-                        landingPage.clearSearch.click();
+    //                     // Click the 'X'
+    //                     landingPage.clearSearch.click();
 
-                        expect(landingPage.resultsNear.isPresent()).toBe(false);
-                        expect(landingPage.firstLocName())
-                            .toEqual('115th Street Library');
-                    });
-            });
-        });
+    //                     expect(landingPage.resultsNear.isPresent()).toBe(false);
+    //                     expect(landingPage.firstLocName())
+    //                         .toEqual('115th Street Library');
+    //                 });
+    //         });
+    //     });
 
-        // Error messages show up regardless of List or Map view
-        describe('Geolocation Failure', function () {
-            it('should not geolocate if you are too far away', function () {
-                browser.executeScript(mockGeo(36.149674, -86.813347));
-                landingPage.currLoc.click();
-                expect(landingPage.distanceError.getText())
-                    .toContain(
-                        'You are not within 25 miles of any NYPL library'
-                    );
-            });
+    //     // Error messages show up regardless of List or Map view
+    //     describe('Geolocation Failure', function () {
+    //         it('should not geolocate if you are too far away', function () {
+    //             browser.executeScript(mockGeo(36.149674, -86.813347));
+    //             landingPage.currLoc.click();
+    //             expect(landingPage.distanceError.getText())
+    //                 .toContain(
+    //                     'You are not within 25 miles of any NYPL library'
+    //                 );
+    //         });
 
-            it('should report when permission is denied', function () {
-                browser.executeScript(mockGeoError(1));
-                landingPage.currLoc.click();
-                expect(landingPage.distanceError.getText())
-                    .toContain('Permission denied.');
-            });
+    //         it('should report when permission is denied', function () {
+    //             browser.executeScript(mockGeoError(1));
+    //             landingPage.currLoc.click();
+    //             expect(landingPage.distanceError.getText())
+    //                 .toContain('Permission denied.');
+    //         });
 
-            it('should report when location is unavailable', function () {
-                browser.executeScript(mockGeoError(2));
-                landingPage.currLoc.click();
-                expect(landingPage.distanceError.getText())
-                    .toContain('The position is currently unavailable.');
-            });
+    //         it('should report when location is unavailable', function () {
+    //             browser.executeScript(mockGeoError(2));
+    //             landingPage.currLoc.click();
+    //             expect(landingPage.distanceError.getText())
+    //                 .toContain('The position is currently unavailable.');
+    //         });
 
-            it('should report when geolocation times out', function () {
-                browser.executeScript(mockGeoError(3));
-                landingPage.currLoc.click();
-                expect(landingPage.distanceError.getText())
-                    .toContain('The request timed out.');
-            });
+    //         it('should report when geolocation times out', function () {
+    //             browser.executeScript(mockGeoError(3));
+    //             landingPage.currLoc.click();
+    //             expect(landingPage.distanceError.getText())
+    //                 .toContain('The request timed out.');
+    //         });
 
-            it('should report unknown errors', function () {
-                browser.executeScript(mockGeoError(100));
-                landingPage.currLoc.click();
-                expect(landingPage.distanceError.getText())
-                    .toContain('Unknown error.');
-            });
-        });
-    });
+    //         it('should report unknown errors', function () {
+    //             browser.executeScript(mockGeoError(100));
+    //             landingPage.currLoc.click();
+    //             expect(landingPage.distanceError.getText())
+    //                 .toContain('Unknown error.');
+    //         });
+    //     });
+    // });
 
     // describe('Search box', function () {
     //     describe(
@@ -663,71 +663,71 @@ describe('Locations: homepage', function () {
 
     // });
 
-    // describe('Location list tracker', function () {
-    //     it('should show 10 items by default', function () {
-    //         expect(landingPage.locations.count()).toBe(10);
-    //         expect(landingPage.showing.getText())
-    //             .toEqual('Showing 10 of 92 Locations');
-    //         expect(landingPage.showMore.getText()).toEqual('Show 10 more');
-    //     });
+    describe('Location list tracker', function () {
+        it('should show 10 items by default', function () {
+            expect(landingPage.locations.count()).toBe(10);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 10 of 92 Locations');
+            expect(landingPage.showMore.getText()).toEqual('Show 10 more');
+        });
 
-    //     it('should show the next 10 items', function () {
-    //         landingPage.showMore.click();
-    //         expect(landingPage.locations.count()).toBe(20);
-    //         expect(landingPage.showing.getText())
-    //             .toEqual('Showing 20 of 92 Locations');
-    //     });
+        it('should show the next 10 items', function () {
+            landingPage.showMore.click();
+            expect(landingPage.locations.count()).toBe(20);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 20 of 92 Locations');
+        });
 
-    //     it('should say "Show All" after showing 80 locations', function () {
-    //         var i = 0;
-    //         for (i = 0; i < 7; i++) {
-    //             landingPage.showMore.click();
-    //         }
+        it('should say "Show All" after showing 80 locations', function () {
+            var i = 0;
+            for (i = 0; i < 7; i++) {
+                landingPage.showMore.click();
+            }
 
-    //         expect(landingPage.showing.getText())
-    //             .toEqual('Showing 80 of 92 Locations');
-    //         expect(landingPage.showMore.getText()).toEqual('Show All');
-    //     });
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 80 of 92 Locations');
+            expect(landingPage.showMore.getText()).toEqual('Show All');
+        });
 
-    //     it('should say show all 92 locations and remove the button',
-    //         function () {
-    //             var i = 0;
-    //             for (i = 0; i < 8; i++) {
-    //                 landingPage.showMore.click();
-    //             }
+        it('should say show all 92 locations and remove the button',
+            function () {
+                var i = 0;
+                for (i = 0; i < 8; i++) {
+                    landingPage.showMore.click();
+                }
 
-    //             expect(landingPage.showing.getText())
-    //                 .toEqual('Showing 92 of 92 Locations');
-    //             expect(landingPage.showMore.isPresent()).toBe(false);
-    //         });
+                expect(landingPage.showing.getText())
+                    .toEqual('Showing 92 of 92 Locations');
+                expect(landingPage.showMore.isPresent()).toBe(false);
+            });
 
-    //     it('should list only four for research libraries', function () {
-    //         var only_r = landingPage.onlyResearch;
-    //         only_r.click();
+        it('should list only four for research libraries', function () {
+            var only_r = landingPage.onlyResearch;
+            only_r.click();
 
-    //         expect(landingPage.locations.count()).toBe(4);
-    //         expect(landingPage.showing.getText())
-    //             .toEqual('Showing 4 of 4 Locations');
-    //     });
+            expect(landingPage.locations.count()).toBe(4);
+            expect(landingPage.showing.getText())
+                .toEqual('Showing 4 of 4 Locations');
+        });
 
-    //     it('should revert to 10 locations after toggling research button',
-    //         function () {
-    //             var only_r = landingPage.onlyResearch;
+        it('should revert to 10 locations after toggling research button',
+            function () {
+                var only_r = landingPage.onlyResearch;
 
-    //             landingPage.showMore.click();
-    //             expect(landingPage.locations.count()).toBe(20);
-    //             expect(landingPage.showing.getText())
-    //                 .toEqual('Showing 20 of 92 Locations');
+                landingPage.showMore.click();
+                expect(landingPage.locations.count()).toBe(20);
+                expect(landingPage.showing.getText())
+                    .toEqual('Showing 20 of 92 Locations');
 
-    //             only_r.click();
+                only_r.click();
 
-    //             expect(landingPage.locations.count()).toBe(4);
+                expect(landingPage.locations.count()).toBe(4);
 
-    //             only_r.click();
+                only_r.click();
 
-    //             expect(landingPage.locations.count()).toBe(10);
-    //             expect(landingPage.showing.getText())
-    //                 .toEqual('Showing 10 of 92 Locations');
-    //         });
-    // });
+                expect(landingPage.locations.count()).toBe(10);
+                expect(landingPage.showing.getText())
+                    .toEqual('Showing 10 of 92 Locations');
+            });
+    });
 });
