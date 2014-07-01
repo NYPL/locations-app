@@ -45,7 +45,7 @@ nypl_locations.controller('LocationsCtrl', [
                 $scope.totalLocations = $scope.locations.length;
             },
             allLocationsInit = function () {
-                $scope.view = 'list'; // used for active control tabs
+                // $scope.view = 'list'; // used for active control tabs
                 $scope.reverse = false;
                 $scope.searchTerm = '';
                 $scope.geolocationAddressOrSearchQuery = '';
@@ -164,16 +164,6 @@ nypl_locations.controller('LocationsCtrl', [
                 if ($scope.view === 'map') {
                     if (nypl_geocoder_service.check_marker('user')) {
                         nypl_geocoder_service.pan_existing_marker('user');
-                        nypl_geocoder_service.add_marker_to_map('user');
-                    } else {
-                        // nypl_geocoder_service
-                        //     .draw_marker(
-                        //         'user',
-                        //         userCoords,
-                        //         "Your Current Location",
-                        //         true,
-                        //         true
-                        //     );
                     }
                 }
             },
@@ -284,6 +274,7 @@ nypl_locations.controller('LocationsCtrl', [
             };
 
         $rootScope.title = "Locations";
+        $scope.view = 'list';
         loadLocations();
 
         $scope.drawMap = function () {
@@ -366,13 +357,13 @@ nypl_locations.controller('LocationsCtrl', [
             $scope.searchMarker = false;
             $scope.researchBranches = false;
             $scope.searchTerm = '';
+            $scope.select_library_for_map = '';
 
             show_libraries_type_of();
             nypl_geocoder_service.show_all_libraries();
+            nypl_geocoder_service.clear_filtered_location();
             nypl_geocoder_service.remove_searchMarker();
-            if ($scope.view !== 'map') {
-                allLocationsInit();
-            }
+            allLocationsInit();
             mapInit();
         };
 
@@ -433,6 +424,8 @@ nypl_locations.controller('LocationsCtrl', [
                     // first see if there are any angularjs filtered results.
                     // if there are, show results based on the angularjs filter.
                     // else, reset back to the start
+                    nypl_geocoder_service.remove_searchMarker();
+                    $scope.searchMarker = false;
                     if (filteredLocations.length && error.msg !== 'query too short') {
                         resetDistance();
                         $scope.searchError = '';
