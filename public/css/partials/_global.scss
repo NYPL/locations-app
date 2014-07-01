@@ -1,24 +1,12 @@
 /*
-** Main page wrapper
+** Global rules and overrides
 */
 
-// (Necessary for centering grid items)
+// Main page wrapper (Necessary for centering grid items)
 .wrapper {
 	margin: 0 auto;
 	padding: 0 24px;
 	max-width: 1200px;
-}
-
-// Firefox specific override rules
-@-moz-document url-prefix() {
-
-	.search-button {
-		vertical-align: .4px !important;
-	}
-
-	.sso-login .login-form {
-		right: 81px !important;
-	}
 }
 
 // Lokinator content wrapper
@@ -96,5 +84,17 @@
 		&:hover {
 			background-color: lighten(#ece94c, 20%);
 		}
+	}
+}
+
+// Firefox specific override rules
+@-moz-document url-prefix() {
+
+	.search-button {
+		vertical-align: .4px !important;
+	}
+
+	.sso-login .login-form {
+		right: 81px !important;
 	}
 }
