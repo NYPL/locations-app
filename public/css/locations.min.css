@@ -251,7 +251,7 @@
             .container__all-locations .locations-results-list table.locations-list-view tbody tr td:before {
               font-weight: bold;
               position: absolute;
-              top: 37.5%;
+              top: 35.5%;
               left: 6px;
               width: 45%;
               padding-right: 10px;
@@ -264,15 +264,19 @@
                   width: auto;
                   padding-left: initial;
                   white-space: nowrap; } }
-            @media screen and (max-width: 601px) {
-              .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(1):before {
-                content: "Location"; } }
+            .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(1):before {
+              top: 75%; }
+              @media screen and (max-width: 601px) {
+                .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(1):before {
+                  content: "Location"; } }
             @media screen and (max-width: 601px) {
               .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(2):before {
                 content: ""; } }
-            @media screen and (max-width: 601px) {
-              .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(3):before {
-                content: "Today's Hours"; } }
+            .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(3):before {
+              top: 35.5%; }
+              @media screen and (max-width: 601px) {
+                .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(3):before {
+                  content: "Today's Hours"; } }
       .container__all-locations .locations-results-list table.locations-list-view td.location-info .p-org {
         font-weight: bold; }
       .container__all-locations .locations-results-list table.locations-list-view td.location-info .map-link, .container__all-locations .locations-results-list table.locations-list-view td.location-info .directions-link {
