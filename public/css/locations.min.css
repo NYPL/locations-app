@@ -23,7 +23,7 @@
   margin-top: 30px; }
   @media screen and (min-width: 768px) {
     .nypl-locations {
-      margin-top: 0px; } }
+      margin-top: 20px; } }
 
 .chunk .desc {
   color: #7d7872; }
@@ -402,6 +402,30 @@ header {
 ** Main Navigation Styles
 **
 **/
+nav {
+  background-color: #000; }
+  nav .nav-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px; }
+    nav .nav-wrapper .container__primary-links {
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      list-style-type: none; }
+      nav .nav-wrapper .container__primary-links > li {
+        display: inline-block; }
+        nav .nav-wrapper .container__primary-links > li > a {
+          display: block;
+          color: #FFF;
+          padding: 8px 10px;
+          text-decoration: none;
+          border-top: 1px solid transparent; }
+          nav .nav-wrapper .container__primary-links > li > a:hover {
+            background-color: #FFF;
+            color: #000;
+            border-top: 1px solid #000; }
+
 /* 
 ** All Locations Landing Page
 */
