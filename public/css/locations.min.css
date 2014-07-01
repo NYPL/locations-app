@@ -122,19 +122,19 @@
         .container__all-locations .search-locations .search-button-area #find-location {
           width: 80%; } }
   .container__all-locations .search-filters {
-    margin: 1em 0; }
+    margin: 1em 0;
+    text-align: center; }
+    @media screen and (min-width: 601px) {
+      .container__all-locations .search-filters {
+        text-align: left; } }
     .container__all-locations .search-filters .filters__current {
       margin: 0; }
       @media screen and (min-width: 601px) {
         .container__all-locations .search-filters .filters__current {
           display: inline-block; } }
       .container__all-locations .search-filters .filters__current p {
-        text-align: center;
         margin: 0;
         max-width: none; }
-        @media screen and (min-width: 601px) {
-          .container__all-locations .search-filters .filters__current p {
-            text-align: left; } }
         .container__all-locations .search-filters .filters__current p .current-location-container {
           display: block; }
           @media screen and (min-width: 601px) {
@@ -155,6 +155,16 @@
         @media screen and (min-width: 601px) {
           .container__all-locations .search-filters .filters__research p .only-research-container {
             display: inline; } }
+  .container__all-locations .search__results #results, .container__all-locations .search__results #search-error, .container__all-locations .search__results #distance-error {
+    margin-bottom: 20px;
+    padding: 6px;
+    border-radius: 2px;
+    font-size: 13.5px; }
+    @media screen and (min-width: 480px) {
+      .container__all-locations .search__results #results, .container__all-locations .search__results #search-error, .container__all-locations .search__results #distance-error {
+        font-size: inherit; } }
+  .container__all-locations .search__results #results {
+    background-color: rgba(0, 144, 196, 0.15); }
   .container__all-locations .views-tab-controls {
     display: none;
     border-bottom: 2px solid #eee; }

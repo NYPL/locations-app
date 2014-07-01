@@ -41,15 +41,20 @@
             </p>
           </div>
         </div>
-      </form>
+      </form><!--
 
-      <div class="search_result_text grid__item">
-        <div id="distanceerror" data-ng-if="distanceError">
-          {{distanceError}} {{ 'STILL_SEARCH_DIRECTIONS' | translate }}</div>
-        <div id="searchError" data-ng-if="searchError">
-          {{ 'NO_RESULTS' | translate }} <strong>{{searchError}}</strong> {{ 'WITHIN_25_MILES' | translate }}</div>
-        <div id="resultsnear" data-ng-if="geolocationAddressOrSearchQuery">
-          {{ 'SHOWING_RESULTS_NEAR' | translate }} <a href="">{{geolocationAddressOrSearchQuery}}</a></div>
+      --><div class="search__results grid__item one-whole">
+        <div id="distance-error" data-ng-if="distanceError">
+          {{distanceError}} {{ 'STILL_SEARCH_DIRECTIONS' | translate }}
+        </div>
+        <div id="search-error" data-ng-if="searchError">
+          {{ 'NO_RESULTS' | translate }} <strong>{{searchError}}</strong> {{ 'WITHIN_25_MILES' | translate }}
+        </div>
+        <!-- Search results from geolocation -->
+        <div id="results" data-ng-if="geolocationAddressOrSearchQuery">
+          {{ 'SHOWING_RESULTS_NEAR' | translate }} 
+          <a href="">{{geolocationAddressOrSearchQuery}}</a>
+        </div>
       </div>
 
     </div>
