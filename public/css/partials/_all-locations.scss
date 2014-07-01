@@ -93,6 +93,11 @@
 	/** Filters Section **/
 	.search-filters {
 		margin: 1em 0;
+		text-align: center;
+
+		@include breakpoint($min, $post-palm) {
+			text-align: left;
+		}
 
 		.filters__current {
 			margin: 0;
@@ -102,13 +107,8 @@
 			}
 
 			p {
-				text-align: center;
 				margin: 0;
 				max-width: none;
-
-				@include breakpoint($min, $post-palm) {
-					text-align: left;
-				}
 
 				.current-location-container {
 					display: block; 
@@ -143,6 +143,25 @@
 					}
 				}
 			}
+		}
+	}
+
+	// Search/Error results container
+	.search__results {
+
+		#results, #search-error, #distance-error {
+			margin-bottom: 20px;
+			padding: 6px;
+			border-radius: 2px;
+			font-size: 13.5px;
+
+			@include breakpoint($min, $mobile-phone) {
+				font-size: inherit;
+			}
+		}
+
+		#results {
+			background-color: rgba(0,144,196,0.15);
 		}
 	}
 
