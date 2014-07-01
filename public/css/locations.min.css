@@ -10,9 +10,10 @@
 ** OR
 ** @include breakpoint(null, $palm, $tablet) {...}
 */
-/*
-** Global rules and overrides
-*/
+/**
+** Global Rules
+**
+**/
 .wrapper {
   margin: 0 auto;
   padding: 0 24px;
@@ -397,6 +398,10 @@ header {
             display: block;
             text-align: right; } }
 
+/**
+** Main Navigation Styles
+**
+**/
 /* 
 ** All Locations Landing Page
 */
@@ -795,3 +800,8 @@ header {
         position: absolute;
         right: 7px;
         top: 7px; } }
+
+/**
+** Footer Styles
+**
+**/
