@@ -108,7 +108,7 @@
       position: absolute;
       left: 0;
       right: 0;
-      width: 45%;
+      width: 55%;
       height: 45px; }
       @media screen and (min-width: 601px) {
         .container__all-locations .search-locations .search-button-area #find-location {
@@ -238,7 +238,7 @@
           .container__all-locations .locations-results-list table.locations-list-view tbody tr td {
             border: none;
             position: relative;
-            padding-left: 30%;
+            padding-left: 35%;
             display: block;
             font-size: 13.5px; }
             @media screen and (min-width: 480px) {

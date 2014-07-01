@@ -71,7 +71,7 @@
 				position: absolute;
 				left: 0;
 				right: 0;
-				width: 45%;
+				width: 55%;
 				height: 45px;
 
 				@include breakpoint($min, $post-palm) {
@@ -267,7 +267,7 @@
 					td {
 						border: none;
 						position: relative;
-						padding-left: 30%;
+						padding-left: 35%;
 						display: block;
 						font-size: 13.5px;
 
