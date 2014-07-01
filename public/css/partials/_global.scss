@@ -9,6 +9,18 @@
 	max-width: 1200px;
 }
 
+// Firefox specific override rules
+@-moz-document url-prefix() {
+
+	.search-button {
+		vertical-align: .4px !important;
+	}
+
+	.sso-login .login-form {
+		right: 81px !important;
+	}
+}
+
 // Lokinator content wrapper
 .nypl-locations {
 	margin-top: 30px;

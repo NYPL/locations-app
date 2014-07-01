@@ -18,6 +18,13 @@
   padding: 0 24px;
   max-width: 1200px; }
 
+@-moz-document url-prefix() {
+  .search-button {
+    vertical-align: .4px !important; }
+
+  .sso-login .login-form {
+    right: 81px !important; } }
+
 .nypl-locations {
   margin-top: 30px; }
   @media screen and (min-width: 768px) {
@@ -181,10 +188,7 @@ header {
             right: 86px;
             border: 2px solid #7d7872;
             width: 300px;
-            box-shadow: none;
-            @-moz-document url-prefix() {
-              right: 84px; }
- } }
+            box-shadow: none; } }
         header .header-wrapper .login-donate .sso-login .login-form form {
           padding: 15px; }
           header .header-wrapper .login-donate .sso-login .login-form form .form-item {
@@ -378,10 +382,6 @@ header {
               margin: 0;
               padding: 0px 0px 1.1px 2px;
               vertical-align: 2.6px;
-              @-moz-document url-prefix() {
-                height: 30px;
-                vertical-align: 2.6px; }
-
               -webkit-transition: background-color 0.2s ease;
               -moz-transition: background-color 0.2s ease;
               -ms-transition: background-color 0.2s ease;
