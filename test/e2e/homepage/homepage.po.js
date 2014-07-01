@@ -6,7 +6,7 @@ var LandingPage = function () {
   // Search Box
   this.searchInput = element(by.id('searchTerm'));
   // Submit search button
-  this.findIt = element(by.id('findit'));
+  this.findIt = element(by.id('find-location'));
   // Showing results near message
   this.resultsNear = element(by.id('results'));
   // Showing no resutls near search query
@@ -34,6 +34,12 @@ var LandingPage = function () {
 
   this.listViewBtn = element(by.css('.list-view-btn'));
   this.mapViewBtn = element(by.css('.map-view-btn'));
+
+  this.clickShowMore = function (n) {
+    for (var i = 0; i < n; i++) {
+      this.showMore.click();
+    }
+  };
 
   this.clear = function () {
     this.searchInput.clear();

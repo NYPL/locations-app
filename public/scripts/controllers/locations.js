@@ -376,6 +376,7 @@ nypl_locations.controller('LocationsCtrl', [
             // Remove previous search marker from the map
             nypl_geocoder_service.remove_searchMarker();
             show_libraries_type_of();
+            nypl_geocoder_service.show_all_libraries();
             $scope.searchMarker = false;
             $scope.researchBranches = false;
 

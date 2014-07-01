@@ -526,142 +526,287 @@ describe('Locations: homepage', function () {
     //     });
     // });
 
-    // describe('Research and Circulating libraries', function () {
-    //     it('should filter by research libraries when clicked', function () {
-    //         var only_r = landingPage.onlyResearch;
-    //         expect(landingPage.locations.count()).toBe(10);
-    //         expect(only_r.getText()).toEqual('only research libraries');
+    describe('Research and Circulating libraries', function () {
+        describe('List View', function () {
+            it('should filter by research libraries when clicked', function () {
+                var only_research = landingPage.onlyResearch;
+                expect(landingPage.locations.count()).toBe(10);
+                expect(only_research.getText()).toEqual('research libraries');
 
-    //         only_r.click();
+                only_research.click();
 
-    //         expect(landingPage.locations.count()).toBe(4);
-    //         expect(only_r.getText()).toEqual('all branches');
-    //         expect(landingPage.showing.getText())
-    //             .toEqual('Showing 4 of 4 Locations');
-    //     });
+                expect(landingPage.locations.count()).toBe(4);
+                expect(only_research.getText()).toEqual('all branches');
+                expect(landingPage.showing.getText())
+                    .toEqual('Showing 4 of 4 Locations');
+            });
 
-    //     it('should revert when the search input \'x\' is clicked',
-    //         function () {
-    //             var only_r = landingPage.onlyResearch;
-    //             only_r.click();
+            it('should revert when the search input \'x\' is clicked',
+                function () {
+                    var only_research = landingPage.onlyResearch;
+                    only_research.click();
 
-    //             expect(landingPage.locations.count()).toBe(4);
-    //             expect(landingPage.showing.getText())
-    //                 .toEqual('Showing 4 of 4 Locations');
+                    expect(landingPage.locations.count()).toBe(4);
+                    expect(landingPage.showing.getText())
+                        .toEqual('Showing 4 of 4 Locations');
 
-    //             landingPage.clearSearch.click();
+                    landingPage.clearSearch.click();
 
-    //             expect(landingPage.locations.count()).toBe(10);
-    //             expect(landingPage.showing.getText())
-    //                 .toEqual('Showing 10 of 92 Locations');
-    //         });
+                    expect(landingPage.locations.count()).toBe(10);
+                    expect(landingPage.showing.getText())
+                        .toEqual('Showing 10 of 92 Locations');
+                    expect(landingPage.showMore.isPresent()).toBe(true);
+                });
 
-    //     it('should show all locations when the button is clicked again',
-    //         function () {
-    //             var only_r = landingPage.onlyResearch;
-    //             only_r.click();
-    //             expect(landingPage.locations.count()).toBe(4);
-    //             expect(only_r.getText()).toEqual('all branches');
+            it('should show all locations when the button is clicked again',
+                function () {
+                    var only_research = landingPage.onlyResearch;
+                    only_research.click();
+                    expect(landingPage.locations.count()).toBe(4);
+                    expect(only_research.getText()).toEqual('all branches');
 
-    //             only_r.click();
-    //             expect(landingPage.locations.count()).toBe(10);
-    //             expect(only_r.getText()).toEqual('only research libraries');
-    //             expect(landingPage.showing.getText())
-    //                 .toEqual('Showing 10 of 92 Locations');
-    //         });
+                    only_research.click();
+                    expect(landingPage.locations.count()).toBe(10);
+                    expect(only_research.getText()).toEqual('research libraries');
+                    expect(landingPage.showing.getText())
+                        .toEqual('Showing 10 of 92 Locations');
+                });
 
-    //     it('should list the four research libraries', function () {
-    //         var only_r = landingPage.onlyResearch,
-    //             research_libraries;
+            it('should list the four research libraries', function () {
+                var only_research = landingPage.onlyResearch,
+                    research_libraries;
 
-    //         only_r.click();
+                only_research.click();
 
-    //         research_libraries = landingPage.locations.map(
-    //             function (elm, index) {
-    //                 return {
-    //                     index: index,
-    //                     text: elm.findElement(by.css('.p-org')).getText()
-    //                 };
-    //             }
-    //         );
+                research_libraries = landingPage.locations.map(
+                    function (elm, index) {
+                        return {
+                            index: index,
+                            text: elm.findElement(by.css('.p-org')).getText()
+                        };
+                    }
+                );
 
-    //         expect(research_libraries).toEqual([
-    //             {
-    //                 index: 0,
-    //                 text: 'New York Public Library for the Performing ' +
-    //                         'Arts, Dorothy and Lewis B. Cullman Center'
-    //             },
-    //             {
-    //                 index: 1,
-    //                 text: 'Schomburg Center for Research in Black Culture'
-    //             },
-    //             {
-    //                 index: 2,
-    //                 text: 'Science, Industry and Business Library (SIBL)'
-    //             },
-    //             {
-    //                 index: 3,
-    //                 text: 'Stephen A. Schwarzman Building'
-    //             }
-    //         ]);
-    //     });
+                expect(research_libraries).toEqual([
+                    {
+                        index: 0,
+                        text: 'New York Public Library for the Performing ' +
+                                'Arts, Dorothy and Lewis B. Cullman Center'
+                    },
+                    {
+                        index: 1,
+                        text: 'Schomburg Center for Research in Black Culture'
+                    },
+                    {
+                        index: 2,
+                        text: 'Science, Industry and Business Library (SIBL)'
+                    },
+                    {
+                        index: 3,
+                        text: 'Stephen A. Schwarzman Building'
+                    }
+                ]);
+            });
 
-    //     it('should revert back to all branches when performing a search',
-    //         function () {
-    //             var only_r = landingPage.onlyResearch;
+            it('should revert back to all branches when performing a search ' +
+                'and display the result first in the list',
+                function () {
+                    var only_research = landingPage.onlyResearch;
 
-    //             only_r.click();
-    //             expect(landingPage.locations.count()).toBe(4);
-    //             expect(only_r.getText()).toEqual('all branches');
+                    only_research.click();
+                    expect(landingPage.locations.count()).toBe(4);
+                    expect(only_research.getText()).toEqual('all branches');
 
-    //             landingPage.search('parkchester');
-    //             browser.sleep(1000);
+                    landingPage.search('parkchester');
+                    browser.sleep(1000);
 
-    //             expect(landingPage.locations.count()).toBe(10);
-    //             expect(only_r.getText()).toEqual('only research libraries');
-    //             expect(landingPage.firstLocName())
-    //                 .toEqual('Parkchester Library');
-    //         });
+                    expect(landingPage.locations.count()).toBe(10);
+                    expect(only_research.getText()).toEqual('research libraries');
+                    expect(landingPage.firstLocName())
+                        .toEqual('Parkchester Library');
+                });
 
-    //     it('should sort by distance after a search', function () {
-    //         var only_r = landingPage.onlyResearch,
-    //             research_libraries;
+            it('should sort by distance after a search', function () {
+                var only_research = landingPage.onlyResearch,
+                    research_libraries;
 
-    //         landingPage.search('parkchester');
-    //         browser.sleep(1000);
+                landingPage.search('parkchester');
+                browser.sleep(1000);
 
-    //         only_r.click();
+                only_research.click();
 
-    //         research_libraries = landingPage.locations.map(function (elm) {
-    //             return {
-    //                 text: elm.findElement(by.css('.p-org')).getText(),
-    //                 distance: elm.findElement(by.css('.distance')).getText()
-    //             };
-    //         });
+                research_libraries = landingPage.locations.map(function (elm) {
+                    return {
+                        text: elm.findElement(by.css('.p-org')).getText(),
+                        distance: elm.findElement(by.css('.distance')).getText()
+                    };
+                });
 
-    //         expect(landingPage.locations.count()).toBe(4);
-    //         expect(research_libraries).toEqual([
-    //             {
-    //                 text: 'Schomburg Center for Research in Black Culture',
-    //                 distance: '4.71 miles'
-    //             },
-    //             {
-    //                 text: 'New York Public Library for the Performing Arts' +
-    //                     ', Dorothy and Lewis B. Cullman Center',
-    //                 distance: '8.06 miles'
-    //             },
-    //             {
-    //                 text: 'Stephen A. Schwarzman Building',
-    //                 distance: '8.82 miles'
-    //             },
-    //             {
-    //                 text: 'Science, Industry and Business Library (SIBL)',
-    //                 distance: '9.09 miles'
-    //             }
-    //         ]);
-    //     });
+                expect(landingPage.locations.count()).toBe(4);
+                expect(research_libraries).toEqual([
+                    {
+                        text: 'Schomburg Center for Research in Black Culture',
+                        distance: 'Distance: 4.71 miles'
+                    },
+                    {
+                        text: 'New York Public Library for the Performing Arts' +
+                            ', Dorothy and Lewis B. Cullman Center',
+                        distance: 'Distance: 8.06 miles'
+                    },
+                    {
+                        text: 'Stephen A. Schwarzman Building',
+                        distance: 'Distance: 8.82 miles'
+                    },
+                    {
+                        text: 'Science, Industry and Business Library (SIBL)',
+                        distance: 'Distance: 9.09 miles'
+                    }
+                ]);
+            });
+        });
 
-    // });
+        describe('Map View', function () {
+            it('should filter by research libraries when clicked', function () {
+                var only_research = landingPage.onlyResearch;
+
+                landingPage.mapViewBtn.click();
+
+                expect(landingPage.locations.count()).toBe(92);
+                expect(only_research.getText()).toEqual('research libraries');
+
+                only_research.click();
+
+                expect(landingPage.locations.count()).toBe(4);
+                expect(only_research.getText()).toEqual('all branches');
+            });
+
+            it('should revert when the search input \'x\' is clicked',
+                function () {
+                    var only_research = landingPage.onlyResearch;
+
+                    landingPage.mapViewBtn.click();
+                    only_research.click();
+
+                    expect(landingPage.locations.count()).toBe(4);
+
+                    landingPage.clearSearch.click();
+
+                    expect(landingPage.locations.count()).toBe(92);
+                });
+
+            it('should switch between the research and circulating branches',
+                function () {
+                    var only_research = landingPage.onlyResearch;
+
+                    landingPage.mapViewBtn.click();
+
+                    only_research.click();
+                    expect(landingPage.locations.count()).toBe(4);
+
+                    only_research.click();
+                    expect(landingPage.locations.count()).toBe(92);
+
+                    only_research.click();
+                    expect(landingPage.locations.count()).toBe(4);
+                });
+
+            it('should list the four research libraries', function () {
+                var only_research = landingPage.onlyResearch,
+                    research_libraries;
+
+                landingPage.mapViewBtn.click();
+                only_research.click();
+
+                research_libraries = landingPage.locations.map(
+                    function (elm, index) {
+                        return {
+                            index: index,
+                            text: elm.findElement(by.css('.p-org')).getText()
+                        };
+                    }
+                );
+
+                expect(research_libraries).toEqual([
+                    {
+                        index: 0,
+                        text: 'New York Public Library for the Performing ' +
+                                'Arts, Dorothy and Lewis B. Cullman Center'
+                    },
+                    {
+                        index: 1,
+                        text: 'Schomburg Center for Research in Black Culture'
+                    },
+                    {
+                        index: 2,
+                        text: 'Science, Industry and Business Library (SIBL)'
+                    },
+                    {
+                        index: 3,
+                        text: 'Stephen A. Schwarzman Building'
+                    }
+                ]);
+            });
+
+            it('should revert back to all branches when performing a search ' +
+                'and display result first in the list',
+                function () {
+                    var only_research = landingPage.onlyResearch;
+
+                    landingPage.mapViewBtn.click();
+                    only_research.click();
+
+                    expect(landingPage.locations.count()).toBe(4);
+                    expect(only_research.getText()).toEqual('all branches');
+
+                    landingPage.search('lower east side');
+                    browser.sleep(1000);
+
+                    expect(landingPage.locations.count()).toBe(92);
+                    expect(only_research.getText()).toEqual('research libraries');
+                    expect(landingPage.firstLocName())
+                        .toEqual('Seward Park Library');
+                });
+
+            it('should sort by distance after a search', function () {
+                var only_research = landingPage.onlyResearch,
+                    research_libraries;
+
+                landingPage.mapViewBtn.click();
+                landingPage.search('lower east side');
+                browser.sleep(1000);
+
+                only_research.click();
+
+                research_libraries = landingPage.locations.map(function (elm) {
+                    return {
+                        text: elm.findElement(by.css('.p-org')).getText(),
+                        distance: elm.findElement(by.css('.distance')).getText()
+                    };
+                });
+
+                expect(landingPage.locations.count()).toBe(4);
+                expect(research_libraries).toEqual([
+                    {
+                        text: 'Science, Industry and Business Library (SIBL)',
+                        distance: 'Distance: 2.28 miles'
+                    },
+                    {
+                        text: 'Stephen A. Schwarzman Building',
+                        distance: 'Distance: 2.64 miles'
+                    },
+                    {
+                        text: 'New York Public Library for the Performing Arts' +
+                            ', Dorothy and Lewis B. Cullman Center',
+                        distance: 'Distance: 4.04 miles'
+                    },
+                    {
+                        text: 'Schomburg Center for Research in Black Culture',
+                        distance: 'Distance: 7.23 miles'
+                    },
+                ]);
+            });
+        });
+    });
 
     describe('Location list tracker', function () {
 
@@ -681,22 +826,35 @@ describe('Locations: homepage', function () {
             });
 
             it('should say "Show All" after showing 80 locations', function () {
-                var i = 0;
-                for (i = 0; i < 7; i++) {
-                    landingPage.showMore.click();
-                }
+                // Click the 'Show more' button 7 times.
+                landingPage.clickShowMore(7);
 
                 expect(landingPage.showing.getText())
                     .toEqual('Showing 80 of 92 Locations');
                 expect(landingPage.showMore.getText()).toEqual('Show All');
             });
 
+            it('should revert back to default after clicking on the ' +
+                '\'x\' button in the searchbox',
+                function () {
+                    // Random
+                    landingPage.clickShowMore(3);
+
+                    expect(landingPage.locations.count()).toBe(40);
+                    expect(landingPage.showing.getText())
+                        .toEqual('Showing 40 of 92 Locations');
+
+                    landingPage.clearSearch.click();
+
+                    expect(landingPage.locations.count()).toBe(10);
+                    expect(landingPage.showing.getText())
+                        .toEqual('Showing 10 of 92 Locations');
+                });
+
             it('should say show all 92 locations and remove the button',
                 function () {
-                    var i = 0;
-                    for (i = 0; i < 8; i++) {
-                        landingPage.showMore.click();
-                    }
+                    // Click the 'Show more' button 8 times.
+                    landingPage.clickShowMore(8);
 
                     expect(landingPage.showing.getText())
                         .toEqual('Showing 92 of 92 Locations');
