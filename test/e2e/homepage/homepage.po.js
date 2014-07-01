@@ -8,11 +8,11 @@ var LandingPage = function () {
   // Submit search button
   this.findIt = element(by.id('findit'));
   // Showing results near message
-  this.resultsNear = element(by.id('resultsnear'));
+  this.resultsNear = element(by.id('results'));
   // Showing no resutls near search query
   this.searchError = element(by.id('searchError'));
   // Clear search link
-  this.clearSearch = element(by.id('clearsearch'));
+  this.clearSearch = element(by.id('clear-search'));
   // Current Location button
   this.currLoc = element(by.id('currentloc'));
 
@@ -28,9 +28,12 @@ var LandingPage = function () {
   // Results list showing X of Y message
   this.showing = element(by.id('showing'));
   // Problem with Geolocation error
-  this.distanceError = element(by.id('distanceerror'));
+  this.distanceError = element(by.id('distance-error'));
 
-  this.mapMarkers = element.all(by.css('#all-locations-map-legend span'));
+  this.mapMarkers = element.all(by.css('#all-locations-map-legend div'));
+
+  this.listViewBtn = element(by.css('.list-view-btn'));
+  this.mapViewBtn = element(by.css('.map-view-btn'));
 
   this.clear = function () {
     this.searchInput.clear();
