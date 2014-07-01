@@ -2,14 +2,26 @@
   NYPL LOCATIONS
 \*------------------------------------*/
 
+// Import Mixins
+@import "partials/mixins";
+
 // Import Media Query breakpoints
 @import "partials/breakpoints";
 
 // Import global rules
 @import "partials/global";
 
+// Import Header
+@import "partials/header";
+
+// Import Top Main Navigation
+@import "partials/main-nav";
+
 // Import All Locations
 @import "partials/all-locations";
 
 // Import Individual Location
 @import "partials/single-location";
+
+// Import Footer
+@import "partials/footer";

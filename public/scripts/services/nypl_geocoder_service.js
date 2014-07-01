@@ -219,7 +219,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             });
         },
 
-        draw_marker: function (id, location, text, user, pan) {
+        draw_marker: function (id, location, text) {
             var _this = this,
                 marker,
                 position = new google.maps
@@ -229,25 +229,10 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
                     map: map
                 };
 
-            // show the user with a blue marker above the rest of the markers
-            if (user) {
-                markerOptions.icon =
-                    "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
-                markerOptions.zIndex = 1000;
-                markerOptions.animation = google.maps.Animation.DROP;
-            } else {
-                markerOptions.icon =
-                    "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
-            }
-
+            markerOptions.icon =
+                "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
             marker = new google.maps.Marker(markerOptions);
-
             markers.push({id: id, marker: marker, text: text});
-
-            if (pan) {
-                this.panMap(marker);
-                this.show_infowindow(marker, text);
-            }
 
             // This works but it seems to have to call an external file?
             // doesn't work when location.geolocation is passed
@@ -260,7 +245,6 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             // Bounds the map to display all the markers
             // bound.extend(marker.getPosition());
             // map.fitBounds(bound);
-
         },
 
         hide_infowindow: function () {
