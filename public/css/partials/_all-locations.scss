@@ -71,7 +71,7 @@
 				position: absolute;
 				left: 0;
 				right: 0;
-				width: 45%;
+				width: 55%;
 				height: 45px;
 
 				@include breakpoint($min, $post-palm) {
@@ -92,7 +92,13 @@
 
 	/** Filters Section **/
 	.search-filters {
-		margin: 1em 0;
+		margin: 1em 0 0;
+		text-align: center;
+
+		@include breakpoint($min, $post-palm) {
+			text-align: left;
+			margin: 1em 0;
+		}
 
 		.filters__current {
 			margin: 0;
@@ -102,13 +108,8 @@
 			}
 
 			p {
-				text-align: center;
 				margin: 0;
 				max-width: none;
-
-				@include breakpoint($min, $post-palm) {
-					text-align: left;
-				}
 
 				.current-location-container {
 					display: block; 
@@ -146,6 +147,30 @@
 		}
 	}
 
+	// Search/Error results container
+	.search__results {
+
+		#results, #search-error, #distance-error {
+			margin-top: 15px;
+			margin-bottom: 20px;
+			padding: 6px;
+			border-radius: 2px;
+			font-size: 13.5px;
+
+			@include breakpoint($min, $mobile-phone) {
+				font-size: inherit;
+			}
+			@include breakpoint($min, $post-palm) {
+				margin-top: 0px;
+			}
+
+		}
+
+		#results {
+			background-color: rgba(0,144,196,0.15);
+		}
+	}
+
 	.views-tab-controls {
 		display: none;
 		border-bottom: 2px solid #eee;
@@ -178,7 +203,10 @@
 
 	/** Locations List View (no-map) **/
 	.locations-results-list {
-		margin-top: 10px;
+		margin-top: 0px;
+		@include breakpoint($min, $post-palm) {
+			margin-top: 10px;
+		}
 
 		table.locations-list-view {
 			display: block;
@@ -239,7 +267,7 @@
 					td {
 						border: none;
 						position: relative;
-						padding-left: 30%;
+						padding-left: 35%;
 						display: block;
 						font-size: 13.5px;
 
@@ -255,7 +283,7 @@
 						&:before {
 							font-weight: bold;
 							position: absolute;
-							top: 37.5%;
+							top: 35.5%;
 							left: 6px;
 							width: 45%;
 							padding-right: 10px;
@@ -272,6 +300,7 @@
 						}
 
 						&:nth-of-type(1):before {
+							top: 75%;
 							@include breakpoint($max, $post-palm) {
 								content: "Location";
 							}
@@ -284,6 +313,7 @@
 						}
 
 						&:nth-of-type(3):before {
+							top: 35.5%;
 							@include breakpoint($max, $post-palm) {
 								content: "Today's Hours";
 							}
@@ -325,8 +355,13 @@
 
 	/** Locations Map View **/
 	.locations-results-map {
-		padding-top: 10px;
-		margin: 0px 0px 20px 0px;
+		padding-top: 0px;
+		margin: -25px 0px 20px 0px;
+
+		@include breakpoint($min, $post-palm) {
+			margin: 0px 0px 20px 0px;
+			padding-top: 10px;
+		}
 
 		.locations-data-wrapper {
 			border: 1px solid #eee;

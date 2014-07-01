@@ -31,9 +31,7 @@
 
           <p class="color-block callout" data-ng-if="location.type == 'research'">
             {{ 'IDV_DIVISION_HOURS' | translate }}
-          </p>
-
-          
+          </p>    
       </div><!--
         
       --><div id="container__address" class="grid__item one-whole lap-one-half desk-one-third">
@@ -47,16 +45,21 @@
             <div class="p-tel">{{location.contacts.phone}}</div>
             <div class="p-manager">{{ 'LIBRARY_MANAGER' | translate }}: {{location.contacts.manager}}</div>
           </div>
+          
           <div class="wheelchair icon-accessibility icon-color-blue">{{ 'WHEELCHAIR' | translate }}</div>
 
           <div class="map-directions">
             <a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">
               {{ 'DIRECTIONS' | translate }}
             </a>
-            <a class="icon-map" href="/#/{{location.slug}}/map">{{ 'MAP' | translate }}</a>
+            <a class="icon-map" href="/#/{{location.slug}}/map">
+              {{ 'MAP' | translate }}
+            </a>
           </div>
 
-		  <a id="catalog-link" class="icon-books" href="{{ location.catalog }}">Catalog Items Here</a>
+		      <a id="catalog-link" class="icon-books" href="{{ location.catalog }}">
+            Catalog Items Here
+          </a>
 
           <div class="social beta" data-ng-if="location.social_media">
             <a class="{{social.classes}}" href="{{social.href}}" 

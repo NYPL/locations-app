@@ -108,7 +108,7 @@
       position: absolute;
       left: 0;
       right: 0;
-      width: 45%;
+      width: 55%;
       height: 45px; }
       @media screen and (min-width: 601px) {
         .container__all-locations .search-locations .search-button-area #find-location {
@@ -122,19 +122,20 @@
         .container__all-locations .search-locations .search-button-area #find-location {
           width: 80%; } }
   .container__all-locations .search-filters {
-    margin: 1em 0; }
+    margin: 1em 0 0;
+    text-align: center; }
+    @media screen and (min-width: 601px) {
+      .container__all-locations .search-filters {
+        text-align: left;
+        margin: 1em 0; } }
     .container__all-locations .search-filters .filters__current {
       margin: 0; }
       @media screen and (min-width: 601px) {
         .container__all-locations .search-filters .filters__current {
           display: inline-block; } }
       .container__all-locations .search-filters .filters__current p {
-        text-align: center;
         margin: 0;
         max-width: none; }
-        @media screen and (min-width: 601px) {
-          .container__all-locations .search-filters .filters__current p {
-            text-align: left; } }
         .container__all-locations .search-filters .filters__current p .current-location-container {
           display: block; }
           @media screen and (min-width: 601px) {
@@ -155,6 +156,20 @@
         @media screen and (min-width: 601px) {
           .container__all-locations .search-filters .filters__research p .only-research-container {
             display: inline; } }
+  .container__all-locations .search__results #results, .container__all-locations .search__results #search-error, .container__all-locations .search__results #distance-error {
+    margin-top: 15px;
+    margin-bottom: 20px;
+    padding: 6px;
+    border-radius: 2px;
+    font-size: 13.5px; }
+    @media screen and (min-width: 480px) {
+      .container__all-locations .search__results #results, .container__all-locations .search__results #search-error, .container__all-locations .search__results #distance-error {
+        font-size: inherit; } }
+    @media screen and (min-width: 601px) {
+      .container__all-locations .search__results #results, .container__all-locations .search__results #search-error, .container__all-locations .search__results #distance-error {
+        margin-top: 0px; } }
+  .container__all-locations .search__results #results {
+    background-color: rgba(0, 144, 196, 0.15); }
   .container__all-locations .views-tab-controls {
     display: none;
     border-bottom: 2px solid #eee; }
@@ -175,7 +190,10 @@
       .container__all-locations .views-tab-controls div:hover {
         cursor: pointer; }
   .container__all-locations .locations-results-list {
-    margin-top: 10px; }
+    margin-top: 0px; }
+    @media screen and (min-width: 601px) {
+      .container__all-locations .locations-results-list {
+        margin-top: 10px; } }
     .container__all-locations .locations-results-list table.locations-list-view {
       display: block;
       width: 100%;
@@ -220,7 +238,7 @@
           .container__all-locations .locations-results-list table.locations-list-view tbody tr td {
             border: none;
             position: relative;
-            padding-left: 30%;
+            padding-left: 35%;
             display: block;
             font-size: 13.5px; }
             @media screen and (min-width: 480px) {
@@ -233,7 +251,7 @@
             .container__all-locations .locations-results-list table.locations-list-view tbody tr td:before {
               font-weight: bold;
               position: absolute;
-              top: 37.5%;
+              top: 35.5%;
               left: 6px;
               width: 45%;
               padding-right: 10px;
@@ -246,15 +264,19 @@
                   width: auto;
                   padding-left: initial;
                   white-space: nowrap; } }
-            @media screen and (max-width: 601px) {
-              .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(1):before {
-                content: "Location"; } }
+            .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(1):before {
+              top: 75%; }
+              @media screen and (max-width: 601px) {
+                .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(1):before {
+                  content: "Location"; } }
             @media screen and (max-width: 601px) {
               .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(2):before {
                 content: ""; } }
-            @media screen and (max-width: 601px) {
-              .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(3):before {
-                content: "Today's Hours"; } }
+            .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(3):before {
+              top: 35.5%; }
+              @media screen and (max-width: 601px) {
+                .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(3):before {
+                  content: "Today's Hours"; } }
       .container__all-locations .locations-results-list table.locations-list-view td.location-info .p-org {
         font-weight: bold; }
       .container__all-locations .locations-results-list table.locations-list-view td.location-info .map-link, .container__all-locations .locations-results-list table.locations-list-view td.location-info .directions-link {
@@ -268,8 +290,12 @@
           .container__all-locations .locations-results-list table.locations-list-view td.services-info ul {
             margin: 0 0 0 .5em; } }
   .container__all-locations .locations-results-map {
-    padding-top: 10px;
-    margin: 0px 0px 20px 0px; }
+    padding-top: 0px;
+    margin: -25px 0px 20px 0px; }
+    @media screen and (min-width: 601px) {
+      .container__all-locations .locations-results-map {
+        margin: 0px 0px 20px 0px;
+        padding-top: 10px; } }
     .container__all-locations .locations-results-map .locations-data-wrapper {
       border: 1px solid #eee;
       padding: 7px;
