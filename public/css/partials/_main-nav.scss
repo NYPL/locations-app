@@ -2,3 +2,39 @@
 ** Main Navigation Styles
 **
 **/
+
+nav {
+	background-color: #000;
+
+	.nav-wrapper {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 24px;
+
+		.container__primary-links {
+			text-align: center;
+			margin: 0;
+			padding: 0;
+			list-style-type: none;
+
+			> li {
+				display: inline-block;
+
+				> a {
+					display: block;
+					color: #FFF;
+					padding: 8px 10px;
+					text-decoration: none;
+					border-top: 1px solid transparent;
+
+					&:hover {
+						background-color: #FFF;
+						color: #000;
+						border-top: 1px solid #000;
+					}
+				}
+			}
+		}
+	}
+
+}
