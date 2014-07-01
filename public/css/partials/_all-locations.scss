@@ -283,7 +283,7 @@
 						&:before {
 							font-weight: bold;
 							position: absolute;
-							top: 37.5%;
+							top: 35.5%;
 							left: 6px;
 							width: 45%;
 							padding-right: 10px;
@@ -300,6 +300,7 @@
 						}
 
 						&:nth-of-type(1):before {
+							top: 75%;
 							@include breakpoint($max, $post-palm) {
 								content: "Location";
 							}
@@ -312,6 +313,7 @@
 						}
 
 						&:nth-of-type(3):before {
+							top: 35.5%;
 							@include breakpoint($max, $post-palm) {
 								content: "Today's Hours";
 							}
