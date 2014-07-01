@@ -122,11 +122,12 @@
         .container__all-locations .search-locations .search-button-area #find-location {
           width: 80%; } }
   .container__all-locations .search-filters {
-    margin: 1em 0;
+    margin: 1em 0 0;
     text-align: center; }
     @media screen and (min-width: 601px) {
       .container__all-locations .search-filters {
-        text-align: left; } }
+        text-align: left;
+        margin: 1em 0; } }
     .container__all-locations .search-filters .filters__current {
       margin: 0; }
       @media screen and (min-width: 601px) {
@@ -156,6 +157,7 @@
           .container__all-locations .search-filters .filters__research p .only-research-container {
             display: inline; } }
   .container__all-locations .search__results #results, .container__all-locations .search__results #search-error, .container__all-locations .search__results #distance-error {
+    margin-top: 15px;
     margin-bottom: 20px;
     padding: 6px;
     border-radius: 2px;
@@ -163,6 +165,9 @@
     @media screen and (min-width: 480px) {
       .container__all-locations .search__results #results, .container__all-locations .search__results #search-error, .container__all-locations .search__results #distance-error {
         font-size: inherit; } }
+    @media screen and (min-width: 601px) {
+      .container__all-locations .search__results #results, .container__all-locations .search__results #search-error, .container__all-locations .search__results #distance-error {
+        margin-top: 0px; } }
   .container__all-locations .search__results #results {
     background-color: rgba(0, 144, 196, 0.15); }
   .container__all-locations .views-tab-controls {
@@ -185,7 +190,10 @@
       .container__all-locations .views-tab-controls div:hover {
         cursor: pointer; }
   .container__all-locations .locations-results-list {
-    margin-top: 10px; }
+    margin-top: 0px; }
+    @media screen and (min-width: 601px) {
+      .container__all-locations .locations-results-list {
+        margin-top: 10px; } }
     .container__all-locations .locations-results-list table.locations-list-view {
       display: block;
       width: 100%;
@@ -278,8 +286,12 @@
           .container__all-locations .locations-results-list table.locations-list-view td.services-info ul {
             margin: 0 0 0 .5em; } }
   .container__all-locations .locations-results-map {
-    padding-top: 10px;
-    margin: 0px 0px 20px 0px; }
+    padding-top: 0px;
+    margin: -25px 0px 20px 0px; }
+    @media screen and (min-width: 601px) {
+      .container__all-locations .locations-results-map {
+        margin: 0px 0px 20px 0px;
+        padding-top: 10px; } }
     .container__all-locations .locations-results-map .locations-data-wrapper {
       border: 1px solid #eee;
       padding: 7px;

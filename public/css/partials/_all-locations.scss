@@ -92,11 +92,12 @@
 
 	/** Filters Section **/
 	.search-filters {
-		margin: 1em 0;
+		margin: 1em 0 0;
 		text-align: center;
 
 		@include breakpoint($min, $post-palm) {
 			text-align: left;
+			margin: 1em 0;
 		}
 
 		.filters__current {
@@ -150,6 +151,7 @@
 	.search__results {
 
 		#results, #search-error, #distance-error {
+			margin-top: 15px;
 			margin-bottom: 20px;
 			padding: 6px;
 			border-radius: 2px;
@@ -158,6 +160,10 @@
 			@include breakpoint($min, $mobile-phone) {
 				font-size: inherit;
 			}
+			@include breakpoint($min, $post-palm) {
+				margin-top: 0px;
+			}
+
 		}
 
 		#results {
@@ -197,7 +203,10 @@
 
 	/** Locations List View (no-map) **/
 	.locations-results-list {
-		margin-top: 10px;
+		margin-top: 0px;
+		@include breakpoint($min, $post-palm) {
+			margin-top: 10px;
+		}
 
 		table.locations-list-view {
 			display: block;
@@ -344,8 +353,13 @@
 
 	/** Locations Map View **/
 	.locations-results-map {
-		padding-top: 10px;
-		margin: 0px 0px 20px 0px;
+		padding-top: 0px;
+		margin: -25px 0px 20px 0px;
+
+		@include breakpoint($min, $post-palm) {
+			margin: 0px 0px 20px 0px;
+			padding-top: 10px;
+		}
 
 		.locations-data-wrapper {
 			border: 1px solid #eee;
