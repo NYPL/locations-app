@@ -333,6 +333,10 @@ nypl_locations.controller('LocationsCtrl', [
             organizeLocations($scope.locations, location, 'name');
         };
 
+        $scope.panToLibrary = function (library_id) {
+            nypl_geocoder_service.pan_existing_marker(library_id);
+        }
+
         $scope.useGeolocation = function () {
             $scope.searchTerm = '';
             $scope.geolocationAddressOrSearchQuery = '';
