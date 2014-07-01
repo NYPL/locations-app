@@ -9,6 +9,15 @@
 	max-width: 1200px;
 }
 
+// Lokinator content wrapper
+.nypl-locations {
+	margin-top: 30px;
+
+	@include breakpoint($min, $tablet) {
+		margin-top: 0px;
+	}
+}
+
 // general "chunk" styling
 .chunk{
 	.desc{

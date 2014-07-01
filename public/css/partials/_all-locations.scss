@@ -267,11 +267,12 @@
 					td {
 						border: none;
 						position: relative;
-						padding-left: 35%;
+						padding-left: 37%;
 						display: block;
 						font-size: 13.5px;
 
 						@include breakpoint($min, $mobile-phone) {
+							padding-left: 35%;
 							font-size: inherit;
 						}
 
