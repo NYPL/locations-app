@@ -11,19 +11,12 @@
 ** @include breakpoint(null, $palm, $tablet) {...}
 */
 /*
-** Main page wrapper
+** Global rules and overrides
 */
 .wrapper {
   margin: 0 auto;
   padding: 0 24px;
   max-width: 1200px; }
-
-@-moz-document url-prefix() {
-  .search-button {
-    vertical-align: .4px !important; }
-
-  .sso-login .login-form {
-    right: 81px !important; } }
 
 .nypl-locations {
   margin-top: 30px; }
@@ -68,6 +61,13 @@
   text-decoration: none; }
   .askNYPL .askchat:hover, .askNYPL .askemail:hover {
     background-color: #f6f4a8; }
+
+@-moz-document url-prefix() {
+  .search-button {
+    vertical-align: .4px !important; }
+
+  .sso-login .login-form {
+    right: 81px !important; } }
 
 header {
   margin: 0 auto;
