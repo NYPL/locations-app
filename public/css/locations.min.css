@@ -83,7 +83,7 @@ header {
     top: 0px;
     left: 0px;
     width: 100%; }
-    @media screen and (min-width: 768px) {
+    @media screen and (min-width: 769px) {
       header .header-wrapper {
         position: relative;
         width: auto;
@@ -98,7 +98,7 @@ header {
       height: 50px;
       width: 115px;
       background: url(http://cdn-prod.www.aws.nypl.org/sites/all/themes/nypl_new/css/tmp-header-sprite.png) no-repeat top left; }
-      @media screen and (min-width: 768px) {
+      @media screen and (min-width: 769px) {
         header .header-wrapper .nypl-logo a {
           position: relative;
           top: 5px;
@@ -132,12 +132,12 @@ header {
             background-color: #FFF; }
         header .header-wrapper .collapsed-buttons .button:hover {
           cursor: pointer; }
-      @media screen and (min-width: 768px) {
+      @media screen and (min-width: 769px) {
         header .header-wrapper .collapsed-buttons {
           display: none; } }
     header .header-wrapper .login-donate > a {
       display: none; }
-    @media screen and (min-width: 768px) {
+    @media screen and (min-width: 769px) {
       header .header-wrapper .login-donate {
         position: absolute;
         right: 0px;
@@ -183,7 +183,7 @@ header {
         width: 100%;
         padding: 0;
         box-shadow: 0 4px 5px 1px #aaa; }
-        @media screen and (min-width: 768px) {
+        @media screen and (min-width: 769px) {
           header .header-wrapper .login-donate .sso-login .login-form {
             position: absolute;
             right: 86px;
@@ -251,7 +251,7 @@ header {
       box-shadow: 0 4px 5px 1px #aaa;
       z-index: 1;
       height: 122px; }
-      @media screen and (min-width: 768px) {
+      @media screen and (min-width: 769px) {
         header .header-wrapper #search-top {
           display: block;
           width: auto;
@@ -269,7 +269,7 @@ header {
         position: relative;
         width: 90%;
         margin: 0 5%; }
-        @media screen and (min-width: 768px) {
+        @media screen and (min-width: 769px) {
           header .header-wrapper #search-top form {
             background-color: #e8e4e1;
             width: auto;
@@ -282,7 +282,7 @@ header {
           padding: 0;
           position: relative;
           top: 65px; }
-          @media screen and (min-width: 768px) {
+          @media screen and (min-width: 769px) {
             header .header-wrapper #search-top form .pseudo-select {
               display: none;
               position: absolute;
@@ -312,7 +312,7 @@ header {
               width: 35%;
               color: #FFF;
               padding: 8px; }
-              @media screen and (min-width: 768px) {
+              @media screen and (min-width: 769px) {
                 header .header-wrapper #search-top form .pseudo-select ul li {
                   position: relative;
                   height: auto;
@@ -324,7 +324,7 @@ header {
                 background-color: #015d90;
                 text-transform: capitalize;
                 left: 0; }
-                @media screen and (min-width: 768px) {
+                @media screen and (min-width: 769px) {
                   header .header-wrapper #search-top form .pseudo-select ul li.search-the-catalog {
                     background-color: #FFF;
                     left: inherit;
@@ -332,7 +332,7 @@ header {
               header .header-wrapper #search-top form .pseudo-select ul li.search-the-website {
                 background-color: #10a2cf;
                 right: 0; }
-                @media screen and (min-width: 768px) {
+                @media screen and (min-width: 769px) {
                   header .header-wrapper #search-top form .pseudo-select ul li.search-the-website {
                     background-color: #FFF;
                     right: inherit; } }
@@ -342,14 +342,14 @@ header {
                 text-align: center;
                 font-size: 16px;
                 padding: 0px 5px; }
-                @media screen and (min-width: 768px) {
+                @media screen and (min-width: 769px) {
                   header .header-wrapper #search-top form .pseudo-select ul li label {
                     display: inline-block;
                     width: 100%;
                     text-align: left; } }
                 header .header-wrapper #search-top form .pseudo-select ul li label input {
                   display: none; }
-                  @media screen and (min-width: 768px) {
+                  @media screen and (min-width: 769px) {
                     header .header-wrapper #search-top form .pseudo-select ul li label input {
                       display: inline; } }
         header .header-wrapper #search-top form #search-block-form-input {
@@ -402,29 +402,69 @@ header {
 ** Main Navigation Styles
 **
 **/
-nav {
-  background-color: #000; }
-  nav .nav-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px; }
-    nav .nav-wrapper .container__primary-links {
-      text-align: center;
+#main-nav {
+  display: none;
+  background-color: #FFF;
+  position: absolute;
+  height: auto;
+  box-shadow: 0 4px 5px 1px #aaa;
+  z-index: 3; }
+  #main-nav.open-navigation {
+    display: block;
+    top: 50px;
+    width: 100%; }
+  @media screen and (min-width: 769px) {
+    #main-nav {
+      position: relative;
+      display: block;
+      top: inherit !important;
+      background-color: #000;
+      box-shadow: none;
+      height: auto; } }
+  #main-nav .nav-wrapper {
+    padding: 10px;
+    margin: 0;
+    max-width: none; }
+    @media screen and (min-width: 769px) {
+      #main-nav .nav-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px; } }
+    #main-nav .nav-wrapper .container__primary-links {
+      text-align: left;
       margin: 0;
       padding: 0;
       list-style-type: none; }
-      nav .nav-wrapper .container__primary-links > li {
-        display: inline-block; }
-        nav .nav-wrapper .container__primary-links > li > a {
+      @media screen and (min-width: 769px) {
+        #main-nav .nav-wrapper .container__primary-links {
+          text-align: center; } }
+      #main-nav .nav-wrapper .container__primary-links > li {
+        display: block;
+        margin: 2px 0px; }
+        @media screen and (min-width: 769px) {
+          #main-nav .nav-wrapper .container__primary-links > li {
+            display: inline-block;
+            margin: 0; } }
+        #main-nav .nav-wrapper .container__primary-links > li > a {
           display: block;
-          color: #FFF;
-          padding: 8px 10px;
           text-decoration: none;
-          border-top: 1px solid transparent; }
-          nav .nav-wrapper .container__primary-links > li > a:hover {
-            background-color: #FFF;
-            color: #000;
-            border-top: 1px solid #000; }
+          color: #000;
+          padding: 4px 0px; }
+          @media screen and (min-width: 769px) {
+            #main-nav .nav-wrapper .container__primary-links > li > a {
+              color: #FFF;
+              padding: 8px 10px;
+              border-top: 1px solid transparent; } }
+          @media screen and (min-width: 769px) {
+            #main-nav .nav-wrapper .container__primary-links > li > a:hover {
+              background-color: #FFF;
+              color: #000;
+              border-top: 1px solid #000; } }
+        #main-nav .nav-wrapper .container__primary-links > li.dropDown > div {
+          display: none; }
+          @media screen and (min-width: 769px) {
+            #main-nav .nav-wrapper .container__primary-links > li.dropDown > div {
+              display: block; } }
 
 /* 
 ** All Locations Landing Page
@@ -650,10 +690,18 @@ nav {
                   content: "Today's Hours"; } }
       .container__all-locations .locations-results-list table.locations-list-view td.location-info .p-org {
         font-weight: bold; }
-      .container__all-locations .locations-results-list table.locations-list-view td.location-info .map-link, .container__all-locations .locations-results-list table.locations-list-view td.location-info .directions-link {
+      .container__all-locations .locations-results-list table.locations-list-view td.location-info .directions-link {
         display: block; }
         @media screen and (min-width: 768px) {
-          .container__all-locations .locations-results-list table.locations-list-view td.location-info .map-link, .container__all-locations .locations-results-list table.locations-list-view td.location-info .directions-link {
+          .container__all-locations .locations-results-list table.locations-list-view td.location-info .directions-link {
+            display: inline; } }
+      .container__all-locations .locations-results-list table.locations-list-view td.location-info .map-link {
+        display: none; }
+        @media screen and (min-width: 600px) and (max-width: 768px) {
+          .container__all-locations .locations-results-list table.locations-list-view td.location-info .map-link {
+            display: block; } }
+        @media screen and (min-width: 769px) {
+          .container__all-locations .locations-results-list table.locations-list-view td.location-info .map-link {
             display: inline; } }
       .container__all-locations .locations-results-list table.locations-list-view td.services-info ul {
         margin: 0 0 0 1.5em; }
@@ -692,6 +740,11 @@ nav {
             margin-left: .1em; }
         .container__all-locations .locations-results-map .locations-data-wrapper .location-data .directions-link {
           margin: .35em 0 .5em; }
+        .container__all-locations .locations-results-map .locations-data-wrapper .location-data .map-link {
+          display: none; }
+          @media screen and (min-width: 601px) {
+            .container__all-locations .locations-results-map .locations-data-wrapper .location-data .map-link {
+              display: block; } }
     .container__all-locations .locations-results-map .map-wrapper {
       display: none; }
       @media screen and (min-width: 601px) {
