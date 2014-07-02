@@ -13,9 +13,11 @@ $viewport-increment: 1px;
 // Desktop
 $desktop: 1024px;
 $pre-desktop: $desktop - $viewport-increment;
+$post-desktop: $desktop + $viewport-increment;
 
 $laptop: 992px;
 $pre-laptop: $laptop - $viewport-increment;
+$post-laptop: $laptop + $viewport-increment;
 
 // Tablet
 $tablet: 768px;
@@ -24,6 +26,7 @@ $post-tablet: $tablet + $viewport-increment;
 
 // Palm
 $palm: 600px;
+$pre-palm: $palm - $viewport-increment;
 $post-palm: $palm + $viewport-increment;
 
 // Mobile Phone

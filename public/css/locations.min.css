@@ -697,7 +697,10 @@ header {
             display: inline; } }
       .container__all-locations .locations-results-list table.locations-list-view td.location-info .map-link {
         display: none; }
-        @media screen and (min-width: 601px) {
+        @media screen and (min-width: 600px) and (max-width: 768px) {
+          .container__all-locations .locations-results-list table.locations-list-view td.location-info .map-link {
+            display: block; } }
+        @media screen and (min-width: 769px) {
           .container__all-locations .locations-results-list table.locations-list-view td.location-info .map-link {
             display: inline; } }
       .container__all-locations .locations-results-list table.locations-list-view td.services-info ul {
