@@ -911,4 +911,67 @@ describe('Locations: homepage', function () {
             });
         });
     });
+
+    describe('Map related functions', function () {
+        describe('Coming from the List View', function () {
+            it('should go to the map when clicking on the Map View button',
+                function () {
+                    expect(landingPage.listViewTable.isPresent()).toBe(true);
+                    expect(landingPage.mapViewMap.isPresent()).toBe(false);
+
+                    landingPage.mapViewBtn.click();
+
+                    expect(landingPage.listViewTable.isPresent()).toBe(false);
+                    expect(landingPage.mapViewMap.isPresent()).toBe(true);
+                });
+
+            it('should show the library you clicked on top of the list' +
+                ' when clicking on "View on Map" and be highlighted when' +
+                ' viewing in "List View"', function () {
+                    expect(landingPage.listViewTable.isPresent()).toBe(true);
+                    expect(landingPage.mapViewMap.isPresent()).toBe(false);
+
+                    landingPage.nthLocViewMapBtn(3).click();
+
+                    expect(landingPage.mapViewMap.isPresent()).toBe(true);
+                    expect(landingPage.listViewTable.isPresent()).toBe(false);
+                    expect(landingPage.firstLocName()).toEqual('67th Street Library');
+
+                    landingPage.listViewBtn.click();
+
+                    expect(landingPage.listViewTable.isPresent()).toBe(true);
+                    expect(landingPage.firstLocName()).toEqual('67th Street Library');
+                    expect(landingPage.locations
+                        .first().getAttribute('class')
+                    ).toContain('callout');
+
+
+                    landingPage.nthLocViewMapBtn(9).click();
+
+                    expect(landingPage.mapViewMap.isPresent()).toBe(true);
+                    expect(landingPage.firstLocName()).toEqual('Baychester Library');
+                });
+        });
+
+        describe('On the Map View', function () {
+            it('should pan to different libraries when clicking on ' +
+                '"View on Map"', function () {
+                    landingPage.mapViewBtn.click();
+
+                    landingPage.nthLocViewMapBtn(2).click();
+                    expect(landingPage.nthLocName(2)).toEqual('58th Street Library');
+                    expect(landingPage.gmapInfoWindow.getText()).toEqual('58th Street Library');
+
+                    landingPage.nthLocViewMapBtn(10).click();
+                    expect(landingPage.nthLocName(10))
+                        .toEqual('Belmont Library and Enrico Fermi Cultural Center');
+                    expect(landingPage.gmapInfoWindow.getText())
+                        .toEqual('Belmont Library and Enrico Fermi Cultural Center');
+
+                    landingPage.nthLocViewMapBtn(25).click();
+                    expect(landingPage.nthLocName(25)).toEqual('Francis Martin Library');
+                    expect(landingPage.gmapInfoWindow.getText()).toEqual('Francis Martin Library');
+                });
+        });
+    });
 });

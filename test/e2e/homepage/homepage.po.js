@@ -35,6 +35,12 @@ var LandingPage = function () {
   this.listViewBtn = element(by.css('.list-view-btn'));
   this.mapViewBtn = element(by.css('.map-view-btn'));
 
+  this.listViewTable = element(by.css('.locations-list-view'));
+  this.mapViewMap = element(by.id('all-locations-map'));
+
+  // This is coming from the map
+  this.gmapInfoWindow = element(by.css('.gm-style-iw a'));
+
   this.clickShowMore = function (n) {
     for (var i = 0; i < n; i++) {
       this.showMore.click();
@@ -64,6 +70,10 @@ var LandingPage = function () {
 
   this.nthLocDist = function (n) {
     return this.nthLoc(n).findElement(by.css('.distance')).getText();
+  };
+
+  this.nthLocViewMapBtn = function (n) {
+    return this.nthLoc(n).findElement(by.css('.icon-map'));
   };
 
   this.firstLocDist = function (n) {
