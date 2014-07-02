@@ -39,7 +39,7 @@ var LandingPage = function () {
   this.mapViewMap = element(by.id('all-locations-map'));
 
   // This is coming from the map
-  this.gmapInfoWindow = element(by.css('.gm-style-iw a'));
+  this.gmapInfoWindow = element(by.css('.gm-style-iw div'));
 
   this.clickShowMore = function (n) {
     for (var i = 0; i < n; i++) {
