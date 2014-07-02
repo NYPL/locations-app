@@ -45,10 +45,6 @@ nypl_locations.config([
                 controller: 'LocationsCtrl',
                 label: 'Home'
             })
-            .when('/full-page-map', {
-                templateUrl: '/views/large-map.html',
-                controller: 'LargeMapCtrl'
-            })
             .when('/division/:division', {
                 templateUrl: 'views/division.html',
                 controller: 'DivisionCtrl',
@@ -78,11 +74,6 @@ nypl_locations.config([
                 templateUrl: '/views/events.html',
                 controller: 'LocationCtrl',
                 label: 'Events'
-            })
-            .when('/:symbol/map', {
-                templateUrl: '/views/map.html',
-                controller: 'mapCtrl',
-                label: 'Map'
             })
             .otherwise({
                 redirectTo: '/404'
