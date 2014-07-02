@@ -10,7 +10,7 @@ var LandingPage = function () {
   // Showing results near message
   this.resultsNear = element(by.id('results'));
   // Showing no resutls near search query
-  this.searchError = element(by.id('searchError'));
+  this.searchError = element(by.id('search-error'));
   // Clear search link
   this.clearSearch = element(by.id('clear-search'));
   // Current Location button
