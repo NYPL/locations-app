@@ -239,6 +239,10 @@ describe('Locations: homepage', function () {
                                 .toEqual('Aguilar Library');
                             expect(landingPage.nthLocName(1))
                                 .toEqual('115th Street Library');
+                            expect(landingPage.gmapInfoWindow.getText())
+                                .toEqual('Aguilar Library' +
+                                    '\n174 East 110th Street\n' +
+                                    'New York, NY, 10029');
                         });
                 });
 
@@ -318,6 +322,10 @@ describe('Locations: homepage', function () {
                             expect(landingPage.nthLocName(1))
                                 .toEqual('New Amsterdam Library');
                             expect(landingPage.nthLocDist(1)).toEqual('Distance: 0.86 miles');
+
+                            expect(landingPage.gmapInfoWindow.getText())
+                                .toEqual('Battery Park City Library\n' +
+                                    '175 North End Avenue\nNew York, NY, 10282');
                         });
                 });
 
@@ -388,6 +396,20 @@ describe('Locations: homepage', function () {
                 ).toEqual('Distance: 1.65 miles');
             });
 
+            describe('Map View', function () {
+                it('should display the search query on the map with a marker ' +
+                    'and organize list by distance',
+                    function () {
+                        landingPage.mapViewBtn.click();
+
+                        expect(landingPage.firstLocName())
+                            .toEqual('West Farms Library');
+                        expect(landingPage.firstLocDist()).toEqual('Distance: 0.51 miles');
+
+                        expect(landingPage.gmapInfoWindow.getText())
+                            .toEqual('bronx zoo');
+                    });
+            });
 
             describe('Clicking searchbox \'x\'', function () {
                 it('should clear the input',
@@ -441,6 +463,9 @@ describe('Locations: homepage', function () {
                         landingPage.nthLoc(2)
                             .findElement(by.css('.p-postal-code')).getText()
                     ).toEqual('10016');
+
+                    expect(landingPage.firstLocName())
+                        .toEqual('Kips Bay Library');
                 });
 
             it('should then search for libraries near the searched zip code' +
@@ -458,6 +483,20 @@ describe('Locations: homepage', function () {
                         .toEqual('Grand Central Library');
                     expect(landingPage.nthLocDist(4)).toEqual('Distance: 0.56 miles');
                 });
+
+            describe('Map View', function () {
+                it('should display one of the matches for the searched' + 
+                    'zip code',
+                    function () {
+                        landingPage.mapViewBtn.click();
+
+                        expect(landingPage.firstLocName())
+                            .toEqual('Kips Bay Library');
+                        expect(landingPage.gmapInfoWindow.getText())
+                            .toEqual('Kips Bay Library\n446 Third Avenue\n' +
+                                'New York, NY, 10016');
+                    });
+            });
 
             describe('Clicking searchbox \'x\'', function () {
                 it('should clear the input',
@@ -527,6 +566,19 @@ describe('Locations: homepage', function () {
                     expect(landingPage.nthLocName(1))
                         .toEqual('125th Street Library');
                 });
+
+            describe('Map View', function () {
+                it('should not place a marker for a location not in NYC',
+                    function () {
+                        landingPage.search('boston');
+                        browser.sleep(1000);
+
+                        landingPage.mapViewBtn.click();
+
+                        expect(landingPage.gmapInfoWindow.isPresent())
+                            .toBe(false);
+                    });
+            });
         });
     });
 
