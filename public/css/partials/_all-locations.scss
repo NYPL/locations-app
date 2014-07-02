@@ -332,13 +332,23 @@
 						font-weight: bold;
 					}
 
-					.map-link, .directions-link {
+					.directions-link {
 						display: block; 
 
 						@include breakpoint($min, $tablet) {
 							display: inline;
 						}
-
+					}
+					// Hide map-link on mobile devices
+					.map-link {
+						display: none; 
+						
+						@include breakpoint(null, $palm, $tablet) {
+							display: block;
+						}
+						@include breakpoint($min, $post-tablet) {
+							display: inline;
+						}
 					}
 				}
 
@@ -402,6 +412,14 @@
 
 				.directions-link {
 					margin: .35em 0 .5em;
+				}
+
+				.map-link {
+					display: none;
+
+					@include breakpoint($min, $post-palm) {
+						display: block;
+					}
 				}
 
 			}

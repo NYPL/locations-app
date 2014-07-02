@@ -15,7 +15,7 @@ header {
 		left: 0px;
 		width: 100%;
 
-		@include breakpoint($min, $tablet) {
+		@include breakpoint($min, $post-tablet) {
 			position: relative;
 			width: auto;
 			top: inherit;
@@ -36,7 +36,7 @@ header {
 				background: url(http://cdn-prod.www.aws.nypl.org/sites/all/themes/nypl_new/css/tmp-header-sprite.png) no-repeat top left;
 				
 				// Tablet Landscape and Up
-				@include breakpoint($min, $tablet) {
+				@include breakpoint($min, $post-tablet) {
 					position: relative;
 					top: 5px;
 					left: 5%;
@@ -85,7 +85,7 @@ header {
 			}
 
 			// Tablet Landscape and Up
-			@include breakpoint($min, $tablet) {
+			@include breakpoint($min, $post-tablet) {
 				display: none;
 			}
 		}
@@ -97,7 +97,7 @@ header {
 				display: none;
 			}
 
-			@include breakpoint($min, $tablet) {
+			@include breakpoint($min, $post-tablet) {
 				position: absolute;
 				right: 0px;
 				top: 0px;
@@ -168,7 +168,7 @@ header {
 					padding: 0;
 					box-shadow: 0 4px 5px 1px #aaa;
 
-					@include breakpoint($min, $tablet) {
+					@include breakpoint($min, $post-tablet) {
 						position: absolute;
 						right: 86px;
 						border: 2px solid #7d7872;
@@ -268,7 +268,7 @@ header {
 			z-index: 1;
 			height: 122px;
 
-			@include breakpoint($min, $tablet) {
+			@include breakpoint($min, $post-tablet) {
 				display: block;
 				width: auto;
 				height: auto;
@@ -290,7 +290,7 @@ header {
 				width: 90%;
 				margin: 0 5%;
 
-				@include breakpoint($min, $tablet) {
+				@include breakpoint($min, $post-tablet) {
 					background-color: #e8e4e1;
 					width: auto;
 					margin: 0;
@@ -307,7 +307,7 @@ header {
 					top: 65px;
 
 
-					@include breakpoint($min, $tablet) {
+					@include breakpoint($min, $post-tablet) {
 						display: none;
 						position: absolute;
 						top: 36px;
@@ -338,7 +338,7 @@ header {
 							color: #FFF;
 							padding: 8px;
 
-							@include breakpoint($min, $tablet) {
+							@include breakpoint($min, $post-tablet) {
 								position: relative;
 								height: auto;
 								display: block;
@@ -352,7 +352,7 @@ header {
 								text-transform: capitalize;
 								left: 0;
 
-								@include breakpoint($min, $tablet) {
+								@include breakpoint($min, $post-tablet) {
 									background-color: #FFF;
 									left: inherit;
 									border-bottom: 1px solid #CCC;
@@ -362,7 +362,7 @@ header {
 								background-color: #10a2cf;
 								right: 0;
 
-								@include breakpoint($min, $tablet) {
+								@include breakpoint($min, $post-tablet) {
 									background-color: #FFF;
 									right: inherit;
 								}
@@ -375,7 +375,7 @@ header {
 								font-size: 16px;
 								padding: 0px 5px;
 
-								@include breakpoint($min, $tablet) {
+								@include breakpoint($min, $post-tablet) {
 									display: inline-block;
 									width: 100%;
 									text-align: left;
@@ -384,7 +384,7 @@ header {
 								input {
 									display: none;
 
-									@include breakpoint($min, $tablet) {
+									@include breakpoint($min, $post-tablet) {
 										display: inline;
 									}
 								}
