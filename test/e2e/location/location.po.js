@@ -21,6 +21,8 @@ var LocationPage = function () {
     element.all(by.repeater('division in location._embedded.divisions'));
 
   this.events = element.all(by.repeater('event in location._embedded.events'));
+  this.google = element(by.css('.google_link'));
+  this.yahoo = element(by.css('.yahoo_link'));
 
   this.about = element(by.binding('location.about'));
 

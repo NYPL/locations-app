@@ -34,14 +34,15 @@
               </div>
 
               <!-- Map/Directions Links -->
-              <span class="map-link">
+              <div class="map-link">
                 <a class="icon-map" href="" data-ng-click="viewMapLibrary(location.slug)">{{ 'VIEW_MAP' | translate}}</a>
-              </span>
-              <span class="directions-link">
-                <a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
-                {{ 'DIRECTIONS' | translate }}
+              </div>
+              <div class="directions-link">
+                <a class="icon-compass" target="_blank"
+                  href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
+                  {{ 'DIRECTIONS' | translate }}
                 </a>
-              </span>
+              </div>
 
               <!-- Distance -->
               <div class="distance" data-ng-if="location.distance">
@@ -83,3 +84,4 @@
     </span>
   </div>
 </div>
+<!-- End Pagination -->

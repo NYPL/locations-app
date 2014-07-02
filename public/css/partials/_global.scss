@@ -1,18 +1,50 @@
-/*
-** Main page wrapper
-*/
+/**
+** Global Rules
+**
+**/
 
-// (Necessary for centering grid items)
+// Main page wrapper (Necessary for centering grid items)
 .wrapper {
 	margin: 0 auto;
 	padding: 0 24px;
 	max-width: 1200px;
 }
 
+// Lokinator content wrapper
+.nypl-locations {
+	margin-top: 30px;
+
+	@include breakpoint($min, $tablet) {
+		margin-top: 20px;
+	}
+}
+
+// general "chunk" styling
+.chunk{
+	.desc{
+		color: #7d7872;
+	}
+	
+	.date{
+		font-style: italic;
+	}
+}
+
+.nypl-alerts {
+	background-color: #ECE94C;
+	padding: 12px;
+
+	p {
+		margin: .5em 0;
+		text-align: center;
+		max-width: none;
+	}
+}
+
 // AskNYPL
 .askNYPL {
 	// adjust padding from grid__item
-	@media only screen and (max-width: 601px) {
+	@include breakpoint($min, $post-palm) {
 		padding-left: 0;
 		padding-top: 24px;
 	}
@@ -37,7 +69,7 @@
 	}
 	
 	.asknum {
-		@media only screen and (min-width: 568px) {
+		@include breakpoint($min, $post-palm) {
 			font-size: 36px;
 		}
 	}
@@ -53,5 +85,17 @@
 		&:hover {
 			background-color: lighten(#ece94c, 20%);
 		}
+	}
+}
+
+// Firefox specific override rules
+@-moz-document url-prefix() {
+
+	.search-button {
+		vertical-align: .4px !important;
+	}
+
+	.sso-login .login-form {
+		right: 81px !important;
 	}
 }

@@ -1,10 +1,14 @@
+<!-- Alerts -->
+<nyplalerts data-ng-if="siteWideAlert || libraryAlert" 
+    sitewidealert='{{siteWideAlert}}'libraryAlert='{{libraryAlert}}'></nyplalerts>
+
 <div class="content grid">
-  <ul class="inline breadcrumb">
+  <<!-- ul class="inline breadcrumb">
     <li ng-repeat="breadcrumb in breadcrumbs.get() track by breadcrumb.path" ng-class="{ active: $last }">
       <a ng-if="!$last" ng-href="#{{ breadcrumb.path }}" ng-bind="breadcrumb.label | capitalize"></a>
       <span ng-if="$last" ng-bind="breadcrumb.label | capitalize"></span>
     </li>
-  </ul>
+  </ul> -->
 
   <section class="grid">
     <div class="grid__item one-whole lap-and-up-two-thirds">
@@ -38,7 +42,7 @@
     <h3><a href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h3>
       <div class="grid__item one-whole lap-and-up-two-thirds">
         <img data-ng-if="event.image" class="img--outline img--left" 
-          src="{{event.image}}" alt="" style="height: 100px;" />
+          data-ng-src="{{event.image}}" alt="" style="height: 100px;" />
         <p>Date/Time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}} - {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p>{{event.body}}</p>
       </div><!--
@@ -46,10 +50,11 @@
           <p class="text--right"><a href="" class="btn gradient">{{ 'REGISTER' | translate }}</a></p>
           <p class="text--right">
             <a href="{{calendar_link('google', event, location)}}"
-              target="_blank" rel="nofollow">Google</a>
+              target="_blank" rel="nofollow" class="icon-calendar google_link">Google</a>
             <a href="{{calendar_link('yahoo', event, location)}}"
-              target="_blank" rel="nofollow">yahoo</a>
-            <a href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" download="nypl_event.ics" rel="nofollow">
+              target="_blank" rel="nofollow" class="icon-calendar yahoo_link">Yahoo</a>
+            <a href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" download="nypl_event.ics" 
+              class="icon-calendar" rel="nofollow">
               iCal
             </a>
           </p>

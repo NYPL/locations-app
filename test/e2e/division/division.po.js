@@ -5,7 +5,7 @@ var DivisionPage = function () {
 
   this.name = element(by.binding('division.name'));
 
-  this.location = element(by.binding('division.location_id'));
+  this.location = element(by.binding('division.location_name'));
   this.floor = element(by.binding('division.floor'));
   this.room = element(by.binding('division.room'));
 

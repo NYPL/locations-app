@@ -7,35 +7,34 @@ describe('Locations: division', function () {
 
   // These tests are specific to a division
   beforeEach(function () {
-    browser.get('/#/division/manuscripts-division');
+    browser.get('/#/division/general-research-division');
     browser.waitForAngular();
   });
 
   it('should display the name', function () {
     expect(divisionPage.name.getText())
-      .toEqual('Manuscripts and Archives Division');
+      .toEqual('General Research Division');
   });
 
   it('should say what library it is located in', function () {
     expect(divisionPage.location.getText())
-      .toEqual('SASB');
+      .toEqual('Stephen A. Schwarzman Building');
   });
 
   it('should have a floor and room number', function () {
     // Seemds like element(by.binding()) gets the text between tags,
     // even if there are two different {{bindings}} between those tags.
-    expect(divisionPage.floor.getText()).toEqual('Third Floor and Room #328');
-    expect(divisionPage.room.getText()).toEqual('Third Floor and Room #328');
+    expect(divisionPage.floor.getText()).toEqual('Third Floor and Room #315');
+    expect(divisionPage.room.getText()).toEqual('and Room #315');
   });
 
   it('should display two social media icons', function () {
     var social_media = divisionPage.social_media;
-    expect(social_media.count()).toBe(2);
+    expect(social_media.count()).toBe(4);
   });
 
   it('should have a manager', function () {
-    expect(divisionPage.division_manager.getText())
-      .not.toBe('');
+    expect(divisionPage.division_manager.getText()).toEqual('Marie Coughlin');
   });
 
   it('should display hours for today', function () {

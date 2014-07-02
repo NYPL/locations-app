@@ -54,25 +54,74 @@ describe('Locations: library', function () {
       expect(locationPage.blogs.count()).toBe(3);
     });
 
+    describe('Calendar links', function () {
+      // Protractor opens the browser in a new instance
+      // which means that you will not be logged in.
+      // The first assertion tests whether you are redirected
+      // to the login page for either Google or Yahoo.
+      // The second assertion tests that the redirect url
+      // is going to the calendar section.
+      it('should verify new window and url for Google calendar link', function () {
+        var appWindow = browser.getWindowHandle();
+
+        locationPage.google.click().then(function () {
+          browser.getAllWindowHandles().then(function (handles) {
+            var newWindowHandle = handles[1];
+            browser.switchTo().window(newWindowHandle).then(function () {
+              expect(browser.driver.getCurrentUrl())
+                .toMatch(/https:\/\/accounts.google.com/);
+              expect(browser.driver.getCurrentUrl())
+                .toMatch(/https:\/\/www.google.com\/calendar\/render/);
+
+              // Go back to app
+              browser.driver.close().then(function () {
+                browser.switchTo().window(appWindow);
+              });
+            });
+          });
+        });
+      });
+
+      it('should verify new window and url for Yahoo calendar link', function () {
+        var appWindow = browser.getWindowHandle();
+
+        locationPage.yahoo.click().then(function () {
+          browser.getAllWindowHandles().then(function (handles) {
+            var newWindowHandle = handles[1];
+            browser.switchTo().window(newWindowHandle).then(function () {
+              expect(browser.driver.getCurrentUrl())
+                .toMatch(/https:\/\/login.yahoo.com/);
+              expect(browser.driver.getCurrentUrl())
+                .toMatch(/calendar.yahoo.com/);
+
+              // Go back to app
+              browser.driver.close().then(function () {
+                browser.switchTo().window(appWindow);
+              });
+            });
+          });
+        });
+      });
+    });
   });
 
   describe('Research branch', function () {
     beforeEach(function () {
-      browser.get('/#/schwarzman');
+      browser.get('/#/schomburg');
       browser.waitForAngular();
     });
 
     it('should display the name', function () {
       expect(locationPage.name.getText())
-        .toEqual('Stephen A. Schwarzman Building');
+        .toEqual('Schomburg Center for Research in Black Culture');
     });
 
     it('should have a complete address', function () {
       expect(locationPage.street_address.getText())
-        .toEqual('Fifth Avenue at 42nd Street');
+        .toEqual('515 Malcolm X Boulevard');
       expect(locationPage.locality.getText()).toEqual('New York');
       expect(locationPage.region.getText()).toEqual('NY');
-      expect(locationPage.postal_code.getText()).toEqual('10018');
+      expect(locationPage.postal_code.getText()).toEqual('10037');
     });
 
     it('should have a library manager', function () {
@@ -88,8 +137,8 @@ describe('Locations: library', function () {
       expect(locationPage.hours.count()).toBe(7);
     });
 
-    it('should display 12 divisions', function () {
-      expect(locationPage.divisions.count()).toBe(12);
+    it('should display 5 divisions', function () {
+      expect(locationPage.divisions.count()).toBe(5);
     });
 
     it('should display three events', function () {
@@ -104,9 +153,58 @@ describe('Locations: library', function () {
       expect(locationPage.blogs.count()).toBe(0);
     });
 
-    it('should display two exhibitions', function () {
-      expect(locationPage.exhibitions.count()).toBe(2);
+    it('should not display any exhibitions', function () {
+      expect(locationPage.exhibitions.count()).toBe(0);
     });
 
+    describe('Calendar links', function () {
+      // Protractor opens the browser in a new instance
+      // which means that you will not be logged in.
+      // The first assertion tests whether you are redirected
+      // to the login page for either Google or Yahoo.
+      // The second assertion tests that the redirect url
+      // is going to the calendar section.
+      it('should verify new window and url for Google calendar link', function () {
+        var appWindow = browser.getWindowHandle();
+
+        locationPage.google.click().then(function () {
+          browser.getAllWindowHandles().then(function (handles) {
+            var newWindowHandle = handles[1];
+            browser.switchTo().window(newWindowHandle).then(function () {
+              expect(browser.driver.getCurrentUrl())
+                .toMatch(/https:\/\/accounts.google.com/);
+              expect(browser.driver.getCurrentUrl())
+                .toMatch(/https:\/\/www.google.com\/calendar\/render/);
+
+              // Go back to app
+              browser.driver.close().then(function () {
+                browser.switchTo().window(appWindow);
+              });
+            });
+          });
+        });
+      });
+
+      it('should verify new window and url for Yahoo calendar link', function () {
+        var appWindow = browser.getWindowHandle();
+
+        locationPage.yahoo.click().then(function () {
+          browser.getAllWindowHandles().then(function (handles) {
+            var newWindowHandle = handles[1];
+            browser.switchTo().window(newWindowHandle).then(function () {
+              expect(browser.driver.getCurrentUrl())
+                .toMatch(/https:\/\/login.yahoo.com/);
+              expect(browser.driver.getCurrentUrl())
+                .toMatch(/calendar.yahoo.com/);
+
+              // Go back to app
+              browser.driver.close().then(function () {
+                browser.switchTo().window(appWindow);
+              });
+            });
+          });
+        });
+      });
+    });
   });
 });

@@ -7,9 +7,15 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         bound,
         panCoords,
         markers = [],
-        sasbLocation = new google.maps.LatLng(40.7532, -73.9822),
+        filteredLocation,
+        sasbLocation = new google.maps.LatLng(40.7632, -73.9822),
         searchMarker = new google.maps.Marker({
             icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+        }),
+        userMarker = new google.maps.Marker({
+            icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+            zIndex: 1000,
+            animation: google.maps.Animation.DROP
         }),
         searchInfoWindow = new google.maps.InfoWindow(),
         infowindow = new google.maps.InfoWindow();
@@ -32,7 +38,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
                 function (result, status) {
                     if (status === google.maps.GeocoderStatus.OK) {
                         coords.lat = result[0].geometry.location.k;
-                        coords.long = result[0].geometry.location.A;
+                        coords.long = result[0].geometry.location.B;
 
                         defer.resolve(coords);
 
@@ -113,6 +119,13 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             map.setZoom(zoom);
         },
 
+        create_userMarker: function (coords, text) {
+            panCoords = new google.maps.LatLng(coords.latitude, coords.longitude);
+            userMarker.setPosition(panCoords);
+            this.show_infowindow(userMarker, text);
+            markers.push({id: 'user', marker: userMarker, text: text});
+        },
+
         create_searchMarker: function (coords, text) {
             panCoords = new google.maps.LatLng(coords.lat, coords.long);
             searchMarker.setPosition(panCoords);
@@ -171,9 +184,18 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
         search_result_marker: function (locations) {
             var location_id = locations[0].slug;
+            filteredLocation = location_id;
             if (this.check_marker(location_id)) {
                 this.pan_existing_marker(location_id);
             }
+        },
+
+        clear_filtered_location: function () {
+            filteredLocation = undefined;
+        },
+
+        get_filtered_location: function () {
+            return filteredLocation;
         },
 
         show_research_libraries: function () {
@@ -197,7 +219,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             });
         },
 
-        draw_marker: function (id, location, text, user, pan) {
+        draw_marker: function (id, location, text) {
             var _this = this,
                 marker,
                 position = new google.maps
@@ -207,25 +229,10 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
                     map: map
                 };
 
-            // show the user with a blue marker above the rest of the markers
-            if (user) {
-                markerOptions.icon =
-                    "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
-                markerOptions.zIndex = 1000;
-                markerOptions.animation = google.maps.Animation.DROP;
-            } else {
-                markerOptions.icon =
-                    "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
-            }
-
+            markerOptions.icon =
+                "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
             marker = new google.maps.Marker(markerOptions);
-
             markers.push({id: id, marker: marker, text: text});
-
-            if (pan) {
-                this.panMap(marker);
-                this.show_infowindow(marker, text);
-            }
 
             // This works but it seems to have to call an external file?
             // doesn't work when location.geolocation is passed
@@ -238,7 +245,6 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             // Bounds the map to display all the markers
             // bound.extend(marker.getPosition());
             // map.fitBounds(bound);
-
         },
 
         hide_infowindow: function () {

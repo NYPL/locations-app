@@ -1,0 +1,451 @@
+
+// Header Mobile First
+header {
+	margin: 0 auto;
+	padding: 0 24px;
+	max-width: 1200px;
+
+	.header-wrapper {
+		position: absolute;
+		background-color: #000;
+		margin: 0;
+		padding: 0;
+		height: 50px;
+		top: 0px;
+		left: 0px;
+		width: 100%;
+
+		@include breakpoint($min, $pre-tablet) {
+			position: relative;
+			width: auto;
+			top: inherit;
+			left: inherit;
+			background-color: inherit;
+			height: auto;
+			margin: 0 auto;
+			padding: 20px 0px 40px;
+		}
+
+		// NYPL Logo
+		.nypl-logo {
+			a {
+				// Mobile first rules
+				display: block;
+				height: 50px;
+				width: 115px;
+				background: url(http://cdn-prod.www.aws.nypl.org/sites/all/themes/nypl_new/css/tmp-header-sprite.png) no-repeat top left;
+				
+				// Tablet Landscape and Up
+				@include breakpoint($min, $pre-tablet) {
+					position: relative;
+					top: 5px;
+					left: 5%;
+					height: 125px;
+					width: 210px;
+					background: url(http://cdn-prod.www.aws.nypl.org/sites/all/themes/nypl_new/images/main-logo.png) no-repeat 0 0;
+				}
+			}
+		}
+
+		// Mobile Search/Menu Buttons (Hidden on Desktop)
+		.collapsed-buttons {
+			display: block;
+			position: absolute;
+			right: 0;
+			top: 0;
+
+			.button {
+				display: inline-block;
+				width: auto;
+				margin: 0;
+				font-size: 30px;
+				padding: 8px 10px 11px;
+				&:before {
+					margin: 0;
+				}
+
+				&.search-open-button {
+					color: #FFF;
+					margin-right: -3px;
+					&.open {
+						color: #000;
+						background-color: #FFF;
+					}
+				}
+				&.nav-open-button {
+					color: #FFF;
+					&.open {
+						color: #000;
+						background-color: #FFF;
+					}
+				}
+				&:hover {
+					cursor: pointer;
+				}
+			}
+
+			// Tablet Landscape and Up
+			@include breakpoint($min, $pre-tablet) {
+				display: none;
+			}
+		}
+
+		// Login/Donate Buttons: Desktop View
+		.login-donate {
+
+			& > a {
+				display: none;
+			}
+
+			@include breakpoint($min, $pre-tablet) {
+				position: absolute;
+				right: 0px;
+				top: 0px;
+
+				& > a {
+					color: #FFF;
+					text-decoration: none;
+					display: inline-block;
+					padding: 8px;
+					font-weight: 300;
+					font-size: 14px;
+					@include transition(background-color .3s ease);
+
+					&:hover {
+						cursor: pointer;
+					}
+
+					&.login-button {
+						background-color: #5e564b;
+
+						&:hover {
+							background-color: #9b958f;
+						}
+
+						&.logged-in {
+
+							.logged-in-arrow {
+								display: inline;
+							}
+						}
+
+						.logged-in-arrow {
+							display: none;
+							width: 10px;
+							vertical-align: -.5px;
+							margin-left: 3px;
+						}
+					}
+
+					&.donate-button {
+						margin-left: 5px;
+						background-color: #cc1a16;
+
+						&:hover {
+							background-color: #e01c18;
+						}
+					}
+				}
+			}
+
+			// SSO
+			.sso-login {
+				position: relative;
+				z-index: 3;
+
+				&.visible {
+					// Login form when visible
+					.login-form {
+						display: block;
+					}
+				}
+
+				// Login Form
+				.login-form {
+					display: none;
+					background-color: #e5e1da;
+					width: 100%;
+					padding: 0;
+					box-shadow: 0 4px 5px 1px #aaa;
+
+					@include breakpoint($min, $pre-tablet) {
+						position: absolute;
+						right: 82px;
+						border: 2px solid #7d7872;
+						width: 300px;
+						box-shadow: none;
+					}
+
+					form {
+						padding: 15px;
+
+						.form-item {
+							display: block;
+
+							// User/Pass sections
+							&.form-item-name, &.form-item-user-pin {
+								margin: 0px 0px 15px;
+
+								label {
+									font-size: 14px;
+									display: block;
+									margin: 0 0 4px;
+									padding: 0;
+								}
+
+								input {
+									display: block;
+									width: 100%;
+									height: 35px;
+									font-size: 15px;
+									border: 1px solid #c9c9c9;
+								}
+							}
+
+							// Remember Me
+							&.form-item-remember-me {
+								margin: 0px 0px 15px;
+
+								input, label {
+									display: inline-block;
+								}
+								label {
+									font-size: 13px;
+									padding: 0;
+								}
+								input {
+									vertical-align: -2px;
+									margin: 0 2px 0 0;
+								}
+
+							}
+
+						}
+						// Submit button
+						#login-form-submit {
+							background-color: #0090c4;
+							border: none;
+							color: #FFF;
+							font-size: 16px;
+							@include transition(background-color .3s ease);
+							padding: 5px 9px;
+							margin: 0;
+							text-transform: uppercase;
+							font-weight: 300;
+							float: right;
+
+							&:hover {
+								cursor: pointer;
+								background-color: #02a8e0;
+							}
+						}
+
+						// Need Account/ Forgot PIN Links
+						#login-form-help {
+							clear: left;
+
+							a {
+								display: block;
+								color: #000;
+								font-size: 14px;
+								margin: 5px 0px;
+							}
+						}
+					}
+				}
+
+			}
+		}
+
+		// Global Search
+		#search-top {
+			position: absolute;
+			display: none;
+			width: 100%;
+			padding: 5px 0px;
+			background-color: #FFF;
+			box-shadow: 0 4px 5px 1px #aaa;
+			z-index: 3;
+			height: 122px;
+
+			@include breakpoint($min, $pre-tablet) {
+				display: block;
+				width: auto;
+				height: auto;
+				padding: 0;
+				background-color: transparent;
+				right: 0px;
+				top: 84px !important;
+				z-index: 1;
+				box-shadow: none;
+			}
+
+			&.open {
+				display: block;
+				top: 50px;
+			}
+
+			form {
+				position: relative;
+				width: 90%;
+				margin: 0 5%;
+
+				@include breakpoint($min, $pre-tablet) {
+					background-color: #e8e4e1;
+					width: auto;
+					margin: 0;
+					padding: 3px 3px;
+				}
+
+				// Fieldset
+				.pseudo-select {
+					display: block;
+					border: none;
+					margin: 0;
+					padding: 0;
+					position: relative;
+					top: 65px;
+
+
+					@include breakpoint($min, $pre-tablet) {
+						display: none;
+						position: absolute;
+						top: 36px;
+						width: 302px;
+						border: 1px solid #e0e0e0;
+						padding: 2px 0px 1px;
+						background-color: #FFF;
+						z-index: 2;
+						max-height: 0px;
+						@include transition(height .5s ease);
+
+						&.open {
+							display: block;
+							max-height: 78px;
+						}
+					}
+
+					ul {
+						margin: 0;
+						padding: 0;
+						list-style-type: none;
+
+						li {
+							position: absolute;
+							display: inline-block;
+							min-height: 25px;
+							width: 35%;
+							color: #FFF;
+							padding: 8px;
+
+							@include breakpoint($min, $pre-tablet) {
+								position: relative;
+								height: auto;
+								display: block;
+								color: #000;
+								width: 100%;
+								padding: 5px 0px;
+							}
+
+							&.search-the-catalog {
+								background-color: #015d90;
+								text-transform: capitalize;
+								left: 0;
+
+								@include breakpoint($min, $pre-tablet) {
+									background-color: #FFF;
+									left: inherit;
+									border-bottom: 1px solid #CCC;
+								}
+							}
+							&.search-the-website {
+								background-color: #10a2cf;
+								right: 0;
+
+								@include breakpoint($min, $pre-tablet) {
+									background-color: #FFF;
+									right: inherit;
+								}
+							}
+
+							label {
+								cursor: pointer;
+								display: block;
+								text-align: center;
+								font-size: 16px;
+								padding: 0px 5px;
+
+								@include breakpoint($min, $pre-tablet) {
+									display: inline-block;
+									width: 100%;
+									text-align: left;
+								}
+
+								input {
+									display: none;
+
+									@include breakpoint($min, $pre-tablet) {
+										display: inline;
+									}
+								}
+							}
+						}
+					}
+				}
+
+				// Search Input
+				#search-block-form-input {
+					width: 99.5%;
+					border: 1px solid #B4AEA9;
+					margin: 0;
+					padding: 5px;
+					position: absolute;
+					top: 8px;
+					font-size: 16px;
+
+					@include breakpoint($min, $pre-tablet) {
+						display: inline-block;
+						position: relative;
+						top: inherit;
+						padding: 0;
+						height: 30.75px;
+						padding: 0px 0px 0px 5px;
+						width: 300px;
+					}
+				}
+
+				// Search Button
+				.search-button {
+					display: none;
+
+					@include breakpoint($min, $pre-tablet) {
+						display: inline-block;
+						border: none;
+						background-color: #5e564b;
+						color: #FFF;
+						font-size: 18px;
+						height: 30px;
+						width: auto;
+						margin: 0;
+						padding: 0px 0px 1.1px 2px;
+						vertical-align: 2.6px;
+						@include transition(background-color .2s ease);
+					}
+					&:hover {
+						cursor: pointer;
+						background-color: #9b958f;
+					}
+				}
+			}
+
+			.search-classic-catalog {
+				display: none;
+
+				@include breakpoint($min, $pre-tablet) {
+					display: block;
+					text-align: right;
+				}
+			}
+		}
+	}
+}
