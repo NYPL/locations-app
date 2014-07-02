@@ -1,7 +1,9 @@
+<!-- Alerts -->
+<nyplalerts data-ng-if="siteWideAlert || libraryAlert" sitewidealert='{{siteWideAlert}}'
+  libraryalert='{{libraryAlert}}'></nyplalerts>
+
 <!-- container -->
 <div class="individual-location {{location.type}} h-card">
-  <nyplalerts data-ng-if="siteWideAlert || libraryAlert" sitewidealert='{{siteWideAlert}}'
-  libraryalert='{{libraryAlert}}'></nyplalerts>
 
   <!--<ul class="inline breadcrumb">
     <li ng-repeat="breadcrumb in breadcrumbs.get() track by breadcrumb.path" ng-class="{ active: $last }">

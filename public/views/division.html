@@ -1,7 +1,9 @@
+<!-- Alerts -->
+<nyplalerts data-ng-if="siteWideAlert || libraryAlert" 
+    sitewidealert='{{siteWideAlert}}'libraryAlert='{{libraryAlert}}'></nyplalerts>
+
 <!-- container -->
 <div class="content grid">
-  <nyplalerts data-ng-if="siteWideAlert || libraryAlert" 
-    sitewidealert='{{siteWideAlert}}'libraryAlert='{{libraryAlert}}'></nyplalerts>
 
   <div class="grid__item one-whole lap-and-up-two-thirds">
     <h1>{{division.name}}</h1>
