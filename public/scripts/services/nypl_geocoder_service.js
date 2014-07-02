@@ -38,7 +38,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
                 function (result, status) {
                     if (status === google.maps.GeocoderStatus.OK) {
                         coords.lat = result[0].geometry.location.k;
-                        coords.long = result[0].geometry.location.A;
+                        coords.long = result[0].geometry.location.B;
 
                         defer.resolve(coords);
 
