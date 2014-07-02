@@ -472,7 +472,7 @@ header {
               border-bottom: 1px solid #000; } }
         #main-nav .nav-wrapper .container__primary-links > li.dropDown > div {
           display: none; }
-          @media screen and (min-width: 992px) {
+          @media screen and (min-width: 900px) {
             #main-nav .nav-wrapper .container__primary-links > li.dropDown > div {
               display: block; } }
 
@@ -892,3 +892,78 @@ header {
 ** Footer Styles
 **
 **/
+footer {
+  position: relative;
+  clear: both;
+  margin-top: 20px;
+  padding: 30px 20px 100px;
+  background: #7d7972; }
+  footer .footerlinks ul {
+    list-style: none;
+    margin: 0 20px; }
+    footer .footerlinks ul:first-of-type {
+      margin-left: 0px; }
+    @media screen and (min-width: 601px) {
+      footer .footerlinks ul {
+        float: left;
+        width: 18%; } }
+    footer .footerlinks ul li {
+      margin: 0px 0px 12px; }
+      footer .footerlinks ul li a {
+        font-weight: 300;
+        font-size: 15px;
+        color: #FFF;
+        text-decoration: none; }
+        footer .footerlinks ul li a:hover {
+          text-decoration: underline; }
+  footer .socialmedia {
+    position: absolute;
+    right: 0px;
+    list-style-type: none;
+    text-align: right;
+    margin: 0 20px 0 0; }
+    footer .socialmedia li {
+      display: inline-block; }
+      footer .socialmedia li a {
+        display: block;
+        color: #FFF;
+        font-size: 24px;
+        opacity: .5;
+        -webkit-transition: all 0.1s ease;
+        -moz-transition: all 0.1s ease;
+        -ms-transition: all 0.1s ease;
+        -o-transition: all 0.1s ease;
+        transition: all 0.1s ease; }
+        footer .socialmedia li a:hover {
+          opacity: 1; }
+        footer .socialmedia li a .replaced-text {
+          border: 0;
+          clip: rect(0 0 0 0);
+          height: 1px;
+          margin: -1px;
+          overflow: hidden;
+          padding: 0;
+          position: absolute;
+          width: 1px; }
+      footer .socialmedia li [class^="icon-"],
+      footer .socialmedia li [class*=" icon-"] {
+        padding: 0; }
+      footer .socialmedia li [data-icon]:before,
+      footer .socialmedia li [class^="icon-"]:before,
+      footer .socialmedia li [class*=" icon-"]:before {
+        margin: 0 5px 0 0 !important; }
+  footer .copyright {
+    clear: both;
+    text-align: center;
+    background: url(http://cdn-prod.www.aws.nypl.org/sites/all/themes/nypl_new/images/main-logo-lion.png) no-repeat;
+    background-size: 60px;
+    background-position: 50%; }
+    footer .copyright p {
+      max-width: none;
+      padding-top: 30px;
+      padding-bottom: 140px;
+      color: #FFF;
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: .07em;
+      line-height: 2em; }

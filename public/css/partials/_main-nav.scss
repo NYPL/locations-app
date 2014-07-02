@@ -94,7 +94,7 @@
 					> div {
 						display: none;
 
-						@include breakpoint($min, $laptop) {
+						@include breakpoint($min, 900px) {
 							display: block;
 						}
 					}
