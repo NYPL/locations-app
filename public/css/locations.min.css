@@ -83,7 +83,7 @@ header {
     top: 0px;
     left: 0px;
     width: 100%; }
-    @media screen and (min-width: 769px) {
+    @media screen and (min-width: 767px) {
       header .header-wrapper {
         position: relative;
         width: auto;
@@ -98,7 +98,7 @@ header {
       height: 50px;
       width: 115px;
       background: url(http://cdn-prod.www.aws.nypl.org/sites/all/themes/nypl_new/css/tmp-header-sprite.png) no-repeat top left; }
-      @media screen and (min-width: 769px) {
+      @media screen and (min-width: 767px) {
         header .header-wrapper .nypl-logo a {
           position: relative;
           top: 5px;
@@ -132,12 +132,12 @@ header {
             background-color: #FFF; }
         header .header-wrapper .collapsed-buttons .button:hover {
           cursor: pointer; }
-      @media screen and (min-width: 769px) {
+      @media screen and (min-width: 767px) {
         header .header-wrapper .collapsed-buttons {
           display: none; } }
     header .header-wrapper .login-donate > a {
       display: none; }
-    @media screen and (min-width: 769px) {
+    @media screen and (min-width: 767px) {
       header .header-wrapper .login-donate {
         position: absolute;
         right: 0px;
@@ -174,7 +174,7 @@ header {
               background-color: #e01c18; } }
     header .header-wrapper .login-donate .sso-login {
       position: relative;
-      z-index: 2; }
+      z-index: 3; }
       header .header-wrapper .login-donate .sso-login.visible .login-form {
         display: block; }
       header .header-wrapper .login-donate .sso-login .login-form {
@@ -183,10 +183,10 @@ header {
         width: 100%;
         padding: 0;
         box-shadow: 0 4px 5px 1px #aaa; }
-        @media screen and (min-width: 769px) {
+        @media screen and (min-width: 767px) {
           header .header-wrapper .login-donate .sso-login .login-form {
             position: absolute;
-            right: 86px;
+            right: 82px;
             border: 2px solid #7d7872;
             width: 300px;
             box-shadow: none; } }
@@ -249,9 +249,9 @@ header {
       padding: 5px 0px;
       background-color: #FFF;
       box-shadow: 0 4px 5px 1px #aaa;
-      z-index: 1;
+      z-index: 3;
       height: 122px; }
-      @media screen and (min-width: 769px) {
+      @media screen and (min-width: 767px) {
         header .header-wrapper #search-top {
           display: block;
           width: auto;
@@ -260,7 +260,7 @@ header {
           background-color: transparent;
           right: 0px;
           top: 84px !important;
-          z-index: 0;
+          z-index: 1;
           box-shadow: none; } }
       header .header-wrapper #search-top.open {
         display: block;
@@ -269,7 +269,7 @@ header {
         position: relative;
         width: 90%;
         margin: 0 5%; }
-        @media screen and (min-width: 769px) {
+        @media screen and (min-width: 767px) {
           header .header-wrapper #search-top form {
             background-color: #e8e4e1;
             width: auto;
@@ -282,7 +282,7 @@ header {
           padding: 0;
           position: relative;
           top: 65px; }
-          @media screen and (min-width: 769px) {
+          @media screen and (min-width: 767px) {
             header .header-wrapper #search-top form .pseudo-select {
               display: none;
               position: absolute;
@@ -291,7 +291,7 @@ header {
               border: 1px solid #e0e0e0;
               padding: 2px 0px 1px;
               background-color: #FFF;
-              z-index: 1;
+              z-index: 2;
               max-height: 0px;
               -webkit-transition: height 0.5s ease;
               -moz-transition: height 0.5s ease;
@@ -312,7 +312,7 @@ header {
               width: 35%;
               color: #FFF;
               padding: 8px; }
-              @media screen and (min-width: 769px) {
+              @media screen and (min-width: 767px) {
                 header .header-wrapper #search-top form .pseudo-select ul li {
                   position: relative;
                   height: auto;
@@ -324,7 +324,7 @@ header {
                 background-color: #015d90;
                 text-transform: capitalize;
                 left: 0; }
-                @media screen and (min-width: 769px) {
+                @media screen and (min-width: 767px) {
                   header .header-wrapper #search-top form .pseudo-select ul li.search-the-catalog {
                     background-color: #FFF;
                     left: inherit;
@@ -332,7 +332,7 @@ header {
               header .header-wrapper #search-top form .pseudo-select ul li.search-the-website {
                 background-color: #10a2cf;
                 right: 0; }
-                @media screen and (min-width: 769px) {
+                @media screen and (min-width: 767px) {
                   header .header-wrapper #search-top form .pseudo-select ul li.search-the-website {
                     background-color: #FFF;
                     right: inherit; } }
@@ -342,14 +342,14 @@ header {
                 text-align: center;
                 font-size: 16px;
                 padding: 0px 5px; }
-                @media screen and (min-width: 769px) {
+                @media screen and (min-width: 767px) {
                   header .header-wrapper #search-top form .pseudo-select ul li label {
                     display: inline-block;
                     width: 100%;
                     text-align: left; } }
                 header .header-wrapper #search-top form .pseudo-select ul li label input {
                   display: none; }
-                  @media screen and (min-width: 769px) {
+                  @media screen and (min-width: 767px) {
                     header .header-wrapper #search-top form .pseudo-select ul li label input {
                       display: inline; } }
         header .header-wrapper #search-top form #search-block-form-input {
@@ -360,7 +360,7 @@ header {
           position: absolute;
           top: 8px;
           font-size: 16px; }
-          @media screen and (min-width: 768px) {
+          @media screen and (min-width: 767px) {
             header .header-wrapper #search-top form #search-block-form-input {
               display: inline-block;
               position: relative;
@@ -371,7 +371,7 @@ header {
               width: 300px; } }
         header .header-wrapper #search-top form .search-button {
           display: none; }
-          @media screen and (min-width: 768px) {
+          @media screen and (min-width: 767px) {
             header .header-wrapper #search-top form .search-button {
               display: inline-block;
               border: none;
@@ -393,7 +393,7 @@ header {
             background-color: #9b958f; }
       header .header-wrapper #search-top .search-classic-catalog {
         display: none; }
-        @media screen and (min-width: 768px) {
+        @media screen and (min-width: 767px) {
           header .header-wrapper #search-top .search-classic-catalog {
             display: block;
             text-align: right; } }
@@ -408,24 +408,25 @@ header {
   position: absolute;
   height: auto;
   box-shadow: 0 4px 5px 1px #aaa;
-  z-index: 3; }
+  z-index: 2; }
   #main-nav.open-navigation {
     display: block;
     top: 50px;
     width: 100%; }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: 767px) {
     #main-nav {
       position: relative;
       display: block;
       top: inherit !important;
       background-color: #000;
       box-shadow: none;
-      height: auto; } }
+      height: auto;
+      z-index: 0; } }
   #main-nav .nav-wrapper {
     padding: 10px;
     margin: 0;
     max-width: none; }
-    @media screen and (min-width: 769px) {
+    @media screen and (min-width: 767px) {
       #main-nav .nav-wrapper {
         max-width: 1200px;
         margin: 0 auto;
@@ -435,34 +436,43 @@ header {
       margin: 0;
       padding: 0;
       list-style-type: none; }
-      @media screen and (min-width: 769px) {
+      @media screen and (min-width: 767px) {
         #main-nav .nav-wrapper .container__primary-links {
           text-align: center; } }
       #main-nav .nav-wrapper .container__primary-links > li {
         display: block;
         margin: 2px 0px; }
-        @media screen and (min-width: 769px) {
+        @media screen and (min-width: 767px) {
           #main-nav .nav-wrapper .container__primary-links > li {
             display: inline-block;
             margin: 0; } }
+        @media screen and (min-width: 767px) and (max-width: 900px) {
+          #main-nav .nav-wrapper .container__primary-links > li {
+            width: 22%; } }
         #main-nav .nav-wrapper .container__primary-links > li > a {
           display: block;
           text-decoration: none;
           color: #000;
           padding: 4px 0px; }
-          @media screen and (min-width: 769px) {
+          @media screen and (min-width: 767px) {
             #main-nav .nav-wrapper .container__primary-links > li > a {
               color: #FFF;
               padding: 8px 10px;
               border-top: 1px solid transparent; } }
-          @media screen and (min-width: 769px) {
+          @media screen and (min-width: 767px) and (max-width: 900px) {
+            #main-nav .nav-wrapper .container__primary-links > li > a {
+              border-bottom: 1px solid transparent; } }
+          @media screen and (min-width: 767px) {
             #main-nav .nav-wrapper .container__primary-links > li > a:hover {
               background-color: #FFF;
               color: #000;
               border-top: 1px solid #000; } }
+          @media screen and (min-width: 767px) and (max-width: 900px) {
+            #main-nav .nav-wrapper .container__primary-links > li > a:hover {
+              border-bottom: 1px solid #000; } }
         #main-nav .nav-wrapper .container__primary-links > li.dropDown > div {
           display: none; }
-          @media screen and (min-width: 769px) {
+          @media screen and (min-width: 900px) {
             #main-nav .nav-wrapper .container__primary-links > li.dropDown > div {
               display: block; } }
 
@@ -882,3 +892,78 @@ header {
 ** Footer Styles
 **
 **/
+footer {
+  position: relative;
+  clear: both;
+  margin-top: 20px;
+  padding: 30px 20px 100px;
+  background: #7d7972; }
+  footer .footerlinks ul {
+    list-style: none;
+    margin: 0 20px; }
+    footer .footerlinks ul:first-of-type {
+      margin-left: 0px; }
+    @media screen and (min-width: 601px) {
+      footer .footerlinks ul {
+        float: left;
+        width: 18%; } }
+    footer .footerlinks ul li {
+      margin: 0px 0px 12px; }
+      footer .footerlinks ul li a {
+        font-weight: 300;
+        font-size: 15px;
+        color: #FFF;
+        text-decoration: none; }
+        footer .footerlinks ul li a:hover {
+          text-decoration: underline; }
+  footer .socialmedia {
+    position: absolute;
+    right: 0px;
+    list-style-type: none;
+    text-align: right;
+    margin: 0 20px 0 0; }
+    footer .socialmedia li {
+      display: inline-block; }
+      footer .socialmedia li a {
+        display: block;
+        color: #FFF;
+        font-size: 24px;
+        opacity: .5;
+        -webkit-transition: all 0.1s ease;
+        -moz-transition: all 0.1s ease;
+        -ms-transition: all 0.1s ease;
+        -o-transition: all 0.1s ease;
+        transition: all 0.1s ease; }
+        footer .socialmedia li a:hover {
+          opacity: 1; }
+        footer .socialmedia li a .replaced-text {
+          border: 0;
+          clip: rect(0 0 0 0);
+          height: 1px;
+          margin: -1px;
+          overflow: hidden;
+          padding: 0;
+          position: absolute;
+          width: 1px; }
+      footer .socialmedia li [class^="icon-"],
+      footer .socialmedia li [class*=" icon-"] {
+        padding: 0; }
+      footer .socialmedia li [data-icon]:before,
+      footer .socialmedia li [class^="icon-"]:before,
+      footer .socialmedia li [class*=" icon-"]:before {
+        margin: 0 5px 0 0 !important; }
+  footer .copyright {
+    clear: both;
+    text-align: center;
+    background: url(http://cdn-prod.www.aws.nypl.org/sites/all/themes/nypl_new/images/main-logo-lion.png) no-repeat;
+    background-size: 60px;
+    background-position: 50%; }
+    footer .copyright p {
+      max-width: none;
+      padding-top: 30px;
+      padding-bottom: 140px;
+      color: #FFF;
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: .07em;
+      line-height: 2em; }

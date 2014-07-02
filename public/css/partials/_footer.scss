@@ -2,3 +2,111 @@
 ** Footer Styles
 **
 **/
+footer {
+	position: relative;
+  clear: both;
+  margin-top: 20px;
+  padding: 30px 20px 100px;
+  background: #7d7972;
+    
+  .footerlinks {
+  	ul {
+	    list-style: none;
+	    margin: 0 20px;
+
+	    &:first-of-type {
+	    	margin-left: 0px;
+	    }
+
+			@include breakpoint($min, $post-palm) {
+				float: left;
+				width: 18%;
+			}
+
+	    li {
+	    	margin: 0px 0px 12px;
+
+	    	a {
+	    		font-weight: 300;
+	    		font-size: 15px;
+	    		color: #FFF;
+	    		text-decoration: none;
+
+	    		&:hover {
+	    			text-decoration: underline;
+	    		}
+	    	}
+	    }
+
+	    &.last {
+	    	
+	    }
+	  }
+  }
+
+  .socialmedia {
+  	position: absolute;
+  	right: 0px;
+  	list-style-type: none;
+  	text-align: right;
+  	margin: 0 20px 0 0;
+
+  	li {
+  		display: inline-block;
+
+  		a {
+  			display: block;
+  			color: #FFF;
+  			font-size: 24px;
+  			opacity: .5;
+  			@include transition(all .1s ease);
+
+  			&:hover {
+  				opacity: 1;
+  			}
+
+			  .replaced-text {
+					//h5bp technique
+			    border: 0;
+			    clip: rect(0 0 0 0);
+			    height: 1px;
+			    margin: -1px;
+			    overflow: hidden;
+			    padding: 0;
+			    position: absolute;
+			    width: 1px;
+		    }
+  		}
+
+  		[class^="icon-"], 
+  		[class*=" icon-"] {
+  			padding: 0;
+  		}
+  		
+  		[data-icon]:before, 
+  		[class^="icon-"]:before, 
+  		[class*=" icon-"]:before {
+  			margin: 0 5px 0 0 !important;
+  		}
+  	} 
+  }
+    
+  .copyright {
+    clear: both;
+    text-align: center;
+    background: url(http://cdn-prod.www.aws.nypl.org/sites/all/themes/nypl_new/images/main-logo-lion.png) no-repeat;
+    background-size: 60px;
+    background-position: 50%;
+    
+    p {
+    	max-width: none;
+			padding-top: 30px;
+      padding-bottom: 140px;
+      color: #FFF;
+	    font-size: 14px;
+	    font-weight: 300;
+	    letter-spacing: .07em;
+	    line-height: 2em;
+    }
+  }
+}
