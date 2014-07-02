@@ -15,7 +15,7 @@ header {
 		left: 0px;
 		width: 100%;
 
-		@include breakpoint($min, $post-tablet) {
+		@include breakpoint($min, $pre-tablet) {
 			position: relative;
 			width: auto;
 			top: inherit;
@@ -36,7 +36,7 @@ header {
 				background: url(http://cdn-prod.www.aws.nypl.org/sites/all/themes/nypl_new/css/tmp-header-sprite.png) no-repeat top left;
 				
 				// Tablet Landscape and Up
-				@include breakpoint($min, $post-tablet) {
+				@include breakpoint($min, $pre-tablet) {
 					position: relative;
 					top: 5px;
 					left: 5%;
@@ -85,7 +85,7 @@ header {
 			}
 
 			// Tablet Landscape and Up
-			@include breakpoint($min, $post-tablet) {
+			@include breakpoint($min, $pre-tablet) {
 				display: none;
 			}
 		}
@@ -97,7 +97,7 @@ header {
 				display: none;
 			}
 
-			@include breakpoint($min, $post-tablet) {
+			@include breakpoint($min, $pre-tablet) {
 				position: absolute;
 				right: 0px;
 				top: 0px;
@@ -151,7 +151,7 @@ header {
 			// SSO
 			.sso-login {
 				position: relative;
-				z-index: 2;
+				z-index: 3;
 
 				&.visible {
 					// Login form when visible
@@ -168,9 +168,9 @@ header {
 					padding: 0;
 					box-shadow: 0 4px 5px 1px #aaa;
 
-					@include breakpoint($min, $post-tablet) {
+					@include breakpoint($min, $pre-tablet) {
 						position: absolute;
-						right: 86px;
+						right: 82px;
 						border: 2px solid #7d7872;
 						width: 300px;
 						box-shadow: none;
@@ -265,10 +265,10 @@ header {
 			padding: 5px 0px;
 			background-color: #FFF;
 			box-shadow: 0 4px 5px 1px #aaa;
-			z-index: 1;
+			z-index: 3;
 			height: 122px;
 
-			@include breakpoint($min, $post-tablet) {
+			@include breakpoint($min, $pre-tablet) {
 				display: block;
 				width: auto;
 				height: auto;
@@ -276,7 +276,7 @@ header {
 				background-color: transparent;
 				right: 0px;
 				top: 84px !important;
-				z-index: 0;
+				z-index: 1;
 				box-shadow: none;
 			}
 
@@ -290,7 +290,7 @@ header {
 				width: 90%;
 				margin: 0 5%;
 
-				@include breakpoint($min, $post-tablet) {
+				@include breakpoint($min, $pre-tablet) {
 					background-color: #e8e4e1;
 					width: auto;
 					margin: 0;
@@ -307,7 +307,7 @@ header {
 					top: 65px;
 
 
-					@include breakpoint($min, $post-tablet) {
+					@include breakpoint($min, $pre-tablet) {
 						display: none;
 						position: absolute;
 						top: 36px;
@@ -315,7 +315,7 @@ header {
 						border: 1px solid #e0e0e0;
 						padding: 2px 0px 1px;
 						background-color: #FFF;
-						z-index: 1;
+						z-index: 2;
 						max-height: 0px;
 						@include transition(height .5s ease);
 
@@ -338,7 +338,7 @@ header {
 							color: #FFF;
 							padding: 8px;
 
-							@include breakpoint($min, $post-tablet) {
+							@include breakpoint($min, $pre-tablet) {
 								position: relative;
 								height: auto;
 								display: block;
@@ -352,7 +352,7 @@ header {
 								text-transform: capitalize;
 								left: 0;
 
-								@include breakpoint($min, $post-tablet) {
+								@include breakpoint($min, $pre-tablet) {
 									background-color: #FFF;
 									left: inherit;
 									border-bottom: 1px solid #CCC;
@@ -362,7 +362,7 @@ header {
 								background-color: #10a2cf;
 								right: 0;
 
-								@include breakpoint($min, $post-tablet) {
+								@include breakpoint($min, $pre-tablet) {
 									background-color: #FFF;
 									right: inherit;
 								}
@@ -375,7 +375,7 @@ header {
 								font-size: 16px;
 								padding: 0px 5px;
 
-								@include breakpoint($min, $post-tablet) {
+								@include breakpoint($min, $pre-tablet) {
 									display: inline-block;
 									width: 100%;
 									text-align: left;
@@ -384,7 +384,7 @@ header {
 								input {
 									display: none;
 
-									@include breakpoint($min, $post-tablet) {
+									@include breakpoint($min, $pre-tablet) {
 										display: inline;
 									}
 								}
@@ -403,7 +403,7 @@ header {
 					top: 8px;
 					font-size: 16px;
 
-					@include breakpoint($min, $tablet) {
+					@include breakpoint($min, $pre-tablet) {
 						display: inline-block;
 						position: relative;
 						top: inherit;
@@ -418,7 +418,7 @@ header {
 				.search-button {
 					display: none;
 
-					@include breakpoint($min, $tablet) {
+					@include breakpoint($min, $pre-tablet) {
 						display: inline-block;
 						border: none;
 						background-color: #5e564b;
@@ -441,7 +441,7 @@ header {
 			.search-classic-catalog {
 				display: none;
 
-				@include breakpoint($min, $tablet) {
+				@include breakpoint($min, $pre-tablet) {
 					display: block;
 					text-align: right;
 				}
