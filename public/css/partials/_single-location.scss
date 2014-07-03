@@ -26,6 +26,11 @@
 // Hours section on top container
 #container__hours {
 	float: right;
+	margin-bottom: 10px;
+
+	@include breakpoint($min, $post-palm) {
+		margin-bottom: 20px;
+	}
 
 	#hours-today {
 		margin-left: -.35em;
@@ -49,13 +54,13 @@
 		}
 	}
 	
-	.day{
+	.day {
 		font-style: italic;
 	}
 
 	#toggle-hours {
 		display: inline;
-		vertical-align: 1px;
+		vertical-align: 2px;
 
 		&:hover {
 			cursor: pointer;
@@ -67,7 +72,7 @@
 	}
 
 	#location-hours {
-		margin: .75em 0 .75em .35em;
+		margin: .75em 0 .75em 0;
 
 		@include breakpoint($min, $post-palm) {
 			margin-left: 48px;

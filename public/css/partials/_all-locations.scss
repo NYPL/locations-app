@@ -173,7 +173,7 @@
 
 	.views-tab-controls {
 		display: none;
-		border-bottom: 2px solid #eee;
+		border-bottom: 1px solid #e2dedb;
 
 		@include breakpoint($min, $post-palm) {
 			display: block;
@@ -182,8 +182,8 @@
 		div {
 			display: inline-block;
 			padding: 10px;
-			background-color: #0090c4;
-			color: #ffffff;
+			background-color: #5e564b;
+			color: #fff;
 			opacity: .65;
 			margin-bottom: -1px;
 
@@ -239,7 +239,7 @@
 
 					th {
 						display: block;
-						background: #eee;
+						background: rgba(#e2dedb, .3);
 
 						@include breakpoint($min, $post-palm) {
 							display: table-cell;
@@ -329,6 +329,7 @@
 				&.location-info {
 
 					.p-org {
+						font-size: 1.2rem;
 						font-weight: bold;
 					}
 
@@ -386,6 +387,7 @@
 				padding: 5px 0px;
 
 				.p-org {
+					font-size: 1.2rem;
 					font-weight: bold;
 				}
 
@@ -402,7 +404,6 @@
 					margin: .35em 0;
 
 					span {
-						text-decoration: underline;
 						margin-right: .05em;
 					}
 					strong {
