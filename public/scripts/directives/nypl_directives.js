@@ -105,16 +105,22 @@ nypl_locations.directive('scrolltop', [
     }]);
 
 nypl_locations.directive('nyplalerts', [
-    function () {
+    'nypl_locations_service',
+    'nypl_utility',
+    function (nypl_locations_service, nypl_utility) {
         'use strict';
 
         return {
             restrict: 'E',
             templateUrl: 'scripts/directives/templates/alerts.html',
             replace: true,
-            scope: {
-                sitewidealert: '@',
-                libraryalert: '@'
+            link: function (scope, element, attrs) {
+                var alerts;
+                nypl_locations_service.alerts().then(function (data) {
+                    alerts = data.alerts;
+
+                    scope.sitewidealert = nypl_utility.alerts(alerts);
+                });
             }
         };
     }]);
