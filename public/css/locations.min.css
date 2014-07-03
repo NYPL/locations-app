@@ -20,7 +20,8 @@
   max-width: 1200px; }
 
 .nypl-locations {
-  margin-top: 30px; }
+  margin-top: 30px;
+  min-height: 700px; }
   @media screen and (min-width: 768px) {
     .nypl-locations {
       margin-top: 20px; } }
@@ -445,7 +446,8 @@ header {
         @media screen and (min-width: 767px) {
           #main-nav .nav-wrapper .container__primary-links > li {
             display: inline-block;
-            margin: 0; } }
+            margin: 0;
+            position: inherit; } }
         @media screen and (min-width: 767px) and (max-width: 900px) {
           #main-nav .nav-wrapper .container__primary-links > li {
             width: 22%; } }
@@ -470,11 +472,74 @@ header {
           @media screen and (min-width: 767px) and (max-width: 900px) {
             #main-nav .nav-wrapper .container__primary-links > li > a:hover {
               border-bottom: 1px solid #000; } }
-        #main-nav .nav-wrapper .container__primary-links > li.dropDown > div {
+        @media screen and (min-width: 900px) {
+          #main-nav .nav-wrapper .container__primary-links > li.dropDown:hover .dropDown_Content {
+            display: block;
+            width: auto;
+            background-color: #FFF;
+            position: absolute;
+            padding: 12px;
+            margin-left: -1px;
+            border-left: 1px solid #71695E;
+            border-right: 1px solid #71695E;
+            border-bottom: 1px solid #71695E; } }
+        #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content {
           display: none; }
-          @media screen and (min-width: 900px) {
-            #main-nav .nav-wrapper .container__primary-links > li.dropDown > div {
-              display: block; } }
+          #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul {
+            margin: 0;
+            list-style-type: none;
+            text-align: left; }
+            #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul li ul {
+              margin: 0; }
+              #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul li ul li {
+                border-bottom: 1px solid #CBC8C1;
+                margin: 0px 12px 0px 5px; }
+                #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul li ul li a {
+                  text-decoration: none;
+                  display: block;
+                  padding: 5px 7px; }
+                  #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul li ul li a:hover {
+                    color: #FFF;
+                    background-color: #E3332C;
+                    text-decoration: none; }
+                #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul li ul li:last-of-type {
+                  border-bottom: none; }
+            #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul li a {
+              text-decoration: none;
+              display: block;
+              padding: 5px 7px; }
+              #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul li a:hover {
+                color: #FFF;
+                background-color: #E3332C;
+                text-decoration: none; }
+            #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul li:last-of-type {
+              border-bottom: none; }
+            #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul > li {
+              border-bottom: 1px solid #CBC8C1; }
+              #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul > li.last {
+                border-bottom: none; }
+          #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content .top-level {
+            clear: both;
+            width: 100%;
+            margin: 0; }
+            #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content .top-level > li {
+              display: block;
+              float: left;
+              margin: 0;
+              border-bottom: none !important; }
+              #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content .top-level > li h5 {
+                color: #E3332C;
+                font-size: .85em;
+                font-weight: 700;
+                letter-spacing: 0.01em;
+                line-height: 1.5em;
+                margin: 0 0 5px 5px;
+                text-transform: uppercase; }
+      #main-nav .nav-wrapper .container__primary-links .mobile-login {
+        display: block; }
+        @media screen and (min-width: 767px) {
+          #main-nav .nav-wrapper .container__primary-links .mobile-login {
+            display: none; } }
 
 /* 
 ** All Locations Landing Page

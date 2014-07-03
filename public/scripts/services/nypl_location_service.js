@@ -93,6 +93,19 @@ angular.module('locationService', ['ngResource'])
                         defer.reject(apiError);
                     });
                     return defer.promise;
+                },
+
+                alerts: function () {
+                    var defer = $q.defer();
+
+                    $http.get(api + '/alerts', {cache: true})
+                        .success(function (data) {
+                            defer.resolve(data);
+                        })
+                        .error(function () {
+                            defer.reject(apiError);
+                        });
+                        return defer.promise;
                 }
             };
         }

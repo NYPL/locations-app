@@ -13,6 +13,7 @@
 // Lokinator content wrapper
 .nypl-locations {
 	margin-top: 30px;
+	min-height: 700px;
 
 	@include breakpoint($min, $tablet) {
 		margin-top: 20px;
