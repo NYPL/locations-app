@@ -34,6 +34,14 @@
 .nypl-alerts {
 	background-color: #ECE94C;
 	padding: 12px;
+	position: relative;
+	top: 25px;
+	width: 100%;
+
+	@include breakpoint($min, $pre-tablet) {
+		width: auto;
+		top: inherit;
+	}
 
 	p {
 		margin: .5em 0;

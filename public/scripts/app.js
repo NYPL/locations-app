@@ -136,3 +136,8 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
 
     $httpProvider.responseInterceptors.push(interceptor);
 }]);
+
+// Run jQuery Scripts
+nypl_locations.run(['$rootScope', function($rootScope) {
+    $rootScope.$on('$viewContentLoaded', headerScripts);
+}]);

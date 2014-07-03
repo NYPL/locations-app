@@ -37,7 +37,7 @@ describe('Locations: homepage', function () {
                 '       }';
         }
 
-        describe('Geolocation Successful', function () {
+        describe('Successful - mocked coordinates based on SASB', function () {
             beforeEach(function () {
                 // Coordinates based on SASB
                 browser.executeScript(mockGeo(40.7529, -73.9821));
@@ -159,15 +159,16 @@ describe('Locations: homepage', function () {
         });
 
         // Error messages show up regardless of List or Map view
-        describe('Geolocation Failure', function () {
-            it('should not geolocate if you are too far away', function () {
-                browser.executeScript(mockGeo(36.149674, -86.813347));
-                landingPage.currLoc.click();
-                expect(landingPage.distanceError.getText())
-                    .toContain(
-                        'You are not within 25 miles of any NYPL library'
-                    );
-            });
+        describe('Failure', function () {
+            it('should not geolocate if you are too far away and report it',
+                function () {
+                    browser.executeScript(mockGeo(36.149674, -86.813347));
+                    landingPage.currLoc.click();
+                    expect(landingPage.distanceError.getText())
+                        .toContain(
+                            'You are not within 25 miles of any NYPL library'
+                        );
+                });
 
             it('should report when permission is denied', function () {
                 browser.executeScript(mockGeoError(1));
@@ -200,7 +201,8 @@ describe('Locations: homepage', function () {
     });
 
     describe('Search box', function () {
-        describe('A library name was searched that is not an NYC area',
+        describe('A library name was searched that is not an NYC area' +
+            ', using "aguilar" for the test',
             function () {
                 beforeEach(function () {
                     landingPage.search('aguilar');
@@ -270,7 +272,8 @@ describe('Locations: homepage', function () {
             });
 
         describe(
-            'A library name was searched that is also an NYC area',
+            'A library name was searched that is also an NYC area, ' +
+            'using "battery park" for the test',
             function () {
                 beforeEach(function () {
                     landingPage.search('battery park');
@@ -295,7 +298,7 @@ describe('Locations: homepage', function () {
                         ).toContain('callout');
                     });
 
-                it('should show other results with distances', function () {
+                it('should show other results with distances in order', function () {
                     expect(landingPage.nthLocName(1))
                         .toEqual('New Amsterdam Library');
                     expect(landingPage.nthLocDist(1)).toEqual('Distance: 0.86 miles');
@@ -353,173 +356,177 @@ describe('Locations: homepage', function () {
             }
         );
 
-        describe('A location in NYC was searched', function () {
-            beforeEach(function () {
-                landingPage.search('bronx zoo');
-                browser.sleep(1000);
-            });
+        describe('A location in NYC was searched, using "bronx zoo" for the test',
+            function () {
+                beforeEach(function () {
+                    landingPage.search('bronx zoo');
+                    browser.sleep(1000);
+                });
 
-            it('should show what the search was', function () {
-                expect(landingPage.resultsNear.getText())
-                    .toEqual('Showing search results near bronx zoo');
-            });
+                it('should show what the search was', function () {
+                    expect(landingPage.resultsNear.getText())
+                        .toEqual('Showing search results near bronx zoo');
+                });
 
-            it('should not have any highlighted locations', function () {
-                expect(element.all(by.css('.callout')).count()).toBe(0);
-            });
+                it('should not have any highlighted locations', function () {
+                    expect(element.all(by.css('.callout')).count()).toBe(0);
+                });
 
-            it('should organize the locations by distance', function () {
-                // There is a probably a better way to test this
-                // The first location that should appear
-                expect(landingPage.firstLocName())
-                    .toEqual('West Farms Library');
-
-                expect(landingPage.firstLocDist()).toEqual('Distance: 0.51 miles');
-
-                // The next location that should appear on the page
-                expect(landingPage.nthLocName(1))
-                    .toEqual(
-                        'Belmont Library and Enrico Fermi Cultural Center'
-                    );
-
-                expect(landingPage.nthLocDist(1)).toEqual('Distance: 0.62 miles');
-
-                // The last of 10 locations that should appear on the page
-                expect(
-                    landingPage.locations
-                        .last().findElement(by.css('.p-org')).getText()
-                ).toEqual('Mosholu Library');
-
-                expect(
-                    landingPage.locations
-                        .last().findElement(by.css('.distance')).getText()
-                ).toEqual('Distance: 1.65 miles');
-            });
-
-            describe('Map View', function () {
-                it('should display the search query on the map with a marker ' +
-                    'and organize list by distance',
+                it('should organize the locations by distance - West Farms Library ' +
+                    'should be first in the list',
                     function () {
-                        landingPage.mapViewBtn.click();
-
+                        // There is a probably a better way to test this
+                        // The first location that should appear
                         expect(landingPage.firstLocName())
                             .toEqual('West Farms Library');
+
                         expect(landingPage.firstLocDist()).toEqual('Distance: 0.51 miles');
 
-                        expect(landingPage.gmapInfoWindow.getText())
-                            .toEqual('bronx zoo');
-                    });
-            });
+                        // The next location that should appear on the page
+                        expect(landingPage.nthLocName(1))
+                            .toEqual(
+                                'Belmont Library and Enrico Fermi Cultural Center'
+                            );
 
-            describe('Clicking searchbox \'x\'', function () {
-                it('should clear the input',
-                    function () {
+                        expect(landingPage.nthLocDist(1)).toEqual('Distance: 0.62 miles');
+
+                        // The last of 10 locations that should appear on the page
                         expect(
-                            landingPage.searchInput.getAttribute('value')
-                        ).toEqual('bronx zoo');
-                        landingPage.clearSearch.click();
+                            landingPage.locations
+                                .last().findElement(by.css('.p-org')).getText()
+                        ).toEqual('Mosholu Library');
+
                         expect(
-                            landingPage.searchInput.getAttribute('value')
-                        ).toEqual('');
+                            landingPage.locations
+                                .last().findElement(by.css('.distance')).getText()
+                        ).toEqual('Distance: 1.65 miles');
                     });
 
-                it('should reset the list of locations by name',
-                    function () {
-                        expect(landingPage.firstLocName())
-                            .toEqual('West Farms Library');
-                        landingPage.clearSearch.click();
-                        expect(landingPage.firstLocName())
-                            .toEqual('115th Street Library');
-                    });
-            });
-        });
+                describe('Map View', function () {
+                    it('should display the search query on the map with a marker ' +
+                        'and organize list by distance',
+                        function () {
+                            landingPage.mapViewBtn.click();
 
-        describe('A zipcode in NYC was searched', function () {
-            beforeEach(function () {
-                landingPage.search('10016');
-                browser.sleep(1000);
-            });
+                            expect(landingPage.firstLocName())
+                                .toEqual('West Farms Library');
+                            expect(landingPage.firstLocDist()).toEqual('Distance: 0.51 miles');
 
-            it('should show what the search was', function () {
-                expect(landingPage.resultsNear.getText())
-                    .toEqual('Showing search results near 10016');
-            });
-
-            it('should show libraries in the searched zip code first',
-                function () {
-                    expect(element.all(by.css('.callout')).count()).toBe(3);
-
-                    expect(
-                        landingPage.nthLoc(0)
-                            .findElement(by.css('.p-postal-code')).getText()
-                    ).toEqual('10016');
-
-                    expect(
-                        landingPage.nthLoc(1)
-                            .findElement(by.css('.p-postal-code')).getText()
-                    ).toEqual('10016');
-
-                    expect(
-                        landingPage.nthLoc(2)
-                            .findElement(by.css('.p-postal-code')).getText()
-                    ).toEqual('10016');
-
-                    expect(landingPage.firstLocName())
-                        .toEqual('Kips Bay Library');
+                            expect(landingPage.gmapInfoWindow.getText())
+                                .toEqual('bronx zoo');
+                        });
                 });
 
-            it('should then search for libraries near the searched zip code' +
-                'sorted by distance', function () {
-                    expect(
-                        landingPage.nthLoc(3)
-                            .findElement(by.css('.p-postal-code')).getText()
-                    ).toEqual('10018');
+                describe('Clicking searchbox \'x\'', function () {
+                    it('should clear the input',
+                        function () {
+                            expect(
+                                landingPage.searchInput.getAttribute('value')
+                            ).toEqual('bronx zoo');
+                            landingPage.clearSearch.click();
+                            expect(
+                                landingPage.searchInput.getAttribute('value')
+                            ).toEqual('');
+                        });
 
-                    expect(landingPage.nthLocName(3))
-                        .toEqual('Stephen A. Schwarzman Building');
-                    expect(landingPage.nthLocDist(3)).toEqual('Distance: 0.43 miles');
+                    it('should reset the list of locations by name',
+                        function () {
+                            expect(landingPage.firstLocName())
+                                .toEqual('West Farms Library');
+                            landingPage.clearSearch.click();
+                            expect(landingPage.firstLocName())
+                                .toEqual('115th Street Library');
+                        });
+                });
+            });
 
-                     expect(landingPage.nthLocName(4))
-                        .toEqual('Grand Central Library');
-                    expect(landingPage.nthLocDist(4)).toEqual('Distance: 0.56 miles');
+        describe('A zipcode in NYC was searched - using "10016" for the test',
+            function () {
+                beforeEach(function () {
+                    landingPage.search('10016');
+                    browser.sleep(1000);
                 });
 
-            describe('Map View', function () {
-                it('should display one of the matches for the searched' + 
-                    'zip code',
+                it('should show what the search was', function () {
+                    expect(landingPage.resultsNear.getText())
+                        .toEqual('Showing search results near 10016');
+                });
+
+                it('should show libraries in the searched zip code first',
                     function () {
-                        landingPage.mapViewBtn.click();
+                        expect(element.all(by.css('.callout')).count()).toBe(3);
+
+                        expect(
+                            landingPage.nthLoc(0)
+                                .findElement(by.css('.p-postal-code')).getText()
+                        ).toEqual('10016');
+
+                        expect(
+                            landingPage.nthLoc(1)
+                                .findElement(by.css('.p-postal-code')).getText()
+                        ).toEqual('10016');
+
+                        expect(
+                            landingPage.nthLoc(2)
+                                .findElement(by.css('.p-postal-code')).getText()
+                        ).toEqual('10016');
 
                         expect(landingPage.firstLocName())
                             .toEqual('Kips Bay Library');
-                        expect(landingPage.gmapInfoWindow.getText())
-                            .toEqual('Kips Bay Library\n446 Third Avenue\n' +
-                                'New York, NY, 10016');
-                    });
-            });
-
-            describe('Clicking searchbox \'x\'', function () {
-                it('should clear the input',
-                    function () {
-                        expect(
-                            landingPage.searchInput.getAttribute('value')
-                        ).toEqual('10016');
-                        landingPage.clearSearch.click();
-                        expect(
-                            landingPage.searchInput.getAttribute('value')
-                        ).toEqual('');
                     });
 
-                it('should reset the list of locations by name',
-                    function () {
-                        expect(landingPage.firstLocName())
-                            .not.toEqual('115th Street Library');
-                        landingPage.clearSearch.click();
-                        expect(landingPage.firstLocName())
-                            .toEqual('115th Street Library');
+                it('should then search for libraries near the searched zip code' +
+                    'sorted by distance', function () {
+                        expect(
+                            landingPage.nthLoc(3)
+                                .findElement(by.css('.p-postal-code')).getText()
+                        ).toEqual('10018');
+
+                        expect(landingPage.nthLocName(3))
+                            .toEqual('Stephen A. Schwarzman Building');
+                        expect(landingPage.nthLocDist(3)).toEqual('Distance: 0.43 miles');
+
+                         expect(landingPage.nthLocName(4))
+                            .toEqual('Grand Central Library');
+                        expect(landingPage.nthLocDist(4)).toEqual('Distance: 0.56 miles');
                     });
+
+                describe('Map View', function () {
+                    it('should display one of the matches for the searched' + 
+                        'zip code',
+                        function () {
+                            landingPage.mapViewBtn.click();
+
+                            expect(landingPage.firstLocName())
+                                .toEqual('Kips Bay Library');
+                            expect(landingPage.gmapInfoWindow.getText())
+                                .toEqual('Kips Bay Library\n446 Third Avenue\n' +
+                                    'New York, NY, 10016');
+                        });
+                });
+
+                describe('Clicking searchbox \'x\'', function () {
+                    it('should clear the input',
+                        function () {
+                            expect(
+                                landingPage.searchInput.getAttribute('value')
+                            ).toEqual('10016');
+                            landingPage.clearSearch.click();
+                            expect(
+                                landingPage.searchInput.getAttribute('value')
+                            ).toEqual('');
+                        });
+
+                    it('should reset the list of locations by name',
+                        function () {
+                            expect(landingPage.firstLocName())
+                                .not.toEqual('115th Street Library');
+                            landingPage.clearSearch.click();
+                            expect(landingPage.firstLocName())
+                                .toEqual('115th Street Library');
+                        });
+                });
             });
-        });
 
         describe('A location outside of NYC was searched', function () {
             it('should tell you that your query was too far from any branch',
@@ -540,7 +547,9 @@ describe('Locations: homepage', function () {
                     .toEqual('');
             });
 
-            it('should refresh the list of locations after a previous search',
+            it('should refresh the list of locations after a previous search - ' +
+                '"city island" was searched first, searching for "boston" results ' +
+                'the list',
                 function () {
                     // User searches for a location:
                     landingPage.search('city island');
@@ -665,7 +674,9 @@ describe('Locations: homepage', function () {
             });
 
             it('should revert back to all branches when performing a search ' +
-                'and display the result first in the list',
+                'and display the result first in the list - searching for ' +
+                '"parkchester" when viewing the research branches should take ' +
+                'you back to view all the branches',
                 function () {
                     var only_research = landingPage.onlyResearch;
 
@@ -682,7 +693,8 @@ describe('Locations: homepage', function () {
                         .toEqual('Parkchester Library');
                 });
 
-            it('should sort by distance after a search', function () {
+            it('should sort the research branches by distance after performing' +
+                ' a search, "parkchester" used in the test', function () {
                 var only_research = landingPage.onlyResearch,
                     research_libraries;
 
@@ -873,12 +885,14 @@ describe('Locations: homepage', function () {
                 expect(landingPage.showMore.getText()).toEqual('Show 10 more');
             });
 
-            it('should show the next 10 locations', function () {
-                landingPage.showMore.click();
-                expect(landingPage.locations.count()).toBe(20);
-                expect(landingPage.showing.getText())
-                    .toEqual('Showing 20 of 92 Locations');
-            });
+            it('should show the next 10 locations when the "show more" ' +
+                'button is clicked',
+                function () {
+                    landingPage.showMore.click();
+                    expect(landingPage.locations.count()).toBe(20);
+                    expect(landingPage.showing.getText())
+                        .toEqual('Showing 20 of 92 Locations');
+                });
 
             it('should say "Show All" after showing 80 locations', function () {
                 // Click the 'Show more' button 7 times.
@@ -890,7 +904,7 @@ describe('Locations: homepage', function () {
             });
 
             it('should revert back to default after clicking on the ' +
-                '\'x\' button in the searchbox',
+                '\'x\' button in the searchbox and show only 10 locations',
                 function () {
                     // Random
                     landingPage.clickShowMore(3);
@@ -906,7 +920,8 @@ describe('Locations: homepage', function () {
                         .toEqual('Showing 10 of 92 Locations');
                 });
 
-            it('should say show all 92 locations and remove the button',
+            it('should say show all 92 locations and remove the button ' +
+                'after the button is clicked 8 times',
                 function () {
                     // Click the 'Show more' button 8 times.
                     landingPage.clickShowMore(8);
@@ -916,14 +931,16 @@ describe('Locations: homepage', function () {
                     expect(landingPage.showMore.isPresent()).toBe(false);
                 });
 
-            it('should list only four for research libraries', function () {
-                var only_r = landingPage.onlyResearch;
-                only_r.click();
+            it('should list only four for research libraries after ' +
+                'clicking the research branches button',
+                function () {
+                    var only_r = landingPage.onlyResearch;
+                    only_r.click();
 
-                expect(landingPage.locations.count()).toBe(4);
-                expect(landingPage.showing.getText())
-                    .toEqual('Showing 4 of 4 Locations');
-            });
+                    expect(landingPage.locations.count()).toBe(4);
+                    expect(landingPage.showing.getText())
+                        .toEqual('Showing 4 of 4 Locations');
+                });
 
             it('should revert to 10 locations after toggling research button',
                 function () {
@@ -946,7 +963,7 @@ describe('Locations: homepage', function () {
                 });
         });
 
-        describe('Map View - shows all and no button', function () {
+        describe('Map View - shows all locations and no button', function () {
             beforeEach(function () {
                 landingPage.mapViewBtn.click();
             });
@@ -966,7 +983,7 @@ describe('Locations: homepage', function () {
 
     describe('Map related functions', function () {
         describe('Coming from the List View', function () {
-            it('should go to the map when clicking on the Map View button',
+            it('should go to the map when clicking on the "Map View" button',
                 function () {
                     expect(landingPage.listViewTable.isPresent()).toBe(true);
                     expect(landingPage.mapViewMap.isPresent()).toBe(false);
@@ -979,30 +996,31 @@ describe('Locations: homepage', function () {
 
             it('should show the library you clicked on top of the list' +
                 ' when clicking on "View on Map" and be highlighted when' +
-                ' viewing in "List View"', function () {
-                    expect(landingPage.listViewTable.isPresent()).toBe(true);
-                    expect(landingPage.mapViewMap.isPresent()).toBe(false);
+                ' viewing in "List View". Using 67th street in the test',
+                    function () {
+                        expect(landingPage.listViewTable.isPresent()).toBe(true);
+                        expect(landingPage.mapViewMap.isPresent()).toBe(false);
 
-                    landingPage.nthLocViewMapBtn(3).click();
+                        landingPage.nthLocViewMapBtn(3).click();
 
-                    expect(landingPage.mapViewMap.isPresent()).toBe(true);
-                    expect(landingPage.listViewTable.isPresent()).toBe(false);
-                    expect(landingPage.firstLocName()).toEqual('67th Street Library');
+                        expect(landingPage.mapViewMap.isPresent()).toBe(true);
+                        expect(landingPage.listViewTable.isPresent()).toBe(false);
+                        expect(landingPage.firstLocName()).toEqual('67th Street Library');
 
-                    landingPage.listViewBtn.click();
+                        landingPage.listViewBtn.click();
 
-                    expect(landingPage.listViewTable.isPresent()).toBe(true);
-                    expect(landingPage.firstLocName()).toEqual('67th Street Library');
-                    expect(landingPage.locations
-                        .first().getAttribute('class')
-                    ).toContain('callout');
+                        expect(landingPage.listViewTable.isPresent()).toBe(true);
+                        expect(landingPage.firstLocName()).toEqual('67th Street Library');
+                        expect(landingPage.locations
+                            .first().getAttribute('class')
+                        ).toContain('callout');
 
 
-                    landingPage.nthLocViewMapBtn(9).click();
+                        landingPage.nthLocViewMapBtn(9).click();
 
-                    expect(landingPage.mapViewMap.isPresent()).toBe(true);
-                    expect(landingPage.firstLocName()).toEqual('Baychester Library');
-                });
+                        expect(landingPage.mapViewMap.isPresent()).toBe(true);
+                        expect(landingPage.firstLocName()).toEqual('Baychester Library');
+                    });
         });
 
         describe('On the Map View', function () {
