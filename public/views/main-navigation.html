@@ -4,8 +4,8 @@
       <!-- Drop Down - MyNYPL -->
       <li class="dropDown">
         <a href="http://nypl.bibliocommons.com/dashboard/user_dashboard">My NYPL</a>
-        <div class="dropDownContent__mynypl">
-          <ul>
+        <div class="dropDown_Content">
+          <ul class="top-level">
             <li>
               <h5>My Borrowing</h5>
               <ul>
@@ -16,10 +16,38 @@
               </ul>
             </li>
             <li>
-              <a href="">My Shelves</a>
+              <h5>My Shelves</h5>
+              <ul>
+                <li>
+                  <a href="http://nypl.bibliocommons.com/collection/show/my/library/completed" title="">Completed</a>
+                </li>
+                <li>
+                  <a href="http://nypl.bibliocommons.com/collection/show/my/library/in_progress" title="">In progress</a>
+                </li>
+                <li>
+                  <a href="http://nypl.bibliocommons.com/collection/show/my/library/for_later" title="">For later</a>
+                </li>
+                <li class="last">
+                  <a href="http://nypl.bibliocommons.com/lists/show/mine" title="">My Lists</a>
+                </li>
+              </ul>
             </li>
             <li>
-              <a href="">My Community</a>
+              <h5>My Community</h5>
+              <ul>
+                <li>
+                  <a href="http://nypl.bibliocommons.com/trustedsources" title="">I'm Following</a>
+                </li>
+                <li>
+                  <a href="http://nypl.bibliocommons.com/ignoredusers" title="">Ignored Users</a>
+                </li>
+                <li>
+                  <a href="http://nypl.bibliocommons.com/recently_shared" title="">Recently Shared</a>
+                </li>
+                <li class="last">
+                  <a href="http://nypl.bibliocommons.com/messages" title="">Inbox</a>
+                </li>
+              </ul>
             </li>
           </ul>
         </div>
@@ -28,8 +56,8 @@
       <!-- Drop Down - MyNYPL -->
       <li class="dropDown">
         <a href="http://nypl.bibliocommons.com/dashboard">Explore</a>
-        <div class="dropDownContent__explore">
-          <ul>
+        <div class="dropDown_Content">
+          <ul class="top-level">
             <li>
               <h5>New &amp; Notable</h5>
               <ul>
@@ -89,8 +117,8 @@
 
       <li class="dropDown">
         <a href="/collections">Research</a>
-        <div class="dropDownContent__research">
-          <ul>
+        <div class="dropDown_Content">
+          <ul class="top-level">
             <li>
               <h5>Electronic Resources</h5>
               <ul>
@@ -146,8 +174,8 @@
 
       <li class="dropDown">
         <a href="/help">Using the Library</a>
-        <div class="dropDownContent__usingthelibrary">
-          <ul>
+        <div class="dropDown_Content">
+          <ul class="top-level">
             <li>
               <h5>Get Oriented</h5>
               <ul>
@@ -208,22 +236,23 @@
       </li>
 
       <li class="dropDown">
-        <a href="/locations">Locations</a><div class="dropDownContent__locations">
-        <ul>
-          <li><a href="/locations#manhattan-list">Manhattan</a></li>
-          <li><a href="/locations#bronx-list">The Bronx</a></li>
-          <li><a href="/locations#statenisland-list">Staten Island</a></li>
-          <li><a href="/locations/schwarzman">Schwarzman Building</a></li>
-          <li><a href="/locations/lpa">Library for the Performing Arts</a></li>
-          <li><a href="/locations/schomburg">Schomburg Center</a></li>
-          <li><a href="/locations/sibl">Science, Industry and Business Library</a></li>
-        </ul>
+        <a href="/locations">Locations</a>
+        <div class="dropDown_Content">
+          <ul>
+            <li><a href="/locations#manhattan-list">Manhattan</a></li>
+            <li><a href="/locations#bronx-list">The Bronx</a></li>
+            <li><a href="/locations#statenisland-list">Staten Island</a></li>
+            <li><a href="/locations/schwarzman">Schwarzman Building</a></li>
+            <li><a href="/locations/lpa">Library for the Performing Arts</a></li>
+            <li><a href="/locations/schomburg">Schomburg Center</a></li>
+            <li><a href="/locations/sibl">Science, Industry and Business Library</a></li>
+          </ul>
         </div>
       </li>
 
       <li class="dropDown">
         <a href="/events">Classes &amp; Events</a>
-        <div class="dropDownContent__classes&events">
+        <div class="dropDown_Content">
           <ul>
             <li><a href="/events/exhibitions">Current Exhibitions</a></li>
             <li><a href="/events/public-programs">Programs</a></li>
@@ -239,7 +268,7 @@
       <!-- Support -->
       <li class="dropDown">
         <a href="/support">Support the Library</a>
-        <div class="dropDownContent__support">
+        <div class="dropDown_Content">
           <ul>
             <li>
               <a href="https://secure3.convio.net/nypl/site/SPageServer?pagename=donation_form&amp;JServSessionIdr003=dwcz55yj27.app304a&amp;s_src=FRQ14ZZ_TNN" title="">Donate</a>
@@ -272,6 +301,10 @@
       <!-- Help -->
       <li>
         <a href="/ask-nypl">Help</a>
+      </li>
+      <!-- Mobile Login button -->
+      <li class="mobile-login">
+        <a href="">Log In</a>
       </li>
     </ul>
   </div>
