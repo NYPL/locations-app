@@ -147,6 +147,10 @@
 // Highlighted Services section
 #container__top_services {
 
+	@include breakpoint($min, $post-palm) {
+		margin-top: 20px;
+	}
+
 	.callout {
 		background-color: transparent;
 		position: relative;

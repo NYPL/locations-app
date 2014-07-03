@@ -934,6 +934,9 @@ header {
   margin: 0;
   padding: 0; }
 
+@media screen and (min-width: 601px) {
+  #container__top_services {
+    margin-top: 20px; } }
 #container__top_services .callout {
   background-color: transparent;
   position: relative; }
@@ -974,7 +977,7 @@ footer {
     margin: 0 20px; }
     footer .footerlinks ul:first-of-type {
       margin-left: 0px; }
-    @media screen and (min-width: 601px) {
+    @media screen and (min-width: 767px) {
       footer .footerlinks ul {
         float: left;
         width: 18%; } }
