@@ -1,4 +1,5 @@
-// An example configuration file.
+var HtmlReporter = require('protractor-html-screenshot-reporter');
+
 exports.config = {
   // Do not start a Selenium Standalone sever - only run this using chrome.
   // chromeOnly: true,
@@ -17,11 +18,20 @@ exports.config = {
   // protractor is called.
   suites: {
     homepage: ['test/e2e/homepage/homepage.spec.js'],
-    division: ['test/e2e/division/division.spec.js'],
-    // map: ['test/e2e/map/map.spec.js'],
-    events: ['test/e2e/events/events.spec.js'],
     location: ['test/e2e/location/location.spec.js'],
+    division: ['test/e2e/division/division.spec.js'],
+    events: ['test/e2e/events/events.spec.js'],
     services: ['test/e2e/services/services.spec.js']
+  },
+
+  onPrepare: function () {
+    // require('jasmine-spec-reporter');
+    // jasmine.getEnv().addReporter(
+    //   new jasmine.SpecReporter({displayStacktrace: true})
+    // );
+    jasmine.getEnv().addReporter(new HtmlReporter({
+      baseDirectory: 'test/test-results'
+    }));
   },
 
   baseUrl: 'http://localhost:9292/',
