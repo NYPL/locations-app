@@ -167,6 +167,7 @@ header {
 					width: 100%;
 					padding: 0;
 					box-shadow: 0 4px 5px 1px #aaa;
+					height: 328px;
 
 					@include breakpoint($min, $pre-tablet) {
 						position: absolute;
@@ -174,6 +175,7 @@ header {
 						border: 2px solid #7d7872;
 						width: 300px;
 						box-shadow: none;
+						height: auto;
 					}
 
 					form {

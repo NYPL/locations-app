@@ -21,6 +21,7 @@ function headerScripts() {
     $('.search-options-resp').removeClass('open');
     $('#search-top').removeClass('open');
     $('#main-nav').toggleClass('open-navigation');
+    $('.sso-login').removeClass('visible');
     return false;
   });
 
@@ -31,6 +32,7 @@ function headerScripts() {
     $('#main-nav').removeClass('open-navigation');
     $('#search-block-form-input').toggleClass('open-search');
     $('#search-top').toggleClass('open');
+    $('.sso-login').removeClass('visible');
     return false;
   });
 
