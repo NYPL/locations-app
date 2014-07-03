@@ -92,7 +92,7 @@
     <ul class="grid">
       <li class="grid__item one-whole desk-one-third" data-ng-repeat="event in division._embedded.events">
         <h3><a href="{{event._links.self.href}}">{{event.title}}</a></h3>
-        <p>{{event.body}}</p>
+        <p class="desc">{{event.body}}</p>
         <div class="callout">
           <p>Start time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
           <p>End time: {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
@@ -110,12 +110,12 @@
     <ul class="grid">
       <li class="grid__item one-whole lap-and-up-one-half">
         <h3><a href="{{}}">Special project title</a></h3>
-        <p>Ooh look, we are digitizing the dance videos! here is the second sentence in the blurb about us doing that.</p>
+        <p class="desc">Ooh look, we are digitizing the dance videos! here is the second sentence in the blurb about us doing that.</p>
       </li><!--
 
       --><li class="grid__item one-whole lap-and-up-one-half">
         <h3><a href="{{}}">Special project title</a></h3>
-        <p>Ooh look, we are digitizing the dance videos! here is the second sentence in the blurb about us doing that.</p>
+        <p class="desc">Ooh look, we are digitizing the dance videos! here is the second sentence in the blurb about us doing that.</p>
       </li>
     </ul>  
     <div><a class="read-more hard--right" href="">
@@ -127,9 +127,9 @@
     <h2 class="hdg">{{ 'BLOGS' | translate }}</h2>
     <div class="grid">
       <div class="grid__item one-whole desk-one-third" data-ng-repeat='blog in division._embedded.blogs'>
-        <img data-ng-if="blog.image" class="img--left" data-ng-src="{{blog.image}}" alt="" style="height: 100px;" />
         <h3><a href="http://nypl.org/{{blog._links.self.href}}">{{blog.title}}</a></h3>
-        <div class="teaser">{{blog.body}}</div>
+        <img data-ng-if="blog.image" class="img--left" data-ng-src="{{blog.image}}" alt="" style="height: 100px;" />
+        <div class="desc">{{blog.body}}</div>
       </div>
     </div>
   </div>
