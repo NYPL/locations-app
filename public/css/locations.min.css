@@ -820,7 +820,7 @@ header {
     font-style: italic; }
   #container__hours #toggle-hours {
     display: inline;
-    vertical-align: 1px; }
+    vertical-align: 2px; }
     #container__hours #toggle-hours:hover {
       cursor: pointer; }
     @media screen and (min-width: 601px) {

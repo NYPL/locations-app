@@ -27,7 +27,7 @@
 #container__hours {
 	float: right;
 	margin-bottom: 10px;
-	
+
 	@include breakpoint($min, $post-palm) {
 		margin-bottom: 20px;
 	}
@@ -60,7 +60,7 @@
 
 	#toggle-hours {
 		display: inline;
-		vertical-align: 1px;
+		vertical-align: 2px;
 
 		&:hover {
 			cursor: pointer;
