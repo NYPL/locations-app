@@ -91,7 +91,7 @@
     <h2 class="hdg">{{ 'DIVISION_HEADER' | translate }}</h2>
     <div class="grid">
       <div class="grid__item one-whole desk-one-third" data-ng-repeat='division in location._embedded.divisions'>
-        <img class="one-half tablet-and-up-one-third desk-one-half img--left img--outline" data-ng-src="http://nypl.org{{division.image}}" alt="" style="height: 100px;" />
+        <img class="img--left img--outline" data-ng-src="http://nypl.org{{division.image}}" alt="" style="height: 100px;" />
         <h4 class=""><a href="/#/division/{{division.slug}}">{{division.name}}</a></h4>
         <p data-ng-if="division.hours">Hours today: {{hoursToday(division.hours) | timeFormat}}</p>
       </div>
@@ -134,7 +134,7 @@
 
         <div class="">
           <aside class="event-buttons">
-	        <a href="" class="btn btn--natural gradient whiteText">
+	        <a href="" class="btn btn--natural whiteText">
 	          {{ 'REGISTER' | translate }}
 	        </a>
 
