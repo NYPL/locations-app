@@ -13,6 +13,7 @@
 // Lokinator content wrapper
 .nypl-locations {
 	margin-top: 30px;
+	min-height: 700px;
 
 	@include breakpoint($min, $tablet) {
 		margin-top: 20px;
@@ -33,6 +34,14 @@
 .nypl-alerts {
 	background-color: #ECE94C;
 	padding: 12px;
+	position: relative;
+	top: 25px;
+	width: 100%;
+
+	@include breakpoint($min, $pre-tablet) {
+		width: auto;
+		top: inherit;
+	}
 
 	p {
 		margin: .5em 0;
