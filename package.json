@@ -2,7 +2,8 @@
   "name": "Locations",
   "version": "0.0.1",
   "dependencies": {
-    "protractor": "^0.22.0"
+    "protractor": "^0.22.0",
+    "jasmine-reporters": "^2.0.0"
   },
   "devDependencies": {
     "karma": "~0.12",

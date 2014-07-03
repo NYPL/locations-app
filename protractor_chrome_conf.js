@@ -24,6 +24,11 @@ exports.config = {
     services: ['test/e2e/services/services.spec.js']
   },
 
+  onPrepare: function () {
+    var js = require('jasmine-reporters');
+    jasmine.getEnv().addReporter(new js.JUnitXmlReporter(null, true, true, 'testresults.e2e'));
+  },
+
   baseUrl: 'http://localhost:9292/',
 
   // Options to be passed to Jasmine-node.
