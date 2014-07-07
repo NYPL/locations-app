@@ -93,7 +93,21 @@
 				// Drop down primary link elements
 				&.dropDown {
 
-					&:hover {
+					&.openDropDown {
+
+						> a {
+
+							@include breakpoint($min, $pre-tablet) {
+								background-color: #FFF;
+								color: #000;
+								border-top: 1px solid #000;
+							}
+
+							@include breakpoint(null, $pre-tablet, 900px) {
+								border-bottom: 1px solid #000;
+							}
+						}
+
 						.dropDown_Content {
 							@include breakpoint($min, 900px) {
 								display: block;
