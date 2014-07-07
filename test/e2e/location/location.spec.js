@@ -5,9 +5,57 @@ describe('Locations: library', function () {
 
   var locationPage = require('./location.po.js');
 
+  var httpBackendMock = function () {
+    var bad_response = {
+      location: {
+        "_id": "GC",
+        "access": "Fully Accessible",
+        "contacts": {
+            "phone": "(212) 621-0670",
+            "manager": "Genoveve Stowell"
+        },
+        "cross_street": null,
+        "floor": null,
+        "geolocation": {
+            "type": "Point",
+            "coordinates": [
+                -73.974,
+                40.7539
+            ]
+        },
+        "id": "GC",
+        "image": "/sites/default/files/images/grand_central.jpg",
+        "lat": null,
+        "locality": "New York",
+        "long": null,
+        "name": "Grand",
+        "postal_code": 10017,
+        "region": "NY",
+        "room": null,
+        "slug": "grand-central",
+        "street_address": "135 East 46th Street",
+        "type": "circulating"
+      }
+    };
+
+    angular.module('httpBackendMock', ['ngMockE2E'])
+      .run(function ($httpBackend) {
+        $httpBackend.when('GET', 'http://evening-mesa-7447-160.herokuapp.com/locations/grand-central')
+          .respond(bad_response);
+
+        // For everything else, don't mock
+        $httpBackend.whenGET(/^\w+.*/).passThrough();
+        $httpBackend.whenGET(/.*/).passThrough();
+        $httpBackend.whenPOST(/^\w+.*/).passThrough();
+      });
+
+    // angular.module('nypl_locations').requires.push('httpBackendMock');
+  };
+
   describe('Circulating branch - Testing Grand Central Library',
     function () {
       beforeEach(function () {
+        // browser.addMockModule('httpBackendMock', httpBackendMock);
         browser.get('/#/grand-central');
         browser.waitForAngular();
       });
