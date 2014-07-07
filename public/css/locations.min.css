@@ -552,6 +552,9 @@ header {
                 line-height: 1.5em;
                 margin: 0 0 5px 5px;
                 text-transform: uppercase; }
+        #main-nav .nav-wrapper .container__primary-links > li.active > a {
+          background-color: #E3332C;
+          color: #FFFFFF; }
       #main-nav .nav-wrapper .container__primary-links .mobile-login {
         display: block; }
         @media screen and (min-width: 767px) {
