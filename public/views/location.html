@@ -165,7 +165,7 @@
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-half">
         <!-- Display Plan your visit info only in Research and Division locations -->
-        <div id="plan-your-visit" data-ng-if="location.type == 'research' && location._embedded.divisions">
+        <div id="plan-your-visit" data-ng-if="location.type == 'research'">
           <h2 class="hdg">{{ 'PLAN_YOUR_VISIT' | translate }}</h2>
           <ul class="flush--left gamma">
             <li class="icon-screen">{{ 'RESERVE_COMPUTER' | translate }}</li>
@@ -186,7 +186,7 @@
       </div><!--
 
       --><div id="about" class="grid__item one-whole lap-and-up-one-half">
-        <h2 class="hdg" data-ng-if="location.type == 'research' && location._embedded.divisions">{{ 'ABOUT' | translate }}</h2>
+        <h2 class="hdg" data-ng-if="location.type == 'research'">{{ 'ABOUT' | translate }}</h2>
         <p>{{location.about}}</p>
         <div><a class="read-more" href="http://nypl.org/locations/{{location.slug}}">
           {{ 'ABOUT_MORE' | translate }} {{location.name}}</a></div>
