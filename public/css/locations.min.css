@@ -464,7 +464,7 @@ header {
           display: block;
           text-decoration: none;
           color: #000;
-          padding: 4px 0px; }
+          padding: 4px 0px 4px 3px; }
           @media screen and (min-width: 767px) {
             #main-nav .nav-wrapper .container__primary-links > li > a {
               color: #FFF;
