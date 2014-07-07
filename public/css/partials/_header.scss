@@ -59,11 +59,11 @@ header {
 				width: auto;
 				margin: 0;
 				font-size: 30px;
-				padding: 8px 10px 11px;
+				padding: 8px 10px 12px;
+
 				&:before {
 					margin: 0;
 				}
-
 				&.search-open-button {
 					color: #FFF;
 					margin-right: -3px;
@@ -167,6 +167,7 @@ header {
 					width: 100%;
 					padding: 0;
 					box-shadow: 0 4px 5px 1px #aaa;
+					height: 328px;
 
 					@include breakpoint($min, $pre-tablet) {
 						position: absolute;
@@ -174,6 +175,7 @@ header {
 						border: 2px solid #7d7872;
 						width: 300px;
 						box-shadow: none;
+						height: auto;
 					}
 
 					form {

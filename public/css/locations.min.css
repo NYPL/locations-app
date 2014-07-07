@@ -33,7 +33,14 @@
 
 .nypl-alerts {
   background-color: #ECE94C;
-  padding: 12px; }
+  padding: 12px;
+  position: relative;
+  top: 25px;
+  width: 100%; }
+  @media screen and (min-width: 767px) {
+    .nypl-alerts {
+      width: auto;
+      top: inherit; } }
   .nypl-alerts p {
     margin: .5em 0;
     text-align: center;
@@ -117,7 +124,7 @@ header {
         width: auto;
         margin: 0;
         font-size: 30px;
-        padding: 8px 10px 11px; }
+        padding: 8px 10px 12px; }
         header .header-wrapper .collapsed-buttons .button:before {
           margin: 0; }
         header .header-wrapper .collapsed-buttons .button.search-open-button {
@@ -183,14 +190,16 @@ header {
         background-color: #e5e1da;
         width: 100%;
         padding: 0;
-        box-shadow: 0 4px 5px 1px #aaa; }
+        box-shadow: 0 4px 5px 1px #aaa;
+        height: 328px; }
         @media screen and (min-width: 767px) {
           header .header-wrapper .login-donate .sso-login .login-form {
             position: absolute;
             right: 82px;
             border: 2px solid #7d7872;
             width: 300px;
-            box-shadow: none; } }
+            box-shadow: none;
+            height: auto; } }
         header .header-wrapper .login-donate .sso-login .login-form form {
           padding: 15px; }
           header .header-wrapper .login-donate .sso-login .login-form form .form-item {
@@ -422,7 +431,7 @@ header {
       background-color: #000;
       box-shadow: none;
       height: auto;
-      z-index: 0; } }
+      z-index: 1; } }
   #main-nav .nav-wrapper {
     padding: 10px;
     margin: 0;
@@ -455,7 +464,7 @@ header {
           display: block;
           text-decoration: none;
           color: #000;
-          padding: 4px 0px; }
+          padding: 4px 0px 4px 3px; }
           @media screen and (min-width: 767px) {
             #main-nav .nav-wrapper .container__primary-links > li > a {
               color: #FFF;
@@ -466,17 +475,25 @@ header {
               border-bottom: 1px solid transparent; } }
           @media screen and (min-width: 767px) {
             #main-nav .nav-wrapper .container__primary-links > li > a:hover {
-              background-color: #FFF;
+              background-color: #fcfaf7;
               color: #000;
               border-top: 1px solid #000; } }
           @media screen and (min-width: 767px) and (max-width: 900px) {
             #main-nav .nav-wrapper .container__primary-links > li > a:hover {
               border-bottom: 1px solid #000; } }
+        @media screen and (min-width: 767px) {
+          #main-nav .nav-wrapper .container__primary-links > li.dropDown.openDropDown > a {
+            background-color: #fcfaf7;
+            color: #000;
+            border-top: 1px solid #000; } }
+        @media screen and (min-width: 767px) and (max-width: 900px) {
+          #main-nav .nav-wrapper .container__primary-links > li.dropDown.openDropDown > a {
+            border-bottom: 1px solid #000; } }
         @media screen and (min-width: 900px) {
-          #main-nav .nav-wrapper .container__primary-links > li.dropDown:hover .dropDown_Content {
+          #main-nav .nav-wrapper .container__primary-links > li.dropDown.openDropDown .dropDown_Content {
             display: block;
             width: auto;
-            background-color: #FFF;
+            background-color: #fcfaf7;
             position: absolute;
             padding: 12px;
             margin-left: -1px;
@@ -500,7 +517,7 @@ header {
                   padding: 5px 7px; }
                   #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul li ul li a:hover {
                     color: #FFF;
-                    background-color: #E3332C;
+                    background-color: #015d90;
                     text-decoration: none; }
                 #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul li ul li:last-of-type {
                   border-bottom: none; }
@@ -510,7 +527,7 @@ header {
               padding: 5px 7px; }
               #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul li a:hover {
                 color: #FFF;
-                background-color: #E3332C;
+                background-color: #015d90;
                 text-decoration: none; }
             #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul li:last-of-type {
               border-bottom: none; }
@@ -528,13 +545,16 @@ header {
               margin: 0;
               border-bottom: none !important; }
               #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content .top-level > li h5 {
-                color: #E3332C;
+                color: #0090c4;
                 font-size: .85em;
                 font-weight: 700;
                 letter-spacing: 0.01em;
                 line-height: 1.5em;
                 margin: 0 0 5px 5px;
                 text-transform: uppercase; }
+        #main-nav .nav-wrapper .container__primary-links > li.active > a {
+          background-color: #E3332C !important;
+          color: #FFFFFF !important; }
       #main-nav .nav-wrapper .container__primary-links .mobile-login {
         display: block; }
         @media screen and (min-width: 767px) {
@@ -737,7 +757,7 @@ header {
             .container__all-locations .locations-results-list table.locations-list-view tbody tr td:before {
               font-weight: bold;
               position: absolute;
-              top: 35.5%;
+              top: .5rem;
               left: 6px;
               width: 45%;
               padding-right: 10px;
@@ -750,11 +770,9 @@ header {
                   width: auto;
                   padding-left: initial;
                   white-space: nowrap; } }
-            .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(1):before {
-              top: 75%; }
-              @media screen and (max-width: 601px) {
-                .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(1):before {
-                  content: "Location"; } }
+            @media screen and (max-width: 601px) {
+              .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(1):before {
+                content: "Location"; } }
             @media screen and (max-width: 601px) {
               .container__all-locations .locations-results-list table.locations-list-view tbody tr td:nth-of-type(2):before {
                 content: ""; } }
@@ -892,7 +910,7 @@ header {
       #container__hours #toggle-hours {
         display: none; } }
   #container__hours #location-hours {
-    margin: .75em 0 .75em 0; }
+    margin: .75em 0 .75em 36px; }
     @media screen and (min-width: 601px) {
       #container__hours #location-hours {
         margin-left: 48px; } }
@@ -924,6 +942,12 @@ header {
   margin-top: .5rem;
   margin-left: 0; }
 
+#container__divisions img {
+  width: 100px;
+  height: 100px; }
+#container__divisions h4 {
+  margin-bottom: .5rem; }
+
 #container__events h3 {
   margin-bottom: .05em; }
 #container__events .callout {
@@ -934,6 +958,9 @@ header {
   margin: 0;
   padding: 0; }
 
+@media screen and (min-width: 601px) {
+  #container__top_services {
+    margin-top: 20px; } }
 #container__top_services .callout {
   background-color: transparent;
   position: relative; }
@@ -974,7 +1001,7 @@ footer {
     margin: 0 20px; }
     footer .footerlinks ul:first-of-type {
       margin-left: 0px; }
-    @media screen and (min-width: 601px) {
+    @media screen and (min-width: 767px) {
       footer .footerlinks ul {
         float: left;
         width: 18%; } }

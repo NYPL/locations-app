@@ -136,3 +136,13 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
 
     $httpProvider.responseInterceptors.push(interceptor);
 }]);
+
+// Run jQuery Scripts
+nypl_locations.run(['$rootScope', function($rootScope) {
+    // fired once the view is loaded, 
+    // after the DOM is rendered. The '$scope' of the view emits the event.
+    $rootScope.$on('$viewContentLoaded', headerScripts);
+
+    // Broadcasted before a route change.
+    $rootScope.$on('$routeChangeStart', headerScripts);
+}]);

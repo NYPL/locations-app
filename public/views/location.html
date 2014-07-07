@@ -91,7 +91,7 @@
     <h2 class="hdg">{{ 'DIVISION_HEADER' | translate }}</h2>
     <div class="grid">
       <div class="grid__item one-whole desk-one-third" data-ng-repeat='division in location._embedded.divisions'>
-        <img class="one-half tablet-and-up-one-third desk-one-half img--left img--outline" data-ng-src="http://nypl.org{{division.image}}" alt="" style="height: 100px;" />
+        <img class="img--left img--outline" data-ng-src="http://nypl.org{{division.image}}" alt="" style="height: 100px;" />
         <h4 class=""><a href="/#/division/{{division.slug}}">{{division.name}}</a></h4>
         <p data-ng-if="division.hours">Hours today: {{hoursToday(division.hours) | timeFormat}}</p>
       </div>
@@ -134,7 +134,7 @@
 
         <div class="">
           <aside class="event-buttons">
-	        <a href="" class="btn btn--natural gradient whiteText">
+	        <a href="" class="btn btn--natural whiteText">
 	          {{ 'REGISTER' | translate }}
 	        </a>
 
@@ -165,7 +165,7 @@
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-half">
         <!-- Display Plan your visit info only in Research and Division locations -->
-        <div id="plan-your-visit" data-ng-if="location.type == 'research' && location._embedded.divisions">
+        <div id="plan-your-visit" data-ng-if="location.type == 'research'">
           <h2 class="hdg">{{ 'PLAN_YOUR_VISIT' | translate }}</h2>
           <ul class="flush--left gamma">
             <li class="icon-screen">{{ 'RESERVE_COMPUTER' | translate }}</li>
@@ -186,7 +186,7 @@
       </div><!--
 
       --><div id="about" class="grid__item one-whole lap-and-up-one-half">
-        <h2 class="hdg" data-ng-if="location.type == 'research' && location._embedded.divisions">{{ 'ABOUT' | translate }}</h2>
+        <h2 class="hdg" data-ng-if="location.type == 'research'">{{ 'ABOUT' | translate }}</h2>
         <p>{{location.about}}</p>
         <div><a class="read-more" href="http://nypl.org/locations/{{location.slug}}">
           {{ 'ABOUT_MORE' | translate }} {{location.name}}</a></div>
