@@ -475,7 +475,7 @@ header {
               border-bottom: 1px solid transparent; } }
           @media screen and (min-width: 767px) {
             #main-nav .nav-wrapper .container__primary-links > li > a:hover {
-              background-color: #FFF;
+              background-color: #fcfaf7;
               color: #000;
               border-top: 1px solid #000; } }
           @media screen and (min-width: 767px) and (max-width: 900px) {
@@ -483,7 +483,7 @@ header {
               border-bottom: 1px solid #000; } }
         @media screen and (min-width: 767px) {
           #main-nav .nav-wrapper .container__primary-links > li.dropDown.openDropDown > a {
-            background-color: #FFF;
+            background-color: #fcfaf7;
             color: #000;
             border-top: 1px solid #000; } }
         @media screen and (min-width: 767px) and (max-width: 900px) {
@@ -493,7 +493,7 @@ header {
           #main-nav .nav-wrapper .container__primary-links > li.dropDown.openDropDown .dropDown_Content {
             display: block;
             width: auto;
-            background-color: #FFF;
+            background-color: #fcfaf7;
             position: absolute;
             padding: 12px;
             margin-left: -1px;
@@ -517,7 +517,7 @@ header {
                   padding: 5px 7px; }
                   #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul li ul li a:hover {
                     color: #FFF;
-                    background-color: #E3332C;
+                    background-color: #015d90;
                     text-decoration: none; }
                 #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul li ul li:last-of-type {
                   border-bottom: none; }
@@ -527,7 +527,7 @@ header {
               padding: 5px 7px; }
               #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul li a:hover {
                 color: #FFF;
-                background-color: #E3332C;
+                background-color: #015d90;
                 text-decoration: none; }
             #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content ul li:last-of-type {
               border-bottom: none; }
@@ -545,7 +545,7 @@ header {
               margin: 0;
               border-bottom: none !important; }
               #main-nav .nav-wrapper .container__primary-links > li.dropDown .dropDown_Content .top-level > li h5 {
-                color: #E3332C;
+                color: #0090c4;
                 font-size: .85em;
                 font-weight: 700;
                 letter-spacing: 0.01em;
