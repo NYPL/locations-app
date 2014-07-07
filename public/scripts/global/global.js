@@ -36,4 +36,15 @@ function headerScripts() {
     return false;
   });
 
+  // Open/Close Main Navigation
+  $('.dropDown').hover(
+    function(){
+      $(this).addClass('openDropDown');
+    }, 
+    function(){
+      $(this).removeClass('openDropDown');
+    }
+  );
+
+
 }

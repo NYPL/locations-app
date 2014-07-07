@@ -80,7 +80,7 @@
 
 					&:hover {
 						@include breakpoint($min, $pre-tablet) {
-							background-color: #FFF;
+							background-color: #fcfaf7;
 							color: #000;
 							border-top: 1px solid #000;
 						}
@@ -89,16 +89,31 @@
 							border-bottom: 1px solid #000;
 						}
 					}
+
 				}
 				// Drop down primary link elements
 				&.dropDown {
 
-					&:hover {
+					&.openDropDown {
+
+						> a {
+
+							@include breakpoint($min, $pre-tablet) {
+								background-color: #fcfaf7;
+								color: #000;
+								border-top: 1px solid #000;
+							}
+
+							@include breakpoint(null, $pre-tablet, 900px) {
+								border-bottom: 1px solid #000;
+							}
+						}
+
 						.dropDown_Content {
 							@include breakpoint($min, 900px) {
 								display: block;
 								width: auto;
-								background-color: #FFF;
+								background-color: #fcfaf7;
 								position: absolute;
 								padding: 12px;
 								margin-left: -1px;
@@ -133,7 +148,7 @@
 
 											&:hover {
 												color: #FFF;
-												background-color: #E3332C;
+												background-color: #015d90;
 												text-decoration: none;
 											}
 										}
@@ -151,7 +166,7 @@
 
 									&:hover {
 										color: #FFF;
-										background-color: #E3332C;
+										background-color: #015d90;
 										text-decoration: none;
 									}
 								}
@@ -182,7 +197,7 @@
 								border-bottom: none !important;
 
 								h5 {
-									color: #E3332C;
+									color: #0090c4;
 									font-size: .85em;
 									font-weight: 700;
 									letter-spacing: 0.01em;
@@ -192,6 +207,13 @@
 								}
 							}
 						}
+					}
+				}
+
+				&.active {
+					> a {
+						background-color: #E3332C !important;
+						color: #FFFFFF !important;
 					}
 				}
 			}

@@ -72,7 +72,7 @@
 	}
 
 	#location-hours {
-		margin: .75em 0 .75em 0;
+		margin: .75em 0 .75em 36px;
 
 		@include breakpoint($min, $post-palm) {
 			margin-left: 48px;
@@ -122,6 +122,18 @@
 		margin-left: 0;
 	}
 
+}
+
+// Divisions section 
+#container__divisions{
+	img{
+		width: 100px;
+		height: 100px;		
+	}
+	
+	h4{
+		margin-bottom: .5rem;
+	}
 }
 
 // Events section
