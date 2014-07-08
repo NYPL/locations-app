@@ -237,8 +237,7 @@ nypl_locations.factory('nypl_utility', [
                 if (!type || !event) {
                     return '';
                 }
-                var base,
-                    title = event.title,
+                var title = event.title,
                     start_date = event.start.replace(/[\-:]/g, ''),
                     end_date = event.end.replace(/[\-:]/g, ''),
                     body = event.body,
@@ -298,7 +297,8 @@ nypl_locations.factory('nypl_utility', [
                         "\nSUMMARY:" + event.title +
                         "\nEND:VEVENT\nEND:VCALENDAR";
 
-                window.open('data:text/calendar;chartset=utf-8,' + encodeURI(icsMSG));
+                window.open('data:text/calendar;chartset=utf-8,' +
+                    encodeURI(icsMSG));
             },
 
             id_location_search: function (locations, searchTerm) {

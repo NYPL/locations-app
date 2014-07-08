@@ -105,7 +105,7 @@ angular.module('locationService', ['ngResource'])
                         .error(function () {
                             defer.reject(apiError);
                         });
-                        return defer.promise;
+                    return defer.promise;
                 }
             };
         }

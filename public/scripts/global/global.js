@@ -1,7 +1,8 @@
-// On Document Load
-$(headerScripts());
+/*jslint indent: 2, maxlen: 80, nomen: true */
+/*globals $ */
 
 function headerScripts() {
+  'use strict';
 
   // Toggle Desktop Login Form
   $('.login-button').click(function () {
@@ -38,13 +39,14 @@ function headerScripts() {
 
   // Open/Close Main Navigation
   $('.dropDown').hover(
-    function(){
+    function () {
       $(this).addClass('openDropDown');
-    }, 
-    function(){
+    },
+    function () {
       $(this).removeClass('openDropDown');
     }
   );
-
-
 }
+
+// On Document Load
+$(headerScripts());

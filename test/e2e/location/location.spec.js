@@ -1,79 +1,80 @@
-/*jslint indent: 2, maxlen: 80 */
-/*global describe, require, beforeEach, browser, it, expect, element, by */
+/*jslint indent: 2, maxlen: 80, regexp: true */
+/*global describe, require, beforeEach,
+browser, it, expect, element, by, angular */
 describe('Locations: library', function () {
   'use strict';
 
-  var locationPage = require('./location.po.js');
-
-  var httpBackendMock = function () {
-    var bad_response = {
-      location: {
-        "_id": "GC",
-        "_links": {},
-        "about": "",
-        "access": "Fully Accessible",
-        "contacts": {
+  var locationPage = require('./location.po.js'),
+    httpBackendMock = function () {
+      var bad_response = {
+        location: {
+          "_id": "GC",
+          "_links": {},
+          "about": "",
+          "access": "Fully Accessible",
+          "contacts": {
             "phone": "(212) 621-0670",
             "manager": "Genoveve Stowell"
-        },
-        "cross_street": null,
-        "floor": null,
-        "geolocation": {
+          },
+          "cross_street": null,
+          "floor": null,
+          "geolocation": {
             "type": "Point",
             "coordinates": [
-                -73.974,
-                40.7539
+              -73.974,
+              40.7539
             ]
-        },
-        "hours": {
-          "regular": [
-            { "day": "Sun", "open": null, "close": null },
-            { "day": "Mon", "open": null, "close": null },
-            { "day": "Tue", "open": null, "close": null },
-            { "day": "Wed", "open": null, "close": null },
-            { "day": "Thu", "open": null, "close": null },
-            { "day": "Fri", "open": null, "close": null },
-            { "day": "Sat", "open": null, "close": null }
-          ],
-          "exceptions": {}
-        },
-        "id": "GC",
-        "image": "/sites/default/files/images/grand_central.jpg",
-        "lat": null,
-        "locality": "New York",
-        "long": null,
-        "name": "Grand Central Library",
-        "postal_code": 10017,
-        "region": "NY",
-        "room": null,
-        "slug": "grand-central",
-        "social_media": [],
-        "street_address": "135 East 46th Street",
-        "type": "circulating",
-        "_embedded": {
-          "services": [],
-          "events": [],
-          "exhibitions": null,
-          "blogs": [],
-          "alerts": [],
-          "divisions": []
+          },
+          "hours": {
+            "regular": [
+              { "day": "Sun", "open": null, "close": null },
+              { "day": "Mon", "open": null, "close": null },
+              { "day": "Tue", "open": null, "close": null },
+              { "day": "Wed", "open": null, "close": null },
+              { "day": "Thu", "open": null, "close": null },
+              { "day": "Fri", "open": null, "close": null },
+              { "day": "Sat", "open": null, "close": null }
+            ],
+            "exceptions": {}
+          },
+          "id": "GC",
+          "image": "/sites/default/files/images/grand_central.jpg",
+          "lat": null,
+          "locality": "New York",
+          "long": null,
+          "name": "Grand Central Library",
+          "postal_code": 10017,
+          "region": "NY",
+          "room": null,
+          "slug": "grand-central",
+          "social_media": [],
+          "street_address": "135 East 46th Street",
+          "type": "circulating",
+          "_embedded": {
+            "services": [],
+            "events": [],
+            "exhibitions": null,
+            "blogs": [],
+            "alerts": [],
+            "divisions": []
+          }
         }
-      }
+      };
+
+      angular.module('httpBackendMock', ['ngMockE2E'])
+        .run(function ($httpBackend) {
+          $httpBackend.when('GET', 'http://evening-mesa-7447-160.' +
+              'herokuapp.com/locations/grand-central')
+            .respond(bad_response);
+
+          // For everything else, don't mock
+          $httpBackend.whenGET(/^\w+.*/).passThrough();
+          $httpBackend.whenGET(/.*/).passThrough();
+          $httpBackend.whenPOST(/^\w+.*/).passThrough();
+        });
+
+      // angular.module('nypl_locations').requires.push('httpBackendMock');
     };
-
-    angular.module('httpBackendMock', ['ngMockE2E'])
-      .run(function ($httpBackend) {
-        $httpBackend.when('GET', 'http://evening-mesa-7447-160.herokuapp.com/locations/grand-central')
-          .respond(bad_response);
-
-        // For everything else, don't mock
-        $httpBackend.whenGET(/^\w+.*/).passThrough();
-        $httpBackend.whenGET(/.*/).passThrough();
-        $httpBackend.whenPOST(/^\w+.*/).passThrough();
-      });
-
-    // angular.module('nypl_locations').requires.push('httpBackendMock');
-  };
 
   describe('Circulating branch - Testing Grand Central Library',
     function () {
@@ -148,47 +149,49 @@ describe('Locations: library', function () {
         // to the login page for either Google or Yahoo.
         // The second assertion tests that the redirect url
         // is going to the calendar section.
-        it('should verify new window and url for Google calendar link', function () {
-          var appWindow = browser.getWindowHandle();
+        it('should verify new window and url for Google calendar link',
+          function () {
+            var appWindow = browser.getWindowHandle();
 
-          locationPage.google.click().then(function () {
-            browser.getAllWindowHandles().then(function (handles) {
-              var newWindowHandle = handles[1];
-              browser.switchTo().window(newWindowHandle).then(function () {
-                expect(browser.driver.getCurrentUrl())
-                  .toMatch(/https:\/\/accounts.google.com/);
-                expect(browser.driver.getCurrentUrl())
-                  .toMatch(/https:\/\/www.google.com\/calendar\/render/);
+            locationPage.google.click().then(function () {
+              browser.getAllWindowHandles().then(function (handles) {
+                var newWindowHandle = handles[1];
+                browser.switchTo().window(newWindowHandle).then(function () {
+                  expect(browser.driver.getCurrentUrl())
+                    .toMatch(/https:\/\/accounts.google.com/);
+                  expect(browser.driver.getCurrentUrl())
+                    .toMatch(/https:\/\/www.google.com\/calendar\/render/);
 
-                // Go back to app
-                browser.driver.close().then(function () {
-                  browser.switchTo().window(appWindow);
+                  // Go back to app
+                  browser.driver.close().then(function () {
+                    browser.switchTo().window(appWindow);
+                  });
                 });
               });
             });
           });
-        });
 
-        it('should verify new window and url for Yahoo calendar link', function () {
-          var appWindow = browser.getWindowHandle();
+        it('should verify new window and url for Yahoo calendar link',
+            function () {
+            var appWindow = browser.getWindowHandle();
 
-          locationPage.yahoo.click().then(function () {
-            browser.getAllWindowHandles().then(function (handles) {
-              var newWindowHandle = handles[1];
-              browser.switchTo().window(newWindowHandle).then(function () {
-                expect(browser.driver.getCurrentUrl())
-                  .toMatch(/https:\/\/login.yahoo.com/);
-                expect(browser.driver.getCurrentUrl())
-                  .toMatch(/calendar.yahoo.com/);
+            locationPage.yahoo.click().then(function () {
+              browser.getAllWindowHandles().then(function (handles) {
+                var newWindowHandle = handles[1];
+                browser.switchTo().window(newWindowHandle).then(function () {
+                  expect(browser.driver.getCurrentUrl())
+                    .toMatch(/https:\/\/login.yahoo.com/);
+                  expect(browser.driver.getCurrentUrl())
+                    .toMatch(/calendar.yahoo.com/);
 
-                // Go back to app
-                browser.driver.close().then(function () {
-                  browser.switchTo().window(appWindow);
+                  // Go back to app
+                  browser.driver.close().then(function () {
+                    browser.switchTo().window(appWindow);
+                  });
                 });
               });
             });
           });
-        });
       });
     });
 
@@ -259,47 +262,49 @@ describe('Locations: library', function () {
       // to the login page for either Google or Yahoo.
       // The second assertion tests that the redirect url
       // is going to the calendar section.
-      it('should verify new window and url for Google calendar link', function () {
-        var appWindow = browser.getWindowHandle();
+      it('should verify new window and url for Google calendar link',
+        function () {
+          var appWindow = browser.getWindowHandle();
 
-        locationPage.google.click().then(function () {
-          browser.getAllWindowHandles().then(function (handles) {
-            var newWindowHandle = handles[1];
-            browser.switchTo().window(newWindowHandle).then(function () {
-              expect(browser.driver.getCurrentUrl())
-                .toMatch(/https:\/\/accounts.google.com/);
-              expect(browser.driver.getCurrentUrl())
-                .toMatch(/https:\/\/www.google.com\/calendar\/render/);
+          locationPage.google.click().then(function () {
+            browser.getAllWindowHandles().then(function (handles) {
+              var newWindowHandle = handles[1];
+              browser.switchTo().window(newWindowHandle).then(function () {
+                expect(browser.driver.getCurrentUrl())
+                  .toMatch(/https:\/\/accounts.google.com/);
+                expect(browser.driver.getCurrentUrl())
+                  .toMatch(/https:\/\/www.google.com\/calendar\/render/);
 
-              // Go back to app
-              browser.driver.close().then(function () {
-                browser.switchTo().window(appWindow);
+                // Go back to app
+                browser.driver.close().then(function () {
+                  browser.switchTo().window(appWindow);
+                });
               });
             });
           });
         });
-      });
 
-      it('should verify new window and url for Yahoo calendar link', function () {
-        var appWindow = browser.getWindowHandle();
+      it('should verify new window and url for Yahoo calendar link',
+        function () {
+          var appWindow = browser.getWindowHandle();
 
-        locationPage.yahoo.click().then(function () {
-          browser.getAllWindowHandles().then(function (handles) {
-            var newWindowHandle = handles[1];
-            browser.switchTo().window(newWindowHandle).then(function () {
-              expect(browser.driver.getCurrentUrl())
-                .toMatch(/https:\/\/login.yahoo.com/);
-              expect(browser.driver.getCurrentUrl())
-                .toMatch(/calendar.yahoo.com/);
+          locationPage.yahoo.click().then(function () {
+            browser.getAllWindowHandles().then(function (handles) {
+              var newWindowHandle = handles[1];
+              browser.switchTo().window(newWindowHandle).then(function () {
+                expect(browser.driver.getCurrentUrl())
+                  .toMatch(/https:\/\/login.yahoo.com/);
+                expect(browser.driver.getCurrentUrl())
+                  .toMatch(/calendar.yahoo.com/);
 
-              // Go back to app
-              browser.driver.close().then(function () {
-                browser.switchTo().window(appWindow);
+                // Go back to app
+                browser.driver.close().then(function () {
+                  browser.switchTo().window(appWindow);
+                });
               });
             });
           });
         });
-      });
     });
   });
 
@@ -314,11 +319,12 @@ describe('Locations: library', function () {
       it('should say that the library is closed every day', function () {
         expect(locationPage.hoursToday.getText()).toEqual('Closed today');
 
-        var i = 0;
-        var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        locationPage.hours.each(function (h) { 
+        var i = 0,
+          days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        locationPage.hours.each(function (h) {
           expect(h.getText()).toEqual(days[i] + ' Closed');
-          i++;
+          i += 1;
         });
       });
     });

@@ -43,7 +43,7 @@ nypl_locations.directive('translatebuttons', [
             controller: function ($scope, $translate) {
                 $scope.translate = function (language) {
                     $translate.use(language);
-                }
+                };
             }
         };
     }]);

@@ -38,17 +38,15 @@ nypl_locations.config([
 
         $routeProvider
             .when('/404', {
-                templateUrl: '/views/404.html',
+                templateUrl: '/views/404.html'
             })
             .when('/', {
                 templateUrl: 'views/locations.html',
-                controller: 'LocationsCtrl',
-                label: 'Home'
+                controller: 'LocationsCtrl'
             })
             .when('/division/:division', {
                 templateUrl: 'views/division.html',
-                controller: 'DivisionCtrl',
-                label: 'Division'
+                controller: 'DivisionCtrl'
             })
             .when('/services', {
                 templateUrl: '/views/services.html',
@@ -62,18 +60,15 @@ nypl_locations.config([
             })
             .when('/services/location/:location_id', {
                 templateUrl: 'views/services.html',
-                controller: 'ServicesAtLibraryCtrl',
-                label: 'Location'
+                controller: 'ServicesAtLibraryCtrl'
             })
             .when('/:symbol', {
                 templateUrl: 'views/location.html',
-                controller: 'LocationCtrl',
-                label: 'Location'
+                controller: 'LocationCtrl'
             })
             .when('/:symbol/events', {
                 templateUrl: '/views/events.html',
-                controller: 'LocationCtrl',
-                label: 'Events'
+                controller: 'LocationCtrl'
             })
             .otherwise({
                 redirectTo: '/404'
