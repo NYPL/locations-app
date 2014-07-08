@@ -18,7 +18,7 @@
 	float: left; // Fix for proper positioning on desktop
 	display: none; // Hidden on mobile
 
-	@include breakpoint($min, $post-tablet) {
+	@include breakpoint($min, $desktop) {
 		display: inline-block;
 	}
 }

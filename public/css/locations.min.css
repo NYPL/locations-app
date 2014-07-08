@@ -869,7 +869,7 @@ header {
 #container__image {
   float: left;
   display: none; }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: 1024px) {
     #container__image {
       display: inline-block; } }
 
