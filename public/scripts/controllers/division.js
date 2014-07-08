@@ -7,14 +7,12 @@ nypl_locations.controller('DivisionCtrl', [
     '$rootScope',
     'nypl_locations_service',
     'nypl_utility',
-    'breadcrumbs',
     function (
         $scope,
         $routeParams,
         $rootScope,
         nypl_locations_service,
-        nypl_utility,
-        breadcrumbs
+        nypl_utility
     ) {
         'use strict';
         var division,
@@ -24,16 +22,6 @@ nypl_locations.controller('DivisionCtrl', [
                     .then(function (data) {
                         division = data.division;
                         $rootScope.title = division.name;
-
-                        breadcrumbs.options = {
-                            "Home": division.location_name,
-                            "Division": division.name
-                        };
-                        // This seems a bit hacky but it's because we need to override
-                        // the home link to go to the location where the division
-                        // is located.
-                        breadcrumbs.breadcrumbs[0].path = "/" + division.location_slug;
-                        $scope.breadcrumbs = breadcrumbs;
 
                         if (division.hours) {
                             $scope.hoursToday = nypl_utility.hoursToday;
