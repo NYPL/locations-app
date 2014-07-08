@@ -52,12 +52,10 @@ describe('Locations: division - Testing General Research Division',
           "street_address": "135 East 46th Street",
           "type": "circulating",
           "_embedded": {
-            "services": [],
             "events": [],
             "exhibitions": null,
             "blogs": [],
-            "alerts": [],
-            "divisions": []
+            "alerts": []
           }
         }
       };
