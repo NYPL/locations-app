@@ -20,10 +20,10 @@ var DivisionPage = function () {
 
   this.about_blurb = element(by.binding('division.about'));
 
-  this.events_container = element(by.id('container__events'));
+  this.events_container = element(by.css('.container__events'));
   this.events = element.all(by.repeater('event in division._embedded.events'));
 
-  this.blogs_container = element(by.id('container__blogs'));
+  this.blogs_container = element(by.css('.container__blogs'));
   this.blogs = element.all(by.repeater('blog in division._embedded.blogs'));
 };
 

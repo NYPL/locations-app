@@ -341,11 +341,8 @@
 					}
 					// Hide map-link on mobile devices
 					.map-link {
-						display: none; 
-						
-						@include breakpoint(null, $palm, $tablet) {
-							display: block;
-						}
+						display: block;
+
 						@include breakpoint($min, $post-tablet) {
 							display: inline;
 						}
@@ -415,11 +412,7 @@
 				}
 
 				.map-link {
-					display: none;
-
-					@include breakpoint($min, $post-palm) {
-						display: block;
-					}
+					display: block;
 				}
 
 			}
@@ -427,12 +420,10 @@
 
 		// Google Map
 		.map-wrapper {
-			display: none; // Hide on mobile
-
+			margin: 24px 0px;
 			@include breakpoint($min, $post-palm) {
-				display: block; // Display on palm devices and up
+				margin: 0;
 			}
-
 			#all-locations-map {
 				height: 500px;
 				width: 100%;
@@ -459,5 +450,4 @@
 			}
 		}
 	}
-	
 }
