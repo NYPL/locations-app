@@ -464,6 +464,19 @@ nypl_locations.controller('LocationsCtrl', [
             }
         };
 
+        $scope.getDirections = function (location) {
+            var markerCoordinates = {
+                    'lat': location.geolocation.coordinates[1],
+                    'long': location.geolocation.coordinates[0]
+                },
+                user, library;
+
+            if ($scope.locationStart) {
+                user = new google.maps.LatLng(userCoords.latitude, userCoords.longitude);
+                library = new google.maps.LatLng(markerCoordinates.lat, markerCoordinates.long);
+                nypl_geocoder_service.get_directions(user, library);
+            }
+        };
     }
 ]);
 // End LocationsCtrl

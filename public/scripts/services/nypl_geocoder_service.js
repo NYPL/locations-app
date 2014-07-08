@@ -18,7 +18,9 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             animation: google.maps.Animation.DROP
         }),
         searchInfoWindow = new google.maps.InfoWindow(),
-        infowindow = new google.maps.InfoWindow();
+        infowindow = new google.maps.InfoWindow(),
+        directionsService = new google.maps.DirectionsService(),
+        directionsDisplay = new google.maps.DirectionsRenderer();
 
     return {
         get_coords: function (address) {
@@ -177,6 +179,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             if (marker.getMap() === null) {
                 this.add_marker_to_map(id);
             }
+            directionsDisplay.setMap(null);
 
             this.panMap(marker);
             this.show_infowindow(markerObj[0].marker, markerObj[0].text);
@@ -255,6 +258,22 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             this.hide_infowindow();
             infowindow.setContent(text);
             infowindow.open(map, marker);
+        },
+
+        get_directions: function (user, library) {
+            directionsDisplay.setMap(map);
+
+            var request = {
+                origin: user,
+                destination: library,
+                travelMode: google.maps.TravelMode.TRANSIT
+            };
+
+            directionsService.route(request, function (result, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(result);
+                }
+            });
         }
     };
 }]);

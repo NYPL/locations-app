@@ -60,6 +60,11 @@
           <div class="map-link">
             <a class="icon-map view-on-map" href="" data-ng-click="panToLibrary(location.slug)">{{ 'VIEW_MAP' | translate}}</a>
           </div>
+          <div>
+            <a class="icon-map" href=""
+              data-ng-if="locationStart"
+              data-ng-click="getDirections(location)">{{ 'VIEW_DIRECTIONS_MAP' | translate}}</a>
+          </div>
           <div class="directions-link">
             <a class="icon-compass" target="_blank"
               href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
