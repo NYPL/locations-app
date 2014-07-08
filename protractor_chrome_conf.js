@@ -24,15 +24,15 @@ exports.config = {
     services: ['test/e2e/services/services.spec.js']
   },
 
-  onPrepare: function () {
-    // require('jasmine-spec-reporter');
-    // jasmine.getEnv().addReporter(
-    //   new jasmine.SpecReporter({displayStacktrace: true})
-    // );
-    jasmine.getEnv().addReporter(new HtmlReporter({
-      baseDirectory: 'test/test-results'
-    }));
-  },
+  // onPrepare: function () {
+  //   // require('jasmine-spec-reporter');
+  //   // jasmine.getEnv().addReporter(
+  //   //   new jasmine.SpecReporter({displayStacktrace: true})
+  //   // );
+  //   jasmine.getEnv().addReporter(new HtmlReporter({
+  //     baseDirectory: 'test/test-results'
+  //   }));
+  // },
 
   baseUrl: 'http://localhost:9292/',
 
