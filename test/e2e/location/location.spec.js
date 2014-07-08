@@ -104,6 +104,7 @@ describe('Locations: library', function () {
       });
 
       it('should display five social media icons', function () {
+        expect(locationPage.social_media_container.isPresent()).toBe(true);
         expect(locationPage.social_media.count()).toBe(5);
       });
 
@@ -219,8 +220,8 @@ describe('Locations: library', function () {
       expect(locationPage.hoursToday.getText()).not.toEqual('');
     });
 
-    it('should display five social media icons', function () {
-      expect(locationPage.social_media.count()).toBe(5);
+    it('should display six social media icons', function () {
+      expect(locationPage.social_media.count()).toBe(6);
     });
 
     it('should display hours for all seven days', function () {
@@ -303,7 +304,7 @@ describe('Locations: library', function () {
   });
 
   describe('Circulating branch - Bad API call', function () {
-   beforeEach(function () {
+    beforeEach(function () {
       browser.addMockModule('httpBackendMock', httpBackendMock);
       browser.get('/#/grand-central');
       browser.waitForAngular();
@@ -334,6 +335,11 @@ describe('Locations: library', function () {
         expect(locationPage.blogs_container.isPresent()).toBe(false);
         expect(locationPage.blogs.count()).toBe(0);
       });
+    });
+
+    it('should not generate the social media icons', function () {
+      expect(locationPage.social_media_container.isPresent()).toBe(false);
+      expect(locationPage.social_media.count()).toBe(0);
     });
   });
 

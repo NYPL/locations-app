@@ -160,10 +160,9 @@ nypl_locations.filter('hoursTodayFormat', [
 
                 return formatted_time;
             }
-
-            console.log('hoursTodayFormat() filter function error: Argument' +
-                ' is not defined or empty, verify API response');
-            return '';
+            else { 
+                return 'Not available'; 
+            }
         };
     }
 ]);
