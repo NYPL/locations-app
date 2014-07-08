@@ -12,6 +12,8 @@ var LocationPage = function () {
   this.postal_code = element(by.binding('location.postal_code'));
 
   this.manager = element(by.binding('location.contacts.manager'));
+
+  this.social_media_container = element(by.id('social_media'));
   this.social_media =
     element.all(by.repeater('social in location.social_media'));
 

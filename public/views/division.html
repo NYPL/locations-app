@@ -13,7 +13,7 @@
         <div>{{division.contacts.phone}}</div>
 
         <div class="social flush beta" data-ng-if="division.social_media">
-          <a class="{{social.classes}}" href="{{social.href}}" 
+          <a class="{{social.classes}}" href="{{social.href}}" id="social_media"
             data-ng-repeat="social in division.social_media" class="inline"></a>
         </div>
 
@@ -82,7 +82,7 @@
     </div>
   </div>
 
-  <div id="events" class="chunk" data-ng-if="division._embedded.events">
+  <div id="container__events" class="chunk" data-ng-if="division._embedded.events">
     <h2 class="hdg">{{ 'EVENTS' | translate }}</h2>
 
     <ul class="grid">
@@ -119,7 +119,7 @@
     
   </div>
 
-  <div class="chunk" id="blogs" data-ng-if="division._embedded.blogs">
+  <div class="chunk" id="container__blogs" data-ng-if="division._embedded.blogs">
     <h2 class="hdg">{{ 'BLOGS' | translate }}</h2>
     <div class="grid">
       <div class="grid__item one-whole desk-one-third" data-ng-repeat='blog in division._embedded.blogs'>
