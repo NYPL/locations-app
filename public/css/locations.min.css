@@ -113,7 +113,7 @@ header {
           left: 5%;
           height: 125px;
           width: 210px;
-          background: url(http://cdn-prod.www.aws.nypl.org/sites/all/themes/nypl_new/images/main-logo.png) no-repeat 0 0; } }
+          background: url(../images/nypl_logo.png) no-repeat 0 0; } }
     header .header-wrapper .collapsed-buttons {
       display: block;
       position: absolute;
@@ -270,7 +270,7 @@ header {
           background-color: transparent;
           right: 0px;
           top: 84px !important;
-          z-index: 1;
+          z-index: 2;
           box-shadow: none; } }
       header .header-wrapper #search-top.open {
         display: block;
@@ -869,7 +869,7 @@ header {
 #container__image {
   float: left;
   display: none; }
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: 1024px) {
     #container__image {
       display: inline-block; } }
 

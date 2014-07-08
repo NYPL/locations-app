@@ -1,5 +1,5 @@
-/*jslint indent: 4, maxlen: 80 */
-/*globals nypl_locations, console */
+/*jslint indent: 4, maxlen: 80, nomen: true */
+/*globals nypl_locations, console, _ */
 
 // Filter formats military time to standard time
 nypl_locations.filter('timeFormat', [
@@ -54,7 +54,7 @@ nypl_locations.filter('capitalize', [
         return function (input, scope) {
             return input.replace(/(^|\s)([a-z])/g, function (str) {
                 return str.toUpperCase();
-            })
+            });
         };
     }]);
 
@@ -160,10 +160,9 @@ nypl_locations.filter('hoursTodayFormat', [
 
                 return formatted_time;
             }
-
-            console.log('hoursTodayFormat() filter function error: Argument' +
-                ' is not defined or empty, verify API response');
-            return '';
+            else { 
+                return 'Not available'; 
+            }
         };
     }
 ]);

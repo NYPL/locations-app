@@ -1,5 +1,6 @@
-/*jslint indent: 4, maxlen: 80 */
-/*globals nypl_locations */
+/*jslint indent: 4, maxlen: 80, nomen: true */
+/*globals nypl_locations, _, angular, jQuery */
+
 nypl_locations.controller('LocationsCtrl', [
     '$scope',
     '$rootScope',
@@ -34,7 +35,7 @@ nypl_locations.controller('LocationsCtrl', [
                     libraryLimit: 10,
                     showMore: true,
                     add_amount: 10,
-                    increaseBy: '10 more',
+                    increaseBy: '10 more'
                 });
 
                 $scope.libraryLimit = location_list.libraryLimit;
@@ -57,6 +58,7 @@ nypl_locations.controller('LocationsCtrl', [
                     location.highlight = '';
                 });
             },
+
             mapInit = function () {
                 if ($scope.view === 'map') {
                     nypl_geocoder_service.remove_searchMarker();
@@ -64,32 +66,9 @@ nypl_locations.controller('LocationsCtrl', [
                     nypl_geocoder_service.panMap();
                 }
             },
-            loadLocations = function () {
-                return nypl_locations_service
-                    .all_locations()
-                    .then(function (data) {
-                        locations = data.locations;
-                        $scope.locations = locations;
-
-                        _.each($scope.locations, function (location) {
-                            location.hoursToday = nypl_utility.hoursToday;
-                            location.locationDest
-                                = nypl_utility.getAddressString(location);
-                        });
-
-                        if ($scope.view === 'map') {
-                            loadMapMarkers();
-                        }
-
-                        checkGeolocation();
-                        allLocationsInit();
-
-                        return locations;
-                    });
-            },
 
             loadMapMarkers = function () {
-                 _.each($scope.locations, function (location) {
+                _.each($scope.locations, function (location) {
                     var locationAddress = nypl_utility
                             .getAddressString(location, true),
                         markerCoordinates = {
@@ -120,6 +99,38 @@ nypl_locations.controller('LocationsCtrl', [
                 }
             },
 
+            loadLocations = function () {
+                return nypl_locations_service
+                    .all_locations()
+                    .then(function (data) {
+                        locations = data.locations;
+                        $scope.locations = locations;
+
+                        _.each($scope.locations, function (location) {
+                            location.hoursToday = nypl_utility.hoursToday;
+                            location.locationDest
+                                = nypl_utility.getAddressString(location);
+                        });
+
+                        if ($scope.view === 'map') {
+                            loadMapMarkers();
+                        }
+
+                        checkGeolocation();
+                        allLocationsInit();
+
+                        return locations;
+                    });
+            },
+
+            draw_user_marker = function () {
+                if ($scope.view === 'map') {
+                    if (nypl_geocoder_service.check_marker('user')) {
+                        nypl_geocoder_service.pan_existing_marker('user');
+                    }
+                }
+            },
+
             loadCoords = function () {
                 return nypl_coordinates_service
                     .getCoordinates()
@@ -131,14 +142,16 @@ nypl_locations.controller('LocationsCtrl', [
 
                         // add a distance property to every location
                         // from that location to the user's coordinates
-                       locations = nypl_utility.add_distance(locations, userCoords);
+                        locations =
+                            nypl_utility.add_distance(locations, userCoords);
 
                         // Must be within 25 miles
                         if (nypl_utility.check_distance(locations)) {
                             // The user is too far away, reset everything
                             allLocationsInit();
                             throw (new Error(
-                                'You are not within 25 miles of any NYPL library.'
+                                'You are not within 25 ' +
+                                    'miles of any NYPL library.'
                             ));
                         }
 
@@ -153,19 +166,13 @@ nypl_locations.controller('LocationsCtrl', [
 
                         $scope.locations = locations;
                         $scope.predicate = 'distance';
-                        nypl_geocoder_service.create_userMarker(userCoords, "Your Current Location");
+                        nypl_geocoder_service
+                            .create_userMarker(userCoords,
+                                "Your Current Location");
                         draw_user_marker();
 
                         return userCoords;
                     });
-            },
-
-            draw_user_marker = function () {
-                if ($scope.view === 'map') {
-                    if (nypl_geocoder_service.check_marker('user')) {
-                        nypl_geocoder_service.pan_existing_marker('user');
-                    }
-                }
             },
 
             // convert coordinate into address
@@ -207,7 +214,8 @@ nypl_locations.controller('LocationsCtrl', [
                     coords = searchObj.coords,
                     searchterm = searchObj.searchTerm;
 
-                locationsCopy = nypl_utility.add_distance(locationsCopy, coords);
+                locationsCopy =
+                    nypl_utility.add_distance(locationsCopy, coords);
 
                 // Must be within 25 miles or throws the error:
                 if (nypl_utility.check_distance(locationsCopy)) {
@@ -220,37 +228,38 @@ nypl_locations.controller('LocationsCtrl', [
                 $scope.searchError = '';
                 return locationsCopy;
             },
-            organizeLocations = function (locations, filteredLocations, sortByFilter) {
-                _.each(locations, function (location) {
-                    location.highlight = '';
-                });
+            organizeLocations =
+                function (locations, filteredLocations, sortByFilter) {
+                    _.each(locations, function (location) {
+                        location.highlight = '';
+                    });
 
-                _.each(filteredLocations, function (location) {
-                    // just to differentiate between angular matched filter 
-                    // results and reverse geocoding results
-                    location.highlight = 'callout';
-                    location.distance = '';
-                });
+                    _.each(filteredLocations, function (location) {
+                        // just to differentiate between angular matched filter 
+                        // results and reverse geocoding results
+                        location.highlight = 'callout';
+                        location.distance = '';
+                    });
 
-                // Sort the locations array here instead of using the angular
-                // orderBy filter. That way we can display the matched
-                // locations first and then display the results from
-                // the geocoder service
-                locations = _.sortBy(locations, function (location) {
-                    return location[sortByFilter];
-                });
+                    // Sort the locations array here instead of using angular
+                    // orderBy filter. That way we can display the matched
+                    // locations first and then display the results from
+                    // the geocoder service
+                    locations = _.sortBy(locations, function (location) {
+                        return location[sortByFilter];
+                    });
 
-                // Remove the matched libraries from the filter search term
-                locations = _.difference(locations, filteredLocations);
+                    // Remove the matched libraries from the filter search term
+                    locations = _.difference(locations, filteredLocations);
 
-                // Use union to add the matched locations in front of the rest 
-                // of the locations
-                $scope.locations = _.union(filteredLocations, locations);
+                    // Use union to add the matched locations in front
+                    // of the rest of the locations
+                    $scope.locations = _.union(filteredLocations, locations);
 
-                // Don't sort by distance or
-                // the matched results will not display first
-                $scope.predicate = '';
-            },
+                    // Don't sort by distance or
+                    // the matched results will not display first
+                    $scope.predicate = '';
+                },
             searchByUserGeolocation = function () {
                 draw_user_marker();
                 // Display the user address, add distance to every library
@@ -271,6 +280,16 @@ nypl_locations.controller('LocationsCtrl', [
                 } else {
                     ngRepeatInit();
                 }
+            },
+
+            scroll_map_top = function () {
+                if (angular.element('.container__all-locations')
+                        .css('width') < '601') {
+                    var top = angular.element('.map-wrapper')
+                                .offset();
+                    angular.element('body')
+                        .animate({scrollTop: top.top}, 1000);
+                }
             };
 
         $rootScope.title = "Locations";
@@ -278,8 +297,11 @@ nypl_locations.controller('LocationsCtrl', [
         loadLocations();
 
         $scope.drawMap = function () {
-            nypl_geocoder_service
-                .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+            nypl_geocoder_service.draw_map({
+                lat: 40.7532,
+                long: -73.9822
+            }, 12, 'all-locations-map');
+
             nypl_geocoder_service
                     .draw_legend('all-locations-map-legend');
             nypl_geocoder_service.load_markers();
@@ -289,7 +311,8 @@ nypl_locations.controller('LocationsCtrl', [
                 nypl_geocoder_service.add_marker_to_map('user');
             }
 
-            if (nypl_geocoder_service.check_searchMarker() && $scope.searchMarker) {
+            if (nypl_geocoder_service.check_searchMarker() &&
+                    $scope.searchMarker) {
                 nypl_geocoder_service.draw_searchMarker();
             } else {
                 mapInit();
@@ -300,14 +323,18 @@ nypl_locations.controller('LocationsCtrl', [
             }
 
             if ($scope.select_library_for_map) {
-                nypl_geocoder_service.pan_existing_marker($scope.select_library_for_map);
+                nypl_geocoder_service
+                    .pan_existing_marker($scope.select_library_for_map);
             }
 
-            var filteredLocation = nypl_geocoder_service.get_filtered_location();
+            var filteredLocation =
+                nypl_geocoder_service.get_filtered_location();
             if (filteredLocation) {
                 nypl_geocoder_service.pan_existing_marker(filteredLocation);
             }
-        }
+
+            scroll_map_top();
+        };
 
         $scope.distanceSort = function () {
             if ($scope.locations[0].distance) {
@@ -326,7 +353,8 @@ nypl_locations.controller('LocationsCtrl', [
 
         $scope.panToLibrary = function (library_id) {
             nypl_geocoder_service.pan_existing_marker(library_id);
-        }
+            scroll_map_top();
+        };
 
         $scope.useGeolocation = function () {
             $scope.searchTerm = '';
@@ -381,11 +409,18 @@ nypl_locations.controller('LocationsCtrl', [
             $scope.researchBranches = false;
 
             var IDfilteredLocations =
-                nypl_utility.id_location_search($scope.locations, searchTerm);
+                nypl_utility.id_location_search($scope.locations, searchTerm),
+                // Filter the locations by the search term using Angularjs
+                filteredLocations =
+                nypl_utility.location_search($scope.locations, searchTerm);
 
             if (IDfilteredLocations && IDfilteredLocations.length !== 0) {
                 resetDistance();
-                organizeLocations($scope.locations, IDfilteredLocations, 'name');
+                organizeLocations(
+                    $scope.locations,
+                    IDfilteredLocations,
+                    'name'
+                );
 
                 // map related work
                 nypl_geocoder_service.search_result_marker(IDfilteredLocations);
@@ -394,19 +429,19 @@ nypl_locations.controller('LocationsCtrl', [
                 return;
             }
 
-            // Filter the locations by the search term
-            // using Angularjs
-            var filteredLocations =
-                nypl_utility.location_search($scope.locations, searchTerm);
-
             loadGeocoding(searchTerm)
                 .then(function (searchObj) {
                     // Map related work
                     if (filteredLocations.length) {
-                        nypl_geocoder_service.search_result_marker(filteredLocations);
+                        nypl_geocoder_service.
+                            search_result_marker(filteredLocations);
                     } else {
                         nypl_geocoder_service.clear_filtered_location();
-                        nypl_geocoder_service.create_searchMarker(searchObj.coords, searchObj.searchTerm);
+                        nypl_geocoder_service.create_searchMarker(
+                            searchObj.coords,
+                            searchObj.searchTerm
+                        );
+
                         if ($scope.view === 'map') {
                             nypl_geocoder_service.draw_searchMarker();
                         }
@@ -427,11 +462,13 @@ nypl_locations.controller('LocationsCtrl', [
                     // else, reset back to the start
                     nypl_geocoder_service.remove_searchMarker();
                     $scope.searchMarker = false;
-                    if (filteredLocations.length && error.msg !== 'query too short') {
+                    if (filteredLocations.length &&
+                            error.msg !== 'query too short') {
                         resetDistance();
                         $scope.searchError = '';
                         // Map related work
-                        nypl_geocoder_service.search_result_marker(filteredLocations);
+                        nypl_geocoder_service
+                            .search_result_marker(filteredLocations);
                         organizeLocations(locations, filteredLocations, 'name');
                     } else {
                         allLocationsInit();
@@ -486,20 +523,16 @@ nypl_locations.controller('LocationCtrl', [
     '$scope',
     '$routeParams',
     '$rootScope',
-    '$location',
     'nypl_locations_service',
     'nypl_coordinates_service',
     'nypl_utility',
-    'breadcrumbs',
     function (
         $scope,
         $routeParams,
         $rootScope,
-        $location,
         nypl_locations_service,
         nypl_coordinates_service,
-        nypl_utility,
-        breadcrumbs
+        nypl_utility
     ) {
         'use strict';
         var location,
@@ -511,16 +544,13 @@ nypl_locations.controller('LocationCtrl', [
                         location = data.location;
                         $rootScope.title = location.name;
 
-                        breadcrumbs.options = { 'Location': location.name };
-                        $scope.breadcrumbs = breadcrumbs;
-
                         $scope.calendar_link = nypl_utility.calendar_link;
                         $scope.ical_link = nypl_utility.ical_link;
 
                         if (location._embedded) {
                             $scope.siteWideAlert =
                                 nypl_utility.alerts(location._embedded.alerts);
-                        };
+                        }
 
                         if (location.hours) {
                             $scope.libraryAlert =
@@ -537,8 +567,9 @@ nypl_locations.controller('LocationCtrl', [
                         $scope.location.social_media =
                             nypl_utility
                                 .socialMediaColor($scope.location.social_media);
-            			$scope.location.catalog =
-            			    nypl_utility.catalog_items_link($scope.location.name);
+                        $scope.location.catalog =
+                            nypl_utility
+                                .catalog_items_link($scope.location.name);
                     })
                     .catch(function (err) {
                         throw err;
@@ -562,26 +593,27 @@ nypl_locations.controller('LocationCtrl', [
         // Load the location and user's geolocation coordinates
         // as chained events
         loadLocation()
-            .then(loadCoords)
-            .catch(function (error) {
-                // Do error handling here in case the API is down
-            });
+            .then(loadCoords);
+            // .catch(function (error) {
+            //     // Do error handling here in case the API is down
+            // });
     }
 ])
-.animation('.collapse', function() {
+    .animation('.collapse', function () {
+        'use strict';
 
-    var NgHideClassName = 'ng-hide';
+        var NgHideClassName = 'ng-hide';
 
-    return {
-        beforeAddClass: function(element, className, done) {
-            if(className === NgHideClassName) {
-                jQuery(element).slideUp(done);
+        return {
+            beforeAddClass: function (element, className, done) {
+                if (className === NgHideClassName) {
+                    jQuery(element).slideUp(done);
+                }
+            },
+            removeClass: function (element, className, done) {
+                if (className === NgHideClassName) {
+                    jQuery(element).hide().slideDown(done);
+                }
             }
-        },
-        removeClass: function(element, className, done) {
-            if(className === NgHideClassName) {
-                jQuery(element).hide().slideDown(done);
-            }
-        }
-    }
-});
+        };
+    });

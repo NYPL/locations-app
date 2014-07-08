@@ -1,10 +1,9 @@
-/*jslint indent: 4, maxlen: 80 */
-/*globals nypl_locations, google, document */
+/*jslint indent: 4, maxlen: 80, nomen: true */
+/*globals nypl_locations, google, document, _ */
 nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
     'use strict';
 
     var map,
-        bound,
         panCoords,
         markers = [],
         filteredLocation,
@@ -84,8 +83,6 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
                 };
 
             map = new google.maps.Map(document.getElementById(id), mapOptions);
-
-            bound = new google.maps.LatLngBounds();
         },
 
         load_markers: function () {
@@ -122,7 +119,8 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         },
 
         create_userMarker: function (coords, text) {
-            panCoords = new google.maps.LatLng(coords.latitude, coords.longitude);
+            panCoords =
+                new google.maps.LatLng(coords.latitude, coords.longitude);
             userMarker.setPosition(panCoords);
             this.show_infowindow(userMarker, text);
             markers.push({id: 'user', marker: userMarker, text: text});
@@ -163,7 +161,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             markerObj[0].marker.setMap(map);
         },
 
-        check_searchMarker: function() {
+        check_searchMarker: function () {
             return searchMarker.getPosition() !== undefined;
         },
 
@@ -244,10 +242,6 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             google.maps.event.addListener(marker, 'click', function () {
                 _this.show_infowindow(marker, text);
             });
-
-            // Bounds the map to display all the markers
-            // bound.extend(marker.getPosition());
-            // map.fitBounds(bound);
         },
 
         hide_infowindow: function () {
