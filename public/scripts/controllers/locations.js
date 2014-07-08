@@ -504,10 +504,12 @@ nypl_locations.controller('LocationCtrl', [
                         $scope.calendar_link = nypl_utility.calendar_link;
                         $scope.ical_link = nypl_utility.ical_link;
 
-                        $scope.siteWideAlert =
-                            nypl_utility.alerts(location._embedded.alerts);
+                        if (location._embedded) {
+                            $scope.siteWideAlert =
+                                nypl_utility.alerts(location._embedded.alerts);
+                        };
 
-                        if (location.hours.exceptions) {
+                        if (location.hours) {
                             $scope.libraryAlert =
                                 nypl_utility.alerts(location.hours.exceptions);
                         }
