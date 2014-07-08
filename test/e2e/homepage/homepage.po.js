@@ -42,7 +42,8 @@ var LandingPage = function () {
   this.gmapInfoWindow = element(by.css('.gm-style-iw div'));
 
   this.clickShowMore = function (n) {
-    for (var i = 0; i < n; i++) {
+    var i;
+    for (i = 0; i < n; i += 1) {
       this.showMore.click();
     }
   };
@@ -76,10 +77,9 @@ var LandingPage = function () {
     return this.nthLoc(n).findElement(by.css('.icon-map'));
   };
 
-  this.firstLocDist = function (n) {
+  this.firstLocDist = function () {
     return this.nthLocDist(0);
   };
-      
 };
 
 module.exports = new LandingPage();
