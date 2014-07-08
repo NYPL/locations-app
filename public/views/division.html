@@ -1,90 +1,90 @@
-<!-- container -->
-<div class="content grid">
-
-  <div class="grid__item one-whole lap-and-up-two-thirds">
-    <h1>{{division.name}}</h1>
+<!-- Individual Division -->
+<div class="individual-division">
+  <div class="container__division-info">
+    <h1 class="p-org">{{division.name}}</h1>
     <div class="grid">
-      <div class="grid__item one-whole lap-and-up-one-half">
+      <!-- Division Hours -->
+      <div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
+        <div class="callout">
+          <todayshours hours="{{hoursToday(division.hours) | hoursTodayFormat:'short'}}" />
+          <div id="location-hours" class="location-hours">
+            <h2 class="flush--ends hdg">
+              {{ 'REGULAR_HOURS' | translate }} 
+              <span id="toggle-hours" ng-click="expand = !expand" ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span>
+            </h2>
+            <div class="weekly-hours zeta collapse" ng-show="expand">
+              <div class="{{hours.day}}" data-ng-repeat="hours in division.hours.regular">
+                <span class="day">
+                  {{hours.day}}
+                </span>
+                <span class="time">
+                  {{ hours | timeFormat }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!--
 
+      --><div id="container__div_address" class="grid__item lap-one-half one-whole desk-one-third">
+        <!-- Division address and related location data -->
         <div>{{division.location_name}}</div>
         <div>{{division.floor}} 
             <span data-ng-if="division.room">{{ 'ROOM' | translate }} #{{division.room}}</span>
         </div>
         <div>{{division.contacts.phone}}</div>
-
         <div class="social flush beta" data-ng-if="division.social_media">
           <a class="{{social.classes}}" href="{{social.href}}" 
             data-ng-repeat="social in division.social_media" class="inline"></a>
         </div>
-
       </div><!--
       
-      --><div class="grid__item one-whole lap-and-up-one-half">
+      --><div id="container__div_services" class="grid__item lap-one-half one-whole desk-one-third">
+        <!-- Division services -->
         <div data-ng-if="division.contacts.manager">
           {{ 'DIVISION_MANAGER' | translate}}<span>{{division.contacts.manager}}</span>
         </div>
         <div>{{ 'DIVISION_INFO' | translate }} 
             <a href="http://nypl.org/locations/{{division.location_slug}}/{{division.slug}}">{{ 'HERE' | translate }}</a>
         </div>
-
         <ul class="top-services flush">
           <li class="icon-book inline">{{ 'BOOKS' | translate }}</li>
           <li class="icon-accessibility inline">{{ 'WHEELCHAIR' | translate }}</li>
           <li class="icon-box-add inline">{{ 'BOOKDROP' | translate }}</li>
         </ul>
-        
         <div id="catalog"><a class="icon-books" href="">Catalog Items Here</a></div>
-
       </div>
+
     </div>
-  </div><!--
+  </div>
 
-  --><div class="grid__item one-whole lap-and-up-one-third container__hours-catalog">
-    <todayshours hours="{{hoursToday(division.hours) | hoursTodayFormat:'short'}}" />
-
-    <div id="division-hours">
-      <h2 class="flush--ends hdg">{{ 'REGULAR_HOURS' | translate }}</h2>
-
-      <div class="weekly-hours zeta">
-        <div class="{{hours.day}}" data-ng-repeat="hours in division.hours.regular">
-          <span class="day">{{hours.day}}</span>
-          <span class="time">
-            {{ hours | timeFormat }}
-          </span>
+  <div class="container__about">
+    <div class="grid">
+      <div class="grid__item one-whole lap-and-up-three-fifths">
+        <h2 class="hdg">{{ 'ABOUT_COLLECTION' | translate }}</h2>
+        <p>{{division.about}}</p>
+        <div>
+          <a class="read-more" href="http://nypl.org/locations/{{division.location_slug}}/{{division.slug}}">
+            {{ 'MORE_ABOUT_DIVISION' | translate }} {{division.name}}</a>
         </div>
+      </div><!--
+
+      --><div class="grid__item one-whole lap-and-up-two-fifths">
+        <h2 class="hdg">Plan Your Visit</h2>
+        <button href="" class="btn--small gamma">{{ 'APPOINTMENT' | translate }}</button>
+        <button href="" class="btn--small gamma">{{ 'ASK_LIBRARIAN' | translate }}</button>
+
+        <ul class="flush--left">
+          <li class="icon-screen">{{ 'RESERVE_COMPUTER' | translate }}</li>
+          <li class="icon-library">{{ 'ILL' | translate }}</li>
+          <li class="icon-users">{{ 'MEETING_ROOMS' | translate }}</li>
+        </ul>
       </div>
-    </div>
-
-    
-  </div>
-
-  <div id="about-and-plan" class="chunk hard--left">
-    <div id="about" class="grid__item one-whole lap-and-up-three-fifths">
-      <h2 class="hdg">{{ 'ABOUT_COLLECTION' | translate }}</h2>
-      <p>{{division.about}}</p>
-      <div>
-        <a class="read-more" href="http://nypl.org/locations/{{division.location_slug}}/{{division.slug}}">
-          {{ 'MORE_ABOUT_DIVISION' | translate }} {{division.name}}</a>
-      </div>
-    </div><!-- 
-
-    --><div id="plan-your-visit" class="grid__item one-whole lap-and-up-two-fifths">
-      <h2 class="hdg">Plan Your Visit</h2>
-      <button href="" class="btn--small gamma">{{ 'APPOINTMENT' | translate }}</button>
-      <button href="" class="btn--small gamma">{{ 'ASK_LIBRARIAN' | translate }}</button>
-
-      <ul class="flush--left">
-        <li class="icon-screen">{{ 'RESERVE_COMPUTER' | translate }}</li>
-        <li class="icon-library">{{ 'ILL' | translate }}</li>
-        <li class="icon-users">{{ 'MEETING_ROOMS' | translate }}</li>
-      </ul>
-
     </div>
   </div>
 
-  <div id="events" class="chunk" data-ng-if="division._embedded.events">
+  <div class="container__events" data-ng-if="division._embedded.events">
     <h2 class="hdg">{{ 'EVENTS' | translate }}</h2>
-
     <ul class="grid">
       <li class="grid__item one-whole desk-one-third" data-ng-repeat="event in division._embedded.events">
         <h3><a href="{{event._links.self.href}}">{{event.title}}</a></h3>
@@ -96,11 +96,14 @@
       </li>
     </ul>   
       
-    <div><a class="read-more" href="/#/{{division.location_slug}}/events">
-      {{ 'MORE_EVENTS' | translate }} {{division.name}}</a></div>
+    <div>
+      <a class="read-more" href="/#/{{division.location_slug}}/events">
+        {{ 'MORE_EVENTS' | translate }} {{division.name}}
+      </a>
+    </div>
   </div>
 
-  <div id="special_project" class="chunk">
+  <div class="container__special_projects">
     <h2 class="hdg">{{ 'SPECIAL_PROJECTS' | translate }}</h2>
 
     <ul class="grid">
@@ -114,12 +117,15 @@
         <p class="desc">Ooh look, we are digitizing the dance videos! here is the second sentence in the blurb about us doing that.</p>
       </li>
     </ul>  
-    <div><a class="read-more hard--right" href="">
-      {{ 'MORE_SPECIAL_PROJECTS' | translate }} {{division.name}}</a></div> 
-    
+
+    <div>
+      <a class="read-more hard--right" href="">
+       {{ 'MORE_SPECIAL_PROJECTS' | translate }} {{division.name}}
+      </a>
+    </div> 
   </div>
 
-  <div class="chunk" id="blogs" data-ng-if="division._embedded.blogs">
+  <div class="container__blogs" data-ng-if="division._embedded.blogs">
     <h2 class="hdg">{{ 'BLOGS' | translate }}</h2>
     <div class="grid">
       <div class="grid__item one-whole desk-one-third" data-ng-repeat='blog in division._embedded.blogs'>
@@ -131,6 +137,4 @@
   </div>
 
   <askdonatefooter chatHref="" emailHref="" donateHref="" />
-  
-<!--   end container -->  
 </div>
