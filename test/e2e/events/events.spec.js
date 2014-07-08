@@ -4,6 +4,76 @@ describe('Locations: events', function () {
   'use strict';
 
   var eventsPage = require('./events.po.js');
+  var httpBackendMock = function () {
+    var bad_response = {
+      location: {
+        "_id": "HU",
+        "_links": {},
+        "about": "",
+        "access": "Fully Accessible",
+        "contacts": {
+            "phone": "(212) 669-9393",
+            "manager": "Tequila Davis",
+            "email": "115st_branch@nypl.org"
+        },
+        "cross_street": null,
+        "floor": "First Floor",
+        "geolocation": {
+            "type": "Point",
+            "coordinates": [
+                -73.9532,
+                40.8028
+            ]
+        },
+        "hours": {
+          "regular": [
+            { "day": "Sun", "open": null, "close": null },
+            { "day": "Mon", "open": null, "close": null },
+            { "day": "Tue", "open": null, "close": null },
+            { "day": "Wed", "open": null, "close": null },
+            { "day": "Thu", "open": null, "close": null },
+            { "day": "Fri", "open": null, "close": null },
+            { "day": "Sat", "open": null, "close": null }
+          ],
+          "exceptions": {}
+        },
+        "id": "HU",
+        "image": "/sites/default/files/images/branch01_003_corrected.jpg",
+        "lat": null,
+        "locality": "New York",
+        "long": null,
+        "name": "115th Street Library",
+        "postal_code": 10026,
+        "region": "NY",
+        "room": null,
+        "slug": "115th-street",
+        "social_media": [],
+        "street_address": "203 West 115th Street",
+        "type": "circulating",
+        "_embedded": {
+          "services": [],
+          "events": [],
+          "exhibitions": null,
+          "blogs": [],
+          "alerts": [],
+          "divisions": []
+        }
+      }
+    };
+
+    angular.module('httpBackendMock', ['ngMockE2E'])
+      .run(function ($httpBackend) {
+        $httpBackend.when('GET', 'http://evening-mesa-7447-160.herokuapp.com/locations/115th-street')
+          .respond(bad_response);
+
+        // For everything else, don't mock
+        $httpBackend.whenGET(/^\w+.*/).passThrough();
+        $httpBackend.whenGET(/.*/).passThrough();
+        $httpBackend.whenPOST(/^\w+.*/).passThrough();
+      });
+
+    // angular.module('nypl_locations').requires.push('httpBackendMock');
+  };
 
   beforeEach(function () {
     browser.get('/#/115th-street/events');
@@ -19,7 +89,7 @@ describe('Locations: events', function () {
     expect(eventsPage.hoursToday.getText()).not.toEqual('');
   });
 
-  it('should display three evnets on the page', function () {
+  it('should display three events on the page', function () {
     expect(eventsPage.events.count()).toBe(3);
   });
 
@@ -70,6 +140,22 @@ describe('Locations: events', function () {
           });
         });
       });
+    });
+  });
+
+  describe('Bad API call', function () {
+    beforeEach(function () {
+      browser.addMockModule('httpBackendMock', httpBackendMock);
+      browser.get('/#/115th-street');
+      browser.waitForAngular();
+    });
+
+    it('should say closed for today', function () {
+      expect(eventsPage.hoursToday.getText()).toEqual('Closed today');
+    });
+
+    it('should not display any events', function () {
+      expect(eventsPage.events.count()).toBe(0);
     });
   });
 });

@@ -548,7 +548,11 @@ nypl_locations.controller('LocationCtrl', [
 
         // Load the location and user's geolocation coordinates
         // as chained events
-        loadLocation().then(loadCoords);
+        loadLocation()
+            .then(loadCoords)
+            .catch(function (error) {
+                // Do error handling here in case the API is down
+            });
     }
 ])
 .animation('.collapse', function() {
