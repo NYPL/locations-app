@@ -70,6 +70,7 @@ nypl_locations.factory('nypl_utility', [
                         }
                     };
                 }
+
                 return hoursToday;
             },
 

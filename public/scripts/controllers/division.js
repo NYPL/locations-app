@@ -41,6 +41,8 @@ nypl_locations.controller('DivisionCtrl', [
 
                         $scope.division = division;
 
+                        console.log($scope.division);
+
                         $scope.siteWideAlert =
                             nypl_utility.alerts(division._embedded.alerts);
 
