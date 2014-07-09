@@ -128,9 +128,9 @@ describe('Locations: division - Testing General Research Division',
         expect(divisionPage.about_blurb.isPresent()).toBe(true);
       });
 
-      it('should have three blogs on the page', function () {
+      it('should have six blogs on the page', function () {
         var blogs = divisionPage.blogs;
-        expect(blogs.count()).toBe(3);
+        expect(blogs.count()).toBe(6);
       });
     });
 
@@ -141,9 +141,9 @@ describe('Locations: division - Testing General Research Division',
         browser.waitForAngular();
       });
 
-      it('should displayed closed hours', function () {
-        expect(divisionPage.hoursToday.getText()).toEqual('Closed Today');
-      });
+      // it('should displayed closed hours', function () {
+      //   expect(divisionPage.hoursToday.getText()).toEqual('Closed Today');
+      // });
 
       it('should not display any social media icons', function () {
         expect(divisionPage.social_media_container.isPresent()).toBe(false);

@@ -1,3 +1,6 @@
+/*jslint nomen: false, indent: 2, maxlen: 80 */
+/*globals require, exports, jasmine */
+
 var HtmlReporter = require('protractor-html-screenshot-reporter');
 
 exports.config = {
@@ -5,8 +8,8 @@ exports.config = {
   // chromeOnly: true,
   // chromeDriver: './node_modules/protractor/selenium/chromedriver',
 
-  // if you do want a separate running selenium server, comment the two lines above
-  // and uncomment this line:
+  // if you do want a separate running selenium server, 
+  // comment the two lines above and uncomment this line:
   seleniumAddress: 'http://0.0.0.0:4444/wd/hub',
 
   // Capabilities to be passed to the webdriver instance.
@@ -24,15 +27,20 @@ exports.config = {
     services: ['test/e2e/services/services.spec.js']
   },
 
-  // onPrepare: function () {
-  //   // require('jasmine-spec-reporter');
-  //   // jasmine.getEnv().addReporter(
-  //   //   new jasmine.SpecReporter({displayStacktrace: true})
-  //   // );
-  //   jasmine.getEnv().addReporter(new HtmlReporter({
-  //     baseDirectory: 'test/test-results'
-  //   }));
-  // },
+  onPrepare: function () {
+    'use strict';
+
+    // Generates an xml file
+    require('jasmine-reporters');
+    jasmine.getEnv()
+      .addReporter(new jasmine.JUnitXmlReporter('test/e2e/output/', true, true));
+
+    // This will generate a screenshot for every test, a json file,
+    // and an html page with all the results:
+    // jasmine.getEnv().addReporter(new HtmlReporter({
+    //   baseDirectory: 'test/test-results'
+    // }));
+  },
 
   baseUrl: 'http://localhost:9292/',
 
