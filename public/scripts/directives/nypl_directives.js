@@ -12,15 +12,15 @@ nypl_locations.directive('loadingWidget', [
                 var
                     startRequestHandler = function (event) {
                         // got the request start notification, show the element
-                        element.show();
+                        element.addClass('show');
                     },
                     endRequestHandler = function (event) {
                         // got the request start notification, show the element
-                        element.hide();
+                        element.removeClass('show');
                     };
 
                 // hide the element initially
-                element.hide();
+                element.removeClass('show');
 
                 // register for the request start notification
                 requestNotificationChannel.
