@@ -134,15 +134,13 @@ nypl_locations.directive('nyplalerts', [
 */
 nypl_locations.
     directive("collapse",
-        function() {
-
+        function () {
+        'use strict'
             function link( $scope, element, attributes ) {
-                var exp = attributes.collapse;
+                var exp = attributes.collapse,
+                    duration = (attributes.duration || "fast");
 
-                // duration in ms
-                var duration = ( attributes.duration || "fast" );
-
-                if ( ! $scope.$eval(exp) ) {
+                if (!$scope.$eval(exp)) {
                     element.hide();
                 }
 
@@ -150,22 +148,22 @@ nypl_locations.
                 // see when it changes and adjust the visibility
                 $scope.$watch(
                     exp,
-                    function( newValue, oldValue ) {
-
-                        if ( newValue === oldValue ) {
+                    function (newVal, oldVal) {
+                        // If values are equal -- just return
+                        if (newVal === oldVal) {
                             return;
                         }
                         // Show element.
-                        if ( newValue ) {
-                            element.stop( true, true ).slideDown(duration);
+                        if (newVal) {
+                            element.stop(true, true).slideDown(duration);
+                        } 
                         // Hide element.
-                        } else {
-                            element.stop( true, true ).slideUp(duration);
+                        else {
+                            element.stop(true, true).slideUp(duration);
                         }
                     }
                 );
             }
-
             return ({
                 link: link,
                 restrict: "A" // Attribute only
