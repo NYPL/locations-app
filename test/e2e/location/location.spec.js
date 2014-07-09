@@ -123,9 +123,9 @@ describe('Locations: library', function () {
         expect(locationPage.divisions.count()).toBe(0);
       });
 
-      it('should display three events', function () {
+      it('should display six events', function () {
         expect(locationPage.events_container.isPresent()).toBe(true);
-        expect(locationPage.events.count()).toBe(3);
+        expect(locationPage.events.count()).toBe(6);
       });
 
       it('should have another image and a blurb', function () {
@@ -137,9 +137,9 @@ describe('Locations: library', function () {
         expect(locationPage.plan_your_visit.isPresent()).toBe(false);
       });
 
-      it('should display three blogs', function () {
+      it('should display six blogs', function () {
         expect(locationPage.blogs_container.isPresent()).toBe(true);
-        expect(locationPage.blogs.count()).toBe(3);
+        expect(locationPage.blogs.count()).toBe(6);
       });
 
       describe('Calendar links', function () {
@@ -236,9 +236,9 @@ describe('Locations: library', function () {
       expect(locationPage.divisions.count()).toBe(5);
     });
 
-    it('should display three events', function () {
+    it('should display five events', function () {
       expect(locationPage.events_container.isPresent()).toBe(true);
-      expect(locationPage.events.count()).toBe(3);
+      expect(locationPage.events.count()).toBe(5);
     });
 
     it('should have a "Plan your visit" and about blurb section', function () {

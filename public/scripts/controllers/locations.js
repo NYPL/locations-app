@@ -545,7 +545,6 @@ nypl_locations.controller('LocationCtrl', [
                     .then(function (data) {
                         location = data.location;
                         $rootScope.title = location.name;
-console.log('loadLocation');
                         $scope.calendar_link = nypl_utility.calendar_link;
                         $scope.ical_link = nypl_utility.ical_link;
 
@@ -579,7 +578,6 @@ console.log('loadLocation');
                     });
             },
             loadCoords = function () {
-                console.log('loadCoords');
                 return nypl_coordinates_service
                     .getCoordinates()
                     .then(function (position) {

@@ -92,8 +92,8 @@ describe('Locations: events', function () {
     expect(eventsPage.hoursToday.getText()).not.toEqual('');
   });
 
-  it('should display three events on the page', function () {
-    expect(eventsPage.events.count()).toBe(3);
+  it('should display six events on the page', function () {
+    expect(eventsPage.events.count()).toBe(6);
   });
 
   describe('Calendar links', function () {
