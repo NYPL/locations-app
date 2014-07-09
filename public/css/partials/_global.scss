@@ -121,7 +121,7 @@
 			}
 
 			.askchat,.askemail {
-				// "button" style
+				display: inline-block;
 				background-color: #ece94c;
 				border-radius: 2px;
 				color: #5e564b;
@@ -130,9 +130,10 @@
 				
 				&:hover {
 					background-color: lighten(#ece94c, 20%);
+					cursor: pointer;
 				}
 			}
-			
+
 			[data-icon]:before, [class^="icon-"]:before, [class*=" icon-"]:before {
 				vertical-align: baseline;
 			}

@@ -102,13 +102,15 @@
           .askNYPL ul li.asknum {
             font-size: 36px; } }
       .askNYPL ul li .askchat, .askNYPL ul li .askemail {
+        display: inline-block;
         background-color: #ece94c;
         border-radius: 2px;
         color: #5e564b;
         padding: 6px;
         text-decoration: none; }
         .askNYPL ul li .askchat:hover, .askNYPL ul li .askemail:hover {
-          background-color: #f6f4a8; }
+          background-color: #f6f4a8;
+          cursor: pointer; }
       .askNYPL ul li [data-icon]:before, .askNYPL ul li [class^="icon-"]:before, .askNYPL ul li [class*=" icon-"]:before {
         vertical-align: baseline; }
 
@@ -1006,6 +1008,8 @@ header {
 #container__address .social {
   margin-top: .5rem;
   margin-left: 0; }
+  #container__address .social a {
+    text-decoration: none; }
 
 #container__divisions img {
   width: 100px;
