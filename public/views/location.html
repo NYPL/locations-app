@@ -65,7 +65,7 @@
         </div><!--
 
         --><div id="container__image" class="grid__item desk-one-third">
-            <img class="" data-ng-src="http://nypl.org{{location.image}}" alt="Picture of {{location.name}}">
+            <img class="" data-ng-src="{{location.image}}" alt="Picture of {{location.name}}">
         </div>
     </div>
   </div>
@@ -91,7 +91,7 @@
     <h2 class="hdg">{{ 'DIVISION_HEADER' | translate }}</h2>
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='division in location._embedded.divisions'>
-        <img class="img--left img--outline" data-ng-src="http://nypl.org{{division.image}}" alt="" style="height: 100px;" />
+        <img class="img--left img--outline" data-ng-src="{{division.image}}" alt="" style="height: 100px;" />
         <h4 class=""><a href="/#/division/{{division.slug}}">{{division.name}}</a></h4>
         <p data-ng-if="division.hours">Hours Today: {{hoursToday(division.hours) | timeFormat}}</p>
       </div>
@@ -181,7 +181,7 @@
         </div>
 
         <div id="location-secondary-img" data-ng-if="location.type == 'circulating'">
-          <img class="one-whole lap-and-up-one-whole" data-ng-src="http://nypl.org{{location.image}}" alt="Picture of {{location.name}}">
+          <img class="one-whole lap-and-up-one-whole" data-ng-src="{{location.image}}" alt="Picture of {{location.name}}">
         </div>
       </div><!--
 
