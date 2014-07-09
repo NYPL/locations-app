@@ -20,7 +20,9 @@ nypl_locations.directive('loadingWidget', [
                     };
 
                 // hide the element initially
-                element.removeClass('show');
+                if (element.hasClass('show')) {
+                    element.removeClass('show');
+                }
 
                 // register for the request start notification
                 requestNotificationChannel.
