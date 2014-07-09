@@ -71,7 +71,7 @@ function headerScripts() {
           o.term = lmnt.find('#search-block-form-input');
           o.search_button = lmnt.find('.search_button');
           o.choices = lmnt.find('.pseudo-select');
-          o.mobile_flag = lmnt.find('.hidden-xs').eq(0);
+          o.mobile_flag = lmnt.find('.search-button');
           o.prompt = {
             default_val: o.term.attr("placeholder"),
             catalog: "Search the catalog",
@@ -103,7 +103,7 @@ function headerScripts() {
           });
 
           // Setup click action on submit button.
-          lmnt.find('.search_button').click(function () {
+          lmnt.find('.search-button').click(function () {
             return methods.do_search();
           });
 
@@ -198,7 +198,6 @@ function headerScripts() {
           target = 'http://nypl.bibliocommons.com/search?t=smart&q='
             + term + '&commit=Search&searchOpt=catalogue';
         }
-        console.log(target);
         window.location = target;
         return false;
       }
@@ -218,11 +217,10 @@ function headerScripts() {
     };
   }(jQuery));
 
-  var defaultInputText = 'Find books, music, movies and more',
-    defaultInputText2 = 'NYPL events, locations and more',
-    header_search = $('#search-top').nypl_search();
+  var defaultInputText  = 'Find books, music, movies and more',
+      defaultInputText2 = 'NYPL events, locations and more',
+      header_search     = $('#search-top').nypl_search();
 }
 
 // On Document Load
 $(headerScripts());
-
