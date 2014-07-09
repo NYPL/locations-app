@@ -12,7 +12,8 @@
 
 // Loader
 #loadingWidget {
-	z-index: 1;
+	display: none;
+	z-index: 5;
 	opacity: 0;
 	background: rgba(0,0,0,.6);
 	position: fixed;
@@ -27,20 +28,9 @@
 	transition: all .5s ease;
 	color: #fff;
 	text-align: center;
-	-webkit-transform: translate3d(0,0,0);
-	-moz-transform: translate3d(0,0,0);
-	-ms-transform: translate3d(0,0,0);
-	-o-transform: translate3d(0,0,0);
-	transform: translate3d(0,0,0);
-	-webkit-backface-visibility: hidden;
-	-moz-backface-visibility: hidden;
-	-ms-backface-visibility: hidden;
-	-o-backface-visibility: hidden;
-	backface-visibility: hidden;
-	-webkit-transform-style: preserve-3d;
-	transform-style: preserve-3d;
 
 	&.show {
+		display: block;
 		z-index: 9999;
 		opacity: 1;
 	}
