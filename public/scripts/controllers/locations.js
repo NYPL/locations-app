@@ -362,15 +362,6 @@ nypl_locations.controller('LocationsCtrl', [
         $scope.panToLibrary = function (library_id, index, slug) {
             nypl_geocoder_service.pan_existing_marker(slug);
             scroll_map_top();
-
-            var elemHeight =
-                    parseInt(
-                        angular.element('#' + library_id).css('height'),
-                        10
-                    ),
-                scrollTo = elemHeight * index;
-            angular.element('.locations-data-wrapper')
-                .animate({scrollTop: scrollTo}, 1000);
         };
 
         $scope.useGeolocation = function () {
