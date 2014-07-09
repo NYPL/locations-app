@@ -5,12 +5,14 @@ nypl_locations.controller('DivisionCtrl', [
     '$scope',
     '$routeParams',
     '$rootScope',
+    '$location',
     'nypl_locations_service',
     'nypl_utility',
     function (
         $scope,
         $routeParams,
         $rootScope,
+        $location,
         nypl_locations_service,
         nypl_utility
     ) {
@@ -36,6 +38,9 @@ nypl_locations.controller('DivisionCtrl', [
                             nypl_utility.socialMediaColor(
                                 division.social_media
                             );
+                    })
+                    .catch(function (error) {
+                        $location.path('/404');
                     });
             };
 

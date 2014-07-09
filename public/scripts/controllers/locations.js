@@ -4,6 +4,7 @@
 nypl_locations.controller('LocationsCtrl', [
     '$scope',
     '$rootScope',
+    '$location',
     'nypl_locations_service',
     'nypl_coordinates_service',
     'nypl_geocoder_service',
@@ -12,6 +13,7 @@ nypl_locations.controller('LocationsCtrl', [
     function (
         $scope,
         $rootScope,
+        $location,
         nypl_locations_service,
         nypl_coordinates_service,
         nypl_geocoder_service,
@@ -119,6 +121,9 @@ nypl_locations.controller('LocationsCtrl', [
                         allLocationsInit();
 
                         return locations;
+                    })
+                    .catch(function (error) {
+                        $location.path('/404');
                     });
             },
 
@@ -521,13 +526,15 @@ nypl_locations.controller('LocationCtrl', [
     'nypl_locations_service',
     'nypl_coordinates_service',
     'nypl_utility',
+    '$location',
     function (
         $scope,
         $routeParams,
         $rootScope,
         nypl_locations_service,
         nypl_coordinates_service,
-        nypl_utility
+        nypl_utility,
+        $location
     ) {
         'use strict';
         var location,
@@ -538,7 +545,7 @@ nypl_locations.controller('LocationCtrl', [
                     .then(function (data) {
                         location = data.location;
                         $rootScope.title = location.name;
-
+console.log('loadLocation');
                         $scope.calendar_link = nypl_utility.calendar_link;
                         $scope.ical_link = nypl_utility.ical_link;
 
@@ -567,10 +574,12 @@ nypl_locations.controller('LocationCtrl', [
                                 .catalog_items_link($scope.location.name);
                     })
                     .catch(function (err) {
+                        $location.path('/404');
                         throw err;
                     });
             },
             loadCoords = function () {
+                console.log('loadCoords');
                 return nypl_coordinates_service
                     .getCoordinates()
                     .then(function (position) {
