@@ -80,30 +80,37 @@
     text-align: center;
     max-width: none; }
 
-@media screen and (min-width: 601px) {
-  .askNYPL {
-    padding-left: 0;
-    padding-top: 24px; } }
-.askNYPL ul {
-  color: #5e564b;
-  margin-left: 0px;
-  text-align: center; }
-.askNYPL li {
-  list-style-type: none;
-  margin-bottom: .5rem; }
-.askNYPL [data-icon]:before, .askNYPL [class^="icon-"]:before, .askNYPL [class*=" icon-"]:before {
-  vertical-align: baseline; }
-@media screen and (min-width: 601px) {
-  .askNYPL .asknum {
-    font-size: 36px; } }
-.askNYPL .askchat, .askNYPL .askemail {
-  background-color: #ece94c;
-  border-radius: 2px;
-  color: #5e564b;
-  padding: 6px;
-  text-decoration: none; }
-  .askNYPL .askchat:hover, .askNYPL .askemail:hover {
-    background-color: #f6f4a8; }
+.askNYPL {
+  padding-left: 0px; }
+  @media screen and (min-width: 601px) {
+    .askNYPL {
+      padding-left: 24px; } }
+  .askNYPL ul {
+    text-align: center;
+    color: #5e564b;
+    margin: 1em 0 0; }
+    @media screen and (min-width: 601px) {
+      .askNYPL ul {
+        margin: 0; } }
+    .askNYPL ul li {
+      display: block;
+      list-style-type: none;
+      margin-bottom: .5rem; }
+      .askNYPL ul li.asknum {
+        font-size: 24px; }
+        @media screen and (min-width: 601px) {
+          .askNYPL ul li.asknum {
+            font-size: 36px; } }
+      .askNYPL ul li .askchat, .askNYPL ul li .askemail {
+        background-color: #ece94c;
+        border-radius: 2px;
+        color: #5e564b;
+        padding: 6px;
+        text-decoration: none; }
+        .askNYPL ul li .askchat:hover, .askNYPL ul li .askemail:hover {
+          background-color: #f6f4a8; }
+      .askNYPL ul li [data-icon]:before, .askNYPL ul li [class^="icon-"]:before, .askNYPL ul li [class*=" icon-"]:before {
+        vertical-align: baseline; }
 
 @-moz-document url-prefix() {
   .search-button {

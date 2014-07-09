@@ -92,49 +92,52 @@
 
 // AskNYPL
 .askNYPL {
-	// adjust padding from grid__item
+	padding-left: 0px;
+	
 	@include breakpoint($min, $post-palm) {
-		padding-left: 0;
-		padding-top: 24px;
+		padding-left: 24px;
 	}
 
 	ul {
-		color: #5e564b;
-		
-		// override default margin
-		margin-left: 0px;
-		
-		// positions elements
 		text-align: center;
-	}
-	
-	li {
-		list-style-type: none;
-		margin-bottom: .5rem;
-	}
-	
-	[data-icon]:before, [class^="icon-"]:before, [class*=" icon-"]:before {
-		vertical-align: baseline;
-	}
-	
-	.asknum {
-		@include breakpoint($min, $post-palm) {
-			font-size: 36px;
-		}
-	}
-	
-	.askchat,.askemail {
-		// "button" style
-		background-color: #ece94c;
-		border-radius: 2px;
 		color: #5e564b;
-		padding: 6px;		
-		text-decoration: none;
-		
-		&:hover {
-			background-color: lighten(#ece94c, 20%);
+		margin: 1em 0 0;
+
+		@include breakpoint($min, $post-palm) {
+			margin: 0;
 		}
-	}
+
+		li {
+			display: block;
+			list-style-type: none;
+			margin-bottom: .5rem;
+
+			&.asknum {
+				font-size: 24px;
+
+				@include breakpoint($min, $post-palm) {
+					font-size: 36px;
+				}
+			}
+
+			.askchat,.askemail {
+				// "button" style
+				background-color: #ece94c;
+				border-radius: 2px;
+				color: #5e564b;
+				padding: 6px;		
+				text-decoration: none;
+				
+				&:hover {
+					background-color: lighten(#ece94c, 20%);
+				}
+			}
+			
+			[data-icon]:before, [class^="icon-"]:before, [class*=" icon-"]:before {
+				vertical-align: baseline;
+			}
+		}
+	}	
 }
 
 // Firefox specific override rules
