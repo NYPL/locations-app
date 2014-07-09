@@ -1055,7 +1055,7 @@ header {
         right: 7px;
         top: 7px; } }
 
-.container__about, .container__special_projects {
+.container__about, .container__special_projects, .container__blogs {
   clear: both;
   margin: 24px 0px; }
 
