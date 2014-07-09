@@ -10,6 +10,46 @@
 	max-width: 1200px;
 }
 
+// Loader
+#loadingWidget {
+	display: none;
+	z-index: 5;
+	opacity: 0;
+	background: rgba(0,0,0,.6);
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	-webkit-transition: all .5s ease;
+	-moz-transition: all .5s ease;
+	-ms-transition: all .5s ease;
+	-o-transition: all .5s ease;
+	transition: all .5s ease;
+	color: #fff;
+	text-align: center;
+
+	&.show {
+		display: block;
+		z-index: 9999;
+		opacity: 1;
+	}
+
+	.loader-icon {
+		position: absolute;
+		display: block;
+		width: 55px;
+		height: 40px;
+		font-size: 2em;
+		left: 50%;
+		top: 50%;
+		-webkit-animation: spin 2s infinite linear;
+		-moz-animation: spin 2s infinite linear;
+		-o-animation: spin 2s infinite linear;
+		animation: spin 2s infinite linear;
+	}
+}
+
 // Lokinator content wrapper
 .nypl-locations {
 	margin-top: 30px;
@@ -52,49 +92,53 @@
 
 // AskNYPL
 .askNYPL {
-	// adjust padding from grid__item
+	padding-left: 0px;
+	
 	@include breakpoint($min, $post-palm) {
-		padding-left: 0;
-		padding-top: 24px;
+		padding-left: 24px;
 	}
 
 	ul {
-		color: #5e564b;
-		
-		// override default margin
-		margin-left: 0px;
-		
-		// positions elements
 		text-align: center;
-	}
-	
-	li {
-		list-style-type: none;
-		margin-bottom: .5rem;
-	}
-	
-	[data-icon]:before, [class^="icon-"]:before, [class*=" icon-"]:before {
-		vertical-align: baseline;
-	}
-	
-	.asknum {
-		@include breakpoint($min, $post-palm) {
-			font-size: 36px;
-		}
-	}
-	
-	.askchat,.askemail {
-		// "button" style
-		background-color: #ece94c;
-		border-radius: 2px;
 		color: #5e564b;
-		padding: 6px;		
-		text-decoration: none;
-		
-		&:hover {
-			background-color: lighten(#ece94c, 20%);
+		margin: 1em 0 0;
+
+		@include breakpoint($min, $post-palm) {
+			margin: 0;
 		}
-	}
+
+		li {
+			display: block;
+			list-style-type: none;
+			margin-bottom: .5rem;
+
+			&.asknum {
+				font-size: 24px;
+
+				@include breakpoint($min, $post-palm) {
+					font-size: 36px;
+				}
+			}
+
+			.askchat,.askemail {
+				display: inline-block;
+				background-color: #ece94c;
+				border-radius: 2px;
+				color: #5e564b;
+				padding: 6px;		
+				text-decoration: none;
+				
+				&:hover {
+					background-color: lighten(#ece94c, 20%);
+					cursor: pointer;
+				}
+			}
+
+			[data-icon]:before, [class^="icon-"]:before, [class*=" icon-"]:before {
+				vertical-align: baseline;
+			}
+		}
+	}	
 }
 
 // Firefox specific override rules
@@ -107,4 +151,40 @@
 	.sso-login .login-form {
 		right: 81px !important;
 	}
+}
+
+// Spin Animation
+@-moz-keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+  }
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-o-keyframes spin {
+  0% {
+    -o-transform: rotate(0deg);
+  }
+  100% {
+    -o-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }

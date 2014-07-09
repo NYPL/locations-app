@@ -283,9 +283,9 @@ nypl_locations.controller('LocationsCtrl', [
 
             scroll_map_top = function () {
                 var containerWidth = parseInt(
-                        10,
                         angular.element('.container__all-locations')
-                            .css('width')
+                            .css('width'),
+                        10
                     ),
                     top;
 
@@ -293,6 +293,9 @@ nypl_locations.controller('LocationsCtrl', [
                     top = angular.element('.map-wrapper').offset();
                     angular.element('body')
                         .animate({scrollTop: top.top}, 1000);
+                } else {
+                    angular.element('body')
+                        .animate({scrollTop: 0}, 1000);
                 }
             };
 
@@ -356,8 +359,8 @@ nypl_locations.controller('LocationsCtrl', [
             organizeLocations($scope.locations, location, 'name');
         };
 
-        $scope.panToLibrary = function (library_id) {
-            nypl_geocoder_service.pan_existing_marker(library_id);
+        $scope.panToLibrary = function (library_id, index, slug) {
+            nypl_geocoder_service.pan_existing_marker(slug);
             scroll_map_top();
         };
 

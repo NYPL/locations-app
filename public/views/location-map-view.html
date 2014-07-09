@@ -22,7 +22,7 @@
 	  	<!-- Locations List Data -->
 	  	<div class="locations-data-wrapper scrollable">
 
-	  		<div class="location-data" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse">
+	  		<div id="{{location.id}}" class="location-data" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse">
 
 					<div class="p-org"><a href='/#/{{location.slug}}'>{{location.name}}</a></div>
 					<div class="p-adr">
@@ -58,7 +58,7 @@
 
           <!-- Map/Directions Links -->
           <div class="map-link">
-            <a class="icon-map view-on-map" href="" data-ng-click="panToLibrary(location.slug)">{{ 'VIEW_MAP' | translate}}</a>
+            <a class="icon-map view-on-map" href="" data-ng-click="panToLibrary(location.id, $index, location.slug)">{{ 'VIEW_MAP' | translate}}</a>
           </div>
           <div class="directions-link">
             <a class="icon-compass" target="_blank"
