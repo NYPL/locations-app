@@ -12,7 +12,7 @@
               {{ 'REGULAR_HOURS' | translate }} 
               <span id="toggle-hours" ng-click="expand = !expand" ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span>
             </h2>
-            <div class="weekly-hours zeta collapse" ng-show="expand">
+            <div class="weekly-hours zeta" collapse="expand" duration="2500">
               <div class="{{hours.day}}" data-ng-repeat="hours in division.hours.regular">
                 <span class="day">
                   {{hours.day}}
@@ -44,9 +44,7 @@
         <div data-ng-if="division.contacts.manager">
           {{ 'DIVISION_MANAGER' | translate}}<span>{{division.contacts.manager}}</span>
         </div>
-        <div>{{ 'DIVISION_INFO' | translate }} 
-            <a href="http://nypl.org/locations/{{division.location_slug}}/{{division.slug}}">{{ 'HERE' | translate }}</a>
-        </div>
+
         <ul class="top-services flush">
           <li class="icon-book inline">{{ 'BOOKS' | translate }}</li>
           <li class="icon-accessibility inline">{{ 'WHEELCHAIR' | translate }}</li>
@@ -63,7 +61,7 @@
       <div class="grid__item one-whole lap-and-up-three-fifths">
         <h2 class="hdg">{{ 'ABOUT_COLLECTION' | translate }}</h2>
         <p>{{division.about}}</p>
-        <div>
+        <div class="push-half--bottom">
           <a class="read-more" href="http://nypl.org/locations/{{division.location_slug}}/{{division.slug}}">
             {{ 'MORE_ABOUT_DIVISION' | translate }}</a>
         </div>
@@ -74,8 +72,8 @@
         <button href="" class="btn--small gamma">{{ 'APPOINTMENT' | translate }}</button>
         <button href="" class="btn--small gamma">{{ 'ASK_LIBRARIAN' | translate }}</button>
 
-        <ul class="flush--left">
-          <li class="icon-screen">{{ 'RESERVE_COMPUTER' | translate }}</li>
+        <ul class="flush--left push-half--top">
+          <li class="icon-screen2">{{ 'RESERVE_COMPUTER' | translate }}</li>
           <li class="icon-library">{{ 'ILL' | translate }}</li>
           <li class="icon-users">{{ 'MEETING_ROOMS' | translate }}</li>
         </ul>
@@ -97,7 +95,7 @@
       </li>
     </ul>   
       
-    <div>
+    <div class="push-half--bottom">
       <a class="read-more" href="/#/{{division.location_slug}}/events">
         {{ 'MORE_EVENTS' | translate }}
       </a>
@@ -119,7 +117,7 @@
       </li>
     </ul>  
 
-    <div>
+    <div class="push-half--bottom">
       <a class="read-more hard--right" href="">
        {{ 'MORE_SPECIAL_PROJECTS' | translate }}
       </a>

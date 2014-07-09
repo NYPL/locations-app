@@ -18,7 +18,7 @@
           <div id="location-hours" class="location-hours">
             <h2 class="flush--ends hdg">{{ 'REGULAR_HOURS' | translate }} <span id="toggle-hours" ng-click="expand = !expand" ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span></h2>
 
-            <div class="weekly-hours zeta collapse" ng-show="expand">
+            <div class="weekly-hours zeta" collapse="expand" duration="2500">
               <div class="{{hours.day}}" data-ng-repeat="hours in location.hours.regular" data-ng-if="$index != 7">
                 <span class="day">{{hours.day}}</span>
                 <span class="time">

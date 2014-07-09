@@ -60,7 +60,12 @@
 
 	#toggle-hours {
 		display: inline;
-		vertical-align: 2px;
+		position: absolute;
+		width: 142px;
+		left: 0px;
+		top: 2px;
+		text-align: right;
+
 
 		&:hover {
 			cursor: pointer;
@@ -79,6 +84,7 @@
 		}
 
 		.hdg {
+			position: relative;
 			border: none;
 		}
 

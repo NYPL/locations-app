@@ -45,9 +45,11 @@
     display: block;
     width: 55px;
     height: 40px;
+    margin-top: -27.5px;
+    margin-left: -20px;
     font-size: 2em;
     left: 50%;
-    top: 50%;
+    top: 40%;
     -webkit-animation: spin 2s infinite linear;
     -moz-animation: spin 2s infinite linear;
     -o-animation: spin 2s infinite linear;
@@ -970,7 +972,11 @@ header {
     font-style: italic; }
   #container__hours #toggle-hours {
     display: inline;
-    vertical-align: 2px; }
+    position: absolute;
+    width: 142px;
+    left: 0px;
+    top: 2px;
+    text-align: right; }
     #container__hours #toggle-hours:hover {
       cursor: pointer; }
     @media screen and (min-width: 601px) {
@@ -982,6 +988,7 @@ header {
       #container__hours #location-hours {
         margin-left: 48px; } }
     #container__hours #location-hours .hdg {
+      position: relative;
       border: none; }
     #container__hours #location-hours .weekly-hours {
       display: none; }
@@ -1055,7 +1062,7 @@ header {
         right: 7px;
         top: 7px; } }
 
-.container__about, .container__special_projects {
+.container__about, .container__special_projects, .container__blogs {
   clear: both;
   margin: 24px 0px; }
 

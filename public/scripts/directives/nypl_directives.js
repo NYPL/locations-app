@@ -126,3 +126,49 @@ nypl_locations.directive('nyplalerts', [
             }
         };
     }]);
+
+/* 
+** Show/Hide collapsible animated directive
+** Usage: <div collapse="name of var toggled" duration="time in ms"></div>
+** Duration is optional
+*/
+nypl_locations.
+    directive("collapse",
+        function() {
+
+            function link( $scope, element, attributes ) {
+                var exp = attributes.collapse;
+
+                // duration in ms
+                var duration = ( attributes.duration || "fast" );
+
+                if ( ! $scope.$eval(exp) ) {
+                    element.hide();
+                }
+
+                // Watch the expression in $scope context to
+                // see when it changes and adjust the visibility
+                $scope.$watch(
+                    exp,
+                    function( newValue, oldValue ) {
+
+                        if ( newValue === oldValue ) {
+                            return;
+                        }
+                        // Show element.
+                        if ( newValue ) {
+                            element.stop( true, true ).slideDown(duration);
+                        // Hide element.
+                        } else {
+                            element.stop( true, true ).slideUp(duration);
+                        }
+                    }
+                );
+            }
+
+            return ({
+                link: link,
+                restrict: "A" // Attribute only
+            });
+        }
+    );
