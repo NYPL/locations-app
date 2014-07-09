@@ -282,10 +282,15 @@ nypl_locations.controller('LocationsCtrl', [
             },
 
             scroll_map_top = function () {
-                if (angular.element('.container__all-locations')
-                        .css('width') < '601') {
-                    var top = angular.element('.map-wrapper')
-                                .offset();
+                var containerWidth = parseInt(
+                        10,
+                        angular.element('.container__all-locations')
+                            .css('width')
+                    ),
+                    top;
+
+                if (containerWidth < 601) {
+                    top = angular.element('.map-wrapper').offset();
                     angular.element('body')
                         .animate({scrollTop: top.top}, 1000);
                 }
