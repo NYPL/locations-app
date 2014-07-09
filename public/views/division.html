@@ -12,7 +12,7 @@
               {{ 'REGULAR_HOURS' | translate }} 
               <span id="toggle-hours" ng-click="expand = !expand" ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span>
             </h2>
-            <div class="weekly-hours zeta collapse" ng-show="expand">
+            <div class="weekly-hours zeta" collapse="expand" duration="2500">
               <div class="{{hours.day}}" data-ng-repeat="hours in division.hours.regular">
                 <span class="day">
                   {{hours.day}}

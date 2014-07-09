@@ -972,7 +972,11 @@ header {
     font-style: italic; }
   #container__hours #toggle-hours {
     display: inline;
-    vertical-align: 2px; }
+    position: absolute;
+    width: 142px;
+    left: 0px;
+    top: 2px;
+    text-align: right; }
     #container__hours #toggle-hours:hover {
       cursor: pointer; }
     @media screen and (min-width: 601px) {
@@ -984,6 +988,7 @@ header {
       #container__hours #location-hours {
         margin-left: 48px; } }
     #container__hours #location-hours .hdg {
+      position: relative;
       border: none; }
     #container__hours #location-hours .weekly-hours {
       display: none; }
