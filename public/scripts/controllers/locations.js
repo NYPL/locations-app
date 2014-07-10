@@ -521,6 +521,7 @@ nypl_locations.controller('LocationsCtrl', [
 // Load one individual location for locations and events pages
 nypl_locations.controller('LocationCtrl', [
     '$scope',
+    '$timeout',
     '$routeParams',
     '$rootScope',
     'nypl_locations_service',
@@ -529,6 +530,7 @@ nypl_locations.controller('LocationCtrl', [
     '$location',
     function (
         $scope,
+        $timeout,
         $routeParams,
         $rootScope,
         nypl_locations_service,
@@ -583,13 +585,12 @@ nypl_locations.controller('LocationCtrl', [
                     .then(function (position) {
                         userCoords = _.pick(position, 'latitude', 'longitude');
 
-                        $scope.locationStart = "";
                         // Needed to update async var on geolocation success
-                        setTimeout(function () {
+                        $timeout(function () {
                             $scope.$apply(function () {
                                 $scope.locationStart = userCoords.latitude + "," + userCoords.longitude;
                             });
-                        }, 500);
+                        });
                     });
             };
 
