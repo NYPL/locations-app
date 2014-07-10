@@ -245,7 +245,7 @@ nypl_locations.factory('nypl_utility', [
                         location.street_address + " " +
                         location.locality + ", " + location.region +
                         " " + location.postal_code,
-                    calendar_link;
+                    calendar_link = '';
 
                 switch (type) {
                 case 'google':

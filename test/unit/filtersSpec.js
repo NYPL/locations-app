@@ -1,17 +1,21 @@
-'use strict';
+/*jslint indent: 2, maxlen: 80 */
+/*globals element, by, module, module,
+describe, expect, beforeEach, inject, it, angular */
 
-describe('NYPL Filter Tests', function() {
-	// Load App dependency
+describe('NYPL Filter Tests', function () {
+  'use strict';
+
+  // Load App dependency
   var timeFormatFilter,
-      dateToISOFilter,
-      capitalizeFilter,
-      hoursTodayFormatFilter,
-      truncateFilter;
+    dateToISOFilter,
+    capitalizeFilter,
+    hoursTodayFormatFilter,
+    truncateFilter;
 
   beforeEach(module('nypl_locations'));
 
-  describe('timeFormat', function() {
-    beforeEach(inject(function (_timeFormatFilter_){
+  describe('timeFormat', function () {
+    beforeEach(inject(function (_timeFormatFilter_) {
       timeFormatFilter = _timeFormatFilter_;
     }));
 
@@ -20,29 +24,35 @@ describe('NYPL Filter Tests', function() {
     });
 
     it('should convert Military time into standard time', function () {
-      expect(timeFormatFilter({'open': '17:00', 'close': '18:00'})).toBe('5:00pm - 6:00pm');
-      expect(timeFormatFilter({'open': '03:30', 'close': '05:30'})).toBe('3:30am - 5:30am');
-      expect(timeFormatFilter({'open': '00:30', 'close': '02:30'})).toBe('12:30am - 2:30am');
-      expect(timeFormatFilter({'open': '00:00', 'close': '2:00'})).toBe('12:00am - 2:00am');
+      expect(timeFormatFilter({'open': '17:00', 'close': '18:00'}))
+        .toEqual('5:00pm - 6:00pm');
+      expect(timeFormatFilter({'open': '03:30', 'close': '05:30'}))
+        .toEqual('3:30am - 5:30am');
+      expect(timeFormatFilter({'open': '00:30', 'close': '02:30'}))
+        .toEqual('12:30am - 2:30am');
+      expect(timeFormatFilter({'open': '00:00', 'close': '2:00'}))
+        .toEqual('12:00am - 2:00am');
     });
 
-    it('should also accept an object with today\'s and tomorrow\'s hours', function () {
-      var time; 
+    it('should also accept an object with today\'s and tomorrow\'s hours',
+      function () {
+        var time;
 
-      time = timeFormatFilter({'today': {'open': '00:00', 'close': '2:00'}});
-      expect(time).toBe('12:00am - 2:00am');
+        time = timeFormatFilter({'today': {'open': '00:00', 'close': '2:00'}});
+        expect(time).toEqual('12:00am - 2:00am');
 
-      time = timeFormatFilter({'today': {'open': '10:00', 'close': '18:00'}});
-      expect(time).toBe('10:00am - 6:00pm');
-    });
+        time = timeFormatFilter({'today': {'open': '10:00', 'close': '18:00'}});
+        expect(time).toEqual('10:00am - 6:00pm');
+      });
 
     // The API returns null
     it('should say Closed if there is no open time', function () {
-      expect(timeFormatFilter({'open': null, 'close': null})).toBe('Closed');
+      expect(timeFormatFilter({'open': null, 'close': null})).toEqual('Closed');
     });
 
     it('should be truthy if input is given', function () {
-      expect(timeFormatFilter({'open': '17:00', 'close': '18:00'})).toBeTruthy();
+      expect(timeFormatFilter({'open': '17:00', 'close': '18:00'}))
+        .toBeTruthy();
     });
 
     it('should be false if input is NOT given', function () {
@@ -50,8 +60,8 @@ describe('NYPL Filter Tests', function() {
     });
   });
 
-  describe('dateToISO', function() {
-    beforeEach(inject(function (_dateToISOFilter_){
+  describe('dateToISO', function () {
+    beforeEach(inject(function (_dateToISOFilter_) {
       dateToISOFilter = _dateToISOFilter_;
     }));
 
@@ -60,12 +70,13 @@ describe('NYPL Filter Tests', function() {
     });
 
     it('Should convert MYSQL DATETIME stamp to ISO', function () {
-      expect(dateToISOFilter('2014-04-22 15:00:00')).toBe('2014-04-22T19:00:00.000Z');
+      expect(dateToISOFilter('2014-04-22 15:00:00'))
+        .toEqual('2014-04-22T19:00:00.000Z');
     });
   });
 
-  describe('capitalize', function() {
-    beforeEach(inject(function (_capitalizeFilter_){
+  describe('capitalize', function () {
+    beforeEach(inject(function (_capitalizeFilter_) {
       capitalizeFilter = _capitalizeFilter_;
     }));
 
@@ -79,126 +90,171 @@ describe('NYPL Filter Tests', function() {
   });
 
   describe('hoursTodayFormat', function () {
-    beforeEach(inject(function (_hoursTodayFormatFilter_){
+    beforeEach(inject(function (_hoursTodayFormatFilter_) {
       hoursTodayFormatFilter = _hoursTodayFormatFilter_;
     }));
 
     describe('when closed', function () {
       it('should be false if no input is given', function () {
-        expect(hoursTodayFormatFilter('')).toBeFalsy();
+        expect(hoursTodayFormatFilter('')).toEqual('Not available');
       });
 
-      it('should say "Closed today" when there is no open or close data and no format', function () {
-        expect(hoursTodayFormatFilter({'today':{'open': '', 'close': ''}})).toBe('Closed today');
-      });
+      it('should say "Closed today" when there is no open or close ' +
+        'data and no format',
+        function () {
+          expect(hoursTodayFormatFilter({'today': {'open': '', 'close': ''}}))
+            .toEqual('Closed today');
+        });
 
-      it('should say "Closed today" when there is no open or close data and short format', function () {
-        expect(hoursTodayFormatFilter({'today':{'open': '', 'close': ''}}, 'short')).toBe('Closed today');
-      });
+      it('should say "Closed today" when there is no open or close ' +
+        'data and short format',
+        function () {
+          expect(
+            hoursTodayFormatFilter({'today': {'open': '', 'close': ''}},
+              'short')
+          ).toEqual('Closed today');
+        });
 
-      it('should say "Closed today" when there is no open or close data and long format', function () {
-        expect(hoursTodayFormatFilter({'today':{'open': '', 'close': ''}}, 'long')).toBe('Closed today');
-      });
+      it('should say "Closed today" when there is no open or close ' +
+        'data and long format',
+        function () {
+          expect(
+            hoursTodayFormatFilter({'today': {'open': '', 'close': ''}},
+              'long')
+          ).toEqual('Closed today');
+        });
     });
 
-    // The only big difference between short and long is the wording when the library
-    // is currently opened. Short says "Open today until ..." and long says
-    // "Open today ...".
+    // The only big difference between short and long is the wording 
+    // when the library is currently opened. Short says 
+    // "Open today until ..." and long says "Open today ...".
     describe('when opened and using the "short" format', function () {
       it('should display the open times for today', function () {
         // Returns 13 for 1pm in the afternoon when a library is open.
-        Date.prototype.getHours = function () {return 13;};
+        Date.prototype.getHours = function () { return 13; };
 
         expect(hoursTodayFormatFilter({
-          'today':{'open': '10:00', 'close': '18:00'},
-          'tomorrow':{'open': '10:00', 'close': '18:00'}}, 'short'))
-            .toBe('Open today until 6pm');
+          'today': {'open': '10:00', 'close': '18:00'},
+          'tomorrow': {'open': '10:00', 'close': '18:00'}
+        }, 'short'))
+            .toEqual('Open today until 6pm');
       });
 
       it('should display the open times for tomorrow', function () {
         // Returns 19 for 7pm after a library has closed.
-        Date.prototype.getHours = function () {return 19;};
+        Date.prototype.getHours = function () { return 19; };
 
         expect(hoursTodayFormatFilter({
-          'today':{'open': '10:00', 'close': '18:00'},
-          'tomorrow':{'open': '10:00', 'close': '18:00'}}, 'short'))
-          .toBe('Open tomorrow 10am-6pm');
+          'today': {'open': '10:00', 'close': '18:00'},
+          'tomorrow': {'open': '10:00', 'close': '18:00'}
+        }, 'short'))
+          .toEqual('Open tomorrow 10am-6pm');
       });
 
       it('should display the open times for later today', function () {
         // Returns 7 for 7am in the morning before a library has opened.
-        Date.prototype.getHours = function () {return 7;};
+        Date.prototype.getHours = function () { return 7; };
 
         expect(hoursTodayFormatFilter({
-          'today':{'open': '10:00', 'close': '18:00'},
-          'tomorrow':{'open': '10:00', 'close': '18:00'}}, 'short'))
-          .toBe('Open today 10am-6pm');
+          'today': {'open': '10:00', 'close': '18:00'},
+          'tomorrow': {'open': '10:00', 'close': '18:00'}
+        }, 'short'))
+          .toEqual('Open today 10am-6pm');
       });
     });
 
     describe('when opened and using the "long" format', function () {
-      it('should display the open times for tomorrow', function () {
-        // Returns 13 for 1pm in the afternoon when a library is open.
-        Date.prototype.getHours = function () {return 13;};
+      it('should display that it is currently open when checking during' +
+        'open hours - short format',
+        function () {
+          // Returns 13 for 1pm in the afternoon when a library is open.
+          Date.prototype.getHours = function () { return 13; };
 
-        expect(hoursTodayFormatFilter({
-          'today':{'open': '10:00', 'close': '18:00'},
-          'tomorrow':{'open': '10:00', 'close': '18:00'}}, 'long'))
-            .toBe('Open today 10am-6pm');
-      });
+          expect(hoursTodayFormatFilter({
+            'today': {'open': '10:00', 'close': '18:00'},
+            'tomorrow': {'open': '10:00', 'close': '18:00'}
+          }, 'short'))
+              .toEqual('Open today until 6pm');
+        });
 
-      it('should display the open times for tomorrow', function () {
-        // Returns 19 for 7pm after a library has closed.
-        Date.prototype.getHours = function () {return 19;};
+      it('should display that it is currently open when checking during' +
+        'open hours - long format',
+        function () {
+          // Returns 13 for 1pm in the afternoon when a library is open.
+          Date.prototype.getHours = function () { return 13; };
 
-        expect(hoursTodayFormatFilter({
-          'today':{'open': '10:00', 'close': '18:00'},
-          'tomorrow':{'open': '10:00', 'close': '18:00'}}, 'long'))
-          .toBe('Open tomorrow 10am-6pm');
-      });
+          expect(hoursTodayFormatFilter({
+            'today': {'open': '10:00', 'close': '18:00'},
+            'tomorrow': {'open': '10:00', 'close': '18:00'}
+          }, 'long'))
+              .toEqual('Open today 10am-6pm');
+        });
 
-      it('should display the open times for later today', function () {
-        // Returns 7 for 7am in the morning before a library has opened.
-        Date.prototype.getHours = function () {return 7;};
+      it('should display the open times for tomorrow when checking after ' +
+        'closing time but before midnight',
+        function () {
+          // Returns 19 for 7pm after a library has closed.
+          Date.prototype.getHours = function () { return 19; };
 
-        expect(hoursTodayFormatFilter({
-          'today':{'open': '10:00', 'close': '18:00'},
-          'tomorrow':{'open': '10:00', 'close': '18:00'}}, 'short'))
-          .toBe('Open today 10am-6pm');
-      });
+          expect(hoursTodayFormatFilter({
+            'today': {'open': '10:00', 'close': '18:00'},
+            'tomorrow': {'open': '10:00', 'close': '18:00'}
+          }, 'long'))
+            .toEqual('Open tomorrow 10am-6pm');
+        });
+
+      it('should display the open times for later today when checking after ' +
+        'midnight but before the library is open',
+        function () {
+          // Returns 7 for 7am in the morning before a library has opened.
+          Date.prototype.getHours = function () { return 7; };
+
+          expect(hoursTodayFormatFilter({
+            'today': {'open': '10:00', 'close': '18:00'},
+            'tomorrow': {'open': '10:00', 'close': '18:00'}
+          }, 'short'))
+            .toEqual('Open today 10am-6pm');
+        });
     });
   });
 
   describe('truncate', function () {
-    beforeEach(inject(function (_truncateFilter_){
+    beforeEach(inject(function (_truncateFilter_) {
       truncateFilter = _truncateFilter_;
     }));
 
-    var blog_post = "If you think of poems as flowers, then the Aguilar Poetry Fest " +
-        "was an exercise in charming cross-pollination. Sharing was the " +
-        "thing. Students were seated in groups of about 6, where they read " + 
-        "their chosen poems to each other and then intermixed with other tables" + 
-        " to multiply the fun. Poets included Langston Hughes, Pablo Neruda," +
-        " Maya Angelou, Naomi Shihab Nye, Shel Silverstein, Douglas Florian " + 
-        "(on Silverstein s wavelength), Billy Collins, some haiku poets, and a smattering of others.";
+    var blog_post = "If you think of poems as flowers, then the Aguilar " +
+        "Poetry Fest was an exercise in charming cross-pollination. Sharing " +
+        "was the thing. Students were seated in groups of about 6, where " +
+        "they read their chosen poems to each other and then intermixed " +
+        "with other tables to multiply the fun. Poets included Langston " +
+        "Hughes, Pablo Neruda, Maya Angelou, Naomi Shihab Nye, Shel " +
+        "Silverstein, Douglas Florian (on Silverstein s wavelength), " +
+        "Billy Collins, some haiku poets, and a smattering of others.";
 
-    it('should truncate a piece of text and add ellipses at the end to 200 characters by default', function () {
-      expect(blog_post.length).toBe(487);
-      expect(truncateFilter(blog_post).length).toBe(200);
-      expect(truncateFilter(blog_post).substring(197)).toBe('...');
-    });
+    it('should truncate a piece of text and add ellipses at the end to ' +
+      '200 characters by default',
+      function () {
+        expect(blog_post.length).toEqual(487);
+        expect(truncateFilter(blog_post).length).toEqual(200);
+        expect(truncateFilter(blog_post).substring(197)).toEqual('...');
+      });
 
-    it('should truncate a piece of text to an arbitary length and add ellipses', function () {
-      expect(blog_post.length).toBe(487);
-      expect(truncateFilter(blog_post, 100).length).toBe(100);
-      expect(truncateFilter(blog_post, 100).substring(97)).toBe('...');
-    });
+    it('should truncate a piece of text to an arbitary length and add ellipses',
+      function () {
+        expect(blog_post.length).toBe(487);
+        expect(truncateFilter(blog_post, 100).length).toEqual(100);
+        expect(truncateFilter(blog_post, 100).substring(97)).toEqual('...');
+      });
 
-    it('should truncate a piece of text to an arbitary length and add an arrow at th end', function () {
-      expect(blog_post.length).toBe(487);
-      expect(truncateFilter(blog_post, 150, ' ->').length).toBe(150);
-      expect(truncateFilter(blog_post, 150, ' ->').substring(147)).toBe(' ->');
-    });
+    it('should truncate a piece of text to an arbitary length and add ' +
+      'an arrow at the end',
+      function () {
+        expect(blog_post.length).toEqual(487);
+        expect(truncateFilter(blog_post, 150, ' ->').length).toEqual(150);
+        expect(truncateFilter(blog_post, 150, ' ->').substring(147))
+          .toEqual(' ->');
+      });
   });
 
 });

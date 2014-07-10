@@ -364,7 +364,7 @@ nypl_locations.controller('LocationsCtrl', [
             organizeLocations($scope.locations, location, 'name');
         };
 
-        $scope.panToLibrary = function (library_id, index, slug) {
+        $scope.panToLibrary = function (slug) {
             nypl_geocoder_service.pan_existing_marker(slug);
             scroll_map_top();
         };
@@ -521,6 +521,7 @@ nypl_locations.controller('LocationsCtrl', [
 // Load one individual location for locations and events pages
 nypl_locations.controller('LocationCtrl', [
     '$scope',
+    '$timeout',
     '$routeParams',
     '$rootScope',
     'nypl_locations_service',
@@ -529,6 +530,7 @@ nypl_locations.controller('LocationCtrl', [
     '$location',
     function (
         $scope,
+        $timeout,
         $routeParams,
         $rootScope,
         nypl_locations_service,
@@ -583,18 +585,16 @@ nypl_locations.controller('LocationCtrl', [
                     .then(function (position) {
                         userCoords = _.pick(position, 'latitude', 'longitude');
 
-                        // Used for the Get Directions link to Google Maps
-                        // If the user rejected geolocation and
-                        // $scope.locationStart is blank,
-                        // the link will still work
-                        $scope.locationStart =
-                            userCoords.latitude + "," + userCoords.longitude;
+                        // Needed to update async var on geolocation success
+                        $timeout(function () {
+                            $scope.locationStart = userCoords.latitude +
+                                "," + userCoords.longitude;
+                        });
                     });
             };
 
         // Load the location and user's geolocation coordinates
         // as chained events
-        loadLocation();
-        loadCoords();
+        loadLocation().then(loadCoords);
     }
 ]);

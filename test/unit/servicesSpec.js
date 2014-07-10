@@ -1,23 +1,27 @@
-'use strict';
+/*jslint indent: 2, maxlen: 80 */
+/*globals element, by, google, module, window, jasmine, document,
+describe, expect, beforeEach, inject, it, angular, spyOn */
 
-describe('NYPL Service Tests', function() {
+describe('NYPL Service Tests', function () {
+  'use strict';
 
   /* 
   * nypl_coordinates_service
-  * Service that retrieves a browser's current location and coordinate distance utility method
+  * Service that retrieves a browser's current location 
+  * and coordinate distance utility method
   */
-  describe('Utility: nypl_coordinates_service', function() {
+  describe('Utility: nypl_coordinates_service', function () {
     var nypl_coordinates_service;
 
     beforeEach(function () {
       // load the module.
       module('nypl_locations');
-      
+
       // inject your service for testing.
       // The _underscores_ are a convenience thing
       // so you can have your variable name be the
       // same as your injected service.
-      inject(function (_nypl_coordinates_service_, _$rootScope_) {
+      inject(function (_nypl_coordinates_service_) {
         nypl_coordinates_service = _nypl_coordinates_service_;
       });
     });
@@ -25,23 +29,30 @@ describe('NYPL Service Tests', function() {
     /* nypl_coordinates_service.getDistance */
     describe('nypl_coordinates_service.getDistance', function () {
       // check to see if it has the expected function
-      it('should have a getDistance() function', function () { 
-        expect(angular.isFunction(nypl_coordinates_service.getDistance)).toBe(true);
+      it('should have a getDistance() function', function () {
+        expect(angular.isFunction(nypl_coordinates_service.getDistance))
+          .toBe(true);
       });
 
       // check to see if it has the expected function
-      it('should calculate the distance from Schwarzman Bldg to 58th Street Library', function () { 
-        var result = nypl_coordinates_service.getDistance(40.75298660000001, -73.9821364, 40.7619, -73.9691);
-        expect(result).toBe(0.92);
-        expect(result).not.toBe(null);
-      });
+      it('should calculate the distance from Schwarzman Bldg to ' +
+        ' 58th Street Library',
+        function () {
+          var result =
+            nypl_coordinates_service
+            .getDistance(40.75298660000001, -73.9821364, 40.7619, -73.9691);
+          expect(result).toBe(0.92);
+          expect(result).not.toBe(null);
+        });
     });
 
     /* nypl_coordinates_service.checkGeolocation */
     describe('nypl_coordinates_service.checkGeolocation', function () {
       it('should have a checkGeolocation function', function () {
-        // The checkGeolocation function checks to see if geolocation is available on the user's browser
-        expect(angular.isFunction(nypl_coordinates_service.checkGeolocation)).toBe(true);
+        // The checkGeolocation function checks to see
+        // if geolocation is available on the user's browser
+        expect(angular.isFunction(nypl_coordinates_service.checkGeolocation))
+          .toBe(true);
       });
 
       it('should return false due to old browser', function () {
@@ -60,7 +71,7 @@ describe('NYPL Service Tests', function() {
         expect(nypl_coordinates_service.checkGeolocation()).toBe(true);
       });
     });
-    
+
     /* nypl_coordinates_service.getCoordinates */
     describe('nypl_coordinates_service.getCoordinates', function () {
       var geolocationMock, geolocationOk, geolocationError, scope;
@@ -68,13 +79,14 @@ describe('NYPL Service Tests', function() {
       beforeEach(inject(function (_$rootScope_) {
         scope = _$rootScope_.$new();
         window.navigator = jasmine.createSpy('navigator');
-        geolocationMock = window.navigator.geolocation = jasmine.createSpy('geolocation');
+        geolocationMock =
+          window.navigator.geolocation = jasmine.createSpy('geolocation');
 
         geolocationOk = function (params, callback) {
           callback({
             position: {
               coords: {
-                latitude: 40.75298660000001, 
+                latitude: 40.75298660000001,
                 longitude: -73.9821364
               }
             }
@@ -89,26 +101,29 @@ describe('NYPL Service Tests', function() {
       }));
 
       // check to see if it has the expected function
-      it('should have an getCoordinates function', function () { 
-        expect(angular.isFunction(nypl_coordinates_service.getCoordinates)).toBe(true);
+      it('should have an getCoordinates function', function () {
+        expect(angular.isFunction(nypl_coordinates_service.getCoordinates))
+          .toBe(true);
         expect(typeof nypl_coordinates_service.getCoordinates).toBe('function');
       });
 
       describe('getCoordinates function successful', function () {
         beforeEach(function () {
-          geolocationMock.getCurrentPosition = 
+          geolocationMock.getCurrentPosition =
               window.navigator.geolocation.getCurrentPosition =
-              jasmine.createSpy('getCurrentPosition').and.callFake(geolocationOk);
+                jasmine.createSpy('getCurrentPosition')
+                .and.callFake(geolocationOk);
         });
 
         it('Should not be called', function () {
           expect(geolocationMock.getCurrentPosition).not.toHaveBeenCalled();
         });
 
-        it('Should call the geolocation function when calling the service', function () {
-          nypl_coordinates_service.getCoordinates();
-          expect(geolocationMock.getCurrentPosition).toHaveBeenCalled();
-        });
+        it('Should call the geolocation function when calling the service',
+          function () {
+            nypl_coordinates_service.getCoordinates();
+            expect(geolocationMock.getCurrentPosition).toHaveBeenCalled();
+          });
 
         it('Should return a promise', function () {
           var promise = nypl_coordinates_service.getCoordinates();
@@ -119,19 +134,21 @@ describe('NYPL Service Tests', function() {
 
       describe('getCoordinates function fails', function () {
         beforeEach(function () {
-          geolocationMock.getCurrentPosition = 
+          geolocationMock.getCurrentPosition =
             window.navigator.geolocation.getCurrentPosition =
-            jasmine.createSpy('getCurrentPosition').and.callFake(geolocationError);
+              jasmine.createSpy('getCurrentPosition')
+              .and.callFake(geolocationError);
         });
 
         it('Should not be called', function () {
           expect(geolocationMock.getCurrentPosition).not.toHaveBeenCalled();
         });
 
-        it('Should call the geolocation function when calling the service', function () {
-          nypl_coordinates_service.getCoordinates();
-          expect(geolocationMock.getCurrentPosition).toHaveBeenCalled();
-        });
+        it('Should call the geolocation function when calling the service',
+          function () {
+            nypl_coordinates_service.getCoordinates();
+            expect(geolocationMock.getCurrentPosition).toHaveBeenCalled();
+          });
       });
 
     });
@@ -140,29 +157,33 @@ describe('NYPL Service Tests', function() {
 
   /* 
   * nypl_geocoder_service 
-  * Queries Google Maps Javascript API to geocode addresses and reverse geocode coordinates.
+  * Queries Google Maps Javascript API to geocode addresses
+  * and reverse geocode coordinates.
   */
   describe('Utility: nypl_geocoder_service', function () {
-    var GeocoderMock, GeoCodingOK, GeoCodingError, 
-        LatLngMock, LatLngBoundsMock, LatLngOk, LatLngError,
-        nypl_geocoder_service, rootScope,
-        get_coords_return_value, get_address_return_value,
-        map_controls_push_mock,
-        httpBackend,
-        infowindow_open_mock, infowindow_close_mock, infowindow_setContent_mock;
+    var GeocoderMock, GeoCodingOK, GeoCodingError,
+      LatLngMock, LatLngBoundsMock, LatLngOk, LatLngError,
+      nypl_geocoder_service, rootScope,
+      get_coords_return_value, get_address_return_value,
+      map_controls_push_mock,
+      httpBackend, mapPrototype,
+      infowindow_open_mock, infowindow_close_mock, infowindow_setContent_mock;
 
-    beforeEach(function() {
+    beforeEach(function () {
       module('nypl_locations');
 
-      google = jasmine.createSpy('google');
+      window.google = jasmine.createSpy('google');
       google.maps = jasmine.createSpy('maps');
       google.maps.InfoWindow = jasmine.createSpy('InfoWindow');
       infowindow_close_mock =
-        google.maps.InfoWindow.prototype.close = jasmine.createSpy('InfoWindow.close');
+        google.maps.InfoWindow.prototype.close =
+        jasmine.createSpy('InfoWindow.close');
       infowindow_setContent_mock =
-        google.maps.InfoWindow.prototype.setContent = jasmine.createSpy('InfoWindow.setcontent');
+        google.maps.InfoWindow.prototype.setContent =
+        jasmine.createSpy('InfoWindow.setcontent');
       infowindow_open_mock =
-        google.maps.InfoWindow.prototype.open = jasmine.createSpy('InfoWindow.open');
+        google.maps.InfoWindow.prototype.open =
+        jasmine.createSpy('InfoWindow.open');
       google.maps.Map = jasmine.createSpy('Map');
       google.maps.Marker = jasmine.createSpy('Marker');
       google.maps.Animation = jasmine.createSpy('Animation');
@@ -171,24 +192,30 @@ describe('NYPL Service Tests', function() {
       google.maps.GeocoderStatus = jasmine.createSpy('GeocoderStatus');
       google.maps.GeocoderStatus.OK = 'OK';
       google.maps.ControlPosition = jasmine.createSpy('ControlPosition');
-      google.maps.ControlPosition.RIGHT_BOTTOM = jasmine.createSpy('RIGHT_BOTTOM');
+      google.maps.ControlPosition.RIGHT_BOTTOM =
+        jasmine.createSpy('RIGHT_BOTTOM');
       google.maps.event = jasmine.createSpy('maps.events');
-      google.maps.event.addListener = jasmine.createSpy('maps.event.addListener');
-      google.maps.Map.prototype.controls = jasmine.createSpy('map.controls');
-      google.maps.Map.prototype.controls[google.maps.ControlPosition.RIGHT_BOTTOM] = jasmine.createSpy('map.controls.position');
+      google.maps.event.addListener =
+        jasmine.createSpy('maps.event.addListener');
+      mapPrototype = google.maps.Map.prototype;
+      mapPrototype.controls = jasmine.createSpy('map.controls');
+      mapPrototype.controls[google.maps.ControlPosition.RIGHT_BOTTOM] =
+          jasmine.createSpy('map.controls.position');
       map_controls_push_mock =
-        google.maps.Map.prototype.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push =
-        jasmine.createSpy('map.controls.push');
+        mapPrototype.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push =
+          jasmine.createSpy('map.controls.push');
       google.maps.Map.prototype.panTo = jasmine.createSpy('map.panTo');
       google.maps.Map.prototype.setZoom = jasmine.createSpy('map.setZoom');
       google.maps.Marker.prototype.setMap = jasmine.createSpy('marker.setMap');
       google.maps.Marker.prototype.getMap = jasmine.createSpy('marker.getMap');
-      google.maps.Marker.prototype.getPosition = jasmine.createSpy('marker.getPosition');
-      google.maps.Marker.prototype.setPosition = jasmine.createSpy('marker.setPosition');
+      google.maps.Marker.prototype.getPosition =
+        jasmine.createSpy('marker.getPosition');
+      google.maps.Marker.prototype.setPosition =
+        jasmine.createSpy('marker.setPosition');
 
       GeoCodingOK = function (params, callback) {
         callback(
-          [{geometry: {location:{k:40.75298660000001, A:-73.9821364}}}],
+          [{geometry: {location: {k: 40.75298660000001, B: -73.9821364}}}],
           'OK'
         );
       };
@@ -199,7 +226,7 @@ describe('NYPL Service Tests', function() {
 
       LatLngOk = function (params, callback) {
         callback(
-          [{address_components:[{long_name:"10018", short_name:"10018"}]}],
+          [{address_components: [{long_name: "10018", short_name: "10018"}]}],
           'OK'
         );
       };
@@ -208,9 +235,11 @@ describe('NYPL Service Tests', function() {
         callback({result: 'Fake result'}, 'ERROR');
       };
 
-      GeocoderMock = window.google.maps.Geocoder = jasmine.createSpy('Geocoder');
+      GeocoderMock = window.google.maps.Geocoder =
+        jasmine.createSpy('Geocoder');
       LatLngMock = window.google.maps.LatLng = jasmine.createSpy('LatLng');
-      LatLngBoundsMock = window.google.maps.LatLngBounds = jasmine.createSpy('LatLngBounds');
+      LatLngBoundsMock = window.google.maps.LatLngBounds =
+        jasmine.createSpy('LatLngBounds');
 
       inject(function ($rootScope, _nypl_geocoder_service_, _$httpBackend_) {
         nypl_geocoder_service = _nypl_geocoder_service_;
@@ -223,7 +252,7 @@ describe('NYPL Service Tests', function() {
       });
     });
 
-    it('Should expose some functions', function(){
+    it('Should expose some functions', function () {
       expect(angular.isFunction(nypl_geocoder_service.get_coords)).toBe(true);
       expect(typeof nypl_geocoder_service.get_coords).toBe('function');
       expect(typeof nypl_geocoder_service.get_address).toBe('function');
@@ -232,8 +261,9 @@ describe('NYPL Service Tests', function() {
     /* nypl_geocoder_service.get_coords */
     describe('nypl_geocoder_service.get_coords', function () {
       describe('get_coords function successful', function () {
-        beforeEach(function() {
-          GeocoderMock.prototype.geocode = jasmine.createSpy('geocode').and.callFake(GeoCodingOK);
+        beforeEach(function () {
+          GeocoderMock.prototype.geocode =
+            jasmine.createSpy('geocode').and.callFake(GeoCodingOK);
         });
 
         it('Should not be called', function () {
@@ -252,7 +282,7 @@ describe('NYPL Service Tests', function() {
 
         it('Should accept the promise when status is OK', function () {
           var okMock = jasmine.createSpy(),
-              errorMock = jasmine.createSpy();
+            errorMock = jasmine.createSpy();
 
           nypl_geocoder_service.get_coords('10018').then(okMock, errorMock);
           rootScope.$apply();
@@ -262,25 +292,31 @@ describe('NYPL Service Tests', function() {
         });
 
         it('Should resolve the promise when receiving data', function () {
-          var promise_callback = jasmine.createSpy(),
-              // The return value was defined in the GeoCoding variable
-              get_coords_return_value = { lat : 40.75298660000001, long : -73.9821364 };
+          var promise_callback = jasmine.createSpy();
+          // The return value was defined in the GeoCoding variable
+          get_coords_return_value = {
+            lat : 40.75298660000001,
+            long : -73.9821364
+          };
 
           nypl_geocoder_service.get_coords('10018').then(promise_callback);
           rootScope.$apply();
 
-          // promise_callback is the callback function with the resolved value from the promise
-          expect(promise_callback).toHaveBeenCalledWith(get_coords_return_value);
+          // promise_callback is the callback function with
+          // the resolved value from the promise
+          expect(promise_callback)
+            .toHaveBeenCalledWith(get_coords_return_value);
         });
       });
 
       describe('get_coords function failed', function () {
-        beforeEach(function() {
-          GeocoderMock.prototype.geocode = jasmine.createSpy('geocode').and.callFake(GeoCodingError);
+        beforeEach(function () {
+          GeocoderMock.prototype.geocode =
+            jasmine.createSpy('geocode').and.callFake(GeoCodingError);
         });
 
         it('Should be called', function () {
-          nypl_geocoder_service.get_coords();
+          nypl_geocoder_service.get_coords("ny");
           expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
         });
 
@@ -291,7 +327,7 @@ describe('NYPL Service Tests', function() {
 
         it('Should reject the promise when status is not OK', function () {
           var okMock = jasmine.createSpy(),
-              errorMock = jasmine.createSpy();
+            errorMock = jasmine.createSpy();
           nypl_geocoder_service.get_coords('10018').then(okMock, errorMock);
           rootScope.$apply();
 
@@ -306,7 +342,8 @@ describe('NYPL Service Tests', function() {
     describe('nypl_geocoder_service.get_address', function () {
       describe('get_address function successful', function () {
         beforeEach(function () {
-          GeocoderMock.prototype.geocode = jasmine.createSpy('geocode').and.callFake(LatLngOk);
+          GeocoderMock.prototype.geocode =
+            jasmine.createSpy('geocode').and.callFake(LatLngOk);
         });
 
         it('Should not be called', function () {
@@ -314,20 +351,27 @@ describe('NYPL Service Tests', function() {
         });
 
         it('Should be called', function () {
-          nypl_geocoder_service.get_address({lat: 40.75298660000001, lng:-73.9821364});
+          nypl_geocoder_service
+            .get_address({lat: 40.75298660000001, lng: -73.9821364});
           expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
         });
 
         it('Should return a promise', function () {
-          var promise = nypl_geocoder_service.get_address({lat: 40.75298660000001, lng:-73.9821364});
+          var promise = nypl_geocoder_service.get_address({
+            lat: 40.75298660000001,
+            lng: -73.9821364
+          });
           expect(typeof promise.then).toBe('function');
         });
 
         it('Should accept the promise when status is OK', function () {
           var okMock = jasmine.createSpy(),
-              errorMock = jasmine.createSpy();
+            errorMock = jasmine.createSpy();
 
-          nypl_geocoder_service.get_address({lat: 40.75298660000001, lng:-73.9821364}).then(okMock, errorMock);
+          nypl_geocoder_service.get_address({
+            lat: 40.75298660000001,
+            lng: -73.9821364
+          }).then(okMock, errorMock);
           rootScope.$apply();
 
           expect(okMock).toHaveBeenCalled();
@@ -336,38 +380,53 @@ describe('NYPL Service Tests', function() {
 
         // Not sure why the following test is not working:
         it('Should resolve the promise when receiving data', function () {
-          var promise_callback = jasmine.createSpy(),
-              // The return value was defined in the LatLngOk variable
-              get_address_return_value = '10018';
+          var promise_callback = jasmine.createSpy();
+          // The return value was defined in the LatLngOk variable
+          get_address_return_value = '10018';
 
 
-          nypl_geocoder_service.get_address({lat: 40.75298660000001, lng:-73.9821364}).then(promise_callback);
+          nypl_geocoder_service.get_address({
+            lat: 40.75298660000001,
+            lng: -73.9821364
+          }).then(promise_callback);
           rootScope.$apply();
 
-          // promise_callback is the callback function with the resolved value from the promise
-          // expect(promise_callback).toHaveBeenCalledWith(get_address_return_value);
+          // promise_callback is the callback function
+          // with the resolved value from the promise
+          // expect(promise_callback)
+          //   .toHaveBeenCalledWith(get_address_return_value);
         });
       });
 
       describe('get_address function failed', function () {
-        beforeEach(function() {
-          GeocoderMock.prototype.geocode = jasmine.createSpy('geocode').and.callFake(LatLngError);
+        beforeEach(function () {
+          GeocoderMock.prototype.geocode =
+            jasmine.createSpy('geocode').and.callFake(LatLngError);
         });
 
         it('Should be called', function () {
-          nypl_geocoder_service.get_address({lat: 40.75298660000001, lng:-73.9821364});
+          nypl_geocoder_service.get_address({
+            lat: 40.75298660000001,
+            lng: -73.9821364
+          });
           expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
         });
 
         it('Should return a promise', function () {
-          var promise = nypl_geocoder_service.get_address({lat: 40.75298660000001, lng:-73.9821364});
+          var promise = nypl_geocoder_service.get_address({
+            lat: 40.75298660000001,
+            lng: -73.9821364
+          });
           expect(typeof promise.then).toBe('function');
         });
 
         it('Should reject the promise when status is not OK', function () {
           var okMock = jasmine.createSpy(),
-              errorMock = jasmine.createSpy();
-          nypl_geocoder_service.get_address({lat: 40.75298660000001, lng:-73.9821364}).then(okMock, errorMock);
+            errorMock = jasmine.createSpy();
+          nypl_geocoder_service.get_address({
+            lat: 40.75298660000001,
+            lng: -73.9821364
+          }).then(okMock, errorMock);
           rootScope.$apply();
 
           expect(okMock).not.toHaveBeenCalled();
@@ -379,7 +438,8 @@ describe('NYPL Service Tests', function() {
 
     describe('draw_map function', function () {
       it('should call the Google Maps', function () {
-        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        nypl_geocoder_service.draw_map({ lat: 40.7532, long: -73.9822 },
+          12, 'all-locations-map');
 
         expect(window.google.maps.Map).toHaveBeenCalled();
       });
@@ -388,55 +448,73 @@ describe('NYPL Service Tests', function() {
     describe('load_markers function', function () {
       // First we draw a marker, then when the load_markers function is called
       // it should call the add_marker_to_map function
-      it('should call the add_marker_to_map function from the service', function () {
-        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-        nypl_geocoder_service.draw_marker("schwarzman", { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
+      it('should call the add_marker_to_map function from the service',
+        function () {
+          nypl_geocoder_service.draw_map({ lat: 40.7532, long: -73.9822 },
+            12, 'all-locations-map');
+          nypl_geocoder_service
+            .draw_marker("schwarzman",
+              { 'lat': 40, 'long': -73},
+              "5th Avenue at 42nd St"
+              );
 
-        nypl_geocoder_service.load_markers();
-        // if there are markers, the load_markers function adds markers to the map
-        // using the add_marker_to_map function, which in turn
-        // calls the setMap function from the google maps api to add the marker to the map:
-        expect(google.maps.Marker.prototype.setMap).toHaveBeenCalled();
-      });
+          nypl_geocoder_service.load_markers();
+          // if there are markers, the load_markers function
+          // adds markers to the map using the add_marker_to_map
+          // function, which in turn calls the setMap function from
+          // the google maps api to add the marker to the map:
+          expect(google.maps.Marker.prototype.setMap).toHaveBeenCalled();
+        });
 
       // no markers are set so it shouldn't do anything
-      it('should NOT call the add_marker_to_map function from the service', function () {
-        nypl_geocoder_service.load_markers();
-        expect(google.maps.Marker.prototype.setMap).not.toHaveBeenCalled();
-      });
+      it('should NOT call the add_marker_to_map function from the service',
+        function () {
+          nypl_geocoder_service.load_markers();
+          expect(google.maps.Marker.prototype.setMap).not.toHaveBeenCalled();
+        });
     });
 
     describe('draw_legend function', function () {
-      it('should call the controls function in the Maps API', function () {
-        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-        document.getElementById = function () {
-          return '<div id="all-locations-map-legend" class="show-legend" style="z-index: 0; position: absolute; bottom: 15px; right: 0px;">'+
-                '<!-- ngIf: locations --><span data-ng-if="locations" class="ng-scope"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png">NYPL Library<br></span><!-- end ngIf: locations -->'+
-                '<!-- ngIf: locationStart -->'+
-              '</div>';
-        }
-        nypl_geocoder_service.draw_legend('test');
-        expect(map_controls_push_mock).toHaveBeenCalled();
-      });
+      it('should call the controls function in the Maps API',
+        function () {
+          nypl_geocoder_service
+            .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+          document.getElementById = function () {
+            return '<div id="all-locations-map-legend" class="show-legend"' +
+                  ' style="z-index: 0; position: absolute; bottom: 15px; ' +
+                  'right: 0px;"><!-- ngIf: locations --><span data-ng-if=' +
+                  '"locations" class="ng-scope"><img src="http://maps.' +
+                  'google.com/mapfiles/ms/icons/red-dot.png">NYPL Library' +
+                  '<br></span><!-- end ngIf: locations -->' +
+                  '<!-- ngIf: locationStart --></div>';
+          };
+          nypl_geocoder_service.draw_legend('test');
+          expect(map_controls_push_mock).toHaveBeenCalled();
+        });
     });
 
     describe('panMap function', function () {
-      it('should call the google maps api functions to pan and zoom on the map', function () {
-        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-        // the panMap function pans to SASB by default
-        nypl_geocoder_service.panMap();
-        // When we call the panMap function, we expect to call the
-        // google maps panTo and setZoom functions avaible in the API
-        // for the map
+      it('should call the google maps api functions to pan and zoom on the map',
+        function () {
+          nypl_geocoder_service
+            .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+          // the panMap function pans to SASB by default
+          nypl_geocoder_service.panMap();
+          // When we call the panMap function, we expect to call the
+          // google maps panTo and setZoom functions avaible in the API
+          // for the map
 
-        expect(google.maps.Map.prototype.panTo).toHaveBeenCalled();
-        expect(google.maps.Map.prototype.setZoom).toHaveBeenCalled();
-      });
+          expect(google.maps.Map.prototype.panTo).toHaveBeenCalled();
+          expect(google.maps.Map.prototype.setZoom).toHaveBeenCalled();
+        });
 
       it('should pan to a specific marker', function () {
         var marker = new google.maps.Marker({});
-        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-        nypl_geocoder_service.draw_marker("schwarzman", { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
+        nypl_geocoder_service
+          .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        nypl_geocoder_service
+          .draw_marker("schwarzman",
+            { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
 
         nypl_geocoder_service.panMap(marker);
 
@@ -446,29 +524,40 @@ describe('NYPL Service Tests', function() {
       });
     });
 
-    // The search marker is the marker that is drawn when a user searches for 'Bronx Zoo',
-    // 'Chelsea Piers', 'Empire State Building', etc.
+    // The search marker is the marker that is drawn when a user
+    // searches for 'Bronx Zoo', 'Chelsea Piers', 'Empire State Building', etc.
     // There is only one search marker on the map at a time so it just simply
     // gets its coordinates and text updated
     describe('draw_searchMarker function', function () {
-      it('should remove the existing search marker and draw another one with updated coordinates and text', function () {
-        nypl_geocoder_service.draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+      it('should remove the existing search marker and draw another ' +
+        'one with updated coordinates and text',
+        function () {
+          nypl_geocoder_service
+            .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
 
+          nypl_geocoder_service.draw_searchMarker(
+            {lat: 40.8505949, long: -73.8769982},
+            'bronx zoo'
+          );
 
-        nypl_geocoder_service.draw_searchMarker({lat: 40.8505949, long: -73.8769982} , 'bronx zoo');
-
-        // First remove the existing search marker from the map (if there is one)
-        expect(google.maps.Marker.prototype.setMap).toHaveBeenCalledWith(null);
-        // Create new google maps coordinates
-        expect(google.maps.LatLng).toHaveBeenCalledWith(40.8505949, -73.8769982);
-        // Update the search marker with the new coordinates
-        expect(google.maps.Marker.prototype.setPosition).toHaveBeenCalled();
-        // Set the search marker on the map
-        expect(google.maps.Marker.prototype.setMap).toHaveBeenCalled();
-        // Set the content on the infowindow and open it
-        expect(google.maps.InfoWindow.prototype.setContent).toHaveBeenCalledWith('bronx zoo');
-        expect(google.maps.InfoWindow.prototype.open).toHaveBeenCalled();
-      });
+          // First remove the existing search marker from the map
+          expect(google.maps.Marker.prototype.setMap)
+            .toHaveBeenCalledWith(null);
+          // Create new google maps coordinates
+          expect(google.maps.LatLng)
+            .toHaveBeenCalledWith(40.8505949, -73.8769982);
+          // Update the search marker with the new coordinates
+          expect(google.maps.Marker.prototype.setPosition)
+            .toHaveBeenCalled();
+          // Set the search marker on the map
+          expect(google.maps.Marker.prototype.setMap)
+            .toHaveBeenCalled();
+          // Set the content on the infowindow and open it
+          expect(google.maps.InfoWindow.prototype.setContent)
+            .toHaveBeenCalledWith('bronx zoo');
+          expect(google.maps.InfoWindow.prototype.open)
+            .toHaveBeenCalled();
+        });
     });
 
     describe('remove_searchMarker function', function () {
@@ -726,7 +815,7 @@ describe('NYPL Service Tests', function() {
   });
 
   describe('Utility: nypl_utility service', function() {
-    var nypl_utility;
+    var nypl_utility, date;
 
     beforeEach(function () {
       // load the module.
@@ -870,21 +959,33 @@ describe('NYPL Service Tests', function() {
       var alerts = [
         {start:"2014-05-17T00:00:00-04:00", end:"2014-05-27T01:00:00-04:00",
           body:"The New York Public Library will be closed from May 24 through May 26 in observance of Memorial Day."},
-        // Note: I'm modifying the Independence Day alert so it will display
-        // for a long time just for testing purposes, so the dates are not real
-        {start:"2014-04-27T00:00:00-04:00", end:"2014-07-06T01:00:00-04:00",
+        {start:"2014-06-27T00:00:00-04:00", end:"2014-07-06T01:00:00-04:00",
           body:"All units of the NYPL are closed July 4 - July 5."},
         {start:"2014-08-23T00:00:00-04:00", end:"2014-09-02T01:00:00-04:00",
           body:"The New York Public Library will be closed August 30th through September 1st in observance of Labor Day"},
       ];
 
       it('should display the Independence Day alert', function () {
+        date = new Date(2014, 5, 29);
+        // In the alerts, we call new Date multiple times with the dates for
+        // each alert, so if a date is passed, use that, else
+        // mock the current date
+        var MockDate = Date;
+        Date = function (alertDate) {
+          if (alertDate) {
+            return new MockDate(alertDate);
+          }
+          return date;
+        };
+
         // The Independence Day alert dates have been modified so it can display
         // for testing purposes
         var display_alert = nypl_utility.alerts(alerts);
 
         // The function only returns the body of the alert
         expect(display_alert).toEqual("All units of the NYPL are closed July 4 - July 5.\n");
+
+        Date = MockDate;
       });
 
       it('should return null if no input is given', function () {
@@ -905,11 +1006,22 @@ describe('NYPL Service Tests', function() {
             " and be entered to win fun prizes (to be announced!) Never picked up a guitar before? A pro" +
             " looking for some extra tips? All levels are welcome! Brought to you by: Make Music New York, " +
             "The New York Public Library, Little Kids Rock and GAMA! Teacher: Gary Heimbauer",
+          _links: {
+            self: {
+              href: 'http://nypl.org/'
+            }
+          }
         },
-        address = "66 Leroy Street";
+        location = {
+          name: "Hudson Park Library",
+          street_address: "66 Leroy Street",
+          locality: "New York",
+          region: "NY",
+          postal_code: 10014,
+        };
 
       it('should return a url to create a Google Calendar given an event and address', function () {
-        var url = nypl_utility.google_calendar_link(nypl_event, address);
+        var url = nypl_utility.calendar_link('google', nypl_event, location);
 
         expect(url).toEqual("https://www.google.com/calendar/render?action=template&text=" + 
           "Make Music New York&dates=20140621T180000Z/20140621T190000Z&details=Guitar Lesson Got" +
@@ -917,11 +1029,11 @@ describe('NYPL Service Tests', function() {
           " and be entered to win fun prizes (to be announced!) Never picked up a guitar before? A pro" +
           " looking for some extra tips? All levels are welcome! Brought to you by: Make Music New York, " +
           "The New York Public Library, Little Kids Rock and GAMA! Teacher: Gary Heimbauer&location=" +
-          "66 Leroy Street&pli=1&uid=&sf=true&output=xml");
+          "Hudson Park Library - 66 Leroy Street New York, NY 10014&pli=1&uid=&sf=true&output=xml");
       });
 
       it('should return an empty string if no event is given', function () {
-        expect(nypl_utility.google_calendar_link()).toEqual('');
+        expect(nypl_utility.calendar_link()).toEqual('');
       });
     });
   });

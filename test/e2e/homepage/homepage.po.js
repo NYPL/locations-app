@@ -1,5 +1,6 @@
 /*jslint indent: 2, maxlen: 80 */
-/* globals: element, by, module */
+/*globals element, by, module */
+
 var LandingPage = function () {
   'use strict';
 

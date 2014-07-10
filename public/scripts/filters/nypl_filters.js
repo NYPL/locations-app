@@ -51,7 +51,7 @@ nypl_locations.filter('capitalize', [
     function () {
         'use strict';
 
-        return function (input, scope) {
+        return function (input) {
             return input.replace(/(^|\s)([a-z])/g, function (str) {
                 return str.toUpperCase();
             });
@@ -64,10 +64,11 @@ nypl_locations.filter('hoursTodayFormat', [
 
         function getHoursObject(time) {
             return _.object(
-                ['hours', 'mins', 'meridian'],
+                ['hours', 'mins', 'meridian', 'military'],
                 [((parseInt(time[0], 10) + 11) % 12 + 1),
                     time[1],
-                    (time[0] >= 12 ? 'pm' : 'am')]
+                    (time[0] >= 12 ? 'pm' : 'am'),
+                    time[0]]
             );
         }
 
@@ -76,8 +77,7 @@ nypl_locations.filter('hoursTodayFormat', [
                 now = new Date(),
                 today, tomorrow,
                 tomorrow_open_time, tomorrow_close_time,
-                hour_now = ((parseInt(now.getHours(), 10) + 11) % 12 + 1),
-                hour_now_meridian = now.getHours() >= 12 ? 'pm' : 'am';
+                hour_now_military = now.getHours();
 
             // If truthy async check
             if (elem) {
@@ -108,12 +108,9 @@ nypl_locations.filter('hoursTodayFormat', [
                     return 'Closed today';
                 }
 
-                // If the current time is past the closing time but earlier
-                // than tomorrow's open time and also earlier than 6am,
-                // display that it will be open 'tomorrow'
-                if (hour_now > closed_time.hours &&
-                        hour_now < tomorrow_open_time.hours &&
-                        hour_now_meridian === 'pm') {
+                // If the current time is past today's closing time but
+                // before midnight, display that it will be open 'tomorrow'
+                if (hour_now_military > closed_time.military) {
                     return 'Open tomorrow ' + tomorrow_open_time.hours +
                         (parseInt(tomorrow_open_time.mins, 10) !== 0 ?
                                 ':' + tomorrow_open_time.mins : '') +
@@ -124,13 +121,16 @@ nypl_locations.filter('hoursTodayFormat', [
                         tomorrow_close_time.meridian;
                 }
 
-                // If it's after 6am but before today's open time,
-                // then display that it will be "open today ...",
-                // instead of "open until ..."
-                if (hour_now > 6 && hour_now < open_time.hours &&
-                        hour_now_meridian === 'am') {
+                // If the current time is after midnight but before
+                // the library's open time, display both the start and
+                // end time for today
+                if (hour_now_military >= 0 &&
+                        hour_now_military < tomorrow_open_time.military) {
                     type = 'long';
                 }
+
+                // The default is checking when the library is currently open.
+                // It will display 'Open today until ...'
 
                 // Multiple cases for args w/ default
                 switch (type) {
@@ -160,9 +160,8 @@ nypl_locations.filter('hoursTodayFormat', [
 
                 return formatted_time;
             }
-            else { 
-                return 'Not available'; 
-            }
+
+            return 'Not available';
         };
     }
 ]);
