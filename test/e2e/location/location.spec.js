@@ -1,6 +1,7 @@
 /*jslint indent: 2, maxlen: 80, regexp: true */
 /*global describe, require, beforeEach,
 browser, it, expect, element, by, angular */
+
 describe('Locations: library', function () {
   'use strict';
 

@@ -1,5 +1,6 @@
 /*jslint indent: 4, maxlen: 80 */
 /*global describe, require, beforeEach, browser, it, expect, element, by */
+
 describe('Locations: homepage', function () {
     "use strict";
     // Check ../support/landingPage.js for code
