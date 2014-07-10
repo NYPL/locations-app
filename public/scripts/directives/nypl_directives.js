@@ -129,14 +129,15 @@ nypl_locations.directive('nyplalerts', [
 
 /* 
 ** Show/Hide collapsible animated directive
-** Usage: <div collapse="name of var toggled" duration="time in ms"></div>
-** Duration is optional
+** Usage: <div collapse="name of var toggled" duration="time in ms" class-name="open"></div>
+** Duration & class-name are optional
 */
 nypl_locations.directive("collapse",
     function () {
-    'use strict'
-        function link( $scope, element, attributes ) {
+        'use strict';
+        function link($scope, element, attributes) {
             var exp = attributes.collapse,
+                class_name = (attributes.className || "open"),
                 duration = (attributes.duration || "fast");
 
             if (!$scope.$eval(exp)) {
@@ -154,11 +155,13 @@ nypl_locations.directive("collapse",
                     }
                     // Show element.
                     if (newVal) {
-                        element.stop(true, true).slideDown(duration);
-                    } 
-                    // Hide element.
-                    else {
-                        element.stop(true, true).slideUp(duration);
+                        element.stop(true, true).
+                            slideDown(duration).
+                            addClass(class_name);
+                    } else {
+                        element.stop(true, true).
+                            slideUp(duration).
+                            removeClass(class_name);
                     }
                 }
             );
@@ -167,5 +170,4 @@ nypl_locations.directive("collapse",
             link: link,
             restrict: "A" // Attribute only
         });
-    }
-);
+    });
