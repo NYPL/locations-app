@@ -587,9 +587,7 @@ nypl_locations.controller('LocationCtrl', [
 
                         // Needed to update async var on geolocation success
                         $timeout(function () {
-                            $scope.$apply(function () {
-                                $scope.locationStart = userCoords.latitude + "," + userCoords.longitude;
-                            });
+                            $scope.locationStart = userCoords.latitude + "," + userCoords.longitude;
                         });
                     });
             };
