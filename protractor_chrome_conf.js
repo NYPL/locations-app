@@ -39,7 +39,9 @@ exports.config = {
     // Generates an xml file
     require('jasmine-reporters');
     jasmine.getEnv()
-      .addReporter(new jasmine.JUnitXmlReporter('test/results/e2e_xml/', true, true));
+      .addReporter(
+        new jasmine.JUnitXmlReporter('test/results/e2e_xml/', true, true)
+      );
   },
 
   baseUrl: 'http://localhost:9292/',
