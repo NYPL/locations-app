@@ -70,7 +70,6 @@ nypl_locations.factory('nypl_utility', [
                         }
                     };
                 }
-
                 return hoursToday;
             },
 
@@ -165,7 +164,7 @@ nypl_locations.factory('nypl_utility', [
                     alert_start = new Date(alerts.start);
                     alert_end = new Date(alerts.end);
 
-                    console.log("End date for library date: " + alert_end);
+                    // console.log("End date for library date: " + alert_end);
                     if (today >= alert_start && today <= alert_end) {
                         todaysAlert += alerts.description;
                     }
@@ -264,7 +263,6 @@ nypl_locations.factory('nypl_utility', [
                         "&ST=" + start_date +
                         "&in_loc=" + address +
                         "&in_st=" + address +
-                        // "&in_csz=" + "New York, NY 10018" +
                         "&DESC=" + body +
                         "&URL=" + url;
                     break;
