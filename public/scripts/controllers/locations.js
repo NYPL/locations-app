@@ -583,18 +583,18 @@ nypl_locations.controller('LocationCtrl', [
                     .then(function (position) {
                         userCoords = _.pick(position, 'latitude', 'longitude');
 
-                        // Used for the Get Directions link to Google Maps
-                        // If the user rejected geolocation and
-                        // $scope.locationStart is blank,
-                        // the link will still work
-                        $scope.locationStart =
-                            userCoords.latitude + "," + userCoords.longitude;
+                        $scope.locationStart = "";
+                        // Needed to update async var on geolocation success
+                        setTimeout(function () {
+                            $scope.$apply(function () {
+                                $scope.locationStart = userCoords.latitude + "," + userCoords.longitude;
+                            });
+                        }, 500);
                     });
             };
 
         // Load the location and user's geolocation coordinates
         // as chained events
-        loadLocation();
-        loadCoords();
+        loadLocation().then(loadCoords);
     }
 ]);
