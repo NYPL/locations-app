@@ -364,7 +364,7 @@ nypl_locations.controller('LocationsCtrl', [
             organizeLocations($scope.locations, location, 'name');
         };
 
-        $scope.panToLibrary = function (library_id, index, slug) {
+        $scope.panToLibrary = function (slug) {
             nypl_geocoder_service.pan_existing_marker(slug);
             scroll_map_top();
         };
@@ -587,7 +587,8 @@ nypl_locations.controller('LocationCtrl', [
 
                         // Needed to update async var on geolocation success
                         $timeout(function () {
-                            $scope.locationStart = userCoords.latitude + "," + userCoords.longitude;
+                            $scope.locationStart = userCoords.latitude +
+                                "," + userCoords.longitude;
                         });
                     });
             };

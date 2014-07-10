@@ -151,7 +151,8 @@ describe('NYPL Directive Tests', function () {
   });
 
   describe('nyplalerts', function () {
-    var $httpBackend;
+    var $httpBackend,
+      date;
 
     beforeEach(inject(function (_$compile_, _$rootScope_, _$httpBackend_) {
       $compile = _$compile_;
@@ -164,16 +165,23 @@ describe('NYPL Directive Tests', function () {
           alerts: [{
             _id: "71579",
             scope: "all",
-            title: "NYPL Mock Alert",
-            body: "The New York Public Library will be " +
-               "closed - Test mock from May 2014 until January 2016.",
-            start: "2014-05-01T00:00:00-04:00",
-            end: "2016-01-01T01:00:00-04:00"
+            title: "Independence Day",
+            body: "All units of the NYPL are closed July 4 - July 5.",
+            start: "2014-06-27T00:00:00-04:00",
+            end: "2014-07-06T01:00:00-04:00"
           }]
         });
     }));
 
     it('should display a site wide alert', function () {
+      var MockDate, alert;
+
+      // Override the date function so we can test a real alert
+      // Store a copy so we can return the original one later
+      date = new Date(2014, 5, 29);
+      MockDate = Date;
+      Date = function () { return date; };
+
       element = angular.element("<nyplalerts></nyplalerts>");
       $compile(element)($rootScope);
       $httpBackend.flush();
@@ -185,11 +193,13 @@ describe('NYPL Directive Tests', function () {
       // console.log(element);
 
       // Currently just using the value in the $rootScope.
-      var alert = $rootScope.sitewidealert;
+      alert = $rootScope.sitewidealert;
 
       expect(alert)
-        .toEqual('The New York Public Library will be ' +
-          'closed - Test mock from May 2014 until January 2016.\n');
+        .toEqual('All units of the NYPL are closed July 4 - July 5.\n');
+
+      // Use the native Date function again
+      Date = MockDate;
     });
 
   });

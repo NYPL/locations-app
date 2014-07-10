@@ -1,5 +1,6 @@
 /*jslint indent: 4, maxlen: 80, nomen: true */
 /*globals nypl_locations, google, document, _ */
+
 nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
     'use strict';
 
