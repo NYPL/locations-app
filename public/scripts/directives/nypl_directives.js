@@ -40,7 +40,7 @@ nypl_locations.directive('translatebuttons', [
 
         return {
             restrict: 'E',
-            templateUrl: '/scripts/directives/templates/translatebuttons.html',
+            templateUrl: 'scripts/directives/templates/translatebuttons.html',
             replace: true,
             controller: function ($scope, $translate) {
                 $scope.translate = function (language) {
@@ -129,7 +129,8 @@ nypl_locations.directive('nyplalerts', [
 
 /* 
 ** Show/Hide collapsible animated directive
-** Usage: <div collapse="name of var toggled" duration="time in ms" class-name="open"></div>
+** Usage: <div collapse="name of var toggled" duration="time in ms"
+**          class-name="open"></div>
 ** Duration & class-name are optional
 */
 nypl_locations.directive("collapse",
