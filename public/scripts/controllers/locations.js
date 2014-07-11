@@ -199,7 +199,7 @@ nypl_locations.controller('LocationsCtrl', [
                     .then(function (coords) {
                         return {
                             coords: coords,
-                            searchTerm: searchTerm
+                            searchTerm: coords.name
                         };
                     })
                     .catch(function (error) {
