@@ -1098,10 +1098,10 @@ footer {
     @media screen and (min-width: 730px) {
       footer .footerlinks ul {
         float: left;
-        width: 18% !important;
-        clear: initial !important; }
+        width: 18% !important; }
         footer .footerlinks ul:nth-of-type(3) {
-          margin-left: 20px; } }
+          margin-left: 20px;
+          clear: none; } }
     footer .footerlinks ul li {
       margin: 0px 0px 12px;
       display: none; }
