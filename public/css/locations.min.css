@@ -1078,15 +1078,38 @@ footer {
   background: #7d7972; }
   footer .footerlinks ul {
     list-style: none;
-    margin: 0 20px; }
-    footer .footerlinks ul:first-of-type {
-      margin-left: 0px; }
-    @media screen and (min-width: 767px) {
+    margin: 0px; }
+    @media screen and (min-width: 481px) {
+      footer .footerlinks ul {
+        margin: 0 20px; }
+        footer .footerlinks ul:first-of-type {
+          margin-left: 0px;
+          float: left;
+          width: 35%; }
+        footer .footerlinks ul:nth-of-type(2) {
+          float: left; }
+        footer .footerlinks ul:nth-of-type(3) {
+          clear: both;
+          margin-left: 0px;
+          width: 35%;
+          float: left; }
+        footer .footerlinks ul.last {
+          float: left; } }
+    @media screen and (min-width: 730px) {
       footer .footerlinks ul {
         float: left;
-        width: 18%; } }
+        width: 18% !important; }
+        footer .footerlinks ul:nth-of-type(3) {
+          margin-left: 20px;
+          clear: none; } }
     footer .footerlinks ul li {
-      margin: 0px 0px 12px; }
+      margin: 0px 0px 12px;
+      display: none; }
+      @media screen and (min-width: 481px) {
+        footer .footerlinks ul li {
+          display: list-item; } }
+      footer .footerlinks ul li.footer1 {
+        display: list-item; }
       footer .footerlinks ul li a {
         font-weight: 300;
         font-size: 15px;
@@ -1106,12 +1129,15 @@ footer {
         display: block;
         color: #FFF;
         font-size: 24px;
-        opacity: .5;
-        -webkit-transition: all 0.1s ease;
-        -moz-transition: all 0.1s ease;
-        -ms-transition: all 0.1s ease;
-        -o-transition: all 0.1s ease;
-        transition: all 0.1s ease; }
+        text-decoration: none; }
+        @media screen and (min-width: 481px) {
+          footer .socialmedia li a {
+            opacity: .5;
+            -webkit-transition: all 0.1s ease;
+            -moz-transition: all 0.1s ease;
+            -ms-transition: all 0.1s ease;
+            -o-transition: all 0.1s ease;
+            transition: all 0.1s ease; } }
         footer .socialmedia li a:hover {
           opacity: 1; }
         footer .socialmedia li a .replaced-text {

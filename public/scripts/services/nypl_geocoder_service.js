@@ -37,11 +37,11 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
                 {address: address, bounds: bounds, region: "US"},
                 function (result, status) {
                     if (status === google.maps.GeocoderStatus.OK) {
-                        coords.lat = result[0].geometry.location.k;
+                        coords.lat  = result[0].geometry.location.k;
                         coords.long = result[0].geometry.location.B;
+                        coords.name = result[0].formatted_address;
 
                         defer.resolve(coords);
-
                     } else {
                         defer.reject(new Error(status));
                     }
@@ -126,9 +126,10 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         },
 
         create_searchMarker: function (coords, text) {
+            var searchTerm = text.replace(',',' <br>').replace(',',' <br>');
             panCoords = new google.maps.LatLng(coords.lat, coords.long);
             searchMarker.setPosition(panCoords);
-            searchInfoWindow.setContent(text);
+            searchInfoWindow.setContent(searchTerm);
         },
 
         draw_searchMarker: function () {

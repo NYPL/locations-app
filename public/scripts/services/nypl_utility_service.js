@@ -331,11 +331,10 @@ nypl_locations.factory('nypl_utility', [
                 if (strictFilter !== undefined && strictFilter.length !== 0) {
                     // Rarely occurs but just in case there are results for
                     // both filters, the strict match should appear first
-                    result = _.union(strictFilter, lazyFilter);
+                    return _.union(strictFilter, lazyFilter);
                 }
-                result = lazyFilter;
-
-                return result;
+                
+                return lazyFilter;
             },
 
             // Iterate through lon/lat and calculate distance

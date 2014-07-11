@@ -199,7 +199,7 @@ nypl_locations.controller('LocationsCtrl', [
                     .then(function (coords) {
                         return {
                             coords: coords,
-                            searchTerm: searchTerm
+                            searchTerm: coords.name
                         };
                     })
                     .catch(function (error) {
@@ -287,11 +287,8 @@ nypl_locations.controller('LocationsCtrl', [
             },
 
             scroll_map_top = function () {
-                var containerWidth = parseInt(
-                        angular.element('.container__all-locations')
-                            .css('width'),
-                        10
-                    ),
+                var content = angular.element('.container__all-locations'),
+                    containerWidth = parseInt(content.css('width'), 10),
                     top;
 
                 if (containerWidth < 601) {
@@ -299,8 +296,9 @@ nypl_locations.controller('LocationsCtrl', [
                     angular.element('body')
                         .animate({scrollTop: top.top}, 1000);
                 } else {
+                    top = content.offset();
                     angular.element('body')
-                        .animate({scrollTop: 0}, 1000);
+                        .animate({scrollTop: top.top}, 1000);
                 }
             };
 
