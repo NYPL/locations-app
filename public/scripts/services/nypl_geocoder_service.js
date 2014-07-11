@@ -126,7 +126,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         },
 
         create_searchMarker: function (coords, text) {
-            var searchTerm = text.replace(',','<br>').replace(',','<br>');
+            var searchTerm = text.replace(',',' <br>').replace(',',' <br>');
             panCoords = new google.maps.LatLng(coords.lat, coords.long);
             searchMarker.setPosition(panCoords);
             searchInfoWindow.setContent(searchTerm);
