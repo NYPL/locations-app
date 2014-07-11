@@ -1137,17 +1137,66 @@ describe('NYPL Service Tests', function () {
             "York, NY 10014&pli=1&uid=&sf=true&output=xml");
         });
 
+      it('should return a url to create a Yahoo Calendar given ' +
+        'an event and address',
+        function () {
+          var url = nypl_utility.calendar_link('yahoo', nypl_event, location);
+
+          expect(url).toEqual("https://calendar.yahoo.com/?v=60&TITLE=" +
+            "Make Music New York&ST=20140621T180000Z&in_loc=Hudson Park " +
+            "Library - 66 Leroy Street New York, NY 10014&in_st=Hudson " +
+            "Park Library - 66 Leroy Street New York, NY 10014&DESC=Guitar " +
+            "Lesson Got 5 Minutes? Then Learn How to Play Guitar! Get a " +
+            "free guitar lesson, and be entered to win fun prizes (to be " +
+            "announced!) Never picked up a guitar before? A pro looking " +
+            "for some extra tips? All levels are welcome! Brought to you " +
+            "by: Make Music New York, The New York Public Library, Little " +
+            "Kids Rock and GAMA! Teacher: Gary Heimbauer&URL=http://nypl.org/");
+        });
+
       it('should return an empty string if no event is given', function () {
         expect(nypl_utility.calendar_link()).toEqual('');
       });
     });
 
+    /*
+    * ical_link(event, address)
+    *   event: An event object.
+    *   address: Address string of the location where the event is being held.
+    *
+    *   Creates a formatted string that is mostly compatible with ical.
+    *   Opens a new window so nothing is returned.
+    */
     describe('nypl_utility.ical_link', function () {
+      var nypl_event = {
+          title: "Crochet/ Knitting Circle",
+          start: "2014-07-12T16:00:00Z",
+          end: "2014-07-12T18:00:00Z",
+          body: "Bring your yarn, crochet hook or knitting needles. Enjoy an " +
+            "afternoon of conversation and stay afterwards to enjoy the movie.",
+          _links: {
+            self: {
+              href: "http://nypl.org/events/programs/2014/07/12/" +
+                "clone-crochet-knitting-circle"
+            }
+          }
+        },
+        address = "203 West 115th Street";
 
+      // it('should return a formatted string for ical', function () {
+      // });
     });
 
+    /*
+    * id_location_search(locations, searchTerm)
+    *   locations: Array with location objects.
+    *   searchTerm: What the user searched for.
+    *
+    *   Returns an array with one object where the searchTerm matches
+    *   the 'id' property of one of the location objects in the locations array.
+    */
     describe('nypl_utility.id_location_search', function () {
-
+      
     });
 
     describe('nypl_utility.location_search', function () {
