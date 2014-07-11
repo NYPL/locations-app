@@ -31,6 +31,7 @@ $post-palm: $palm + $viewport-increment;
 
 // Mobile Phone
 $mobile-phone: 480px;
+$post-mobile-phone: $mobile-phone + $viewport-increment;
 
 // Small Mobile Phone
 $sm-mobile-phone: 320px;
