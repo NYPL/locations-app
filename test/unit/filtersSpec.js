@@ -69,7 +69,7 @@ describe('NYPL Filter Tests', function () {
       expect(angular.isFunction(dateToISOFilter)).toBe(true);
     });
 
-    it('Should convert MYSQL DATETIME stamp to ISO', function () {
+    it('should convert MYSQL DATETIME stamp to ISO', function () {
       expect(dateToISOFilter('2014-04-22 15:00:00'))
         .toEqual('2014-04-22T19:00:00.000Z');
     });
@@ -80,12 +80,16 @@ describe('NYPL Filter Tests', function () {
       capitalizeFilter = _capitalizeFilter_;
     }));
 
-    it('should have a dateToISOFilter function', function () {
+    it('should have a capitalize filter function', function () {
       expect(angular.isFunction(capitalizeFilter)).toBe(true);
     });
 
-    it('Should capitalize a word', function () {
+    it('should capitalize a word', function () {
       expect(capitalizeFilter('schwarzman')).toEqual('Schwarzman');
+    });
+    it('should capitalize every word in a phrase', function () {
+      expect(capitalizeFilter('stephen a. schwarzman building'))
+        .toEqual('Stephen A. Schwarzman Building');
     });
   });
 
@@ -164,7 +168,7 @@ describe('NYPL Filter Tests', function () {
     });
 
     describe('when opened and using the "long" format', function () {
-      it('should display that it is currently open when checking during' +
+      it('should display that it is currently open when checking during ' +
         'open hours - short format',
         function () {
           // Returns 13 for 1pm in the afternoon when a library is open.
@@ -177,7 +181,7 @@ describe('NYPL Filter Tests', function () {
               .toEqual('Open today until 6pm');
         });
 
-      it('should display that it is currently open when checking during' +
+      it('should display that it is currently open when checking during ' +
         'open hours - long format',
         function () {
           // Returns 13 for 1pm in the afternoon when a library is open.

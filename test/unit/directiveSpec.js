@@ -21,6 +21,42 @@ describe('NYPL Directive Tests', function () {
         .respond('public/languages/en.json');
   }));
 
+  describe('loadingWidget', function () {
+    beforeEach(inject(function (_$compile_, _$rootScope_) {
+      $compile = _$compile_;
+      $rootScope = _$rootScope_;
+    }));
+
+    it('should compile', function () {
+      element = angular.element('<div id="loadingWidget" loading-widget>' +
+        '<div class="loader-icon icon-spinner2"></div></div>');
+      $compile(element)($rootScope);
+      $rootScope.$digest();
+
+      expect(element.attr('id')).toEqual('loadingWidget');
+    });
+  });
+
+  describe('translatebuttons', function () {
+    beforeEach(inject(function (_$compile_, _$rootScope_) {
+      $compile = _$compile_;
+      $rootScope = _$rootScope_;
+
+      element = angular.element('<translatebuttons></translatebuttons>');
+      $compile(element)($rootScope);
+      $rootScope.$digest();
+    }));
+
+    it('should have a translate class', function () {
+      expect(element.attr('class')).toContain('translate');
+    });
+
+    // At the time of writing this test, we only have two languages
+    it('should have two spans elements', function () {
+      expect(element.find('span').length).toBe(2);
+    });
+  });
+
   // Note that testing directives means also testing the 'hoursTodayformat'
   // since the output text depends on that filter and the data being passed
   describe('todayshours', function () {
@@ -201,7 +237,6 @@ describe('NYPL Directive Tests', function () {
       // Use the native Date function again
       Date = MockDate;
     });
-
   });
 
 });
