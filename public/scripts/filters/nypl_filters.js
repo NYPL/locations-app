@@ -83,11 +83,13 @@ nypl_locations.filter('hoursTodayFormat', [
             if (elem) {
                 today = elem.today;
                 tomorrow = elem.tomorrow;
+
                 // Assign open time obj
                 if (today.open) {
                     time = today.open.split(':');
                     open_time = getHoursObject(time);
-
+                }
+                if (tomorrow.open !== null) {
                     time = tomorrow.open.split(':');
                     tomorrow_open_time = getHoursObject(time);
                 }
@@ -95,7 +97,8 @@ nypl_locations.filter('hoursTodayFormat', [
                 if (today.close) {
                     time = today.close.split(':');
                     closed_time = getHoursObject(time);
-
+                }
+                if (tomorrow.close !== null) {
                     time = tomorrow.close.split(':');
                     tomorrow_close_time = getHoursObject(time);
                 }
@@ -108,23 +111,27 @@ nypl_locations.filter('hoursTodayFormat', [
                     return 'Closed today';
                 }
 
-                // If the current time is past today's closing time but
-                // before midnight, display that it will be open 'tomorrow'
-                if (hour_now_military > closed_time.military) {
-                    return 'Open tomorrow ' + tomorrow_open_time.hours +
-                        (parseInt(tomorrow_open_time.mins, 10) !== 0 ?
-                                ':' + tomorrow_open_time.mins : '') +
-                        tomorrow_open_time.meridian +
-                        '-' + tomorrow_close_time.hours +
-                        (parseInt(tomorrow_close_time.mins, 10) !== 0 ?
-                                ':' + tomorrow_close_time.mins : '') +
-                        tomorrow_close_time.meridian;
+                if (hour_now_military >= closed_time.military) {
+                    // If the current time is past today's closing time but
+                    // before midnight, display that it will be open 'tomorrow'
+                    if (tomorrow_open_time || tomorrow_close_time) {
+                        return 'Open tomorrow ' + tomorrow_open_time.hours +
+                            (parseInt(tomorrow_open_time.mins, 10) !== 0 ?
+                                    ':' + tomorrow_open_time.mins : '') +
+                            tomorrow_open_time.meridian +
+                            '-' + tomorrow_close_time.hours +
+                            (parseInt(tomorrow_close_time.mins, 10) !== 0 ?
+                                    ':' + tomorrow_close_time.mins : '') +
+                            tomorrow_close_time.meridian;
+                    }
+                    return "Closed today";
                 }
 
                 // If the current time is after midnight but before
                 // the library's open time, display both the start and
                 // end time for today
-                if (hour_now_military >= 0 &&
+                if (tomorrow_open_time &&
+                        hour_now_military >= 0 &&
                         hour_now_military < tomorrow_open_time.military) {
                     type = 'long';
                 }
