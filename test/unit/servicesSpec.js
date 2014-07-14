@@ -8,9 +8,9 @@ describe('NYPL Service Tests', function () {
   /* 
   * nypl_coordinates_service
   * Service that retrieves a browser's current location 
-  * and coordinate distance utility method
+  * and coordinate distance utility method.
   */
-  describe('Utility: nypl_coordinates_service', function () {
+  describe('nypl_coordinates_service', function () {
     var nypl_coordinates_service;
 
     beforeEach(function () {
@@ -26,7 +26,16 @@ describe('NYPL Service Tests', function () {
       });
     });
 
-    /* nypl_coordinates_service.getDistance */
+    /* 
+    * nypl_coordinates_service.getDistance(lat1, lon1, lat2, lon2)
+    *   lat1: Latitude of the first point
+    *   lon1: Longitude of the first point
+    *   lat2: Latitude of the second point
+    *   lon2: Longitude of the second point
+    *
+    *   Returns the distance, in miles, between two geographical
+    *   points based on their coordinates.
+    */
     describe('nypl_coordinates_service.getDistance', function () {
       // check to see if it has the expected function
       it('should have a getDistance() function', function () {
@@ -46,7 +55,12 @@ describe('NYPL Service Tests', function () {
         });
     });
 
-    /* nypl_coordinates_service.checkGeolocation */
+    /*
+    * nypl_coordinates_service.checkGeolocation()
+    *
+    * Returns true if navigator and geolocation are available on the
+    * browser, false otherwise.
+    */
     describe('nypl_coordinates_service.checkGeolocation', function () {
       it('should have a checkGeolocation function', function () {
         // The checkGeolocation function checks to see
@@ -72,7 +86,11 @@ describe('NYPL Service Tests', function () {
       });
     });
 
-    /* nypl_coordinates_service.getCoordinates */
+    /*
+    * nypl_coordinates_service.getCoordinates()
+    *
+    * Returns an object with the coordinates of the user's current location.
+    */
     describe('nypl_coordinates_service.getCoordinates', function () {
       var geolocationMock, geolocationOk, geolocationError, scope;
 
@@ -152,15 +170,14 @@ describe('NYPL Service Tests', function () {
       });
 
     });
-  });
-
+  }); /* End nypl_coordinates_service */
 
   /* 
   * nypl_geocoder_service 
   * Queries Google Maps Javascript API to geocode addresses
   * and reverse geocode coordinates.
   */
-  describe('Utility: nypl_geocoder_service', function () {
+  describe('nypl_geocoder_service', function () {
     var GeocoderMock, GeoCodingOK, GeoCodingError,
       LatLngOk, LatLngError,
       nypl_geocoder_service, rootScope,
@@ -643,7 +660,7 @@ describe('NYPL Service Tests', function () {
   });
   /* end nypl_geocoder_service called directly */
 
-  describe('Utility: nypl_locations_service', function () {
+  describe('nypl_locations_service', function () {
     var nypl_locations_service, httpBackend;
 
     beforeEach(function () {
@@ -842,9 +859,9 @@ describe('NYPL Service Tests', function () {
       expect(service_result).toEqual(mocked_location_services_API_call);
     });
 
-  });
+  }); /* End nypl_locations_service */
 
-  describe('Utility: nypl_utility service', function () {
+  describe('nypl_utility', function () {
     var nypl_utility, date;
 
     beforeEach(function () {
@@ -859,7 +876,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * hoursToday(hours)
+    * nypl_utility.hoursToday(hours)
     *   hours: An array with a 'regular' property that is
     *     an array of objects with open and close times for
     *     every day of the week starting from Sunday.
@@ -915,7 +932,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * getAddressString(location, nicePrint)
+    * nypl_utility.getAddressString(location, nicePrint)
     *   location: A location object.
     *   nicePrint (optional): Boolean to return the address with 
     *     HTML markup if true. Defaults to false.
@@ -960,7 +977,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * locationType(id)
+    * nypl_utility.locationType(id)
     *   id: The id of the location
     *
     *   Returns the type of library based on it's id.
@@ -988,7 +1005,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * socialMediaColor(social_media)
+    * nypl_utility.socialMediaColor(social_media)
     *   social_media: Array of objects each with an 'href' and 'site'
     *     property used to decide what color the icon should be
     *
@@ -1029,7 +1046,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * alerts(alerts)
+    * nypl_utility.alerts(alerts)
     *   alerts: Array of alert objects that should have 'start', 'end',
     *   and 'body' properties.
     *
@@ -1086,7 +1103,7 @@ describe('NYPL Service Tests', function () {
     // });
 
     /*
-    * calendar_link(type, event, location)
+    * nypl_utility.calendar_link(type, event, location)
     *   type: Either 'google' or 'yahoo'.
     *   event: An event object.
     *   location: A location object.
@@ -1160,7 +1177,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * ical_link(event, address)
+    * nypl_utility.ical_link(event, address)
     *   event: An event object.
     *   address: Address string of the location where the event is being held.
     *
@@ -1188,7 +1205,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * id_location_search(locations, searchTerm)
+    * nypl_utility.id_location_search(locations, searchTerm)
     *   locations: Array with location objects.
     *   searchTerm: What the user searched for.
     *
@@ -1230,7 +1247,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * location_search(locations, searchTerm)
+    * nypl_utility.location_search(locations, searchTerm)
     *   locations: Array with location objects.
     *   searchTerm: What the user searched for.
     *
@@ -1280,7 +1297,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * add_distance(locations, coords)
+    * nypl_utility.add_distance(locations, coords)
     *   locations: An array with location objects
     *   coords: Coordinates of the location that we are using to 
     *     get distance data.
@@ -1332,7 +1349,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * check_distance(locations)
+    * nypl_utility.check_distance(locations)
     *   locations: Array with location objects
     *
     *   Returns true if the minimum distance from the user or the location
@@ -1383,7 +1400,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * catalog_items_link(branch)
+    * nypl_utility.catalog_items_link(branch)
     *   branch: A library branch name
     *
     *   Returns a link to biblicommons based on the branch.
@@ -1422,6 +1439,10 @@ describe('NYPL Service Tests', function () {
       });
     });
 
+    /*
+    * nypl_location_list.init(settings)
+    *   settings: Object with properties to extend the default
+    */
     it('should create and extend the config object', function () {
       var config = nypl_location_list.init();
 
@@ -1451,6 +1472,11 @@ describe('NYPL Service Tests', function () {
       });
     });
 
+    /* 
+    * nypl_location_list.view_more()
+    *   Updates the limit of libraries that can be shown in the list as
+    *   well as the text in the button.
+    */
     it('should update the settings when the view_more function is called',
       function () {
         var config, i;

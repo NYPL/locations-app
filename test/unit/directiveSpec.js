@@ -21,6 +21,10 @@ describe('NYPL Directive Tests', function () {
         .respond('public/languages/en.json');
   }));
 
+  /*
+  * The loadingWidget directive is markup that displays before
+  * an http request is fulfilled, in this case showing a spinner.
+  */
   describe('loadingWidget', function () {
     beforeEach(inject(function (_$compile_, _$rootScope_) {
       $compile = _$compile_;
@@ -37,6 +41,10 @@ describe('NYPL Directive Tests', function () {
     });
   });
 
+  /*
+  * The translatebutton directive displays a simple list
+  * of languages that the site can be translated into.
+  */
   describe('translatebuttons', function () {
     beforeEach(inject(function (_$compile_, _$rootScope_) {
       $compile = _$compile_;
@@ -57,8 +65,15 @@ describe('NYPL Directive Tests', function () {
     });
   });
 
-  // Note that testing directives means also testing the 'hoursTodayformat'
-  // since the output text depends on that filter and the data being passed
+  /*
+  * The todayshours directive returns text that should be displayed 
+  * based on what time is currently is and what the library time is.
+  * It will display either closed, open today until, or not available
+  * if the API is down.
+  *
+  * Note that testing directives means also testing the 'hoursTodayformat'
+  * since the output text depends on that filter and the data being passed
+  */
   describe('todayshours', function () {
     beforeEach(inject(function (_$compile_, _$rootScope_) {
       $compile = _$compile_;
@@ -158,6 +173,10 @@ describe('NYPL Directive Tests', function () {
       });
   });
 
+  /*
+  * The askdonatefooter directive is simple markup right above the footer
+  * that displays a donation link and ways to contact the library.
+  */
   describe('askdonatefooter', function () {
     beforeEach(inject(function (_$compile_, _$rootScope_) {
       $compile = _$compile_;
@@ -186,6 +205,10 @@ describe('NYPL Directive Tests', function () {
     });
   });
 
+  /*
+  * The nyplalerts directive displays a site-wide alert by checking all the
+  * alerts in the API and checking the current date.
+  */
   describe('nyplalerts', function () {
     var $httpBackend,
       date;
