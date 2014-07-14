@@ -1196,25 +1196,296 @@ describe('NYPL Service Tests', function () {
     *   the 'id' property of one of the location objects in the locations array.
     */
     describe('nypl_utility.id_location_search', function () {
-      
+      it('should return the location object that matches the id that was ' +
+        'searched',
+        function () {
+          var search = 'bar', // Baychester
+            locations = [
+              {id: 'AG', name: 'Aguilar Library'},
+              {id: 'AL', name: 'Allerton Library'},
+              {id: 'BAR', name: 'Baychester Library'},
+              {id: 'BLC', name: 'Bronx Library Center'}
+            ],
+            location;
+
+          location = nypl_utility.id_location_search(locations, search);
+          expect(location).toEqual([{id: 'BAR', name: 'Baychester Library'}]);
+        });
+
+      it('should return an empty array if the search did not match',
+        function () {
+          var search = 'upper west side',
+            locations = [
+              {id: 'AG', name: 'Aguilar Library'},
+              {id: 'AL', name: 'Allerton Library'},
+              {id: 'BAR', name: 'Baychester Library'},
+              {id: 'BLC', name: 'Bronx Library Center'}
+            ],
+            location;
+
+          location = nypl_utility.id_location_search(locations, search);
+          // Should not match any ids in any library object.
+          expect(location).toEqual([]);
+        });
     });
 
+    /*
+    * location_search(locations, searchTerm)
+    *   locations: Array with location objects.
+    *   searchTerm: What the user searched for.
+    *
+    *   Returns an array with all the location objects that match what
+    *   the user searched for.
+    */
     describe('nypl_utility.location_search', function () {
+      it('should return an array with locations that match ' +
+        'what was searched for',
+        function () {
+          var search = 'bay',
+            locations = [
+              {id: 'AG', name: 'Aguilar Library'},
+              {id: 'AL', name: 'Allerton Library'},
+              {id: 'BAR', name: 'Baychester Library'},
+              {id: 'BLC', name: 'Bronx Library Center'},
+              {id: 'KP', name: 'Kips Bay Library'},
+              {id: 'PM', name: 'Pelham Bay Library'}
+            ],
+            location;
 
+          location = nypl_utility.location_search(locations, search);
+          expect(location).toEqual([
+            {id: 'BAR', name: 'Baychester Library'},
+            {id: 'KP', name: 'Kips Bay Library'},
+            {id: 'PM', name: 'Pelham Bay Library'}
+          ]);
+        });
+
+      it('should return an empty array if the search did not match',
+        function () {
+          var search = 'upper west side',
+            locations = [
+              {id: 'AG', name: 'Aguilar Library'},
+              {id: 'AL', name: 'Allerton Library'},
+              {id: 'BAR', name: 'Baychester Library'},
+              {id: 'BLC', name: 'Bronx Library Center'},
+              {id: 'KP', name: 'Kips Bay Library'},
+              {id: 'PM', name: 'Pelham Bay Library'}
+            ],
+            location;
+
+          location = nypl_utility.location_search(locations, search);
+          // Should not match any ids in any library object.
+          expect(location).toEqual([]);
+        });
     });
 
+    /*
+    * add_distance(locations, coords)
+    *   locations: An array with location objects
+    *   coords: Coordinates of the location that we are using to 
+    *     get distance data.
+    *
+    *   Returns the same locations array but with a distance
+    *   property for each location object in the array that was
+    *   calculated from the coords.
+    */
     describe('nypl_utility.add_distance', function () {
+      it('should add the distance of every library from Chelsea Piers',
+        function () {
+          // The coordinates of Chelsea Piers
+          var coords = {
+            lat: 40.7483308,
+            long: -74.0084794
+          },
+            locations = [
+              {id: 'AG', name: 'Aguilar Library', //4.56
+                lat: 40.7483308, long: -74.0084794},
+              {id: 'AL', name: 'Allerton Library',// 11.13
+                lat: 40.866, long: -73.8632},
+              {id: 'BAR', name: 'Baychester Library', //12.6
+                lat: 40.8711, long: -73.8305},
+              {id: 'BLC', name: 'Bronx Library Center', //9.94
+                lat: 40.8634, long: -73.8944},
+              {id: 'KP', name: 'Kips Bay Library', //1.54
+                lat: 40.7438, long: -73.9797},
+              {id: 'PM', name: 'Pelham Bay Library', //11.54
+                lat: 40.8336, long: -73.828}
+            ],
+            updatedLocations;
 
+          updatedLocations = nypl_utility.add_distance(locations, coords);
+          expect(updatedLocations).toEqual([
+            {id: 'AG', name: 'Aguilar Library',
+              lat: 40.7483308, long: -74.0084794, distance: 0.01}, //4.56
+            {id: 'AL', name: 'Allerton Library',
+              lat: 40.866, long: -73.8632, distance: 11.13},
+            {id: 'BAR', name: 'Baychester Library',
+              lat: 40.8711, long: -73.8305, distance: 12.6},
+            {id: 'BLC', name: 'Bronx Library Center',
+              lat: 40.8634, long: -73.8944, distance: 9.94},
+            {id: 'KP', name: 'Kips Bay Library',
+              lat: 40.7438, long: -73.9797, distance: 1.54},
+            {id: 'PM', name: 'Pelham Bay Library',
+              lat: 40.8336, long: -73.828, distance: 11.13}
+          ]);
+        });
     });
 
+    /*
+    * check_distance(locations)
+    *   locations: Array with location objects
+    *
+    *   Returns true if the minimum distance from the user or the location
+    *   that was search is more than 25 miles, false otherwise.
+    */
     describe('nypl_utility.check_distance', function () {
+      it('should return false because the minimum distance is less ' +
+        'than 25 miles',
+        function () {
+          var locations = [
+            {id: 'AG', name: 'Aguilar Library',
+              lat: 40.7483308, long: -74.0084794, distance: 4.56},
+            {id: 'AL', name: 'Allerton Library',
+              lat: 40.866, long: -73.8632, distance: 11.13},
+            {id: 'BAR', name: 'Baychester Library',
+              lat: 40.8711, long: -73.8305, distance: 12.6},
+            {id: 'BLC', name: 'Bronx Library Center',
+              lat: 40.8634, long: -73.8944, distance: 9.94},
+            {id: 'KP', name: 'Kips Bay Library',
+              lat: 40.7438, long: -73.9797, distance: 1.54},
+            {id: 'PM', name: 'Pelham Bay Library',
+              lat: 40.8336, long: -73.828, distance: 11.13}
+          ];
 
+          expect(nypl_utility.check_distance(locations)).toBe(false);
+        });
+
+      it('should return true because the minimum distance is more ' +
+        'than 25 miles',
+        function () {
+          var locations = [
+            {id: 'AG', name: 'Aguilar Library',
+              lat: 40.7483308, long: -74.0084794, distance: 26},
+            {id: 'AL', name: 'Allerton Library',
+              lat: 40.866, long: -73.8632, distance: 31.13},
+            {id: 'BAR', name: 'Baychester Library',
+              lat: 40.8711, long: -73.8305, distance: 32.6},
+            {id: 'BLC', name: 'Bronx Library Center',
+              lat: 40.8634, long: -73.8944, distance: 29.94},
+            {id: 'KP', name: 'Kips Bay Library',
+              lat: 40.7438, long: -73.9797, distance: 41.54},
+            {id: 'PM', name: 'Pelham Bay Library',
+              lat: 40.8336, long: -73.828, distance: 31.13}
+          ];
+
+          expect(nypl_utility.check_distance(locations)).toBe(true);
+        });
     });
 
+    /*
+    * catalog_items_link(branch)
+    *   branch: A library branch name
+    *
+    *   Returns a link to biblicommons based on the branch.
+    *   Will be removed when the link is in the api.
+    */
     describe('nypl_utility.catalog_items_link', function () {
+      it('should output a url to biblicommons', function () {
+        var branch = '125th Street Library';
 
+        expect(nypl_utility.catalog_items_link(branch))
+          .toEqual('http://nypl.bibliocommons.com/search?custom_' +
+            'query=available%3A"125th%20Street"');
+
+        branch = 'Andrew Heiskell Braille and Talking Book Library';
+        expect(nypl_utility.catalog_items_link(branch))
+          .toEqual('http://nypl.bibliocommons.com/search?custom_' +
+            'query=available%3A"Andrew%20Heiskell%20Braille%20%26%' +
+            '20Talking%20Book%20Library"');
+      });
     });
 
   }); /* End nypl_utility service */
+
+  /*
+  * nypl_location_list is a service that keeps track of the 'pagination'
+  * that occurs on the homepage for the list view. Showing 10 more
+  * libraries when the 'Show more' button is clicked.
+  */
+  describe('nypl_location_list', function () {
+    var nypl_location_list;
+
+    beforeEach(function () {
+      module('nypl_locations');
+      inject(function (_nypl_location_list_) {
+        nypl_location_list = _nypl_location_list_;
+      });
+    });
+
+    it('should create and extend the config object', function () {
+      var config = nypl_location_list.init();
+
+      expect(config).toEqual({
+        // Show the button
+        showMore: true,
+        // How many libraries to add when the button is clicked
+        add_amount: 10,
+        // To keep track of how many are on the page at a time
+        libraryLimit: 10,
+        // Text that updates when the button is pressed
+        increaseBy: "10 more"
+      });
+
+      // Extend the settings
+      config = nypl_location_list.init({
+        libraryLimit: 20,
+        increaseBy: "20 more",
+        add_amount: 20
+      });
+
+      expect(config).toEqual({
+        showMore: true,
+        libraryLimit: 20,
+        increaseBy: "20 more",
+        add_amount: 20
+      });
+    });
+
+    it('should update the settings when the view_more function is called',
+      function () {
+        var config, i;
+
+        nypl_location_list.init();
+        // The 'show more' button was clicked
+        config = nypl_location_list.view_more();
+        expect(config).toEqual({
+          showMore: true,
+          add_amount: 10,
+          libraryLimit: 20,
+          increaseBy: "10 more"
+        });
+
+        // Click the show more button 6 more times
+        for (i = 0; i < 6; i += 1) {
+          config = nypl_location_list.view_more();
+        }
+        expect(config).toEqual({
+          showMore: true,
+          add_amount: 12,
+          libraryLimit: 80,
+          increaseBy: "All"
+        });
+
+        // The last click
+        config = nypl_location_list.view_more();
+        expect(config).toEqual({
+          showMore: false,
+          add_amount: 12,
+          libraryLimit: 92,
+          increaseBy: "All"
+        });
+      });
+  }); /* End nypl_location_list */
+
 });
 

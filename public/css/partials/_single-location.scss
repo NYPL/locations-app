@@ -20,6 +20,8 @@
 
 	@include breakpoint($min, $desktop) {
 		display: inline-block;
+		height: 245px; // constrain proportions until proper images exist
+		overflow: hidden; // constrain proportions until proper images exist
 	}
 }
 
