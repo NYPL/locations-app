@@ -1316,17 +1316,17 @@ describe('NYPL Service Tests', function () {
           updatedLocations = nypl_utility.add_distance(locations, coords);
           expect(updatedLocations).toEqual([
             {id: 'AG', name: 'Aguilar Library',
-                lat: 40.7483308, long: -74.0084794, distance: 0.01}, //4.56
-              {id: 'AL', name: 'Allerton Library',
-                lat: 40.866, long: -73.8632, distance: 11.13},
-              {id: 'BAR', name: 'Baychester Library',
-                lat: 40.8711, long: -73.8305, distance: 12.6},
-              {id: 'BLC', name: 'Bronx Library Center',
-                lat: 40.8634, long: -73.8944, distance: 9.94},
-              {id: 'KP', name: 'Kips Bay Library',
-                lat: 40.7438, long: -73.9797, distance: 1.54},
-              {id: 'PM', name: 'Pelham Bay Library',
-                lat: 40.8336, long: -73.828, distance: 11.13}
+              lat: 40.7483308, long: -74.0084794, distance: 0.01}, //4.56
+            {id: 'AL', name: 'Allerton Library',
+              lat: 40.866, long: -73.8632, distance: 11.13},
+            {id: 'BAR', name: 'Baychester Library',
+              lat: 40.8711, long: -73.8305, distance: 12.6},
+            {id: 'BLC', name: 'Bronx Library Center',
+              lat: 40.8634, long: -73.8944, distance: 9.94},
+            {id: 'KP', name: 'Kips Bay Library',
+              lat: 40.7438, long: -73.9797, distance: 1.54},
+            {id: 'PM', name: 'Pelham Bay Library',
+              lat: 40.8336, long: -73.828, distance: 11.13}
           ]);
         });
     });
@@ -1344,17 +1344,17 @@ describe('NYPL Service Tests', function () {
         function () {
           var locations = [
             {id: 'AG', name: 'Aguilar Library',
-                lat: 40.7483308, long: -74.0084794, distance: 4.56},
-              {id: 'AL', name: 'Allerton Library',
-                lat: 40.866, long: -73.8632, distance: 11.13},
-              {id: 'BAR', name: 'Baychester Library',
-                lat: 40.8711, long: -73.8305, distance: 12.6},
-              {id: 'BLC', name: 'Bronx Library Center',
-                lat: 40.8634, long: -73.8944, distance: 9.94},
-              {id: 'KP', name: 'Kips Bay Library',
-                lat: 40.7438, long: -73.9797, distance: 1.54},
-              {id: 'PM', name: 'Pelham Bay Library',
-                lat: 40.8336, long: -73.828, distance: 11.13}
+              lat: 40.7483308, long: -74.0084794, distance: 4.56},
+            {id: 'AL', name: 'Allerton Library',
+              lat: 40.866, long: -73.8632, distance: 11.13},
+            {id: 'BAR', name: 'Baychester Library',
+              lat: 40.8711, long: -73.8305, distance: 12.6},
+            {id: 'BLC', name: 'Bronx Library Center',
+              lat: 40.8634, long: -73.8944, distance: 9.94},
+            {id: 'KP', name: 'Kips Bay Library',
+              lat: 40.7438, long: -73.9797, distance: 1.54},
+            {id: 'PM', name: 'Pelham Bay Library',
+              lat: 40.8336, long: -73.828, distance: 11.13}
           ];
 
           expect(nypl_utility.check_distance(locations)).toBe(false);
@@ -1365,17 +1365,17 @@ describe('NYPL Service Tests', function () {
         function () {
           var locations = [
             {id: 'AG', name: 'Aguilar Library',
-                lat: 40.7483308, long: -74.0084794, distance: 26},
-              {id: 'AL', name: 'Allerton Library',
-                lat: 40.866, long: -73.8632, distance: 31.13},
-              {id: 'BAR', name: 'Baychester Library',
-                lat: 40.8711, long: -73.8305, distance: 32.6},
-              {id: 'BLC', name: 'Bronx Library Center',
-                lat: 40.8634, long: -73.8944, distance: 29.94},
-              {id: 'KP', name: 'Kips Bay Library',
-                lat: 40.7438, long: -73.9797, distance: 41.54},
-              {id: 'PM', name: 'Pelham Bay Library',
-                lat: 40.8336, long: -73.828, distance: 31.13}
+              lat: 40.7483308, long: -74.0084794, distance: 26},
+            {id: 'AL', name: 'Allerton Library',
+              lat: 40.866, long: -73.8632, distance: 31.13},
+            {id: 'BAR', name: 'Baychester Library',
+              lat: 40.8711, long: -73.8305, distance: 32.6},
+            {id: 'BLC', name: 'Bronx Library Center',
+              lat: 40.8634, long: -73.8944, distance: 29.94},
+            {id: 'KP', name: 'Kips Bay Library',
+              lat: 40.7438, long: -73.9797, distance: 41.54},
+            {id: 'PM', name: 'Pelham Bay Library',
+              lat: 40.8336, long: -73.828, distance: 31.13}
           ];
 
           expect(nypl_utility.check_distance(locations)).toBe(true);
@@ -1391,10 +1391,101 @@ describe('NYPL Service Tests', function () {
     */
     describe('nypl_utility.catalog_items_link', function () {
       it('should output a url to biblicommons', function () {
-        // var branch = ''
+        var branch = '125th Street Library';
+
+        expect(nypl_utility.catalog_items_link(branch))
+          .toEqual('http://nypl.bibliocommons.com/search?custom_' +
+            'query=available%3A"125th%20Street"');
+
+        branch = 'Andrew Heiskell Braille and Talking Book Library';
+        expect(nypl_utility.catalog_items_link(branch))
+          .toEqual('http://nypl.bibliocommons.com/search?custom_' +
+            'query=available%3A"Andrew%20Heiskell%20Braille%20%26%' +
+            '20Talking%20Book%20Library"');
       });
     });
 
   }); /* End nypl_utility service */
+
+  /*
+  * nypl_location_list is a service that keeps track of the 'pagination'
+  * that occurs on the homepage for the list view. Showing 10 more
+  * libraries when the 'Show more' button is clicked.
+  */
+  describe('nypl_location_list', function () {
+    var nypl_location_list;
+
+    beforeEach(function () {
+      module('nypl_locations');
+      inject(function (_nypl_location_list_) {
+        nypl_location_list = _nypl_location_list_;
+      });
+    });
+
+    it('should create and extend the config object', function () {
+      var config = nypl_location_list.init();
+
+      expect(config).toEqual({
+        // Show the button
+        showMore: true,
+        // How many libraries to add when the button is clicked
+        add_amount: 10,
+        // To keep track of how many are on the page at a time
+        libraryLimit: 10,
+        // Text that updates when the button is pressed
+        increaseBy: "10 more"
+      });
+
+      // Extend the settings
+      config = nypl_location_list.init({
+        libraryLimit: 20,
+        increaseBy: "20 more",
+        add_amount: 20
+      });
+
+      expect(config).toEqual({
+        showMore: true,
+        libraryLimit: 20,
+        increaseBy: "20 more",
+        add_amount: 20
+      });
+    });
+
+    it('should update the settings when the view_more function is called',
+      function () {
+        var config, i;
+
+        nypl_location_list.init();
+        // The 'show more' button was clicked
+        config = nypl_location_list.view_more();
+        expect(config).toEqual({
+          showMore: true,
+          add_amount: 10,
+          libraryLimit: 20,
+          increaseBy: "10 more"
+        });
+
+        // Click the show more button 6 more times
+        for (i = 0; i < 6; i += 1) {
+          config = nypl_location_list.view_more();
+        }
+        expect(config).toEqual({
+          showMore: true,
+          add_amount: 12,
+          libraryLimit: 80,
+          increaseBy: "All"
+        });
+
+        // The last click
+        config = nypl_location_list.view_more();
+        expect(config).toEqual({
+          showMore: false,
+          add_amount: 12,
+          libraryLimit: 92,
+          increaseBy: "All"
+        });
+      });
+  }); /* End nypl_location_list */
+
 });
 
