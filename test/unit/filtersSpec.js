@@ -103,10 +103,13 @@ describe('NYPL Filter Tests', function () {
         expect(hoursTodayFormatFilter('')).toEqual('Not available');
       });
 
+      // Note how the following tests don't have data for the 'tomorrow'
+      // object, meaning if the today object has no data, no need to check
+      // tomorrow's object.
       it('should say "Closed today" when there is no open or close ' +
         'data and no format',
         function () {
-          expect(hoursTodayFormatFilter({'today': {'open': '', 'close': ''}}))
+          expect(hoursTodayFormatFilter({'today': {'open': null, 'close': null}}))
             .toEqual('Closed today');
         });
 
@@ -114,7 +117,7 @@ describe('NYPL Filter Tests', function () {
         'data and short format',
         function () {
           expect(
-            hoursTodayFormatFilter({'today': {'open': '', 'close': ''}},
+            hoursTodayFormatFilter({'today': {'open': null, 'close': null}},
               'short')
           ).toEqual('Closed today');
         });
@@ -123,7 +126,7 @@ describe('NYPL Filter Tests', function () {
         'data and long format',
         function () {
           expect(
-            hoursTodayFormatFilter({'today': {'open': '', 'close': ''}},
+            hoursTodayFormatFilter({'today': {'open': null, 'close': null}},
               'long')
           ).toEqual('Closed today');
         });
@@ -219,6 +222,22 @@ describe('NYPL Filter Tests', function () {
           }, 'short'))
             .toEqual('Open today 10am-6pm');
         });
+    });
+
+    describe('when tomorrow\'s time is closed', function () {
+      it('should say closed but not "Open tomorrow ..."', function () {
+        // Returns 19 for 7pm in the afternoon when a library is open.
+        Date.prototype.getHours = function () { return 19; };
+
+        // Since there are no hours for the tomorrow object and we are checking
+        // after today's closing time, then we cannot display, for example,
+        // "Open tomorrow 10am - 6pm". Display that it's just closed.
+        expect(hoursTodayFormatFilter({
+          'today': {'open': '10:00', 'close': '18:00'},
+          'tomorrow': {'open': null, 'close': null}
+        }, 'short'))
+          .toEqual('Closed today');
+      });
     });
   });
 

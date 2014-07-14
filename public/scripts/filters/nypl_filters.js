@@ -89,18 +89,10 @@ nypl_locations.filter('hoursTodayFormat', [
                     time = today.open.split(':');
                     open_time = getHoursObject(time);
                 }
-                if (tomorrow.open !== null) {
-                    time = tomorrow.open.split(':');
-                    tomorrow_open_time = getHoursObject(time);
-                }
                 // Assign closed time obj
                 if (today.close) {
                     time = today.close.split(':');
                     closed_time = getHoursObject(time);
-                }
-                if (tomorrow.close !== null) {
-                    time = tomorrow.close.split(':');
-                    tomorrow_close_time = getHoursObject(time);
                 }
 
                 // If there are no open or close times, then it's closed today
@@ -111,9 +103,19 @@ nypl_locations.filter('hoursTodayFormat', [
                     return 'Closed today';
                 }
 
+                if (tomorrow.open !== null) {
+                    time = tomorrow.open.split(':');
+                    tomorrow_open_time = getHoursObject(time);
+                }
+                if (tomorrow.close !== null) {
+                    time = tomorrow.close.split(':');
+                    tomorrow_close_time = getHoursObject(time);
+                }
+
                 if (hour_now_military >= closed_time.military) {
                     // If the current time is past today's closing time but
-                    // before midnight, display that it will be open 'tomorrow'
+                    // before midnight, display that it will be open 'tomorrow',
+                    // if there is data for tomorrow's time.
                     if (tomorrow_open_time || tomorrow_close_time) {
                         return 'Open tomorrow ' + tomorrow_open_time.hours +
                             (parseInt(tomorrow_open_time.mins, 10) !== 0 ?
