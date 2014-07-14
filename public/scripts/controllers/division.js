@@ -38,8 +38,6 @@ nypl_locations.controller('DivisionCtrl', [
                             nypl_utility.socialMediaColor(
                                 division.social_media
                             );
-
-                        console.log($scope.division);
                     })
                     .catch(function (error) {
                         $location.path('/404');

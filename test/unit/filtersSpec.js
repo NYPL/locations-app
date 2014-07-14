@@ -14,6 +14,11 @@ describe('NYPL Filter Tests', function () {
 
   beforeEach(module('nypl_locations'));
 
+  /*
+  * Given an object with open and close time properties, the timeFormat
+  * filter will nicely output the military-formatted time. If there is
+  * no open time in the object, it is considered closed.
+  */
   describe('timeFormat', function () {
     beforeEach(inject(function (_timeFormatFilter_) {
       timeFormatFilter = _timeFormatFilter_;
@@ -60,6 +65,9 @@ describe('NYPL Filter Tests', function () {
     });
   });
 
+  /*
+  * Filter to convert a date string into ISO format.
+  */
   describe('dateToISO', function () {
     beforeEach(inject(function (_dateToISOFilter_) {
       dateToISOFilter = _dateToISOFilter_;
@@ -75,6 +83,9 @@ describe('NYPL Filter Tests', function () {
     });
   });
 
+  /*
+  * Filter to capitalize a string of words.
+  */
   describe('capitalize', function () {
     beforeEach(inject(function (_capitalizeFilter_) {
       capitalizeFilter = _capitalizeFilter_;
@@ -93,6 +104,13 @@ describe('NYPL Filter Tests', function () {
     });
   });
 
+  /*
+  * Filter that checks an object with a 'today' and 'tomorrow' object.
+  * It outputs closed if there is no data, otherwise it checks the
+  * current time and compares the times for the library and outputs
+  * when the library opens, when it is open until, and what time
+  * it is open tomorrow - if tomorrow data is available.
+  */
   describe('hoursTodayFormat', function () {
     beforeEach(inject(function (_hoursTodayFormatFilter_) {
       hoursTodayFormatFilter = _hoursTodayFormatFilter_;
@@ -241,6 +259,10 @@ describe('NYPL Filter Tests', function () {
     });
   });
 
+  /*
+  * The truncate filter shortens text by a given length and adds ellipsis
+  * to the end of the truncated text.
+  */
   describe('truncate', function () {
     beforeEach(inject(function (_truncateFilter_) {
       truncateFilter = _truncateFilter_;
