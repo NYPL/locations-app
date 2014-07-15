@@ -99,7 +99,7 @@ nypl_locations.controller('ServicesAtLibraryCtrl', [
                         $scope.services = services;
 
                         breadcrumbs.options = { 'Location': location.name };
-                        $scope.breadcrumbs = breadcrumbs;
+                        $scope.breadcrumbs = breadcrumbs;  // Throws replace undefined error
                     });
             };
 
