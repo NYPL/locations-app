@@ -102,7 +102,8 @@
 
 
 #catalog-link {
-	background-color: rgba(#0090c4, .2);
+	background-color: lighten(#0090c4, 50%);
+	border: 1px solid transparent;
 	border-radius: 2px;
 	color: darken(#0090c4, 10%);
 	padding: 4px;
@@ -110,8 +111,7 @@
 	margin-left: .35em;
 	
 	&:hover {
-		color: #0090c4;
-		text-decoration: underline;	
+		border:	1px solid #0090c4;
 	}
 }
 
