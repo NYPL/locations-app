@@ -1,4 +1,4 @@
-<div class="content grid">
+<section class="events">
   <!-- ul class="inline breadcrumb">
     <li ng-repeat="breadcrumb in breadcrumbs.get() track by breadcrumb.path" ng-class="{ active: $last }">
       <a ng-if="!$last" ng-href="#{{ breadcrumb.path }}" ng-bind="breadcrumb.label | capitalize"></a>
@@ -6,57 +6,67 @@
     </li>
   </ul> -->
 
-  <section class="grid">
-    <div class="grid__item one-whole lap-and-up-two-thirds">
-      <h1>{{ 'EVENTS_AT' | translate }} {{location.name}}</h1>
-    </div><!--
-    --><div class="grid__item one-whole lap-and-up-one-third">
-      <todayshours hours="{{hoursToday(location.hours) | hoursTodayFormat:'short'}}" />
-    </div>
-    <div class="grid__item one-whole">
-      <p>
-        This space is a couple of lines maximum with general stuff about what Events at a branch means.  Should be standard across all locations.
-        Examples of text type.  All events are free unless otherwise noted.
-      </p>
-    </div>
-  </section>
-
-  <section class="grid__item one-whole">
-    <div class="callout">
-      <h3 class="flush">{{ 'EXHIBITION' | translate }}: Title of exhibition</h3>
-    </div>
-  </section>
-
-  <section class="grid__item one-whole">
-  <p data-ng-if="location._embedded.events.length > '1'">
-    Showing {{location._embedded.events.length}} of # upcoming events at {{location.name}}.
-  </p>
-  </section>
-
-  <section class="grid__item one-whole" data-ng-repeat="event in location._embedded.events" 
-    data-ng-if="location._embedded.events">
-    <h3><a href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h3>
+  <section class="location_events_info {{location.name}}">
+    <div class="grid">
       <div class="grid__item one-whole lap-and-up-two-thirds">
-        <img data-ng-if="event.image" class="img--outline img--left" 
-          data-ng-src="{{event.image}}" alt="" style="height: 100px;" />
-        <p>Date/Time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}} - {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
-        <p>{{event.body}}</p>
+        <h1>{{ 'EVENTS_AT' | translate }} {{location.name}}</h1>
       </div><!--
+
       --><div class="grid__item one-whole lap-and-up-one-third">
-          <p class="text--right"><a href="" class="btn gradient">{{ 'REGISTER' | translate }}</a></p>
-          <p class="text--right">
-            <a href="{{calendar_link('google', event, location)}}"
-              target="_blank" rel="nofollow" class="icon-calendar google_link">Google</a>
-            <a href="{{calendar_link('yahoo', event, location)}}"
-              target="_blank" rel="nofollow" class="icon-calendar yahoo_link">Yahoo</a>
-            <a href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" download="nypl_event.ics" 
-              class="icon-calendar" rel="nofollow">
-              iCal
-            </a>
+        <div class="callout">
+          <todayshours hours="{{hoursToday(location.hours) | hoursTodayFormat:'short'}}" />
+        </div>
+      </div><!--
+
+      --><div class="grid__item one-whole">
+        <p>
+          This space is a couple of lines maximum with general stuff about what Events at a branch means.  Should be standard across all locations.
+          Examples of text type.  All events are free unless otherwise noted.
+        </p>
+      </div><!--
+
+      --><div class="grid__item one-whole">
+        <div class="callout featured-event">
+          <h3 class="flush">{{ 'EXHIBITION' | translate }}: Title of exhibition</h3>
+        </div>
+        <div class="events-pager">
+          <p data-ng-if="location._embedded.events.length > '1'">
+            Showing {{location._embedded.events.length}} of # upcoming events at {{location.name}}.
           </p>
+        </div>
       </div>
+    </div>
+  </section>
+
+
+  <section class="list-of-events">
+    <div class="grid">
+      <div class="grid__item one-whole" data-ng-repeat="event in location._embedded.events" 
+        data-ng-if="location._embedded.events">
+        <h3><a href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h3>
+        <div class="grid__item one-whole lap-and-up-two-thirds">
+          <img data-ng-if="event.image" class="img--outline img--left" 
+            data-ng-src="{{event.image}}" alt="" style="height: 100px;" />
+          <p>Date/Time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}} - {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+          <p>{{event.body}}</p>
+        </div><!--
+        --><div class="grid__item one-whole lap-and-up-one-third">
+            <p class="text--right"><a href="" class="btn gradient whiteText">{{ 'REGISTER' | translate }}</a></p>
+            <p class="text--right">
+              <a href="{{calendar_link('google', event, location)}}"
+                target="_blank" rel="nofollow" class="icon-calendar google_link">Google</a>
+              <a href="{{calendar_link('yahoo', event, location)}}"
+                target="_blank" rel="nofollow" class="icon-calendar yahoo_link">Yahoo</a>
+              <a href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" download="nypl_event.ics" 
+                class="icon-calendar" rel="nofollow">
+                iCal
+              </a>
+            </p>
+        </div>
+      </div>
+    </div>
   </section>
 
   <askdonatefooter chatHref="" emailHref="" donateHref="" />
   
-</div>
+</section>

@@ -571,6 +571,8 @@ nypl_locations.controller('LocationCtrl', [
                         $scope.location.catalog =
                             nypl_utility
                                 .catalog_items_link($scope.location.name);
+
+                        console.log($scope.location);
                     })
                     .catch(function (err) {
                         $location.path('/404');

@@ -217,7 +217,31 @@
 
 // About section
 #location-secondary-img{
-		height: 300px; // constrain proportions until proper images exist
-		overflow: hidden; // constrain proportions until proper images exist
-	
+	height: 300px; // constrain proportions until proper images exist
+	overflow: hidden; // constrain proportions until proper images exist
+}
+
+// Events page for each location-hours
+.location_events_info {
+	#hours-today {
+		margin-left: -.35em;
+
+		@include breakpoint($min, $post-palm) {
+			margin-left: 0;
+		}
+
+		.hours-today {
+			font-size: 14px;
+			font-size: 1.4rem;
+
+			@include breakpoint($min, $post-palm) {
+				font-size: 16px;
+				font-size: 1.6rem;
+			}		
+
+			span {
+				vertical-align: -2px;
+			}
+		}
+	}
 }
