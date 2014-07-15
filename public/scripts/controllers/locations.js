@@ -526,6 +526,7 @@ nypl_locations.controller('LocationCtrl', [
     'nypl_coordinates_service',
     'nypl_utility',
     '$location',
+    'breadcrumbs',
     function (
         $scope,
         $timeout,
@@ -534,7 +535,8 @@ nypl_locations.controller('LocationCtrl', [
         nypl_locations_service,
         nypl_coordinates_service,
         nypl_utility,
-        $location
+        $location,
+        breadcrumbs
     ) {
         'use strict';
         var location,
@@ -547,6 +549,9 @@ nypl_locations.controller('LocationCtrl', [
                         $rootScope.title = location.name;
                         $scope.calendar_link = nypl_utility.calendar_link;
                         $scope.ical_link = nypl_utility.ical_link;
+
+                        breadcrumbs.options = { 'Location': location.name };
+                        $scope.breadcrumbs = breadcrumbs;
 
                         if (location._embedded) {
                             $scope.siteWideAlert =
