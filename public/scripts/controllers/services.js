@@ -15,6 +15,7 @@ nypl_locations.controller('ServicesCtrl', [
     ) {
         'use strict';
         var services,
+            homeUrl,
             loadServices = function () {
                 return nypl_locations_service
                     .services()
@@ -24,8 +25,13 @@ nypl_locations.controller('ServicesCtrl', [
                     });
             };
 
-        $scope.breadcrumbs = breadcrumbs;
         $rootScope.title = "Services";
+
+        // Inserts into beginning of breadcrumbs
+        homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
+        breadcrumbs.breadcrumbs.unshift(homeUrl);
+        $scope.breadcrumbs = breadcrumbs;
+
         loadServices();
     }
 ]);
@@ -48,6 +54,7 @@ nypl_locations.controller('OneServiceCtrl', [
         'use strict';
         var service,
             locations,
+            homeUrl,
             loadOneService = function () {
                 return nypl_locations_service
                     .one_service($routeParams.service_id)
@@ -60,7 +67,10 @@ nypl_locations.controller('OneServiceCtrl', [
                         $scope.locations = locations;
                         $scope.service_name = service.name;
 
+                        // Inserts into beginning of breadcrumbs
+                        homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
                         breadcrumbs.options = { 'Service': service.name };
+                        breadcrumbs.breadcrumbs.unshift(homeUrl);
                         $scope.breadcrumbs = breadcrumbs;
                     });
             };
@@ -87,6 +97,7 @@ nypl_locations.controller('ServicesAtLibraryCtrl', [
         'use strict';
         var services,
             location,
+            homeUrl,
             loadServicesAtBranch = function () {
                 return nypl_locations_service
                     .services_at_library($routeParams.location_id)
@@ -98,8 +109,11 @@ nypl_locations.controller('ServicesAtLibraryCtrl', [
                         $scope.location = location;
                         $scope.services = services;
 
+                        // Inserts into beginning of breadcrumbs
+                        homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
                         breadcrumbs.options = { 'Location': location.name };
-                        $scope.breadcrumbs = breadcrumbs;  // Throws replace undefined error
+                        breadcrumbs.breadcrumbs.unshift(homeUrl);
+                        $scope.breadcrumbs = breadcrumbs;
                     });
             };
 

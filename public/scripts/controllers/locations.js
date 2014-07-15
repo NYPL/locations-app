@@ -541,6 +541,7 @@ nypl_locations.controller('LocationCtrl', [
         'use strict';
         var location,
             userCoords,
+            homeUrl,
             loadLocation = function () {
                 return nypl_locations_service
                     .single_location($routeParams.symbol)
@@ -551,6 +552,8 @@ nypl_locations.controller('LocationCtrl', [
                         $scope.ical_link = nypl_utility.ical_link;
 
                         breadcrumbs.options = { 'Location': location.name };
+                        homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
+                        breadcrumbs.breadcrumbs.unshift(homeUrl);
                         $scope.breadcrumbs = breadcrumbs;
 
                         if (location._embedded) {

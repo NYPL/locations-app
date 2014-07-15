@@ -43,7 +43,7 @@ nypl_locations.config([
             .when('/', {
                 templateUrl: 'views/locations.html',
                 controller: 'LocationsCtrl',
-                label: 'Home'
+                label: 'Locations'
             })
             .when('/division/:division', {
                 templateUrl: 'views/division.html',

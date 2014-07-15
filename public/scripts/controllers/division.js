@@ -20,6 +20,8 @@ nypl_locations.controller('DivisionCtrl', [
     ) {
         'use strict';
         var division,
+            homeUrl,
+            locationUrl,
             loadDivision = function () {
                 return nypl_locations_service
                     .single_division($routeParams.division)
@@ -28,14 +30,13 @@ nypl_locations.controller('DivisionCtrl', [
                         $rootScope.title = division.name;
 
                         breadcrumbs.options = {
-                            "Home": division.location_name,
                             "Division": division.name
                         };
-                        // This is hacky but needed because the 'home'
-                        // link is actually going to the library's (where
-                        // the division is located) homepage.
-                        breadcrumbs.breadcrumbs[0].path = "#/" +
-                            division.location_slug;
+
+                        homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
+                        locationUrl = { label: division.location_name, path: '#/' + division.location_slug };
+                        breadcrumbs.breadcrumbs.unshift(homeUrl);
+                        breadcrumbs.breadcrumbs.splice(2,0,locationUrl);
                         $scope.breadcrumbs = breadcrumbs;
 
                         if (division.hours) {
