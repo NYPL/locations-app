@@ -69,15 +69,16 @@
   <!-- Conditional | List/Map Views -->
   <div data-ng-switch on="view">
     <div data-ng-switch-when="list">
-      <ng-include src="'views/location-list-view.html'"></ng-include>
+      <data-ng-include src="'views/location-list-view.html'"></data-ng-include>
     </div>
 
     <div data-ng-switch-when="map">
-      <ng-include src="'views/location-map-view.html'" onLoad="drawMap()"></ng-include>
+      <data-ng-include src="'views/location-map-view.html'" onLoad="drawMap()"
+        data-ng-controller="MapCtrl"></data-ng-include>
     </div>
 
     <div data-ng-switch-default>
-      <ng-include src="'views/location-list-view.html'"></ng-include>
+      <data-ng-include src="'views/location-list-view.html'"></data-ng-include>
     </div>
   </div>
 </div>
