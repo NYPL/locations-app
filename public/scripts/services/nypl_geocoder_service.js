@@ -174,7 +174,8 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             var markerObj = _.where(markers, {id: id}),
                 marker = markerObj[0].marker;
 
-            if (marker.getMap() === null) {
+            if (marker.getMap() === undefined ||
+                marker.getMap() === null) {
                 this.add_marker_to_map(id);
             }
 

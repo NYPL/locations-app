@@ -391,6 +391,16 @@ nypl_locations.factory('nypl_utility', [
                         .replace(/ /g, "%20");
                 }
                 return base + bc_branch + "\"";
+            },
+
+            search_word_filter: function (query) {
+                var words = ['branch'];
+
+                _.each(words, function (word) {
+                    query = query.replace(word, "");
+                });
+
+                return query;
             }
         };
     }
