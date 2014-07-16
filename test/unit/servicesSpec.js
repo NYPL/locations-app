@@ -660,6 +660,11 @@ describe('NYPL Service Tests', function () {
   });
   /* end nypl_geocoder_service called directly */
 
+
+  /*
+  * nypl_locations_service is an Angularjs service that calls the
+  * API and returns data.
+  */
   describe('nypl_locations_service', function () {
     var nypl_locations_service, httpBackend;
 
@@ -686,6 +691,12 @@ describe('NYPL Service Tests', function () {
       httpBackend.verifyNoOutstandingRequest();
     });
 
+    /*
+    * nypl_locations_service.all_locations()
+    *
+    *   Hits the /locations endpoint in the API and returns
+    *   all the locations.
+    */
     it('should get all locations', function () {
       var locations,
         service_result,
@@ -711,6 +722,13 @@ describe('NYPL Service Tests', function () {
       expect(service_result).toEqual(mocked_all_locations_API_call);
     });
 
+    /*
+    * nypl_locations_service.single_location(symbol)
+    *   symbol: The location slug passed from Angular's route params.
+    *
+    *   Hits the /location/:symbol endpoint and returns the json for one
+    *   specific branch. 
+    */
     it('should return one specific location', function () {
       var location,
         service_result,
@@ -735,10 +753,16 @@ describe('NYPL Service Tests', function () {
       expect(service_result).toEqual(mocked_one_location_API_call);
     });
 
+    /*
+    * nypl_locations_service.single_division(division)
+    *   division: The division slug passed from Angular's route params.
+    *
+    *   Hits the /division/:division endpoint and returns the json for
+    *   one division.
+    */
     it('should return one division', function () {
       var division,
         service_result,
-        // The actual API call has many properties for one location
         mocked_one_division_API_call = {
           division: {
             id: "MAP",
@@ -762,10 +786,15 @@ describe('NYPL Service Tests', function () {
       expect(service_result).toEqual(mocked_one_division_API_call);
     });
 
+    /*
+    * nypl_locations_service.services()
+    *
+    *   Hits the /services endpoint and returns all the services
+    *   available in the API.
+    */
     it('should return a list of services', function () {
       var services,
         service_result,
-        // The actual API call has many properties for one location
         mocked_services_API_call = {
           services: [
             {id: 4, name: "Computers for Public Use", _links: {}},
@@ -790,10 +819,17 @@ describe('NYPL Service Tests', function () {
       expect(service_result).toEqual(mocked_services_API_call);
     });
 
+    /*
+    * nypl_locations_service.one_service(symbol)
+    *   symbol: The service id passed from Angular's route params.
+    *
+    *   Hits the /service:/symbol endpoint and returns data for one
+    *   specific branch.
+    */
     it('should return a list of locations for one service', function () {
       var locations,
         service_result,
-        // The actual API call has many properties for one location
+        // The actual API call has many properties for one service
         mocked_one_service_API_call = {
           services: {
             id: 36,
@@ -823,6 +859,13 @@ describe('NYPL Service Tests', function () {
       expect(service_result).toEqual(mocked_one_service_API_call);
     });
 
+    /*
+    * nypl_locations_services.services_at_library(symbol)
+    *   symbol: The id of the location passed from Angular's route params.
+    *
+    *   Hit's the /locations/:symbol/services endpoint and returns all the 
+    *   services available at a specific location.
+    */
     it('should return a list of services at a specific location', function () {
       var services,
         service_result,
@@ -857,6 +900,51 @@ describe('NYPL Service Tests', function () {
         .toEqual('Science, Industry and Business Library (SIBL)');
       expect(service_result.locations._embedded.services.length).toBe(4);
       expect(service_result).toEqual(mocked_location_services_API_call);
+    });
+
+    /*
+    * nypl_locations_services.alerts()
+    *
+    *   Hits the /alerts endpoint and returns a list of all the upcoming
+    *   site wide alerts.
+    */
+    it('should return a list of alerts', function () {
+      var alerts,
+        alerts_result,
+        mocked_alerts_API_call = {
+          alerts: [{
+            _id: '71579',
+            scope: 'all',
+            title: 'Labor Day',
+            body: "The New York Public Library will be closed " +
+              "August 30th through September 1st in observance of Labor Day.",
+            start: "2014-08-23T00:00:00-04:00",
+            end: "2014-09-02T01:00:00-04:00"
+          },
+          {
+            _id: '71581',
+            scope: 'all',
+            title: 'Columbus Day',
+            body: "The New York Public Library will be closed on Monday, " +
+              "October 13 in observance of Columbus Day.",
+            start: "2014-10-06T00:00:00-04:00",
+            end: "2014-10-14T01:00:00-04:00"
+          }]
+        };
+
+      httpBackend
+        .expectGET('http://evening-mesa-7447-160.herokuapp.com/alerts')
+        .respond(mocked_alerts_API_call);
+
+      alerts = nypl_locations_service.alerts();
+      alerts.then(function (data) {
+        alerts_result = data;
+      });
+
+      httpBackend.flush();
+
+      expect(alerts_result.alerts.length).toBe(2);
+      expect(alerts_result).toEqual(mocked_alerts_API_call);
     });
 
   }); /* End nypl_locations_service */

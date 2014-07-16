@@ -1,5 +1,13 @@
 <!-- Individual Division -->
 <div class="individual-division">
+
+  <ul class="inline breadcrumb">
+    <li ng-repeat="breadcrumb in breadcrumbs.get() track by breadcrumb.path" ng-class="{ active: $last }">
+      <a ng-if="!$last" ng-href="{{ breadcrumb.path }}" ng-bind="breadcrumb.label | capitalize"></a>
+      <span ng-if="$last" ng-bind="breadcrumb.label | capitalize"></span>
+    </li>
+  </ul>
+
   <div class="container__division-info">
     <h1 class="p-org">{{division.name}}</h1>
     <div class="grid">
