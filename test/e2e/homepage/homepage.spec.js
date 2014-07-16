@@ -283,7 +283,8 @@ describe('Locations: homepage', function () {
 
                 it('should show what the search was', function () {
                     expect(landingPage.resultsNear.getText())
-                        .toEqual('Showing search results near battery park');
+                        .toEqual('Showing search results near Battery Park, ' +
+                            'New York, NY, USA');
                 });
 
                 it('should search by location name and be the first result',
@@ -366,7 +367,8 @@ describe('Locations: homepage', function () {
 
                 it('should show what the search was', function () {
                     expect(landingPage.resultsNear.getText())
-                        .toEqual('Showing search results near bronx zoo');
+                        .toEqual('Showing search results near Bronx Zoo, 2300 ' +
+                            'Southern Boulevard, Bronx, NY 10460, USA');
                 });
 
                 it('should not have any highlighted locations', function () {
@@ -414,7 +416,8 @@ describe('Locations: homepage', function () {
                             expect(landingPage.firstLocDist()).toEqual('Distance: 0.51 miles');
 
                             expect(landingPage.gmapInfoWindow.getText())
-                                .toEqual('bronx zoo');
+                                .toEqual('Bronx Zoo\n2300 Southern Boulevard\nBronx, ' +
+                                    'NY 10460, USA');
                         });
                 });
 
@@ -450,7 +453,8 @@ describe('Locations: homepage', function () {
 
                 it('should show what the search was', function () {
                     expect(landingPage.resultsNear.getText())
-                        .toEqual('Showing search results near 10016');
+                        .toEqual('Showing search results near New York, NY ' +
+                            '10016, USA');
                 });
 
                 it('should show libraries in the searched zip code first',
@@ -536,8 +540,8 @@ describe('Locations: homepage', function () {
                     browser.sleep(1000);
 
                     expect(landingPage.searchError.getText())
-                        .toEqual('No results for boston within 25 miles of' +
-                                 ' an NYPL location. Showing all locations.');
+                        .toEqual('No results for Boston, MA, USA within 25 miles ' +
+                                'of an NYPL location. Showing all locations.');
                 });
 
             it('should clear the search field', function () {
@@ -568,8 +572,8 @@ describe('Locations: homepage', function () {
                     browser.sleep(1000);
 
                     expect(landingPage.searchError.getText())
-                        .toEqual('No results for boston within 25 miles of' +
-                                 ' an NYPL location. Showing all locations.');
+                        .toEqual('No results for Boston, MA, USA within 25 miles ' +
+                            'of an NYPL location. Showing all locations.');
 
                     expect(landingPage.firstLocName())
                         .toEqual('115th Street Library');
@@ -831,7 +835,7 @@ describe('Locations: homepage', function () {
                     expect(landingPage.firstLocName())
                         .toEqual('Seward Park Library');
                     expect(landingPage.gmapInfoWindow.getText())
-                        .toEqual('lower east side');
+                        .toEqual('Lower East Side\nNew York\nNY, USA');
                 });
 
             it('should sort by distance after a search', function () {
@@ -851,7 +855,7 @@ describe('Locations: homepage', function () {
                 });
 
                 expect(landingPage.gmapInfoWindow.getText())
-                    .toEqual('lower east side');
+                    .toEqual('Lower East Side\nNew York\nNY, USA');
                 expect(landingPage.locations.count()).toBe(4);
                 expect(research_libraries).toEqual([
                     {
