@@ -127,8 +127,8 @@
   <div id="container__events" data-ng-if="location._embedded.events">
     <h2 class="hdg">{{ 'EVENTS' | translate }}</h2>
     <ul class="grid">
-      <li class="chunk one-whole lap-and-up-one-third" data-ng-repeat="event in location._embedded.events">
-        <h3><a href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h3>
+      <li class="chunk one-whole desk-one-third" data-ng-repeat="event in location._embedded.events">
+        <h3 class="event__title"><a href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h3>
         <p class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p class="desc">{{event.body}}</p>
 
