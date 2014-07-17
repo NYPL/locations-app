@@ -1,13 +1,7 @@
 <!-- Individual Division -->
 <div class="individual-division">
 
-  <ul class="inline breadcrumb">
-    <li data-ng-repeat="breadcrumb in breadcrumbs.get() track by breadcrumb.path"
-      data-ng-class="{ active: $last }" data-ng-if="!$last">
-      <a data-ng-href="{{ breadcrumb.path }}"
-        data-ng-bind="breadcrumb.label | capitalize"></a>
-    </li>
-  </ul>
+  <nyplbreadcrumbs></nyplbreadcrumbs>
 
   <div class="container__division-info">
     <h1 class="p-org">{{division.name}}</h1>

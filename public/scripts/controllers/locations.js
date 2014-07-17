@@ -564,6 +564,7 @@ nypl_locations.controller('LocationCtrl', [
 
                         breadcrumbs.options = { 'Location': location.name };
                         homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
+                        breadcrumbs.breadcrumbs[1].path = "#/" + location.slug;
                         breadcrumbs.breadcrumbs.unshift(homeUrl);
                         $scope.breadcrumbs = breadcrumbs;
 
