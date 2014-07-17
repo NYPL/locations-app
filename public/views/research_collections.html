@@ -1,0 +1,44 @@
+<section class="research-collections">
+
+  <section class="collection-search">
+    <div class="grid">
+      <div class="grid__item one-whole lap-and-up-two-thirds">
+        <h1>Research Collections + Divisions</h1>
+        <p>How can we help you today?</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="grid__item one-half">
+        I want to search by:
+        <select data-ng-model="searchBy.main"
+          data-ng-options="main.name for main in data" class="one-half"></select>
+      </div><!--
+
+      --><div class="grid__item one-half" data-ng-if="searchBy.main">
+        Great! Did you want:
+        <select data-ng-model="searchBy.second"
+          data-ng-options="second.sub for second in searchBy.main.sub" class="one-half"></select>
+      </div>
+  </section>
+
+  <section class="collections-results" data-ng-if="searchBy.second">
+    <hr />
+
+    <h2>Results:</h2>
+    <span>Results also available in Digital Collections</span>
+
+    <!-- Divisions (API dependent) -->
+    <div id="container__divisions">
+      <div class="grid">
+        <div class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='division in divisions | filter:{medium:searchBy.second.id} '>
+          <img class="img--left img--outline" data-ng-src="{{division.image}}" alt="" style="height: 100px;" />
+          <h4 class=""><a href="/#/division/{{division.slug}}">{{division.name}}</a></h4>
+          <p data-ng-if="division.hours">Hours Today: {{hoursToday(division.hours) | timeFormat}}</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</section>

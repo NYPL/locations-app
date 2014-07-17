@@ -50,6 +50,11 @@ nypl_locations.config([
                 controller: 'DivisionCtrl',
                 label: 'Division'
             })
+            .when('/research-collections', {
+                templateUrl: 'views/research_collections.html',
+                controller: 'CollectionsCtrl',
+                label: 'Collections'
+            })
             .when('/services', {
                 templateUrl: '/views/services.html',
                 controller: 'ServicesCtrl',

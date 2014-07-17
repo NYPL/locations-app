@@ -39,6 +39,20 @@ angular.module('locationService', ['ngResource'])
                     return defer.promise;
                 },
 
+                all_divisions: function () {
+                    var defer = $q.defer();
+
+                    $http.get(
+                        api + '/divisions',
+                        {cache: true}
+                    ).success(function (data) {
+                        defer.resolve(data);
+                    }).error(function () {
+                        defer.reject(apiError);
+                    });
+                    return defer.promise;
+                },
+
                 single_division: function (division) {
                     var defer = $q.defer();
 
