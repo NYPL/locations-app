@@ -42,6 +42,24 @@ describe('NYPL Directive Tests', function () {
   });
 
   /*
+  *
+  */
+  describe('nyplbreadcrumbs', function () {
+    beforeEach(inject(function (_$compile_, _$rootScope_) {
+      $compile = _$compile_;
+      $rootScope = _$rootScope_;
+    }));
+
+    it('should compile', function () {
+      element = angular.element('<nyplbreadcrumbs></nyplbreadcrumbs>');
+      $compile(element)($rootScope);
+      $rootScope.$digest();
+
+      expect(element.attr('class')).toContain('breadcrumb');
+    });
+  });
+
+  /*
   * The translatebutton directive displays a simple list
   * of languages that the site can be translated into.
   */
