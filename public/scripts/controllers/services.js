@@ -70,6 +70,7 @@ nypl_locations.controller('OneServiceCtrl', [
                         // Inserts into beginning of breadcrumbs
                         homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
                         breadcrumbs.options = { 'Service': service.name };
+                        breadcrumbs.breadcrumbs[1].path = "#/services";
                         breadcrumbs.breadcrumbs.unshift(homeUrl);
                         $scope.breadcrumbs = breadcrumbs;
                     });
@@ -112,6 +113,7 @@ nypl_locations.controller('ServicesAtLibraryCtrl', [
                         // Inserts into beginning of breadcrumbs
                         homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
                         breadcrumbs.options = { 'Location': location.name };
+                        breadcrumbs.breadcrumbs[1].path = "#/services";
                         breadcrumbs.breadcrumbs.unshift(homeUrl);
                         $scope.breadcrumbs = breadcrumbs;
                     });

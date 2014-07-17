@@ -2,9 +2,10 @@
 <div class="individual-division">
 
   <ul class="inline breadcrumb">
-    <li ng-repeat="breadcrumb in breadcrumbs.get() track by breadcrumb.path" ng-class="{ active: $last }">
-      <a ng-if="!$last" ng-href="{{ breadcrumb.path }}" ng-bind="breadcrumb.label | capitalize"></a>
-      <span ng-if="$last" ng-bind="breadcrumb.label | capitalize"></span>
+    <li data-ng-repeat="breadcrumb in breadcrumbs.get() track by breadcrumb.path"
+      data-ng-class="{ active: $last }" data-ng-if="!$last">
+      <a data-ng-href="{{ breadcrumb.path }}"
+        data-ng-bind="breadcrumb.label | capitalize"></a>
     </li>
   </ul>
 
