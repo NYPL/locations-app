@@ -21,16 +21,27 @@ nypl_locations.controller('CollectionsCtrl', [
                         divisions = data.divisions;
 
                         _.each(divisions, function (division) {
-                            var rarebooks = ['SCM', 'BRG', 'CPS'];
-                            if (_.contains(rarebooks, division.id)) {
-                                division.medium = 0;
-                                console.log(division);
-                            }
+                            division.medium = [];
+                            var medium = {
+                                rarebooks: {id: 0, divs: ['RBK', 'SCM', 'BRG', 'CPS']},
+                                manuscripts: {id: 2, divs: ['MSS', 'SCM', 'SPN', 'BRG', 'CPS', 'THE', 'TOFT', 'DAN', 'MUS']},
+                                archives: {id: 3, divs: ['MSS', 'SCM', 'SPN', 'BRG', 'THE', 'TOFT', 'DAN', 'MUS']},
+                                map: {id: 4, divs: ['MAP']},
+                                scores: {id: 5, divs: ['MUS']},
+                                filmvideo: {id: 6, divs: ['TOFT', 'MSS', 'SCL', 'DAN']},
+                                soundrecordings: {id: 7, divs: ['RHA', 'SCL']},
+                                photographs: {id: 8, divs: ['PHG', 'SCL', 'PRN', 'THE', 'TOFT', 'MSS']},
+                                prints: {id: 9, divs: ['PRN', 'SCL']},
+                                newspapers: {id: 10, divs: ['GRD']},
+                                artistsbook: {id: 11, divs: ['SPN']},
+                                artartifacts: {id: 12, divs: ['SCF']}
+                            };
 
-                            var manuscripts = ['MSS', 'SCM', 'SPN'];
-                            if (_.contains(manuscripts, division.id)) {
-                                division.medium = 2;
-                            }
+                            _.each(medium, function (m) {
+                                if (_.contains(m.divs, division.id)) {
+                                    division.medium.push(m.id);
+                                }
+                            });
                         });
 
                         $scope.divisions = divisions;
@@ -48,79 +59,81 @@ nypl_locations.controller('CollectionsCtrl', [
             {
                 id: 0,
                 name: 'Subject',
-                sub: [
-                    { 'sub': 'African American History' },
-                    { 'sub': 'African Studies' },
-                    { 'sub': 'Anthropology' },
-                    { 'sub': 'Archaeology' },
-                    { 'sub': 'Architecture' },
-                    { 'sub': 'Art History' },
-                    { 'sub': 'Artists\' Books' },
-                    { 'sub': 'Business & Finance' },
-                    { 'sub': 'Children\'s Literature' },
-                    { 'sub': 'Classics' },
-                    { 'sub': 'Culinary Studies' },
-                    { 'sub': 'Dance' },
-                    { 'sub': 'Decorative Arts' },
-                    { 'sub': 'East Asian Studies' },
-                    { 'sub': 'Eastern European Studies' },
-                    { 'sub': 'Economics ' },
-                    { 'sub': 'Film, Television, & Radio' },
-                    { 'sub': 'Gay & Lesbian Studies' },
-                    { 'sub': 'Genealogy' },
-                    { 'sub': 'Industry' },
-                    { 'sub': 'Jewish Studies' },
-                    { 'sub': 'Latin American Studies' },
-                    { 'sub': 'Literature' },
-                    { 'sub': 'Maps' },
-                    { 'sub': 'Middle Eastern Studies' },
-                    { 'sub': 'Music' },
-                    { 'sub': 'Native American Studies' },
-                    { 'sub': 'New York City History' },
-                    { 'sub': 'Philosophy' },
-                    { 'sub': 'Photography' },
-                    { 'sub': 'Political Science' },
-                    { 'sub': 'Popular Culture' },
-                    { 'sub': 'Prints' },
-                    { 'sub': 'Psychology' },
-                    { 'sub': 'Religion' },
-                    { 'sub': 'Slavic & Baltic Studies' },
-                    { 'sub': 'Sociology' },
-                    { 'sub': 'South Asian Studies' },
-                    { 'sub': 'Sports' },
-                    { 'sub': 'Theatre' },
-                    { 'sub': 'U.S. History' },
-                    { 'sub': 'Western European Studies' },
-                    { 'sub': 'Women\'s Studies' },
-                    { 'sub': 'World History' }
+                list: [
+                    { 'item': 'African American History' },
+                    { 'item': 'African Studies' },
+                    { 'item': 'Anthropology' },
+                    { 'item': 'Archaeology' },
+                    { 'item': 'Architecture' },
+                    { 'item': 'Art History' },
+                    { 'item': 'Artists\' Books' },
+                    { 'item': 'Business & Finance' },
+                    { 'item': 'Children\'s Literature' },
+                    { 'item': 'Classics' },
+                    { 'item': 'Culinary Studies' },
+                    { 'item': 'Dance' },
+                    { 'item': 'Decorative Arts' },
+                    { 'item': 'East Asian Studies' },
+                    { 'item': 'Eastern European Studies' },
+                    { 'item': 'Economics ' },
+                    { 'item': 'Film, Television, & Radio' },
+                    { 'item': 'Gay & Lesbian Studies' },
+                    { 'item': 'Genealogy' },
+                    { 'item': 'Industry' },
+                    { 'item': 'Jewish Studies' },
+                    { 'item': 'Latin American Studies' },
+                    { 'item': 'Literature' },
+                    { 'item': 'Maps' },
+                    { 'item': 'Middle Eastern Studies' },
+                    { 'item': 'Music' },
+                    { 'item': 'Native American Studies' },
+                    { 'item': 'New York City History' },
+                    { 'item': 'Philosophy' },
+                    { 'item': 'Photography' },
+                    { 'item': 'Political Science' },
+                    { 'item': 'Popular Culture' },
+                    { 'item': 'Prints' },
+                    { 'item': 'Psychology' },
+                    { 'item': 'Religion' },
+                    { 'item': 'Slavic & Baltic Studies' },
+                    { 'item': 'Sociology' },
+                    { 'item': 'South Asian Studies' },
+                    { 'item': 'Sports' },
+                    { 'item': 'Theatre' },
+                    { 'item': 'U.S. History' },
+                    { 'item': 'Western European Studies' },
+                    { 'item': 'Women\'s Studies' },
+                    { 'item': 'World History' }
                 ]
             },
             {
                 id: 1,
                 name: 'Medium',
-                sub: [
-                    { 'sub': 'Rare Books', 'id': 0 },
-                    { 'sub': 'Government Documents', 'id': 1 },
-                    { 'sub': 'Manuscripts', 'id': 2 },
-                    { 'sub': 'Archives', 'id': 3 },
-                    { 'sub': 'Maps', 'id': 4 },
-                    { 'sub': 'Scores', 'id': 5 },
-                    { 'sub': 'Film and Video', 'id': 6 },
-                    { 'sub': 'Sound Recordings', 'id': 7 },
-                    { 'sub': 'Photographs', 'id': 8 },
-                    { 'sub': 'Prints', 'id': 9 },
-                    { 'sub': 'Newspapers', 'id': 10 },
-                    { 'sub': 'Artists\' Books', 'id': 11 },
-                    { 'sub': 'Art & Artifacts', 'id': 12 }
+                list: [
+                    { 'item': 'Rare Books', 'id': 0 },
+                    { 'item': 'Government Documents', 'id': 1 },
+                    { 'item': 'Manuscripts', 'id': 2 },
+                    { 'item': 'Archives', 'id': 3 },
+                    { 'item': 'Maps', 'id': 4 },
+                    { 'item': 'Scores', 'id': 5 },
+                    { 'item': 'Film and Video', 'id': 6 },
+                    { 'item': 'Sound Recordings', 'id': 7 },
+                    { 'item': 'Photographs', 'id': 8 },
+                    { 'item': 'Prints', 'id': 9 },
+                    { 'item': 'Newspapers', 'id': 10 },
+                    { 'item': 'Artists\' Books', 'id': 11 },
+                    { 'item': 'Art & Artifacts', 'id': 12 }
                 ]
             },
             {
                 id: 2,
-                name: "Collection"
+                name: "Collection",
+                list: []
             },
             {
                 id: 3,
-                name: "Location"
+                name: "Location",
+                list: []
             }
 
         ];
