@@ -22,14 +22,10 @@
       </div><!--
 
       --><div class="grid__item one-whole">
-        <div class="callout featured-event">
-          <h3 class="flush">{{ 'EXHIBITION' | translate }}: Title of exhibition</h3>
-        </div>
-        <div class="events-pager">
-          <p data-ng-if="location._embedded.events.length > '1'">
-            Showing {{location._embedded.events.length}} of # upcoming events at {{location.name}}.
-          </p>
-        </div>
+      	   <h2 class="hdg">Highlighted exhibition</h2>
+           <div class=" featured-event">
+	          <h3 class="flush">{{ 'EXHIBITION' | translate }}: Title of exhibition</h3>
+           </div>
       </div>
     </div>
   </section>
@@ -37,18 +33,23 @@
 
   <section class="list-of-events">
     <div class="grid">
-      <div class="grid__item one-whole" data-ng-repeat="event in location._embedded.events" 
+      <h2 class="hdg push--left">Events</h2>
+      <div class="events-pager push--left">
+        <p data-ng-if="location._embedded.events.length > '1'">
+          Showing {{location._embedded.events.length}} of # upcoming events at {{location.name}}.
+        </p>
+      </div>
+      <div class="chunk one-whole desk-one-third" data-ng-repeat="event in location._embedded.events" 
         data-ng-if="location._embedded.events">
-        <h3><a href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h3>
-        <div class="grid__item one-whole lap-and-up-two-thirds">
+        <h3 class="event__title"><a href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h3>
+        <div class="">
           <img data-ng-if="event.image" class="img--outline img--left" 
             data-ng-src="{{event.image}}" alt="" style="height: 100px;" />
-          <p>Date/Time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}} - {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
-          <p>{{event.body}}</p>
+          <p class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+          <p class="desc">{{event.body}}</p>
         </div><!--
-        --><div class="grid__item one-whole lap-and-up-one-third">
-            <p class="text--right"><a href="" class="btn gradient whiteText">{{ 'REGISTER' | translate }}</a></p>
-            <p class="text--right">
+        --><div class="">
+            <a href="" class="btn btn--natural whiteText">{{ 'REGISTER' | translate }}</a>
               <a href="{{calendar_link('google', event, location)}}"
                 target="_blank" rel="nofollow" class="icon-calendar google_link">Google</a>
               <a href="{{calendar_link('yahoo', event, location)}}"
@@ -57,7 +58,6 @@
                 class="icon-calendar" rel="nofollow">
                 iCal
               </a>
-            </p>
         </div>
       </div>
     </div>
