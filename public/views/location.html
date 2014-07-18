@@ -129,9 +129,9 @@
 
         <div class="">
           <aside class="event-buttons">
-	        <a href="" class="btn btn--natural whiteText">
-	          {{ 'REGISTER' | translate }}
-	        </a>
+  	        <a href="" class="btn btn--natural whiteText" data-ng-if="event.registration">
+  	          {{ 'REGISTER' | translate }}
+  	        </a>
 
             <a href="{{calendar_link('google', event, location)}}" target="_blank" rel="nofollow" class="icon-calendar google_link">
               Google
