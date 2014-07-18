@@ -19,17 +19,25 @@
           This space is a couple of lines maximum with general stuff about what Events at a branch means.  Should be standard across all locations.
           Examples of text type.  All events are free unless otherwise noted.
         </p>
-      </div><!--
-
-      --><div class="grid__item one-whole">
-      	   <h2 class="hdg">Highlighted exhibition</h2>
-           <div class=" featured-event">
-	          <h3 class="flush">{{ 'EXHIBITION' | translate }}: Title of exhibition</h3>
-           </div>
       </div>
     </div>
   </section>
 
+  <section class="exhibition" data-ng-if="location.type == 'research' && location._embedded.exhibitions">
+    <div class="grid">
+      <div id="container__exhibitions" class="grid__item one-whole">
+        <h2 class="hdg">Highlighted exhibition</h2>
+        <div class="featured-event">
+          <div class="one-whole" data-ng-repeat='exhibition in location._embedded.exhibitions | limitTo:1'>
+            <img data-ng-if="exhibition.image" class="img--left" data-ng-src="{{exhibition.image}}" alt="" style="height: 100px;" />
+            <h3 class="flush"><a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}">{{exhibition.title}}</a></h3>
+            <p>{{ 'START_TIME' | translate }}: {{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+            <p class="teaser desc">{{exhibition.body}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section class="list-of-events">
     <div class="grid">
@@ -37,6 +45,9 @@
       <div class="events-pager push--left">
         <p data-ng-if="location._embedded.events.length > '1'">
           Showing {{location._embedded.events.length}} of # upcoming events at {{location.name}}.
+        </p>
+        <p data-ng-if="!location._embedded.events.length">
+          There are currently no events at {{location.name}}.
         </p>
       </div>
       <div class="chunk one-whole desk-one-third" data-ng-repeat="event in location._embedded.events" 

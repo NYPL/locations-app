@@ -206,10 +206,10 @@
   <div id="container__exhibitions" data-ng-if="location.type == 'research' && location._embedded.exhibitions">
     <h2 class="hdg">{{ 'EXHIBITION' | translate }}</h2>
     <div class="grid">
-      <div class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='exhibition in location._embedded.exhibitions'>
+      <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat='exhibition in location._embedded.exhibitions'>
         <img data-ng-if="exhibition.image" class="img--left" data-ng-src="{{exhibition.image}}" alt="" style="height: 100px;" />
         <h4><a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}">{{exhibition.title}}</a></h4>
-        <div class="teaser">{{exhibition.body | truncate}}</div>
+        <p class="teaser desc">{{exhibition.body | truncate}}</p>
         <div class="callout">
           <p>{{ 'START_TIME' | translate }}: {{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
           <p>{{ 'END_TIME' | translate }}: {{exhibition.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
