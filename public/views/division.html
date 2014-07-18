@@ -37,7 +37,7 @@
         </div>
         <div>{{division.contacts.phone}}</div>
         <div class="social flush beta" data-ng-if="division.social_media">
-          <a class="{{social.classes}}" href="{{social.href}}" id="social_media"
+          <a class="{{social.classes}}" data-ng-href="{{social.href}}" id="social_media"
             data-ng-repeat="social in division.social_media" class="inline"></a>
         </div>
       </div><!--
@@ -53,7 +53,8 @@
           <li class="icon-accessibility inline">{{ 'WHEELCHAIR' | translate }}</li>
           <li class="icon-box-add inline">{{ 'BOOKDROP' | translate }}</li>
         </ul>
-        <div id="catalog"><a class="icon-books" href="">Catalog Items Here</a></div>
+        <div id="catalog"><a class="icon-books" data-ng-if="division._links.catalog_link"
+         data-ng-href="{{division._links.catalog_link.href}}">Catalog Items Here</a></div>
       </div>
 
     </div>
@@ -66,15 +67,15 @@
         <img data-ng-if="division.image" class="img--left img--outline" data-ng-src="{{division.image}}" style="max-width: 165px;" />
         <p>{{division.about}}</p>
         <div class="push-half--bottom">
-          <a class="read-more" href="http://nypl.org/locations/{{division.location_slug}}/{{division.slug}}">
+          <a class="read-more" data-ng-href="http://nypl.org/locations/{{division.location_slug}}/{{division.slug}}">
             {{ 'MORE_ABOUT_DIVISION' | translate }}</a>
         </div>
       </div><!--
 
       --><div class="grid__item one-whole lap-and-up-two-fifths">
         <h2 class="hdg">Plan Your Visit</h2>
-        <a data-ng-if="division._links.concierge.href" href="{{division._links.concierge.href}}" class="btn btn--large whiteText">{{ 'APPOINTMENT' | translate }}</a>
-        <a data-ng-if="division._links.contact.href" href="{{division._links.contact.href}}" class="btn btn--large whiteText">{{ 'ASK_LIBRARIAN' | translate }}</a>
+        <a data-ng-if="division._links.concierge.href" data-ng-href="{{division._links.concierge.href}}" class="btn btn--large whiteText">{{ 'APPOINTMENT' | translate }}</a>
+        <a data-ng-if="division._links.contact.href" data-ng-href="{{division._links.contact.href}}" class="btn btn--large whiteText">{{ 'ASK_LIBRARIAN' | translate }}</a>
 
         <ul class="flush--left push-half--top">
           <li class="icon-screen2">{{ 'RESERVE_COMPUTER' | translate }}</li>
@@ -90,7 +91,7 @@
     <h2 class="hdg">{{ 'EVENTS' | translate }}</h2>
     <ul class="grid">
       <li class="grid__item one-whole desk-one-third" data-ng-repeat="event in division._embedded.events">
-        <h3><a href="{{event._links.self.href}}">{{event.title}}</a></h3>
+        <h3><a data-ng-href="{{event._links.self.href}}">{{event.title}}</a></h3>
         <p class="desc">{{event.body}}</p>
         <div class="callout">
           <p>Start time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
@@ -100,7 +101,7 @@
     </ul>   
       
     <div class="push-half--bottom">
-      <a class="read-more" href="/#/{{division.location_slug}}/events">
+      <a class="read-more" data-ng-href="/#/{{division.location_slug}}/events">
         {{ 'MORE_EVENTS' | translate }}
       </a>
     </div>
@@ -111,18 +112,18 @@
 
     <ul class="grid">
       <li class="grid__item one-whole lap-and-up-one-half">
-        <h3><a href="">Special project title</a></h3>
+        <h3><a data-ng-href="">Special project title</a></h3>
         <p class="desc">Ooh look, we are digitizing the dance videos! here is the second sentence in the blurb about us doing that.</p>
       </li><!--
 
       --><li class="grid__item one-whole lap-and-up-one-half">
-        <h3><a href="">Special project title</a></h3>
+        <h3><a data-ng-href="">Special project title</a></h3>
         <p class="desc">Ooh look, we are digitizing the dance videos! here is the second sentence in the blurb about us doing that.</p>
       </li>
     </ul>  
 
     <div class="push-half--bottom">
-      <a class="read-more hard--right" href="">
+      <a class="read-more hard--right" data-ng-href="">
        {{ 'MORE_SPECIAL_PROJECTS' | translate }}
       </a>
     </div> 
@@ -132,7 +133,7 @@
     <h2 class="hdg">{{ 'BLOGS' | translate }}</h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in division._embedded.blogs'>
-        <h3><a href="http://nypl.org/{{blog._links.self.href}}">{{blog.title}}</a></h3>
+        <h3><a data-ng-href="http://nypl.org/{{blog._links.self.href}}">{{blog.title}}</a></h3>
         <img data-ng-if="blog.image" class="img--left" data-ng-src="{{blog.image}}" alt="" style="max-width: 120px;" />
         <div class="desc">{{blog.body}}</div>
       </div>
