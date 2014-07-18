@@ -1,10 +1,6 @@
-<div class="content grid">
-  <ul class="inline breadcrumb">
-    <li ng-repeat="breadcrumb in breadcrumbs.get() track by breadcrumb.path" ng-class="{ active: $last }">
-      <a ng-if="!$last" ng-href="{{ breadcrumb.path }}" ng-bind="breadcrumb.label | capitalize"></a>
-      <span ng-if="$last" ng-bind="breadcrumb.label | capitalize"></span>
-    </li>
-  </ul>
+<div class="content">
+  
+  <nyplbreadcrumbs></nyplbreadcrumbs>
 
   <section class="grid">
 
@@ -16,21 +12,21 @@
     </div>
     
     <div data-nf-if="service_name" class="grid__item">
-      <a class="services__reserve btn btn--natural" data-ng-if="service._links.reserve" href="{{service._links.reserve.href}}">Reserve</a>
-      <a class="services__info" data-ng-if="service._links.info" href="{{service._links.info.href}}">Learn more</a>
+      <a class="services__reserve btn btn--natural" data-ng-if="service._links.reserve" data-ng-href="{{service._links.reserve.href}}">Reserve</a>
+      <a class="services__info" data-ng-if="service._links.info" data-ng-href="{{service._links.info.href}}">Learn more</a>
     </div>
 
     <ul data-ng-if="services">
       <li data-ng-repeat="service in services">
-        <div><a href="/#/services/{{service._id}}">{{service.name}}</a>, Id: {{service._id}}</div>
-        <a class="services__reserve btn btn--natural" data-ng-if="service._links.reserve" href="{{service._links.reserve.href}}">Reserve</a>
-      <a class="services__info" data-ng-if="service._links.info" href="{{service._links.info.href}}">Learn more</a>
+        <div><a data-ng-href="/#/services/{{service._id}}">{{service.name}}</a>, Id: {{service._id}}</div>
+        <a class="services__reserve btn btn--natural" data-ng-if="service._links.reserve" data-ng-href="{{service._links.reserve.href}}">Reserve</a>
+      <a class="services__info" data-ng-if="service._links.info" data-ng-href="{{service._links.info.href}}">Learn more</a>
       </li>
     </ul>
 
     <ul data-ng-if="locations">
       <li data-ng-repeat="location in locations">
-        <a href="/#/services/location/{{location.id}}">{{location.name}}</a>, Id: {{location.id}}
+        <a data-ng-href="/#/services/location/{{location.id}}">{{location.name}}</a>, Id: {{location.id}}
       </li>
     </ul>
     

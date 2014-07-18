@@ -64,6 +64,18 @@ nypl_locations.directive('todayshours', [
         };
     }]);
 
+
+nypl_locations.directive('nyplbreadcrumbs', [
+    function () {
+        'use strict';
+
+        return {
+            restrict: 'E',
+            templateUrl: 'scripts/directives/templates/breadcrumbs.html',
+            replace: true,
+        };
+    }]);
+
 nypl_locations.directive('askdonatefooter', [
     'nypl_utility',
     function (nypl_utility) {

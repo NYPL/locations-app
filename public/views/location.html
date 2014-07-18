@@ -1,12 +1,7 @@
 <!-- Individual Location -->
 <div class="individual-location {{location.type}} h-card">
 
-  <ul class="inline breadcrumb">
-    <li ng-repeat="breadcrumb in breadcrumbs.get() track by breadcrumb.path" ng-class="{ active: $last }">
-      <a ng-if="!$last" ng-href="{{ breadcrumb.path }}" ng-bind="breadcrumb.label | capitalize"></a>
-      <span ng-if="$last" ng-bind="breadcrumb.label | capitalize"></span>
-    </li>
-  </ul>
+  <nyplbreadcrumbs></nyplbreadcrumbs>
 
   <!-- Location hours, address and image -->
   <div id="container__location_info">
@@ -48,17 +43,18 @@
           <div class="wheelchair icon-accessibility icon-color-blue">{{ 'WHEELCHAIR' | translate }}</div>
 
           <div class="map-directions">
-            <a class="icon-compass" href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">
+            <a class="icon-compass" data-ng-href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">
               {{ 'DIRECTIONS' | translate }}
             </a>
           </div>
 
-		      <a id="catalog-link" class="icon-books" href="{{ location.catalog }}">
+		      <a id="catalog-link" class="icon-books" data-ng-if="location._links.catalog_link"
+            data-ng-href="{{ location._links.catalog_link.href }}">
             On Our Shelves Now
           </a>
 
           <div class="social beta" data-ng-if="location.social_media">
-            <a class="{{social.classes}}" href="{{social.href}}" id="social_media"
+            <a class="{{social.classes}}" data-ng-href="{{social.href}}" id="social_media"
               data-ng-repeat="social in location.social_media" class="inline"></a>
           </div>
           
@@ -80,7 +76,7 @@
             <li class="icon-book"><span>Lending</span></li>
             <li class="icon-box-add"><span>Book drop</span></li>
           </ul> 
-          <a href="/#/services/location/{{location.id}}" class="read-more">{{ 'ALL_SERVICES' | translate }}</a> 
+          <a data-ng-href="/#/services/location/{{location.id}}" class="read-more">{{ 'ALL_SERVICES' | translate }}</a> 
         </div>
       </div>
     </div>
@@ -92,7 +88,7 @@
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='division in location._embedded.divisions'>
         <img class="img--left img--outline" data-ng-src="{{division.image}}" alt="" style="height: 100px;" />
-        <h4 class=""><a href="/#/division/{{division.slug}}">{{division.name}}</a></h4>
+        <h4 class=""><a data-ng-href="/#/division/{{division.slug}}">{{division.name}}</a></h4>
         <p data-ng-if="division.hours">Hours Today: {{hoursToday(division.hours) | timeFormat}}</p>
       </div>
     </div>
@@ -127,24 +123,24 @@
   <div id="container__events" data-ng-if="location._embedded.events">
     <h2 class="hdg">{{ 'EVENTS' | translate }}</h2>
     <ul class="grid">
-      <li class="chunk one-whole lap-and-up-one-third" data-ng-repeat="event in location._embedded.events">
-        <h3><a href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h3>
+      <li class="chunk one-whole desk-one-third" data-ng-repeat="event in location._embedded.events">
+        <h3 class="event__title"><a data-ng-href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h3>
         <p class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p class="desc">{{event.body}}</p>
 
         <div class="">
           <aside class="event-buttons">
-	        <a href="" class="btn btn--natural whiteText">
-	          {{ 'REGISTER' | translate }}
-	        </a>
+  	        <a data-ng-href="" class="btn btn--natural whiteText" data-ng-if="event.registration">
+  	          {{ 'REGISTER' | translate }}
+  	        </a>
 
-            <a href="{{calendar_link('google', event, location)}}" target="_blank" rel="nofollow" class="icon-calendar google_link">
+            <a data-ng-href="{{calendar_link('google', event, location)}}" target="_blank" rel="nofollow" class="icon-calendar google_link">
               Google
             </a>
-            <a href="{{calendar_link('yahoo', event, location)}}" target="_blank" rel="nofollow" class="icon-calendar yahoo_link">
+            <a data-ng-href="{{calendar_link('yahoo', event, location)}}" target="_blank" rel="nofollow" class="icon-calendar yahoo_link">
               Yahoo
             </a>
-            <a href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" download="nypl_event.ics" rel="nofollow" class="icon-calendar">
+            <a data-ng-href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" download="nypl_event.ics" rel="nofollow" class="icon-calendar">
               iCal
             </a>
           </aside>
@@ -153,7 +149,7 @@
     </ul>   
       
     <div>
-      <a class="read-more" href="/#/{{location.slug}}/events">
+      <a class="read-more" data-ng-href="/#/{{location.slug}}/events">
         {{ 'MORE_EVENTS' | translate }}
       </a>
     </div>
@@ -174,7 +170,7 @@
           </ul>
 
           <div>
-            <a class="read-more" href="/#/services/location/{{location.id}}">
+            <a class="read-more" data-ng-href="/#/services/location/{{location.id}}">
               {{ 'ALL_SERVICES' | translate }}
             </a>
           </div>
@@ -188,7 +184,7 @@
       --><div id="about" class="grid__item one-whole lap-and-up-one-half">
         <h2 class="hdg" data-ng-if="location.type == 'research'">{{ 'ABOUT' | translate }}</h2>
         <p>{{location.about}}</p>
-        <div><a class="read-more" href="http://nypl.org/locations/{{location.slug}}">
+        <div><a class="read-more" data-ng-href="http://nypl.org/locations/{{location.slug}}">
           {{ 'ABOUT_MORE' | translate }}</a></div>
       </div>
     </div>
@@ -199,7 +195,7 @@
     <h2 class="hdg">{{ 'BLOGS' |translate }}</h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
-        <h3><a href="http://nypl.org/{{blog._links.self.href}}">{{blog.title}}</a></h3>
+        <h3><a data-ng-href="http://nypl.org/{{blog._links.self.href}}">{{blog.title}}</a></h3>
         <img data-ng-if="blog.image" class="img--left" data-ng-src="{{blog.image}}" alt="" style="height: 100px;" />
         <div class="teaser desc">{{blog.body | truncate}}</div>
       </div>
@@ -210,10 +206,10 @@
   <div id="container__exhibitions" data-ng-if="location.type == 'research' && location._embedded.exhibitions">
     <h2 class="hdg">{{ 'EXHIBITION' | translate }}</h2>
     <div class="grid">
-      <div class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='exhibition in location._embedded.exhibitions'>
+      <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat='exhibition in location._embedded.exhibitions'>
         <img data-ng-if="exhibition.image" class="img--left" data-ng-src="{{exhibition.image}}" alt="" style="height: 100px;" />
-        <h4><a href="{{exhibition._links.self.href}}">{{exhibition.title}}</a></h4>
-        <div class="teaser">{{exhibition.body | truncate}}</div>
+        <h4><a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}">{{exhibition.title}}</a></h4>
+        <p class="teaser desc">{{exhibition.body | truncate}}</p>
         <div class="callout">
           <p>{{ 'START_TIME' | translate }}: {{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
           <p>{{ 'END_TIME' | translate }}: {{exhibition.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>

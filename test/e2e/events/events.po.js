@@ -10,8 +10,8 @@ var EventsPage = function () {
 
   this.events = element.all(by.repeater('event in location._embedded.events'));
 
-  this.google = element(by.css('.google_link'));
-  this.yahoo = element(by.css('.yahoo_link'));
+  this.google = element.all(by.css('.google_link'));
+  this.yahoo = element.all(by.css('.yahoo_link'));
 };
 
 module.exports = new EventsPage();

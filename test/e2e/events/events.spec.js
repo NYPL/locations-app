@@ -107,18 +107,21 @@ describe('Locations: events', function () {
       function () {
         var appWindow = browser.getWindowHandle();
 
-        eventsPage.google.click().then(function () {
-          browser.getAllWindowHandles().then(function (handles) {
-            var newWindowHandle = handles[1];
-            browser.switchTo().window(newWindowHandle).then(function () {
-              expect(browser.driver.getCurrentUrl())
-                .toMatch(/https:\/\/accounts.google.com/);
-              expect(browser.driver.getCurrentUrl())
-                .toMatch(/https:\/\/www.google.com\/calendar\/render/);
+        eventsPage.google.then(function (first_google_link) {
+          first_google_link[0].click().then(function () {
+            browser.getAllWindowHandles().then(function (handles) {
+              var newWindowHandle = handles[1];
+              browser.switchTo().window(newWindowHandle).then(function () {
+                browser.sleep(1000);
+                expect(browser.driver.getCurrentUrl())
+                  .toMatch(/https:\/\/accounts.google.com/);
+                expect(browser.driver.getCurrentUrl())
+                  .toMatch(/https:\/\/www.google.com\/calendar\/render/);
 
-              // Go back to app
-              browser.driver.close().then(function () {
-                browser.switchTo().window(appWindow);
+                // Go back to app
+                browser.driver.close().then(function () {
+                  browser.switchTo().window(appWindow);
+                });
               });
             });
           });
@@ -129,18 +132,21 @@ describe('Locations: events', function () {
       function () {
         var appWindow = browser.getWindowHandle();
 
-        eventsPage.yahoo.click().then(function () {
-          browser.getAllWindowHandles().then(function (handles) {
-            var newWindowHandle = handles[1];
-            browser.switchTo().window(newWindowHandle).then(function () {
-              expect(browser.driver.getCurrentUrl())
-                .toMatch(/https:\/\/login.yahoo.com/);
-              expect(browser.driver.getCurrentUrl())
-                .toMatch(/calendar.yahoo.com/);
+        eventsPage.yahoo.then(function (first_yahoo_link) {
+          first_yahoo_link[0].click().then(function () {
+            browser.getAllWindowHandles().then(function (handles) {
+              var newWindowHandle = handles[1];
+              browser.switchTo().window(newWindowHandle).then(function () {
+                browser.sleep(1000);
+                expect(browser.driver.getCurrentUrl())
+                  .toMatch(/https:\/\/login.yahoo.com/);
+                expect(browser.driver.getCurrentUrl())
+                  .toMatch(/calendar.yahoo.com/);
 
-              // Go back to app
-              browser.driver.close().then(function () {
-                browser.switchTo().window(appWindow);
+                // Go back to app
+                browser.driver.close().then(function () {
+                  browser.switchTo().window(appWindow);
+                });
               });
             });
           });

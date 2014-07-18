@@ -27,8 +27,9 @@ var LocationPage = function () {
 
   this.events_container = element(by.id('container__events'));
   this.events = element.all(by.repeater('event in location._embedded.events'));
-  this.google = element(by.css('.google_link'));
-  this.yahoo = element(by.css('.yahoo_link'));
+
+  this.google = element.all(by.css('.google_link'));
+  this.yahoo = element.all(by.css('.yahoo_link'));
 
   this.plan_your_visit = element(by.id('plan-your-visit'));
   this.secondary_image = element(by.id('location-secondary-img'));
