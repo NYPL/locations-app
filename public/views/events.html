@@ -59,8 +59,12 @@
           <p class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
           <p class="desc">{{event.body}}</p>
         </div><!--
+        --><div data-ng-if="event.registration">
+          Registration:
+            <a data-ng-href="" class="btn btn--natural whiteText" data-ng-if="event.registration">
+              {{event.registration}}</a>
+        </div><!--
         --><div class="">
-            <a data-ng-href="" class="btn btn--natural whiteText" data-ng-if="event.registration">{{ 'REGISTER' | translate }}</a>
             <a data-ng-href="{{calendar_link('google', event, location)}}"
               target="_blank" rel="nofollow" class="icon-calendar google_link">Google</a>
             <a data-ng-href="{{calendar_link('yahoo', event, location)}}"

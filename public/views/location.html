@@ -130,9 +130,11 @@
 
         <div class="">
           <aside class="event-buttons">
-  	        <a data-ng-href="" class="btn btn--natural whiteText" data-ng-if="event.registration">
-  	          {{ 'REGISTER' | translate }}
-  	        </a>
+            <div data-ng-if="event.registration">
+              Registration:
+              <a data-ng-href="" class="btn btn--natural whiteText">
+                {{event.registration}}</a>
+            </div>
 
             <a data-ng-href="{{calendar_link('google', event, location)}}" target="_blank" rel="nofollow" class="icon-calendar google_link">
               Google
