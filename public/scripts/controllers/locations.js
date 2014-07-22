@@ -424,10 +424,12 @@ nypl_locations.controller('MapCtrl', [
     '$scope',
     'nypl_geocoder_service',
     'nypl_utility',
+    '$timeout',
     function (
         $scope,
         nypl_geocoder_service,
-        nypl_utility
+        nypl_utility,
+        $timeout
     ) {
         var loadMapMarkers = function () {
                 _.each($scope.locations, function (location) {
@@ -524,7 +526,9 @@ nypl_locations.controller('MapCtrl', [
                 nypl_geocoder_service.pan_existing_marker(filteredLocation);
             }
 
-            scroll_map_top();
+            $timeout(function () {
+                scroll_map_top();
+            }, 1200);
         };
 
 }]);
