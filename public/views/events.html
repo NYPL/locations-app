@@ -26,7 +26,7 @@
   <section class="exhibition" data-ng-if="location.type == 'research' && location._embedded.exhibitions">
     <div class="grid">
       <div id="container__exhibitions" class="grid__item one-whole">
-        <h2 class="hdg">Highlighted exhibition</h2>
+        <h2 class="hdg">{{ 'HIGHLIGHT_EXHIBITION' | translate }}</h2>
         <div class="featured-event">
           <div class="one-whole" data-ng-repeat='exhibition in location._embedded.exhibitions | limitTo:1'>
             <img data-ng-if="exhibition.image" class="img--left"
@@ -43,10 +43,11 @@
 
   <section class="list-of-events">
     <div class="grid">
-      <h2 class="hdg push--left">Events</h2>
+      <h2 class="hdg push--left">{{ 'EVENTS' | translate }}</h2>
       <div class="events-pager push--left">
         <p data-ng-if="location._embedded.events.length > '1'">
-          Showing {{location._embedded.events.length}} of # upcoming events at {{location.name}}.
+          {{ 'SHOWING' | translate }} {{location._embedded.events.length}} {{ 'OF' | translate }}
+          # {{ 'UPCOMING_EVENTS' | translate }} {{location.name}}.
         </p>
         <p data-ng-if="!location._embedded.events.length">
           There are currently no events at {{location.name}}.

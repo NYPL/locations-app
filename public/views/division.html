@@ -55,7 +55,7 @@
           <li class="icon-box-add inline">{{ 'BOOKDROP' | translate }}</li>
         </ul>
         <div><a id="catalog-link" class="icon-books" data-ng-if="division._links.catalog_link"
-         data-ng-href="{{division._links.catalog_link.href}}">On Our Shelves Now</a></div>
+         data-ng-href="{{division._links.catalog_link.href}}">{{ 'SHELVES' | translate }}</a></div>
       </div>
 
     </div>
@@ -76,7 +76,7 @@
       </div><!--
 
       --><div class="grid__item one-whole lap-and-up-two-fifths">
-        <h2 class="hdg">Plan Your Visit</h2>
+        <h2 class="hdg">{{ 'PLAN_YOUR_VISIT' | translate }}</h2>
         <a data-ng-if="division._links.concierge.href"
           data-ng-href="{{division._links.concierge.href}}" class="btn btn--large whiteText">
           {{ 'APPOINTMENT' | translate }}</a>
@@ -99,12 +99,9 @@
     <ul class="grid">
       <li class="grid__item one-whole desk-one-third"
         data-ng-repeat="event in division._embedded.events">
-        <h3><a data-ng-href="{{event._links.self.href}}">{{event.title}}</a></h3>
+        <h3 class="event__title"><a data-ng-href="{{event._links.self.href}}">{{event.title}}</a></h3>
+        <p class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p class="desc">{{event.body}}</p>
-        <div class="callout">
-          <p>Start time: {{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
-          <p>End time: {{event.end | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
-        </div>
       </li>
     </ul>   
       
