@@ -242,27 +242,27 @@ nypl_locations.controller('LocationsCtrl', [
                 } else {
                     ngRepeatInit();
                 }
-            },
-
-            scroll_map_top = function () {
-                var content = angular.element('.container__all-locations'),
-                    containerWidth = parseInt(content.css('width'), 10),
-                    top;
-
-                if (containerWidth < 601) {
-                    top = angular.element('.map-wrapper').offset();
-                    angular.element('body')
-                        .animate({scrollTop: top.top}, 1000);
-                } else {
-                    top = content.offset();
-                    angular.element('body')
-                        .animate({scrollTop: top.top}, 1000);
-                }
             };
 
         $rootScope.title = "Locations";
         $scope.view = 'list';
         loadLocations();
+
+        $scope.scroll_map_top = function () {
+            var content = angular.element('.container__all-locations'),
+                containerWidth = parseInt(content.css('width'), 10),
+                top;
+
+            if (containerWidth < 601) {
+                top = angular.element('.map-wrapper').offset();
+                angular.element('body')
+                    .animate({scrollTop: top.top}, 1000);
+            } else {
+                top = content.offset();
+                angular.element('body')
+                    .animate({scrollTop: top.top}, 1000);
+            }
+        };
 
         $scope.distanceSort = function () {
             if ($scope.locations[0].distance) {
@@ -274,6 +274,7 @@ nypl_locations.controller('LocationsCtrl', [
         $scope.viewMapLibrary = function (library_id) {
             $scope.view = 'map';
             $scope.select_library_for_map = library_id;
+            // $scope.scroll_map_top();
 
             var location = _.where($scope.locations, { 'slug' : library_id });
             organizeLocations($scope.locations, location, 'name');
@@ -522,7 +523,7 @@ nypl_locations.controller('MapCtrl', [
                 nypl_geocoder_service.pan_existing_marker(filteredLocation);
             }
 
-            // scroll_map_top();
+            $scope.scroll_map_top();
         };
 
 }]);
