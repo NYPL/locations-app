@@ -46,13 +46,13 @@
 
           <!-- Distance -->
           <div class="distance" data-ng-if="location.distance">
-            <span>Distance</span>:
+            <span>{{ 'DISTANCE' | translate }}</span>:
             <strong>{{location.distance}} {{ 'MILES' | translate}}</strong>
           </div>
 
           <!-- Today's Hours -->
 					<div class="todays-hours">
-							<span>Today's Hours</span>:
+							<span>{{ 'TODAYS_HOURS' | translate }}</span>:
 							<strong>{{ location.hoursToday(location.hours) | timeFormat }}</strong>
 					</div>
 

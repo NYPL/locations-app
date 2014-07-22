@@ -118,10 +118,14 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         },
 
         create_userMarker: function (coords, text) {
+            var _this = this;
             panCoords =
                 new google.maps.LatLng(coords.latitude, coords.longitude);
             userMarker.setPosition(panCoords);
-            this.show_infowindow(userMarker, text);
+            // this.show_infowindow(userMarker, text);
+            google.maps.event.addListener(userMarker, 'click', function () {
+                _this.show_infowindow(userMarker, text);
+            });
             markers.push({id: 'user', marker: userMarker, text: text});
         },
 
@@ -134,14 +138,12 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
         draw_searchMarker: function () {
             this.remove_searchMarker();
-            // panCoords = new google.maps.LatLng(coords.lat, coords.long);
-
-            // searchMarker.setPosition(panCoords);
+            
             searchMarker.setMap(map);
             this.panMap(searchMarker);
 
-            // searchInfoWindow.setContent(text);
             searchInfoWindow.open(map, searchMarker);
+            this.hide_infowindow();
             google.maps.event.addListener(searchMarker, 'click', function () {
                 searchInfoWindow.open(map, searchMarker);
             });
@@ -242,6 +244,10 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
             google.maps.event.addListener(marker, 'click', function () {
                 _this.show_infowindow(marker, text);
             });
+        },
+
+        hide_search_infowindow: function () {
+            searchInfoWindow.close();
         },
 
         hide_infowindow: function () {

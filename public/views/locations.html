@@ -4,7 +4,7 @@
     <div class="grid">
       <!-- Search Section: Search Box/Filters -->
       <form class="locations-search-form grid__item one-whole">
-        <label for="searchTerm" class="search-box-label">Example: Jefferson Market, 10018, 455 Fifth Avenue</label>
+        <label for="searchTerm" class="search-box-label">{{ 'EXAMPLE' | translate }}: Jefferson Market, 10018, 455 Fifth Avenue</label>
         <div class="search-box-area">
           <input class="search-box" id="searchTerm" type="text" data-ng-model="searchTerm"/>
           <span class="icon-search"></span>
@@ -62,8 +62,10 @@
 
   <!-- Views Control Section -->
   <section class="views-tab-controls">
-    <div class="list-view-btn" data-ng-click="view='list'" ng-class="{'active': view=='list'}">List View</div>
-    <div class="map-view-btn" data-ng-click="view='map'" ng-class="{'active': view=='map'}">Map View</div>
+    <div class="list-view-btn" data-ng-click="view='list'" ng-class="{'active': view=='list'}">
+      {{ 'LIST_VIEW' | translate }}</div>
+    <div class="map-view-btn" data-ng-click="view='map'" ng-class="{'active': view=='map'}">
+      {{ 'MAP_VIEW'  | translate }}</div>
   </section>
 
   <!-- Conditional | List/Map Views -->

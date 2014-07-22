@@ -26,11 +26,13 @@
   <section class="exhibition" data-ng-if="location.type == 'research' && location._embedded.exhibitions">
     <div class="grid">
       <div id="container__exhibitions" class="grid__item one-whole">
-        <h2 class="hdg">Highlighted exhibition</h2>
+        <h2 class="hdg">{{ 'HIGHLIGHT_EXHIBITION' | translate }}</h2>
         <div class="featured-event">
           <div class="one-whole" data-ng-repeat='exhibition in location._embedded.exhibitions | limitTo:1'>
-            <img data-ng-if="exhibition.image" class="img--left" data-ng-src="{{exhibition.image}}" alt="" style="height: 100px;" />
-            <h3 class="flush"><a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}">{{exhibition.title}}</a></h3>
+            <img data-ng-if="exhibition.image" class="img--left"
+              data-ng-src="{{exhibition.image}}" alt="" style="height: 100px;" />
+            <h3 class="flush"><a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}">
+              {{exhibition.title}}</a></h3>
             <p>{{ 'START_TIME' | translate }}: {{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
             <p class="teaser desc">{{exhibition.body}}</p>
           </div>
@@ -41,10 +43,11 @@
 
   <section class="list-of-events">
     <div class="grid">
-      <h2 class="hdg push--left">Events</h2>
+      <h2 class="hdg push--left">{{ 'EVENTS' | translate }}</h2>
       <div class="events-pager push--left">
         <p data-ng-if="location._embedded.events.length > '1'">
-          Showing {{location._embedded.events.length}} of # upcoming events at {{location.name}}.
+          {{ 'SHOWING' | translate }} {{location._embedded.events.length}} {{ 'OF' | translate }}
+          # {{ 'UPCOMING_EVENTS' | translate }} {{location.name}}.
         </p>
         <p data-ng-if="!location._embedded.events.length">
           There are currently no events at {{location.name}}.
@@ -65,13 +68,13 @@
               {{event.registration}}</a>
         </div><!--
         --><div class="">
-            <a data-ng-href="{{calendar_link('google', event, location)}}"
-              target="_blank" rel="nofollow" class="icon-calendar google_link">Google</a>
-            <a data-ng-href="{{calendar_link('yahoo', event, location)}}"
-              target="_blank" rel="nofollow" class="icon-calendar yahoo_link">Yahoo</a>
-            <a data-ng-href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" download="nypl_event.ics" 
-              class="icon-calendar" rel="nofollow">
-              iCal</a>
+          <a data-ng-href="{{calendar_link('google', event, location)}}"
+            target="_blank" rel="nofollow" class="icon-calendar google_link">Google</a>
+          <a data-ng-href="{{calendar_link('yahoo', event, location)}}"
+            target="_blank" rel="nofollow" class="icon-calendar yahoo_link">Yahoo</a>
+          <a data-ng-href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" download="nypl_event.ics" 
+            class="icon-calendar" rel="nofollow">
+            iCal</a>
         </div>
       </div>
     </div>
