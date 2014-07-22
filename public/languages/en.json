@@ -1,4 +1,5 @@
-{ 
+{
+  "EXAMPLE": "Example",
   "MAIN_SEARCH_BTN": "Find a library!",
   "SHOW_ME": "Just show me",
   "USER_LOCATION": "libraries near me",
@@ -12,6 +13,8 @@
   "NO_RESULTS": "No results for",
   "WITHIN_25_MILES": "within 25 miles of an NYPL location.  Showing all locations.",
   "SHOWING_RESULTS_NEAR": "Showing search results near",
+  "LIST_VIEW": "List View",
+  "MAP_VIEW": "Map View",
   "MILES": "miles",
   "VIEW_MAP": "View on Map",
   "DIRECTIONS": "Get Directions",

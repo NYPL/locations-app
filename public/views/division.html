@@ -13,7 +13,8 @@
           <div id="location-hours" class="location-hours" data-ng-if="division.hours">
             <h2 class="flush--ends hdg">
               {{ 'REGULAR_HOURS' | translate }} 
-              <span id="toggle-hours" ng-click="expand = !expand" ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span>
+              <span id="toggle-hours" ng-click="expand = !expand"
+                ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span>
             </h2>
             <div class="weekly-hours zeta" collapse="expand" duration="2500">
               <div class="{{hours.day}}" data-ng-repeat="hours in division.hours.regular">
@@ -64,18 +65,24 @@
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-three-fifths">
         <h2 class="hdg">{{ 'ABOUT_COLLECTION' | translate }}</h2>
-        <img data-ng-if="division.image" class="img--left img--outline" data-ng-src="{{division.image}}" style="max-width: 165px;" />
+        <img data-ng-if="division.image" class="img--left img--outline"
+          data-ng-src="{{division.image}}" style="max-width: 165px;" />
         <p>{{division.about}}</p>
         <div class="push-half--bottom">
-          <a class="read-more" data-ng-href="http://nypl.org/locations/{{division.location_slug}}/{{division.slug}}">
+          <a class="read-more"
+            data-ng-href="http://nypl.org/locations/{{division.location_slug}}/{{division.slug}}">
             {{ 'MORE_ABOUT_DIVISION' | translate }}</a>
         </div>
       </div><!--
 
       --><div class="grid__item one-whole lap-and-up-two-fifths">
         <h2 class="hdg">Plan Your Visit</h2>
-        <a data-ng-if="division._links.concierge.href" data-ng-href="{{division._links.concierge.href}}" class="btn btn--large whiteText">{{ 'APPOINTMENT' | translate }}</a>
-        <a data-ng-if="division._links.contact.href" data-ng-href="{{division._links.contact.href}}" class="btn btn--large whiteText">{{ 'ASK_LIBRARIAN' | translate }}</a>
+        <a data-ng-if="division._links.concierge.href"
+          data-ng-href="{{division._links.concierge.href}}" class="btn btn--large whiteText">
+          {{ 'APPOINTMENT' | translate }}</a>
+        <a data-ng-if="division._links.contact.href"
+          data-ng-href="{{division._links.contact.href}}" class="btn btn--large whiteText">
+          {{ 'ASK_LIBRARIAN' | translate }}</a>
 
         <ul class="flush--left push-half--top">
           <li class="icon-screen2">{{ 'RESERVE_COMPUTER' | translate }}</li>
@@ -90,7 +97,8 @@
 
     <h2 class="hdg">{{ 'EVENTS' | translate }}</h2>
     <ul class="grid">
-      <li class="grid__item one-whole desk-one-third" data-ng-repeat="event in division._embedded.events">
+      <li class="grid__item one-whole desk-one-third"
+        data-ng-repeat="event in division._embedded.events">
         <h3><a data-ng-href="{{event._links.self.href}}">{{event.title}}</a></h3>
         <p class="desc">{{event.body}}</p>
         <div class="callout">
@@ -134,7 +142,8 @@
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in division._embedded.blogs'>
         <h3><a data-ng-href="http://nypl.org/{{blog._links.self.href}}">{{blog.title}}</a></h3>
-        <img data-ng-if="blog.image" class="img--left" data-ng-src="{{blog.image}}" alt="" style="max-width: 120px;" />
+        <img data-ng-if="blog.image" class="img--left"
+          data-ng-src="{{blog.image}}" alt="" style="max-width: 120px;" />
         <div class="desc">{{blog.body}}</div>
       </div>
     </div>

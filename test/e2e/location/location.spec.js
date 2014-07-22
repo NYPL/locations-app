@@ -258,8 +258,8 @@ describe('Locations: library', function () {
       expect(locationPage.blogs.count()).toBe(0);
     });
 
-    it('should not display any exhibitions', function () {
-      expect(locationPage.exhibitions.count()).toBe(0);
+    it('should display four exhibitions', function () {
+      expect(locationPage.exhibitions.count()).toBe(4);
     });
 
     describe('Calendar links', function () {

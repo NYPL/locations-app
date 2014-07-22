@@ -1,4 +1,5 @@
 {
+  "EXAMPLE": "Ejemplo",
   "MAIN_SEARCH_BTN": "Busca una biblioteca!",
   "SHOW_ME": "Enseñame solamente",
   "USER_LOCATION": "bibliotecas cerca de mi",
@@ -12,6 +13,8 @@
   "NO_RESULTS": "No hay resultados para",
   "WITHIN_25_MILES": "en 25 millas de una biblioteca de NYPL.  Mostrando todas los bibliotecas.",
   "SHOWING_RESULTS_NEAR": "Mostrando resultados de búsqueda cerca de",
+  "LIST_VIEW": "Ver en lista",
+  "MAP_VIEW": "Ver en mapa",
   "MILES": "millas",
   "VIEW_MAP": "Ver en un mapa",
   "DIRECTIONS": "Obtener direcciones",
