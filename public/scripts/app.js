@@ -34,7 +34,7 @@ nypl_locations.config([
         });
         $translateProvider.translations('en');
         $translateProvider.translations('es');
-        $translateProvider.preferredLanguage('es');
+        $translateProvider.preferredLanguage('en');
 
         $routeProvider
             .when('/404', {
