@@ -28,6 +28,8 @@ var DivisionPage = function () {
   this.blogs = element.all(by.repeater('blog in division._embedded.blogs'));
 
   this.ask_librarian = element(by.css('#ask-librarian'));
+  this.email_us = element(by.css('.askemail'));
+
 };
 
 module.exports = new DivisionPage();

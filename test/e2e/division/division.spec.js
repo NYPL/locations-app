@@ -138,6 +138,11 @@ describe('Locations: division - Testing General Research Division',
           expect(divisionPage.ask_librarian.getAttribute('href'))
             .toEqual('http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?institution=13306&type=1&language=1');
         });
+
+        it('should be the same as the Email Us button', function () {
+          expect(divisionPage.ask_librarian.getAttribute('href'))
+            .toEqual(divisionPage.email_us.getAttribute('href'));
+        });            
       });
     });
 
