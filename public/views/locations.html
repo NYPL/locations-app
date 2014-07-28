@@ -74,9 +74,8 @@
       <data-ng-include src="'views/location-list-view.html'"></data-ng-include>
     </div>
 
-    <div data-ng-switch-when="map">
-      <data-ng-include src="'views/location-map-view.html'" onLoad="drawMap()"
-        data-ng-controller="MapCtrl"></data-ng-include>
+    <div data-ng-switch-when="map" data-ng-controller="MapCtrl as mapCtrl">
+      <data-ng-include src="'views/location-map-view.html'" onLoad="drawMap()"></data-ng-include>
     </div>
 
     <div data-ng-switch-default>

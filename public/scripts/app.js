@@ -36,6 +36,18 @@ nypl_locations.config([
         $translateProvider.translations('es');
         $translateProvider.preferredLanguage('en');
 
+        function LoadLocation(nypl_locations_service, $route, $location) {
+            return nypl_locations_service
+                .single_location($route.current.params.symbol)
+                .then(function (data) {
+                    return data.location;
+                })
+                .catch(function (err) {
+                    $location.path('/404');
+                    throw err;
+                });
+        }
+
         $routeProvider
             .when('/404', {
                 templateUrl: '/views/404.html'
@@ -43,12 +55,58 @@ nypl_locations.config([
             .when('/', {
                 templateUrl: 'views/locations.html',
                 controller: 'LocationsCtrl',
-                label: 'Locations'
+                label: 'Locations',
+                resolve: {
+                    allLocations: function (
+                        nypl_locations_service,
+                        $route,
+                        $location
+                    ) {
+                        return nypl_locations_service
+                            .all_locations()
+                            .then(function (data) {
+                                return data.locations;
+                                // $scope.locations = locations;
+
+                                // _.each($scope.locations, function (location) {
+                                //     location.hoursToday = nypl_utility.hoursToday;
+                                //     location.locationDest
+                                //         = nypl_utility.getAddressString(location);
+                                // });
+
+                                // checkGeolocation();
+                                // allLocationsInit();
+
+                                // return locations;
+                            })
+                            .catch(function (error) {
+                                $location.path('/404');
+                            });
+                    }
+                }
             })
             .when('/division/:division', {
                 templateUrl: 'views/division.html',
                 controller: 'DivisionCtrl',
-                label: 'Division'
+                label: 'Division',
+                resolve: {
+                    division: function (
+                        nypl_locations_service,
+                        $route,
+                        $location
+                    ) {
+                        return nypl_locations_service
+                            .single_division($route.current.params.division)
+                            .then(function (data) {
+                                return data.division;
+                            })
+                            .catch(function (err) {
+                                $location.path('/404');
+                                console.log('BAD DIVISION');
+                                throw err;
+                            });
+                    }
+                }
             })
             .when('/services', {
                 templateUrl: '/views/services.html',
@@ -68,12 +126,20 @@ nypl_locations.config([
             .when('/:symbol', {
                 templateUrl: 'views/location.html',
                 controller: 'LocationCtrl',
-                label: 'Location'
+                controllerAs: 'ctrl',
+                label: 'Location',
+                resolve: {
+                    location: LoadLocation
+                }
             })
             .when('/:symbol/events', {
                 templateUrl: '/views/events.html',
                 controller: 'LocationCtrl',
-                label: 'Events'
+                controllerAs: 'eventCtrl',
+                label: 'Events',
+                resolve: {
+                    location: LoadLocation
+                }
             })
             .otherwise({
                 redirectTo: '/404'
@@ -84,6 +150,8 @@ nypl_locations.config([
 // Declare an http interceptor that will signal the start and end of each request
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
 nypl_locations.config(['$httpProvider', function ($httpProvider) {
+    'use strict';
+
     var $http,
         interceptor = ['$q', '$injector', '$location', function ($q, $injector, $location) {
             var notificationChannel;
@@ -138,7 +206,9 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
 }]);
 
 // Run jQuery Scripts
-nypl_locations.run(['$rootScope', function($rootScope) {
+nypl_locations.run(['$rootScope', function ($rootScope) {
+    'use strict';
+
     // fired once the view is loaded, 
     // after the DOM is rendered. The '$scope' of the view emits the event.
     $rootScope.$on('$viewContentLoaded', headerScripts);

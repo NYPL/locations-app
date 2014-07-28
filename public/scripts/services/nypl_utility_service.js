@@ -406,39 +406,41 @@ nypl_locations.factory('nypl_utility', [
     }
 ]);
 
-nypl_locations.factory('nypl_location_list', [
-    function () {
-        'use strict';
+function nypl_location_list() {
+    'use strict';
 
-        var config = {
+    var config = {
             showMore: true,
             add_amount: 10,
             libraryLimit: 10,
             increaseBy: "10 more"
-        };
+        },
+        nypl_location_list = {};
 
-        return {
-            init: function (options) {
-                _.extend(config, options);
+    nypl_location_list.init = function (options) {
+        _.extend(config, options);
 
-                return config;
-            },
+        return config;
+    };
 
-            view_more: function () {
-                config.libraryLimit += config.add_amount;
+    nypl_location_list.view_more = function () {
+        config.libraryLimit += config.add_amount;
 
-                if (config.libraryLimit === 80) {
-                    config.add_amount = 12;
-                    config.increaseBy = "All";
-                }
+        if (config.libraryLimit === 80) {
+            config.add_amount = 12;
+            config.increaseBy = "All";
+        }
 
-                if (config.libraryLimit === 92) {
-                    config.showMore = false;
-                    // config.libraryLimit = 10;
-                }
+        if (config.libraryLimit === 92) {
+            config.showMore = false;
+            // config.libraryLimit = 10;
+        }
 
-                return config;
-            }
-        };
-    }
-]);
+        return config;
+    };
+
+    return nypl_location_list;
+}
+
+nypl_locations.factory('nypl_location_list', nypl_location_list);
+
