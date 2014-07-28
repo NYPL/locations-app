@@ -47,7 +47,8 @@ nypl_locations.controller('DivisionCtrl', [
                         }
 
                         $scope.division = division;
-
+                        $scope.calendar_link = nypl_utility.calendar_link;
+                        $scope.ical_link = nypl_utility.ical_link;
                         $scope.siteWideAlert =
                             nypl_utility.alerts(division._embedded.alerts);
 

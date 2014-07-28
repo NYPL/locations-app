@@ -151,6 +151,28 @@ nypl_locations.directive('nyplalerts', [
         };
     }]);
 
+nypl_locations.directive('eventRegistration', [
+    function () {
+        'use strict';
+
+        return {
+            restrict: 'E',
+            templateUrl: 'scripts/directives/templates/registration.html',
+            replace: true,
+            scope: {
+                how: '@',
+                link: '@'
+            },
+            link: function (scope, element, attrs) {
+                scope.online = false;
+                
+                if (attrs.how === 'Online') {
+                    scope.online = true;
+                }
+            }
+        };
+    }]);
+
 /* 
 ** Show/Hide collapsible animated directive
 ** Usage: <div collapse="name of var toggled" duration="time in ms"

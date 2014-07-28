@@ -63,16 +63,16 @@
           <p class="desc">{{event.body}}</p>
         </div><!--
         --><div data-ng-if="event.registration">
-          Registration:
-            <a data-ng-href="" class="btn btn--natural whiteText" data-ng-if="event.registration">
-              {{event.registration}}</a>
+           {{ 'REGISTRATION' | translate }}:
+          <event-registration how="{{event.registration}}" link="{{event._links.self.href}}">
+          </event-registration>
         </div><!--
         --><div class="">
           <a data-ng-href="{{calendar_link('google', event, location)}}"
             target="_blank" rel="nofollow" class="icon-calendar google_link">Google</a>
           <a data-ng-href="{{calendar_link('yahoo', event, location)}}"
             target="_blank" rel="nofollow" class="icon-calendar yahoo_link">Yahoo</a>
-          <a data-ng-href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" download="nypl_event.ics" 
+          <a href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" download="nypl_event.ics" 
             class="icon-calendar" rel="nofollow">
             iCal</a>
         </div>
