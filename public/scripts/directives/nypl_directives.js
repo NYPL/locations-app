@@ -76,19 +76,30 @@ nypl_locations.directive('nyplbreadcrumbs', [
         };
     }]);
 
-nypl_locations.directive('askdonatefooter', [
-    'nypl_utility',
-    function (nypl_utility) {
+nypl_locations.directive('emailusbutton', [
+    function () {
         'use strict';
 
         return {
-            restrict: 'EA',
-            templateUrl: 'scripts/directives/templates/ask-donate-footer.html',
+            restrict: 'E',
+            templateUrl: 'scripts/directives/templates/emailus.html',
             replace: true,
             scope: {
-                emailHref: '@',
-                donateHref: '@'
-            },
+                link: '@'
+            }
+        };
+    }
+]);
+
+nypl_locations.directive('librarianchatbutton', [
+    'nypl_utility',
+
+    function (nypl_utility) {
+        'use strict';
+        return {
+            restrict: 'E',
+            templateUrl: 'scripts/directives/templates/librarianchat.html',
+            replace: true,
             link: function (scope, element, attrs, window) {
                 scope.openChat = function () {
                     // Utilize service in directive to fire off the new window.
@@ -103,9 +114,10 @@ nypl_locations.directive('askdonatefooter', [
                     );
                 };
             }
-
         };
-    }]);
+    }
+
+]);
 
 nypl_locations.directive('scrolltop', [
     function () {
@@ -135,6 +147,28 @@ nypl_locations.directive('nyplalerts', [
 
                     scope.sitewidealert = nypl_utility.alerts(alerts);
                 });
+            }
+        };
+    }]);
+
+nypl_locations.directive('eventRegistration', [
+    function () {
+        'use strict';
+
+        return {
+            restrict: 'E',
+            templateUrl: 'scripts/directives/templates/registration.html',
+            replace: true,
+            scope: {
+                how: '@',
+                link: '@'
+            },
+            link: function (scope, element, attrs) {
+                scope.online = false;
+                
+                if (attrs.how === 'Online') {
+                    scope.online = true;
+                }
             }
         };
     }]);

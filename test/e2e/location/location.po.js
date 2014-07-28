@@ -40,6 +40,8 @@ var LocationPage = function () {
 
   this.exhibitions =
     element.all(by.repeater('exhibition in location._embedded.exhibitions'));
+
+  this.email_us = element(by.css('.askemail'));
 };
 
 module.exports = new LocationPage();

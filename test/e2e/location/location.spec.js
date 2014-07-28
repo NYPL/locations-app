@@ -143,6 +143,10 @@ describe('Locations: library', function () {
         expect(locationPage.blogs.count()).toBe(6);
       });
 
+      it('should display email us your question link', function () {
+        expect(locationPage.email_us.getAttribute('href')).toBe('http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=10208&type=1&language=1');
+      });
+
       describe('Calendar links', function () {
         // Protractor opens the browser in a new instance
         // which means that you will not be logged in.

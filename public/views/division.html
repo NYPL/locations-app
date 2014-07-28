@@ -81,7 +81,7 @@
           data-ng-href="{{division._links.concierge.href}}" class="btn btn--large whiteText">
           {{ 'APPOINTMENT' | translate }}</a>
         <a data-ng-if="division._links.contact.href"
-          data-ng-href="{{division._links.contact.href}}" class="btn btn--large whiteText">
+          data-ng-href="{{division._links.contact.href}}" class="btn btn--large whiteText" id="ask-librarian">
           {{ 'ASK_LIBRARIAN' | translate }}</a>
 
         <ul class="flush--left push-half--top">
@@ -99,9 +99,25 @@
     <ul class="grid">
       <li class="grid__item one-whole desk-one-third"
         data-ng-repeat="event in division._embedded.events">
-        <h3 class="event__title"><a data-ng-href="{{event._links.self.href}}">{{event.title}}</a></h3>
+        <h3 class="event__title"><a data-ng-href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h3>
+        <img data-ng-if="event.image" class="img--outline img--left" 
+          data-ng-src="{{event.image}}" alt="" style="height: 100px;" />
         <p class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p class="desc">{{event.body}}</p>
+        <div data-ng-if="event.registration">
+           {{ 'REGISTRATION' | translate }}:
+          <event-registration how="{{event.registration}}" link="{{event._links.self.href}}">
+          </event-registration>
+        </div><!--
+        --><div class="">
+          <a data-ng-href="{{calendar_link('google', event, location)}}"
+            target="_blank" rel="nofollow" class="icon-calendar google_link">Google</a>
+          <a data-ng-href="{{calendar_link('yahoo', event, location)}}"
+            target="_blank" rel="nofollow" class="icon-calendar yahoo_link">Yahoo</a>
+          <a href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" download="nypl_event.ics" 
+            class="icon-calendar" rel="nofollow">
+            iCal</a>
+        </div>
       </li>
     </ul>   
       
@@ -146,5 +162,19 @@
     </div>
   </div>
 
-  <askdonatefooter chatHref="" emailHref="" donateHref="" />
+  <div class="ask-donate">
+    <div class="appeal grid__item one-whole lap-and-up-one-half" id="donate">
+        <p>Help us keep this library open 6 days a week!</p>
+        <button class="btn--donate" class="{{donateHref}}">Donate now</button>
+    </div><!--
+
+    --><div class="askNYPL grid__item one-whole lap-and-up-one-half " id="ask-nypl">
+        <ul>
+          <li class="asknum icon-phone">917-ASK-NYPL</li>
+          <li><librarianchatbutton /></li>
+          <li><emailusbutton link="{{division._links.contact.href}}" /></li>
+        </ul>
+    </div>
+  </div>
+
 </div>
