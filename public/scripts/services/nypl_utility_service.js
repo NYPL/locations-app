@@ -1,5 +1,5 @@
 /*jslint nomen: true, indent: 4, maxlen: 80, browser: true */
-/*globals nypl_locations, angular, console, window, _ */
+/*globals nypl_locations, angular, console, $window, _ */
 
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
 function requestNotificationChannel($rootScope) {
@@ -37,7 +37,7 @@ function requestNotificationChannel($rootScope) {
     return notificationChannel;
 }
 
-function nypl_utility($filter, nypl_coordinates_service) {
+function nypl_utility($filter, nypl_coordinates_service, $window) {
     'use strict';
 
     var utility = {};
@@ -196,14 +196,14 @@ function nypl_utility($filter, nypl_coordinates_service) {
 
         // Check if link and title are set and assign attributes
         if (link && title) {
-            popUp = window.open(
+            popUp = $window.open(
                 link,
                 title,
                 "menubar=1,resizable=1,width=" + w + ",height=" + h
             );
         } else if (link) {
             // Only if link is set, default title: ''
-            popUp = window.open(
+            popUp = $window.open(
                 link,
                 "",
                 "menubar=1,resizable=1,width=" + w + ",height=" + h
@@ -288,7 +288,7 @@ function nypl_utility($filter, nypl_coordinates_service) {
                 "\nSUMMARY:" + event.title +
                 "\nEND:VEVENT\nEND:VCALENDAR";
 
-        window.open('data:text/calendar;chartset=utf-8,' +
+        $window.open('data:text/calendar;chartset=utf-8,' +
             encodeURI(icsMSG));
     };
 

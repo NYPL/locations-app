@@ -1,5 +1,5 @@
 /*jslint indent: 4, maxlen: 80 */
-/*globals nypl_locations, window, angular */
+/*globals nypl_locations, $window, angular */
 
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
 // declare the directive that will show and hide the loading widget
@@ -90,7 +90,7 @@ function librarianchatbutton(nypl_utility) {
         restrict: 'E',
         templateUrl: 'scripts/directives/templates/librarianchat.html',
         replace: true,
-        link: function (scope, element, attrs, window) {
+        link: function (scope, element, attrs, $window) {
             scope.openChat = function () {
                 // Utilize service in directive to fire off the new window.
                 // Arguments: 
@@ -107,12 +107,12 @@ function librarianchatbutton(nypl_utility) {
     };
 }
 
-function scrolltop() {
+function scrolltop($window) {
     'use strict';
 
     return function (scope) {
         scope.$on('$routeChangeStart', function () {
-            window.scrollTo(0, 0);
+            $window.scrollTo(0, 0);
         });
     };
 }
