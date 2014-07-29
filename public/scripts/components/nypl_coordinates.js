@@ -91,5 +91,5 @@ function nypl_coordinates_service($q, $window) {
 }
 
 angular
-    .module('nypl_locations')
+    .module('coordinateService', [])
     .factory('nypl_coordinates_service', nypl_coordinates_service);

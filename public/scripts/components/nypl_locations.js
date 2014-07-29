@@ -103,6 +103,6 @@ function nypl_locations_service($http, $q) {
 }
 
 angular
-    .module('locationService', ['ngResource'])
+    .module('locationService', [])
     .factory('nypl_locations_service', nypl_locations_service);
 
