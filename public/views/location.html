@@ -87,7 +87,7 @@
     <h2 class="hdg">{{ 'DIVISION_HEADER' | translate }}</h2>
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='division in location._embedded.divisions'>
-        <img class="img--left img--outline" data-ng-src="{{division.image}}" alt="" style="height: 100px;" />
+        <img class="img--left img--outline" data-ng-src="{{division.image}}" alt="" style="height: 100px;"/>
         <h4 class=""><a data-ng-href="/#/division/{{division.slug}}">{{division.name}}</a></h4>
         <p data-ng-if="division.hours">Hours Today: {{hoursToday(division.hours) | timeFormat}}</p>
       </div>
@@ -99,23 +99,12 @@
     <h2 class="hdg">{{ 'FEATURED' | translate }}</h2>
     <div class="grid">
 
-      <div class="chunk one-whole lap-and-up-one-third">
-        <img class="one-whole   img--left img--outline" data-ng-src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map">
-        <h3 class="">Feature One, Which Might Be an Event at Schwarzman</h3>
-        <p class="desc">Bring your yarn, crochet hook or knitting needles. Enjoy an afternoon of conversation and stay afterwards to enjoy the movie.</p>
-      </div><!--
-
-      --><div class="chunk one-whole lap-and-up-one-third">
-        <img class="one-whole   img--left img--outline" data-ng-src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map">
-        <h3 class="">Feature One, Which Might Be an Event at Schwarzman</h3>
-        <p class="desc">Bring your yarn, crochet hook or knitting needles. Enjoy an afternoon of conversation and stay afterwards to enjoy the movie.</p>
-      </div><!--
-
-      --><div class="chunk one-whole lap-and-up-one-third">
-        <img class="one-whole   img--left img--outline" data-ng-src="http://images.nypl.org/?id=psnypl_map_352&amp;t=w" alt="jeffmkt-map">
-        <h3 class="">Feature One, Which Might Be an Event at Schwarzman</h3>
-        <p class="desc">Bring your yarn, crochet hook or knitting needles. Enjoy an afternoon of conversation and stay afterwards to enjoy the movie.</p>
-      </div> 
+      <div class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in location._embedded.features'>
+        <img class="one-whole img--left img--outline" data-ng-src="{{feature.image}}" 
+          alt="Image of {{feature.title}}" style="height: 300px;">
+        <h3 class=""><a data-ng-href="{{feature._links.web.href}}">{{feature.title}}</a></h3>
+        <p class="desc">{{feature.description}}</p>
+      </div>
     </div>
   </div>
 
