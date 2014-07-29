@@ -8,8 +8,8 @@ function LocationsCtrl(
     nypl_geocoder_service,
     nypl_utility,
     nypl_location_list,
-    $timeout,
-    allLocations
+    nypl_locations_service,
+    $timeout
 ) {
     'use strict';
 
@@ -61,6 +61,29 @@ function LocationsCtrl(
             if (nypl_coordinates_service.checkGeolocation()) {
                 $scope.geolocationOn = true;
             }
+        },
+
+        loadLocations = function () {
+            return nypl_locations_service
+                .all_locations()
+                .then(function (data) {
+                    locations = data.locations;
+                    $scope.locations = locations;
+
+                    _.each($scope.locations, function (location) {
+                        location.hoursToday = nypl_utility.hoursToday;
+                        location.locationDest
+                            = nypl_utility.getAddressString(location);
+                    });
+
+                    checkGeolocation();
+                    allLocationsInit();
+
+                    return locations;
+                })
+                .catch(function (error) {
+                    $location.path('/404');
+                });
         },
 
         loadCoords = function () {
@@ -231,17 +254,7 @@ function LocationsCtrl(
 
     $rootScope.title = "Locations";
     $scope.view = 'list';
-
-    locations = allLocations;
-    $scope.locations = allLocations;
-    _.each($scope.locations, function (location) {
-        location.hoursToday = nypl_utility.hoursToday;
-        location.locationDest
-            = nypl_utility.getAddressString(location);
-    });
-
-    checkGeolocation();
-    allLocationsInit();
+    loadLocations();
 
     $scope.scroll_map_top = function () {
         var content = angular.element('.container__all-locations'),

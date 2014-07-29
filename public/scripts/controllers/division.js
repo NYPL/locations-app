@@ -34,4 +34,6 @@ function DivisionCtrl($scope, $rootScope, nypl_utility, breadcrumbs, division) {
         nypl_utility.socialMediaColor(division.social_media);
 }
 
-nypl_locations.controller('DivisionCtrl', DivisionCtrl);
+angular
+    .module('nypl_locations')
+    .controller('DivisionCtrl', DivisionCtrl);

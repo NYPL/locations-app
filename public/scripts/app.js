@@ -32,8 +32,6 @@ nypl_locations.config([
             prefix: '/languages/',
             suffix: '.json'
         });
-        $translateProvider.translations('en');
-        $translateProvider.translations('es');
         $translateProvider.preferredLanguage('en');
 
         function LoadLocation(nypl_locations_service, $route, $location) {
@@ -48,6 +46,18 @@ nypl_locations.config([
                 });
         }
 
+        function LoadDivision(nypl_locations_service, $route, $location) {
+            return nypl_locations_service
+                .single_division($route.current.params.division)
+                .then(function (data) {
+                    return data.division;
+                })
+                .catch(function (err) {
+                    $location.path('/404');
+                    throw err;
+                });
+        }
+
         $routeProvider
             .when('/404', {
                 templateUrl: '/views/404.html'
@@ -55,57 +65,14 @@ nypl_locations.config([
             .when('/', {
                 templateUrl: 'views/locations.html',
                 controller: 'LocationsCtrl',
-                label: 'Locations',
-                resolve: {
-                    allLocations: function (
-                        nypl_locations_service,
-                        $route,
-                        $location
-                    ) {
-                        return nypl_locations_service
-                            .all_locations()
-                            .then(function (data) {
-                                return data.locations;
-                                // $scope.locations = locations;
-
-                                // _.each($scope.locations, function (location) {
-                                //     location.hoursToday = nypl_utility.hoursToday;
-                                //     location.locationDest
-                                //         = nypl_utility.getAddressString(location);
-                                // });
-
-                                // checkGeolocation();
-                                // allLocationsInit();
-
-                                // return locations;
-                            })
-                            .catch(function (error) {
-                                $location.path('/404');
-                            });
-                    }
-                }
+                label: 'Locations'
             })
             .when('/division/:division', {
                 templateUrl: 'views/division.html',
                 controller: 'DivisionCtrl',
                 label: 'Division',
                 resolve: {
-                    division: function (
-                        nypl_locations_service,
-                        $route,
-                        $location
-                    ) {
-                        return nypl_locations_service
-                            .single_division($route.current.params.division)
-                            .then(function (data) {
-                                return data.division;
-                            })
-                            .catch(function (err) {
-                                $location.path('/404');
-                                console.log('BAD DIVISION');
-                                throw err;
-                            });
-                    }
+                    division: LoadDivision
                 }
             })
             .when('/services', {
