@@ -95,7 +95,7 @@
   </div>
 
   <!-- Features -->
-  <div id="container__features">
+  <div id="container__features" data-ng-if="location._embedded.features">
     <h2 class="hdg">{{ 'FEATURED' | translate }}</h2>
     <div class="grid">
 
@@ -146,21 +146,44 @@
     </div>
   </div>
 
-  <!-- About -->
+  <!-- About (multi-view conditional) -->
   <div id="container__about">
-    <h2 class="hdg">{{ 'ABOUT' | translate }}</h2>
+    <h2 class="hdg" data-ng-if="location.type == 'circulating'">{{ 'ABOUT' | translate }}</h2>
     <div class="grid">
-      <div class="grid__item one-whole lap-and-up-one-half">
-        <div id="location-secondary-img">
-          <img class="one-whole lap-and-up-one-whole img--outline"
-            data-ng-src="{{location.image}}" alt="Picture of {{location.name}}">
+      <div id="about" class="grid__item one-whole" data-ng-class="{true: 'lap-and-up-two-thirds', false: ''}[location.type == 'research']">
+        <h2 class="hdg" data-ng-if="location.type == 'research'">{{ 'ABOUT' | translate }}</h2>
+        <div class="grid">
+          <div id="location-secondary-img" class="grid__item one-whole lap-and-up-one-half">
+            <img class="img--outline"
+              data-ng-src="{{location.image}}" alt="Picture of {{location.name}}">
+          </div><!--
+
+          --><div class="grid__item one-whole lap-and-up-one-half">
+            <p>{{location.about}}</p>
+            <div><a class="read-more" data-ng-href="http://nypl.org/locations/{{location.slug}}">
+              {{ 'ABOUT_MORE' | translate }}
+            </a></div>
+          </div>
         </div>
       </div><!--
 
-      --><div id="about" class="grid__item one-whole lap-and-up-one-half">
-        <p>{{location.about}}</p>
-        <div><a class="read-more" data-ng-href="http://nypl.org/locations/{{location.slug}}">
-          {{ 'ABOUT_MORE' | translate }}</a></div>
+      --><div class="grid__item one-whole lap-and-up-one-third" data-ng-if="location.type == 'research'">
+
+        <!-- Display Plan your visit info only in Research and Division locations -->
+        <div id="plan-your-visit">
+          <h2 class="hdg">{{ 'PLAN_YOUR_VISIT' | translate }}</h2>
+          <ul class="flush--left gamma">
+            <li class="icon-screen">{{ 'RESERVE_COMPUTER' | translate }}</li>
+            <li class="icon-library">{{ 'ILL' | translate }}</li>
+            <li class="icon-users">{{ 'MEETING_ROOMS' | translate }}</li>
+          </ul>
+ 
+          <div>
+            <a class="read-more" data-ng-href="/#/services/location/{{location.id}}">
+              {{ 'ALL_SERVICES' | translate }}
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -178,37 +201,14 @@
   </div>
 
   <!-- Exhibitions (conditional) -->
-  <div id="container__exhibitions_visit" data-ng-if="location.type == 'research'">
+  <div id="container__exhibitions" data-ng-if="location.type == 'research' && location._embedded.exhibitions">
+    <h2 class="hdg">{{ 'EXHIBITION' | translate }}</h2>
     <div class="grid">
-      <div class="grid__item one-whole lap-and-up-one-half" data-ng-if="location._embedded.exhibitions">
-        <div id="container__exhibitions">
-          <h2 class="hdg">{{ 'EXHIBITION' | translate }}</h2>
-          <div class="grid">
-            <div class="chunk one-whole" data-ng-repeat='exhibition in location._embedded.exhibitions | limitTo:1'>
-              <img data-ng-if="exhibition.image" class="img--left" data-ng-src="{{exhibition.image}}" alt="" style="height: 100px;" />
-              <h3 class="exhibition__title"><a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}">{{exhibition.title}}</a></h3>
-              <p class="date">{{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
-              <p class="teaser desc">{{exhibition.body | truncate}}</p>
-            </div>
-          </div>
-        </div>
-      </div><!--
-
-      --><div class="grid__item one-whole lap-and-up-one-half">
-        <div id="container__plan_visit" data-ng-if="location.type == 'research'">
-          <h2 class="hdg">{{ 'PLAN_YOUR_VISIT' | translate }}</h2>
-          <ul class="flush--left gamma">
-            <li class="icon-screen2">{{ 'RESERVE_COMPUTER' | translate }}</li>
-            <li class="icon-library">{{ 'ILL' | translate }}</li>
-            <li class="icon-users">{{ 'MEETING_ROOMS' | translate }}</li>
-          </ul>
-
-          <div>
-            <a class="read-more" data-ng-href="/#/services/location/{{location.id}}">
-              {{ 'ALL_SERVICES' | translate }}
-            </a>
-          </div>
-        </div>
+      <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat='exhibition in location._embedded.exhibitions'>
+        <img data-ng-if="exhibition.image" class="img--left" data-ng-src="{{exhibition.image}}" alt="" style="height: 100px;" />
+        <h3 class="exhibition__title"><a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}">{{exhibition.title}}</a></h3>
+        <p class="date">{{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        <p class="teaser desc">{{exhibition.body | truncate}}</p>
       </div>
     </div>
   </div>
