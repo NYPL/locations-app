@@ -9,7 +9,7 @@
 #container__events,
 #container__about,
 #container__blogs,
-#container__exhibitions {
+#container__exhibitions_visit {
 	margin-bottom: 24px;
 }
 
@@ -169,6 +169,12 @@
 		padding: 0;
 	}
 } 
+
+#container__exhibitions {
+	.exhibition__title {
+		margin-bottom: .05em;
+	}
+}
 
 // Highlighted Services section
 #container__top_services {
