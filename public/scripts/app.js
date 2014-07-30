@@ -1,5 +1,5 @@
 /*jslint nomen: true, indent: 4, maxlen: 80 */
-/*globals angular, window */
+/*globals angular, window, headerScripts */
 
 var nypl_locations = angular.module('nypl_locations', [
     'ngCookies',
@@ -76,18 +76,18 @@ nypl_locations.config([
                     division: LoadDivision
                 }
             })
-            .when('/services', {
-                templateUrl: '/views/services.html',
+            .when('/amenities', {
+                templateUrl: '/views/amenities.html',
                 controller: 'ServicesCtrl',
-                label: 'Services'
+                label: 'Amenities'
             })
-            .when('/services/:service_id', {
-                templateUrl: 'views/services.html',
+            .when('/amenities/:amenities_id', {
+                templateUrl: 'views/amenities.html',
                 controller: 'OneServiceCtrl',
-                label: 'Service'
+                label: 'Amenities'
             })
-            .when('/services/location/:location_id', {
-                templateUrl: 'views/services.html',
+            .when('/amenities/location/:location_id', {
+                templateUrl: 'views/amenities.html',
                 controller: 'ServicesAtLibraryCtrl',
                 label: 'Location'
             })
@@ -115,60 +115,71 @@ nypl_locations.config([
     }
 ]);
 
-// Declare an http interceptor that will signal the start and end of each request
+// Declare an http interceptor that will signal
+// the start and end of each request
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
 nypl_locations.config(['$httpProvider', function ($httpProvider) {
     'use strict';
 
     var $http,
-        interceptor = ['$q', '$injector', '$location', function ($q, $injector, $location) {
-            var notificationChannel;
+        interceptor = [
+            '$q',
+            '$injector',
+            '$location',
+            function ($q, $injector, $location) {
+                var notificationChannel;
 
-            function success(response) {
-                // get $http via $injector because of circular dependency problem
-                $http = $http || $injector.get('$http');
-                // don't send notification until all requests are complete
-                if ($http.pendingRequests.length < 1) {
-                    // get requestNotificationChannel via $injector because of circular dependency problem
-                    notificationChannel = notificationChannel || $injector.get('requestNotificationChannel');
-                    // send a notification requests are complete
-                    notificationChannel.requestEnded();
+                function success(response) {
+                    // get $http via $injector because
+                    // of circular dependency problem
+                    $http = $http || $injector.get('$http');
+                    // don't send notification until all requests are complete
+                    if ($http.pendingRequests.length < 1) {
+                        // get requestNotificationChannel via $injector
+                        // because of circular dependency problem
+                        notificationChannel = notificationChannel ||
+                            $injector.get('requestNotificationChannel');
+                        // send a notification requests are complete
+                        notificationChannel.requestEnded();
+                    }
+                    return response;
                 }
-                return response;
-            }
 
-            function error(response) {
-                var status = response.status;
+                function error(response) {
+                    var status = response.status;
 
-                // get $http via $injector because of circular dependency problem
-                $http = $http || $injector.get('$http');
-                // don't send notification until all requests are complete
-                if ($http.pendingRequests.length < 1) {
-                    // get requestNotificationChannel via $injector because of circular dependency problem
-                    notificationChannel = notificationChannel || $injector.get('requestNotificationChannel');
-                    // send a notification requests are complete
-                    notificationChannel.requestEnded();
-                }
-                // Intercept 404 error code from server
-                if (status == 404) {
-                    console.log('Error code: ' + status);
-                    $location.path('/404');
+                    // get $http via $injector because
+                    // of circular dependency problem
+                    $http = $http || $injector.get('$http');
+                    // don't send notification until all requests are complete
+                    if ($http.pendingRequests.length < 1) {
+                        // get requestNotificationChannel via $injector
+                        // because of circular dependency problem
+                        notificationChannel = notificationChannel ||
+                            $injector.get('requestNotificationChannel');
+                        // send a notification requests are complete
+                        notificationChannel.requestEnded();
+                    }
+                    // Intercept 404 error code from server
+                    if (status === 404) {
+                        $location.path('/404');
+                        return $q.reject(response);
+                    }
+
                     return $q.reject(response);
                 }
 
-                console.log(response);
-
-                return $q.reject(response);
+                return function (promise) {
+                    // get requestNotificationChannel via $injector
+                    // because of circular dependency problem
+                    notificationChannel = notificationChannel ||
+                        $injector.get('requestNotificationChannel');
+                    // send a notification requests are complete
+                    notificationChannel.requestStarted();
+                    return promise.then(success, error);
+                };
             }
-
-            return function (promise) {
-                // get requestNotificationChannel via $injector because of circular dependency problem
-                notificationChannel = notificationChannel || $injector.get('requestNotificationChannel');
-                // send a notification requests are complete
-                notificationChannel.requestStarted();
-                return promise.then(success, error);
-            }
-        }];
+        ];
 
     $httpProvider.responseInterceptors.push(interceptor);
 }]);

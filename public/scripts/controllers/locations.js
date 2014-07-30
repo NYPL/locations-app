@@ -83,6 +83,7 @@ function LocationsCtrl(
                 })
                 .catch(function (error) {
                     $location.path('/404');
+                    throw error;
                 });
         },
 
@@ -604,7 +605,6 @@ function LocationCtrl(
     // Used for the Get Directions link to Google Maps
     $scope.locationDest = nypl_utility.getAddressString(location);
 }
-
 
 angular
     .module('nypl_locations')
