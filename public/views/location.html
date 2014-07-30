@@ -100,8 +100,10 @@
     <div class="grid">
 
       <div class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in location._embedded.features'>
-        <img class="one-whole img--left img--outline" data-ng-src="{{feature.image}}" 
-          alt="Image of {{feature.title}}" style="height: 300px;">
+        <a data-ng-href="{{feature._links.web.href}}" data-ng-if="feature.image">
+          <img class="one-whole img--left img--outline" data-ng-src="{{feature.image}}"
+            alt="Image of {{feature.title}}" style="height: 300px;">
+        </a>
         <h3 class=""><a data-ng-href="{{feature._links.web.href}}">{{feature.title}}</a></h3>
         <p class="desc">{{feature.description}}</p>
       </div>
@@ -193,10 +195,17 @@
     <h2 class="hdg">{{ 'BLOGS' |translate }}</h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
-        <h3><a data-ng-href="http://nypl.org/{{blog._links.self.href}}">{{blog.title}}</a></h3>
-        <img data-ng-if="blog.image" class="img--left" data-ng-src="{{blog.image}}" alt="" style="height: 100px;" />
+        <h3 class=""><a data-ng-href="http://nypl.org/{{blog._links.self.href}}">{{blog.title}}</a></h3>
+        <a data-ng-if="blog.image" data-ng-href="http://nypl.org/{{blog._links.self.href}}">
+          <img class="img--left" data-ng-src="{{blog.image}}" alt="" style="height: 100px;" />
+        </a>
+        <span class="blog_author">By </span><br />
+        <time class="date" ><span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span></time>
         <div class="teaser desc">{{blog.body | truncate}}</div>
       </div>
+    </div>
+    <div class="push-half--bottom">
+      <a class="read-more" data-ng-href="">{{ 'MORE_BLOGS' | translate }}</a>
     </div>
   </div>
 
@@ -205,7 +214,9 @@
     <h2 class="hdg">{{ 'EXHIBITION' | translate }}</h2>
     <div class="grid">
       <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat='exhibition in location._embedded.exhibitions'>
-        <img data-ng-if="exhibition.image" class="img--left" data-ng-src="{{exhibition.image}}" alt="" style="height: 100px;" />
+        <a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}" data-ng-if="exhibition.image">
+          <img class="img--left" data-ng-src="{{exhibition.image}}" alt="" style="height: 100px;" />
+        </a>
         <h3 class="exhibition__title"><a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}">{{exhibition.title}}</a></h3>
         <p class="date">{{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p class="teaser desc">{{exhibition.body | truncate}}</p>
