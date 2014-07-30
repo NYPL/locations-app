@@ -29,8 +29,9 @@
         <h2 class="hdg">{{ 'HIGHLIGHT_EXHIBITION' | translate }}</h2>
         <div class="featured-event">
           <div class="one-whole" data-ng-repeat='exhibition in location._embedded.exhibitions | limitTo:1'>
-            <img data-ng-if="exhibition.image" class="img--left"
-              data-ng-src="{{exhibition.image}}" alt="" style="height: 100px;" />
+            <a data-ng-if="exhibition.image" data-ng-href="http://nypl.org/{{exhibition._links.self.href}}">
+              <img class="img--left" data-ng-src="{{exhibition.image}}" alt="" style="height: 100px;" />
+            </a>
             <h3 class="flush"><a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}">
               {{exhibition.title}}</a></h3>
             <p>{{ 'START_TIME' | translate }}: {{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>

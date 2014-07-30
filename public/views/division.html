@@ -150,15 +150,21 @@
     </div> 
   </div>
 
-  <div class="container__blogs" data-ng-if="division._embedded.blogs">
+  <div id="container__blogs" data-ng-if="division._embedded.blogs">
     <h2 class="hdg">{{ 'BLOGS' | translate }}</h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in division._embedded.blogs'>
         <h3><a data-ng-href="http://nypl.org/{{blog._links.self.href}}">{{blog.title}}</a></h3>
-        <img data-ng-if="blog.image" class="img--left"
-          data-ng-src="{{blog.image}}" alt="" style="max-width: 120px;" />
+        <a data-ng-if="blog.image" data-ng-href="http://nypl.org/{{blog._links.self.href}}">
+          <img class="img--left" data-ng-src="{{blog.image}}" alt="" style="max-width: 120px;" />
+        </a>
+        <span class="blog_author">By </span><br />
+        <time class="date" ><span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span></time>
         <div class="desc">{{blog.body}}</div>
       </div>
+    </div>
+    <div class="push-half--bottom">
+      <a class="read-more" data-ng-href="">{{ 'MORE_BLOGS' | translate }}</a>
     </div>
   </div>
 

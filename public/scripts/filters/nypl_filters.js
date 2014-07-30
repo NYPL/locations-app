@@ -42,8 +42,7 @@ nypl_locations.filter('dateToISO', [
         'use strict';
 
         return function (input) {
-            input = new Date(input).toISOString();
-            return input;
+            return new Date(input).toISOString();
         };
     }]);
 
