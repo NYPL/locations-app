@@ -1,5 +1,5 @@
 /*jslint nomen: true, indent: 4, maxlen: 80 */
-/*globals angular, window */
+/*globals angular, window, headerScripts */
 
 var nypl_locations = angular.module('nypl_locations', [
     'ngCookies',
@@ -79,64 +79,79 @@ nypl_locations.config([
     }
 ]);
 
-// Declare an http interceptor that will signal the start and end of each request
+// Declare an http interceptor that will signal
+// the start and end of each request
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
 nypl_locations.config(['$httpProvider', function ($httpProvider) {
+    'use strict';
+
     var $http,
-        interceptor = ['$q', '$injector', '$location', function ($q, $injector, $location) {
-            var notificationChannel;
+        interceptor = [
+            '$q',
+            '$injector',
+            '$location',
+            function ($q, $injector, $location) {
+                var notificationChannel;
 
-            function success(response) {
-                // get $http via $injector because of circular dependency problem
-                $http = $http || $injector.get('$http');
-                // don't send notification until all requests are complete
-                if ($http.pendingRequests.length < 1) {
-                    // get requestNotificationChannel via $injector because of circular dependency problem
-                    notificationChannel = notificationChannel || $injector.get('requestNotificationChannel');
-                    // send a notification requests are complete
-                    notificationChannel.requestEnded();
+                function success(response) {
+                    // get $http via $injector because
+                    // of circular dependency problem
+                    $http = $http || $injector.get('$http');
+                    // don't send notification until all requests are complete
+                    if ($http.pendingRequests.length < 1) {
+                        // get requestNotificationChannel via $injector
+                        // because of circular dependency problem
+                        notificationChannel = notificationChannel ||
+                            $injector.get('requestNotificationChannel');
+                        // send a notification requests are complete
+                        notificationChannel.requestEnded();
+                    }
+                    return response;
                 }
-                return response;
-            }
 
-            function error(response) {
-                var status = response.status;
+                function error(response) {
+                    var status = response.status;
 
-                // get $http via $injector because of circular dependency problem
-                $http = $http || $injector.get('$http');
-                // don't send notification until all requests are complete
-                if ($http.pendingRequests.length < 1) {
-                    // get requestNotificationChannel via $injector because of circular dependency problem
-                    notificationChannel = notificationChannel || $injector.get('requestNotificationChannel');
-                    // send a notification requests are complete
-                    notificationChannel.requestEnded();
-                }
-                // Intercept 404 error code from server
-                if (status == 404) {
-                    console.log('Error code: ' + status);
-                    $location.path('/404');
+                    // get $http via $injector because
+                    // of circular dependency problem
+                    $http = $http || $injector.get('$http');
+                    // don't send notification until all requests are complete
+                    if ($http.pendingRequests.length < 1) {
+                        // get requestNotificationChannel via $injector
+                        // because of circular dependency problem
+                        notificationChannel = notificationChannel ||
+                            $injector.get('requestNotificationChannel');
+                        // send a notification requests are complete
+                        notificationChannel.requestEnded();
+                    }
+                    // Intercept 404 error code from server
+                    if (status === 404) {
+                        $location.path('/404');
+                        return $q.reject(response);
+                    }
+
                     return $q.reject(response);
                 }
 
-                console.log(response);
-
-                return $q.reject(response);
+                return function (promise) {
+                    // get requestNotificationChannel via $injector
+                    // because of circular dependency problem
+                    notificationChannel = notificationChannel ||
+                        $injector.get('requestNotificationChannel');
+                    // send a notification requests are complete
+                    notificationChannel.requestStarted();
+                    return promise.then(success, error);
+                };
             }
-
-            return function (promise) {
-                // get requestNotificationChannel via $injector because of circular dependency problem
-                notificationChannel = notificationChannel || $injector.get('requestNotificationChannel');
-                // send a notification requests are complete
-                notificationChannel.requestStarted();
-                return promise.then(success, error);
-            }
-        }];
+        ];
 
     $httpProvider.responseInterceptors.push(interceptor);
 }]);
 
 // Run jQuery Scripts
 nypl_locations.run(['$rootScope', function ($rootScope) {
+    'use strict';
+
     // fired once the view is loaded, 
     // after the DOM is rendered. The '$scope' of the view emits the event.
     $rootScope.$on('$viewContentLoaded', headerScripts);

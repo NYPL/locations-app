@@ -72,7 +72,7 @@ nypl_locations.directive('nyplbreadcrumbs', [
         return {
             restrict: 'E',
             templateUrl: 'scripts/directives/templates/breadcrumbs.html',
-            replace: true,
+            replace: true
         };
     }]);
 
@@ -165,7 +165,6 @@ nypl_locations.directive('eventRegistration', [
             },
             link: function (scope, element, attrs) {
                 scope.online = false;
-                
                 if (attrs.how === 'Online') {
                     scope.online = true;
                 }

@@ -130,7 +130,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
         },
 
         create_searchMarker: function (coords, text) {
-            var searchTerm = text.replace(',',' <br>').replace(',',' <br>');
+            var searchTerm = text.replace(',', ' <br>').replace(',', ' <br>');
             panCoords = new google.maps.LatLng(coords.lat, coords.long);
             searchMarker.setPosition(panCoords);
             searchInfoWindow.setContent(searchTerm);
@@ -138,7 +138,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
 
         draw_searchMarker: function () {
             this.remove_searchMarker();
-            
+
             searchMarker.setMap(map);
             this.panMap(searchMarker);
 
@@ -177,7 +177,7 @@ nypl_locations.factory('nypl_geocoder_service', ['$q', function ($q) {
                 marker = markerObj[0].marker;
 
             if (marker.getMap() === undefined ||
-                marker.getMap() === null) {
+                    marker.getMap() === null) {
                 this.add_marker_to_map(id);
             }
 
