@@ -32,8 +32,6 @@ nypl_locations.config([
             prefix: '/languages/',
             suffix: '.json'
         });
-        $translateProvider.translations('en');
-        $translateProvider.translations('es');
         $translateProvider.preferredLanguage('en');
 
         $routeProvider
@@ -50,18 +48,18 @@ nypl_locations.config([
                 controller: 'DivisionCtrl',
                 label: 'Division'
             })
-            .when('/services', {
-                templateUrl: '/views/services.html',
+            .when('/amenities', {
+                templateUrl: '/views/amenities.html',
                 controller: 'ServicesCtrl',
-                label: 'Services'
+                label: 'Amenities'
             })
-            .when('/services/:service_id', {
-                templateUrl: 'views/services.html',
+            .when('/amenities/:amenities_id', {
+                templateUrl: 'views/amenities.html',
                 controller: 'OneServiceCtrl',
-                label: 'Service'
+                label: 'Amenities'
             })
-            .when('/services/location/:location_id', {
-                templateUrl: 'views/services.html',
+            .when('/amenities/location/:location_id', {
+                templateUrl: 'views/amenities.html',
                 controller: 'ServicesAtLibraryCtrl',
                 label: 'Location'
             })
