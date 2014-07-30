@@ -12,15 +12,15 @@
     </div>
     
     <div data-nf-if="service_name" class="grid__item">
-      <a class="services__reserve btn btn--natural" data-ng-if="service._links.reserve" data-ng-href="{{service._links.reserve.href}}">Reserve</a>
-      <a class="services__info" data-ng-if="service._links.info" data-ng-href="{{service._links.info.href}}">Learn more</a>
+      <a class="amenities__reserve btn btn--natural" data-ng-if="service._links.reserve" data-ng-href="{{service._links.reserve.href}}">Reserve</a>
+      <a class="amenities__info" data-ng-if="service._links.info" data-ng-href="{{service._links.info.href}}">Learn more</a>
     </div>
 
     <ul data-ng-if="services">
       <li data-ng-repeat="service in services">
         <div><a data-ng-href="/#/amenities/{{service._id}}">{{service.name}}</a>, Id: {{service._id}}</div>
-        <a class="services__reserve btn btn--natural" data-ng-if="service._links.reserve" data-ng-href="{{service._links.reserve.href}}">Reserve</a>
-      <a class="services__info" data-ng-if="service._links.info" data-ng-href="{{service._links.info.href}}">Learn more</a>
+        <a class="amenities__reserve btn btn--natural" data-ng-if="service._links.reserve" data-ng-href="{{service._links.reserve.href}}">Reserve</a>
+      <a class="amenities__info" data-ng-if="service._links.info" data-ng-href="{{service._links.info.href}}">Learn more</a>
       </li>
     </ul>
 

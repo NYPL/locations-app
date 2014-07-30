@@ -9,7 +9,7 @@
             <th class="location-title" ng-click="predicate = 'name'; reverse=!reverse">
               {{ 'LOCATION_HEADER' | translate }}
             </th>
-            <th class="services-title">
+            <th class="amenities-title">
               {{ 'AMENITIES_HEADER' | translate }}
             </th>
             <th class="hours-title">
@@ -52,8 +52,8 @@
             </td>
 
             <!-- Highlighted Amenities -->
-            <td class="services-info">
-              <ul class="highlighted-services-list">
+            <td class="amenities-info">
+              <ul class="highlighted-amenities-list">
                 <li data-ng-repeat="service in location._embedded.services | limitTo:3">
                   {{service.name}}
                 </li>
