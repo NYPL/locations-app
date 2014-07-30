@@ -320,8 +320,7 @@ nypl_locations.factory('nypl_utility', [
                 var lazyFilter =
                         $filter('filter')(locations, searchTerm),
                     strictFilter =
-                        $filter('filter')(locations, searchTerm, true),
-                    result;
+                        $filter('filter')(locations, searchTerm, true);
 
                 // Check the strict and 'lazy' filter.
                 // The strict filter has a higher priority since it's
@@ -333,7 +332,7 @@ nypl_locations.factory('nypl_utility', [
                     // both filters, the strict match should appear first
                     return _.union(strictFilter, lazyFilter);
                 }
-                
+
                 return lazyFilter;
             },
 
@@ -364,33 +363,6 @@ nypl_locations.factory('nypl_utility', [
                     return true;
                 }
                 return false;
-            },
-
-            // Generate link to the books available at a particular branch
-            // in Bibliocommons
-            catalog_items_link: function (branch) {
-                var base = "http://nypl.bibliocommons.com/search?" +
-                    "custom_query=available%3A\"",
-                    bc_branch;
-
-                // TODO: Instead of handling these exceptions here, the 
-                // API should just return a catalog link
-                if (branch.indexOf("Andrew Heiskel") === 0) {
-                    bc_branch =
-                        "Andrew%20Heiskell%20Braille%20%26%20Talking" +
-                        "%20Book%20Library";
-                } else if (branch.indexOf("Belmont Library") === 0) {
-                    bc_branch = "Belmont";
-                } else if (branch === "Bronx Library Center") {
-                    bc_branch = branch;
-                } else if (branch.indexOf(" Library Center") !== -1) {
-                    bc_branch = branch.replace(" Library Center", "");
-                } else {
-                    bc_branch = branch
-                        .replace(" Library", "")
-                        .replace(/ /g, "%20");
-                }
-                return base + bc_branch + "\"";
             },
 
             search_word_filter: function (query) {

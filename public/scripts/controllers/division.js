@@ -33,13 +33,16 @@ nypl_locations.controller('DivisionCtrl', [
                             "Division": division.name
                         };
 
-                        homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
+                        homeUrl = {
+                            label: 'Home',
+                            path: 'http://www.nypl.org'
+                        };
                         locationUrl = {
                             label: division.location_name,
                             path: '#/' + division.location_slug
                         };
                         breadcrumbs.breadcrumbs.unshift(homeUrl);
-                        breadcrumbs.breadcrumbs.splice(2,0,locationUrl);
+                        breadcrumbs.breadcrumbs.splice(2, 0, locationUrl);
                         $scope.breadcrumbs = breadcrumbs;
 
                         if (division.hours) {
@@ -59,6 +62,7 @@ nypl_locations.controller('DivisionCtrl', [
                     })
                     .catch(function (error) {
                         $location.path('/404');
+                        throw error;
                     });
             };
 

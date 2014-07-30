@@ -23,6 +23,7 @@ nypl_locations.controller('LocationsCtrl', [
         $timeout
     ) {
         'use strict';
+
         var userCoords,
             userAddress,
             locations,
@@ -93,6 +94,7 @@ nypl_locations.controller('LocationsCtrl', [
                     })
                     .catch(function (error) {
                         $location.path('/404');
+                        throw error;
                     });
             },
 
@@ -475,6 +477,8 @@ nypl_locations.controller('MapCtrl', [
         nypl_utility,
         $timeout
     ) {
+        'use strict';
+
         var loadMapMarkers = function () {
                 _.each($scope.locations, function (location) {
                     var locationAddress = nypl_utility
@@ -522,11 +526,12 @@ nypl_locations.controller('MapCtrl', [
 
             nypl_geocoder_service.load_markers();
             loadMapMarkers();
-            if(!$scope.locations) 
+            if (!$scope.locations) {
                 $scope.loadLocations().then(function () {
                     nypl_geocoder_service.load_markers();
                     loadMapMarkers();
                 });
+            }
 
             $scope.draw_user_marker();
 
@@ -561,8 +566,7 @@ nypl_locations.controller('MapCtrl', [
                 $scope.scroll_map_top();
             }, 1200);
         };
-
-}]);
+    }]);
 
 // Load one individual location for locations and events pages
 nypl_locations.controller('LocationCtrl', [
@@ -600,7 +604,10 @@ nypl_locations.controller('LocationCtrl', [
                         $scope.ical_link = nypl_utility.ical_link;
 
                         breadcrumbs.options = { 'Location': location.name };
-                        homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
+                        homeUrl = {
+                            label: 'Home',
+                            path: 'http://www.nypl.org'
+                        };
                         breadcrumbs.breadcrumbs[1].path = "#/" + location.slug;
                         breadcrumbs.breadcrumbs.unshift(homeUrl);
                         $scope.breadcrumbs = breadcrumbs;

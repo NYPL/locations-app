@@ -14,6 +14,7 @@
     "karma-ng-html2js-preprocessor": "^0.1.0",
     "jasmine-spec-reporter": "^0.4.0",
     "protractor-html-screenshot-reporter": "0.0.10",
-    "jasmine-reporters": "^0.2.1"
+    "jasmine-reporters": "^0.2.1",
+    "grunt-scss-lint": "^0.3.1"
   }
 }
