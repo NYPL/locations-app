@@ -32,8 +32,6 @@ nypl_locations.config([
             prefix: '/languages/',
             suffix: '.json'
         });
-        $translateProvider.translations('en');
-        $translateProvider.translations('es');
         $translateProvider.preferredLanguage('en');
 
         $routeProvider
