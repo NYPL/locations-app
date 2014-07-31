@@ -80,45 +80,38 @@ nypl_locations.controller('OneServiceCtrl', [
     }
 ]);
 
-// Load one location and list all the services
-// found in that location.
-nypl_locations.controller('ServicesAtLibraryCtrl', [
+// Load one location and list all the amenities found in that location.
+nypl_locations.controller('AmenitiesAtLibraryCtrl', [
     '$scope',
     '$routeParams',
     '$rootScope',
     'nypl_locations_service',
     'breadcrumbs',
+    'location',
     function (
         $scope,
         $routeParams,
         $rootScope,
         nypl_locations_service,
-        breadcrumbs
+        breadcrumbs,
+        location
     ) {
         'use strict';
         var services,
-            location,
-            homeUrl,
-            loadServicesAtBranch = function () {
-                return nypl_locations_service
-                    .services_at_library($routeParams.location_id)
-                    .then(function (data) {
-                        location = data.location;
-                        services = location._embedded.services;
+            homeUrl;
 
-                        $rootScope.title = location.name;
-                        $scope.location = location;
-                        $scope.services = services;
+        console.log(location);
+    //     services = location._embedded.services;
 
-                        // Inserts into beginning of breadcrumbs
-                        homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
-                        breadcrumbs.options = { 'Location': location.name };
-                        breadcrumbs.breadcrumbs[1].path = "#/amenities";
-                        breadcrumbs.breadcrumbs.unshift(homeUrl);
-                        $scope.breadcrumbs = breadcrumbs;
-                    });
-            };
+    // $rootScope.title = location.name;
+    // $scope.location = location;
+    // $scope.services = services;
 
-        loadServicesAtBranch();
+    // // Inserts into beginning of breadcrumbs
+    // homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
+    // breadcrumbs.options = { 'Location': location.name };
+    // breadcrumbs.breadcrumbs[1].path = "#/amenities";
+    // breadcrumbs.breadcrumbs.unshift(homeUrl);
+    // $scope.breadcrumbs = breadcrumbs;
     }
 ]);

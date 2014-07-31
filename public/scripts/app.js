@@ -8,6 +8,7 @@ var nypl_locations = angular.module('nypl_locations', [
     'ngRoute',
     'ngAnimate',
     'locationService',
+    'coordinateService',
     'angulartics',
     'angulartics.google.analytics',
     'pascalprecht.translate',
@@ -33,6 +34,19 @@ nypl_locations.config([
             suffix: '.json'
         });
         $translateProvider.preferredLanguage('en');
+
+
+        function AmenitiesAtLibrary(nypl_locations_service, $route, $location) {
+            return nypl_locations_service
+                .amenities_at_library($route.current.params.location_id)
+                .then(function (data) {
+                    return data.location;
+                })
+                .catch(function (error) {
+                    $location.path('/404');
+                    throw error;
+                });
+        }
 
         $routeProvider
             .when('/404', {
@@ -60,8 +74,11 @@ nypl_locations.config([
             })
             .when('/amenities/location/:location_id', {
                 templateUrl: 'views/amenities.html',
-                controller: 'ServicesAtLibraryCtrl',
-                label: 'Location'
+                controller: 'AmenitiesAtLibraryCtrl',
+                label: 'Location',
+                resolve: {
+                    location: AmenitiesAtLibrary
+                }
             })
             .when('/:symbol', {
                 templateUrl: 'views/location.html',
