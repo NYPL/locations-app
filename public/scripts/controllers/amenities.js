@@ -7,7 +7,7 @@ function AmenitiesCtrl($scope, $rootScope, breadcrumbs, amenities) {
     var homeUrl;
 
     $rootScope.title = "Amenities";
-    $scope.amenities = amenities;
+    $scope.amenities = amenities.services;
 
     // Inserts into beginning of breadcrumbs
     homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
@@ -20,8 +20,6 @@ function AmenitiesCtrl($scope, $rootScope, breadcrumbs, amenities) {
 function AmenityCtrl($scope, $rootScope, breadcrumbs, amenity) {
     'use strict';
     var homeUrl;
-
-    console.log(amenity);
 
     $rootScope.title = amenity.service.name;
     $scope.amenity = amenity.service;
@@ -62,6 +60,6 @@ function AmenitiesAtLibraryCtrl($scope, $rootScope, breadcrumbs, location, $http
 
 angular
     .module('nypl_locations')
-    .controller('AmenitiesCtrl', AmenitiesCtrl)
     .controller('AmenityCtrl', AmenityCtrl)
+    .controller('AmenitiesCtrl', AmenitiesCtrl)
     .controller('AmenitiesAtLibraryCtrl', AmenitiesAtLibraryCtrl);

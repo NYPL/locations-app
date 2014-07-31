@@ -48,24 +48,11 @@ function nypl_locations_api($http, $q) {
     };
 
     // All amenities at NYPL
-    locations_api.amenities = function () {
-        var defer = $q.defer();
+    locations_api.amenities = function (param) {
+        var defer = $q.defer(),
+            url = !param ? '/services' : '/services/' + param; 
 
-        $http.get(api + '/services', {cache: true})
-            .success(function (data) {
-                defer.resolve(data);
-            })
-            .error(function () {
-                defer.reject(apiError);
-            });
-        return defer.promise;
-    };
-
-    // All locations for one amenity
-    locations_api.amenity = function (symbol) {
-        var defer = $q.defer();
-
-        $http.get(api + '/services/' + symbol, {cache: true})
+        $http.get(api + url, {cache: true})
             .success(function (data) {
                 defer.resolve(data);
             })
