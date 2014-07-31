@@ -103,7 +103,7 @@ nypl_locations.config([
                 }
             })
             .when('/amenities/location/:location_id', {
-                templateUrl: 'views/AmenitiesAtLibrary.html',
+                templateUrl: 'views/amenitiesAtLibrary.html',
                 controller: 'AmenitiesAtLibraryCtrl',
                 label: 'Location',
                 resolve: {
