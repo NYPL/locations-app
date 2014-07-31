@@ -47,7 +47,8 @@ function nypl_locations_api($http, $q) {
         return defer.promise;
     };
 
-    locations_api.services = function () {
+    // All amenities at NYPL
+    locations_api.amenities = function () {
         var defer = $q.defer();
 
         $http.get(api + '/services', {cache: true})
@@ -60,7 +61,8 @@ function nypl_locations_api($http, $q) {
         return defer.promise;
     };
 
-    locations_api.one_service = function (symbol) {
+    // All locations for one amenity
+    locations_api.amenity = function (symbol) {
         var defer = $q.defer();
 
         $http.get(api + '/services/' + symbol, {cache: true})
@@ -73,6 +75,7 @@ function nypl_locations_api($http, $q) {
         return defer.promise;
     };
 
+    // All amenities at one location
     locations_api.amenities_at_library = function (symbol) {
         var defer = $q.defer();
 

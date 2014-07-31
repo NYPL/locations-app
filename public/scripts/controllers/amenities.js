@@ -1,84 +1,40 @@
 /*jslint indent: 4, maxlen: 80 */
 /*global nypl_locations, angular */
 
-// Load all the services available.
-nypl_locations.controller('ServicesCtrl', [
-    '$scope',
-    '$rootScope',
-    'nypl_locations_service',
-    'breadcrumbs',
-    function (
-        $scope,
-        $rootScope,
-        nypl_locations_service,
-        breadcrumbs
-    ) {
-        'use strict';
-        var services,
-            homeUrl,
-            loadServices = function () {
-                return nypl_locations_service
-                    .services()
-                    .then(function (data) {
-                        services = data.services;
-                        $scope.services = services;
-                    });
-            };
+// Load all the amenities available.
+function AmenitiesCtrl($scope, $rootScope, breadcrumbs, amenities) {
+    'use strict';
+    var homeUrl;
 
-        $rootScope.title = "Services";
+    $rootScope.title = "Amenities";
+    $scope.amenities = amenities;
 
-        // Inserts into beginning of breadcrumbs
-        homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
-        breadcrumbs.breadcrumbs.unshift(homeUrl);
-        $scope.breadcrumbs = breadcrumbs;
+    // Inserts into beginning of breadcrumbs
+    homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
+    breadcrumbs.breadcrumbs.unshift(homeUrl);
+    $scope.breadcrumbs = breadcrumbs;
+}
 
-        loadServices();
-    }
-]);
+// Load an amenity and list all the locations
+// where the amenity can be found.
+function AmenityCtrl($scope, $rootScope, breadcrumbs, amenity) {
+    'use strict';
+    var homeUrl;
 
-// Load one service and list all the locations
-// where the service can be found.
-nypl_locations.controller('OneServiceCtrl', [
-    '$scope',
-    '$routeParams',
-    '$rootScope',
-    'nypl_locations_service',
-    'breadcrumbs',
-    function (
-        $scope,
-        $routeParams,
-        $rootScope,
-        nypl_locations_service,
-        breadcrumbs
-    ) {
-        'use strict';
-        var service,
-            locations,
-            homeUrl,
-            loadOneService = function () {
-                return nypl_locations_service
-                    .one_service($routeParams.amenities_id)
-                    .then(function (data) {
-                        service = data.service;
-                        locations = data.locations;
+    console.log(amenity);
 
-                        $rootScope.title = service.name;
-                        $scope.service = service;
-                        $scope.locations = locations;
-                        $scope.service_name = service.name;
+    $rootScope.title = amenity.service.name;
+    $scope.amenity = amenity.service;
+    $scope.locations = amenity.locations;
+    $scope.amenity_name = amenity.service.name;
 
-                        // Inserts into beginning of breadcrumbs
-                        homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
-                        breadcrumbs.options = { 'Service': service.name };
-                        breadcrumbs.breadcrumbs[1].path = "#/amenities";
-                        breadcrumbs.breadcrumbs.unshift(homeUrl);
-                        $scope.breadcrumbs = breadcrumbs;
-                    });
-            };
-
-        loadOneService();
-    }
-]);
+    // Inserts into beginning of breadcrumbs
+    homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
+    breadcrumbs.options = { 'Service': amenity.service.name };
+    breadcrumbs.breadcrumbs[1].path = "#/amenities";
+    breadcrumbs.breadcrumbs.unshift(homeUrl);
+    $scope.breadcrumbs = breadcrumbs;
+}
 
 // Load one location and list all the amenities found in that location.
 function AmenitiesAtLibraryCtrl($scope, $rootScope, breadcrumbs, location, $http) {
@@ -106,4 +62,6 @@ function AmenitiesAtLibraryCtrl($scope, $rootScope, breadcrumbs, location, $http
 
 angular
     .module('nypl_locations')
+    .controller('AmenitiesCtrl', AmenitiesCtrl)
+    .controller('AmenityCtrl', AmenityCtrl)
     .controller('AmenitiesAtLibraryCtrl', AmenitiesAtLibraryCtrl);

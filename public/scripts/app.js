@@ -48,6 +48,30 @@ nypl_locations.config([
                 });
         }
 
+        function Amenities(nypl_locations_service, $route, $location) {
+            return nypl_locations_service
+                .amenities()
+                .then(function (data) {
+                    return data.services;
+                })
+                .catch(function (error) {
+                    $location.path('/404');
+                    throw error;
+                });
+        }
+
+        function Amenity(nypl_locations_service, $route, $location) {
+            return nypl_locations_service
+                .amenity($route.current.params.amenity_id)
+                .then(function (data) {
+                    return data;
+                })
+                .catch(function (error) {
+                    $location.path('/404');
+                    throw error;
+                });
+        }
+
         $routeProvider
             .when('/404', {
                 templateUrl: '/views/404.html'
@@ -64,16 +88,22 @@ nypl_locations.config([
             })
             .when('/amenities', {
                 templateUrl: '/views/amenities.html',
-                controller: 'ServicesCtrl',
-                label: 'Amenities'
+                controller: 'AmenitiesCtrl',
+                label: 'Amenities',
+                resolve: {
+                    amenities: Amenities
+                }
             })
-            .when('/amenities/:amenities_id', {
+            .when('/amenities/:amenity_id', {
                 templateUrl: 'views/amenities.html',
-                controller: 'OneServiceCtrl',
-                label: 'Amenities'
+                controller: 'AmenityCtrl',
+                label: 'Amenities',
+                resolve: {
+                    amenity: Amenity
+                }
             })
             .when('/amenities/location/:location_id', {
-                templateUrl: 'views/amenities.html',
+                templateUrl: 'views/AmenitiesAtLibrary.html',
                 controller: 'AmenitiesAtLibraryCtrl',
                 label: 'Location',
                 resolve: {
