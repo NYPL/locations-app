@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content amenities">
   
   <nyplbreadcrumbs></nyplbreadcrumbs>
 
@@ -6,32 +6,52 @@
 
     <div class="grid__item">
       <h2 data-ng-if="location.name"><a href="/#/{{location.slug}}">{{location.name}}</a></h2>
-      <h2 data-ng-if="service_name">{{service_name}}</h2>
-
-      <h2 data-ng-if="!location.name && !service_name">All Amenities</h2>
-    </div>
-    
-    <div data-nf-if="service_name" class="grid__item">
-      <a class="amenities__reserve btn btn--natural" data-ng-if="service._links.reserve" data-ng-href="{{service._links.reserve.href}}">Reserve</a>
-      <a class="amenities__info" data-ng-if="service._links.info" data-ng-href="{{service._links.info.href}}">Learn more</a>
     </div>
 
-    <ul data-ng-if="services">
-      <li data-ng-repeat="service in services">
-        <div><a data-ng-href="/#/amenities/{{service._id}}">{{service.name}}</a>, Id: {{service._id}}</div>
-        <a class="amenities__reserve btn btn--natural" data-ng-if="service._links.reserve" data-ng-href="{{service._links.reserve.href}}">Reserve</a>
-      <a class="amenities__info" data-ng-if="service._links.info" data-ng-href="{{service._links.info.href}}">Learn more</a>
-      </li>
-    </ul>
+    <div class="grid">
 
-    <ul data-ng-if="locations">
-      <li data-ng-repeat="location in locations">
-        <a data-ng-href="/#/amenities/location/{{location.id}}">{{location.name}}</a>, Id: {{location.id}}
-      </li>
-    </ul>
+      <div class="grid__item one-whole lap-and-up-two-thirds">
+        <ul data-ng-if="amenitiesCategories" class="amenity-category-list">
+          <li data-ng-repeat="category in amenitiesCategories">
+            <h3><span class="icon-rocket">{{category.name}}</span></h3>
+            <ul class="amenities-list">
+              <li data-ng-repeat="amenity in category.amenities">
+                <a data-ng-href="/#/amenities/{{amenity.id}}">{{amenity.name}}</a>
+                <span data-ng-if="amenity._links.info">
+                  <a data-ng-href="{{amenity._links.info.href}}" class="btn btn--natural">Information</a>
+                </span>
+                <span data-ng-if="amenity._links.reserve">
+                  <a data-ng-href="{{amenity._links.reserve.href}}" class="amenities__reserve btn btn--natural">Reserve</a>
+                </span>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div><!--
+
+      --><div class="grid__item one-whole lap-and-up-one-third">
+        <div class="callout">
+          <p>See all Amenities at NYPL</p>
+        </div>
+      </div>
+
+    </div>
     
   </section>
 
-  <askdonatefooter chatHref="" emailHref="" donateHref="" />
+  <div class="ask-donate">
+    <div class="appeal grid__item one-whole lap-and-up-one-half" id="donate">
+        <p>Help us keep this library open 6 days a week!</p>
+        <button class="btn--donate" class="{{donateHref}}">Donate now</button>
+    </div><!--
+
+    --><div class="askNYPL grid__item one-whole lap-and-up-one-half " id="ask-nypl">
+        <ul>
+          <li class="asknum icon-phone">917-ASK-NYPL</li>
+          <li><librarianchatbutton /></li>
+          <li><emailusbutton link="{{division._links.contact.href}}" /></li>
+        </ul>
+    </div>
+  </div>
   
 </div>  
