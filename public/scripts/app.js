@@ -50,19 +50,7 @@ nypl_locations.config([
 
         function Amenities(nypl_locations_service, $route, $location) {
             return nypl_locations_service
-                .amenities()
-                .then(function (data) {
-                    return data.services;
-                })
-                .catch(function (error) {
-                    $location.path('/404');
-                    throw error;
-                });
-        }
-
-        function Amenity(nypl_locations_service, $route, $location) {
-            return nypl_locations_service
-                .amenity($route.current.params.amenity_id)
+                .amenities($route.current.params.amenity_id)
                 .then(function (data) {
                     return data;
                 })
@@ -99,7 +87,7 @@ nypl_locations.config([
                 controller: 'AmenityCtrl',
                 label: 'Amenities',
                 resolve: {
-                    amenity: Amenity
+                    amenity: Amenities
                 }
             })
             .when('/amenities/location/:location_id', {
