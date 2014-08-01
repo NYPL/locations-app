@@ -1,7 +1,9 @@
 /*jslint indent: 2, maxlen: 80, nomen: true */
-/*globals $, window, console, jQuery */
+/*globals $, window, console, jQuery, angular */
 
 function nyplSearch() {
+  'use strict';
+
   return {
     restrict: 'E',
     scope: {},
@@ -12,72 +14,6 @@ function nyplSearch() {
       console.log(element.find('.search-the-catalog'));
 
       var o = {};
-
-      function init() {
-        angular.element('html').click(function () {
-          element.find('.pseudo-select').removeClass('open');
-          element.find('.error').removeClass('error');
-        });
-
-        var lmnt = element,
-          mobile_hidden = lmnt.find('.hidden-xs').eq(0);
-
-        o.term = lmnt.find('#search-block-form-input');
-        o.search_button = lmnt.find('.search_button');
-        o.choices = lmnt.find('.pseudo-select');
-        o.mobile_flag = lmnt.find('.search-button');
-        o.prompt = {
-          default_val: o.term.attr("placeholder"),
-          catalog: "Search the catalog",
-          site: "Search NYPL.org"
-        };
-
-        // Don't let clicks get out of the search box
-        lmnt.click(function (e) {
-          e.stopPropagation();
-        });
-
-        // Override default submit, fire search button click event 
-        // instead
-        lmnt.find("#search-block-form").submit(function () {
-          o.search_button.click();
-          return false;
-        });
-
-        // Open search scope pane when you click into the
-        // search input
-        o.term.focus(function (e) {
-          o.choices.addClass('open');
-        });
-
-        // If the error class has been set on the input box, remove it
-        // when the user clicks into it
-        o.term.focus(function () {
-          clear_error();
-        });
-
-        // Setup click action on submit button.
-        lmnt.find('.search-button').click(function () {
-          return do_search();
-        });
-
-        // Setup click action on radio butons
-        o.choices.find('li input').click(function () {
-          set_prompt(angular.element(this));
-        });
-
-        // Setup click action on list items (will be active when items are
-        // as buttons on narrow screens
-        o.choices.find('li').click(function () {
-          if (is_mobile()) {
-            if (search_term().length === 0) {
-              set_error();
-            } else {
-              do_search(get_choice(angular.element(this)));
-            }
-          }
-        });
-      }
 
       // Set search box placeholder based on selected item
       function set_prompt(lmnt) {
@@ -155,9 +91,74 @@ function nyplSearch() {
         return false;
       }
 
+      function init() {
+        angular.element('html').click(function () {
+          element.find('.pseudo-select').removeClass('open');
+          element.find('.error').removeClass('error');
+        });
+
+        var lmnt = element;
+
+        o.term = lmnt.find('#search-block-form-input');
+        o.search_button = lmnt.find('.search_button');
+        o.choices = lmnt.find('.pseudo-select');
+        o.mobile_flag = lmnt.find('.search-button');
+        o.prompt = {
+          default_val: o.term.attr("placeholder"),
+          catalog: "Search the catalog",
+          site: "Search NYPL.org"
+        };
+
+        // Don't let clicks get out of the search box
+        lmnt.click(function (e) {
+          e.stopPropagation();
+        });
+
+        // Override default submit, fire search button click event 
+        // instead
+        lmnt.find("#search-block-form").submit(function () {
+          o.search_button.click();
+          return false;
+        });
+
+        // Open search scope pane when you click into the
+        // search input
+        o.term.focus(function (e) {
+          o.choices.addClass('open');
+        });
+
+        // If the error class has been set on the input box, remove it
+        // when the user clicks into it
+        o.term.focus(function () {
+          clear_error();
+        });
+
+        // Setup click action on submit button.
+        lmnt.find('.search-button').click(function () {
+          return do_search();
+        });
+
+        // Setup click action on radio butons
+        o.choices.find('li input').click(function () {
+          set_prompt(angular.element(this));
+        });
+
+        // Setup click action on list items (will be active when items are
+        // as buttons on narrow screens
+        o.choices.find('li').click(function () {
+          if (is_mobile()) {
+            if (search_term().length === 0) {
+              set_error();
+            } else {
+              do_search(get_choice(angular.element(this)));
+            }
+          }
+        });
+      }
+
       init();
     }
-  }
+  };
 }
 
 angular
