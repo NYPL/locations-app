@@ -2,14 +2,14 @@
 /*globals nypl_locations, _, angular, jQuery */
 
 function LocationsCtrl(
-    $scope,
     $rootScope,
+    $scope,
+    $timeout,
     nypl_coordinates_service,
     nypl_geocoder_service,
-    nypl_utility,
     nypl_location_list,
     nypl_locations_service,
-    $timeout
+    nypl_utility
 ) {
     'use strict';
 
@@ -454,7 +454,7 @@ function LocationsCtrl(
 }
 // End LocationsCtrl
 
-function MapCtrl($scope, nypl_geocoder_service, nypl_utility, $timeout) {
+function MapCtrl($scope, $timeout, nypl_geocoder_service, nypl_utility) {
     'use strict';
 
     var loadMapMarkers = function () {
@@ -548,13 +548,13 @@ function MapCtrl($scope, nypl_geocoder_service, nypl_utility, $timeout) {
 }
 
 function LocationCtrl(
+    $rootScope,
     $scope,
     $timeout,
-    $rootScope,
-    nypl_coordinates_service,
-    nypl_utility,
     breadcrumbs,
-    location
+    location,
+    nypl_coordinates_service,
+    nypl_utility
 ) {
     'use strict';
 

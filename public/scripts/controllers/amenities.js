@@ -2,7 +2,7 @@
 /*global nypl_locations, angular */
 
 // Load all the amenities available.
-function AmenitiesCtrl($scope, $rootScope, breadcrumbs, amenities) {
+function AmenitiesCtrl($rootScope, $scope, amenities, breadcrumbs) {
     'use strict';
     var homeUrl;
 
@@ -17,7 +17,7 @@ function AmenitiesCtrl($scope, $rootScope, breadcrumbs, amenities) {
 
 // Load an amenity and list all the locations
 // where the amenity can be found.
-function AmenityCtrl($scope, $rootScope, breadcrumbs, amenity) {
+function AmenityCtrl($rootScope, $scope, amenity, breadcrumbs) {
     'use strict';
     var homeUrl;
 
@@ -35,7 +35,7 @@ function AmenityCtrl($scope, $rootScope, breadcrumbs, amenity) {
 }
 
 // Load one location and list all the amenities found in that location.
-function AmenitiesAtLibraryCtrl($scope, $rootScope, breadcrumbs, location, $http) {
+function AmenitiesAtLibraryCtrl($http, $rootScope, $scope, breadcrumbs, location) {
     'use strict';
 
     var homeUrl;
