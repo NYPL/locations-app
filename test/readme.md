@@ -2,31 +2,27 @@
 
 ## End-to-end tests with Protractor 
 
-I created a package.json file in the root directory in order to save the npm package for protractor. Then I ran:
-
-  npm install protractor --save
-
-When cloning this repo to run tests, just run in the root directory
+On the root directory for this repo, run:
   
   sudo npm install
 
-to get protractor.
+to get all the node modules needed for running the tests.
 
 Protractor is built on top of Selenium's WebDriver, and the Jasmine testing framework.  Protractor also requires a separate server running selenium but it's easy to install.
 
 1. After running `npm install`, protractor will download in the node_modules directory.
-2. run the Selenium installation script `./node_modules/protractor/bin/webdriver-manager update`
-3. start the standalone version of selenium `./node_modules/protractor/bin/webdriver-manager start`
+2. Update the Selenium installation script `./node_modules/protractor/bin/webdriver-manager update`
+3. Start the standalone version of selenium `./node_modules/protractor/bin/webdriver-manager start`
 
-It should start the selenium server in the background and now Protractor can connect to it.
+The selenium server will run in the background and now Protractor can connect to it.
 
-The next step is only needed if you're starting a new Protractor test. This file should already exist when cloning this repo.
+The first step is only needed if you're starting a new Protractor test. This file should already exist when cloning this repo.
 
-copy the config file for protractor
+1. Copy the config file for protractor:
 
     cp ./node_modules/protractor/example/chromeOnlyConf.js protractor_conf.js
 
-In the root directory with the webdriver-manager running in the background, run
+2. In the root directory with the webdriver-manager running in the background, run
 
   protractor protractor_chrome_conf.js
 
