@@ -1,0 +1,148 @@
+{
+  "amenitiesCategories": [
+    {
+      "weight": 0,
+      "name": "Computer Services",
+      "icon": "",
+      "amenities": [
+        {
+          "_id":4,
+          "_links": {
+            "self": {
+              "href":"services/4"
+            },
+            "info": {
+              "href":"http://www.nypl.org/help/computers-internet-and-wireless-access/reserving-computer"
+            },
+            "reserve": {
+              "href":"http://pcreserve.nypl.org/"
+            }
+          },
+          "id":4,
+          "name":"Computers for Public Use"
+        },
+        {
+          "_id":6,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            },
+            "info": {
+              "href":"http://www.nypl.org/help/computers-internet-and-wireless-access/wireless-internet-access"
+            }
+          },
+          "id":6,
+          "name":"Wireless Internet Access "
+        }
+      ]
+    },
+    {
+      "weight": 1,
+      "name": "Circulation",
+      "icon": "",
+      "amenities": [
+        {
+          "_id":4,
+          "_links": {
+            "self": {
+              "href":"services/"
+            }
+          },
+          "id":4,
+          "name":"Inter-Library Loan"
+        },
+        {
+          "_id":6,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":6,
+          "name":"Self-service check-out"
+        }
+      ]
+    },
+    {
+      "weight": 2,
+      "name": "Office Services",
+      "icon": "",
+      "amenities": [
+        {
+          "_id":4,
+          "_links": {
+            "self": {
+              "href":"services/"
+            }
+          },
+          "id":4,
+          "name":"Photocopiers (black/white)"
+        },
+        {
+          "_id":6,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":6,
+          "name":"Photocopiers (color)"
+        }
+      ]
+    },
+    {
+      "weight": 3,
+      "name": "Facilities",
+      "icon": "",
+      "amenities": [
+        {
+          "_id":4,
+          "_links": {
+            "self": {
+              "href":"services/"
+            }
+          },
+          "id":4,
+          "name":"Public Restrooms"
+        },
+        {
+          "_id":6,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":6,
+          "name":"Children's Only Restrooms"
+        }
+      ]
+    },
+    {
+      "weight": 4,
+      "name": "Assistive Technologies",
+      "icon": "",
+      "amenities": [
+        {
+          "_id":4,
+          "_links": {
+            "self": {
+              "href":"services/"
+            }
+          },
+          "id":4,
+          "name":"Screen magnification software (MAGic)"
+        },
+        {
+          "_id":6,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":6,
+          "name":"Screen reading software (JAWS)"
+        }
+      ]
+    }
+  ]
+}

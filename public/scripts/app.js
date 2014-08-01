@@ -2,7 +2,6 @@
 /*globals angular, window, headerScripts */
 
 var nypl_locations = angular.module('nypl_locations', [
-    'ngCookies',
     'ngResource',
     'ngSanitize',
     'ngRoute',
@@ -59,6 +58,30 @@ nypl_locations.config([
                 });
         }
 
+        function AmenitiesAtLibrary(nypl_locations_service, $route, $location) {
+            return nypl_locations_service
+                .amenities_at_library($route.current.params.location_id)
+                .then(function (data) {
+                    return data.location;
+                })
+                .catch(function (error) {
+                    $location.path('/404');
+                    throw error;
+                });
+        }
+
+        function Amenities(nypl_locations_service, $route, $location) {
+            return nypl_locations_service
+                .amenities($route.current.params.amenity_id)
+                .then(function (data) {
+                    return data;
+                })
+                .catch(function (error) {
+                    $location.path('/404');
+                    throw error;
+                });
+        }
+
         $routeProvider
             .when('/404', {
                 templateUrl: '/views/404.html'
@@ -78,18 +101,27 @@ nypl_locations.config([
             })
             .when('/amenities', {
                 templateUrl: '/views/amenities.html',
-                controller: 'ServicesCtrl',
-                label: 'Amenities'
+                controller: 'AmenitiesCtrl',
+                label: 'Amenities',
+                resolve: {
+                    amenities: Amenities
+                }
             })
-            .when('/amenities/:amenities_id', {
+            .when('/amenities/:amenity_id', {
                 templateUrl: 'views/amenities.html',
-                controller: 'OneServiceCtrl',
-                label: 'Amenities'
+                controller: 'AmenityCtrl',
+                label: 'Amenities',
+                resolve: {
+                    amenity: Amenities
+                }
             })
             .when('/amenities/location/:location_id', {
-                templateUrl: 'views/amenities.html',
-                controller: 'ServicesAtLibraryCtrl',
-                label: 'Location'
+                templateUrl: 'views/amenitiesAtLibrary.html',
+                controller: 'AmenitiesAtLibraryCtrl',
+                label: 'Location',
+                resolve: {
+                    location: AmenitiesAtLibrary
+                }
             })
             .when('/:symbol', {
                 templateUrl: 'views/location.html',

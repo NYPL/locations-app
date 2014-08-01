@@ -5,7 +5,7 @@
 // Spacing for each container
 #container__address,
 #container__image,
-#container__top_services,
+#container__top_amenities,
 #container__events,
 #container__about,
 #container__blogs,
@@ -183,8 +183,8 @@
 	}
 }
 
-// Highlighted Services section
-#container__top_services {
+// Highlighted Amenities section
+#container__top_amenities {
 
 	@include breakpoint($min, $post-palm) {
 		margin-top: 20px;

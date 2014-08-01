@@ -117,23 +117,6 @@ function scrolltop($window) {
     };
 }
 
-function nyplalerts(nypl_locations_service, nypl_utility) {
-    'use strict';
-
-    return {
-        restrict: 'E',
-        templateUrl: 'scripts/directives/templates/alerts.html',
-        replace: true,
-        link: function (scope, element, attrs) {
-            var alerts;
-            nypl_locations_service.alerts().then(function (data) {
-                alerts = data.alerts;
-                scope.sitewidealert = nypl_utility.alerts(alerts);
-            });
-        }
-    };
-}
-
 function eventRegistration() {
     'use strict';
 
@@ -153,6 +136,36 @@ function eventRegistration() {
         }
     };
 }
+
+function nyplSiteAlerts(nypl_locations_service, nypl_utility) {
+    'use strict';
+
+    return {
+        restrict: 'E',
+        templateUrl: 'scripts/directives/templates/alerts.html',
+        replace: true,
+        scope: {},
+        link: function (scope, element, attrs) {
+            var alerts;
+            nypl_locations_service.alerts().then(function (data) {
+                alerts = data.alerts;
+                scope.sitewidealert = nypl_utility.alerts(alerts);
+            });
+        }
+    };
+}
+
+function nyplLibraryAlert() {
+    'use strict';
+
+    return {
+        restrict: 'E',
+        templateUrl: 'scripts/directives/templates/library-alert.html',
+        replace: true,
+        scope: true
+    };
+}
+
 
 /* 
 ** Show/Hide collapsible animated directive
@@ -209,6 +222,7 @@ angular
     .directive('emailusbutton', emailusbutton)
     .directive('librarianchatbutton', librarianchatbutton)
     .directive('scrolltop', scrolltop)
-    .directive('nyplalerts', nyplalerts)
     .directive('eventRegistration', eventRegistration)
+    .directive('nyplSiteAlerts', nyplSiteAlerts)
+    .directive('nyplLibraryAlert', nyplLibraryAlert)
     .directive('collapse', collapse);

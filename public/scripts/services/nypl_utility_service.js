@@ -368,6 +368,12 @@ function nypl_utility($filter, nypl_coordinates_service, $window) {
         return query;
     };
 
+    // Use ngSanitize to allow markup.
+    // Must use ng-bind-html as attribute in the element.
+    utility.returnHTML = function (string) {
+        return $sce.trustAsHtml(string);
+    };
+
     return utility;
 }
 

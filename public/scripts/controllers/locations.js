@@ -592,12 +592,19 @@ function LocationCtrl(
     $scope.location.social_media =
         nypl_utility.socialMediaColor($scope.location.social_media);
 
-    if (location._embedded) {
-        $scope.siteWideAlert = nypl_utility.alerts(location._embedded.alerts);
-    }
+    // Mocked data for library specific alert.
+    // Problem with current data is the start/end time.
+    // location.hours.exceptions = {
+    //     start: "2014-07-01T15:37:31-04:00",
+    //     end: "2014-08-10T15:37:31-04:00",
+    //     open: "",
+    //     close: "",
+    //     description: "Test library specific alert"
+    // };
 
-    if (location.hours) {
-        $scope.libraryAlert = nypl_utility.alerts(location.hours.exceptions);
+    if (location.hours.exceptions) {
+        $scope.libraryAlert =
+            nypl_utility.alerts(location.hours.exceptions);
     }
 
     $scope.hoursToday = nypl_utility.hoursToday;
@@ -612,4 +619,3 @@ angular
     .controller('MapCtrl', MapCtrl)
     // Load one individual location for locations and events pages
     .controller('LocationCtrl', LocationCtrl);
-

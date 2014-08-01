@@ -349,7 +349,7 @@
 					}
 				}
 
-				&.services-info {
+				&.amenities-info {
 					ul {
 						margin: 0 0 0 1.5em;
 						@include breakpoint($min, $post-palm) {
@@ -387,7 +387,7 @@
 					font-weight: bold;
 				}
 
-				.highlighted-services-list {
+				.highlighted-amenities-list {
 					margin: .5em 0 .5em 1.25em;
 					list-style-type: disc;
 
