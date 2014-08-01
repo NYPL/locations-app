@@ -107,7 +107,7 @@
             alt="Image of {{feature.title}}" style="height: 300px;">
         </a>
         <h3 class=""><a data-ng-href="{{feature._links.web.href}}">{{feature.title}}</a></h3>
-        <p class="desc">{{feature.description}}</p>
+        <div class="desc" data-ng-bind-html="returnHTML(feature.description)"></div>
       </div>
     </div>
   </div>

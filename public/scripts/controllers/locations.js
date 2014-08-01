@@ -665,5 +665,7 @@ nypl_locations.controller('LocationCtrl', [
         // Load the location and user's geolocation coordinates
         // as chained events
         loadLocation().then(loadCoords);
+
+        $scope.returnHTML = nypl_utility.returnHTML;
     }
 ]);

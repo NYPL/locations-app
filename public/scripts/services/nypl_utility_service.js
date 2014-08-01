@@ -46,8 +46,9 @@ nypl_locations.factory('requestNotificationChannel', [
 
 nypl_locations.factory('nypl_utility', [
     '$filter',
+    '$sce',
     'nypl_coordinates_service',
-    function ($filter, nypl_coordinates_service) {
+    function ($filter, $sce, nypl_coordinates_service) {
         'use strict';
         return {
             hoursToday: function (hours) {
@@ -373,6 +374,12 @@ nypl_locations.factory('nypl_utility', [
                 });
 
                 return query;
+            },
+
+            // Use ngSanitize to allow markup.
+            // Must use ng-bind-html as attribute in the element.
+            returnHTML: function (string) {
+                return $sce.trustAsHtml(string);
             }
         };
     }

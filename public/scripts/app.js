@@ -2,7 +2,6 @@
 /*globals angular, window, headerScripts */
 
 var nypl_locations = angular.module('nypl_locations', [
-    'ngCookies',
     'ngResource',
     'ngSanitize',
     'ngRoute',
