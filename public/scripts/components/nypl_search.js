@@ -73,7 +73,7 @@ function nyplSearch() {
             if (search_term().length === 0) {
               set_error();
             } else {
-              do_search(get_choice(this));
+              do_search(get_choice(angular.element(this)));
             }
           }
         });
@@ -95,7 +95,7 @@ function nyplSearch() {
 
       // Get the search term from the input box. Returns '' if the
       // term is undefined
-      function  search_term() {
+      function search_term() {
         return $.trim(o.term.val());
       }
 
@@ -122,11 +122,10 @@ function nyplSearch() {
       // Get text of the active search scope selection.
       // choice: optional element to use
       function get_choice(choice) {
-        var selectChoice = angular.element(choice);
-        if (selectChoice === undefined) {
-          selectChoice = o.choices.find('input[type=radio]:checked').parent();
+        if (choice === undefined) {
+          choice = o.choices.find('input[type=radio]:checked').parent();
         }
-        return $.trim(selectChoice.text()).toLowerCase();
+        return $.trim(choice.text()).toLowerCase();
       }
 
       // Execute the search
