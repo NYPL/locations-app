@@ -130,7 +130,7 @@ nypl_locations.directive('scrolltop', [
         };
     }]);
 
-nypl_locations.directive('nyplalerts', [
+nypl_locations.directive('nyplSiteAlerts', [
     'nypl_locations_service',
     'nypl_utility',
     function (nypl_locations_service, nypl_utility) {
@@ -145,11 +145,22 @@ nypl_locations.directive('nyplalerts', [
                 var alerts;
                 nypl_locations_service.alerts().then(function (data) {
                     alerts = data.alerts;
-
                     scope.sitewidealert = nypl_utility.alerts(alerts);
                 });
             }
         };
+    }]);
+
+nypl_locations.directive('nyplLibraryAlert', [
+    function () {
+        'use strict';
+
+        return {
+            restrict: 'E',
+            templateUrl: 'scripts/directives/templates/library-alert.html',
+            replace: true,
+            scope: true
+        }
     }]);
 
 nypl_locations.directive('eventRegistration', [

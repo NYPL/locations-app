@@ -617,7 +617,17 @@ nypl_locations.controller('LocationCtrl', [
                                 nypl_utility.alerts(location._embedded.alerts);
                         }
 
-                        if (location.hours) {
+                        // Mocked data for library specific alert.
+                        // Problem with current data is the start/end time.
+                        // location.hours.exceptions = {
+                        //     start: "2014-07-01T15:37:31-04:00",
+                        //     end: "2014-08-10T15:37:31-04:00",
+                        //     open: "",
+                        //     close: "",
+                        //     description: "Test library specific alert"
+                        // };
+
+                        if (location.hours.exceptions) {
                             $scope.libraryAlert =
                                 nypl_utility.alerts(location.hours.exceptions);
                         }
