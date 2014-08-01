@@ -1,7 +1,7 @@
 /*jslint indent: 4, maxlen: 80, nomen: true */
 /*globals nypl_locations */
 
-function DivisionCtrl($scope, $rootScope, nypl_utility, breadcrumbs, division) {
+function DivisionCtrl($rootScope, $scope, breadcrumbs, division, nypl_utility) {
     'use strict';
 
     var homeUrl,
