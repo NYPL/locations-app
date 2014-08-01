@@ -31,7 +31,7 @@
     <div ng-include="'views/header.html'"></div>
 
     <!-- Main Navigation -->
-    <div ng-include="'views/main-navigation.html'"></div>
+    <nypl-navigation></nypl-navigation>
 
     <div class="wrapper">
       <!-- Lokinator App -->
@@ -82,7 +82,10 @@
     <!-- NYPL Components -->
     <script src="scripts/components/nypl_coordinates.js"></script>
     <script src="scripts/components/nypl_locations_api.js"></script>
-    
+    <script src="scripts/components/nypl_search/nypl_search.js"></script>
+    <script src="scripts/components/nypl_sso/nypl_sso.js"></script>
+    <script src="scripts/components/nypl_navigation/nypl_navigation.js"></script>
+
     <!-- App Config -->
     <script src="scripts/app.js"></script>
     <!-- Filters -->
@@ -96,9 +99,6 @@
     <script src="scripts/services/nypl_utility_service.js"></script>
     <!-- Directives -->
     <script src="scripts/directives/nypl_directives.js"></script>
-
-    <!-- Global Header Scripts -->
-    <script src="scripts/global/global.js"></script>
 
 </body>
 </html>
