@@ -611,6 +611,8 @@ function LocationCtrl(
 
     // Used for the Get Directions link to Google Maps
     $scope.locationDest = nypl_utility.getAddressString(location);
+
+    $scope.returnHTML = nypl_utility.returnHTML;
 }
 
 angular

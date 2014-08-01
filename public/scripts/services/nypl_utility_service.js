@@ -37,7 +37,7 @@ function requestNotificationChannel($rootScope) {
     return notificationChannel;
 }
 
-function nypl_utility($filter, nypl_coordinates_service, $window) {
+function nypl_utility($filter, nypl_coordinates_service, $window, $sce) {
     'use strict';
 
     var utility = {};
