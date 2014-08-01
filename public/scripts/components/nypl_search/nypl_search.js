@@ -8,11 +8,8 @@ function nyplSearch() {
     restrict: 'E',
     scope: {},
     replace: true,
-    templateUrl: 'scripts/components/nypl_search.html',
+    templateUrl: 'scripts/components/nypl_search/nypl_search.html',
     link: function (scope, element, attrs) {
-      console.log(scope);
-      console.log(element.find('.search-the-catalog'));
-
       var o = {};
 
       // Set search box placeholder based on selected item
