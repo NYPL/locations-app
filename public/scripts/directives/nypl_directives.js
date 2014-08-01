@@ -140,6 +140,7 @@ nypl_locations.directive('nyplalerts', [
             restrict: 'E',
             templateUrl: 'scripts/directives/templates/alerts.html',
             replace: true,
+            scope: {},
             link: function (scope, element, attrs) {
                 var alerts;
                 nypl_locations_service.alerts().then(function (data) {
