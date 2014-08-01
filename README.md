@@ -36,24 +36,24 @@ To find out more about our tests and to run them, please read the [README file i
 Third Party
 * jQuery
 * AngularJs
-** ngResource
-** ngSanitize
-** ngRoute
-** ngAnimate
+  * ngResource
+  * ngSanitize
+  * ngRoute
+  * ngAnimate
 * [angulartics](http://luisfarzati.github.io/angulartics/)
-** angulartics.google.analytics
+  * angulartics.google.analytics
 * [Angular Translate](http://angular-translate.github.io/)
 * [ng-breadcrumbs](http://ianwalter.github.io/ng-breadcrumbs/#/)
 
 NYPL Components
 These can be found in [public/scripts/components](public/scripts/components).
 * LocationService
-** nypl_location.api.js - To call the API service.
+  * nypl_location.api.js - To call the API service.
 * CoordinatesService
-** nypl_coordinates.js - For geolocation.
+  * nypl_coordinates.js - For geolocation.
 * NYPL_Navigation
-**  nypl_navigation.js - Module that provides an AngularJS directive for the main header navigation.
+  *  nypl_navigation.js - Module that provides an AngularJS directive for the main header navigation.
 * NYPL_Search
-** nypl_search.js - Module that provides an AngularJS directive for search on Bibliocommons or NYPL.org.
+  * nypl_search.js - Module that provides an AngularJS directive for search on Bibliocommons or NYPL.org.
 * NYPL_SSO
-** nypl_sso.js - Module that provides an AngularJS directive for displaying the mobile and desktop SSO login.
+  * nypl_sso.js - Module that provides an AngularJS directive for displaying the mobile and desktop SSO login.
