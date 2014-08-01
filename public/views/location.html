@@ -3,6 +3,8 @@
 
   <nyplbreadcrumbs></nyplbreadcrumbs>
 
+  <nypl-library-alert></nypl-library-alert>
+
   <!-- Location hours, address and image -->
   <div id="container__location_info">
     <h1 class="p-org">{{location.name}}</h1>
@@ -105,7 +107,7 @@
             alt="Image of {{feature.title}}" style="height: 300px;">
         </a>
         <h3 class=""><a data-ng-href="{{feature._links.web.href}}">{{feature.title}}</a></h3>
-        <p class="desc">{{feature.description}}</p>
+        <div class="desc" data-ng-bind-html="returnHTML(feature.description)"></div>
       </div>
     </div>
   </div>

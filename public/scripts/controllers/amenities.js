@@ -40,6 +40,7 @@ function AmenitiesAtLibraryCtrl($scope, $rootScope, breadcrumbs, location, $http
 
     var homeUrl;
 
+    // Mocked data for now until the amenities are sorted by categories in the API.
     $http
         .get('json/amenitiesAtLibrary.json')
         .success(function (data) {

@@ -2,13 +2,15 @@
 /*globals angular, window, headerScripts */
 
 var nypl_locations = angular.module('nypl_locations', [
-    'ngCookies',
     'ngResource',
     'ngSanitize',
     'ngRoute',
     'ngAnimate',
     'locationService',
     'coordinateService',
+    'nyplSearch',
+    'nyplSSO',
+    'nyplNavigation',
     'angulartics',
     'angulartics.google.analytics',
     'pascalprecht.translate',
@@ -35,6 +37,29 @@ nypl_locations.config([
         });
         $translateProvider.preferredLanguage('en');
 
+        function LoadLocation(nypl_locations_service, $route, $location) {
+            return nypl_locations_service
+                .single_location($route.current.params.symbol)
+                .then(function (data) {
+                    return data.location;
+                })
+                .catch(function (err) {
+                    $location.path('/404');
+                    throw err;
+                });
+        }
+
+        function LoadDivision(nypl_locations_service, $route, $location) {
+            return nypl_locations_service
+                .single_division($route.current.params.division)
+                .then(function (data) {
+                    return data.division;
+                })
+                .catch(function (err) {
+                    $location.path('/404');
+                    throw err;
+                });
+        }
 
         function AmenitiesAtLibrary(nypl_locations_service, $route, $location) {
             return nypl_locations_service
@@ -72,7 +97,10 @@ nypl_locations.config([
             .when('/division/:division', {
                 templateUrl: 'views/division.html',
                 controller: 'DivisionCtrl',
-                label: 'Division'
+                label: 'Division',
+                resolve: {
+                    division: LoadDivision
+                }
             })
             .when('/amenities', {
                 templateUrl: '/views/amenities.html',
@@ -101,12 +129,20 @@ nypl_locations.config([
             .when('/:symbol', {
                 templateUrl: 'views/location.html',
                 controller: 'LocationCtrl',
-                label: 'Location'
+                controllerAs: 'ctrl',
+                label: 'Location',
+                resolve: {
+                    location: LoadLocation
+                }
             })
             .when('/:symbol/events', {
                 templateUrl: '/views/events.html',
                 controller: 'LocationCtrl',
-                label: 'Events'
+                controllerAs: 'eventCtrl',
+                label: 'Events',
+                resolve: {
+                    location: LoadLocation
+                }
             })
             .otherwise({
                 redirectTo: '/404'
@@ -181,16 +217,4 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
         ];
 
     $httpProvider.responseInterceptors.push(interceptor);
-}]);
-
-// Run jQuery Scripts
-nypl_locations.run(['$rootScope', function ($rootScope) {
-    'use strict';
-
-    // fired once the view is loaded, 
-    // after the DOM is rendered. The '$scope' of the view emits the event.
-    $rootScope.$on('$viewContentLoaded', headerScripts);
-
-    // Broadcasted before a route change.
-    $rootScope.$on('$routeChangeStart', headerScripts);
 }]);
