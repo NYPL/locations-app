@@ -3,7 +3,6 @@
     {
       "weight": 0,
       "name": "Computer Services",
-      "icon": "",
       "amenities": [
         {
           "_id":4,
@@ -32,41 +31,100 @@
             }
           },
           "id":6,
-          "name":"Wireless Internet Access "
+          "name":"Wireless Internet Access"
+        },
+        {
+          "_id":216,
+          "_links": {
+          },
+          "id":216,
+          "name":"Laptops for Public Use"
+        },
+        {
+          "_id":7,
+          "_links": {
+          },
+          "id":7,
+          "name":"Printing (From PC)"
+        },
+        {
+          "_id":9,
+          "_links": {
+          },
+          "id":9,
+          "name":"Electrical Outlets Available"
         }
       ]
     },
     {
       "weight": 1,
       "name": "Circulation",
-      "icon": "",
       "amenities": [
         {
-          "_id":4,
+          "_id":434563456,
           "_links": {
             "self": {
               "href":"services/"
             }
           },
-          "id":4,
+          "id":4345634564,
           "name":"Inter-Library Loan"
         },
         {
-          "_id":6,
+          "_id":62183,
           "_links": {
             "self": {
               "href":"services/6"
             }
           },
-          "id":6,
+          "id":62183,
           "name":"Self-service check-out"
+        },
+        {
+          "_id":65910,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":65910,
+          "name":"Book Drop Box (24 Hour)"
+        },
+        {
+          "_id":39,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":39,
+          "name":"Book Drop Box (Limited Hours)"
+        },
+        {
+          "_id":62183,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":62183,
+          "name":"Books in Braille"
+        },
+        {
+          "_id":62183,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":62183,
+          "name":"Talking Books"
         }
       ]
     },
     {
       "weight": 2,
       "name": "Office Services",
-      "icon": "",
       "amenities": [
         {
           "_id":4,
@@ -79,21 +137,50 @@
           "name":"Photocopiers (black/white)"
         },
         {
-          "_id":6,
+          "_id":64253647,
           "_links": {
             "self": {
               "href":"services/6"
             }
           },
-          "id":6,
+          "id":6342567,
           "name":"Photocopiers (color)"
+        },
+        {
+          "_id":62183,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":62183,
+          "name":"Scanners"
+        },
+        {
+          "_id":62183,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":62183,
+          "name":"Map Photocopies (up to 36\" wide)"
+        },
+        {
+          "_id":62183,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":62183,
+          "name":"Change Machine"
         }
       ]
     },
     {
       "weight": 3,
       "name": "Facilities",
-      "icon": "",
       "amenities": [
         {
           "_id":4,
@@ -106,21 +193,60 @@
           "name":"Public Restrooms"
         },
         {
-          "_id":6,
+          "_id":623453578,
           "_links": {
             "self": {
               "href":"services/6"
             }
           },
-          "id":6,
+          "id":6345678,
           "name":"Children's Only Restrooms"
+        },
+        {
+          "_id":62183,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":62183,
+          "name":"Research Study Rooms"
+        },
+        {
+          "_id":62183,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":62183,
+          "name":"Parking"
+        },
+        {
+          "_id":62183,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":62183,
+          "name":"Lost and Found"
+        },
+        {
+          "_id":62183,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":62183,
+          "name":"Bicycle Rack"
         }
       ]
     },
     {
       "weight": 4,
       "name": "Assistive Technologies",
-      "icon": "",
       "amenities": [
         {
           "_id":4,
@@ -133,14 +259,54 @@
           "name":"Screen magnification software (MAGic)"
         },
         {
-          "_id":6,
+          "_id":623457,
           "_links": {
             "self": {
               "href":"services/6"
             }
           },
-          "id":6,
+          "id":623456789,
           "name":"Screen reading software (JAWS)"
+        },
+        {
+          "_id":62183,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":62183,
+          "name":"Closed-Circuit Television Enlargers (CCTVs)"
+        },
+        {
+          "_id":62183,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":62183,
+          "name":"Scanner/reading Rooms"
+        },
+        {
+          "_id":62183,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":62183,
+          "name":"Brailler Translation Software"
+        },
+        {
+          "_id":62183,
+          "_links": {
+            "self": {
+              "href":"services/6"
+            }
+          },
+          "id":62183,
+          "name":"Braille Embossing"
         }
       ]
     }

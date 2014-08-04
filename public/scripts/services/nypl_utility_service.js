@@ -412,9 +412,56 @@ function nypl_location_list() {
     return location_list;
 }
 
+function nypl_amenities() {
+    'use strict';
+
+    var amenities = {};
+
+    amenities.add_icon = function (amenities) {
+        _.each(amenities, function (amenityCategory) {
+            var icon = '';
+            switch (amenityCategory.name) {
+            case 'Computer Services':
+                icon = 'icon-screen2';
+                break;
+            case 'Circulation':
+                icon = 'icon-book';
+                break;
+            case 'Office Services':
+                icon = 'icon-copy';
+                break;
+            case 'Facilities':
+                icon = 'icon-library';
+                break;
+            case 'Assistive Technologies':
+                icon = 'icon-accessibility2';
+                break;
+            }
+
+            amenityCategory.icon = icon;
+
+            _.each(amenityCategory.amenities, function (amenity) {
+                switch (amenity.id) {
+                case 6: amenity.icon = 'icon-connection'; break;
+                case 216: amenity.icon = 'icon-laptop'; break;
+                case 7: amenity.icon = 'icon-print'; break;
+                case 9: amenity.icon = 'icon-power-cord'; break;
+                case 65910:
+                case 39: amenity.icon = 'icon-box-add'; break;
+                default: amenity.icon = icon; break;
+                }
+            });
+        });
+
+        return amenities;
+    }
+
+    return amenities;
+}
+
 angular
     .module('nypl_locations')
     .factory('nypl_utility', nypl_utility)
     .factory('nypl_location_list', nypl_location_list)
+    .factory('nypl_amenities', nypl_amenities)
     .factory('requestNotificationChannel', requestNotificationChannel);
-

@@ -27,7 +27,7 @@ and then go to `http://localhost:9292/'.
 
 Testing is awesome but can get rather complicated to set up. We run two sets of tests for the Locinator.
 * Unit tests: Jasmine and Karma are used to test the AngularJs code for the Locinator
-* End-to-end tests: AngularJs' Protractor E2E test framework is used to test the full stack app on different browsers.
+* End-to-end tests: AngularJS's Protractor E2E test framework is used to test the full stack app on different browsers.
 
 To find out more about our tests and to run them, please read the [README file in /test](test).
 
