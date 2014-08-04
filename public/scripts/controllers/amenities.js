@@ -35,16 +35,17 @@ function AmenityCtrl($rootScope, $scope, amenity, breadcrumbs) {
 }
 
 // Load one location and list all the amenities found in that location.
-function AmenitiesAtLibraryCtrl($http, $rootScope, $scope, breadcrumbs, location) {
+function AmenitiesAtLibraryCtrl($http, $rootScope, $scope, breadcrumbs, location, nypl_amenities) {
     'use strict';
 
-    var homeUrl;
+    var homeUrl, amenities;
 
     // Mocked data for now until the amenities are sorted by categories in the API.
     $http
         .get('json/amenitiesAtLibrary.json')
         .success(function (data) {
-            $scope.amenitiesCategories = data.amenitiesCategories;
+            amenities = nypl_amenities.add_icon(data.amenitiesCategories);
+            $scope.amenitiesCategories = amenities;
             // console.log($scope.amenitiesCategories);
         });
 
