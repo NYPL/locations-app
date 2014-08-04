@@ -297,7 +297,7 @@ function LocationsCtrl(
         }, 1000);
 
         // Use cached user coordinates if available
-        if (!userCoords) {
+        // if (!userCoords) {
             loadCoords()
                 .then(loadReverseGeocoding)
                 .catch(function (error) {
@@ -305,7 +305,7 @@ function LocationsCtrl(
                     $scope.geolocationOn = false;
                 });
             return;
-        }
+        // }
 
         if (!$scope.distanceError) {
             // Need to update or remove from page when user is too far.

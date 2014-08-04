@@ -417,7 +417,38 @@ function nypl_amenities() {
 
     var amenities = {};
 
-    amenities.add_icon = function (amenities) {
+    amenities.add_icon = function (amenities, default_icon) {
+        var icon = default_icon || '';
+        _.each(amenities, function (amenity) {
+            // console.log(amenity);
+            switch (amenity.id) {
+            case 6:
+                amenity.icon = 'icon-connection';
+                break;
+            case 216:
+                amenity.icon = 'icon-laptop';
+                break;
+            case 7:
+                amenity.icon = 'icon-print';
+                break;
+            case 9:
+                amenity.icon = 'icon-power-cord';
+                break;
+            case 65910:
+            case 39:
+                amenity.icon = 'icon-box-add';
+                break;
+            default:
+                amenity.icon = icon;
+                break;
+            }
+        });
+
+        return amenities;
+    };
+
+    amenities.add_category_icon = function (amenities) {
+        var self = this;
         _.each(amenities, function (amenityCategory) {
             var icon = '';
             switch (amenityCategory.name) {
@@ -439,22 +470,12 @@ function nypl_amenities() {
             }
 
             amenityCategory.icon = icon;
-
-            _.each(amenityCategory.amenities, function (amenity) {
-                switch (amenity.id) {
-                case 6: amenity.icon = 'icon-connection'; break;
-                case 216: amenity.icon = 'icon-laptop'; break;
-                case 7: amenity.icon = 'icon-print'; break;
-                case 9: amenity.icon = 'icon-power-cord'; break;
-                case 65910:
-                case 39: amenity.icon = 'icon-box-add'; break;
-                default: amenity.icon = icon; break;
-                }
-            });
+            amenityCategory.amenities =
+                self.add_icon(amenityCategory.amenities, icon);
         });
 
         return amenities;
-    }
+    };
 
     return amenities;
 }
