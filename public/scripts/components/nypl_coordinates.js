@@ -18,9 +18,9 @@ function nypl_coordinates_service($q, $window) {
             );
         } else {
             // Use stored coords, FF bug fix
-            if (geoCoords) {
-                defer.resolve(geoCoords);
-            } else {
+            // if (geoCoords) {
+            //     defer.resolve(geoCoords);
+            // } else {
                 $window.navigator.geolocation.getCurrentPosition(
                     function (position) {
                         // Extract coordinates for geoPosition obj
@@ -58,7 +58,7 @@ function nypl_coordinates_service($q, $window) {
                         }
                     }
                 );
-            }
+            // }
         }
 
         return defer.promise; // Enables 'then' callback
