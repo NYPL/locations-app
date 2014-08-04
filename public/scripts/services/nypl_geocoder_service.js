@@ -85,11 +85,11 @@ function nypl_geocoder_service($q) {
     };
 
     geocoder_service.load_markers = function () {
-        var _this = this;
+        var self = this;
         // if markers are available, draw them
         if (markers) {
             _.each(markers, function (marker) {
-                _this.add_marker_to_map(marker.id);
+                self.add_marker_to_map(marker.id);
             });
         }
     };
@@ -118,12 +118,12 @@ function nypl_geocoder_service($q) {
     };
 
     geocoder_service.create_userMarker = function (coords, text) {
-        var _this = this;
+        var self = this;
         panCoords = new google.maps.LatLng(coords.latitude, coords.longitude);
         userMarker.setPosition(panCoords);
         // this.show_infowindow(userMarker, text);
         google.maps.event.addListener(userMarker, 'click', function () {
-            _this.show_infowindow(userMarker, text);
+            self.show_infowindow(userMarker, text);
         });
         markers.push({id: 'user', marker: userMarker, text: text});
     };
@@ -200,28 +200,28 @@ function nypl_geocoder_service($q) {
     };
 
     geocoder_service.show_research_libraries = function () {
-        var _this = this,
+        var self = this,
             // Add the 'user' marker. If it's available,
             // we do not want to remove it at all. Use slug names
             list = ['schwarzman', 'lpa', 'sibl', 'schomburg', 'user'];
 
         _.each(markers, function (marker) {
             if (!_.contains(list, marker.id)) {
-                _this.remove_marker(marker.id);
+                self.remove_marker(marker.id);
             }
         });
     };
 
     geocoder_service.show_all_libraries = function () {
-        var _this = this;
+        var self = this;
 
         _.each(markers, function (marker) {
-            _this.add_marker_to_map(marker.id);
+            self.add_marker_to_map(marker.id);
         });
     };
 
     geocoder_service.draw_marker = function (id, location, text) {
-        var _this = this,
+        var self = this,
             marker,
             position = new google.maps
                 .LatLng(location.latitude, location.longitude),
@@ -240,7 +240,7 @@ function nypl_geocoder_service($q) {
         // map.data.loadGeoJson();
 
         google.maps.event.addListener(marker, 'click', function () {
-            _this.show_infowindow(marker, text);
+            self.show_infowindow(marker, text);
         });
     };
 
