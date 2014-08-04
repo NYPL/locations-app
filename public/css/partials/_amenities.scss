@@ -1,7 +1,17 @@
 .amenities h3 {
-  margin: 0.5em 0;
+  margin: 0.5em 0 0;
 }
 
 .amenity-category-list {
   list-style: none;
+  
+  & > li{
+	  margin-bottom: 2rem;
+  }
+  
+}
+
+.amenities__reserve{
+	font-size: .9rem;
+	padding: 3px 9px;
 }
