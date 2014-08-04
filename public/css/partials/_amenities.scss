@@ -1,3 +1,4 @@
+//better spacing
 .amenities h3 {
   margin: 0.5em 0 0;
 }
@@ -6,11 +7,15 @@
   list-style: none;
   
   & > li{
-	  margin-bottom: 2rem;
+	  margin-bottom: 2.5rem;
   }
-  
 }
 
+.amenities-list > li {
+	margin: 1rem 0;
+}
+
+//normalize the reserve button
 .amenities__reserve{
 	font-size: .9rem;
 	padding: 3px 9px;
