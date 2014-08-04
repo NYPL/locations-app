@@ -16,7 +16,7 @@
             <h3><span class="{{category.icon}}">{{category.name}}</span></h3>
             <ul class="amenities-list">
               <li data-ng-repeat="amenity in category.amenities">
-                <a data-ng-href="/#/amenities/{{amenity.id}}" class="{{amenity.icon}}">{{amenity.name}}</a>
+                <a data-ng-href="/#/amenities/{{amenity.id}}">{{amenity.name}}</a>
                 <span data-ng-if="amenity._links.info">
                   <a data-ng-href="{{amenity._links.info.href}}" class="btn btn--natural whiteText">Information</a>
                 </span>
