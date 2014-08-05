@@ -5,6 +5,7 @@ function LocationsCtrl(
     $rootScope,
     $scope,
     $timeout,
+    $location,
     nypl_coordinates_service,
     nypl_geocoder_service,
     nypl_location_list,

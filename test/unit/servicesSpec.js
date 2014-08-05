@@ -1487,29 +1487,6 @@ describe('NYPL Service Tests', function () {
         });
     });
 
-    /*
-    * nypl_utility.catalog_items_link(branch)
-    *   branch: A library branch name
-    *
-    *   Returns a link to biblicommons based on the branch.
-    *   Will be removed when the link is in the api.
-    */
-    describe('nypl_utility.catalog_items_link', function () {
-      it('should output a url to biblicommons', function () {
-        var branch = '125th Street Library';
-
-        expect(nypl_utility.catalog_items_link(branch))
-          .toEqual('http://nypl.bibliocommons.com/search?custom_' +
-            'query=available%3A"125th%20Street"');
-
-        branch = 'Andrew Heiskell Braille and Talking Book Library';
-        expect(nypl_utility.catalog_items_link(branch))
-          .toEqual('http://nypl.bibliocommons.com/search?custom_' +
-            'query=available%3A"Andrew%20Heiskell%20Braille%20%26%' +
-            '20Talking%20Book%20Library"');
-      });
-    });
-
   }); /* End nypl_utility service */
 
   /*
