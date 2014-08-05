@@ -126,12 +126,25 @@ function eventRegistration() {
         replace: true,
         scope: {
             how: '@',
-            link: '@'
+            link: '@',
+            registrationopen: '@'
         },
         link: function (scope, element, attrs) {
+            var today,
+                registrationopen = attrs.registrationopen;
+
             scope.online = false;
+            scope.opens = 'opens';
+
             if (attrs.how === 'Online') {
                 scope.online = true;
+            }
+
+            if (registrationopen) {
+                today = new Date().toISOString();
+                if (today > registrationopen) {
+                    scope.opens = 'opened';
+                }
             }
         }
     };
