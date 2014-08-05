@@ -2,7 +2,7 @@
 /*global describe, require, beforeEach,
 browser, it, expect, element, by, angular */
 
-describe('Locations: library', function () {
+describe('Locations: Library', function () {
   'use strict';
 
   var locationPage = require('./location.po.js'),
@@ -77,7 +77,7 @@ describe('Locations: library', function () {
       // angular.module('nypl_locations').requires.push('httpBackendMock');
     };
 
-  describe('Circulating branch - Testing Grand Central Library',
+  describe('Circulating Branch - Testing Grand Central Library',
     function () {
       beforeEach(function () {
         browser.get('/#/grand-central');
@@ -144,7 +144,9 @@ describe('Locations: library', function () {
       });
 
       it('should display email us your question link', function () {
-        expect(locationPage.email_us.getAttribute('href')).toBe('http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=10208&type=1&language=1');
+        expect(locationPage.email_us.getAttribute('href'))
+          .toBe('http://www.questionpoint.org/crs/servlet/org.oclc.admin.' +
+            'BuildForm?&institution=10208&type=1&language=1');
       });
 
       describe('Calendar links', function () {
@@ -206,7 +208,7 @@ describe('Locations: library', function () {
       });
     });
 
-  describe('Research branch - Testing Schomburg', function () {
+  describe('Research Branch - Testing Schomburg', function () {
     beforeEach(function () {
       browser.get('/#/schomburg');
       browser.waitForAngular();
@@ -226,7 +228,7 @@ describe('Locations: library', function () {
     });
 
     it('should have a library manager', function () {
-      expect(locationPage.manager.getText()).not.toEqual('');
+      expect(locationPage.manager.isPresent()).toBe(false);
     });
 
     it('should display hours for today', function () {
@@ -242,14 +244,14 @@ describe('Locations: library', function () {
       expect(locationPage.hours.count()).toBe(7);
     });
 
-    it('should display 5 divisions', function () {
+    it('should display four divisions', function () {
       expect(locationPage.divisions_container.isPresent()).toBe(true);
-      expect(locationPage.divisions.count()).toBe(5);
+      expect(locationPage.divisions.count()).toBe(4);
     });
 
-    it('should display five events', function () {
+    it('should display one events', function () {
       expect(locationPage.events_container.isPresent()).toBe(true);
-      expect(locationPage.events.count()).toBe(5);
+      expect(locationPage.events.count()).toBe(1);
     });
 
     it('should have a "Plan your visit" and about blurb section', function () {
@@ -262,8 +264,8 @@ describe('Locations: library', function () {
       expect(locationPage.blogs.count()).toBe(0);
     });
 
-    it('should display four exhibitions', function () {
-      expect(locationPage.exhibitions.count()).toBe(4);
+    it('should display three exhibitions', function () {
+      expect(locationPage.exhibitions.count()).toBe(3);
     });
 
     describe('Calendar links', function () {
@@ -325,7 +327,7 @@ describe('Locations: library', function () {
     });
   });
 
-  describe('Circulating branch - Bad API call', function () {
+  describe('Circulating Branch - Bad API call', function () {
     beforeEach(function () {
       browser.addMockModule('httpBackendMock', httpBackendMock);
       browser.get('/#/grand-central');

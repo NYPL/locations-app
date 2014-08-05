@@ -3,6 +3,7 @@
 
 describe('Locations: homepage', function () {
     "use strict";
+
     // Check ../support/landingPage.js for code
     var landingPage = require('./homepage.po.js');
 
@@ -53,7 +54,8 @@ describe('Locations: homepage', function () {
                         expect(landingPage.resultsNear.isPresent()).toBe(true);
                     });
 
-                it('should locate you and sort the list of locations by distance',
+                it('should locate you and sort the list of ' +
+                    'locations by distance',
                     function () {
                         // The list is initially sorted by name - there is
                         // no distance set for any location
@@ -76,8 +78,8 @@ describe('Locations: homepage', function () {
                         expect(landingPage.nthLocName(1))
                             .toEqual('Mid-Manhattan Library');
                     });
-    
-                it('should reset the location list' + 
+
+                it('should reset the location list' +
                     ' when the searchbox \'x\' is clicked',
                     function () {
                         landingPage.currLoc.click();
@@ -100,32 +102,36 @@ describe('Locations: homepage', function () {
                 beforeEach(function () {
                     // Go to map view
                     landingPage.mapViewBtn.click();
-                    // browser.sleep(1500);
+                    browser.sleep(2000);
                 });
 
-                it('should locate you and show the blue marker on the map and legend',
+                it('should locate you and show the blue marker ' +
+                    'on the map and legend',
                     function () {
-                        // Only the 'NYPL Library' key should be in the map legend
+                        // Only the 'NYPL Library' key
+                        // should be in the map legend
                         expect(landingPage.mapMarkers.count()).toEqual(1);
                         landingPage.currLoc.click();
-                        browser.sleep(2000);
+                        browser.sleep(3000);
 
                         // "Showing search results near ...."
                         expect(landingPage.resultsNear.isPresent()).toBe(true);
                         // The "Your Current Location" key should show up in
                         // the map legend
                         expect(landingPage.mapMarkers.count()).toEqual(2);
-                        expect(landingPage.gmapInfoWindow.getText()).toEqual('Your Current Location');
+                        expect(landingPage.gmapInfoWindow.getText())
+                            .toEqual('Your Current Location');
                     });
 
-                it('should locate you and sort the list of locations by distance',
+                it('should locate you and sort the list ' +
+                    'of locations by distance',
                     function () {
                         // The list is initially sorted by name
                         expect(landingPage.firstLocName())
                             .toEqual('115th Street Library');
 
                         landingPage.currLoc.click();
-                        browser.sleep(1500);
+                        browser.sleep(200);
 
                         // The closest location to you
                         expect(landingPage.firstLocDist())
@@ -139,11 +145,11 @@ describe('Locations: homepage', function () {
                             .toEqual('Mid-Manhattan Library');
                     });
 
-                it('should reset the location list' + 
+                it('should reset the location list' +
                     ' when the searchbox \'x\' is clicked',
                     function () {
                         landingPage.currLoc.click();
-                        browser.sleep(1000);
+                        browser.sleep(1500);
 
                         expect(landingPage.resultsNear.isPresent()).toBe(true);
                         expect(landingPage.firstLocName())
@@ -209,8 +215,9 @@ describe('Locations: homepage', function () {
                     landingPage.search('aguilar');
                     browser.sleep(1000); // must be a better way
                 });
-                
-                it('should search by location name and return that result first',
+
+                it('should search by location name and ' +
+                    'return that result first',
                     function () {
                         expect(landingPage.firstLocName())
                             .toEqual('Aguilar Library');
@@ -219,8 +226,7 @@ describe('Locations: homepage', function () {
                 it('should have one highlighted location', function () {
                     expect(element.all(by.css('.callout')).count()).toBe(1);
                     expect(
-                        landingPage.locations
-                            .first().getAttribute('class')
+                        landingPage.locations.first().getAttribute('class')
                     ).toContain('callout');
                 });
 
@@ -272,8 +278,7 @@ describe('Locations: homepage', function () {
                 });
             });
 
-        describe(
-            'A library name was searched that is also an NYC area, ' +
+        describe('A library name was searched that is also an NYC area, ' +
             'using "battery park" for the test',
             function () {
                 beforeEach(function () {
@@ -295,21 +300,22 @@ describe('Locations: homepage', function () {
                         // It should be the only match for that search
                         expect(element.all(by.css('.callout')).count()).toBe(1);
                         expect(
-                            landingPage.locations
-                                .first().getAttribute('class')
+                            landingPage.locations.first().getAttribute('class')
                         ).toContain('callout');
                     });
 
-                it('should show other results with distances in order', function () {
-                    expect(landingPage.nthLocName(1))
-                        .toEqual('New Amsterdam Library');
-                    expect(landingPage.nthLocDist(1)).toEqual('Distance: 0.86 miles');
+                it('should show other results with distances in order',
+                    function () {
+                        expect(landingPage.nthLocName(1))
+                            .toEqual('New Amsterdam Library');
+                        expect(landingPage.nthLocDist(1))
+                            .toEqual('Distance: 0.86 miles');
 
-
-                    expect(landingPage.nthLocName(2))
-                        .toEqual('Chatham Square Library');
-                    expect(landingPage.nthLocDist(2)).toEqual('Distance: 1.29 miles');
-                });
+                        expect(landingPage.nthLocName(2))
+                            .toEqual('Chatham Square Library');
+                        expect(landingPage.nthLocDist(2))
+                            .toEqual('Distance: 1.29 miles');
+                    });
 
                 describe('Map View', function () {
                     it('should have the same location list from the List View',
@@ -318,7 +324,8 @@ describe('Locations: homepage', function () {
                                 .toEqual('Battery Park City Library');
                             expect(landingPage.nthLocName(1))
                                 .toEqual('New Amsterdam Library');
-                            expect(landingPage.nthLocDist(1)).toEqual('Distance: 0.86 miles');
+                            expect(landingPage.nthLocDist(1))
+                                .toEqual('Distance: 0.86 miles');
 
                             landingPage.mapViewBtn.click();
 
@@ -326,11 +333,12 @@ describe('Locations: homepage', function () {
                                 .toEqual('Battery Park City Library');
                             expect(landingPage.nthLocName(1))
                                 .toEqual('New Amsterdam Library');
-                            expect(landingPage.nthLocDist(1)).toEqual('Distance: 0.86 miles');
+                            expect(landingPage.nthLocDist(1))
+                                .toEqual('Distance: 0.86 miles');
 
                             expect(landingPage.gmapInfoWindow.getText())
-                                .toEqual('Battery Park City Library\n' +
-                                    '175 North End Avenue\nNew York, NY, 10282');
+                                .toEqual('Battery Park City Library\n175 ' +
+                                    'North End Avenue\nNew York, NY, 10282');
                         });
                 });
 
@@ -355,10 +363,9 @@ describe('Locations: homepage', function () {
                                 .toEqual('115th Street Library');
                         });
                 });
-            }
-        );
+            });
 
-        describe('A location in NYC was searched, using "bronx zoo" for the test',
+        describe('A location in NYC was searched, testing "bronx zoo"',
             function () {
                 beforeEach(function () {
                     landingPage.search('bronx zoo');
@@ -367,57 +374,61 @@ describe('Locations: homepage', function () {
 
                 it('should show what the search was', function () {
                     expect(landingPage.resultsNear.getText())
-                        .toEqual('Showing search results near Bronx Zoo, 2300 ' +
-                            'Southern Boulevard, Bronx, NY 10460, USA');
+                        .toEqual('Showing search results near Bronx Zoo, ' +
+                            '2300 Southern Boulevard, Bronx, NY 10460, USA');
                 });
 
                 it('should not have any highlighted locations', function () {
                     expect(element.all(by.css('.callout')).count()).toBe(0);
                 });
 
-                it('should organize the locations by distance - West Farms Library ' +
-                    'should be first in the list',
+                it('should organize the locations by distance - West Farms ' +
+                    'Library should be first in the list',
                     function () {
                         // There is a probably a better way to test this
                         // The first location that should appear
                         expect(landingPage.firstLocName())
                             .toEqual('West Farms Library');
 
-                        expect(landingPage.firstLocDist()).toEqual('Distance: 0.51 miles');
+                        expect(landingPage.firstLocDist())
+                            .toEqual('Distance: 0.51 miles');
 
                         // The next location that should appear on the page
                         expect(landingPage.nthLocName(1))
-                            .toEqual(
-                                'Belmont Library and Enrico Fermi Cultural Center'
-                            );
+                            .toEqual('Belmont Library and Enrico ' +
+                                'Fermi Cultural Center');
 
-                        expect(landingPage.nthLocDist(1)).toEqual('Distance: 0.62 miles');
+                        expect(landingPage.nthLocDist(1))
+                            .toEqual('Distance: 0.62 miles');
 
-                        // The last of 10 locations that should appear on the page
+                        // The last of 10 locations that
+                        // should appear on the page
                         expect(
                             landingPage.locations
                                 .last().findElement(by.css('.p-org')).getText()
                         ).toEqual('Mosholu Library');
 
                         expect(
-                            landingPage.locations
-                                .last().findElement(by.css('.distance')).getText()
+                            landingPage.locations.last()
+                                .findElement(by.css('.distance')).getText()
                         ).toEqual('Distance: 1.65 miles');
                     });
 
                 describe('Map View', function () {
-                    it('should display the search query on the map with a marker ' +
-                        'and organize list by distance',
+                    it('should display the search query on the map with ' +
+                        'a marker and organize list by distance',
                         function () {
                             landingPage.mapViewBtn.click();
+                            browser.sleep(1500);
 
                             expect(landingPage.firstLocName())
                                 .toEqual('West Farms Library');
-                            expect(landingPage.firstLocDist()).toEqual('Distance: 0.51 miles');
+                            expect(landingPage.firstLocDist())
+                                .toEqual('Distance: 0.51 miles');
 
                             expect(landingPage.gmapInfoWindow.getText())
-                                .toEqual('Bronx Zoo\n2300 Southern Boulevard\nBronx, ' +
-                                    'NY 10460, USA');
+                                .toEqual('Bronx Zoo\n2300 Southern ' +
+                                    'Boulevard\nBronx, NY 10460, USA');
                         });
                 });
 
@@ -480,8 +491,8 @@ describe('Locations: homepage', function () {
                             .toEqual('Kips Bay Library');
                     });
 
-                it('should then search for libraries near the searched zip code' +
-                    'sorted by distance', function () {
+                it('should then search for libraries near the searched ' +
+                    'zip code sorted by distance', function () {
                         expect(
                             landingPage.nthLoc(3)
                                 .findElement(by.css('.p-postal-code')).getText()
@@ -489,15 +500,17 @@ describe('Locations: homepage', function () {
 
                         expect(landingPage.nthLocName(3))
                             .toEqual('Stephen A. Schwarzman Building');
-                        expect(landingPage.nthLocDist(3)).toEqual('Distance: 0.43 miles');
+                        expect(landingPage.nthLocDist(3))
+                            .toEqual('Distance: 0.43 miles');
 
-                         expect(landingPage.nthLocName(4))
+                        expect(landingPage.nthLocName(4))
                             .toEqual('Grand Central Library');
-                        expect(landingPage.nthLocDist(4)).toEqual('Distance: 0.56 miles');
+                        expect(landingPage.nthLocDist(4))
+                            .toEqual('Distance: 0.56 miles');
                     });
 
                 describe('Map View', function () {
-                    it('should display one of the matches for the searched' + 
+                    it('should display one of the matches for the searched' +
                         'zip code',
                         function () {
                             landingPage.mapViewBtn.click();
@@ -505,8 +518,8 @@ describe('Locations: homepage', function () {
                             expect(landingPage.firstLocName())
                                 .toEqual('Kips Bay Library');
                             expect(landingPage.gmapInfoWindow.getText())
-                                .toEqual('Kips Bay Library\n446 Third Avenue\n' +
-                                    'New York, NY, 10016');
+                                .toEqual('Kips Bay Library\n446 Third ' +
+                                    'Avenue\nNew York, NY, 10016');
                         });
                 });
 
@@ -540,8 +553,9 @@ describe('Locations: homepage', function () {
                     browser.sleep(1000);
 
                     expect(landingPage.searchError.getText())
-                        .toEqual('No results for Boston, MA, USA within 25 miles ' +
-                                'of an NYPL location. Showing all locations.');
+                        .toEqual('No results for Boston, MA, USA within 25 ' +
+                            'miles of an NYPL location. ' +
+                            'Showing all locations.');
                 });
 
             it('should clear the search field', function () {
@@ -552,9 +566,9 @@ describe('Locations: homepage', function () {
                     .toEqual('');
             });
 
-            it('should refresh the list of locations after a previous search - ' +
-                '"city island" was searched first, searching for "boston" results ' +
-                'the list',
+            it('should refresh the list of locations after a previous ' +
+                'search - "city island" was searched first, searching for ' +
+                '"boston" results the list',
                 function () {
                     // User searches for a location:
                     landingPage.search('city island');
@@ -572,8 +586,9 @@ describe('Locations: homepage', function () {
                     browser.sleep(1000);
 
                     expect(landingPage.searchError.getText())
-                        .toEqual('No results for Boston, MA, USA within 25 miles ' +
-                            'of an NYPL location. Showing all locations.');
+                        .toEqual('No results for Boston, MA, USA within 25 ' +
+                            'miles of an NYPL location. ' +
+                            'Showing all locations.');
 
                     expect(landingPage.firstLocName())
                         .toEqual('115th Street Library');
@@ -604,6 +619,7 @@ describe('Locations: homepage', function () {
                 expect(only_research.getText()).toEqual('research libraries');
 
                 only_research.click();
+                browser.sleep(1000);
 
                 expect(landingPage.locations.count()).toBe(4);
                 expect(only_research.getText()).toEqual('all branches');
@@ -637,7 +653,8 @@ describe('Locations: homepage', function () {
 
                     only_research.click();
                     expect(landingPage.locations.count()).toBe(10);
-                    expect(only_research.getText()).toEqual('research libraries');
+                    expect(only_research.getText())
+                        .toEqual('research libraries');
                     expect(landingPage.showing.getText())
                         .toEqual('Showing 10 of 92 Locations');
                 });
@@ -680,8 +697,8 @@ describe('Locations: homepage', function () {
 
             it('should revert back to all branches when performing a search ' +
                 'and display the result first in the list - searching for ' +
-                '"parkchester" when viewing the research branches should take ' +
-                'you back to view all the branches',
+                '"parkchester" when viewing the research branches should ' +
+                'take you back to view all the branches',
                 function () {
                     var only_research = landingPage.onlyResearch;
 
@@ -693,62 +710,67 @@ describe('Locations: homepage', function () {
                     browser.sleep(1000);
 
                     expect(landingPage.locations.count()).toBe(10);
-                    expect(only_research.getText()).toEqual('research libraries');
+                    expect(only_research.getText())
+                        .toEqual('research libraries');
                     expect(landingPage.firstLocName())
                         .toEqual('Parkchester Library');
                 });
 
-            it('should sort the research branches by distance after performing' +
-                ' a search, "parkchester" used in the test', function () {
-                var only_research = landingPage.onlyResearch,
-                    research_libraries;
+            it('should sort the research branches by distance after ' +
+                'performing a search, "parkchester" used in the test',
+                function () {
+                    var only_research = landingPage.onlyResearch,
+                        research_libraries;
 
-                landingPage.search('parkchester');
-                browser.sleep(1000);
+                    landingPage.search('parkchester');
+                    browser.sleep(1000);
 
-                only_research.click();
+                    only_research.click();
 
-                research_libraries = landingPage.locations.map(function (elm) {
-                    return {
-                        text: elm.findElement(by.css('.p-org')).getText(),
-                        distance: elm.findElement(by.css('.distance')).getText()
-                    };
+                    research_libraries = landingPage.locations
+                        .map(function (elm) {
+                            return {
+                                text: elm.findElement(by.css('.p-org'))
+                                    .getText(),
+                                distance: elm.findElement(by.css('.distance'))
+                                    .getText()
+                            };
+                        });
+
+                    expect(landingPage.locations.count()).toBe(4);
+                    expect(research_libraries).toEqual([
+                        {
+                            text: 'Schomburg Center for Research in ' +
+                                'Black Culture',
+                            distance: 'Distance: 4.71 miles'
+                        },
+                        {
+                            text: 'New York Public Library for the ' +
+                                'Performing Arts, Dorothy and Lewis B. ' +
+                                'Cullman Center',
+                            distance: 'Distance: 8.06 miles'
+                        },
+                        {
+                            text: 'Stephen A. Schwarzman Building',
+                            distance: 'Distance: 8.82 miles'
+                        },
+                        {
+                            text: 'Science, Industry and Business ' +
+                                'Library (SIBL)',
+                            distance: 'Distance: 9.09 miles'
+                        }
+                    ]);
                 });
-
-                expect(landingPage.locations.count()).toBe(4);
-                expect(research_libraries).toEqual([
-                    {
-                        text: 'Schomburg Center for Research in Black Culture',
-                        distance: 'Distance: 4.71 miles'
-                    },
-                    {
-                        text: 'New York Public Library for the Performing Arts' +
-                            ', Dorothy and Lewis B. Cullman Center',
-                        distance: 'Distance: 8.06 miles'
-                    },
-                    {
-                        text: 'Stephen A. Schwarzman Building',
-                        distance: 'Distance: 8.82 miles'
-                    },
-                    {
-                        text: 'Science, Industry and Business Library (SIBL)',
-                        distance: 'Distance: 9.09 miles'
-                    }
-                ]);
-            });
         });
 
         describe('Map View', function () {
             beforeEach(function () {
                 landingPage.mapViewBtn.click();
-                browser.sleep(1000);
+                browser.sleep(2000);
             });
 
             it('should filter by research libraries when clicked', function () {
                 var only_research = landingPage.onlyResearch;
-
-                expect(landingPage.locations.count()).toBe(92);
-                expect(only_research.getText()).toEqual('research libraries');
 
                 only_research.click();
 
@@ -831,7 +853,8 @@ describe('Locations: homepage', function () {
                     browser.sleep(1000);
 
                     expect(landingPage.locations.count()).toBe(92);
-                    expect(only_research.getText()).toEqual('research libraries');
+                    expect(only_research.getText())
+                        .toEqual('research libraries');
                     expect(landingPage.firstLocName())
                         .toEqual('Seward Park Library');
                     expect(landingPage.gmapInfoWindow.getText())
@@ -846,6 +869,7 @@ describe('Locations: homepage', function () {
                 browser.sleep(1000);
 
                 only_research.click();
+                browser.sleep(500);
 
                 research_libraries = landingPage.locations.map(function (elm) {
                     return {
@@ -867,14 +891,14 @@ describe('Locations: homepage', function () {
                         distance: 'Distance: 2.64 miles'
                     },
                     {
-                        text: 'New York Public Library for the Performing Arts' +
-                            ', Dorothy and Lewis B. Cullman Center',
+                        text: 'New York Public Library for the Performing ' +
+                            'Arts, Dorothy and Lewis B. Cullman Center',
                         distance: 'Distance: 4.04 miles'
                     },
                     {
                         text: 'Schomburg Center for Research in Black Culture',
                         distance: 'Distance: 7.23 miles'
-                    },
+                    }
                 ]);
             });
         });
@@ -1002,30 +1026,31 @@ describe('Locations: homepage', function () {
             it('should show the library you clicked on top of the list' +
                 ' when clicking on "View on Map" and be highlighted when' +
                 ' viewing in "List View". Using 67th street in the test',
-                    function () {
-                        expect(landingPage.listViewTable.isPresent()).toBe(true);
-                        expect(landingPage.mapViewMap.isPresent()).toBe(false);
+                function () {
+                    expect(landingPage.listViewTable.isPresent()).toBe(true);
+                    expect(landingPage.mapViewMap.isPresent()).toBe(false);
 
-                        landingPage.nthLocViewMapBtn(3).click();
+                    landingPage.nthLocViewMapBtn(3).click();
 
-                        expect(landingPage.mapViewMap.isPresent()).toBe(true);
-                        expect(landingPage.listViewTable.isPresent()).toBe(false);
-                        expect(landingPage.firstLocName()).toEqual('67th Street Library');
+                    expect(landingPage.mapViewMap.isPresent()).toBe(true);
+                    expect(landingPage.listViewTable.isPresent()).toBe(false);
+                    expect(landingPage.firstLocName())
+                        .toEqual('67th Street Library');
 
-                        landingPage.listViewBtn.click();
+                    landingPage.listViewBtn.click();
 
-                        expect(landingPage.listViewTable.isPresent()).toBe(true);
-                        expect(landingPage.firstLocName()).toEqual('67th Street Library');
-                        expect(landingPage.locations
-                            .first().getAttribute('class')
-                        ).toContain('callout');
+                    expect(landingPage.listViewTable.isPresent()).toBe(true);
+                    expect(landingPage.firstLocName())
+                        .toEqual('67th Street Library');
+                    expect(landingPage.locations.first().getAttribute('class'))
+                        .toContain('callout');
 
+                    landingPage.nthLocViewMapBtn(9).click();
 
-                        landingPage.nthLocViewMapBtn(9).click();
-
-                        expect(landingPage.mapViewMap.isPresent()).toBe(true);
-                        expect(landingPage.firstLocName()).toEqual('Baychester Library');
-                    });
+                    expect(landingPage.mapViewMap.isPresent()).toBe(true);
+                    expect(landingPage.firstLocName())
+                        .toEqual('Baychester Library');
+                });
         });
 
         describe('On the Map View', function () {
@@ -1034,23 +1059,26 @@ describe('Locations: homepage', function () {
                     landingPage.mapViewBtn.click();
 
                     landingPage.nthLocViewMapBtn(2).click();
-                    expect(landingPage.nthLocName(2)).toEqual('58th Street Library');
+                    expect(landingPage.nthLocName(2))
+                        .toEqual('58th Street Library');
                     expect(landingPage.gmapInfoWindow.getText())
                         .toEqual('58th Street Library\n127 East 58th Street\n' +
                             'New York, NY, 10022');
 
                     landingPage.nthLocViewMapBtn(10).click();
                     expect(landingPage.nthLocName(10))
-                        .toEqual('Belmont Library and Enrico Fermi Cultural Center');
+                        .toEqual('Belmont Library and Enrico Fermi Cultural ' +
+                            'Center');
                     expect(landingPage.gmapInfoWindow.getText())
-                        .toEqual('Belmont Library and Enrico Fermi Cultural Center\n' +
-                            '610 E. 186th Street\nBronx, NY, 10458');
+                        .toEqual('Belmont Library and Enrico Fermi Cultural ' +
+                            'Center\n610 E. 186th Street\nBronx, NY, 10458');
 
                     landingPage.nthLocViewMapBtn(25).click();
-                    expect(landingPage.nthLocName(25)).toEqual('Francis Martin Library');
+                    expect(landingPage.nthLocName(25))
+                        .toEqual('Francis Martin Library');
                     expect(landingPage.gmapInfoWindow.getText())
-                        .toEqual('Francis Martin Library\n2150 University Avenue\n' +
-                            'Bronx, NY, 10453');
+                        .toEqual('Francis Martin Library\n2150 University ' +
+                            'Avenue\nBronx, NY, 10453');
                 });
         });
     });

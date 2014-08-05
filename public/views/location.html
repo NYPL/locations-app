@@ -39,7 +39,9 @@
             <span class="p-region">{{location.region}}</span>, 
             <span class="p-postal-code">{{location.postal_code}}</span>
             <div class="p-tel">{{location.contacts.phone}}</div>
-            <div class="p-manager">{{ 'LIBRARY_MANAGER' | translate }}: {{location.contacts.manager}}</div>
+            <div class="p-manager" data-ng-if="location.contacts.manager">
+              {{ 'LIBRARY_MANAGER' | translate }}: {{location.contacts.manager}}
+            </div>
           </div>
           
           <div class="wheelchair icon-accessibility icon-color-blue">{{ 'WHEELCHAIR' | translate }}</div>

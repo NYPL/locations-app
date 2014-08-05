@@ -163,7 +163,8 @@ function nypl_geocoder_service($q) {
     };
 
     geocoder_service.check_searchMarker = function () {
-        return searchMarker.getPosition() !== undefined;
+        return searchMarker.getPosition() !== undefined &&
+            searchMarker.getMap() !== null;
     };
 
     geocoder_service.check_marker = function (id) {

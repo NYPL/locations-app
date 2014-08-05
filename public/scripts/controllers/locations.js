@@ -178,8 +178,14 @@ function LocationsCtrl(
             if (nypl_utility.check_distance(locationsCopy)) {
                 // The search query is too far
                 $scope.searchError = searchterm;
+                nypl_geocoder_service.remove_searchMarker();
                 throw (new Error('The search query is too far'));
             }
+
+            if ($scope.view === 'map') {
+                nypl_geocoder_service.draw_searchMarker();
+            }
+            $scope.searchMarker = true;
 
             $scope.geolocationAddressOrSearchQuery = searchterm;
             $scope.searchError = '';
@@ -388,11 +394,6 @@ function LocationsCtrl(
                         searchObj.coords,
                         searchObj.searchTerm
                     );
-
-                    if ($scope.view === 'map') {
-                        nypl_geocoder_service.draw_searchMarker();
-                    }
-                    $scope.searchMarker = true;
                 }
 
                 return searchByCoordinates(searchObj);
@@ -499,8 +500,7 @@ function MapCtrl($scope, $timeout, nypl_geocoder_service, nypl_utility) {
             long: -73.9822
         }, 12, 'all-locations-map');
 
-        nypl_geocoder_service
-                .draw_legend('all-locations-map-legend');
+        nypl_geocoder_service.draw_legend('all-locations-map-legend');
 
         nypl_geocoder_service.load_markers();
         loadMapMarkers();
