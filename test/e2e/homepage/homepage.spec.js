@@ -419,7 +419,7 @@ describe('Locations: homepage', function () {
                         'a marker and organize list by distance',
                         function () {
                             landingPage.mapViewBtn.click();
-                            browser.sleep(1500);
+                            browser.sleep(1000);
 
                             expect(landingPage.firstLocName())
                                 .toEqual('West Farms Library');
