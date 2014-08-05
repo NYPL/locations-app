@@ -28,7 +28,7 @@ describe('Google analytics configuration', function () {
       browser.executeScript(mockGA());
     });
 
-    it('should do the thing', function () {
+    it('should log a branch path as a page view', function () {
       landingPage.branch_link.click();
       expect(browser.executeScript('return window.ga_msg[0][2];'))
         .toEqual('/115th-street');
