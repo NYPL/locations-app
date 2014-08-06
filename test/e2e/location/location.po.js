@@ -21,6 +21,8 @@ var LocationPage = function () {
   this.hoursToday = element(by.css('.hours-today'));
   this.hours = element.all(by.repeater('hours in location.hours.regular'));
 
+  this.allAmenities = element(by.css('#all_amenities'));
+
   this.divisions_container = element(by.id('container__divisions'));
   this.divisions =
     element.all(by.repeater('division in location._embedded.divisions'));

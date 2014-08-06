@@ -119,6 +119,17 @@ describe('Locations: Library', function () {
         expect(locationPage.hours.count()).toBe(7);
       });
 
+      describe('Amenities', function () {
+        it('should have an "All Amenities" link', function () {
+          expect(locationPage.allAmenities.getText()).toBe('See all amenities');
+        });
+
+        it('should have a link with the slug, not abbreviation', function () {
+          expect(locationPage.allAmenities.getAttribute('href'))
+            .toMatch(/grand-central$/);
+        });
+      });
+
       it('should not display any divisions', function () {
         expect(locationPage.divisions_container.isPresent()).toBe(false);
         expect(locationPage.divisions.count()).toBe(0);
