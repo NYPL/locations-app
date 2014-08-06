@@ -67,29 +67,23 @@ describe('NYPL CoordinateService Module', function () {
      * Returns an object with the coordinates of the user's current location.
      */
     describe('nyplCoordinatesService.getCoordinates', function () {
-      var geolocationMock, geolocationOk, geolocationError, scope;
+      var geolocationMock, geolocationOk, $rootScope;
 
       beforeEach(inject(function (_$rootScope_) {
-        scope = _$rootScope_.$new();
+        $rootScope = _$rootScope_;
         window.navigator = jasmine.createSpy('navigator');
         geolocationMock =
           window.navigator.geolocation = jasmine.createSpy('geolocation');
 
-        geolocationOk = function (params, callback) {
-          callback({
-            position: {
-              coords: {
-                latitude: 40.75298660000001,
-                longitude: -73.9821364
-              }
+        geolocationOk = function () {
+          var position = {
+            coords: {
+              // SASB
+              latitude: 40.7528047,
+              longitude: -73.98216959999999
             }
-          });
-        };
-
-        geolocationError = function (params, callback) {
-          callback({
-            error: "Your browser does not support Geolocation"
-          });
+          };
+          arguments[0](position);
         };
       }));
 
@@ -119,32 +113,155 @@ describe('NYPL CoordinateService Module', function () {
             expect(geolocationMock.getCurrentPosition).toHaveBeenCalled();
           });
 
-        it('should return a promise', function () {
-          var promise = nyplCoordinatesService.getCoordinates();
-          expect(typeof promise.then).toBe('function');
-        });
+        it('should return an object with latitude and longitude properties',
+          function () {
+            var SASBLocation = {
+                latitude: 40.7528047,
+                longitude: -73.98216959999999
+              },
+              returned_coordinates;
 
+            nyplCoordinatesService.getCoordinates().then(function (data) {
+              returned_coordinates = data;
+            });
+            $rootScope.$digest();
+
+            expect(returned_coordinates).toEqual(SASBLocation);
+          });
       });
 
       describe('getCoordinates function fails', function () {
-        beforeEach(function () {
-          geolocationMock.getCurrentPosition =
-            window.navigator.geolocation.getCurrentPosition =
-              jasmine.createSpy('getCurrentPosition')
-              .and.callFake(geolocationError);
-        });
-
-        it('should not be called', function () {
-          expect(geolocationMock.getCurrentPosition).not.toHaveBeenCalled();
-        });
-
-        it('should call the geolocation function when calling the service',
-          function () {
-            nyplCoordinatesService.getCoordinates();
-            expect(geolocationMock.getCurrentPosition).toHaveBeenCalled();
+        describe('Permission denied', function () {
+          beforeEach(function () {
+            geolocationMock.getCurrentPosition =
+              window.navigator.geolocation.getCurrentPosition =
+                jasmine.createSpy('getCurrentPosition')
+                .and.callFake(function () {
+                  var error = {code : 1, PERMISSION_DENIED: 1};
+                  arguments[1](error);
+                });
           });
+
+          it('should call the geolocation function when calling the service',
+            function () {
+              nyplCoordinatesService.getCoordinates();
+              expect(geolocationMock.getCurrentPosition).toHaveBeenCalled();
+            });
+
+          it('should return an error message', function () {
+            var error_message = new Error('Permission denied.'),
+              returned_coordinates;
+
+            nyplCoordinatesService.getCoordinates()
+              .then(function () {})
+              .catch(function (error) {
+                returned_coordinates = error;
+              });
+            $rootScope.$digest();
+
+            expect(returned_coordinates).toEqual(error_message);
+          });
+        });
+
+        describe('Position Unavailable', function () {
+          beforeEach(function () {
+            geolocationMock.getCurrentPosition =
+              window.navigator.geolocation.getCurrentPosition =
+                jasmine.createSpy('getCurrentPosition')
+                .and.callFake(function () {
+                  var error = {code : 2, POSITION_UNAVAILABLE: 2};
+                  arguments[1](error);
+                });
+          });
+
+          it('should call the geolocation function when calling the service',
+            function () {
+              nyplCoordinatesService.getCoordinates();
+              expect(geolocationMock.getCurrentPosition).toHaveBeenCalled();
+            });
+
+          it('should return an error message', function () {
+            var error_message =
+              new Error('The position is currently unavailable.'),
+              returned_coordinates;
+
+            nyplCoordinatesService.getCoordinates()
+              .then(function () {})
+              .catch(function (error) {
+                returned_coordinates = error;
+              });
+            $rootScope.$digest();
+
+            expect(returned_coordinates).toEqual(error_message);
+          });
+        });
+
+        describe('Request timed out', function () {
+          beforeEach(function () {
+            geolocationMock.getCurrentPosition =
+              window.navigator.geolocation.getCurrentPosition =
+                jasmine.createSpy('getCurrentPosition')
+                .and.callFake(function () {
+                  var error = {code : 3, TIMEOUT: 3};
+                  arguments[1](error);
+                });
+          });
+
+          it('should call the geolocation function when calling the service',
+            function () {
+              nyplCoordinatesService.getCoordinates();
+              expect(geolocationMock.getCurrentPosition).toHaveBeenCalled();
+            });
+
+          it('should return an error message', function () {
+            var error_message = new Error('The request timed out.'),
+              returned_coordinates;
+
+            nyplCoordinatesService.getCoordinates()
+              .then(function () {})
+              .catch(function (error) {
+                returned_coordinates = error;
+              });
+            $rootScope.$digest();
+
+            expect(returned_coordinates).toEqual(error_message);
+          });
+        });
+
+        describe('Unknown error', function () {
+          beforeEach(function () {
+            geolocationMock.getCurrentPosition =
+              window.navigator.geolocation.getCurrentPosition =
+                jasmine.createSpy('getCurrentPosition')
+                .and.callFake(function () {
+                  var error = {code : 4};
+                  arguments[1](error);
+                });
+          });
+
+          it('should call the geolocation function when calling the service',
+            function () {
+              nyplCoordinatesService.getCoordinates();
+              expect(geolocationMock.getCurrentPosition).toHaveBeenCalled();
+            });
+
+          it('should return an error message', function () {
+            var error_message = new Error('Unknown error.'),
+              returned_coordinates;
+
+            nyplCoordinatesService.getCoordinates()
+              .then(function (data) {})
+              .catch(function (error) {
+                returned_coordinates = error;
+              });
+            $rootScope.$digest();
+
+            expect(returned_coordinates).toEqual(error_message);
+          });
+        });
       });
-    });
+
+    }); /* end nyplCoordinatesService.getCoordinates()*/
 
     /* 
      * nyplCoordinatesService.getDistance(lat1, lon1, lat2, lon2)
@@ -165,12 +282,11 @@ describe('NYPL CoordinateService Module', function () {
 
       // check to see if it has the expected function
       it('should calculate the distance from Schwarzman Bldg to ' +
-        '58th Street Library',
+        ' 58th Street Library',
         function () {
-          var location1 = {lat: 40.75298660000001, lon: -73.9821364},
-            location2 = {lat: 40.7619, lon: -73.9691},
-            result =
-              nyplCoordinatesService.getDistance(40.75298660000001, -73.9821364, 40.7619, -73.9691);
+          var result =
+            nyplCoordinatesService
+            .getDistance(40.75298660000001, -73.9821364, 40.7619, -73.9691);
 
           expect(result).toBe(0.92);
           expect(result).not.toBe(null);
