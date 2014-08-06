@@ -19,7 +19,7 @@
         </thead>
         <tbody>
           <!-- Repeated location row data -->
-          <tr class="locations-row {{location._id}} {{location.highlight}}" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse | limitTo: libraryLimit">
+          <tr class="locations-row {{location._id}} {{location.highlight}}" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse">
             <td class="location-info h-card">
               <!-- Library Info -->
               <div class="p-org"><a data-ng-href='/#/{{location.slug}}'>{{location.name}}</a></div>
@@ -75,7 +75,7 @@
 <!-- End List View -->
 
 <!-- Pagination -->
-<div data-ng-if='locations'>
+<!-- <div data-ng-if='locations'>
   <div id="showing" class="grid--center grid__item">
     {{ 'SHOWING' | translate }} {{libraryLimit}} {{ 'OF' | translate }} {{totalLocations}} {{ 'LOCATIONS' | translate }}
   </div>
@@ -84,5 +84,5 @@
       Show {{increaseBy}}
     </span>
   </div>
-</div>
+</div> -->
 <!-- End Pagination -->

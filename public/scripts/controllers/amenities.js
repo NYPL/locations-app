@@ -44,7 +44,8 @@ function AmenitiesAtLibraryCtrl($http, $rootScope, $scope, breadcrumbs, location
     $http
         .get('json/amenitiesAtLibrary.json')
         .success(function (data) {
-            amenities = nypl_amenities.add_category_icon(data.amenitiesCategories);
+            amenities =
+                nypl_amenities.add_category_icon(data.amenitiesCategories);
             $scope.amenitiesCategories = amenities;
             // console.log($scope.amenitiesCategories);
         });

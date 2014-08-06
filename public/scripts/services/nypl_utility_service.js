@@ -37,7 +37,7 @@ function requestNotificationChannel($rootScope) {
     return notificationChannel;
 }
 
-function nypl_utility($filter, nypl_coordinates_service, $window, $sce) {
+function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
     'use strict';
 
     var utility = {};
@@ -338,7 +338,7 @@ function nypl_utility($filter, nypl_coordinates_service, $window, $sce) {
 
         _.each(locations, function (location) {
             location.distance =
-                nypl_coordinates_service.getDistance(
+                nyplCoordinatesService.getDistance(
                     search.latitude,
                     search.longitude,
                     location.lat,
@@ -377,7 +377,7 @@ function nypl_utility($filter, nypl_coordinates_service, $window, $sce) {
     return utility;
 }
 
-function nypl_location_list() {
+function nyplLocationList() {
     'use strict';
 
     var config = {
@@ -482,7 +482,7 @@ function nypl_amenities() {
 
 angular
     .module('nypl_locations')
-    .factory('nypl_utility', nypl_utility)
-    .factory('nypl_location_list', nypl_location_list)
+    .factory('nyplUtility', nyplUtility)
+    .factory('nyplLocationList', nyplLocationList)
     .factory('nypl_amenities', nypl_amenities)
     .factory('requestNotificationChannel', requestNotificationChannel);

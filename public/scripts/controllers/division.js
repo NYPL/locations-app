@@ -1,7 +1,7 @@
 /*jslint indent: 4, maxlen: 80, nomen: true */
 /*globals nypl_locations */
 
-function DivisionCtrl($rootScope, $scope, breadcrumbs, division, nypl_utility) {
+function DivisionCtrl($rootScope, $scope, breadcrumbs, division, nyplUtility) {
     'use strict';
 
     var homeUrl,
@@ -10,9 +10,7 @@ function DivisionCtrl($rootScope, $scope, breadcrumbs, division, nypl_utility) {
     $scope.division = division;
     $rootScope.title = division.name;
 
-    breadcrumbs.options = {
-        "Division": division.name
-    };
+    breadcrumbs.options = { "Division": division.name };
     homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
     locationUrl = {
         label: division.location_name,
@@ -23,15 +21,15 @@ function DivisionCtrl($rootScope, $scope, breadcrumbs, division, nypl_utility) {
     $scope.breadcrumbs = breadcrumbs;
 
     if (division.hours) {
-        $scope.hoursToday = nypl_utility.hoursToday;
+        $scope.hoursToday = nyplUtility.hoursToday;
     }
 
-    $scope.calendar_link = nypl_utility.calendar_link;
-    $scope.ical_link = nypl_utility.ical_link;
-    $scope.siteWideAlert = nypl_utility.alerts(division._embedded.alerts);
+    $scope.calendar_link = nyplUtility.calendar_link;
+    $scope.ical_link = nyplUtility.ical_link;
+    $scope.siteWideAlert = nyplUtility.alerts(division._embedded.alerts);
 
     $scope.division.social_media =
-        nypl_utility.socialMediaColor(division.social_media);
+        nyplUtility.socialMediaColor(division.social_media);
 }
 
 angular

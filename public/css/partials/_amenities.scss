@@ -1,4 +1,4 @@
-//better spacing
+// better spacing
 .amenities h3 {
   margin: 0.5em 0 0;
 }
@@ -15,8 +15,27 @@
 	margin: 1rem 0;
 }
 
-//normalize the reserve button
+// normalize the reserve button
 .amenities__reserve{
 	font-size: .9rem;
 	padding: 3px 9px;
+}
+
+
+// services "ad"
+.services-callout{
+	font-size: 1.5rem;
+	text-align: center;
+	
+	.services-link{
+		text-decoration: none;
+		
+		&:hover{
+			text-decoration: underline;
+		}
+	}
+}
+.services-callout-2{
+	font-size: 2rem;
+	font-weight: bold;
 }

@@ -2,7 +2,7 @@
 /*global describe, require, beforeEach,
 browser, it, expect, element, by, angular */
 
-describe('Locations: events', function () {
+describe('Locations: Events Page - Testing 115th Street', function () {
   'use strict';
 
   var eventsPage = require('./events.po.js'),

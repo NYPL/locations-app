@@ -218,14 +218,14 @@
 			}
 
 			thead {
-				display: block;
+				// display: block;
+				background: rgba(#e2dedb, .3);
 
-				@include breakpoint($min, $post-palm) {
-					display: table-header-group;
-				}
+				// @include breakpoint($min, $post-palm) {
+				// 	display: table-header-group;
+				// }
 
 				tr {
-					display: block;
 					position: absolute;
 					top: -9999px;
 					left: -9999px;
@@ -239,10 +239,11 @@
 
 					th {
 						display: block;
-						background: rgba(#e2dedb, .3);
+						width: 33%;
+						// background: rgba(#e2dedb, .3);
 
 						@include breakpoint($min, $post-palm) {
-							display: table-cell;
+							display: inline-block;
 						}
 					}
 				}
@@ -250,10 +251,12 @@
 
 			tbody {
 				display: block;
+				overflow: auto;
+				height: 500px;
 
-				@include breakpoint($min, $post-palm) {
-					display: table-row-group;
-				}
+				// @include breakpoint($min, $post-palm) {
+				// 	display: table-row-group;
+				// }
 
 				tr {
 					display: block;
@@ -279,6 +282,7 @@
 						@include breakpoint($min, $post-palm) {
 							display: table-cell;
 							padding-left: 12px;
+							width: 30%;
 						}
 
 						&:before {
@@ -354,6 +358,16 @@
 						margin: 0 0 0 1.5em;
 						@include breakpoint($min, $post-palm) {
 							margin: 0 0 0 .5em;
+						}
+					}
+				}
+
+				&.hours-info {
+					p {
+						padding-top: 22px;
+
+						@include breakpoint($min, $post-tablet) {
+							padding-top: 0px;
 						}
 					}
 				}
