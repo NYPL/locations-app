@@ -13,7 +13,7 @@ function nyplSearch() {
       var o = {};
 
       // Set search box placeholder based on selected item
-      function set_prompt(lmnt) {
+      function setPrompt(lmnt) {
         var item = lmnt.closest('li');
         if (item.hasClass('search-the-catalog')) {
           return o.term.attr('placeholder', o.prompt.catalog);
@@ -28,12 +28,12 @@ function nyplSearch() {
 
       // Get the search term from the input box. Returns '' if the
       // term is undefined
-      function search_term() {
+      function searchTerm() {
         return $.trim(o.term.val());
       }
 
       // Set error state in the search input box
-      function set_error(err) {
+      function setError(err) {
         if (err === undefined) {
           err = 'Please enter a search term';
         }
@@ -41,20 +41,20 @@ function nyplSearch() {
       }
 
       // Clear error state in the search input box
-      function clear_error() {
+      function clearError() {
         return o.term.removeClass('error').attr('placeholder', '');
       }
 
       // The element referred to by mobile_flag should be hidden by
       // a media query. Checking whether or not it is visible will tell
       // us if that mediq query is active
-      function is_mobile() {
+      function isMobile() {
         return !o.mobile_flag.is(':visible');
       }
 
       // Get text of the active search scope selection.
       // choice: optional element to use
-      function get_choice(choice) {
+      function getChoice(choice) {
         if (choice === undefined) {
           choice = o.choices.find('input[type=radio]:checked').parent();
         }
@@ -62,17 +62,17 @@ function nyplSearch() {
       }
 
       // Execute the search
-      function do_search(scope) {
-        var term = search_term(),
+      function doSearch(scope) {
+        var term = searchTerm(),
           target;
 
         if (scope === undefined) {
-          scope = get_choice();
+          scope = getChoice();
         }
 
         // Don't perform search if no term has been entered
         if (term.length === 0) {
-          set_error();
+          setError();
           return false;
         }
 
@@ -127,27 +127,27 @@ function nyplSearch() {
         // If the error class has been set on the input box, remove it
         // when the user clicks into it
         o.term.focus(function () {
-          clear_error();
+          clearError();
         });
 
         // Setup click action on submit button.
         lmnt.find('.search-button').click(function () {
-          return do_search();
+          return doSearch();
         });
 
         // Setup click action on radio butons
         o.choices.find('li input').click(function () {
-          set_prompt(angular.element(this));
+          setPrompt(angular.element(this));
         });
 
         // Setup click action on list items (will be active when items are
         // as buttons on narrow screens
         o.choices.find('li').click(function () {
-          if (is_mobile()) {
-            if (search_term().length === 0) {
-              set_error();
+          if (isMobile()) {
+            if (searchTerm().length === 0) {
+              setError();
             } else {
-              do_search(get_choice(angular.element(this)));
+              doSearch(getChoice(angular.element(this)));
             }
           }
         });
