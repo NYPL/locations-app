@@ -1036,26 +1036,26 @@ describe('NYPL Service Tests', function () {
   }); /* End nyplUtility service */
 
   /*
-  * nypl_location_list is a service that keeps track of the 'pagination'
+  * nyplLocationList is a service that keeps track of the 'pagination'
   * that occurs on the homepage for the list view. Showing 10 more
   * libraries when the 'Show more' button is clicked.
   */
-  describe('nypl_location_list', function () {
-    var nypl_location_list;
+  describe('nyplLocationList', function () {
+    var nyplLocationList;
 
     beforeEach(function () {
       module('nypl_locations');
-      inject(function (_nypl_location_list_) {
-        nypl_location_list = _nypl_location_list_;
+      inject(function (_nyplLocationList_) {
+        nyplLocationList = _nyplLocationList_;
       });
     });
 
     /*
-    * nypl_location_list.init(settings)
+    * nyplLocationList.init(settings)
     *   settings: Object with properties to extend the default
     */
     it('should create and extend the config object', function () {
-      var config = nypl_location_list.init();
+      var config = nyplLocationList.init();
 
       expect(config).toEqual({
         // Show the button
@@ -1069,7 +1069,7 @@ describe('NYPL Service Tests', function () {
       });
 
       // Extend the settings
-      config = nypl_location_list.init({
+      config = nyplLocationList.init({
         libraryLimit: 20,
         increaseBy: "20 more",
         add_amount: 20
@@ -1084,7 +1084,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /* 
-    * nypl_location_list.view_more()
+    * nyplLocationList.view_more()
     *   Updates the limit of libraries that can be shown in the list as
     *   well as the text in the button.
     */
@@ -1092,9 +1092,9 @@ describe('NYPL Service Tests', function () {
       function () {
         var config, i;
 
-        nypl_location_list.init();
+        nyplLocationList.init();
         // The 'show more' button was clicked
-        config = nypl_location_list.view_more();
+        config = nyplLocationList.view_more();
         expect(config).toEqual({
           showMore: true,
           add_amount: 10,
@@ -1104,7 +1104,7 @@ describe('NYPL Service Tests', function () {
 
         // Click the show more button 6 more times
         for (i = 0; i < 6; i += 1) {
-          config = nypl_location_list.view_more();
+          config = nyplLocationList.view_more();
         }
         expect(config).toEqual({
           showMore: true,
@@ -1114,7 +1114,7 @@ describe('NYPL Service Tests', function () {
         });
 
         // The last click
-        config = nypl_location_list.view_more();
+        config = nyplLocationList.view_more();
         expect(config).toEqual({
           showMore: false,
           add_amount: 12,
@@ -1122,7 +1122,7 @@ describe('NYPL Service Tests', function () {
           increaseBy: "All"
         });
       });
-  }); /* End nypl_location_list */
+  }); /* End nyplLocationList */
 
 });
 

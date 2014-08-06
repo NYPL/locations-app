@@ -8,7 +8,7 @@ function LocationsCtrl(
     $location,
     nyplCoordinatesService,
     nypl_geocoder_service,
-    nypl_location_list,
+    nyplLocationList,
     nypl_locations_service,
     nyplUtility
 ) {
@@ -26,7 +26,7 @@ function LocationsCtrl(
             // Once we show 80 libraries, show the 12 remaining libraries
             // and reword to say "Show All"
             // Once all libraries are shown, we hide the "showMore" element
-            var location_list = nypl_location_list.init({
+            var location_list = nyplLocationList.init({
                 libraryLimit: 10,
                 showMore: true,
                 add_amount: 10,
@@ -417,7 +417,7 @@ function LocationsCtrl(
     };
 
     $scope.viewMore = function () {
-        var viewMore = nypl_location_list.view_more();
+        var viewMore = nyplLocationList.view_more();
 
         $scope.libraryLimit = viewMore.libraryLimit;
         $scope.increaseBy = viewMore.increaseBy;

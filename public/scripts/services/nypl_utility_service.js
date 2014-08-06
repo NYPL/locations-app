@@ -377,7 +377,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
     return utility;
 }
 
-function nypl_location_list() {
+function nyplLocationList() {
     'use strict';
 
     var config = {
@@ -483,6 +483,6 @@ function nypl_amenities() {
 angular
     .module('nypl_locations')
     .factory('nyplUtility', nyplUtility)
-    .factory('nypl_location_list', nypl_location_list)
+    .factory('nyplLocationList', nyplLocationList)
     .factory('nypl_amenities', nypl_amenities)
     .factory('requestNotificationChannel', requestNotificationChannel);
