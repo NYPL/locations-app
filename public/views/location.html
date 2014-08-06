@@ -103,8 +103,8 @@
 
       <div class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in location._embedded.features'>
         <a data-ng-href="{{feature._links.web.href}}" data-ng-if="feature.image">
-          <img class="one-whole img--left img--outline" data-ng-src="{{feature.image}}"
-            alt="Image of {{feature.title}}" style="height: 300px;">
+          <img class="one-third img--left img--outline" data-ng-src="{{feature.image}}"
+            alt="Image of {{feature.title}}">
         </a>
         <h3 class=""><a data-ng-href="{{feature._links.web.href}}">{{feature.title}}</a></h3>
         <div class="desc" data-ng-bind-html="returnHTML(feature.description)"></div>
