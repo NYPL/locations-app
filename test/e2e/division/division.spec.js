@@ -2,7 +2,7 @@
 /*global describe, require, beforeEach,
 browser, it, expect, element, by, angular */
 
-describe('Locations: division - Testing General Research Division',
+describe('Locations: Division - Testing General Research Division',
   function () {
     'use strict';
 
@@ -104,7 +104,7 @@ describe('Locations: division - Testing General Research Division',
         expect(divisionPage.room.getText()).toEqual('and Room #315');
       });
 
-      it('should display two social media icons', function () {
+      it('should display four social media icons', function () {
         var social_media = divisionPage.social_media;
         expect(social_media.count()).toBe(4);
         expect(divisionPage.social_media_container.isPresent()).toBe(true);
@@ -136,13 +136,14 @@ describe('Locations: division - Testing General Research Division',
       describe('Email a librarian link', function () {
         it('should have a link', function () {
           expect(divisionPage.ask_librarian.getAttribute('href'))
-            .toEqual('http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?institution=13306&type=1&language=1');
+            .toEqual('http://www.questionpoint.org/crs/servlet/org.oclc.admin' +
+              '.BuildForm?institution=13306&type=1&language=1');
         });
 
         it('should be the same as the Email Us button', function () {
           expect(divisionPage.ask_librarian.getAttribute('href'))
             .toEqual(divisionPage.email_us.getAttribute('href'));
-        });            
+        });
       });
     });
 

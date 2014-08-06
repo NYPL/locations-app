@@ -1,5 +1,10 @@
-<span>
-  <span data-ng-if="!online">{{how}}</span>
-  <a data-ng-if="online" class="btn btn--natural whiteText"
-    data-ng-href="http://nypl.org/{{link}}">{{how}}</a>
-</span>
+<div>
+  <div data-ng-if="how">
+    {{ 'REGISTRATION' | translate }}:
+    <span data-ng-if="!online">{{how}}</span>
+    <a class="btn btn--natural whiteText" data-ng-if="online"
+      data-ng-href="http://nypl.org/{{link}}">{{how}}</a>
+    <p data-ng-if="registrationopen">Registration {{opens}}
+      {{registrationopen | dateToISO | date:'MMMM d, y - h:mma'}}</p>
+  </div>
+</div>

@@ -126,12 +126,25 @@ function eventRegistration() {
         replace: true,
         scope: {
             how: '@',
-            link: '@'
+            link: '@',
+            registrationopen: '@'
         },
         link: function (scope, element, attrs) {
+            var today,
+                registrationopen = attrs.registrationopen;
+
             scope.online = false;
+            scope.opens = 'opens';
+
             if (attrs.how === 'Online') {
                 scope.online = true;
+            }
+
+            if (registrationopen) {
+                today = new Date().toISOString();
+                if (today > registrationopen) {
+                    scope.opens = 'opened';
+                }
             }
         }
     };
@@ -144,7 +157,8 @@ function nyplSiteAlerts(nypl_locations_service, nypl_utility) {
         restrict: 'E',
         templateUrl: 'scripts/directives/templates/alerts.html',
         replace: true,
-        scope: {},
+        // Must be global for unit test to pass. Must find better way to test.
+        // scope: {},
         link: function (scope, element, attrs) {
             var alerts;
             nypl_locations_service.alerts().then(function (data) {

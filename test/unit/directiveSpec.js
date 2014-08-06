@@ -195,39 +195,39 @@ describe('NYPL Directive Tests', function () {
   * The askdonatefooter directive is simple markup right above the footer
   * that displays a donation link and ways to contact the library.
   */
-  describe('askdonatefooter', function () {
-    beforeEach(inject(function (_$compile_, _$rootScope_) {
-      $compile = _$compile_;
-      $rootScope = _$rootScope_;
+  // describe('askdonatefooter', function () {
+  //   beforeEach(inject(function (_$compile_, _$rootScope_) {
+  //     $compile = _$compile_;
+  //     $rootScope = _$rootScope_;
 
-      element = angular
-        .element('<askdonatefooter chatHref="" emailHref="" donateHref="" />');
-      $compile(element)($rootScope);
-      $rootScope.$digest();
-    }));
+  //     element = angular
+  //       .element('<askdonatefooter chatHref="" emailHref="" donateHref="" />');
+  //     $compile(element)($rootScope);
+  //     $rootScope.$digest();
+  //   }));
 
-    it('should have the ask-donate class in the outer wrapper', function () {
-      expect(element.attr('class')).toContain('ask-donate');
-    });
+  //   it('should have the ask-donate class in the outer wrapper', function () {
+  //     expect(element.attr('class')).toContain('ask-donate');
+  //   });
 
-    it('should generate the donate section', function () {
-      // Get the first div in the markup
-      expect(element.find('p').text())
-        .toEqual('Help us keep this library open 6 days a week!');
-      expect(element.find('button').text()).toBe('Donate now');
-    });
+  //   it('should generate the donate section', function () {
+  //     // Get the first div in the markup
+  //     expect(element.find('p').text())
+  //       .toEqual('Help us keep this library open 6 days a week!');
+  //     expect(element.find('button').text()).toBe('Donate now');
+  //   });
 
-    it('should generate the askNYPL section', function () {
-      var asknyplList = element.find('ul');
-      expect(asknyplList.find('li').length).toEqual(3);
-    });
-  });
+  //   it('should generate the askNYPL section', function () {
+  //     var asknyplList = element.find('ul');
+  //     expect(asknyplList.find('li').length).toEqual(3);
+  //   });
+  // });
 
   /*
   * The nyplalerts directive displays a site-wide alert by checking all the
   * alerts in the API and checking the current date.
   */
-  describe('nyplalerts', function () {
+  describe('nyplSiteAlerts', function () {
     var $httpBackend,
       date;
 
@@ -259,7 +259,7 @@ describe('NYPL Directive Tests', function () {
       MockDate = Date;
       Date = function () { return date; };
 
-      element = angular.element("<nyplalerts></nyplalerts>");
+      element = angular.element("<nypl-site-alerts></nypl-site-alerts>");
       $compile(element)($rootScope);
       $httpBackend.flush();
       $rootScope.$digest();

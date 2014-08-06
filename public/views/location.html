@@ -39,7 +39,9 @@
             <span class="p-region">{{location.region}}</span>, 
             <span class="p-postal-code">{{location.postal_code}}</span>
             <div class="p-tel">{{location.contacts.phone}}</div>
-            <div class="p-manager">{{ 'LIBRARY_MANAGER' | translate }}: {{location.contacts.manager}}</div>
+            <div class="p-manager" data-ng-if="location.contacts.manager">
+              {{ 'LIBRARY_MANAGER' | translate }}: {{location.contacts.manager}}
+            </div>
           </div>
           
           <div class="wheelchair icon-accessibility icon-color-blue">{{ 'WHEELCHAIR' | translate }}</div>
@@ -57,13 +59,15 @@
 
           <div class="social beta" data-ng-if="location.social_media">
             <a class="{{social.classes}}" data-ng-href="{{social.href}}" id="social_media"
-              data-ng-repeat="social in location.social_media" class="inline"></a>
+              data-ng-repeat="social in location.social_media" class="inline"
+                title="{{social.site | capitalize}}"></a>
           </div>
           
         </div><!--
 
         --><div id="container__image" class="grid__item desk-one-third">
-            <img class="img--outline" data-ng-src="{{location.image}}" alt="Picture of {{location.name}}">
+            <img class="img--outline" data-ng-src="{{location.image}}"
+              alt="Image of {{location.name}}" title="Image of {{location.name}}">
         </div>
     </div>
   </div>
@@ -78,7 +82,7 @@
             <li class="icon-book"><span>Lending</span></li>
             <li class="icon-box-add"><span>Book drop</span></li>
           </ul> 
-          <a data-ng-href="/#/amenities/location/{{location.id}}" class="read-more">{{ 'ALL_AMENITIES' | translate }}</a> 
+          <a id="all_amenities" data-ng-href="/#/amenities/location/{{location.id}}" class="read-more">{{ 'ALL_AMENITIES' | translate }}</a> 
         </div>
       </div>
     </div>
@@ -89,7 +93,8 @@
     <h2 class="hdg">{{ 'DIVISION_HEADER' | translate }}</h2>
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='division in location._embedded.divisions'>
-        <img class="img--left img--outline" data-ng-src="{{division.image}}" alt="" style="height: 100px;"/>
+        <img class="img--left img--outline" data-ng-src="{{division.image}}"
+          alt="Image for {{division.name}}" title="Image for {{division.name}}" style="height: 100px;"/>
         <h4 class=""><a data-ng-href="/#/division/{{division.slug}}">{{division.name}}</a></h4>
         <p data-ng-if="division.hours">Hours Today: {{hoursToday(division.hours) | timeFormat}}</p>
       </div>
@@ -103,8 +108,10 @@
 
       <div class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in location._embedded.features'>
         <a data-ng-href="{{feature._links.web.href}}" data-ng-if="feature.image">
+
           <img class="one-third img--left img--outline" data-ng-src="{{feature.image}}"
             alt="Image of {{feature.title}}">
+
         </a>
         <h3 class=""><a data-ng-href="{{feature._links.web.href}}">{{feature.title}}</a></h3>
         <div class="desc" data-ng-bind-html="returnHTML(feature.description)"></div>
@@ -123,11 +130,10 @@
 
         <div class="">
           <aside class="event-buttons">
-            <div data-ng-if="event.registration">
-              {{ 'REGISTRATION' | translate }}:
-              <event-registration how="{{event.registration}}" link="{{event._links.self.href}}">
-              </event-registration>
-            </div>
+            <event-registration
+              how="{{event.registration}}"
+              link="{{event._links.self.href}}"
+              registrationopen="{{event.registration_open}}"></event-registration>
 
             <a data-ng-href="{{calendar_link('google', event, location)}}" target="_blank" rel="nofollow" class="icon-calendar google_link">
               Google
@@ -158,8 +164,8 @@
         <h2 class="hdg" data-ng-if="location.type == 'research'">{{ 'ABOUT' | translate }}</h2>
         <div class="grid">
           <div id="location-secondary-img" class="grid__item one-whole lap-and-up-one-half">
-            <img class="img--outline"
-              data-ng-src="{{location.image}}" alt="Picture of {{location.name}}">
+            <img class="img--outline" title="Image of {{location.name}}"
+              data-ng-src="{{location.image}}" alt="Image of {{location.name}}">
           </div><!--
 
           --><div class="grid__item one-whole lap-and-up-one-half">
@@ -199,9 +205,14 @@
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
         <h3 class=""><a data-ng-href="http://nypl.org/{{blog._links.self.href}}">{{blog.title}}</a></h3>
         <a data-ng-if="blog.image" data-ng-href="http://nypl.org/{{blog._links.self.href}}">
-          <img class="img--left" data-ng-src="{{blog.image}}" alt="" style="height: 100px;" />
+          <img class="img--left" data-ng-src="{{blog.image}}" style="height: 100px;"
+            alt="Image for blog post {{blog.title}}" title="Image for blog post {{blog.title}}" />
         </a>
-        <span class="blog_author">By </span><br />
+        <div class="blog_author">
+          <span class="blog_name">By {{blog.author.name}}<span>
+          <span class="blog_position" data-ng-if="blog.author.position">, {{blog.author.position}}</span>
+          <span class="blog_location" data-ng-if="blog.author.location">, {{blog.author.location}}</span>
+        </div>
         <time class="date" ><span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span></time>
         <div class="teaser desc">{{blog.body | truncate}}</div>
       </div>
@@ -217,7 +228,8 @@
     <div class="grid">
       <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat='exhibition in location._embedded.exhibitions'>
         <a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}" data-ng-if="exhibition.image">
-          <img class="img--left" data-ng-src="{{exhibition.image}}" alt="" style="height: 100px;" />
+          <img class="img--left" data-ng-src="{{exhibition.image}}" style="height: 100px;"
+            alt="Image for exhibition {{exhibition.title}}" title="Image for exhibition {{exhibition.title}}" />
         </a>
         <h3 class="exhibition__title"><a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}">{{exhibition.title}}</a></h3>
         <p class="date">{{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
