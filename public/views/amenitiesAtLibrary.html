@@ -5,7 +5,7 @@
   <section class="grid">
 
     <div class="grid__item amenity__title">
-      <h2 data-ng-if="location.name"><a href="/#/{{location.slug}}">{{location.name}}</a></h2>
+      <h2 data-ng-if="location.name">Amenities at <a href="/#/{{location.slug}}">{{location.name}}</a></h2>
     </div>
 
     <div class="grid">
@@ -32,9 +32,11 @@
         </ul>
       </div><!--
 
-      --><div class="grid__item one-whole lap-and-up-one-third">
-        <div class="callout">
-          <p>See all Amenities at NYPL</p>
+      --><div class="grid__item one-whole lap-and-up-one-third ">
+      
+        <div class="services-callout callout">
+         <p>The Library also offers<br><span class="services-callout-2">services</span><br>of all kinds!</p>
+         <a class="services-link purpleText" href="">Find out more <span class="icon-arrow-right"></span></a>
         </div>
       </div>
 
