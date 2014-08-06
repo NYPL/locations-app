@@ -37,7 +37,7 @@ function requestNotificationChannel($rootScope) {
     return notificationChannel;
 }
 
-function nypl_utility($filter, nypl_coordinates_service, $window, $sce) {
+function nypl_utility($filter, nyplCoordinatesService, $window, $sce) {
     'use strict';
 
     var utility = {};
@@ -338,7 +338,7 @@ function nypl_utility($filter, nypl_coordinates_service, $window, $sce) {
 
         _.each(locations, function (location) {
             location.distance =
-                nypl_coordinates_service.getDistance(
+                nyplCoordinatesService.getDistance(
                     search.latitude,
                     search.longitude,
                     location.lat,

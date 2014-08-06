@@ -1,7 +1,7 @@
 /*jslint indent: 2, maxlen: 80 */
 /*globals nypl_locations, angular */
 
-function nypl_coordinates_service($q, $window) {
+function nyplCoordinatesService($q, $window) {
   'use strict';
 
   var geoCoords = null,
@@ -88,4 +88,4 @@ function nypl_coordinates_service($q, $window) {
 
 angular
   .module('coordinateService', [])
-  .factory('nypl_coordinates_service', nypl_coordinates_service);
+  .factory('nyplCoordinatesService', nyplCoordinatesService);

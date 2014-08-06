@@ -6,7 +6,7 @@ function LocationsCtrl(
     $scope,
     $timeout,
     $location,
-    nypl_coordinates_service,
+    nyplCoordinatesService,
     nypl_geocoder_service,
     nypl_location_list,
     nypl_locations_service,
@@ -59,7 +59,7 @@ function LocationsCtrl(
             // supports geolocation before the user actually tries to
             // geolocate their location. If available, the button to
             // geolocate appears.
-            if (nypl_coordinates_service.checkGeolocation()) {
+            if (nyplCoordinatesService.checkGeolocation()) {
                 $scope.geolocationOn = true;
             }
         },
@@ -89,7 +89,7 @@ function LocationsCtrl(
         },
 
         loadCoords = function () {
-            return nypl_coordinates_service
+            return nyplCoordinatesService
                 .getCoordinates()
                 .then(function (position) {
                     userCoords = _.pick(position, 'latitude', 'longitude');
@@ -228,9 +228,9 @@ function LocationsCtrl(
             // Display the user address, add distance to every library
             // relative to the user's location and sort by distance
             $scope.geolocationAddressOrSearchQuery = userAddress;
-            $scope.predicate = 'distance';
             $scope.locations =
                 nypl_utility.add_distance($scope.locations, userCoords);
+            $scope.predicate = 'distance';
         },
 
         show_libraries_type_of = function (type) {
@@ -301,16 +301,12 @@ function LocationsCtrl(
         // if (!userCoords) {
         loadCoords()
             .then(loadReverseGeocoding)
+            .then(searchByUserGeolocation)
             .catch(function (error) {
                 $scope.distanceError = error.message;
                 $scope.geolocationOn = false;
             });
         // }
-
-        if (!$scope.distanceError) {
-            // Need to update or remove from page when user is too far.
-            searchByUserGeolocation();
-        }
     };
 
     $scope.clearSearch = function () {
@@ -544,7 +540,7 @@ function LocationCtrl(
     $timeout,
     breadcrumbs,
     location,
-    nypl_coordinates_service,
+    nyplCoordinatesService,
     nypl_utility
 ) {
     'use strict';
@@ -552,7 +548,7 @@ function LocationCtrl(
     var userCoords,
         homeUrl,
         loadCoords = function () {
-            return nypl_coordinates_service
+            return nyplCoordinatesService
                 .getCoordinates()
                 .then(function (position) {
                     userCoords = _.pick(position, 'latitude', 'longitude');
