@@ -94,8 +94,7 @@ function LocationsCtrl(
                 .then(function (position) {
                     userCoords = _.pick(position, 'latitude', 'longitude');
                     $scope.locationStart =
-                            userCoords.latitude + "," +
-                            userCoords.longitude;
+                            userCoords.latitude + "," + userCoords.longitude;
 
                     // add a distance property to every location
                     // from that location to the user's coordinates
@@ -124,8 +123,7 @@ function LocationsCtrl(
                     $scope.locations = locations;
                     $scope.predicate = 'distance';
                     nypl_geocoder_service
-                        .create_userMarker(userCoords,
-                            "Your Current Location");
+                        .create_userMarker(userCoords, "Your Current Location");
                     $scope.draw_user_marker();
 
                     return userCoords;
@@ -172,8 +170,7 @@ function LocationsCtrl(
                 coords = searchObj.coords,
                 searchterm = searchObj.searchTerm;
 
-            locationsCopy =
-                nypl_utility.add_distance(locationsCopy, coords);
+            locationsCopy = nypl_utility.add_distance(locationsCopy, coords);
 
             // Must be within 25 miles or throws the error:
             if (nypl_utility.check_distance(locationsCopy)) {
@@ -255,8 +252,7 @@ function LocationsCtrl(
 
             if (containerWidth < 601) {
                 top = angular.element('.search__results').offset();
-                angular.element('body')
-                    .animate({scrollTop: top.top}, 1000);
+                angular.element('body').animate({scrollTop: top.top}, 1000);
             }
         };
 
@@ -271,12 +267,10 @@ function LocationsCtrl(
 
         if (containerWidth < 601) {
             top = angular.element('.map-wrapper').offset();
-            angular.element('body')
-                .animate({scrollTop: top.top}, 1000);
+            angular.element('body').animate({scrollTop: top.top}, 1000);
         } else {
             top = content.offset();
-            angular.element('body')
-                .animate({scrollTop: top.top}, 1000);
+            angular.element('body').animate({scrollTop: top.top}, 1000);
         }
     };
 
@@ -367,11 +361,7 @@ function LocationsCtrl(
 
         if (IDfilteredLocations && IDfilteredLocations.length !== 0) {
             resetDistance();
-            organizeLocations(
-                $scope.locations,
-                IDfilteredLocations,
-                'name'
-            );
+            organizeLocations($scope.locations, IDfilteredLocations, 'name');
 
             // map related work
             nypl_geocoder_service.search_result_marker(IDfilteredLocations);
@@ -472,8 +462,7 @@ function MapCtrl($scope, $timeout, nypl_geocoder_service, nypl_utility) {
                 // Initially, when the map is drawn and 
                 // markers are availble, they will be drawn too. 
                 // No need to draw them again if they exist.
-                if (!nypl_geocoder_service
-                        .check_marker(location.slug)) {
+                if (!nypl_geocoder_service.check_marker(location.slug)) {
                     nypl_geocoder_service
                         .draw_marker(location.slug,
                             markerCoordinates,
@@ -605,8 +594,7 @@ function LocationCtrl(
     // };
 
     if (location.hours.exceptions) {
-        $scope.libraryAlert =
-            nypl_utility.alerts(location.hours.exceptions);
+        $scope.libraryAlert = nypl_utility.alerts(location.hours.exceptions);
     }
 
     $scope.hoursToday = nypl_utility.hoursToday;

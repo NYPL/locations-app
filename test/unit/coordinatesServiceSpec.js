@@ -2,6 +2,12 @@
 /*globals element, by, google, module, window, jasmine, document,
 describe, expect, beforeEach, inject, it, angular, spyOn, afterEach */
 
+/* 
+ * coordinateService is an NYPL Module that checks if a user's browser
+ * can use geolocation, computes the user's geolocation, and computes the 
+ * distance between two coordinate points.
+ */
+
 describe('NYPL CoordinateService Module', function () {
   'use strict';
 

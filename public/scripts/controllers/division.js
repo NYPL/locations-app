@@ -10,9 +10,7 @@ function DivisionCtrl($rootScope, $scope, breadcrumbs, division, nypl_utility) {
     $scope.division = division;
     $rootScope.title = division.name;
 
-    breadcrumbs.options = {
-        "Division": division.name
-    };
+    breadcrumbs.options = { "Division": division.name };
     homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
     locationUrl = {
         label: division.location_name,
