@@ -27,7 +27,7 @@ function loadingWidget(requestNotificationChannel) {
                 onRequestStarted(scope, startRequestHandler);
             // register for the request end notification
             requestNotificationChannel.
-                 onRequestEnded(scope, endRequestHandler);
+                onRequestEnded(scope, endRequestHandler);
         }
     };
 }
@@ -83,7 +83,7 @@ function emailusbutton() {
     };
 }
 
-function librarianchatbutton(nypl_utility) {
+function librarianchatbutton(nyplUtility) {
     'use strict';
 
     return {
@@ -96,7 +96,7 @@ function librarianchatbutton(nypl_utility) {
                 // Arguments: 
                 // link (req),
                 // title (optional), width (optional), height (optional)
-                nypl_utility.popup_window(
+                nyplUtility.popup_window(
                     'http://www.nypl.org/ask-librarian',
                     'NYPL Chat',
                     210,
@@ -150,7 +150,7 @@ function eventRegistration() {
     };
 }
 
-function nyplSiteAlerts(nypl_locations_service, nypl_utility) {
+function nyplSiteAlerts(nypl_locations_service, nyplUtility) {
     'use strict';
 
     return {
@@ -163,7 +163,7 @@ function nyplSiteAlerts(nypl_locations_service, nypl_utility) {
             var alerts;
             nypl_locations_service.alerts().then(function (data) {
                 alerts = data.alerts;
-                scope.sitewidealert = nypl_utility.alerts(alerts);
+                scope.sitewidealert = nyplUtility.alerts(alerts);
             });
         }
     };

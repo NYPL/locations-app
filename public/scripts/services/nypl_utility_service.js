@@ -37,7 +37,7 @@ function requestNotificationChannel($rootScope) {
     return notificationChannel;
 }
 
-function nypl_utility($filter, nyplCoordinatesService, $window, $sce) {
+function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
     'use strict';
 
     var utility = {};
@@ -482,7 +482,7 @@ function nypl_amenities() {
 
 angular
     .module('nypl_locations')
-    .factory('nypl_utility', nypl_utility)
+    .factory('nyplUtility', nyplUtility)
     .factory('nypl_location_list', nypl_location_list)
     .factory('nypl_amenities', nypl_amenities)
     .factory('requestNotificationChannel', requestNotificationChannel);
