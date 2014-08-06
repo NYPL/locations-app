@@ -3,19 +3,19 @@
 describe, expect, beforeEach, inject, it, angular, spyOn, afterEach */
 
 /* 
- * coordinateService is an NYPL Module that checks if a user's browser
- * can use geolocation, computes the user's geolocation, and computes the 
- * distance between two coordinate points.
+ * coordinateService is an NYPL AngularJS Module that checks if a user's
+ * browser can use geolocation, computes the user's geolocation, and computes
+ * the distance between two coordinate points.
  */
 
 describe('NYPL CoordinateService Module', function () {
   'use strict';
 
   /* 
-  * nypl_coordinates_service
-  * Service that retrieves a browser's current location 
-  * and coordinate distance utility method.
-  */
+   * nypl_coordinates_service
+   * AngularJS Service that retrieves a browser's current location 
+   * and coordinate distance utility method.
+   */
   describe('nypl_coordinates_service', function () {
     var nypl_coordinates_service;
 
@@ -32,41 +32,12 @@ describe('NYPL CoordinateService Module', function () {
       });
     });
 
-    /* 
-    * nypl_coordinates_service.getDistance(lat1, lon1, lat2, lon2)
-    *   lat1: Latitude of the first point
-    *   lon1: Longitude of the first point
-    *   lat2: Latitude of the second point
-    *   lon2: Longitude of the second point
-    *
-    *   Returns the distance, in miles, between two geographical
-    *   points based on their coordinates.
-    */
-    describe('nypl_coordinates_service.getDistance', function () {
-      // check to see if it has the expected function
-      it('should have a getDistance() function', function () {
-        expect(angular.isFunction(nypl_coordinates_service.getDistance))
-          .toBe(true);
-      });
-
-      // check to see if it has the expected function
-      it('should calculate the distance from Schwarzman Bldg to ' +
-        ' 58th Street Library',
-        function () {
-          var result =
-            nypl_coordinates_service
-            .getDistance(40.75298660000001, -73.9821364, 40.7619, -73.9691);
-          expect(result).toBe(0.92);
-          expect(result).not.toBe(null);
-        });
-    });
-
     /*
-    * nypl_coordinates_service.checkGeolocation()
-    *
-    * Returns true if navigator and geolocation are available on the
-    * browser, false otherwise.
-    */
+     * nypl_coordinates_service.checkGeolocation()
+     *
+     * Returns true if navigator and geolocation are available on the
+     * browser, false otherwise.
+     */
     describe('nypl_coordinates_service.checkGeolocation', function () {
       it('should have a checkGeolocation function', function () {
         // The checkGeolocation function checks to see
@@ -93,10 +64,10 @@ describe('NYPL CoordinateService Module', function () {
     });
 
     /*
-    * nypl_coordinates_service.getCoordinates()
-    *
-    * Returns an object with the coordinates of the user's current location.
-    */
+     * nypl_coordinates_service.getCoordinates()
+     *
+     * Returns an object with the coordinates of the user's current location.
+     */
     describe('nypl_coordinates_service.getCoordinates', function () {
       var geolocationMock, geolocationOk, geolocationError, scope;
 
@@ -174,7 +145,36 @@ describe('NYPL CoordinateService Module', function () {
             expect(geolocationMock.getCurrentPosition).toHaveBeenCalled();
           });
       });
-
     });
+
+    /* 
+     * nypl_coordinates_service.getDistance(lat1, lon1, lat2, lon2)
+     *   lat1: Latitude of the first point
+     *   lon1: Longitude of the first point
+     *   lat2: Latitude of the second point
+     *   lon2: Longitude of the second point
+     *
+     *   Returns the distance, in miles, between two geographical
+     *   points based on their coordinates.
+     */
+    describe('nypl_coordinates_service.getDistance', function () {
+      // check to see if it has the expected function
+      it('should have a getDistance() function', function () {
+        expect(angular.isFunction(nypl_coordinates_service.getDistance))
+          .toBe(true);
+      });
+
+      // check to see if it has the expected function
+      it('should calculate the distance from Schwarzman Bldg to ' +
+        ' 58th Street Library',
+        function () {
+          var result =
+            nypl_coordinates_service
+            .getDistance(40.75298660000001, -73.9821364, 40.7619, -73.9691);
+          expect(result).toBe(0.92);
+          expect(result).not.toBe(null);
+        });
+    });
+
   }); /* End nypl_coordinates_service */
 });

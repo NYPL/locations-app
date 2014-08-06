@@ -1,95 +1,91 @@
-/*jslint indent: 4, maxlen: 80 */
-/*globals nypl_locations */
+/*jslint indent: 2, maxlen: 80 */
+/*globals nypl_locations, angular */
 
 function nypl_coordinates_service($q, $window) {
-    'use strict';
+  'use strict';
 
-    var geoCoords = null,
-        coordinates_service = {};
+  var geoCoords = null,
+    coordinatesService = {};
 
-        // Geolocation extraction of coordinates
-    coordinates_service.getCoordinates = function () {
-        // Object containing success/failure conditions
-        var defer = $q.defer();
-        // Verify the browser supports Geolocation
-        if (!$window.navigator && !$window.navigator.geolocation) {
-            defer.reject(
-                new Error("Your browser does not support Geolocation.")
-            );
-        } else {
-            // Use stored coords, FF bug fix
-            // if (geoCoords) {
-            //     defer.resolve(geoCoords);
-            // } else {
-                $window.navigator.geolocation.getCurrentPosition(
-                    function (position) {
-                        // Extract coordinates for geoPosition obj
-                        geoCoords = position.coords;
-                        defer.resolve(geoCoords);
+  // Check if the browser has geolocation on:
+  coordinatesService.checkGeolocation = function () {
+    return (!$window.navigator && !$window.navigator.geolocation) ?
+        false :
+        true;
+  };
 
-                        // Testing a user's location that is more than 
-                        // 25miles of any NYPL location
-                        // var coords = {
-                        //     'latitude': 42.3581,
-                        //     'longitude': -71.0636
-                        // }
-                        // defer.resolve(coords);
-                    },
-                    function (error) {
-                        switch (error.code) {
-                        case error.PERMISSION_DENIED:
-                            defer.reject(new Error("Permission denied."));
-                            break;
+  // Geolocation extraction of coordinates
+  coordinatesService.getCoordinates = function () {
+    // Object containing success/failure conditions
+    var defer = $q.defer();
 
-                        case error.POSITION_UNAVAILABLE:
-                            defer.reject(
-                                new Error("The position is " +
-                                    "currently unavailable.")
-                            );
-                            break;
+    // Verify the browser supports Geolocation
+    if (!$window.navigator && !$window.navigator.geolocation) {
+      defer.reject(new Error("Your browser does not support Geolocation."));
+    } else {
+      // Use stored coords, FF bug fix
+      // if (geoCoords) {
+      //   defer.resolve(geoCoords);
+      // } else {
+      $window.navigator.geolocation.getCurrentPosition(
+        function (position) {
+          // Extract coordinates for geoPosition obj
+          geoCoords = position.coords;
+          defer.resolve(geoCoords);
 
-                        case error.TIMEOUT:
-                            defer.reject(new Error("The request timed out."));
-                            break;
+          // Testing a user's location that is more than 
+          // 25miles of any NYPL location
+          // var coords = {
+          //     'latitude': 42.3581,
+          //     'longitude': -71.0636
+          // }
+          // defer.resolve(coords);
+        },
+        function (error) {
+          switch (error.code) {
+          case error.PERMISSION_DENIED:
+            defer.reject(new Error("Permission denied."));
+            break;
 
-                        default:
-                            defer.reject(new Error("Unknown error."));
-                            break;
-                        }
-                    }
-                );
-            // }
+          case error.POSITION_UNAVAILABLE:
+            defer.reject(new Error("The position is currently unavailable."));
+            break;
+
+          case error.TIMEOUT:
+            defer.reject(new Error("The request timed out."));
+            break;
+
+          default:
+            defer.reject(new Error("Unknown error."));
+            break;
+          }
         }
-
-        return defer.promise; // Enables 'then' callback
-    },
-
-    // Check if the browser has geolocation on:
-    coordinates_service.checkGeolocation = function () {
-        return (!$window.navigator && !$window.navigator.geolocation) ?
-                false :
-                true;
-    },
-
-    // Calculate distance using coordinates
-    coordinates_service.getDistance = function (lat1, lon1, lat2, lon2) {
-        var radlat1 = Math.PI * lat1 / 180,
-            radlat2 = Math.PI * lat2 / 180,
-            theta = lon1 - lon2,
-            radtheta = Math.PI * theta / 180,
-            distance;
-
-        distance = Math.sin(radlat1) * Math.sin(radlat2) +
-            Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-        distance = Math.acos(distance);
-        distance = distance * 180 / Math.PI;
-        distance = distance * 60 * 1.1515;
-        return Math.ceil(distance * 100) / 100;
+      );
+      // }
     }
 
-    return coordinates_service;
+    return defer.promise; // Enables 'then' callback
+  };
+
+  // Calculate distance using coordinates
+  coordinatesService.getDistance = function (lat1, lon1, lat2, lon2) {
+    var radlat1 = Math.PI * lat1 / 180,
+      radlat2 = Math.PI * lat2 / 180,
+      theta = lon1 - lon2,
+      radtheta = Math.PI * theta / 180,
+      distance;
+
+    distance = Math.sin(radlat1) * Math.sin(radlat2) +
+      Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    distance = Math.acos(distance);
+    distance = distance * 180 / Math.PI;
+    distance = distance * 60 * 1.1515;
+    return Math.ceil(distance * 100) / 100;
+  };
+
+  return coordinatesService;
 }
 
 angular
-    .module('coordinateService', [])
-    .factory('nypl_coordinates_service', nypl_coordinates_service);
+  .module('coordinateService', [])
+  .factory('nypl_coordinates_service', nypl_coordinates_service);
