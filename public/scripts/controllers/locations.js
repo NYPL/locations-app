@@ -8,9 +8,9 @@ function LocationsCtrl(
     $location,
     nyplCoordinatesService,
     nypl_geocoder_service,
-    nypl_location_list,
+    nyplLocationList,
     nypl_locations_service,
-    nypl_utility
+    nyplUtility
 ) {
     'use strict';
 
@@ -26,7 +26,7 @@ function LocationsCtrl(
             // Once we show 80 libraries, show the 12 remaining libraries
             // and reword to say "Show All"
             // Once all libraries are shown, we hide the "showMore" element
-            var location_list = nypl_location_list.init({
+            var location_list = nyplLocationList.init({
                 libraryLimit: 10,
                 showMore: true,
                 add_amount: 10,
@@ -72,9 +72,9 @@ function LocationsCtrl(
                     $scope.locations = locations;
 
                     _.each($scope.locations, function (location) {
-                        location.hoursToday = nypl_utility.hoursToday;
+                        location.hoursToday = nyplUtility.hoursToday;
                         location.locationDest
-                            = nypl_utility.getAddressString(location);
+                            = nyplUtility.getAddressString(location);
                     });
 
                     checkGeolocation();
@@ -99,10 +99,10 @@ function LocationsCtrl(
                     // add a distance property to every location
                     // from that location to the user's coordinates
                     locations =
-                        nypl_utility.add_distance(locations, userCoords);
+                        nyplUtility.add_distance(locations, userCoords);
 
                     // Must be within 25 miles
-                    if (nypl_utility.check_distance(locations)) {
+                    if (nyplUtility.check_distance(locations)) {
                         // The user is too far away, reset everything
                         allLocationsInit();
                         throw (new Error(
@@ -170,10 +170,10 @@ function LocationsCtrl(
                 coords = searchObj.coords,
                 searchterm = searchObj.searchTerm;
 
-            locationsCopy = nypl_utility.add_distance(locationsCopy, coords);
+            locationsCopy = nyplUtility.add_distance(locationsCopy, coords);
 
             // Must be within 25 miles or throws the error:
-            if (nypl_utility.check_distance(locationsCopy)) {
+            if (nyplUtility.check_distance(locationsCopy)) {
                 // The search query is too far
                 $scope.searchError = searchterm;
                 nypl_geocoder_service.remove_searchMarker();
@@ -229,7 +229,7 @@ function LocationsCtrl(
             // relative to the user's location and sort by distance
             $scope.geolocationAddressOrSearchQuery = userAddress;
             $scope.locations =
-                nypl_utility.add_distance($scope.locations, userCoords);
+                nyplUtility.add_distance($scope.locations, userCoords);
             $scope.predicate = 'distance';
         },
 
@@ -339,7 +339,7 @@ function LocationsCtrl(
             return;
         }
 
-        searchTerm = nypl_utility.search_word_filter(searchTerm);
+        searchTerm = nyplUtility.search_word_filter(searchTerm);
 
         $scope.geolocationAddressOrSearchQuery = '';
         // Remove previous search marker from the map
@@ -350,10 +350,10 @@ function LocationsCtrl(
         $scope.researchBranches = false;
 
         var IDfilteredLocations =
-                nypl_utility.id_location_search($scope.locations, searchTerm),
+                nyplUtility.id_location_search($scope.locations, searchTerm),
             // Filter the locations by the search term using Angularjs
             filteredLocations =
-                nypl_utility.location_search($scope.locations, searchTerm);
+                nyplUtility.location_search($scope.locations, searchTerm);
 
         if (IDfilteredLocations && IDfilteredLocations.length !== 0) {
             resetDistance();
@@ -417,7 +417,7 @@ function LocationsCtrl(
     };
 
     $scope.viewMore = function () {
-        var viewMore = nypl_location_list.view_more();
+        var viewMore = nyplLocationList.view_more();
 
         $scope.libraryLimit = viewMore.libraryLimit;
         $scope.increaseBy = viewMore.increaseBy;
@@ -443,12 +443,12 @@ function LocationsCtrl(
 }
 // End LocationsCtrl
 
-function MapCtrl($scope, $timeout, nypl_geocoder_service, nypl_utility) {
+function MapCtrl($scope, $timeout, nypl_geocoder_service, nyplUtility) {
     'use strict';
 
     var loadMapMarkers = function () {
             _.each($scope.locations, function (location) {
-                var locationAddress = nypl_utility
+                var locationAddress = nyplUtility
                         .getAddressString(location, true),
                     markerCoordinates = {
                         'latitude': location.geolocation.coordinates[1],
@@ -541,7 +541,7 @@ function LocationCtrl(
     breadcrumbs,
     location,
     nyplCoordinatesService,
-    nypl_utility
+    nyplUtility
 ) {
     'use strict';
 
@@ -567,8 +567,8 @@ function LocationCtrl(
     $scope.location = location;
     $rootScope.title = location.name;
 
-    $scope.calendar_link = nypl_utility.calendar_link;
-    $scope.ical_link = nypl_utility.ical_link;
+    $scope.calendar_link = nyplUtility.calendar_link;
+    $scope.ical_link = nyplUtility.ical_link;
 
     // breadcrumbs.options = { 'Location': location.name };
     // homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
@@ -577,7 +577,7 @@ function LocationCtrl(
     // $scope.breadcrumbs = breadcrumbs;
 
     $scope.location.social_media =
-        nypl_utility.socialMediaColor($scope.location.social_media);
+        nyplUtility.socialMediaColor($scope.location.social_media);
 
     // Mocked data for library specific alert.
     // Problem with current data is the start/end time.
@@ -590,15 +590,15 @@ function LocationCtrl(
     // };
 
     if (location.hours.exceptions) {
-        $scope.libraryAlert = nypl_utility.alerts(location.hours.exceptions);
+        $scope.libraryAlert = nyplUtility.alerts(location.hours.exceptions);
     }
 
-    $scope.hoursToday = nypl_utility.hoursToday;
+    $scope.hoursToday = nyplUtility.hoursToday;
 
     // Used for the Get Directions link to Google Maps
-    $scope.locationDest = nypl_utility.getAddressString(location);
+    $scope.locationDest = nyplUtility.getAddressString(location);
 
-    $scope.returnHTML = nypl_utility.returnHTML;
+    $scope.returnHTML = nyplUtility.returnHTML;
 }
 
 angular
