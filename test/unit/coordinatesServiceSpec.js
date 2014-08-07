@@ -1,4 +1,4 @@
-/*jslint indent: 2, maxlen: 80 */
+/*jslint nomen: true, unparam: true, indent: 2, maxlen: 80 */
 /*globals element, by, google, module, window, jasmine, document,
 describe, expect, beforeEach, inject, it, angular, spyOn, afterEach */
 
@@ -7,8 +7,7 @@ describe, expect, beforeEach, inject, it, angular, spyOn, afterEach */
  * available on the user's browser, computes the user's geolocation,
  * and computes the distance between two coordinate points.
  */
-
-describe('NYPL CoordinateService Module', function () {
+describe('NYPL coordinateService Module', function () {
   'use strict';
 
   /* 
@@ -35,8 +34,8 @@ describe('NYPL CoordinateService Module', function () {
     /*
      * nyplCoordinatesService.checkGeolocation()
      *
-     * Returns true if navigator and geolocation are available on the
-     * browser, false otherwise.
+     *   Returns true if navigator and geolocation are available on the
+     *   browser, false otherwise.
      */
     describe('nyplCoordinatesService.checkGeolocation()', function () {
       it('should have a checkGeolocation function', function () {
@@ -64,10 +63,8 @@ describe('NYPL CoordinateService Module', function () {
     /*
      * nyplCoordinatesService.getCoordinates()
      *
-     * Returns an object with the coordinates of the user's current location.
-     * { latitude: 40.35, longitude: -73.98 }
-     *
-     * Returns an error on failure.
+     *   Returns an object with the coordinates of the user's current location.
+     *   Returns an error on failure.
      */
     describe('nyplCoordinatesService.getCoordinates()', function () {
       var geolocationMock, $rootScope;
@@ -90,7 +87,7 @@ describe('NYPL CoordinateService Module', function () {
         var geolocationOk;
 
         beforeEach(function () {
-          geolocationOk = function () {
+          geolocationOk = function (success) {
             var position = {
               // SASB's location
               coords: {
@@ -98,7 +95,7 @@ describe('NYPL CoordinateService Module', function () {
                 longitude: -73.98216959
               }
             };
-            arguments[0](position);
+            return success(position);
           };
           geolocationMock.getCurrentPosition =
               window.navigator.geolocation.getCurrentPosition =
@@ -137,12 +134,12 @@ describe('NYPL CoordinateService Module', function () {
       describe('getCoordinates function fails', function () {
         describe('Permission denied', function () {
           it('should return an error message', function () {
-            var permissionDenied = function () {
+            var permissionDenied = function (success, failure) {
                 var error = {
                   code : 1,
                   PERMISSION_DENIED: 1
                 };
-                arguments[1](error);
+                return failure(error);
               },
               error_message = new Error('Permission denied.'),
               returned_error_message;
@@ -165,12 +162,12 @@ describe('NYPL CoordinateService Module', function () {
 
         describe('Position Unavailable', function () {
           it('should return an error message', function () {
-            var positionUnavailable = function () {
+            var positionUnavailable = function (success, failure) {
                 var error = {
                   code : 2,
                   POSITION_UNAVAILABLE: 2
                 };
-                arguments[1](error);
+                return failure(error);
               },
               error_message =
                 new Error('The position is currently unavailable.'),
@@ -194,12 +191,12 @@ describe('NYPL CoordinateService Module', function () {
 
         describe('Request timed out', function () {
           it('should return an error message', function () {
-            var requestTimeOut = function () {
+            var requestTimeOut = function (success, failure) {
                 var error = {
                   code : 3,
                   TIMEOUT: 3
                 };
-                arguments[1](error);
+                return failure(error);
               },
               error_message = new Error('The request timed out.'),
               returned_error_message;
@@ -221,9 +218,9 @@ describe('NYPL CoordinateService Module', function () {
 
         describe('Unknown error', function () {
           it('should return an error message', function () {
-            var unknownError = function () {
+            var unknownError = function (success, failure) {
                 var error = { code : 4 };
-                arguments[1](error);
+                return failure(error);
               },
               error_message = new Error('Unknown error.'),
               returned_error_message;

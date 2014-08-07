@@ -5,12 +5,12 @@ var HtmlReporter = require('protractor-html-screenshot-reporter');
 
 exports.config = {
   // Do not start a Selenium Standalone sever - only run this using chrome.
-  // chromeOnly: true,
-  // chromeDriver: './node_modules/protractor/selenium/chromedriver',
+  chromeOnly: true,
+  chromeDriver: './node_modules/protractor/selenium/chromedriver',
 
   // if you do want a separate running selenium server, 
   // comment the two lines above and uncomment this line:
-  seleniumAddress: 'http://0.0.0.0:4444/wd/hub',
+  // seleniumAddress: 'http://0.0.0.0:4444/wd/hub',
 
   // Capabilities to be passed to the webdriver instance.
   capabilities: {
@@ -24,6 +24,7 @@ exports.config = {
     location: ['test/e2e/location/location.spec.js'],
     division: ['test/e2e/division/division.spec.js'],
     events: ['test/e2e/events/events.spec.js'],
+    nyplchat: ['test/e2e/nyplchat/nyplchat.spec.js'],
     services: ['test/e2e/services/services.spec.js']
   },
 

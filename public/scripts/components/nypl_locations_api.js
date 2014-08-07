@@ -21,10 +21,10 @@ function nypLocationsApi($http, $q) {
         return defer.promise;
     };
 
-    locationsApi.singleLocation = function (symbol) {
+    locationsApi.singleLocation = function (location) {
         var defer = $q.defer();
 
-        $http.get(api + '/locations/' + symbol, {cache: true})
+        $http.get(api + '/locations/' + location, {cache: true})
             .success(function (data) {
                 defer.resolve(data);
             })
@@ -48,9 +48,9 @@ function nypLocationsApi($http, $q) {
     };
 
     // All amenities at NYPL
-    locationsApi.amenities = function (param) {
+    locationsApi.amenities = function (amenity) {
         var defer = $q.defer(),
-            url = !param ? '/services' : '/services/' + param; 
+            url = !amenity ? '/services' : '/services/' + amenity; 
 
         $http.get(api + url, {cache: true})
             .success(function (data) {
@@ -63,10 +63,10 @@ function nypLocationsApi($http, $q) {
     };
 
     // All amenities at one location
-    locationsApi.amenitiesAtLibrary = function (symbol) {
+    locationsApi.amenitiesAtLibrary = function (location) {
         var defer = $q.defer();
 
-        $http.get(api + '/locations/' + symbol + '/services', {cache: true})
+        $http.get(api + '/locations/' + location + '/services', {cache: true})
             .success(function (data) {
                 defer.resolve(data);
             })
