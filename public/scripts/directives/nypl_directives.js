@@ -102,6 +102,9 @@ function librarianchatbutton(nyplUtility) {
                     210,
                     450
                 );
+                if (!element.hasClass('active')) {
+                    element.addClass('active');
+                }
             };
         }
     };
