@@ -1,15 +1,14 @@
-/*jslint indent: 2, maxlen: 80 */
+/*jslint nomen: true, unparam: true, indent: 2, maxlen: 80 */
 /*globals element, by, module, module,
 describe, expect, beforeEach, inject, it, angular */
 
+/*
+ * Tests for AngularJS Directives.
+ */
 describe('NYPL Directive Tests', function () {
   'use strict';
 
-  var element,
-    $compile,
-    $rootScope,
-    timeElement,
-    httpBackend;
+  var element, $compile, $rootScope, timeElement, httpBackend;
 
   beforeEach(module('nypl_locations'));
   beforeEach(module('directiveTemplates'));
@@ -22,9 +21,10 @@ describe('NYPL Directive Tests', function () {
   }));
 
   /*
-  * The loadingWidget directive is markup that displays before
-  * an http request is fulfilled, in this case showing a spinner.
-  */
+   * <div loading-widget></div>
+   *   The loadingWidget directive is markup that displays before
+   *   an http request is fulfilled, in this case showing a spinner.
+   */
   describe('loadingWidget', function () {
     beforeEach(inject(function (_$compile_, _$rootScope_) {
       $compile = _$compile_;
@@ -42,33 +42,16 @@ describe('NYPL Directive Tests', function () {
   });
 
   /*
-  *
-  */
-  describe('nyplbreadcrumbs', function () {
-    beforeEach(inject(function (_$compile_, _$rootScope_) {
-      $compile = _$compile_;
-      $rootScope = _$rootScope_;
-    }));
-
-    it('should compile', function () {
-      element = angular.element('<nyplbreadcrumbs></nyplbreadcrumbs>');
-      $compile(element)($rootScope);
-      $rootScope.$digest();
-
-      expect(element.attr('class')).toContain('breadcrumb');
-    });
-  });
-
-  /*
-  * The translatebutton directive displays a simple list
-  * of languages that the site can be translated into.
-  */
-  describe('translatebuttons', function () {
+   * <nypl-translate><nypl-translate>
+   *   The nyplTranslate directive displays a simple list
+   *   of languages that the site can be translated into.
+   */
+  describe('nyplTranslate', function () {
     beforeEach(inject(function (_$compile_, _$rootScope_) {
       $compile = _$compile_;
       $rootScope = _$rootScope_;
 
-      element = angular.element('<translatebuttons></translatebuttons>');
+      element = angular.element('<nypl-translate></nypl-translate>');
       $compile(element)($rootScope);
       $rootScope.$digest();
     }));
@@ -84,14 +67,15 @@ describe('NYPL Directive Tests', function () {
   });
 
   /*
-  * The todayshours directive returns text that should be displayed 
-  * based on what time is currently is and what the library time is.
-  * It will display either closed, open today until, or not available
-  * if the API is down.
-  *
-  * Note that testing directives means also testing the 'hoursTodayformat'
-  * since the output text depends on that filter and the data being passed
-  */
+   * <todayshours hours=""></todayshours>
+   *   The todayshours directive returns text that should be displayed 
+   *   based on what time is currently is and what the library time is.
+   *   It will display either closed, open today until, or not available
+   *   if the API is down.
+   *
+   *   Note that testing directives means also testing the 'hoursTodayformat'
+   *   since the output text depends on that filter and the data being passed
+   */
   describe('todayshours', function () {
     beforeEach(inject(function (_$compile_, _$rootScope_) {
       $compile = _$compile_;
@@ -168,7 +152,7 @@ describe('NYPL Directive Tests', function () {
       });
 
     it('should tell you "Open today ..." when checking in the morning',
-        function () {
+      function () {
         // Returns 7 for 7am before a library has opened.
         Date.prototype.getHours = function () { return 7; };
 
@@ -189,44 +173,151 @@ describe('NYPL Directive Tests', function () {
 
         expect(timeElement.text()).toBe('Open today 10am-6pm');
       });
+  }); /* End todayshours */
+
+  /*
+   * <nyplbreadcrumbs></nyplbreadcrumbs>
+   */
+  describe('nyplbreadcrumbs', function () {
+    beforeEach(inject(function (_$compile_, _$rootScope_) {
+      $compile = _$compile_;
+      $rootScope = _$rootScope_;
+    }));
+
+    it('should compile', function () {
+      element = angular.element('<nyplbreadcrumbs></nyplbreadcrumbs>');
+      $compile(element)($rootScope);
+      $rootScope.$digest();
+
+      expect(element.attr('class')).toContain('breadcrumb');
+    });
   });
 
   /*
-  * The askdonatefooter directive is simple markup right above the footer
-  * that displays a donation link and ways to contact the library.
-  */
-  // describe('askdonatefooter', function () {
-  //   beforeEach(inject(function (_$compile_, _$rootScope_) {
-  //     $compile = _$compile_;
-  //     $rootScope = _$rootScope_;
+   * <emailusbutton link="" />
+   *   Generates a link to email a librarian.
+   */
+  describe('emailusbutton', function () {
+    beforeEach(inject(function (_$compile_, _$rootScope_) {
+      $compile = _$compile_;
+      $rootScope = _$rootScope_;
 
-  //     element = angular
-  //       .element('<askdonatefooter chatHref="" emailHref="" donateHref="" />');
-  //     $compile(element)($rootScope);
-  //     $rootScope.$digest();
-  //   }));
+      element = angular.element('<emailusbutton link="nypl.org" />');
+      $compile(element)($rootScope);
+      $rootScope.$digest();
+    }));
 
-  //   it('should have the ask-donate class in the outer wrapper', function () {
-  //     expect(element.attr('class')).toContain('ask-donate');
-  //   });
+    it('should compile', function () {
+      expect(element.attr('class')).toContain('askemail');
+    });
 
-  //   it('should generate the donate section', function () {
-  //     // Get the first div in the markup
-  //     expect(element.find('p').text())
-  //       .toEqual('Help us keep this library open 6 days a week!');
-  //     expect(element.find('button').text()).toBe('Donate now');
-  //   });
-
-  //   it('should generate the askNYPL section', function () {
-  //     var asknyplList = element.find('ul');
-  //     expect(asknyplList.find('li').length).toEqual(3);
-  //   });
-  // });
+    it('should create a link', function () {
+      expect(element.attr('href')).toContain('nypl.org');
+      expect(element.text()).toEqual('Email us your question');
+    });
+  });
 
   /*
-  * The nyplalerts directive displays a site-wide alert by checking all the
-  * alerts in the API and checking the current date.
-  */
+   * <librarianchatbutton />
+   *   Generates a link element that will create a popup for the NYPL Chat
+   *   widget to talk to a librarian.
+   */
+  describe('librarianchatbutton', function () {
+    beforeEach(inject(function (_$compile_, _$rootScope_) {
+      $compile = _$compile_;
+      $rootScope = _$rootScope_;
+
+      element = angular.element('<librarianchatbutton />');
+      $compile(element)($rootScope);
+      $rootScope.$digest();
+    }));
+
+    it('should compile', function () {
+      expect(element.attr('class')).toContain('askchat');
+    });
+
+    it('should create a link', function () {
+      expect(element.text()).toEqual('Chat with a librarian');
+    });
+  });
+
+  /*
+   * <event-registration how="" link="" registrationopen="" />
+   *   Generates a link element that will create a popup for the NYPL Chat
+   *   widget to talk to a librarian.
+   */
+  describe('eventRegistration', function () {
+    beforeEach(inject(function (_$compile_, _$rootScope_) {
+      $compile = _$compile_;
+      $rootScope = _$rootScope_;
+    }));
+
+    describe('First Come, First Served', function () {
+      beforeEach(function () {
+        element = angular.element('<event-registration ' +
+          'how="First Come, First Serve" link="" registrationopen="" />'
+        );
+        $compile(element)($rootScope);
+        $rootScope.$digest();
+      });
+
+      it('should compile', function () {
+        expect(element.attr('class')).toContain('registration-for-event');
+      });
+
+      it('should display the type of registration', function () {
+        expect(element.find('.registration_type').text())
+          .toEqual('First Come, First Serve');
+      });
+
+      it('should not have an anchor tag', function () {
+        expect(element.find('a').length).toBe(0);
+      });
+    });
+
+    describe('Online', function () {
+      beforeEach(function () {
+        element = angular.element('<event-registration ' +
+          'how="Online" link="events/nypl-event" ' +
+          'registrationopen="2014-08-29T17:00:00Z" />'
+        );
+        $compile(element)($rootScope);
+        $rootScope.$digest();
+      });
+
+      it('should compile', function () {
+        expect(element.attr('class')).toContain('registration-for-event');
+      });
+
+      it('should display the type of registration', function () {
+        expect(element.find('.registration_type').text())
+          .toEqual('Online');
+      });
+
+      it('should have a link to the event', function () {
+        expect(element.find('a').attr('href'))
+          .toEqual('http://nypl.org/events/nypl-event');
+      });
+
+      it('should tell you when registration opens', function () {
+        // Override the date function so we can test the wording
+        var date = new Date(2014, 8, 7);
+        var MockDate = Date;
+        Date = function () { return date; };
+
+        expect(element.find('p').text())
+          .toEqual('Registration opens August 29, 2014 - 7:00AM');
+
+        Date = MockDate;
+      });
+    });
+  }); /* End eventRegistration */
+
+  /*
+   * <nypl-site-alerts></nypl-site-alerts>
+   *   The nyplSiteAlerts directive displays a site-wide alert by checking all
+   *   the alerts in the API and checking the current date.
+   */
   describe('nyplSiteAlerts', function () {
     var $httpBackend,
       date;
@@ -271,7 +362,6 @@ describe('NYPL Directive Tests', function () {
 
       // Currently just using the value in the $rootScope.
       alert = $rootScope.sitewidealert;
-
       expect(alert)
         .toEqual('All units of the NYPL are closed July 4 - July 5.\n');
 
@@ -280,4 +370,42 @@ describe('NYPL Directive Tests', function () {
     });
   });
 
+  /*
+   * <nypl-library-alert></nypl-library-alert>
+   *   The nyplLibraryAlert directive displays an alert for a specific location.
+   */
+  describe('nyplLibraryAlert', function () {
+    var $httpBackend,
+      date;
+
+    beforeEach(inject(function (_$compile_, _$rootScope_, _$httpBackend_) {
+      $compile = _$compile_;
+      $rootScope = _$rootScope_;
+      $httpBackend = _$httpBackend_;
+
+      $rootScope.libraryAlert = "Test library specific alert";
+    }));
+
+    it('should display a site wide alert', function () {
+      var MockDate, alert;
+
+      // Override the date function so we can test a real alert
+      // Store a copy so we can return the original one later
+      date = new Date(2014, 5, 29);
+      MockDate = Date;
+      Date = function () { return date; };
+
+      element = angular.element("<nypl-library-alert></nypl-library-alert>");
+      $compile(element)($rootScope);
+      $rootScope.$digest();
+
+      // Not sure how to test since it requires libraryAlert variable to be in
+      // the scope for the directive. Doesn't seem to work if it's assigned
+      // to the $rootScope, however.
+      // console.log($rootScope);
+
+      // Use the native Date function again
+      Date = MockDate;
+    });
+  });
 });

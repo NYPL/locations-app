@@ -1,4 +1,4 @@
-/*jslint indent: 4, maxlen: 80 */
+/*jslint unparam: true, indent: 4, maxlen: 80 */
 /*globals nypl_locations, $window, angular */
 
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
@@ -32,7 +32,7 @@ function loadingWidget(requestNotificationChannel) {
     };
 }
 
-function translatebuttons() {
+function nyplTranslate() {
     'use strict';
 
     return {
@@ -233,7 +233,7 @@ function collapse() {
 angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
-    .directive('translatebuttons', translatebuttons)
+    .directive('nyplTranslate', nyplTranslate)
     .directive('todayshours', todayshours)
     .directive('nyplbreadcrumbs', nyplbreadcrumbs)
     .directive('emailusbutton', emailusbutton)
