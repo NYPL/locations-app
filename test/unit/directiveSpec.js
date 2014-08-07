@@ -255,8 +255,7 @@ describe('NYPL Directive Tests', function () {
     describe('First Come, First Served', function () {
       beforeEach(function () {
         element = angular.element('<event-registration ' +
-          'how="First Come, First Serve" link="" registrationopen="" />'
-        );
+          'how="First Come, First Serve" link="" registrationopen="" />');
         $compile(element)($rootScope);
         $rootScope.$digest();
       });
@@ -279,8 +278,7 @@ describe('NYPL Directive Tests', function () {
       beforeEach(function () {
         element = angular.element('<event-registration ' +
           'how="Online" link="events/nypl-event" ' +
-          'registrationopen="2014-08-29T17:00:00Z" />'
-        );
+          'registrationopen="2014-08-29T17:00:00Z" />');
         $compile(element)($rootScope);
         $rootScope.$digest();
       });
@@ -301,8 +299,8 @@ describe('NYPL Directive Tests', function () {
 
       it('should tell you when registration opens', function () {
         // Override the date function so we can test the wording
-        var date = new Date(2014, 8, 7);
-        var MockDate = Date;
+        var date = new Date(2014, 8, 7),
+          MockDate = Date;
         Date = function () { return date; };
 
         expect(element.find('p').text())
@@ -375,19 +373,15 @@ describe('NYPL Directive Tests', function () {
    *   The nyplLibraryAlert directive displays an alert for a specific location.
    */
   describe('nyplLibraryAlert', function () {
-    var $httpBackend,
-      date;
-
-    beforeEach(inject(function (_$compile_, _$rootScope_, _$httpBackend_) {
+    beforeEach(inject(function (_$compile_, _$rootScope_) {
       $compile = _$compile_;
       $rootScope = _$rootScope_;
-      $httpBackend = _$httpBackend_;
 
       $rootScope.libraryAlert = "Test library specific alert";
     }));
 
     it('should display a site wide alert', function () {
-      var MockDate, alert;
+      var date, MockDate;
 
       // Override the date function so we can test a real alert
       // Store a copy so we can return the original one later
