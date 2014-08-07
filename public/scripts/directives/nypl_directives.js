@@ -153,7 +153,7 @@ function eventRegistration() {
     };
 }
 
-function nyplSiteAlerts(nypl_locations_service, nyplUtility) {
+function nyplSiteAlerts(nyplLocationsService, nyplUtility) {
     'use strict';
 
     return {
@@ -164,7 +164,7 @@ function nyplSiteAlerts(nypl_locations_service, nyplUtility) {
         // scope: {},
         link: function (scope, element, attrs) {
             var alerts;
-            nypl_locations_service.alerts().then(function (data) {
+            nyplLocationsService.alerts().then(function (data) {
                 alerts = data.alerts;
                 scope.sitewidealert = nyplUtility.alerts(alerts);
             });

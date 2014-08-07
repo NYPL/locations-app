@@ -1,14 +1,14 @@
 /*jslint indent: 4, maxlen: 80 */
 /*globals angular */
 
-function nypl_locations_api($http, $q) {
+function nypLocationsApi($http, $q) {
     'use strict';
 
     var api = 'http://evening-mesa-7447-160.herokuapp.com',
         apiError = "Could not reach API",
-        locations_api = {};
+        locationsApi = {};
 
-    locations_api.all_locations = function () {
+    locationsApi.allLocations = function () {
         var defer = $q.defer();
 
         $http.get(api + '/locations', {cache: true})
@@ -21,7 +21,7 @@ function nypl_locations_api($http, $q) {
         return defer.promise;
     };
 
-    locations_api.single_location = function (symbol) {
+    locationsApi.singleLocation = function (symbol) {
         var defer = $q.defer();
 
         $http.get(api + '/locations/' + symbol, {cache: true})
@@ -34,7 +34,7 @@ function nypl_locations_api($http, $q) {
         return defer.promise;
     };
 
-    locations_api.single_division = function (division) {
+    locationsApi.singleDivision = function (division) {
         var defer = $q.defer();
 
         $http.get(api + '/divisions/' + division, {cache: true})
@@ -48,7 +48,7 @@ function nypl_locations_api($http, $q) {
     };
 
     // All amenities at NYPL
-    locations_api.amenities = function (param) {
+    locationsApi.amenities = function (param) {
         var defer = $q.defer(),
             url = !param ? '/services' : '/services/' + param; 
 
@@ -63,7 +63,7 @@ function nypl_locations_api($http, $q) {
     };
 
     // All amenities at one location
-    locations_api.amenities_at_library = function (symbol) {
+    locationsApi.amenitiesAtLibrary = function (symbol) {
         var defer = $q.defer();
 
         $http.get(api + '/locations/' + symbol + '/services', {cache: true})
@@ -76,7 +76,7 @@ function nypl_locations_api($http, $q) {
         return defer.promise;
     };
 
-    locations_api.alerts = function () {
+    locationsApi.alerts = function () {
         var defer = $q.defer();
 
         $http.get(api + '/alerts', {cache: true})
@@ -89,10 +89,10 @@ function nypl_locations_api($http, $q) {
         return defer.promise;
     };
 
-    return locations_api;
+    return locationsApi;
 }
 
 
 angular
     .module('locationService', [])
-    .factory('nypl_locations_service', nypl_locations_api);
+    .factory('nyplLocationsService', nypLocationsApi);

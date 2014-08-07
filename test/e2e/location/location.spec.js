@@ -255,9 +255,9 @@ describe('Locations: Library', function () {
       expect(locationPage.hours.count()).toBe(7);
     });
 
-    it('should display four divisions', function () {
+    it('should display five divisions', function () {
       expect(locationPage.divisions_container.isPresent()).toBe(true);
-      expect(locationPage.divisions.count()).toBe(4);
+      expect(locationPage.divisions.count()).toBe(5);
     });
 
     it('should display one events', function () {
