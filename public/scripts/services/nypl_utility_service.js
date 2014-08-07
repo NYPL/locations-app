@@ -172,7 +172,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
     * link (URL), title (String), 
     * width (Int or String), height (Int or String)
     */
-    utility.popup_window = function (link, title, width, height) {
+    utility.popupWindow = function (link, title, width, height) {
         var w, h, popUp, popUp_h, popUp_w;
         // Set width from args, defaults 300px
         if (width === undefined) {

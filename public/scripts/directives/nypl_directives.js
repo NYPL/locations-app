@@ -96,7 +96,7 @@ function librarianchatbutton(nyplUtility) {
                 // Arguments: 
                 // link (req),
                 // title (optional), width (optional), height (optional)
-                nyplUtility.popup_window(
+                nyplUtility.popupWindow(
                     'http://www.nypl.org/ask-librarian',
                     'NYPL Chat',
                     210,
