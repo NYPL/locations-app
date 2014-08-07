@@ -412,7 +412,7 @@ function nyplLocationList() {
     return location_list;
 }
 
-function nypl_amenities() {
+function nyplAmenities() {
     'use strict';
 
     var amenities = {};
@@ -484,5 +484,5 @@ angular
     .module('nypl_locations')
     .factory('nyplUtility', nyplUtility)
     .factory('nyplLocationList', nyplLocationList)
-    .factory('nypl_amenities', nypl_amenities)
+    .factory('nyplAmenities', nyplAmenities)
     .factory('requestNotificationChannel', requestNotificationChannel);
