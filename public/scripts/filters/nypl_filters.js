@@ -48,9 +48,12 @@ function capitalize() {
     'use strict';
 
     return function (input) {
-        return input.replace(/(^|\s)([a-z])/g, function (str) {
-            return str.toUpperCase();
-        });
+        if (typeof input === 'string') {
+            return input.replace(/(^|\s)([a-z])/g, function (str) {
+                return str.toUpperCase();
+            });
+        }
+        return input;
     };
 }
 
@@ -174,6 +177,14 @@ function truncate() {
     'use strict';
 
     return function (text, length, end) {
+        if (typeof text !== 'string') {
+            return text;
+        }
+
+        if (text.length < 200) {
+            return text;
+        }
+
         if (isNaN(length)) {
             length = 200; // Default length
         }

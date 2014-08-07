@@ -8,6 +8,7 @@ module.exports = function (config) {
     basePath : '../../',
 
     files : [
+      'public/bower_components/jquery/jquery.js',
       'public/bower_components/angular/angular.js',
       'public/bower_components/angular-mocks/*.js',
       'public/bower_components/angular-cookies/*.js',
@@ -16,6 +17,7 @@ module.exports = function (config) {
       'public/bower_components/angular-route/*.js',
       'public/scripts/**/*.js',
       'public/scripts/directives/templates/*.html',
+      'public/scripts/components/**/*.html',
       'test/unit/**/*.js',
       'public/bower_components/underscore/underscore.js',
       'public/bower_components/angularitics/src/angulartics.js',
@@ -57,7 +59,8 @@ module.exports = function (config) {
     },
 
     preprocessors : {
-      'public/scripts/directives/templates/*.html': ['ng-html2js']
+      'public/scripts/directives/templates/*.html': ['ng-html2js'],
+      'public/scripts/components/**/*.html': ['ng-html2js']
     },
 
     ngHtml2JsPreprocessor: {

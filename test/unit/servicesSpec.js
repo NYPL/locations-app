@@ -732,7 +732,7 @@ describe('NYPL Service Tests', function () {
       });
     });
 
-    // describe('nyplUtility.popup_window', function () {
+    // describe('nyplUtility.popupWindow', function () {
     //   // Not sure how to test just yet
     // });
 

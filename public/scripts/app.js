@@ -37,9 +37,9 @@ nypl_locations.config([
         });
         $translateProvider.preferredLanguage('en');
 
-        function LoadLocation(nypl_locations_service, $route, $location) {
-            return nypl_locations_service
-                .single_location($route.current.params.symbol)
+        function LoadLocation(nyplLocationsService, $route, $location) {
+            return nyplLocationsService
+                .singleLocation($route.current.params.location)
                 .then(function (data) {
                     return data.location;
                 })
@@ -49,9 +49,9 @@ nypl_locations.config([
                 });
         }
 
-        function LoadDivision(nypl_locations_service, $route, $location) {
-            return nypl_locations_service
-                .single_division($route.current.params.division)
+        function LoadDivision(nyplLocationsService, $route, $location) {
+            return nyplLocationsService
+                .singleDivision($route.current.params.division)
                 .then(function (data) {
                     return data.division;
                 })
@@ -61,9 +61,9 @@ nypl_locations.config([
                 });
         }
 
-        function AmenitiesAtLibrary(nypl_locations_service, $route, $location) {
-            return nypl_locations_service
-                .amenities_at_library($route.current.params.location_id)
+        function AmenitiesAtLibrary(nyplLocationsService, $route, $location) {
+            return nyplLocationsService
+                .amenitiesAtLibrary($route.current.params.location)
                 .then(function (data) {
                     return data.location;
                 })
@@ -73,9 +73,9 @@ nypl_locations.config([
                 });
         }
 
-        function Amenities(nypl_locations_service, $route, $location) {
-            return nypl_locations_service
-                .amenities($route.current.params.amenity_id)
+        function Amenities(nyplLocationsService, $route, $location) {
+            return nyplLocationsService
+                .amenities($route.current.params.amenity)
                 .then(function (data) {
                     return data;
                 })
@@ -110,7 +110,7 @@ nypl_locations.config([
                     amenities: Amenities
                 }
             })
-            .when('/amenities/:amenity_id', {
+            .when('/amenities/:amenity', {
                 templateUrl: 'views/amenities.html',
                 controller: 'AmenityCtrl',
                 label: 'Amenities',
@@ -118,7 +118,7 @@ nypl_locations.config([
                     amenity: Amenities
                 }
             })
-            .when('/amenities/location/:location_id', {
+            .when('/amenities/location/:location', {
                 templateUrl: 'views/amenitiesAtLibrary.html',
                 controller: 'AmenitiesAtLibraryCtrl',
                 label: 'Location',
@@ -126,7 +126,7 @@ nypl_locations.config([
                     location: AmenitiesAtLibrary
                 }
             })
-            .when('/:symbol', {
+            .when('/:location', {
                 templateUrl: 'views/location.html',
                 controller: 'LocationCtrl',
                 controllerAs: 'ctrl',

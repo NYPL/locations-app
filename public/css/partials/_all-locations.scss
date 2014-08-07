@@ -307,6 +307,7 @@
 						&:nth-of-type(1):before {
 							@include breakpoint($max, $post-palm) {
 								content: "Location";
+								top: 7%;
 							}
 						}
 

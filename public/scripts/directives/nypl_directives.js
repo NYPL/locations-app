@@ -1,4 +1,4 @@
-/*jslint indent: 4, maxlen: 80 */
+/*jslint unparam: true, indent: 4, maxlen: 80 */
 /*globals nypl_locations, $window, angular */
 
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
@@ -32,7 +32,7 @@ function loadingWidget(requestNotificationChannel) {
     };
 }
 
-function translatebuttons() {
+function nyplTranslate() {
     'use strict';
 
     return {
@@ -96,12 +96,15 @@ function librarianchatbutton(nyplUtility) {
                 // Arguments: 
                 // link (req),
                 // title (optional), width (optional), height (optional)
-                nyplUtility.popup_window(
+                nyplUtility.popupWindow(
                     'http://www.nypl.org/ask-librarian',
                     'NYPL Chat',
                     210,
                     450
                 );
+                if (!element.hasClass('active')) {
+                    element.addClass('active');
+                }
             };
         }
     };
@@ -150,7 +153,7 @@ function eventRegistration() {
     };
 }
 
-function nyplSiteAlerts(nypl_locations_service, nyplUtility) {
+function nyplSiteAlerts(nyplLocationsService, nyplUtility) {
     'use strict';
 
     return {
@@ -161,7 +164,7 @@ function nyplSiteAlerts(nypl_locations_service, nyplUtility) {
         // scope: {},
         link: function (scope, element, attrs) {
             var alerts;
-            nypl_locations_service.alerts().then(function (data) {
+            nyplLocationsService.alerts().then(function (data) {
                 alerts = data.alerts;
                 scope.sitewidealert = nyplUtility.alerts(alerts);
             });
@@ -230,7 +233,7 @@ function collapse() {
 angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
-    .directive('translatebuttons', translatebuttons)
+    .directive('nyplTranslate', nyplTranslate)
     .directive('todayshours', todayshours)
     .directive('nyplbreadcrumbs', nyplbreadcrumbs)
     .directive('emailusbutton', emailusbutton)

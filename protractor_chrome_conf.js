@@ -24,6 +24,7 @@ exports.config = {
     location: ['test/e2e/location/location.spec.js'],
     division: ['test/e2e/division/division.spec.js'],
     events: ['test/e2e/events/events.spec.js'],
+    nyplchat: ['test/e2e/nyplchat/nyplchat.spec.js'],
     services: ['test/e2e/services/services.spec.js']
   },
 
