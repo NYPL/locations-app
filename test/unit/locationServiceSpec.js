@@ -6,11 +6,11 @@ describe('NYPL Service Tests', function () {
   'use strict';  
 
   /*
-  * nypl_locations_service is an Angularjs service that calls the
+  * nyplLocationsService is an Angularjs service that calls the
   * API and returns data.
   */
-  describe('nypl_locations_service', function () {
-    var nypl_locations_service, httpBackend;
+  describe('nyplLocationsService', function () {
+    var nyplLocationsService, httpBackend;
 
     beforeEach(function () {
       // load the module.
@@ -20,14 +20,14 @@ describe('NYPL Service Tests', function () {
       // The _underscores_ are a convenience thing
       // so you can have your variable name be the
       // same as your injected service.
-      inject(function (_nypl_locations_service_, _$httpBackend_) {
-        nypl_locations_service = _nypl_locations_service_;
+      inject(function (_nyplLocationsService_, _$httpBackend_) {
+        nyplLocationsService = _nyplLocationsService_;
         httpBackend = _$httpBackend_;
       });
     });
 
     /*
-    * nypl_locations_service.all_locations()
+    * nyplLocationsService.all_locations()
     *
     *   Hits the /locations endpoint in the API and returns
     *   all the locations.
@@ -47,7 +47,7 @@ describe('NYPL Service Tests', function () {
         .expectGET('http://evening-mesa-7447-160.herokuapp.com/locations')
         .respond(mocked_all_locations_API_call);
 
-      locations = nypl_locations_service.all_locations();
+      locations = nyplLocationsService.all_locations();
       locations.then(function (data) {
         service_result = data;
       });
@@ -58,7 +58,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * nypl_locations_service.single_location(symbol)
+    * nyplLocationsService.single_location(symbol)
     *   symbol: The location slug passed from Angular's route params.
     *
     *   Hits the /location/:symbol endpoint and returns the json for one
@@ -78,7 +78,7 @@ describe('NYPL Service Tests', function () {
           'locations/hudson-park')
         .respond(mocked_one_location_API_call);
 
-      location = nypl_locations_service.single_location('hudson-park');
+      location = nyplLocationsService.single_location('hudson-park');
       location.then(function (data) {
         service_result = data;
       });
@@ -89,7 +89,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * nypl_locations_service.single_division(division)
+    * nyplLocationsService.single_division(division)
     *   division: The division slug passed from Angular's route params.
     *
     *   Hits the /division/:division endpoint and returns the json for
@@ -111,7 +111,7 @@ describe('NYPL Service Tests', function () {
           'divisions/map-division')
         .respond(mocked_one_division_API_call);
 
-      division = nypl_locations_service.single_division('map-division');
+      division = nyplLocationsService.single_division('map-division');
       division.then(function (data) {
         service_result = data;
       });
@@ -122,7 +122,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * nypl_locations_service.services()
+    * nyplLocationsService.services()
     *
     *   Hits the /services endpoint and returns all the services
     *   available in the API.
@@ -143,7 +143,7 @@ describe('NYPL Service Tests', function () {
         .expectGET('http://evening-mesa-7447-160.herokuapp.com/services')
         .respond(mocked_services_API_call);
 
-      services = nypl_locations_service.services();
+      services = nyplLocationsService.services();
       services.then(function (data) {
         service_result = data;
       });
@@ -155,7 +155,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * nypl_locations_service.one_service(symbol)
+    * nyplLocationsService.one_service(symbol)
     *   symbol: The service id passed from Angular's route params.
     *
     *   Hits the /service:/symbol endpoint and returns data for one
@@ -182,7 +182,7 @@ describe('NYPL Service Tests', function () {
         .expectGET('http://evening-mesa-7447-160.herokuapp.com/services/36')
         .respond(mocked_one_service_API_call);
 
-      locations = nypl_locations_service.one_service(36);
+      locations = nyplLocationsService.one_service(36);
       locations.then(function (data) {
         service_result = data;
       });
@@ -195,7 +195,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * nypl_locations_services.services_at_library(symbol)
+    * nyplLocationsServices.services_at_library(symbol)
     *   symbol: The id of the location passed from Angular's route params.
     *
     *   Hit's the /locations/:symbol/services endpoint and returns all the 
@@ -224,7 +224,7 @@ describe('NYPL Service Tests', function () {
           'locations/sibl/services')
         .respond(mocked_location_services_API_call);
 
-      services = nypl_locations_service.services_at_library('sibl');
+      services = nyplLocationsService.services_at_library('sibl');
       services.then(function (data) {
         service_result = data;
       });
@@ -238,7 +238,7 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * nypl_locations_services.alerts()
+    * nyplLocationsService.alerts()
     *
     *   Hits the /alerts endpoint and returns a list of all the upcoming
     *   site wide alerts.
@@ -271,7 +271,7 @@ describe('NYPL Service Tests', function () {
         .expectGET('http://evening-mesa-7447-160.herokuapp.com/alerts')
         .respond(mocked_alerts_API_call);
 
-      alerts = nypl_locations_service.alerts();
+      alerts = nyplLocationsService.alerts();
       alerts.then(function (data) {
         alerts_result = data;
       });
@@ -282,5 +282,5 @@ describe('NYPL Service Tests', function () {
       expect(alerts_result).toEqual(mocked_alerts_API_call);
     });
 
-  }); /* End nypl_locations_service */
+  }); /* End nyplLocationsService */
 });

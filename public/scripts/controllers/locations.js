@@ -9,7 +9,7 @@ function LocationsCtrl(
     nyplCoordinatesService,
     nypl_geocoder_service,
     nyplLocationList,
-    nypl_locations_service,
+    nyplLocationsService,
     nyplUtility
 ) {
     'use strict';
@@ -65,8 +65,8 @@ function LocationsCtrl(
         },
 
         loadLocations = function () {
-            return nypl_locations_service
-                .all_locations()
+            return nyplLocationsService
+                .allLocations()
                 .then(function (data) {
                     locations = data.locations;
                     $scope.locations = locations;
