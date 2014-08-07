@@ -1,7 +1,10 @@
-/*jslint indent: 2, maxlen: 80 */
+/*jslint nomen: true, unparam: true, indent: 2, maxlen: 80 */
 /*globals element, by, module, module,
 describe, expect, beforeEach, inject, it, angular */
 
+/*
+ * The following tests are for custom AngularJS filters.
+ */
 describe('NYPL Filter Tests', function () {
   'use strict';
 
@@ -15,10 +18,14 @@ describe('NYPL Filter Tests', function () {
   beforeEach(module('nypl_locations'));
 
   /*
-  * Given an object with open and close time properties, the timeFormat
-  * filter will nicely output the military-formatted time. If there is
-  * no open time in the object, it is considered closed.
-  */
+   * {object} | timeFormat
+   *   Input is an object with 'open' and 'close' properties OR
+   *   it can be an object with 'today' and 'tomorrow' properties, each with
+   *   their own 'open' and 'close' properties.
+   *
+   *   Returns a string of nicely military-formatted time. If there is
+   *   no open time in the input object, 'Closed' is returned.
+   */
   describe('timeFormat', function () {
     beforeEach(inject(function (_timeFormatFilter_) {
       timeFormatFilter = _timeFormatFilter_;
@@ -28,6 +35,7 @@ describe('NYPL Filter Tests', function () {
       expect(angular.isFunction(timeFormatFilter)).toBe(true);
     });
 
+    // The input is a simple object with 'open' and 'close' properties
     it('should convert Military time into standard time', function () {
       expect(timeFormatFilter({'open': '17:00', 'close': '18:00'}))
         .toEqual('5:00pm - 6:00pm');
@@ -39,35 +47,34 @@ describe('NYPL Filter Tests', function () {
         .toEqual('12:00am - 2:00am');
     });
 
+    // The input is an object with 'today' and 'tomorrow' properties but only
+    // the 'today' property is used.
     it('should also accept an object with today\'s and tomorrow\'s hours',
       function () {
-        var time;
+        expect(timeFormatFilter({'today': {'open': '00:00', 'close': '2:00'}}))
+          .toEqual('12:00am - 2:00am');
 
-        time = timeFormatFilter({'today': {'open': '00:00', 'close': '2:00'}});
-        expect(time).toEqual('12:00am - 2:00am');
-
-        time = timeFormatFilter({'today': {'open': '10:00', 'close': '18:00'}});
-        expect(time).toEqual('10:00am - 6:00pm');
+        expect(timeFormatFilter({'today': {'open': '10:00', 'close': '18:00'}}))
+          .toEqual('10:00am - 6:00pm');
       });
 
-    // The API returns null
+    // The API returns null values
     it('should say Closed if there is no open time', function () {
       expect(timeFormatFilter({'open': null, 'close': null})).toEqual('Closed');
     });
 
-    it('should be truthy if input is given', function () {
-      expect(timeFormatFilter({'open': '17:00', 'close': '18:00'}))
-        .toBeTruthy();
-    });
-
     it('should be false if input is NOT given', function () {
+      expect(timeFormatFilter()).toEqual('');
       expect(timeFormatFilter()).toBeFalsy();
     });
   });
 
   /*
-  * Filter to convert a date string into ISO format.
-  */
+   * dateToISO
+   *   The input is a string date stamp.
+   *
+   *   Returns the date in ISO format.
+   */
   describe('dateToISO', function () {
     beforeEach(inject(function (_dateToISOFilter_) {
       dateToISOFilter = _dateToISOFilter_;
@@ -81,11 +88,15 @@ describe('NYPL Filter Tests', function () {
       expect(dateToISOFilter('2014-04-22 15:00:00'))
         .toEqual('2014-04-22T19:00:00.000Z');
     });
-  });
+  }); /* End dateToISO */
 
   /*
-  * Filter to capitalize a string of words.
-  */
+   * 'string' | capitalize
+   *   Input is a string.
+   *
+   *   Returns a string with every word capitalized. If the input is not
+   *   a string, it returns the input untouched.
+   */
   describe('capitalize', function () {
     beforeEach(inject(function (_capitalizeFilter_) {
       capitalizeFilter = _capitalizeFilter_;
@@ -98,19 +109,26 @@ describe('NYPL Filter Tests', function () {
     it('should capitalize a word', function () {
       expect(capitalizeFilter('schwarzman')).toEqual('Schwarzman');
     });
+
     it('should capitalize every word in a phrase', function () {
       expect(capitalizeFilter('stephen a. schwarzman building'))
         .toEqual('Stephen A. Schwarzman Building');
     });
-  });
+
+    it('should return an empty string', function () {
+      expect(capitalizeFilter(1234)).toEqual(1234);
+    });
+  }); /* End capitalize */
 
   /*
-  * Filter that checks an object with a 'today' and 'tomorrow' object.
-  * It outputs closed if there is no data, otherwise it checks the
-  * current time and compares the times for the library and outputs
-  * when the library opens, when it is open until, and what time
-  * it is open tomorrow - if tomorrow data is available.
-  */
+   * {object} | hoursTodayFormat
+   *   Input is an object with a 'today' and 'tomorrow' object properties.
+   *
+   *   It returns 'Closed today' if there is no data, otherwise it checks the
+   *   current time and compares the times for the library and outputs
+   *   when the library opens, when it is open until, and what time
+   *   it is open tomorrow - if tomorrow data is available.
+   */
   describe('hoursTodayFormat', function () {
     beforeEach(inject(function (_hoursTodayFormatFilter_) {
       hoursTodayFormatFilter = _hoursTodayFormatFilter_;
@@ -127,8 +145,9 @@ describe('NYPL Filter Tests', function () {
       it('should say "Closed today" when there is no open or close ' +
         'data and no format',
         function () {
-          expect(hoursTodayFormatFilter({'today': {'open': null, 'close': null}}))
-            .toEqual('Closed today');
+          expect(
+            hoursTodayFormatFilter({'today': {'open': null, 'close': null}})
+          ).toEqual('Closed today');
         });
 
       it('should say "Closed today" when there is no open or close ' +
@@ -150,9 +169,12 @@ describe('NYPL Filter Tests', function () {
         });
     });
 
-    // The only big difference between short and long is the wording 
-    // when the library is currently opened. Short says 
-    // "Open today until ..." and long says "Open today ...".
+    /*
+     * The only big difference between short and long is the wording 
+     * when the library is currently opened.
+     * Short says "Open today until ..."
+     * Long says "Open today ...".
+     */
     describe('when opened and using the "short" format', function () {
       it('should display the open times for today', function () {
         // Returns 13 for 1pm in the afternoon when a library is open.
@@ -162,7 +184,7 @@ describe('NYPL Filter Tests', function () {
           'today': {'open': '10:00', 'close': '18:00'},
           'tomorrow': {'open': '10:00', 'close': '18:00'}
         }, 'short'))
-            .toEqual('Open today until 6pm');
+          .toEqual('Open today until 6pm');
       });
 
       it('should display the open times for tomorrow', function () {
@@ -257,12 +279,15 @@ describe('NYPL Filter Tests', function () {
           .toEqual('Closed today');
       });
     });
-  });
+  }); /* End hoursTodayFormat */
 
   /*
-  * The truncate filter shortens text by a given length and adds ellipsis
-  * to the end of the truncated text.
-  */
+   * 'String' | truncate
+   *   The input is a long string.
+   *
+   *   Returns shortened text by a given length and adds ellipsis
+   *   to the end of the truncated text.
+   */
   describe('truncate', function () {
     beforeEach(inject(function (_truncateFilter_) {
       truncateFilter = _truncateFilter_;
@@ -275,31 +300,49 @@ describe('NYPL Filter Tests', function () {
         "with other tables to multiply the fun. Poets included Langston " +
         "Hughes, Pablo Neruda, Maya Angelou, Naomi Shihab Nye, Shel " +
         "Silverstein, Douglas Florian (on Silverstein s wavelength), " +
-        "Billy Collins, some haiku poets, and a smattering of others.";
+        "Billy Collins, some haiku poets, and a smattering of others.",
+      short_blog_post = "If you think of poems as flowers, then the Aguilar " +
+        "Poetry Fest was an exercise in charming cross-pollination. Sharing " +
+        "was the thing.";
 
-    it('should truncate a piece of text and add ellipses at the end to ' +
-      '200 characters by default',
-      function () {
-        expect(blog_post.length).toEqual(487);
-        expect(truncateFilter(blog_post).length).toEqual(200);
-        expect(truncateFilter(blog_post).substring(197)).toEqual('...');
-      });
+    it('should return the input if it is not a string', function () {
+      expect(truncateFilter(1234)).toEqual(1234);
+    });
 
-    it('should truncate a piece of text to an arbitary length and add ellipses',
-      function () {
-        expect(blog_post.length).toBe(487);
-        expect(truncateFilter(blog_post, 100).length).toEqual(100);
-        expect(truncateFilter(blog_post, 100).substring(97)).toEqual('...');
-      });
+    describe('long blog post', function () {
+      it('should truncate a piece of text and add ellipses at the end to ' +
+        '200 characters by default',
+        function () {
+          expect(blog_post.length).toEqual(487);
+          expect(truncateFilter(blog_post).length).toEqual(200);
+          expect(truncateFilter(blog_post).substring(197)).toEqual('...');
+        });
 
-    it('should truncate a piece of text to an arbitary length and add ' +
-      'an arrow at the end',
-      function () {
-        expect(blog_post.length).toEqual(487);
-        expect(truncateFilter(blog_post, 150, ' ->').length).toEqual(150);
-        expect(truncateFilter(blog_post, 150, ' ->').substring(147))
-          .toEqual(' ->');
-      });
-  });
+      it('should truncate a piece of text to an arbitary length and ' +
+        'add ellipses',
+        function () {
+          expect(blog_post.length).toBe(487);
+          expect(truncateFilter(blog_post, 100).length).toEqual(100);
+          expect(truncateFilter(blog_post, 100).substring(97)).toEqual('...');
+        });
+
+      it('should truncate a piece of text to an arbitary length and add ' +
+        'an arrow at the end',
+        function () {
+          expect(blog_post.length).toEqual(487);
+          expect(truncateFilter(blog_post, 150, ' ->').length).toEqual(150);
+          expect(truncateFilter(blog_post, 150, ' ->').substring(147))
+            .toEqual(' ->');
+        });
+    });
+
+    describe('short blog post', function () {
+      it('should return the same string since it\'s less than 200 characters',
+        function () {
+          expect(short_blog_post.length).toEqual(132);
+          expect(truncateFilter(short_blog_post).length).toEqual(132);
+        });
+    });
+  }); /* End truncate */
 
 });
