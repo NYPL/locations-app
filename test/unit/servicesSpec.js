@@ -11,485 +11,485 @@ describe('NYPL Service Tests', function () {
    * Queries Google Maps Javascript API to geocode addresses
    * and reverse geocode coordinates.
    */
-  // describe('nypl_geocoder_service', function () {
-  //   var GeocoderMock, GeoCodingOK, GeoCodingError,
-  //     LatLngOk, LatLngError,
-  //     nypl_geocoder_service, rootScope,
-  //     get_coords_return_value,
-  //     map_controls_push_mock,
-  //     httpBackend, mapPrototype,
-  //     infowindow_open_mock, infowindow_close_mock, infowindow_setContent_mock;
-
-  //   beforeEach(function () {
-  //     module('nypl_locations');
-
-  //     window.google = jasmine.createSpy('google');
-  //     google.maps = jasmine.createSpy('maps');
-  //     google.maps.InfoWindow = jasmine.createSpy('InfoWindow');
-  //     infowindow_close_mock =
-  //       google.maps.InfoWindow.prototype.close =
-  //       jasmine.createSpy('InfoWindow.close');
-  //     infowindow_setContent_mock =
-  //       google.maps.InfoWindow.prototype.setContent =
-  //       jasmine.createSpy('InfoWindow.setcontent');
-  //     infowindow_open_mock =
-  //       google.maps.InfoWindow.prototype.open =
-  //       jasmine.createSpy('InfoWindow.open');
-  //     google.maps.Map = jasmine.createSpy('Map');
-  //     google.maps.Marker = jasmine.createSpy('Marker');
-  //     google.maps.Animation = jasmine.createSpy('Animation');
-  //     google.maps.Animation.BOUNCE = jasmine.createSpy('Bounce');
-  //     google.maps.Animation.DROP = jasmine.createSpy('Drop');
-  //     google.maps.GeocoderStatus = jasmine.createSpy('GeocoderStatus');
-  //     google.maps.GeocoderStatus.OK = 'OK';
-  //     google.maps.ControlPosition = jasmine.createSpy('ControlPosition');
-  //     google.maps.ControlPosition.RIGHT_BOTTOM =
-  //       jasmine.createSpy('RIGHT_BOTTOM');
-  //     google.maps.event = jasmine.createSpy('maps.events');
-  //     google.maps.event.addListener =
-  //       jasmine.createSpy('maps.event.addListener');
-  //     mapPrototype = google.maps.Map.prototype;
-  //     mapPrototype.controls = jasmine.createSpy('map.controls');
-  //     mapPrototype.controls[google.maps.ControlPosition.RIGHT_BOTTOM] =
-  //         jasmine.createSpy('map.controls.position');
-  //     map_controls_push_mock =
-  //       mapPrototype.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push =
-  //         jasmine.createSpy('map.controls.push');
-  //     google.maps.Map.prototype.panTo = jasmine.createSpy('map.panTo');
-  //     google.maps.Map.prototype.setZoom = jasmine.createSpy('map.setZoom');
-  //     google.maps.Marker.prototype.setMap = jasmine.createSpy('marker.setMap');
-  //     google.maps.Marker.prototype.getMap = jasmine.createSpy('marker.getMap');
-  //     google.maps.Marker.prototype.getPosition =
-  //       jasmine.createSpy('marker.getPosition');
-  //     google.maps.Marker.prototype.setPosition =
-  //       jasmine.createSpy('marker.setPosition');
-
-  //     GeoCodingOK = function (params, callback) {
-  //       callback(
-  //         [{geometry: {location: {k: 40.75298660000001, B: -73.9821364}}}],
-  //         'OK'
-  //       );
-  //     };
-
-  //     GeoCodingError = function (params, callback) {
-  //       callback({result: 'Fake result'}, 'ERROR');
-  //     };
-
-  //     LatLngOk = function (params, callback) {
-  //       callback(
-  //         [{address_components: [{long_name: "10018", short_name: "10018"}]}],
-  //         'OK'
-  //       );
-  //     };
-
-  //     LatLngError = function (params, callback) {
-  //       callback({result: 'Fake result'}, 'ERROR');
-  //     };
-
-  //     GeocoderMock = window.google.maps.Geocoder =
-  //       jasmine.createSpy('Geocoder');
-  //     window.google.maps.LatLng = jasmine.createSpy('LatLng');
-  //     window.google.maps.LatLngBounds =
-  //       jasmine.createSpy('LatLngBounds');
-
-  //     inject(function ($rootScope, _nypl_geocoder_service_, _$httpBackend_) {
-  //       nypl_geocoder_service = _nypl_geocoder_service_;
-  //       rootScope = $rootScope;
-  //       httpBackend = _$httpBackend_;
-
-  //       httpBackend
-  //         .expectGET('/languages/en.json')
-  //         .respond('public/languages/en.json');
-  //     });
-  //   });
-
-  //   it('Should expose some functions', function () {
-  //     expect(angular.isFunction(nypl_geocoder_service.get_coords)).toBe(true);
-  //     expect(typeof nypl_geocoder_service.get_coords).toBe('function');
-  //     expect(typeof nypl_geocoder_service.get_address).toBe('function');
-  //   });
-
-  //   /* nypl_geocoder_service.get_coords */
-  //   describe('nypl_geocoder_service.get_coords', function () {
-  //     describe('get_coords function successful', function () {
-  //       beforeEach(function () {
-  //         GeocoderMock.prototype.geocode =
-  //           jasmine.createSpy('geocode').and.callFake(GeoCodingOK);
-  //       });
-
-  //       it('Should not be called', function () {
-  //         expect(GeocoderMock.prototype.geocode).not.toHaveBeenCalled();
-  //       });
-
-  //       it('Should call the geocode api when calling the service', function () {
-  //         nypl_geocoder_service.get_coords('10018');
-  //         expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
-  //       });
-
-  //       it('Should return a promise', function () {
-  //         var promise = nypl_geocoder_service.get_coords('10018');
-  //         expect(typeof promise.then).toBe('function');
-  //       });
-
-  //       it('Should accept the promise when status is OK', function () {
-  //         var okMock = jasmine.createSpy(),
-  //           errorMock = jasmine.createSpy();
-
-  //         nypl_geocoder_service.get_coords('10018').then(okMock, errorMock);
-  //         rootScope.$apply();
-
-  //         expect(okMock).toHaveBeenCalled();
-  //         expect(errorMock).not.toHaveBeenCalled();
-  //       });
-
-  //       it('Should resolve the promise when receiving data', function () {
-  //         var promise_callback = jasmine.createSpy();
-  //         // The return value was defined in the GeoCoding variable
-  //         get_coords_return_value = {
-  //           lat : 40.75298660000001,
-  //           long : -73.9821364,
-  //           // no name for zipcode search
-  //           name: undefined
-  //         };
-
-  //         nypl_geocoder_service.get_coords('10018').then(promise_callback);
-  //         rootScope.$apply();
-
-  //         // promise_callback is the callback function with
-  //         // the resolved value from the promise
-  //         expect(promise_callback)
-  //           .toHaveBeenCalledWith(get_coords_return_value);
-  //       });
-  //     });
-
-  //     describe('get_coords function failed', function () {
-  //       beforeEach(function () {
-  //         GeocoderMock.prototype.geocode =
-  //           jasmine.createSpy('geocode').and.callFake(GeoCodingError);
-  //       });
-
-  //       it('Should be called', function () {
-  //         nypl_geocoder_service.get_coords("ny");
-  //         expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
-  //       });
-
-  //       it('Should return a promise', function () {
-  //         var promise = nypl_geocoder_service.get_coords('10018');
-  //         expect(typeof promise.then).toBe('function');
-  //       });
-
-  //       it('Should reject the promise when status is not OK', function () {
-  //         var okMock = jasmine.createSpy(),
-  //           errorMock = jasmine.createSpy();
-  //         nypl_geocoder_service.get_coords('10018').then(okMock, errorMock);
-  //         rootScope.$apply();
-
-  //         expect(okMock).not.toHaveBeenCalled();
-  //         expect(errorMock).toHaveBeenCalled();
-  //       });
-  //     });
-  //   });
-  //   /* end nypl_geocoder_service.get_coords */
-
-  //   /* nypl_geocoder_service.get_address */
-  //   describe('nypl_geocoder_service.get_address', function () {
-  //     describe('get_address function successful', function () {
-  //       beforeEach(function () {
-  //         GeocoderMock.prototype.geocode =
-  //           jasmine.createSpy('geocode').and.callFake(LatLngOk);
-  //       });
-
-  //       it('Should not be called', function () {
-  //         expect(GeocoderMock.prototype.geocode).not.toHaveBeenCalled();
-  //       });
-
-  //       it('Should be called', function () {
-  //         nypl_geocoder_service
-  //           .get_address({lat: 40.75298660000001, lng: -73.9821364});
-  //         expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
-  //       });
-
-  //       it('Should return a promise', function () {
-  //         var promise = nypl_geocoder_service.get_address({
-  //           lat: 40.75298660000001,
-  //           lng: -73.9821364
-  //         });
-  //         expect(typeof promise.then).toBe('function');
-  //       });
-
-  //       it('Should accept the promise when status is OK', function () {
-  //         var okMock = jasmine.createSpy(),
-  //           errorMock = jasmine.createSpy();
-
-  //         nypl_geocoder_service.get_address({
-  //           lat: 40.75298660000001,
-  //           lng: -73.9821364
-  //         }).then(okMock, errorMock);
-  //         rootScope.$apply();
-
-  //         expect(okMock).toHaveBeenCalled();
-  //         expect(errorMock).not.toHaveBeenCalled();
-  //       });
-
-  //       // Not sure why the following test is not working:
-  //       it('Should resolve the promise when receiving data', function () {
-  //         var promise_callback = jasmine.createSpy(),
-  //           // The return value was defined in the LatLngOk variable
-  //           get_address_return_value = '10018';
-
-
-  //         nypl_geocoder_service.get_address({
-  //           lat: 40.75298660000001,
-  //           lng: -73.9821364
-  //         }).then(promise_callback);
-  //         rootScope.$apply();
-
-  //         // promise_callback is the callback function
-  //         // with the resolved value from the promise
-  //         // expect(promise_callback)
-  //         //   .toHaveBeenCalledWith(get_address_return_value);
-  //       });
-  //     });
-
-  //     describe('get_address function failed', function () {
-  //       beforeEach(function () {
-  //         GeocoderMock.prototype.geocode =
-  //           jasmine.createSpy('geocode').and.callFake(LatLngError);
-  //       });
-
-  //       it('Should be called', function () {
-  //         nypl_geocoder_service.get_address({
-  //           lat: 40.75298660000001,
-  //           lng: -73.9821364
-  //         });
-  //         expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
-  //       });
-
-  //       it('Should return a promise', function () {
-  //         var promise = nypl_geocoder_service.get_address({
-  //           lat: 40.75298660000001,
-  //           lng: -73.9821364
-  //         });
-  //         expect(typeof promise.then).toBe('function');
-  //       });
-
-  //       it('Should reject the promise when status is not OK', function () {
-  //         var okMock = jasmine.createSpy(),
-  //           errorMock = jasmine.createSpy();
-  //         nypl_geocoder_service.get_address({
-  //           lat: 40.75298660000001,
-  //           lng: -73.9821364
-  //         }).then(okMock, errorMock);
-  //         rootScope.$apply();
-
-  //         expect(okMock).not.toHaveBeenCalled();
-  //         expect(errorMock).toHaveBeenCalled();
-  //       });
-  //     });
-  //   });
-  //   /* end nypl_geocoder_service.get_address */
-
-  //   describe('draw_map function', function () {
-  //     it('should call the Google Maps', function () {
-  //       nypl_geocoder_service.draw_map({ lat: 40.7532, long: -73.9822 },
-  //         12, 'all-locations-map');
-
-  //       expect(window.google.maps.Map).toHaveBeenCalled();
-  //     });
-  //   });
-
-  //   describe('load_markers function', function () {
-  //     // First we draw a marker, then when the load_markers function is called
-  //     // it should call the add_marker_to_map function
-  //     it('should call the add_marker_to_map function from the service',
-  //       function () {
-  //         nypl_geocoder_service.draw_map({ lat: 40.7532, long: -73.9822 },
-  //           12, 'all-locations-map');
-  //         nypl_geocoder_service
-  //           .draw_marker("schwarzman",
-  //             { 'lat': 40, 'long': -73},
-  //             "5th Avenue at 42nd St"
-  //             );
-
-  //         nypl_geocoder_service.load_markers();
-  //         // if there are markers, the load_markers function
-  //         // adds markers to the map using the add_marker_to_map
-  //         // function, which in turn calls the setMap function from
-  //         // the google maps api to add the marker to the map:
-  //         expect(google.maps.Marker.prototype.setMap).toHaveBeenCalled();
-  //       });
-
-  //     // no markers are set so it shouldn't do anything
-  //     it('should NOT call the add_marker_to_map function from the service',
-  //       function () {
-  //         nypl_geocoder_service.load_markers();
-  //         expect(google.maps.Marker.prototype.setMap).not.toHaveBeenCalled();
-  //       });
-  //   });
-
-  //   describe('draw_legend function', function () {
-  //     it('should call the controls function in the Maps API',
-  //       function () {
-  //         nypl_geocoder_service
-  //           .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-  //         document.getElementById = function () {
-  //           return '<div id="all-locations-map-legend" class="show-legend"' +
-  //                 ' style="z-index: 0; position: absolute; bottom: 15px; ' +
-  //                 'right: 0px;"><!-- ngIf: locations --><span data-ng-if=' +
-  //                 '"locations" class="ng-scope"><img src="http://maps.' +
-  //                 'google.com/mapfiles/ms/icons/red-dot.png">NYPL Library' +
-  //                 '<br></span><!-- end ngIf: locations -->' +
-  //                 '<!-- ngIf: locationStart --></div>';
-  //         };
-  //         nypl_geocoder_service.draw_legend('test');
-  //         expect(map_controls_push_mock).toHaveBeenCalled();
-  //       });
-  //   });
-
-  //   describe('panMap function', function () {
-  //     it('should call the google maps api functions to pan and zoom on the map',
-  //       function () {
-  //         nypl_geocoder_service
-  //           .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-  //         // the panMap function pans to SASB by default
-  //         nypl_geocoder_service.panMap();
-  //         // When we call the panMap function, we expect to call the
-  //         // google maps panTo and setZoom functions avaible in the API
-  //         // for the map
-
-  //         expect(google.maps.Map.prototype.panTo).toHaveBeenCalled();
-  //         expect(google.maps.Map.prototype.setZoom).toHaveBeenCalled();
-  //       });
-
-  //     it('should pan to a specific marker', function () {
-  //       var marker = new google.maps.Marker({});
-  //       nypl_geocoder_service
-  //         .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-  //       nypl_geocoder_service
-  //         .draw_marker("schwarzman",
-  //           { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
-
-  //       nypl_geocoder_service.panMap(marker);
-
-  //       expect(google.maps.Marker.prototype.getPosition).toHaveBeenCalled();
-  //       expect(google.maps.Map.prototype.panTo).toHaveBeenCalled();
-  //       expect(google.maps.Map.prototype.setZoom).toHaveBeenCalled();
-  //     });
-  //   });
-
-  //   // The search marker is the marker that is drawn when a user
-  //   // searches for 'Bronx Zoo', 'Chelsea Piers', 'Empire State Building', etc.
-  //   // There is only one search marker on the map at a time so it just simply
-  //   // gets its coordinates and text updated
-  //   // describe('draw_searchMarker function', function () {
-  //   //   it('should remove the existing search marker and draw another ' +
-  //   //     'one with updated coordinates and text',
-  //   //     function () {
-  //   //       nypl_geocoder_service
-  //   //         .draw_map({lat: 40.7532, long: -73.9822},
-  //   //            12, 'all-locations-map');
-
-  //   //       nypl_geocoder_service.draw_searchMarker(
-  //   //         {lat: 40.8505949, long: -73.8769982},
-  //   //         'bronx zoo'
-  //   //       );
-
-  //   //       // First remove the existing search marker from the map
-  //   //       expect(google.maps.Marker.prototype.setMap)
-  //   //         .toHaveBeenCalledWith(null);
-  //   //       // Create new google maps coordinates
-  //   //       expect(google.maps.LatLng)
-  //   //         .toHaveBeenCalledWith(40.8505949, -73.8769982, "bronx zoo");
-  //   //       // Update the search marker with the new coordinates
-  //   //       expect(google.maps.Marker.prototype.setPosition)
-  //   //         .toHaveBeenCalled();
-  //   //       // Set the search marker on the map
-  //   //       expect(google.maps.Marker.prototype.setMap)
-  //   //         .toHaveBeenCalled();
-  //   //       // Set the content on the infowindow and open it
-  //   //       expect(google.maps.InfoWindow.prototype.setContent)
-  //   //         .toHaveBeenCalledWith('bronx zoo');
-  //   //       expect(google.maps.InfoWindow.prototype.open)
-  //   //         .toHaveBeenCalled();
-  //   //     });
-  //   // });
-
-  //   describe('remove_searchMarker function', function () {
-  //     it('should set the search marker map to null to remove it', function () {
-  //       nypl_geocoder_service
-  //         .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-  //       nypl_geocoder_service.draw_searchMarker(
-  //         {lat: 40.8505949, long: -73.8769982},
-  //         'chelsea piers'
-  //       );
-
-  //       nypl_geocoder_service.remove_searchMarker();
-
-  //       expect(google.maps.Marker.prototype.setMap).toHaveBeenCalledWith(null);
-  //     });
-  //   });
-
-  //   // This differs from the search marker so that it will not be in the same
-  //   // set as the location markers when manipulating them
-  //   describe('remove_marker function', function () {
-  //     it('should remove a marker that was on the map', function () {
-  //       nypl_geocoder_service
-  //         .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-  //       nypl_geocoder_service.draw_marker("schwarzman",
-  //         { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
-
-  //       nypl_geocoder_service.remove_marker("schwarzman");
-
-  //       expect(google.maps.Marker.prototype.setMap).toHaveBeenCalledWith(null);
-  //     });
-  //   });
-
-  //   describe('check_marker function', function () {
-  //     it('should return false because no markers exist', function () {
-  //       nypl_geocoder_service
-  //         .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-  //       var marker = nypl_geocoder_service.check_marker('schwarzman');
-
-  //       expect(marker).toBe(false);
-  //     });
-
-  //     it('should return true because the marker exists and was drawn',
-  //       function () {
-  //         nypl_geocoder_service
-  //           .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-  //         nypl_geocoder_service.draw_marker("schwarzman",
-  //           { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
-  //         var marker = nypl_geocoder_service.check_marker('schwarzman');
-
-  //         expect(marker).toBe(true);
-  //       });
-  //   });
-
-  //   describe('pan_existing_marker', function () {
-  //     it('should pan to a marker that is already on the map and open ' +
-  //       'the infowindow',
-  //       function () {
-  //         nypl_geocoder_service
-  //           .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-  //         nypl_geocoder_service.draw_marker("schwarzman",
-  //           { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
-
-  //         // Must make sure it's an existing marker
-  //         if (nypl_geocoder_service.check_marker('schwarzman')) {
-  //           nypl_geocoder_service.pan_existing_marker('schwarzman');
-  //         }
-
-  //         // When we call it, we pan to that marker and
-  //         // open the infowindow with text
-  //         expect(google.maps.Map.prototype.panTo).toHaveBeenCalled();
-  //         expect(google.maps.Map.prototype.setZoom).toHaveBeenCalled();
-  //         expect(infowindow_close_mock).toHaveBeenCalled();
-  //         expect(infowindow_setContent_mock)
-  //           .toHaveBeenCalledWith("5th Avenue at 42nd St");
-  //         expect(infowindow_open_mock).toHaveBeenCalled();
-  //       });
-  //   });
-  // });
+  describe('nypl_geocoder_service', function () {
+    var GeocoderMock, GeoCodingOK, GeoCodingError,
+      LatLngOk, LatLngError,
+      nypl_geocoder_service, rootScope,
+      get_coords_return_value,
+      map_controls_push_mock,
+      httpBackend, mapPrototype,
+      infowindow_open_mock, infowindow_close_mock, infowindow_setContent_mock;
+
+    beforeEach(function () {
+      module('nypl_locations');
+
+      window.google = jasmine.createSpy('google');
+      google.maps = jasmine.createSpy('maps');
+      google.maps.InfoWindow = jasmine.createSpy('InfoWindow');
+      infowindow_close_mock =
+        google.maps.InfoWindow.prototype.close =
+        jasmine.createSpy('InfoWindow.close');
+      infowindow_setContent_mock =
+        google.maps.InfoWindow.prototype.setContent =
+        jasmine.createSpy('InfoWindow.setcontent');
+      infowindow_open_mock =
+        google.maps.InfoWindow.prototype.open =
+        jasmine.createSpy('InfoWindow.open');
+      google.maps.Map = jasmine.createSpy('Map');
+      google.maps.Marker = jasmine.createSpy('Marker');
+      google.maps.Animation = jasmine.createSpy('Animation');
+      google.maps.Animation.BOUNCE = jasmine.createSpy('Bounce');
+      google.maps.Animation.DROP = jasmine.createSpy('Drop');
+      google.maps.GeocoderStatus = jasmine.createSpy('GeocoderStatus');
+      google.maps.GeocoderStatus.OK = 'OK';
+      google.maps.ControlPosition = jasmine.createSpy('ControlPosition');
+      google.maps.ControlPosition.RIGHT_BOTTOM =
+        jasmine.createSpy('RIGHT_BOTTOM');
+      google.maps.event = jasmine.createSpy('maps.events');
+      google.maps.event.addListener =
+        jasmine.createSpy('maps.event.addListener');
+      mapPrototype = google.maps.Map.prototype;
+      mapPrototype.controls = jasmine.createSpy('map.controls');
+      mapPrototype.controls[google.maps.ControlPosition.RIGHT_BOTTOM] =
+          jasmine.createSpy('map.controls.position');
+      map_controls_push_mock =
+        mapPrototype.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push =
+          jasmine.createSpy('map.controls.push');
+      google.maps.Map.prototype.panTo = jasmine.createSpy('map.panTo');
+      google.maps.Map.prototype.setZoom = jasmine.createSpy('map.setZoom');
+      google.maps.Marker.prototype.setMap = jasmine.createSpy('marker.setMap');
+      google.maps.Marker.prototype.getMap = jasmine.createSpy('marker.getMap');
+      google.maps.Marker.prototype.getPosition =
+        jasmine.createSpy('marker.getPosition');
+      google.maps.Marker.prototype.setPosition =
+        jasmine.createSpy('marker.setPosition');
+
+      GeoCodingOK = function (params, callback) {
+        callback(
+          [{geometry: {location: {k: 40.75298660000001, B: -73.9821364}}}],
+          'OK'
+        );
+      };
+
+      GeoCodingError = function (params, callback) {
+        callback({result: 'Fake result'}, 'ERROR');
+      };
+
+      LatLngOk = function (params, callback) {
+        callback(
+          [{address_components: [{long_name: "10018", short_name: "10018"}]}],
+          'OK'
+        );
+      };
+
+      LatLngError = function (params, callback) {
+        callback({result: 'Fake result'}, 'ERROR');
+      };
+
+      GeocoderMock = window.google.maps.Geocoder =
+        jasmine.createSpy('Geocoder');
+      window.google.maps.LatLng = jasmine.createSpy('LatLng');
+      window.google.maps.LatLngBounds =
+        jasmine.createSpy('LatLngBounds');
+
+      inject(function ($rootScope, _nypl_geocoder_service_, _$httpBackend_) {
+        nypl_geocoder_service = _nypl_geocoder_service_;
+        rootScope = $rootScope;
+        httpBackend = _$httpBackend_;
+
+        httpBackend
+          .expectGET('/languages/en.json')
+          .respond('public/languages/en.json');
+      });
+    });
+
+    it('Should expose some functions', function () {
+      expect(angular.isFunction(nypl_geocoder_service.get_coords)).toBe(true);
+      expect(typeof nypl_geocoder_service.get_coords).toBe('function');
+      expect(typeof nypl_geocoder_service.get_address).toBe('function');
+    });
+
+    /* nypl_geocoder_service.get_coords */
+    describe('nypl_geocoder_service.get_coords', function () {
+      describe('get_coords function successful', function () {
+        beforeEach(function () {
+          GeocoderMock.prototype.geocode =
+            jasmine.createSpy('geocode').and.callFake(GeoCodingOK);
+        });
+
+        it('Should not be called', function () {
+          expect(GeocoderMock.prototype.geocode).not.toHaveBeenCalled();
+        });
+
+        it('Should call the geocode api when calling the service', function () {
+          nypl_geocoder_service.get_coords('10018');
+          expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
+        });
+
+        it('Should return a promise', function () {
+          var promise = nypl_geocoder_service.get_coords('10018');
+          expect(typeof promise.then).toBe('function');
+        });
+
+        it('Should accept the promise when status is OK', function () {
+          var okMock = jasmine.createSpy(),
+            errorMock = jasmine.createSpy();
+
+          nypl_geocoder_service.get_coords('10018').then(okMock, errorMock);
+          rootScope.$apply();
+
+          expect(okMock).toHaveBeenCalled();
+          expect(errorMock).not.toHaveBeenCalled();
+        });
+
+        it('Should resolve the promise when receiving data', function () {
+          var promise_callback = jasmine.createSpy();
+          // The return value was defined in the GeoCoding variable
+          get_coords_return_value = {
+            lat : 40.75298660000001,
+            long : -73.9821364,
+            // no name for zipcode search
+            name: undefined
+          };
+
+          nypl_geocoder_service.get_coords('10018').then(promise_callback);
+          rootScope.$apply();
+
+          // promise_callback is the callback function with
+          // the resolved value from the promise
+          expect(promise_callback)
+            .toHaveBeenCalledWith(get_coords_return_value);
+        });
+      });
+
+      describe('get_coords function failed', function () {
+        beforeEach(function () {
+          GeocoderMock.prototype.geocode =
+            jasmine.createSpy('geocode').and.callFake(GeoCodingError);
+        });
+
+        it('Should be called', function () {
+          nypl_geocoder_service.get_coords("ny");
+          expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
+        });
+
+        it('Should return a promise', function () {
+          var promise = nypl_geocoder_service.get_coords('10018');
+          expect(typeof promise.then).toBe('function');
+        });
+
+        it('Should reject the promise when status is not OK', function () {
+          var okMock = jasmine.createSpy(),
+            errorMock = jasmine.createSpy();
+          nypl_geocoder_service.get_coords('10018').then(okMock, errorMock);
+          rootScope.$apply();
+
+          expect(okMock).not.toHaveBeenCalled();
+          expect(errorMock).toHaveBeenCalled();
+        });
+      });
+    });
+    /* end nypl_geocoder_service.get_coords */
+
+    /* nypl_geocoder_service.get_address */
+    describe('nypl_geocoder_service.get_address', function () {
+      describe('get_address function successful', function () {
+        beforeEach(function () {
+          GeocoderMock.prototype.geocode =
+            jasmine.createSpy('geocode').and.callFake(LatLngOk);
+        });
+
+        it('Should not be called', function () {
+          expect(GeocoderMock.prototype.geocode).not.toHaveBeenCalled();
+        });
+
+        it('Should be called', function () {
+          nypl_geocoder_service
+            .get_address({lat: 40.75298660000001, lng: -73.9821364});
+          expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
+        });
+
+        it('Should return a promise', function () {
+          var promise = nypl_geocoder_service.get_address({
+            lat: 40.75298660000001,
+            lng: -73.9821364
+          });
+          expect(typeof promise.then).toBe('function');
+        });
+
+        it('Should accept the promise when status is OK', function () {
+          var okMock = jasmine.createSpy(),
+            errorMock = jasmine.createSpy();
+
+          nypl_geocoder_service.get_address({
+            lat: 40.75298660000001,
+            lng: -73.9821364
+          }).then(okMock, errorMock);
+          rootScope.$apply();
+
+          expect(okMock).toHaveBeenCalled();
+          expect(errorMock).not.toHaveBeenCalled();
+        });
+
+        // Not sure why the following test is not working:
+        it('Should resolve the promise when receiving data', function () {
+          var promise_callback = jasmine.createSpy(),
+            // The return value was defined in the LatLngOk variable
+            get_address_return_value = '10018';
+
+
+          nypl_geocoder_service.get_address({
+            lat: 40.75298660000001,
+            lng: -73.9821364
+          }).then(promise_callback);
+          rootScope.$apply();
+
+          // promise_callback is the callback function
+          // with the resolved value from the promise
+          // expect(promise_callback)
+          //   .toHaveBeenCalledWith(get_address_return_value);
+        });
+      });
+
+      describe('get_address function failed', function () {
+        beforeEach(function () {
+          GeocoderMock.prototype.geocode =
+            jasmine.createSpy('geocode').and.callFake(LatLngError);
+        });
+
+        it('Should be called', function () {
+          nypl_geocoder_service.get_address({
+            lat: 40.75298660000001,
+            lng: -73.9821364
+          });
+          expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
+        });
+
+        it('Should return a promise', function () {
+          var promise = nypl_geocoder_service.get_address({
+            lat: 40.75298660000001,
+            lng: -73.9821364
+          });
+          expect(typeof promise.then).toBe('function');
+        });
+
+        it('Should reject the promise when status is not OK', function () {
+          var okMock = jasmine.createSpy(),
+            errorMock = jasmine.createSpy();
+          nypl_geocoder_service.get_address({
+            lat: 40.75298660000001,
+            lng: -73.9821364
+          }).then(okMock, errorMock);
+          rootScope.$apply();
+
+          expect(okMock).not.toHaveBeenCalled();
+          expect(errorMock).toHaveBeenCalled();
+        });
+      });
+    });
+    /* end nypl_geocoder_service.get_address */
+
+    describe('draw_map function', function () {
+      it('should call the Google Maps', function () {
+        nypl_geocoder_service.draw_map({ lat: 40.7532, long: -73.9822 },
+          12, 'all-locations-map');
+
+        expect(window.google.maps.Map).toHaveBeenCalled();
+      });
+    });
+
+    describe('load_markers function', function () {
+      // First we draw a marker, then when the load_markers function is called
+      // it should call the add_marker_to_map function
+      it('should call the add_marker_to_map function from the service',
+        function () {
+          nypl_geocoder_service.draw_map({ lat: 40.7532, long: -73.9822 },
+            12, 'all-locations-map');
+          nypl_geocoder_service
+            .draw_marker("schwarzman",
+              { 'lat': 40, 'long': -73},
+              "5th Avenue at 42nd St"
+              );
+
+          nypl_geocoder_service.load_markers();
+          // if there are markers, the load_markers function
+          // adds markers to the map using the add_marker_to_map
+          // function, which in turn calls the setMap function from
+          // the google maps api to add the marker to the map:
+          expect(google.maps.Marker.prototype.setMap).toHaveBeenCalled();
+        });
+
+      // no markers are set so it shouldn't do anything
+      it('should NOT call the add_marker_to_map function from the service',
+        function () {
+          nypl_geocoder_service.load_markers();
+          expect(google.maps.Marker.prototype.setMap).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('draw_legend function', function () {
+      it('should call the controls function in the Maps API',
+        function () {
+          nypl_geocoder_service
+            .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+          document.getElementById = function () {
+            return '<div id="all-locations-map-legend" class="show-legend"' +
+                  ' style="z-index: 0; position: absolute; bottom: 15px; ' +
+                  'right: 0px;"><!-- ngIf: locations --><span data-ng-if=' +
+                  '"locations" class="ng-scope"><img src="http://maps.' +
+                  'google.com/mapfiles/ms/icons/red-dot.png">NYPL Library' +
+                  '<br></span><!-- end ngIf: locations -->' +
+                  '<!-- ngIf: locationStart --></div>';
+          };
+          nypl_geocoder_service.draw_legend('test');
+          expect(map_controls_push_mock).toHaveBeenCalled();
+        });
+    });
+
+    describe('panMap function', function () {
+      it('should call the google maps api functions to pan and zoom on the map',
+        function () {
+          nypl_geocoder_service
+            .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+          // the panMap function pans to SASB by default
+          nypl_geocoder_service.panMap();
+          // When we call the panMap function, we expect to call the
+          // google maps panTo and setZoom functions avaible in the API
+          // for the map
+
+          expect(google.maps.Map.prototype.panTo).toHaveBeenCalled();
+          expect(google.maps.Map.prototype.setZoom).toHaveBeenCalled();
+        });
+
+      it('should pan to a specific marker', function () {
+        var marker = new google.maps.Marker({});
+        nypl_geocoder_service
+          .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        nypl_geocoder_service
+          .draw_marker("schwarzman",
+            { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
+
+        nypl_geocoder_service.panMap(marker);
+
+        expect(google.maps.Marker.prototype.getPosition).toHaveBeenCalled();
+        expect(google.maps.Map.prototype.panTo).toHaveBeenCalled();
+        expect(google.maps.Map.prototype.setZoom).toHaveBeenCalled();
+      });
+    });
+
+    // The search marker is the marker that is drawn when a user
+    // searches for 'Bronx Zoo', 'Chelsea Piers', 'Empire State Building', etc.
+    // There is only one search marker on the map at a time so it just simply
+    // gets its coordinates and text updated
+    // describe('draw_searchMarker function', function () {
+    //   it('should remove the existing search marker and draw another ' +
+    //     'one with updated coordinates and text',
+    //     function () {
+    //       nypl_geocoder_service
+    //         .draw_map({lat: 40.7532, long: -73.9822},
+    //            12, 'all-locations-map');
+
+    //       nypl_geocoder_service.draw_searchMarker(
+    //         {lat: 40.8505949, long: -73.8769982},
+    //         'bronx zoo'
+    //       );
+
+    //       // First remove the existing search marker from the map
+    //       expect(google.maps.Marker.prototype.setMap)
+    //         .toHaveBeenCalledWith(null);
+    //       // Create new google maps coordinates
+    //       expect(google.maps.LatLng)
+    //         .toHaveBeenCalledWith(40.8505949, -73.8769982, "bronx zoo");
+    //       // Update the search marker with the new coordinates
+    //       expect(google.maps.Marker.prototype.setPosition)
+    //         .toHaveBeenCalled();
+    //       // Set the search marker on the map
+    //       expect(google.maps.Marker.prototype.setMap)
+    //         .toHaveBeenCalled();
+    //       // Set the content on the infowindow and open it
+    //       expect(google.maps.InfoWindow.prototype.setContent)
+    //         .toHaveBeenCalledWith('bronx zoo');
+    //       expect(google.maps.InfoWindow.prototype.open)
+    //         .toHaveBeenCalled();
+    //     });
+    // });
+
+    describe('remove_searchMarker function', function () {
+      it('should set the search marker map to null to remove it', function () {
+        nypl_geocoder_service
+          .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        nypl_geocoder_service.draw_searchMarker(
+          {lat: 40.8505949, long: -73.8769982},
+          'chelsea piers'
+        );
+
+        nypl_geocoder_service.remove_searchMarker();
+
+        expect(google.maps.Marker.prototype.setMap).toHaveBeenCalledWith(null);
+      });
+    });
+
+    // This differs from the search marker so that it will not be in the same
+    // set as the location markers when manipulating them
+    describe('remove_marker function', function () {
+      it('should remove a marker that was on the map', function () {
+        nypl_geocoder_service
+          .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        nypl_geocoder_service.draw_marker("schwarzman",
+          { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
+
+        nypl_geocoder_service.remove_marker("schwarzman");
+
+        expect(google.maps.Marker.prototype.setMap).toHaveBeenCalledWith(null);
+      });
+    });
+
+    describe('check_marker function', function () {
+      it('should return false because no markers exist', function () {
+        nypl_geocoder_service
+          .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+        var marker = nypl_geocoder_service.check_marker('schwarzman');
+
+        expect(marker).toBe(false);
+      });
+
+      it('should return true because the marker exists and was drawn',
+        function () {
+          nypl_geocoder_service
+            .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+          nypl_geocoder_service.draw_marker("schwarzman",
+            { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
+          var marker = nypl_geocoder_service.check_marker('schwarzman');
+
+          expect(marker).toBe(true);
+        });
+    });
+
+    describe('pan_existing_marker', function () {
+      it('should pan to a marker that is already on the map and open ' +
+        'the infowindow',
+        function () {
+          nypl_geocoder_service
+            .draw_map({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
+          nypl_geocoder_service.draw_marker("schwarzman",
+            { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
+
+          // Must make sure it's an existing marker
+          if (nypl_geocoder_service.check_marker('schwarzman')) {
+            nypl_geocoder_service.pan_existing_marker('schwarzman');
+          }
+
+          // When we call it, we pan to that marker and
+          // open the infowindow with text
+          expect(google.maps.Map.prototype.panTo).toHaveBeenCalled();
+          expect(google.maps.Map.prototype.setZoom).toHaveBeenCalled();
+          expect(infowindow_close_mock).toHaveBeenCalled();
+          expect(infowindow_setContent_mock)
+            .toHaveBeenCalledWith("5th Avenue at 42nd St");
+          expect(infowindow_open_mock).toHaveBeenCalled();
+        });
+    });
+  });
   /* end nypl_geocoder_service called directly */
 
   /* 
@@ -1012,6 +1012,12 @@ describe('NYPL Service Tests', function () {
               lat: 40.8336, long: -73.828, distance: 11.13}
           ]);
         });
+
+      it('should return an empty array if no params are passed', function () {
+        var empty_result = nyplUtility.addDistance();
+
+        expect(empty_result).toEqual([]);
+      });
     });
 
     /*
@@ -1066,47 +1072,221 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-     * nyplUtility.searchWordFilter()
+     * nyplUtility.searchWordFilter(query)
+     *   query: a string coming form a search input field
      *
+     *   Returns a string but with a set of words removed from the string.
      */
     describe('nyplUtility.searchWordFilter()', function () {
+      // The set of words to remove from searchs only include 'branch'
+      // at the moment.
+      it('should remove the word "branch" from a search', function () {
+        var query = "columbus circle branch";
 
+        expect(nyplUtility.searchWordFilter(query)).toEqual('columbus circle ');
+      });
+
+      it('should return the same string if no filtered words are in the search',
+        function () {
+          var query = "library of performing arts";
+
+          expect(nyplUtility.searchWordFilter(query))
+            .toEqual('library of performing arts');
+        });
     });
 
     /*
-     * nyplUtility.returnHTML()
+     * nyplUtility.returnHTML(html)
+     *   html: a string with HTML elements
      *
+     *   Returns HTML as returned by the ngSanitize function trustAsHtml.
      */
     describe('nyplUtility.returnHTML()', function () {
+      it('should return html from a string', function () {
+        var html = "<p>hello world</p>";
 
+        // TODO: not sure how to test yet since it must use Angular's
+        // ng-bind-html in the element that it will be placed.
+      })
     });
 
     /*
-     * nyplUtility.divisionHasAppointment()
+     * nyplUtility.divisionHasAppointment(id)
+     *   id: the ID of a division as a string.
      *
+     *   Returns true if the division is part of the list, false otherwise.
+     *   Used to determined if the division should have a
+     *   'Make an Appointment' link on its page.
      */
     describe('nyplUtility.divisionHasAppointment()', function () {
+      it('should return false because Map Division should not have the link',
+        function () {
+          expect(nyplUtility.divisionHasAppointment('MAP')).toBe(false);
+        });
 
+      it('should return true because Arents Division should have the link',
+        function () {
+          expect(nyplUtility.divisionHasAppointment('ARN')).toBe(true);
+        });
     });
 
   }); /* End nyplUtility service */
 
   /*
    * nyplAmenities
+   *   AngularJS service that adds icon class names to amenities.
    */
-  describe('nyplLocationList', function () {
-    /*
-     * nyplAmenities.addIcon()
-     */
-    describe('nyplLocationList.addIcon()', function () {
-      
+  describe('nyplAmenities', function () {
+    var nyplAmenities;
+
+    beforeEach(function () {
+      module('nypl_locations');
+      // inject your service for testing.
+      // The _underscores_ are a convenience thing
+      // so you can have your variable name be the
+      // same as your injected service.
+      inject(function (_nyplAmenities_) {
+        nyplAmenities = _nyplAmenities_;
+      });
     });
 
     /*
-     * nyplAmenities.addCategoryIcon()
+     * nyplAmenities.addIcon(amenities, default_icon)
+     *   amenities: Array of amenities objects
+     *   default_icon: The CSS class name of what the default icon should be.
+     *
+     *   Returns the array of amenities object with each amenity now having
+     *   an icon property set. There are cases that need specific icons but
+     *   the rest use amenity category icons.
      */
-    describe('nyplLocationList.addCategoryIcon()', function () {
-      
+    describe('nyplAmenities.addIcon()', function () {
+      it('should add icon class names to every amenity', function () {
+        var amenities = [
+            { 'id': 4, 'name': 'Computers for Public Use' },
+            { 'id': 6, 'name': 'Wireless Internet Access' },
+            { 'id': 216, 'name': 'Laptops for Public Use' },
+            { 'id': 7, 'name': 'Printing (From PC)' },
+            { 'id': 9, 'name': 'Electrical Outlets Available' },
+            { 'id': 65910, 'name': 'Book Drop Box (24 Hour)' },
+            { 'id': 39, 'name': 'Book Drop Box (Limited Hours)' }
+          ];
+
+        expect(nyplAmenities.addIcon(amenities))
+          .toEqual([
+            { 'id': 4, 'name': 'Computers for Public Use', 'icon': '' },
+            { 'id': 6, 'name': 'Wireless Internet Access',
+              'icon': 'icon-connection' },
+            { 'id': 216, 'name': 'Laptops for Public Use'
+              , 'icon': 'icon-laptop' },
+            { 'id': 7, 'name': 'Printing (From PC)', 'icon': 'icon-print' },
+            { 'id': 9, 'name': 'Electrical Outlets Available',
+              'icon': 'icon-power-cord' },
+            { 'id': 65910, 'name': 'Book Drop Box (24 Hour)',
+              'icon': 'icon-box-add' },
+            { 'id': 39, 'name': 'Book Drop Box (Limited Hours)',
+              'icon': 'icon-box-add' }
+          ]);
+      });
+
+      it('should give all amenities a default icon class', function () {
+        var amenities = [
+            { 'id': 4, 'name': 'Computers for Public Use' },
+            { 'id': 23, 'name': 'Wireless Internet Access' },
+            { 'id': 212, 'name': 'Laptops for Public Use' },
+            { 'id': 13, 'name': 'Printing (From PC)' },
+          ];
+
+        expect(nyplAmenities.addIcon(amenities, 'icon-class-test'))
+          .toEqual([
+            { 'id': 4, 'name': 'Computers for Public Use',
+              'icon': 'icon-class-test' },
+            { 'id': 23, 'name': 'Wireless Internet Access',
+              'icon': 'icon-class-test' },
+            { 'id': 212, 'name': 'Laptops for Public Use'
+              , 'icon': 'icon-class-test' },
+            { 'id': 13, 'name': 'Printing (From PC)',
+              'icon': 'icon-class-test' }
+          ]);
+      });
+    });
+
+    /*
+     * nyplAmenities.addCategoryIcon(amenities)
+     *   amenities: Array of amenity categories, with each category containing
+     *   an array of amenities objects.
+     *
+     *   Returns the same array but now every amenity category has an icon
+     *   class name and every amenity in the category has its own icon.
+     */
+    describe('nyplAmenities.addCategoryIcon()', function () {
+      it('should add icon class names to every amenity category and to ' +
+        'every amenity in each category',
+        function () {
+          var amenitiesCategories = [
+              {
+                'name': 'Computer Services',
+                'weight': 0,
+                'amenities': [
+                  { 'id': 4, 'name': 'Computers for Public Use' },
+                  { 'id': 6, 'name': 'Wireless Internet Access' },
+                ]
+              },
+              {
+                'name': 'Circulation',
+                'weight': 1,
+                'amenities': [
+                  { 'id': 234, 'name': 'Inter-Library Loan' },
+                  { 'id': 1234, 'name': 'Self-service check-out' },
+                ]
+              },
+              {
+                'name': 'Office Services',
+                'weight': 1,
+                'amenities': [
+                  { 'id': 234, 'name': 'Photocopiers (black/white)' },
+                  { 'id': 1234, 'name': 'Photocopiers (color)' },
+                ]
+              }
+            ];
+
+          expect(nyplAmenities.addCategoryIcon(amenitiesCategories))
+            .toEqual([
+              {
+                'name': 'Computer Services',
+                'weight': 0,
+                'icon': 'icon-screen2',
+                'amenities': [
+                  { 'id': 4, 'name': 'Computers for Public Use',
+                    'icon': 'icon-screen2' },
+                  { 'id': 6, 'name': 'Wireless Internet Access',
+                    'icon': 'icon-connection' }
+                ]
+              },
+              {
+                'name': 'Circulation',
+                'weight': 1,
+                'icon': 'icon-book',
+                'amenities': [
+                  { 'id': 234, 'name': 'Inter-Library Loan',
+                    'icon': 'icon-book' },
+                  { 'id': 1234, 'name': 'Self-service check-out',
+                  'icon': 'icon-book' }
+                ]
+              },
+              {
+                'name': 'Office Services',
+                'weight': 1,
+                'icon': 'icon-copy',
+                'amenities': [
+                  { 'id': 234, 'name': 'Photocopiers (black/white)',
+                    'icon': 'icon-copy' },
+                  { 'id': 1234, 'name': 'Photocopiers (color)',
+                    'icon': 'icon-copy' },
+                ]
+              }
+            ]);
+        });
+
     });
   }); /* End nyplAmenities */
 

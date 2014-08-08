@@ -331,6 +331,10 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
 
     // Iterate through lon/lat and calculate distance
     utility.addDistance = function (locations, coords) {
+        if (!locations) {
+            return [];
+        }
+
         var search = {
             latitude: coords.latitude || coords.lat,
             longitude: coords.longitude || coords.long
@@ -362,7 +366,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         var words = ['branch'];
 
         _.each(words, function (word) {
-            query = query.replace(word, "");
+            query = query.replace(word, '');
         });
 
         return query;
@@ -370,8 +374,8 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
 
     // Use ngSanitize to allow markup.
     // Must use ng-bind-html as attribute in the element.
-    utility.returnHTML = function (string) {
-        return $sce.trustAsHtml(string);
+    utility.returnHTML = function (html) {
+        return $sce.trustAsHtml(html);
     };
 
     utility.divisionHasAppointment = function (id) {

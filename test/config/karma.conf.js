@@ -18,6 +18,7 @@ module.exports = function (config) {
       'public/scripts/**/*.js',
       'public/scripts/directives/templates/*.html',
       'public/scripts/components/**/*.html',
+      'public/scripts/components/**/*.js',
       'test/unit/**/*.js',
       'public/bower_components/underscore/underscore.js',
       'public/bower_components/angularitics/src/angulartics.js',
