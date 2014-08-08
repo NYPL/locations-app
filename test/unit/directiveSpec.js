@@ -402,4 +402,36 @@ describe('NYPL Directive Tests', function () {
       Date = MockDate;
     });
   });
+
+  /*
+   * <div class="weekly-hours" collapse="expand" duration="2500"></div>
+   *   The collapse directive creates a slide toggle animation for an element.
+   */
+  describe('collapse', function () {
+    beforeEach(inject(function (_$compile_, _$rootScope_) {
+      $compile = _$compile_;
+      $rootScope = _$rootScope_;
+    }));
+
+    it('should open and close the element by hiding it', function () {
+      element = angular.element('<div class="weekly-hours" collapse="expand" ' +
+        'duration="2500"></div>');
+      $compile(element)($rootScope);
+
+      // Initially on load it is false and hidden.
+      $rootScope.expand = false;
+      $rootScope.$digest();
+
+      expect(element.attr('class')).not.toContain('open');
+      expect(element.attr('style')).toEqual('display: none;');
+
+      // When clicked, it slides down.
+      $rootScope.expand = true;
+      $rootScope.$digest();
+
+      expect(element.attr('class')).toContain('open');
+      expect(element.attr('style')).toContain('display: block;');
+    });
+  });
+
 });
