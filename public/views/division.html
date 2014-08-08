@@ -77,7 +77,7 @@
 
       --><div class="grid__item one-whole lap-and-up-two-fifths">
         <h2 class="hdg">{{ 'PLAN_YOUR_VISIT' | translate }}</h2>
-        <a data-ng-if="division._links.concierge.href"
+        <a data-ng-if="division._links.concierge.href && has_appointment"
           data-ng-href="{{division._links.concierge.href}}" class="btn btn--natural whiteText">
           {{ 'APPOINTMENT' | translate }}</a>
         <a data-ng-if="division._links.contact.href"
