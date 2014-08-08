@@ -8,7 +8,6 @@ function LocationsCtrl(
     $location,
     nyplCoordinatesService,
     nypl_geocoder_service,
-    nyplLocationList,
     nyplLocationsService,
     nyplUtility
 ) {
@@ -21,22 +20,6 @@ function LocationsCtrl(
             if (sortBy !== undefined) {
                 $scope.predicate = sortBy; // Default sort upon DOM Load
             }
-
-            // Increase the limit by 10, wording says 'Show 10 more'
-            // Once we show 80 libraries, show the 12 remaining libraries
-            // and reword to say "Show All"
-            // Once all libraries are shown, we hide the "showMore" element
-            var location_list = nyplLocationList.init({
-                libraryLimit: 10,
-                showMore: true,
-                add_amount: 10,
-                increaseBy: '10 more'
-            });
-
-            $scope.libraryLimit = location_list.libraryLimit;
-            $scope.addLibraries = location_list.add_amount;
-            $scope.increaseBy = location_list.increaseBy;
-            $scope.showMore = location_list.showMore;
 
             $scope.totalLocations = $scope.locations.length;
         },
@@ -237,9 +220,7 @@ function LocationsCtrl(
             $scope.location_type = type;
 
             if (type === 'research') {
-                $scope.showMore = false;
                 $scope.totalLocations = 4;
-                $scope.libraryLimit = 4;
             } else {
                 ngRepeatInit();
             }
@@ -414,14 +395,6 @@ function LocationsCtrl(
                     // mapInit();
                 }
             });
-    };
-
-    $scope.viewMore = function () {
-        var viewMore = nyplLocationList.viewMore();
-
-        $scope.libraryLimit = viewMore.libraryLimit;
-        $scope.increaseBy = viewMore.increaseBy;
-        $scope.showMore = viewMore.showMore;
     };
 
     $scope.showResearch = function () {

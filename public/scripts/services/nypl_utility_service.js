@@ -393,41 +393,6 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
     return utility;
 }
 
-function nyplLocationList() {
-    'use strict';
-
-    var config = {
-            showMore: true,
-            add_amount: 10,
-            libraryLimit: 10,
-            increaseBy: "10 more"
-        },
-        location_list = {};
-
-    location_list.init = function (options) {
-        _.extend(config, options);
-        return config;
-    };
-
-    location_list.viewMore = function () {
-        config.libraryLimit += config.add_amount;
-
-        if (config.libraryLimit === 80) {
-            config.add_amount = 12;
-            config.increaseBy = "All";
-        }
-
-        if (config.libraryLimit === 92) {
-            config.showMore = false;
-            // config.libraryLimit = 10;
-        }
-
-        return config;
-    };
-
-    return location_list;
-}
-
 function nyplAmenities() {
     'use strict';
 
@@ -499,6 +464,5 @@ function nyplAmenities() {
 angular
     .module('nypl_locations')
     .factory('nyplUtility', nyplUtility)
-    .factory('nyplLocationList', nyplLocationList)
     .factory('nyplAmenities', nyplAmenities)
     .factory('requestNotificationChannel', requestNotificationChannel);
