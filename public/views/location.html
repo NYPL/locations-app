@@ -11,7 +11,7 @@
     <div class="grid">
       <div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
         <div class="callout">
-          <todayshours class="todays-hours" hours="{{hoursToday(location.hours) | hoursTodayFormat:'short'}}" />
+          <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat:'short'}}" />
           <div id="location-hours" class="location-hours">
             <h2 class="flush--ends hdg">{{ 'REGULAR_HOURS' | translate }} <span id="toggle-hours" ng-click="expand = !expand" ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span></h2>
 
@@ -96,7 +96,7 @@
         <img class="img--left img--outline" data-ng-src="{{division.image}}"
           alt="Image for {{division.name}}" title="Image for {{division.name}}" style="height: 100px;"/>
         <h4 class=""><a data-ng-href="/#/division/{{division.slug}}">{{division.name}}</a></h4>
-        <p data-ng-if="division.hours">Hours Today: {{hoursToday(division.hours) | timeFormat}}</p>
+        <p data-ng-if="division.hours">Hours Today: {{division.divisionHoursToday | timeFormat}}</p>
       </div>
     </div>
   </div>
@@ -114,7 +114,7 @@
 
         </a>
         <h3 class=""><a data-ng-href="{{feature._links.web.href}}">{{feature.title}}</a></h3>
-        <div class="desc" data-ng-bind-html="returnHTML(feature.description)"></div>
+        <div class="desc" data-ng-bind-html="feature.description"></div>
       </div>
     </div>
   </div>

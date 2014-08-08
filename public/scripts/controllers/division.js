@@ -21,7 +21,7 @@ function DivisionCtrl($rootScope, $scope, breadcrumbs, division, nyplUtility) {
     $scope.breadcrumbs = breadcrumbs;
 
     if (division.hours) {
-        $scope.hoursToday = nyplUtility.hoursToday;
+        $scope.hoursToday = nyplUtility.hoursToday(division.hours);
     }
 
     $scope.calendar_link = nyplUtility.calendar_link;

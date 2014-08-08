@@ -593,12 +593,20 @@ function LocationCtrl(
         $scope.libraryAlert = nyplUtility.alerts(location.hours.exceptions);
     }
 
-    $scope.hoursToday = nyplUtility.hoursToday;
+    if (location.hours) {
+        $scope.hoursToday = nyplUtility.hoursToday(location.hours);
+    }
+
+    _.each(location._embedded.divisions, function (division) {
+        division.divisionHoursToday = nyplUtility.hoursToday(division.hours);
+    });
+
+    _.each(location._embedded.features, function (feature) {
+        feature.description = nyplUtility.returnHTML(feature.description);
+    });
 
     // Used for the Get Directions link to Google Maps
     $scope.locationDest = nyplUtility.getAddressString(location);
-
-    $scope.returnHTML = nyplUtility.returnHTML;
 }
 
 angular
