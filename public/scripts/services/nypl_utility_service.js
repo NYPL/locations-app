@@ -374,6 +374,22 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         return $sce.trustAsHtml(string);
     };
 
+    utility.divisionHasAppointment = function (id) {
+        switch (id) {
+        case "ARN":
+        case "RBK":
+        case "MSS":
+        case "BRG":
+        case "PRN":
+        case "PHG":
+        case "SPN":
+        case "CPS":
+            return true;
+        default:
+            return false;
+        }
+    };
+
     return utility;
 }
 

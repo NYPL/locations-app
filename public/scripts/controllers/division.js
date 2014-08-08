@@ -30,6 +30,8 @@ function DivisionCtrl($rootScope, $scope, breadcrumbs, division, nyplUtility) {
 
     $scope.division.social_media =
         nyplUtility.socialMediaColor(division.social_media);
+
+    $scope.has_appointment = nyplUtility.divisionHasAppointment(division.id);
 }
 
 angular
