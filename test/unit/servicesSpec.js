@@ -5,11 +5,12 @@ describe, expect, beforeEach, inject, it, angular, spyOn, afterEach */
 describe('NYPL Service Tests', function () {
   'use strict';
 
+
   /* 
-  * nypl_geocoder_service 
-  * Queries Google Maps Javascript API to geocode addresses
-  * and reverse geocode coordinates.
-  */
+   * nypl_geocoder_service 
+   * Queries Google Maps Javascript API to geocode addresses
+   * and reverse geocode coordinates.
+   */
   describe('nypl_geocoder_service', function () {
     var GeocoderMock, GeoCodingOK, GeoCodingError,
       LatLngOk, LatLngError,
@@ -488,13 +489,14 @@ describe('NYPL Service Tests', function () {
           expect(infowindow_open_mock).toHaveBeenCalled();
         });
     });
-
-
   });
   /* end nypl_geocoder_service called directly */
 
-
-  /* NYPL Utility */
+  /* 
+   * nyplUtility
+   *   An AngularJS service with functions for simple routine and model 
+   *   changes and logic that should not be in the controller.
+   */
   describe('nyplUtility', function () {
     var nyplUtility, date;
 
@@ -510,15 +512,15 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * nyplUtility.hoursToday(hours)
-    *   hours: An array with a 'regular' property that is
-    *     an array of objects with open and close times for
-    *     every day of the week starting from Sunday.
-    *
-    *   Returns an object with a two properties, 'today' and 
-    *   'tomorrow' that has the day and open/close times
-    */
-    describe('nyplUtility.hoursToday', function () {
+     * nyplUtility.hoursToday(hours)
+     *   hours: An array with a 'regular' property that is
+     *     an array of objects with open and close times for
+     *     every day of the week starting from Sunday.
+     *
+     *   Returns an object with a two properties, 'today' and 
+     *   'tomorrow' that has the day and open/close times
+     */
+    describe('nyplUtility.hoursToday()', function () {
       var hours = {
         regular: [
           {close: null, day: "Sun", open: null },
@@ -536,26 +538,28 @@ describe('NYPL Service Tests', function () {
         expect(angular.isFunction(nyplUtility.hoursToday)).toBe(true);
       });
 
-      it('should return today\'s and tomorrow\'s open and close times',
+      it('should return today\'s and tomorrow\'s open and close times ' +
+        '- mocking Wednesday',
         function () {
           // getDay() returns 3 to mock that today is Wednesday
           Date.prototype.getDay = function () { return 3; };
 
-          var today_tomorrow_object = nyplUtility.hoursToday(hours);
+          var todayTomorrowObject = nyplUtility.hoursToday(hours);
 
-          expect(JSON.stringify(today_tomorrow_object))
+          expect(JSON.stringify(todayTomorrowObject))
             .toEqual('{"today":{"day":"Wed","open":"10:00","close":"18:00"},' +
               '"tomorrow":{"day":"Thu","open":"11:00","close":"17:00"}}');
         });
 
-      it('should return today\'s and tomorrow\'s open and close times',
+      it('should return today\'s and tomorrow\'s open and close times ' +
+        '- mocking Friday',
         function () {
           // getDay() returns 5 to mock that today is Friday
           Date.prototype.getDay = function () { return 5; };
 
-          var today_tomorrow_object = nyplUtility.hoursToday(hours);
+          var todayTomorrowObject = nyplUtility.hoursToday(hours);
 
-          expect(JSON.stringify(today_tomorrow_object))
+          expect(JSON.stringify(todayTomorrowObject))
             .toEqual('{"today":{"day":"Fri","open":"10:00","close":"18:00"},' +
               '"tomorrow":{"day":"Sat","open":"09:00","close":"17:00"}}');
         });
@@ -566,16 +570,15 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * nyplUtility.getAddressString(location, nicePrint)
-    *   location: A location object.
-    *   nicePrint (optional): Boolean to return the address with 
-    *     HTML markup if true. Defaults to false.
-    *
-    *   Returns the location's address as either a simple string
-    *   or with markup if it will be used in a Google Map 
-    *   marker's infowindow.
-    */
-    describe('nyplUtility.getAddressString', function () {
+     * nyplUtility.getAddressString(location, nicePrint)
+     *   location: A location object.
+     *   nicePrint (optional): Boolean to return the address with HTML 
+     *   markup if true. Defaults to false.
+     *
+     *   Returns the location's address as either a simple string or with 
+     *   markup if it will be used in a Google Map marker's infowindow.
+     */
+    describe('nyplUtility.getAddressString()', function () {
       // The location object has more properties but these
       // are all that are needed for the service function
       var location = {
@@ -611,12 +614,12 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * nyplUtility.locationType(id)
-    *   id: The id of the location
-    *
-    *   Returns the type of library based on it's id.
-    */
-    describe('nyplUtility.locationType', function () {
+     * nyplUtility.locationType(id)
+     *   id: The id of the location
+     *
+     *   Returns the type of library based on its id.
+     */
+    describe('nyplUtility.locationType()', function () {
       var library_type;
 
       it('should return circulating for a regular branch', function () {
@@ -639,13 +642,13 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * nyplUtility.socialMediaColor(social_media)
-    *   social_media: Array of objects each with an 'href' and 'site'
-    *     property used to decide what color the icon should be
-    *
-    *   Returns a CSS text color class name.
-    */
-    describe('nyplUtility.socialMediaColor', function () {
+     * nyplUtility.socialMediaColor(social_media)
+     *   social_media: Array of objects each with an 'href' and 'site'
+     *     property used to decide what color the icon should be
+     *
+     *   Returns a CSS text color class name.
+     */
+    describe('nyplUtility.socialMediaColor()', function () {
       // The social media objects have more properties
       // but they are not needed for the service function
       var social_media = [
@@ -660,7 +663,7 @@ describe('NYPL Service Tests', function () {
 
       it('should add an icon class and a text color class', function () {
         var modified_social_media = nyplUtility.socialMediaColor(social_media),
-          social_media_with_classes = [
+          expected_social_media = [
             {href: "http://www.facebook.com/pages/115th-Street-Branch" +
               "/105612772837483", site: "facebook",
               classes: "icon-facebook blueDarkerText"},
@@ -675,20 +678,20 @@ describe('NYPL Service Tests', function () {
               classes: "icon-bibliocommons"}
           ];
 
-        expect(modified_social_media).toEqual(social_media_with_classes);
+        expect(modified_social_media).toEqual(expected_social_media);
       });
     });
 
     /*
-    * nyplUtility.alerts(alerts)
-    *   alerts: Array of alert objects that should have 'start', 'end',
-    *   and 'body' properties.
-    *
-    *   Returns a string which is the content that should be displayed
-    *   if the alert should be live (based on start and end date and 
-    *   the date we are checking);
-    */
-    describe('nyplUtility.alerts', function () {
+     * nyplUtility.alerts(alerts)
+     *   alerts: Array of alert objects or just one object that have 
+     *   'start', 'end', and 'body' properties.
+     *
+     *   Returns a string which is the content that should be displayed
+     *   if the alert should be live (based on start and end date and 
+     *   the date we are checking);
+     */
+    describe('nyplUtility.alerts()', function () {
       // The alert objects have more properties which are
       // not needed for the service function
       var alerts = [
@@ -700,13 +703,40 @@ describe('NYPL Service Tests', function () {
         {start: "2014-08-23T00:00:00-04:00", end: "2014-09-02T01:00:00-04:00",
           body: "The New York Public Library will be closed August 30th " +
             "through September 1st in observance of Labor Day"}
-      ];
+      ],
+        one_alert = {
+          start: "2014-08-23T00:00:00-04:00",
+          end: "2014-09-02T01:00:00-04:00",
+          description: "The New York Public Library will be closed August " +
+            "30th through September 1st in observance of Labor Day"
+        };
 
-      it('should display the Independence Day alert', function () {
-        date = new Date(2014, 5, 29);
-        // In the alerts, we call new Date multiple times with the dates for
-        // each alert, so if a date is passed, use that, else
-        // mock the current date
+      it('should display the Independence Day alert - array of alerts',
+        function () {
+          date = new Date(2014, 5, 29);
+          // In the alerts, we call new Date multiple times with the dates for
+          // each alert, so if a date is passed, use that, else
+          // mock the current date
+          var MockDate = Date,
+            display_alert;
+          Date = function (alertDate) {
+            if (alertDate) {
+              return new MockDate(alertDate);
+            }
+            return date;
+          };
+
+          display_alert = nyplUtility.alerts(alerts);
+
+          // The function only returns the body of the alert
+          expect(display_alert)
+            .toEqual("All units of the NYPL are closed July 4 - July 5.\n");
+
+          Date = MockDate;
+        });
+
+      it('should display the Labor Day alert - single object', function () {
+        date = new Date(2014, 7, 29);
         var MockDate = Date,
           display_alert;
         Date = function (alertDate) {
@@ -718,11 +748,12 @@ describe('NYPL Service Tests', function () {
 
         // The Independence Day alert dates have been modified so it can display
         // for testing purposes
-        display_alert = nyplUtility.alerts(alerts);
+        display_alert = nyplUtility.alerts(one_alert);
 
         // The function only returns the body of the alert
         expect(display_alert)
-          .toEqual("All units of the NYPL are closed July 4 - July 5.\n");
+          .toEqual("The New York Public Library will be closed August 30th " +
+            "through September 1st in observance of Labor Day");
 
         Date = MockDate;
       });
@@ -737,15 +768,15 @@ describe('NYPL Service Tests', function () {
     // });
 
     /*
-    * nyplUtility.calendar_link(type, event, location)
-    *   type: Either 'google' or 'yahoo'.
-    *   event: An event object.
-    *   location: A location object.
-    *
-    *   Returns a string which is used as a link to generate the
-    *   event on either Google or Yahoo calendar.
-    */
-    describe('nyplUtility.calendar_link', function () {
+     * nyplUtility.calendarLink(type, event, location)
+     *   type: Either 'google' or 'yahoo'.
+     *   event: An event object.
+     *   location: A location object.
+     *
+     *   Returns a string which is used as a link to generate the
+     *   event on either Google or Yahoo calendar.
+     */
+    describe('nyplUtility.calendarLink()', function () {
       var nypl_event = {
           title: "Make Music New York",
           start: "2014-06-21T18:00:00Z",
@@ -773,7 +804,7 @@ describe('NYPL Service Tests', function () {
       it('should return a url to create a Google Calendar given ' +
         'an event and address',
         function () {
-          var url = nyplUtility.calendar_link('google', nypl_event, location);
+          var url = nyplUtility.calendarLink('google', nypl_event, location);
 
           expect(url).toEqual("https://www.google.com/calendar/render?" +
             "action=template&text=Make Music New York&dates=" +
@@ -791,7 +822,7 @@ describe('NYPL Service Tests', function () {
       it('should return a url to create a Yahoo Calendar given ' +
         'an event and address',
         function () {
-          var url = nyplUtility.calendar_link('yahoo', nypl_event, location);
+          var url = nyplUtility.calendarLink('yahoo', nypl_event, location);
 
           expect(url).toEqual("https://calendar.yahoo.com/?v=60&TITLE=" +
             "Make Music New York&ST=20140621T180000Z&in_loc=Hudson Park " +
@@ -806,19 +837,19 @@ describe('NYPL Service Tests', function () {
         });
 
       it('should return an empty string if no event is given', function () {
-        expect(nyplUtility.calendar_link()).toEqual('');
+        expect(nyplUtility.calendarLink()).toEqual('');
       });
     });
 
     /*
-    * nyplUtility.ical_link(event, address)
-    *   event: An event object.
-    *   address: Address string of the location where the event is being held.
-    *
-    *   Creates a formatted string that is mostly compatible with ical.
-    *   Opens a new window so nothing is returned.
-    */
-    describe('nyplUtility.ical_link', function () {
+     * nyplUtility.icalLink(event, address)
+     *   event: An event object.
+     *   address: Address string of the location where the event is being held.
+     *
+     *   Creates a formatted string that is mostly compatible with ical.
+     *   Opens a new window so nothing is returned.
+     */
+    describe('nyplUtility.icalLink()', function () {
       var nypl_event = {
           title: "Crochet/ Knitting Circle",
           start: "2014-07-12T16:00:00Z",
@@ -839,14 +870,14 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * nyplUtility.id_location_search(locations, searchTerm)
-    *   locations: Array with location objects.
-    *   searchTerm: What the user searched for.
-    *
-    *   Returns an array with one object where the searchTerm matches
-    *   the 'id' property of one of the location objects in the locations array.
-    */
-    describe('nyplUtility.id_location_search', function () {
+     * nyplUtility.idLocationSearch(locations, searchTerm)
+     *   locations: Array with location objects.
+     *   searchTerm: What the user searched for.
+     *
+     *   Returns an array with one object where the searchTerm matches
+     *   the 'id' property of one of the location objects in the locations array.
+     */
+    describe('nyplUtility.idLocationSearch()', function () {
       it('should return the location object that matches the id that was ' +
         'searched',
         function () {
@@ -859,7 +890,7 @@ describe('NYPL Service Tests', function () {
             ],
             location;
 
-          location = nyplUtility.id_location_search(locations, search);
+          location = nyplUtility.idLocationSearch(locations, search);
           expect(location).toEqual([{id: 'BAR', name: 'Baychester Library'}]);
         });
 
@@ -874,21 +905,21 @@ describe('NYPL Service Tests', function () {
             ],
             location;
 
-          location = nyplUtility.id_location_search(locations, search);
+          location = nyplUtility.idLocationSearch(locations, search);
           // Should not match any ids in any library object.
           expect(location).toEqual([]);
         });
     });
 
     /*
-    * nyplUtility.location_search(locations, searchTerm)
-    *   locations: Array with location objects.
-    *   searchTerm: What the user searched for.
-    *
-    *   Returns an array with all the location objects that match what
-    *   the user searched for.
-    */
-    describe('nyplUtility.location_search', function () {
+     * nyplUtility.locationSearch(locations, searchTerm)
+     *   locations: Array with location objects.
+     *   searchTerm: What the user searched for.
+     *
+     *   Returns an array with all the location objects that match what
+     *   the user searched for.
+     */
+    describe('nyplUtility.locationSearch()', function () {
       it('should return an array with locations that match ' +
         'what was searched for',
         function () {
@@ -903,7 +934,7 @@ describe('NYPL Service Tests', function () {
             ],
             location;
 
-          location = nyplUtility.location_search(locations, search);
+          location = nyplUtility.locationSearch(locations, search);
           expect(location).toEqual([
             {id: 'BAR', name: 'Baychester Library'},
             {id: 'KP', name: 'Kips Bay Library'},
@@ -924,47 +955,48 @@ describe('NYPL Service Tests', function () {
             ],
             location;
 
-          location = nyplUtility.location_search(locations, search);
+          location = nyplUtility.locationSearch(locations, search);
           // Should not match any ids in any library object.
           expect(location).toEqual([]);
         });
     });
 
     /*
-    * nyplUtility.add_distance(locations, coords)
-    *   locations: An array with location objects
-    *   coords: Coordinates of the location that we are using to 
-    *     get distance data.
-    *
-    *   Returns the same locations array but with a distance
-    *   property for each location object in the array that was
-    *   calculated from the coords.
-    */
-    describe('nyplUtility.add_distance', function () {
+     * nyplUtility.addDistance(locations, coords)
+     *   locations: An array with location objects
+     *   coords: Coordinates of the location that we are using to 
+     *     get distance data.
+     *
+     *   Returns the same locations array but with a distance
+     *   property for each location object in the array that was
+     *   calculated from the coords.
+     */
+    describe('nyplUtility.addDistance()', function () {
       it('should add the distance of every library from Chelsea Piers',
         function () {
           // The coordinates of Chelsea Piers
           var coords = {
-            lat: 40.7483308,
-            long: -74.0084794
-          },
+              lat: 40.7483308,
+              long: -74.0084794
+            },
             locations = [
-              {id: 'AG', name: 'Aguilar Library', //4.56
+              {id: 'AG', name: 'Aguilar Library',
                 lat: 40.7483308, long: -74.0084794},
-              {id: 'AL', name: 'Allerton Library',// 11.13
+              {id: 'AL', name: 'Allerton Library',
                 lat: 40.866, long: -73.8632},
-              {id: 'BAR', name: 'Baychester Library', //12.6
+              {id: 'BAR', name: 'Baychester Library',
                 lat: 40.8711, long: -73.8305},
-              {id: 'BLC', name: 'Bronx Library Center', //9.94
+              {id: 'BLC', name: 'Bronx Library Center',
                 lat: 40.8634, long: -73.8944},
-              {id: 'KP', name: 'Kips Bay Library', //1.54
+              {id: 'KP', name: 'Kips Bay Library',
                 lat: 40.7438, long: -73.9797},
-              {id: 'PM', name: 'Pelham Bay Library', //11.54
+              {id: 'PM', name: 'Pelham Bay Library',
                 lat: 40.8336, long: -73.828}
             ],
             updatedLocations;
 
-          updatedLocations = nyplUtility.add_distance(locations, coords);
+          updatedLocations = nyplUtility.addDistance(locations, coords);
+
           expect(updatedLocations).toEqual([
             {id: 'AG', name: 'Aguilar Library',
               lat: 40.7483308, long: -74.0084794, distance: 0.01}, //4.56
@@ -983,13 +1015,13 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * nyplUtility.check_distance(locations)
-    *   locations: Array with location objects
-    *
-    *   Returns true if the minimum distance from the user or the location
-    *   that was search is more than 25 miles, false otherwise.
-    */
-    describe('nyplUtility.check_distance', function () {
+     * nyplUtility.checkDistance(locations)
+     *   locations: Array with location objects
+     *
+     *   Returns true if the minimum distance from the user or the location
+     *   that was search is more than 25 miles, false otherwise.
+     */
+    describe('nyplUtility.checkDistance()', function () {
       it('should return false because the minimum distance is less ' +
         'than 25 miles',
         function () {
@@ -1008,7 +1040,7 @@ describe('NYPL Service Tests', function () {
               lat: 40.8336, long: -73.828, distance: 11.13}
           ];
 
-          expect(nyplUtility.check_distance(locations)).toBe(false);
+          expect(nyplUtility.checkDistance(locations)).toBe(false);
         });
 
       it('should return true because the minimum distance is more ' +
@@ -1029,17 +1061,41 @@ describe('NYPL Service Tests', function () {
               lat: 40.8336, long: -73.828, distance: 31.13}
           ];
 
-          expect(nyplUtility.check_distance(locations)).toBe(true);
+          expect(nyplUtility.checkDistance(locations)).toBe(true);
         });
+    });
+
+    /*
+     * nyplUtility.searchWordFilter()
+     *
+     */
+    describe('nyplUtility.searchWordFilter()', function () {
+
+    });
+
+    /*
+     * nyplUtility.returnHTML()
+     *
+     */
+    describe('nyplUtility.returnHTML()', function () {
+
+    });
+
+    /*
+     * nyplUtility.divisionHasAppointment()
+     *
+     */
+    describe('nyplUtility.divisionHasAppointment()', function () {
+
     });
 
   }); /* End nyplUtility service */
 
   /*
-  * nyplLocationList is a service that keeps track of the 'pagination'
-  * that occurs on the homepage for the list view. Showing 10 more
-  * libraries when the 'Show more' button is clicked.
-  */
+   * nyplLocationList is a service that keeps track of the 'pagination'
+   * that occurs on the homepage for the list view. Showing 10 more
+   * libraries when the 'Show more' button is clicked.
+   */
   describe('nyplLocationList', function () {
     var nyplLocationList;
 
@@ -1051,9 +1107,9 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-    * nyplLocationList.init(settings)
-    *   settings: Object with properties to extend the default
-    */
+     * nyplLocationList.init(settings)
+     *   settings: Object with properties to extend the default
+     */
     it('should create and extend the config object', function () {
       var config = nyplLocationList.init();
 
@@ -1084,17 +1140,17 @@ describe('NYPL Service Tests', function () {
     });
 
     /* 
-    * nyplLocationList.view_more()
-    *   Updates the limit of libraries that can be shown in the list as
-    *   well as the text in the button.
-    */
-    it('should update the settings when the view_more function is called',
+     * nyplLocationList.viewMore()
+     *   Updates the limit of libraries that can be shown in the list as
+     *   well as the text in the button.
+     */
+    it('should update the settings when the viewMore function is called',
       function () {
         var config, i;
 
         nyplLocationList.init();
         // The 'show more' button was clicked
-        config = nyplLocationList.view_more();
+        config = nyplLocationList.viewMore();
         expect(config).toEqual({
           showMore: true,
           add_amount: 10,
@@ -1104,7 +1160,7 @@ describe('NYPL Service Tests', function () {
 
         // Click the show more button 6 more times
         for (i = 0; i < 6; i += 1) {
-          config = nyplLocationList.view_more();
+          config = nyplLocationList.viewMore();
         }
         expect(config).toEqual({
           showMore: true,
@@ -1114,7 +1170,7 @@ describe('NYPL Service Tests', function () {
         });
 
         // The last click
-        config = nyplLocationList.view_more();
+        config = nyplLocationList.viewMore();
         expect(config).toEqual({
           showMore: false,
           add_amount: 12,
@@ -1123,6 +1179,25 @@ describe('NYPL Service Tests', function () {
         });
       });
   }); /* End nyplLocationList */
+
+  /*
+   * nyplAmenities
+   */
+  describe('nyplLocationList', function () {
+    /*
+     * nyplAmenities.addIcon()
+     */
+    describe('nyplLocationList.addIcon()', function () {
+      
+    });
+
+    /*
+     * nyplAmenities.addCategoryIcon()
+     */
+    describe('nyplLocationList.addCategoryIcon()', function () {
+      
+    });
+  }); /* End nyplAmenities */
 
 });
 

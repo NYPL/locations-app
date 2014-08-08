@@ -225,7 +225,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         }
     };
 
-    utility.calendar_link = function (type, event, location) {
+    utility.calendarLink = function (type, event, location) {
         if (!type || !event) {
             return '';
         }
@@ -266,7 +266,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         return calendar_link;
     };
 
-    utility.ical_link = function (event, address) {
+    utility.icalLink = function (event, address) {
         if (!event || !address) {
             return '';
         }
@@ -292,7 +292,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
             encodeURI(icsMSG));
     };
 
-    utility.id_location_search = function (locations, searchTerm) {
+    utility.idLocationSearch = function (locations, searchTerm) {
         var IDFilter = [];
 
         // search for ID
@@ -309,7 +309,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         return IDFilter;
     };
 
-    utility.location_search = function (locations, searchTerm) {
+    utility.locationSearch = function (locations, searchTerm) {
         var lazyFilter =
                 $filter('filter')(locations, searchTerm),
             strictFilter =
@@ -330,7 +330,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
     };
 
     // Iterate through lon/lat and calculate distance
-    utility.add_distance = function (locations, coords) {
+    utility.addDistance = function (locations, coords) {
         var search = {
             latitude: coords.latitude || coords.lat,
             longitude: coords.longitude || coords.long
@@ -349,7 +349,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         return locations;
     };
 
-    utility.check_distance = function (locations) {
+    utility.checkDistance = function (locations) {
         var distanceArray = _.pluck(locations, 'distance');
 
         if (_.min(distanceArray) > 25) {
@@ -358,7 +358,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         return false;
     };
 
-    utility.search_word_filter = function (query) {
+    utility.searchWordFilter = function (query) {
         var words = ['branch'];
 
         _.each(words, function (word) {
@@ -409,7 +409,7 @@ function nyplLocationList() {
         return config;
     };
 
-    location_list.view_more = function () {
+    location_list.viewMore = function () {
         config.libraryLimit += config.add_amount;
 
         if (config.libraryLimit === 80) {
@@ -433,7 +433,7 @@ function nyplAmenities() {
 
     var amenities = {};
 
-    amenities.add_icon = function (amenities, default_icon) {
+    amenities.addIcon = function (amenities, default_icon) {
         var icon = default_icon || '';
         _.each(amenities, function (amenity) {
             // console.log(amenity);
@@ -463,7 +463,7 @@ function nyplAmenities() {
         return amenities;
     };
 
-    amenities.add_category_icon = function (amenities) {
+    amenities.addCategoryIcon = function (amenities) {
         var self = this;
         _.each(amenities, function (amenityCategory) {
             var icon = '';
@@ -487,7 +487,7 @@ function nyplAmenities() {
 
             amenityCategory.icon = icon;
             amenityCategory.amenities =
-                self.add_icon(amenityCategory.amenities, icon);
+                self.addIcon(amenityCategory.amenities, icon);
         });
 
         return amenities;
