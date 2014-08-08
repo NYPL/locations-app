@@ -10,7 +10,7 @@
 
       --><div class="grid__item one-whole lap-and-up-one-third">
         <div class="callout">
-          <todayshours hours="{{hoursToday(location.hours) | hoursTodayFormat:'short'}}" />
+          <todayshours hours="{{hoursToday | hoursTodayFormat:'short'}}" />
         </div>
       </div><!--
 
@@ -69,11 +69,11 @@
           </event-registration>
         </div><!--
         --><div class="">
-          <a data-ng-href="{{calendar_link('google', event, location)}}"
+          <a data-ng-href="{{calendarLink('google', event, location)}}"
             target="_blank" rel="nofollow" class="icon-calendar google_link">Google</a>
-          <a data-ng-href="{{calendar_link('yahoo', event, location)}}"
+          <a data-ng-href="{{calendarLink('yahoo', event, location)}}"
             target="_blank" rel="nofollow" class="icon-calendar yahoo_link">Yahoo</a>
-          <a href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" download="nypl_event.ics" 
+          <a href="" data-ng-click="icalLink(event, location.street_address)" target="_blank" download="nypl_event.ics" 
             class="icon-calendar" rel="nofollow">
             iCal</a>
         </div>

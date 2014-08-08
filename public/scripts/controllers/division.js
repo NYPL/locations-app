@@ -21,11 +21,11 @@ function DivisionCtrl($rootScope, $scope, breadcrumbs, division, nyplUtility) {
     $scope.breadcrumbs = breadcrumbs;
 
     if (division.hours) {
-        $scope.hoursToday = nyplUtility.hoursToday;
+        $scope.hoursToday = nyplUtility.hoursToday(division.hours);
     }
 
-    $scope.calendar_link = nyplUtility.calendar_link;
-    $scope.ical_link = nyplUtility.ical_link;
+    $scope.calendarLink = nyplUtility.calendarLink;
+    $scope.icalLink = nyplUtility.icalLink;
     $scope.siteWideAlert = nyplUtility.alerts(division._embedded.alerts);
 
     $scope.division.social_media =

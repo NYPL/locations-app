@@ -5,6 +5,7 @@
 // declare the directive that will show and hide the loading widget
 function loadingWidget(requestNotificationChannel) {
     'use strict';
+
     return {
         restrict: "A",
         link: function (scope, element) {
@@ -183,7 +184,6 @@ function nyplLibraryAlert() {
     };
 }
 
-
 /* 
 ** Show/Hide collapsible animated directive
 ** Usage: <div collapse="name of var toggled" duration="time in ms"
@@ -192,6 +192,7 @@ function nyplLibraryAlert() {
 */
 function collapse() {
     'use strict';
+
     function link($scope, element, attributes) {
         var exp = attributes.collapse,
             class_name = (attributes.className || "open"),
@@ -212,13 +213,13 @@ function collapse() {
                 }
                 // Show element.
                 if (newVal) {
-                    element.stop(true, true).
-                        slideDown(duration).
-                        addClass(class_name);
+                    element.stop(true, true)
+                        .slideDown(duration)
+                        .addClass(class_name);
                 } else {
-                    element.stop(true, true).
-                        slideUp(duration).
-                        removeClass(class_name);
+                    element.stop(true, true)
+                        .slideUp(duration)
+                        .removeClass(class_name);
                 }
             }
         );

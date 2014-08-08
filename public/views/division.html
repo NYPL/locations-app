@@ -9,7 +9,7 @@
       <!-- Division Hours -->
       <div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
         <div class="callout">
-          <todayshours hours="{{hoursToday(division.hours) | hoursTodayFormat:'short'}}" />
+          <todayshours hours="{{hoursToday | hoursTodayFormat:'short'}}" />
           <div id="location-hours" class="location-hours" data-ng-if="division.hours">
             <h2 class="flush--ends hdg">
               {{ 'REGULAR_HOURS' | translate }} 
@@ -110,11 +110,11 @@
           </event-registration>
         </div><!--
         --><div class="">
-          <a data-ng-href="{{calendar_link('google', event, location)}}"
+          <a data-ng-href="{{calendarLink('google', event, location)}}"
             target="_blank" rel="nofollow" class="icon-calendar google_link">Google</a>
-          <a data-ng-href="{{calendar_link('yahoo', event, location)}}"
+          <a data-ng-href="{{calendarLink('yahoo', event, location)}}"
             target="_blank" rel="nofollow" class="icon-calendar yahoo_link">Yahoo</a>
-          <a href="" data-ng-click="ical_link(event, location.street_address)" target="_blank" download="nypl_event.ics" 
+          <a href="" data-ng-click="icalLink(event, location.street_address)" target="_blank" download="nypl_event.ics" 
             class="icon-calendar" rel="nofollow">
             iCal</a>
         </div>

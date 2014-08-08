@@ -225,7 +225,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         }
     };
 
-    utility.calendar_link = function (type, event, location) {
+    utility.calendarLink = function (type, event, location) {
         if (!type || !event) {
             return '';
         }
@@ -266,7 +266,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         return calendar_link;
     };
 
-    utility.ical_link = function (event, address) {
+    utility.icalLink = function (event, address) {
         if (!event || !address) {
             return '';
         }
@@ -292,7 +292,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
             encodeURI(icsMSG));
     };
 
-    utility.id_location_search = function (locations, searchTerm) {
+    utility.idLocationSearch = function (locations, searchTerm) {
         var IDFilter = [];
 
         // search for ID
@@ -309,7 +309,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         return IDFilter;
     };
 
-    utility.location_search = function (locations, searchTerm) {
+    utility.locationSearch = function (locations, searchTerm) {
         var lazyFilter =
                 $filter('filter')(locations, searchTerm),
             strictFilter =
@@ -330,7 +330,11 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
     };
 
     // Iterate through lon/lat and calculate distance
-    utility.add_distance = function (locations, coords) {
+    utility.addDistance = function (locations, coords) {
+        if (!locations) {
+            return [];
+        }
+
         var search = {
             latitude: coords.latitude || coords.lat,
             longitude: coords.longitude || coords.long
@@ -349,7 +353,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         return locations;
     };
 
-    utility.check_distance = function (locations) {
+    utility.checkDistance = function (locations) {
         var distanceArray = _.pluck(locations, 'distance');
 
         if (_.min(distanceArray) > 25) {
@@ -358,11 +362,11 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         return false;
     };
 
-    utility.search_word_filter = function (query) {
+    utility.searchWordFilter = function (query) {
         var words = ['branch'];
 
         _.each(words, function (word) {
-            query = query.replace(word, "");
+            query = query.replace(word, '');
         });
 
         return query;
@@ -370,8 +374,8 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
 
     // Use ngSanitize to allow markup.
     // Must use ng-bind-html as attribute in the element.
-    utility.returnHTML = function (string) {
-        return $sce.trustAsHtml(string);
+    utility.returnHTML = function (html) {
+        return $sce.trustAsHtml(html);
     };
 
     utility.divisionHasAppointment = function (id) {
@@ -393,47 +397,12 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
     return utility;
 }
 
-function nyplLocationList() {
-    'use strict';
-
-    var config = {
-            showMore: true,
-            add_amount: 10,
-            libraryLimit: 10,
-            increaseBy: "10 more"
-        },
-        location_list = {};
-
-    location_list.init = function (options) {
-        _.extend(config, options);
-        return config;
-    };
-
-    location_list.view_more = function () {
-        config.libraryLimit += config.add_amount;
-
-        if (config.libraryLimit === 80) {
-            config.add_amount = 12;
-            config.increaseBy = "All";
-        }
-
-        if (config.libraryLimit === 92) {
-            config.showMore = false;
-            // config.libraryLimit = 10;
-        }
-
-        return config;
-    };
-
-    return location_list;
-}
-
 function nyplAmenities() {
     'use strict';
 
     var amenities = {};
 
-    amenities.add_icon = function (amenities, default_icon) {
+    amenities.addIcon = function (amenities, default_icon) {
         var icon = default_icon || '';
         _.each(amenities, function (amenity) {
             // console.log(amenity);
@@ -463,7 +432,7 @@ function nyplAmenities() {
         return amenities;
     };
 
-    amenities.add_category_icon = function (amenities) {
+    amenities.addCategoryIcon = function (amenities) {
         var self = this;
         _.each(amenities, function (amenityCategory) {
             var icon = '';
@@ -487,7 +456,7 @@ function nyplAmenities() {
 
             amenityCategory.icon = icon;
             amenityCategory.amenities =
-                self.add_icon(amenityCategory.amenities, icon);
+                self.addIcon(amenityCategory.amenities, icon);
         });
 
         return amenities;
@@ -499,6 +468,5 @@ function nyplAmenities() {
 angular
     .module('nypl_locations')
     .factory('nyplUtility', nyplUtility)
-    .factory('nyplLocationList', nyplLocationList)
     .factory('nyplAmenities', nyplAmenities)
     .factory('requestNotificationChannel', requestNotificationChannel);

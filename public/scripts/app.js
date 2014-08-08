@@ -135,7 +135,7 @@ nypl_locations.config([
                     location: LoadLocation
                 }
             })
-            .when('/:symbol/events', {
+            .when('/:location/events', {
                 templateUrl: '/views/events.html',
                 controller: 'LocationCtrl',
                 controllerAs: 'eventCtrl',
