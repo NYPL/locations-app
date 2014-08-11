@@ -406,12 +406,12 @@ describe('Locations: homepage', function () {
                         expect(
                             landingPage.locations
                                 .last().findElement(by.css('.p-org')).getText()
-                        ).toEqual('Mosholu Library');
+                        ).toEqual('Tottenville Library');
 
                         expect(
                             landingPage.locations.last()
                                 .findElement(by.css('.distance')).getText()
-                        ).toEqual('Distance: 1.65 miles');
+                        ).toEqual('Distance: 30.4 miles');
                     });
 
                 describe('Map View', function () {
@@ -615,7 +615,7 @@ describe('Locations: homepage', function () {
         describe('List View', function () {
             it('should filter by research libraries when clicked', function () {
                 var only_research = landingPage.onlyResearch;
-                expect(landingPage.locations.count()).toBe(10);
+                expect(landingPage.locations.count()).toBe(92);
                 expect(only_research.getText()).toEqual('research libraries');
 
                 only_research.click();
@@ -623,8 +623,6 @@ describe('Locations: homepage', function () {
 
                 expect(landingPage.locations.count()).toBe(4);
                 expect(only_research.getText()).toEqual('all branches');
-                expect(landingPage.showing.getText())
-                    .toEqual('Showing 4 of 4 Locations');
             });
 
             it('should revert when the search input \'x\' is clicked',
@@ -633,14 +631,10 @@ describe('Locations: homepage', function () {
                     only_research.click();
 
                     expect(landingPage.locations.count()).toBe(4);
-                    expect(landingPage.showing.getText())
-                        .toEqual('Showing 4 of 4 Locations');
 
                     landingPage.clearSearch.click();
 
-                    expect(landingPage.locations.count()).toBe(10);
-                    expect(landingPage.showing.getText())
-                        .toEqual('Showing 10 of 92 Locations');
+                    expect(landingPage.locations.count()).toBe(92);
                     expect(landingPage.showMore.isPresent()).toBe(true);
                 });
 
@@ -652,11 +646,9 @@ describe('Locations: homepage', function () {
                     expect(only_research.getText()).toEqual('all branches');
 
                     only_research.click();
-                    expect(landingPage.locations.count()).toBe(10);
+                    expect(landingPage.locations.count()).toBe(92);
                     expect(only_research.getText())
                         .toEqual('research libraries');
-                    expect(landingPage.showing.getText())
-                        .toEqual('Showing 10 of 92 Locations');
                 });
 
             it('should list the four research libraries', function () {
@@ -900,112 +892,6 @@ describe('Locations: homepage', function () {
                         distance: 'Distance: 7.23 miles'
                     }
                 ]);
-            });
-        });
-    });
-
-    describe('Location list tracker', function () {
-
-        describe('List View - has show more button', function () {
-            it('should show 10 locations by default', function () {
-                expect(landingPage.locations.count()).toBe(10);
-                expect(landingPage.showing.getText())
-                    .toEqual('Showing 10 of 92 Locations');
-                expect(landingPage.showMore.getText()).toEqual('Show 10 more');
-            });
-
-            it('should show the next 10 locations when the "show more" ' +
-                'button is clicked',
-                function () {
-                    landingPage.showMore.click();
-                    expect(landingPage.locations.count()).toBe(20);
-                    expect(landingPage.showing.getText())
-                        .toEqual('Showing 20 of 92 Locations');
-                });
-
-            it('should say "Show All" after showing 80 locations', function () {
-                // Click the 'Show more' button 7 times.
-                landingPage.clickShowMore(7);
-
-                expect(landingPage.showing.getText())
-                    .toEqual('Showing 80 of 92 Locations');
-                expect(landingPage.showMore.getText()).toEqual('Show All');
-            });
-
-            it('should revert back to default after clicking on the ' +
-                '\'x\' button in the searchbox and show only 10 locations',
-                function () {
-                    // Random
-                    landingPage.clickShowMore(3);
-
-                    expect(landingPage.locations.count()).toBe(40);
-                    expect(landingPage.showing.getText())
-                        .toEqual('Showing 40 of 92 Locations');
-
-                    landingPage.clearSearch.click();
-
-                    expect(landingPage.locations.count()).toBe(10);
-                    expect(landingPage.showing.getText())
-                        .toEqual('Showing 10 of 92 Locations');
-                });
-
-            it('should say show all 92 locations and remove the button ' +
-                'after the button is clicked 8 times',
-                function () {
-                    // Click the 'Show more' button 8 times.
-                    landingPage.clickShowMore(8);
-
-                    expect(landingPage.showing.getText())
-                        .toEqual('Showing 92 of 92 Locations');
-                    expect(landingPage.showMore.isPresent()).toBe(false);
-                });
-
-            it('should list only four for research libraries after ' +
-                'clicking the research branches button',
-                function () {
-                    var only_r = landingPage.onlyResearch;
-                    only_r.click();
-
-                    expect(landingPage.locations.count()).toBe(4);
-                    expect(landingPage.showing.getText())
-                        .toEqual('Showing 4 of 4 Locations');
-                });
-
-            it('should revert to 10 locations after toggling research button',
-                function () {
-                    var only_r = landingPage.onlyResearch;
-
-                    landingPage.showMore.click();
-                    expect(landingPage.locations.count()).toBe(20);
-                    expect(landingPage.showing.getText())
-                        .toEqual('Showing 20 of 92 Locations');
-
-                    only_r.click();
-
-                    expect(landingPage.locations.count()).toBe(4);
-
-                    only_r.click();
-
-                    expect(landingPage.locations.count()).toBe(10);
-                    expect(landingPage.showing.getText())
-                        .toEqual('Showing 10 of 92 Locations');
-                });
-        });
-
-        describe('Map View - shows all locations and no button', function () {
-            beforeEach(function () {
-                landingPage.mapViewBtn.click();
-            });
-
-            it('should show all locations by default', function () {
-                expect(landingPage.locations.count()).toBe(92);
-                expect(landingPage.showing.isPresent()).toBe(false);
-            });
-
-            it('should show the four research branches', function () {
-                landingPage.onlyResearch.click();
-                expect(landingPage.locations.count()).toBe(4);
-                expect(landingPage.showing.isPresent()).toBe(false);
             });
         });
     });
