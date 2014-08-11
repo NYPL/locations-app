@@ -59,6 +59,11 @@ function nyplCoordinatesService($q, $window) {
             defer.reject(new Error("Unknown error."));
             break;
           }
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 600000
         }
       );
       // }
