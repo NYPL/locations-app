@@ -4,7 +4,7 @@
 var nypl_locations = angular.module('nypl_locations', [
     'ngResource',
     'ngSanitize',
-    'ngRoute',
+    'ui.router',
     'ngAnimate',
     'locationService',
     'coordinateService',
@@ -20,10 +20,10 @@ var nypl_locations = angular.module('nypl_locations', [
 nypl_locations.constant('_', window._);
 
 nypl_locations.config([
-    '$routeProvider',
     '$locationProvider',
     '$translateProvider',
-    function ($routeProvider, $locationProvider, $translateProvider) {
+    '$stateProvider',
+    function ($locationProvider, $translateProvider, $stateProvider) {
         'use strict';
 
         // uses the HTML5 History API, remove hash (need to test)
@@ -85,16 +85,16 @@ nypl_locations.config([
                 });
         }
 
-        $routeProvider
-            .when('/404', {
+        $stateProvider
+            .state('/404', {
                 templateUrl: '/views/404.html'
             })
-            .when('/', {
+            .state('/', {
                 templateUrl: 'views/locations.html',
                 controller: 'LocationsCtrl',
                 label: 'Locations'
             })
-            .when('/division/:division', {
+            .state('/division/:division', {
                 templateUrl: 'views/division.html',
                 controller: 'DivisionCtrl',
                 label: 'Division',
@@ -102,7 +102,7 @@ nypl_locations.config([
                     division: LoadDivision
                 }
             })
-            .when('/amenities', {
+            .state('/amenities', {
                 templateUrl: '/views/amenities.html',
                 controller: 'AmenitiesCtrl',
                 label: 'Amenities',
@@ -110,7 +110,7 @@ nypl_locations.config([
                     amenities: Amenities
                 }
             })
-            .when('/amenities/:amenity', {
+            .state('/amenities/:amenity', {
                 templateUrl: 'views/amenities.html',
                 controller: 'AmenityCtrl',
                 label: 'Amenities',
@@ -118,7 +118,7 @@ nypl_locations.config([
                     amenity: Amenities
                 }
             })
-            .when('/amenities/location/:location', {
+            .state('/amenities/location/:location', {
                 templateUrl: 'views/amenitiesAtLibrary.html',
                 controller: 'AmenitiesAtLibraryCtrl',
                 label: 'Location',
@@ -126,7 +126,7 @@ nypl_locations.config([
                     location: AmenitiesAtLibrary
                 }
             })
-            .when('/:location', {
+            .state('/:location', {
                 templateUrl: 'views/location.html',
                 controller: 'LocationCtrl',
                 controllerAs: 'ctrl',
@@ -135,7 +135,7 @@ nypl_locations.config([
                     location: LoadLocation
                 }
             })
-            .when('/:location/events', {
+            .state('/:location/events', {
                 templateUrl: '/views/events.html',
                 controller: 'LocationCtrl',
                 controllerAs: 'eventCtrl',
@@ -144,9 +144,9 @@ nypl_locations.config([
                     location: LoadLocation
                 }
             })
-            .otherwise({
-                redirectTo: '/404'
-            });
+            // .otherwise({
+            //     redirectTo: '/404'
+            // });
     }
 ]);
 
