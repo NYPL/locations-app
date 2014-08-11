@@ -1,7 +1,7 @@
 /*jslint indent: 4, maxlen: 80, nomen: true */
 /*globals nypl_locations */
 
-function DivisionCtrl($rootScope, $scope, breadcrumbs, division, nyplUtility) {
+function DivisionCtrl($rootScope, $scope, division, nyplUtility) {
     'use strict';
 
     var homeUrl,
@@ -10,15 +10,15 @@ function DivisionCtrl($rootScope, $scope, breadcrumbs, division, nyplUtility) {
     $scope.division = division;
     $rootScope.title = division.name;
 
-    breadcrumbs.options = { "Division": division.name };
-    homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
-    locationUrl = {
-        label: division.location_name,
-        path: '#/' + division.location_slug
-    };
-    breadcrumbs.breadcrumbs.unshift(homeUrl);
-    breadcrumbs.breadcrumbs.splice(2, 0, locationUrl);
-    $scope.breadcrumbs = breadcrumbs;
+    // breadcrumbs.options = { "Division": division.name };
+    // homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
+    // locationUrl = {
+    //     label: division.location_name,
+    //     path: '#/' + division.location_slug
+    // };
+    // breadcrumbs.breadcrumbs.unshift(homeUrl);
+    // breadcrumbs.breadcrumbs.splice(2, 0, locationUrl);
+    // $scope.breadcrumbs = breadcrumbs;
 
     if (division.hours) {
         $scope.hoursToday = nyplUtility.hoursToday(division.hours);

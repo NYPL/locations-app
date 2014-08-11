@@ -82,7 +82,7 @@
             <li class="icon-book"><span>Lending</span></li>
             <li class="icon-box-add"><span>Book drop</span></li>
           </ul> 
-          <a id="all_amenities" data-ng-href="/#/amenities/location/{{location.id}}" class="read-more">{{ 'ALL_AMENITIES' | translate }}</a> 
+          <a id="all_amenities" data-ui-sref="amenities-at-location({location: location.id})" class="read-more">{{ 'ALL_AMENITIES' | translate }}</a> 
         </div>
       </div>
     </div>
@@ -95,7 +95,7 @@
       <div class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='division in location._embedded.divisions'>
         <img class="img--left img--outline" data-ng-src="{{division.image}}"
           alt="Image for {{division.name}}" title="Image for {{division.name}}" style="height: 100px;"/>
-        <h4 class=""><a data-ng-href="/#/division/{{division.slug}}">{{division.name}}</a></h4>
+        <h4 class=""><a data-ng-href="division({division: division.slug})">{{division.name}}</a></h4>
         <p data-ng-if="division.hours">Hours Today: {{division.divisionHoursToday | timeFormat}}</p>
       </div>
     </div>
@@ -150,7 +150,7 @@
     </ul>   
       
     <div>
-      <a class="read-more" data-ng-href="/#/{{location.slug}}/events">
+      <a class="read-more" data-ui-sref="events({location: location.slug})">
         {{ 'MORE_EVENTS' | translate }}
       </a>
     </div>
@@ -189,7 +189,7 @@
           </ul>
  
           <div>
-            <a class="read-more" data-ng-href="/#/amenities/location/{{location.id}}">
+            <a class="read-more" data-ui-sref="amenities-at-location({location: location.id})">
               {{ 'ALL_AMENITIES' | translate }}
             </a>
           </div>

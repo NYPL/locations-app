@@ -511,7 +511,7 @@ function LocationCtrl(
     $rootScope,
     $scope,
     $timeout,
-    breadcrumbs,
+    // breadcrumbs,
     location,
     nyplCoordinatesService,
     nyplUtility

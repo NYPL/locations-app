@@ -115,7 +115,7 @@ function scrolltop($window) {
     'use strict';
 
     return function (scope) {
-        scope.$on('$routeChangeStart', function () {
+        scope.$on('$stateChangeStart', function () {
             $window.scrollTo(0, 0);
         });
     };

@@ -14,7 +14,7 @@
       <div class="grid__item one-whole lap-and-up-two-thirds">
         <ul data-ng-if="amenities" class="amenity-category-list">
           <li data-ng-repeat="amenity in amenities">
-            <a data-ng-href="/#/amenities/{{amenity._id}}">{{amenity.name}}</a>
+            <a data-ui-sref="amenity({amenity: amenity.id})">{{amenity.name}}</a>
             <span data-ng-if="amenity._links.info">
               <a data-ng-href="{{amenity._links.info.href}}" class="btn btn--natural whiteText">Information</a>
             </span>
@@ -26,7 +26,7 @@
 
         <ul data-ng-if="locations" class="amenity-location-list">
           <li data-ng-repeat="location in locations">
-            <a data-ng-href="/#/{{location.slug}}">{{location.name}}</a>
+            <a data-ui-sref="location({location: location.slug})">{{location.name}}</a>
           </li>
         </ul>
       </div>
