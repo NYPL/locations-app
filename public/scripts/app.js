@@ -2,7 +2,6 @@
 /*globals angular, window, headerScripts */
 
 var nypl_locations = angular.module('nypl_locations', [
-    'ngResource',
     'ngSanitize',
     'ui.router',
     'ngAnimate',
@@ -13,8 +12,8 @@ var nypl_locations = angular.module('nypl_locations', [
     'nyplNavigation',
     'angulartics',
     'angulartics.google.analytics',
-    'pascalprecht.translate'
-    // 'ng-breadcrumbs'
+    'pascalprecht.translate',
+    'ncy-angular-breadcrumb'
 ]);
 
 nypl_locations.constant('_', window._);
@@ -24,11 +23,13 @@ nypl_locations.config([
     '$translateProvider',
     '$stateProvider',
     '$urlRouterProvider',
+    '$breadcrumbProvider',
     function (
         $locationProvider,
         $translateProvider,
         $stateProvider,
-        $urlRouterProvider
+        $urlRouterProvider,
+        $breadcrumbProvider
     ) {
         'use strict';
 
@@ -91,12 +92,40 @@ nypl_locations.config([
                 });
         }
 
-        // $urlRouterProvider.otherwise('/');
+        $breadcrumbProvider.setOptions({
+            template: 'bootstrap2'
+        });
+
+        // $urlRouterProvider.when('/list', '/');
+        $urlRouterProvider.otherwise('/');
         $stateProvider
             .state('home', {
                 url: '/',
+                abstract: true,
                 templateUrl: 'views/locations.html',
                 controller: 'LocationsCtrl',
+                label: 'Locations',
+                data: {
+                    ncyBreadcrumbLabel: 'Locations',
+                    // ncyBreadcrumbSkip: true
+                }
+            })
+            .state('home.index', {
+                templateUrl: 'views/location-list-view.html',
+                url: '',
+                // controller: 'LocationsCtrl',
+                label: 'Locations'
+            })
+            .state('home.list', {
+                templateUrl: 'views/location-list-view.html',
+                url: 'list',
+                // controller: 'LocationsCtrl',
+                label: 'Locations'
+            })
+            .state('home.map', {
+                templateUrl: 'views/location-map-view.html',
+                url: 'map',
+                controller: 'MapCtrl',
                 label: 'Locations'
             })
             .state('division', {
@@ -106,6 +135,9 @@ nypl_locations.config([
                 label: 'Division',
                 resolve: {
                     division: LoadDivision
+                },
+                data: {
+                    ncyBreadcrumbLabel: ''
                 }
             })
             .state('amenities', {
@@ -143,6 +175,10 @@ nypl_locations.config([
                 // label: 'Location',
                 resolve: {
                     location: LoadLocation
+                },
+                data: {
+                    ncyBreadcrumbLabel: '{{location.name}}',
+                    // ncyBreadcrumbSkip: true
                 }
             })
             .state('events', {
@@ -153,6 +189,10 @@ nypl_locations.config([
                 label: 'Events',
                 resolve: {
                     location: LoadLocation
+                },
+                data: {
+                    ncyBreadcrumbLabel: '{{location.name}}',
+                    // ncyBreadcrumbSkip: true
                 }
             });
             // .otherwise({
@@ -230,8 +270,3 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.responseInterceptors.push(interceptor);
 }]);
 
-// nypl_locations.run(function ($rootScope, $state, $stateParams) {
-//     $rootScope.$state = $state;
-//     $rootScope.$stateParams = $stateParams;
-//     console.log($rootScope.$state);
-// });

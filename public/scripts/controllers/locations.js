@@ -6,6 +6,7 @@ function LocationsCtrl(
     $scope,
     $timeout,
     $location,
+    $state,
     nyplCoordinatesService,
     nypl_geocoder_service,
     nyplLocationsService,
@@ -239,6 +240,7 @@ function LocationsCtrl(
 
     $rootScope.title = "Locations";
     $scope.view = 'list';
+    $scope.$state= $state;
     loadLocations();
 
     $scope.scroll_map_top = function () {

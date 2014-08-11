@@ -62,24 +62,14 @@
 
   <!-- Views Control Section -->
   <section class="views-tab-controls">
-    <div class="list-view-btn" data-ng-click="view='list'" ng-class="{'active': view=='list'}">
-      {{ 'LIST_VIEW' | translate }}</div>
-    <div class="map-view-btn" data-ng-click="view='map'" ng-class="{'active': view=='map'}">
-      {{ 'MAP_VIEW'  | translate }}</div>
+    <div class="list-view-btn" data-ui-sref=".list"
+      data-ng-class="{active: $state.includes('home.index') || $state.includes('home.list')}">
+      List View</div>
+    <div class="map-view-btn" data-ui-sref=".map"
+      data-ng-class="{active: $state.includes('home.map')}">Map View</div>
   </section>
 
   <!-- Conditional | List/Map Views -->
-  <div data-ng-switch on="view">
-    <div data-ng-switch-when="list">
-      <data-ng-include src="'views/location-list-view.html'"></data-ng-include>
-    </div>
+  <section ui-view><section>
 
-    <div data-ng-switch-when="map" data-ng-controller="MapCtrl">
-      <data-ng-include src="'views/location-map-view.html'" onLoad="drawMap()"></data-ng-include>
-    </div>
-
-    <div data-ng-switch-default>
-      <data-ng-include src="'views/location-list-view.html'"></data-ng-include>
-    </div>
-  </div>
 </div>
