@@ -17,7 +17,7 @@
             <h3><span class="{{category.icon}}">{{category.name}}</span></h3>
             <ul class="amenities-list">
               <li data-ng-repeat="amenity in category.amenities">
-                <a data-ng-href="/#/amenities/{{amenity.id}}">{{amenity.name}}</a>
+                <a data-ui-sref="amenity({amenity: amenity.id})">{{amenity.name}}</a>
                 
                 <span data-ng-if="amenity._links.reserve">
                   <a data-ng-href="{{amenity._links.reserve.href}}" class="amenities__reserve btn btn--natural whiteText">Reserve</a>
@@ -34,7 +34,7 @@
 
         <ul data-ng-if="locations" class="amenity-location-list">
           <li data-ng-repeat="location in locations">
-            <a data-ng-href="/#/{{location.slug}}">{{location.name}}</a>
+            <a data-ui-sref="location({location: location.slug})">{{location.name}}</a>
           </li>
         </ul>
       </div><!--

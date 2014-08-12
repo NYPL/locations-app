@@ -1,78 +1,81 @@
 /*jslint indent: 4, maxlen: 80 */
 /*global nypl_locations, angular */
 
-// Load all the amenities available.
-function AmenitiesCtrl($http, $rootScope, $scope, amenities, breadcrumbs, nyplAmenities) {
-    'use strict';
-    var homeUrl;
+(function () {
+    // Load all the amenities available.
+    function AmenitiesCtrl($http, $rootScope, $scope, amenities, nyplAmenities) {
+        'use strict';
+        var homeUrl;
 
-    // Mocked data for now until the amenities are sorted by categories in the API.
-    $http
-        .get('json/amenitiesAtLibrary.json')
-        .success(function (data) {
-            amenities =
-                nyplAmenities.addCategoryIcon(data.amenitiesCategories);
-            $scope.amenitiesCategories = amenities;
-            // console.log($scope.amenitiesCategories);
-        });
+        // Mocked data for now until the amenities are sorted by categories in the API.
+        $http
+            .get('json/amenitiesAtLibrary.json')
+            .success(function (data) {
+                amenities =
+                    nyplAmenities.addCategoryIcon(data.amenitiesCategories);
+                $scope.amenitiesCategories = amenities;
+                // console.log($scope.amenitiesCategories);
+            });
 
-    $rootScope.title = "Amenities";
-    $scope.amenities = amenities.amenities;
+        $rootScope.title = "Amenities";
+        $scope.amenities = amenities.amenities;
 
-    // Inserts into beginning of breadcrumbs
-    homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
-    breadcrumbs.breadcrumbs.unshift(homeUrl);
-    $scope.breadcrumbs = breadcrumbs;
-}
+        // Inserts into beginning of breadcrumbs
+        // homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
+        // breadcrumbs.breadcrumbs.unshift(homeUrl);
+        // $scope.breadcrumbs = breadcrumbs;
+    }
 
-// Load an amenity and list all the locations
-// where the amenity can be found.
-function AmenityCtrl($rootScope, $scope, amenity, breadcrumbs) {
-    'use strict';
-    var homeUrl,
-        name = amenity.amenity.name;
-    $rootScope.title = name;
-    $scope.amenity = amenity.amenity;
-    $scope.locations = amenity.locations;
-    $scope.amenity_name = name;
+    // Load an amenity and list all the locations
+    // where the amenity can be found.
+    function AmenityCtrl($rootScope, $scope, amenity) {
+        'use strict';
 
-    // Inserts into beginning of breadcrumbs
-    homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
-    breadcrumbs.options = { 'Service': name };
-    breadcrumbs.breadcrumbs[1].path = "#/amenities";
-    breadcrumbs.breadcrumbs.unshift(homeUrl);
-    $scope.breadcrumbs = breadcrumbs;
-}
+        var homeUrl,
+            name = amenity.amenity.name;
+        $rootScope.title = name;
+        $scope.amenity = amenity.amenity;
+        $scope.locations = amenity.locations;
+        $scope.amenity_name = name;
 
-// Load one location and list all the amenities found in that location.
-function AmenitiesAtLibraryCtrl($http, $rootScope, location, $scope, breadcrumbs, nyplAmenities) {
-    'use strict';
+        // Inserts into beginning of breadcrumbs
+        // homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
+        // breadcrumbs.options = { 'Service': name };
+        // breadcrumbs.breadcrumbs[1].path = "#/amenities";
+        // breadcrumbs.breadcrumbs.unshift(homeUrl);
+        // $scope.breadcrumbs = breadcrumbs;
+    }
 
-    var homeUrl, amenities;
+    // Load one location and list all the amenities found in that location.
+    function AmenitiesAtLibraryCtrl($http, $rootScope, location, $scope, nyplAmenities) {
+        'use strict';
 
-    // Mocked data for now until the amenities are sorted by categories in the API.
-    $http
-        .get('json/amenitiesAtLibrary.json')
-        .success(function (data) {
-            amenities =
-                nyplAmenities.addCategoryIcon(data.amenitiesCategories);
-            $scope.amenitiesCategories = amenities;
-            // console.log($scope.amenitiesCategories);
-        });
+        var homeUrl, amenities;
 
-    $rootScope.title = location.name;
-    $scope.location = location;
+        // Mocked data for now until the amenities are sorted by categories in the API.
+        $http
+            .get('json/amenitiesAtLibrary.json')
+            .success(function (data) {
+                amenities =
+                    nyplAmenities.addCategoryIcon(data.amenitiesCategories);
+                $scope.amenitiesCategories = amenities;
+                // console.log($scope.amenitiesCategories);
+            });
 
-    // Inserts into beginning of breadcrumbs
-    homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
-    breadcrumbs.options = { 'Location': location.name };
-    breadcrumbs.breadcrumbs[1].path = "#/amenities";
-    breadcrumbs.breadcrumbs.unshift(homeUrl);
-    $scope.breadcrumbs = breadcrumbs;
-}
+        $rootScope.title = location.name;
+        $scope.location = location;
 
-angular
-    .module('nypl_locations')
-    .controller('AmenityCtrl', AmenityCtrl)
-    .controller('AmenitiesCtrl', AmenitiesCtrl)
-    .controller('AmenitiesAtLibraryCtrl', AmenitiesAtLibraryCtrl);
+        // Inserts into beginning of breadcrumbs
+        // homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
+        // breadcrumbs.options = { 'Location': location.name };
+        // breadcrumbs.breadcrumbs[1].path = "#/amenities";
+        // breadcrumbs.breadcrumbs.unshift(homeUrl);
+        // $scope.breadcrumbs = breadcrumbs;
+    }
+
+    angular
+        .module('nypl_locations')
+        .controller('AmenityCtrl', AmenityCtrl)
+        .controller('AmenitiesCtrl', AmenitiesCtrl)
+        .controller('AmenitiesAtLibraryCtrl', AmenitiesAtLibraryCtrl);
+})();
