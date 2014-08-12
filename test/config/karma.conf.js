@@ -11,10 +11,9 @@ module.exports = function (config) {
       'public/bower_components/jquery/jquery.js',
       'public/bower_components/angular/angular.js',
       'public/bower_components/angular-mocks/*.js',
-      'public/bower_components/angular-cookies/*.js',
-      'public/bower_components/angular-resource/*.js',
       'public/bower_components/angular-sanitize/*.js',
-      'public/bower_components/angular-route/*.js',
+      // 'public/bower_components/angular-route/*.js',
+      'public/bower_components/angular-ui-router/release/*.js',
       'public/scripts/**/*.js',
       'public/scripts/directives/templates/*.html',
       'public/scripts/components/**/*.html',
@@ -24,7 +23,6 @@ module.exports = function (config) {
       'public/bower_components/angularitics/src/angulartics.js',
       'public/bower_components/angularitics/src/angulartics-ga.js',
       'public/bower_components/angular-translate/angular-translate.min.js',
-      'public/bower_components/ng-breadcrumbs/dist/ng-breadcrumbs.min.js',
       'public/bower_components/angular-translate-loader-static-files/' +
         'angular-translate-loader-static-files.min.js',
       'public/bower_components/angular-animate/angular-animate.js'

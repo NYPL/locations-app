@@ -208,7 +208,7 @@ describe('NYPL locationService Module', function () {
             };
 
           httpBackend
-            .expectGET('http://evening-mesa-7447-160.herokuapp.com/services')
+            .expectGET('http://evening-mesa-7447-160.herokuapp.com/amenities')
             .respond(mockedAmenitiesAPICall);
 
           nyplLocationsService.amenities().then(function (data) {
@@ -225,7 +225,7 @@ describe('NYPL locationService Module', function () {
           var returned_error_message;
 
           httpBackend
-            .expectGET('http://evening-mesa-7447-160.herokuapp.com/services')
+            .expectGET('http://evening-mesa-7447-160.herokuapp.com/amenities')
             .respond(500);
 
           nyplLocationsService.amenities()
@@ -257,7 +257,7 @@ describe('NYPL locationService Module', function () {
             };
 
           httpBackend
-            .expectGET('http://evening-mesa-7447-160.herokuapp.com/services/36')
+            .expectGET('http://evening-mesa-7447-160.herokuapp.com/amenities/36')
             .respond(mockedAmenityAPICall);
 
           nyplLocationsService.amenities(36).then(function (data) {
@@ -276,7 +276,7 @@ describe('NYPL locationService Module', function () {
           var returned_error_message;
 
           httpBackend
-            .expectGET('http://evening-mesa-7447-160.herokuapp.com/services/36')
+            .expectGET('http://evening-mesa-7447-160.herokuapp.com/amenities/36')
             .respond(500);
 
           nyplLocationsService.amenities(36)
@@ -318,7 +318,7 @@ describe('NYPL locationService Module', function () {
 
         httpBackend
           .expectGET('http://evening-mesa-7447-160.herokuapp.com/' +
-            'locations/sibl/services')
+            'locations/sibl/amenities')
           .respond(mockedLocationAmenitiesAPICall);
 
         nyplLocationsService.amenitiesAtLibrary('sibl').then(function (data) {
@@ -338,7 +338,7 @@ describe('NYPL locationService Module', function () {
 
         httpBackend
           .expectGET('http://evening-mesa-7447-160.herokuapp.com/' +
-            'locations/sibl/services')
+            'locations/sibl/amenities')
           .respond(500);
 
         nyplLocationsService.amenitiesAtLibrary('sibl')

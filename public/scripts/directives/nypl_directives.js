@@ -121,7 +121,7 @@ function scrolltop($window) {
     };
 }
 
-function eventRegistration() {
+function eventRegistration($filter) {
     'use strict';
 
     return {
@@ -136,21 +136,17 @@ function eventRegistration() {
             link: '@'
         },
         link: function (scope, element, attrs) {
-            var today,
-                type = scope.type,
-                open = scope.open;
-
             scope.online = false;
-            scope.opens = 'opens';
 
-            if (type === 'Online') {
+            if (scope.type === 'Online') {
                 scope.online = true;
-            }
 
-            if (open) {
-                today = new Date().toISOString();
-                if (today > open) {
-                    scope.opens = 'opened';
+                if (scope.open === 'true') {
+                    scope.registration_available = "Registration opens on " +
+                        $filter('date')(scope.start, 'MMMM d, y - h:mma');
+                } else {
+                    scope.registration_available =
+                        "Registration for this event is closed."
                 }
             }
         }
