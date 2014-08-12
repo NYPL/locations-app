@@ -509,7 +509,6 @@
                 $scope.scroll_map_top();
             }, 800);
         };
-
     }
 
     function LocationCtrl(
