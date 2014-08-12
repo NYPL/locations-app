@@ -126,7 +126,7 @@ describe('Locations: Library', function () {
 
         it('should have a link with the slug, not abbreviation', function () {
           expect(locationPage.allAmenities.getAttribute('href'))
-            .toMatch(/grand-central$/);
+            .toMatch(/amenities\/location\/GC/);
         });
       });
 

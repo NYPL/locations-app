@@ -7,7 +7,7 @@ function AmenitiesCtrl($rootScope, $scope, amenities, breadcrumbs) {
     var homeUrl;
 
     $rootScope.title = "Amenities";
-    $scope.amenities = amenities.services;
+    $scope.amenities = amenities.amenities;
 
     // Inserts into beginning of breadcrumbs
     homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
@@ -19,23 +19,23 @@ function AmenitiesCtrl($rootScope, $scope, amenities, breadcrumbs) {
 // where the amenity can be found.
 function AmenityCtrl($rootScope, $scope, amenity, breadcrumbs) {
     'use strict';
-    var homeUrl;
-
-    $rootScope.title = amenity.service.name;
-    $scope.amenity = amenity.service;
+    var homeUrl,
+        name = amenity.amenity.name;
+    $rootScope.title = name;
+    $scope.amenity = amenity.amenity;
     $scope.locations = amenity.locations;
-    $scope.amenity_name = amenity.service.name;
+    $scope.amenity_name = name;
 
     // Inserts into beginning of breadcrumbs
     homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
-    breadcrumbs.options = { 'Service': amenity.service.name };
+    breadcrumbs.options = { 'Service': name };
     breadcrumbs.breadcrumbs[1].path = "#/amenities";
     breadcrumbs.breadcrumbs.unshift(homeUrl);
     $scope.breadcrumbs = breadcrumbs;
 }
 
 // Load one location and list all the amenities found in that location.
-function AmenitiesAtLibraryCtrl($http, $rootScope, $scope, breadcrumbs, location, nyplAmenities) {
+function AmenitiesAtLibraryCtrl($http, $rootScope, location, $scope, breadcrumbs, nyplAmenities) {
     'use strict';
 
     var homeUrl, amenities;

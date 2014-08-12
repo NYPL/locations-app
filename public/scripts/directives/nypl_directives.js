@@ -129,24 +129,28 @@ function eventRegistration() {
         templateUrl: 'scripts/directives/templates/registration.html',
         replace: true,
         scope: {
-            how: '@',
-            link: '@',
-            registrationopen: '@'
+            registration: '@',
+            type: '@',
+            open: '@',
+            start: '@',
+            link: '@'
         },
         link: function (scope, element, attrs) {
             var today,
-                registrationopen = attrs.registrationopen;
+                type = scope.type,
+                start = scope.start,
+                open = scope.open;
 
             scope.online = false;
             scope.opens = 'opens';
 
-            if (attrs.how === 'Online') {
+            if (type === 'Online') {
                 scope.online = true;
             }
 
-            if (registrationopen) {
+            if (scope.open) {
                 today = new Date().toISOString();
-                if (today > registrationopen) {
+                if (today > open) {
                     scope.opens = 'opened';
                 }
             }

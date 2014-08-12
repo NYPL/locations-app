@@ -562,9 +562,9 @@ function LocationCtrl(
     //     description: "Test library specific alert"
     // };
 
-    if (location.hours.exceptions) {
-        $scope.libraryAlert = nyplUtility.alerts(location.hours.exceptions);
-    }
+    // if (location.hours.exceptions) {
+    //     $scope.libraryAlert = nyplUtility.alerts(location.hours.exceptions);
+    // }
 
     if (location.hours) {
         $scope.hoursToday = nyplUtility.hoursToday(location.hours);

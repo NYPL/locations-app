@@ -28,22 +28,22 @@ exports.config = {
     services: ['test/e2e/services/services.spec.js']
   },
 
-  // onPrepare: function () {
-  //   'use strict';
+  onPrepare: function () {
+    'use strict';
 
-  //   // This will generate a screenshot for every test, a json file,
-  //   // and an html page with all the results:
-  //   jasmine.getEnv().addReporter(new HtmlReporter({
-  //     baseDirectory: 'test/results/e2e_html_screenshots'
-  //   }));
+    // This will generate a screenshot for every test, a json file,
+    // and an html page with all the results:
+    jasmine.getEnv().addReporter(new HtmlReporter({
+      baseDirectory: 'test/results/e2e_html_screenshots'
+    }));
 
-  //   // Generates an xml file
-  //   require('jasmine-reporters');
-  //   jasmine.getEnv()
-  //     .addReporter(
-  //       new jasmine.JUnitXmlReporter('test/results/e2e_xml/', true, true)
-  //     );
-  // },
+    // Generates an xml file
+    require('jasmine-reporters');
+    jasmine.getEnv()
+      .addReporter(
+        new jasmine.JUnitXmlReporter('test/results/e2e_xml/', true, true)
+      );
+  },
 
   baseUrl: 'http://localhost:9292/',
 

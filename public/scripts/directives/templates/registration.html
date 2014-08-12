@@ -1,9 +1,16 @@
 <div class="registration-for-event">
-  <div data-ng-if="how">
+  <div data-ng-if="registration">
     {{ 'REGISTRATION' | translate }}:
-    <span class="registration_type" data-ng-if="!online">{{how}}</span>
+    <span class="registration_type" data-ng-if="!online">{{type}}</span>
     <a class="registration_type" class="btn btn--natural whiteText" data-ng-if="online"
-      data-ng-href="http://nypl.org/{{link}}">{{how}}</a>
-    <p data-ng-if="registrationopen">Registration {{opens}} {{registrationopen | dateToISO | date:'MMMM d, y - h:mma'}}</p>
+      data-ng-href="http://nypl.org/{{link}}">{{type}}</a>
+    <div data-ng-if="online">
+      <p data-ng-if="open">
+        Registration {{opens}} {{start | dateToISO | date:'MMMM d, y - h:mma'}}
+      </p>
+      <p data-ng-if-not="open">
+        Registration is now closed for this event.
+      </p>
+    </div>
   </div>
 </div>
