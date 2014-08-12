@@ -24,7 +24,7 @@
 
 	  		<div id="{{location.id}}" class="location-data" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse">
 
-					<div class="p-org"><a data-ng-href='/#/{{location.slug}}'>{{location.name}}</a></div>
+					<div class="p-org"><a data-ui-sref='location({location: location.slug})'>{{location.name}}</a></div>
 					<div class="p-adr">
 						<div class="p-street-address">{{location.street_address}}</div>
 						<span class="p-locality">{{location.locality}}</span>, 
@@ -39,7 +39,7 @@
 					<div class="loc-amenities">
             <ul class="highlighted-amenities-list">
               <li data-ng-repeat="amenity in location._embedded.amenities | limitTo:3">
-                {{amenities.name}}
+                {{amenity.name}}
               </li>
             </ul>
 					</div>

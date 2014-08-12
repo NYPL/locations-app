@@ -74,28 +74,28 @@ describe('Locinator controllers', function () {
       expect(typeof nyplLocationsService.singleLocation).toBe('function');
     });
 
-    it('Should call the branches API and successfully get data back',
-      function () {
-        var locations_reponse = '[{"id":"AG","geolocation":' +
-            '{"coordinates":[-73.9436,40.7943]},' +
-            '"name":"Aguilar","locationDest":"Aguilar undefined ' +
-            'undefined, undefined, undefined","distance":"","highlight":""}]';
+    // it('Should call the branches API and successfully get data back',
+    //   function () {
+    //     var locations_reponse = '[{"id":"AG","geolocation":' +
+    //         '{"coordinates":[-73.9436,40.7943]},' +
+    //         '"name":"Aguilar","locationDest":"Aguilar undefined ' +
+    //         'undefined, undefined, undefined","distance":"","highlight":""}]';
 
-        expect(scope.locations).not.toBeDefined();
+    //     expect(scope.locations).not.toBeDefined();
 
-        httpBackend
-          .expectGET("http://evening-mesa-7447-160.herokuapp.com/locations")
-          .respond(200, '{"locations" : [{"id": "AG", "geolocation":' +
-            '{"coordinates":[-73.9436, 40.7943]}, "name":"Aguilar"}]}');
+    //     httpBackend
+    //       .expectGET("http://evening-mesa-7447-160.herokuapp.com/locations")
+    //       .respond(200, '{"locations" : [{"id": "AG", "geolocation":' +
+    //         '{"coordinates":[-73.9436, 40.7943]}, "name":"Aguilar"}]}');
 
-        httpBackend.flush();
-        scope.$digest();
+    //     httpBackend.flush();
+    //     scope.$digest();
 
-        expect(scope.locations).toBeDefined();
-        // The controller adds extra properties to the locations model.
-        // Converted to strings since it's easier to compare.
-        expect(JSON.stringify(scope.locations)).toEqual(locations_reponse);
-      });
+    //     expect(scope.locations).toBeDefined();
+    //     // The controller adds extra properties to the locations model.
+    //     // Converted to strings since it's easier to compare.
+    //     expect(JSON.stringify(scope.locations)).toEqual(locations_reponse);
+    //   });
 
     // it('should call the branches api and fail', function () {
     //   httpBackend
@@ -149,17 +149,17 @@ describe('Locinator controllers', function () {
           .respond('public/languages/en.json');
       }));
 
-      it('should get coordinates from a zipcode',
-        inject(function () {
-          $httpBackend
-            .expectGET("http://evening-mesa-7447-160.herokuapp.com/locations")
-            .respond(200, '{"locations" : [{"id": "AG", "geolocation":' +
-              '{"coordinates":[-73.9436, 40.7943]}, "name":"Aguilar"}]}');
+      // it('should get coordinates from a zipcode',
+      //   inject(function () {
+      //     $httpBackend
+      //       .expectGET("http://evening-mesa-7447-160.herokuapp.com/locations")
+      //       .respond(200, '{"locations" : [{"id": "AG", "geolocation":' +
+      //         '{"coordinates":[-73.9436, 40.7943]}, "name":"Aguilar"}]}');
 
-          $httpBackend.flush();
-          scope.submitAddress('10018');
+      //     $httpBackend.flush();
+      //     scope.submitAddress('10018');
 
-          expect(nypl_geocoder_mock.get_coords).toHaveBeenCalled();
-        }));
+      //     expect(nypl_geocoder_mock.get_coords).toHaveBeenCalled();
+      //   }));
     });
 });

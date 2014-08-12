@@ -252,10 +252,11 @@ describe('NYPL Directive Tests', function () {
       $rootScope = _$rootScope_;
     }));
 
-    describe('First Come, First Served', function () {
+    describe('Registration type - First Come, First Served', function () {
       beforeEach(function () {
         element = angular.element('<event-registration ' +
-          'how="First Come, First Serve" link="" registrationopen="" />');
+          'type="First Come, First Serve" open="false" start="null"' +
+          'link="events/nypl-event" registration="{}"></event-registration>');
         $compile(element)($rootScope);
         $rootScope.$digest();
       });
@@ -272,43 +273,85 @@ describe('NYPL Directive Tests', function () {
       it('should not have an anchor tag', function () {
         expect(element.find('a').length).toBe(0);
       });
-    });
 
-    describe('Online', function () {
-      beforeEach(function () {
-        element = angular.element('<event-registration ' +
-          'how="Online" link="events/nypl-event" ' +
-          'registrationopen="2014-08-29T17:00:00Z" />');
-        $compile(element)($rootScope);
-        $rootScope.$digest();
-      });
-
-      it('should compile', function () {
-        expect(element.attr('class')).toContain('registration-for-event');
-      });
-
-      it('should display the type of registration', function () {
-        expect(element.find('.registration_type').text())
-          .toEqual('Online');
-      });
-
-      it('should have a link to the event', function () {
-        expect(element.find('a').attr('href'))
-          .toEqual('http://nypl.org/events/nypl-event');
-      });
-
-      it('should tell you when registration opens', function () {
-        // Override the date function so we can test the wording
-        var date = new Date(2014, 8, 7),
-          MockDate = Date;
-        Date = function () { return date; };
-
-        expect(element.find('p').text())
-          .toEqual('Registration opens August 29, 2014 - 7:00AM');
-
-        Date = MockDate;
+      it('should not have any type of registration message', function () {
+        expect(element.find('.registration-available').text()).toEqual('');
       });
     });
+
+    describe('Registration type - Online - event will open in the future',
+      function () {
+        beforeEach(function () {
+          element = angular.element('<event-registration type="Online" ' +
+            'open="true" start="2014-08-29T17:00:00Z"' +
+            'link="events/nypl-event" registration="{}"></event-registration>');
+          $compile(element)($rootScope);
+          $rootScope.$digest();
+        });
+
+        it('should compile', function () {
+          expect(element.attr('class')).toContain('registration-for-event');
+        });
+
+        it('should display the type of registration', function () {
+          expect(element.find('.registration_type').text().trim())
+            .toEqual('Online');
+        });
+
+        it('should have a link to the event', function () {
+          expect(element.find('a').attr('href'))
+            .toEqual('http://nypl.org/events/nypl-event');
+        });
+
+        it('should tell you when registration opens', function () {
+          // Override the date function so we can test the wording
+          var date = new Date(2014, 8, 7),
+            MockDate = Date;
+          Date = function () { return date; };
+
+          expect(element.find('.registration-available').text().trim())
+            .toEqual('Registration opens on August 29, 2014 - 7:00AM');
+
+          Date = MockDate;
+        });
+      });
+
+    describe('Registration type - Online - registration is closed',
+      function () {
+        beforeEach(function () {
+          element = angular.element('<event-registration type="Online" ' +
+            'open="false" start="2014-07-29T17:00:00Z"' +
+            'link="events/nypl-event" registration="{}"></event-registration>');
+          $compile(element)($rootScope);
+          $rootScope.$digest();
+        });
+
+        it('should compile', function () {
+          expect(element.attr('class')).toContain('registration-for-event');
+        });
+
+        it('should display the type of registration', function () {
+          expect(element.find('.registration_type').text().trim())
+            .toEqual('Online');
+        });
+
+        it('should have a link to the event', function () {
+          expect(element.find('a').attr('href'))
+            .toEqual('http://nypl.org/events/nypl-event');
+        });
+
+        it('should tell you when registration opens', function () {
+          // Override the date function so we can test the wording
+          var date = new Date(2014, 8, 7),
+            MockDate = Date;
+          Date = function () { return date; };
+
+          expect(element.find('.registration-available').text().trim())
+            .toEqual('Registration for this event is closed.');
+
+          Date = MockDate;
+        });
+      });
   }); /* End eventRegistration */
 
   /*

@@ -115,13 +115,13 @@ function scrolltop($window) {
     'use strict';
 
     return function (scope) {
-        scope.$on('$routeChangeStart', function () {
+        scope.$on('$stateChangeStart', function () {
             $window.scrollTo(0, 0);
         });
     };
 }
 
-function eventRegistration() {
+function eventRegistration($filter) {
     'use strict';
 
     return {
@@ -136,22 +136,17 @@ function eventRegistration() {
             link: '@'
         },
         link: function (scope, element, attrs) {
-            var today,
-                type = scope.type,
-                start = scope.start,
-                open = scope.open;
-
             scope.online = false;
-            scope.opens = 'opens';
 
-            if (type === 'Online') {
+            if (scope.type === 'Online') {
                 scope.online = true;
-            }
 
-            if (scope.open) {
-                today = new Date().toISOString();
-                if (today > open) {
-                    scope.opens = 'opened';
+                if (scope.open === 'true') {
+                    scope.registration_available = "Registration opens on " +
+                        $filter('date')(scope.start, 'MMMM d, y - h:mma');
+                } else {
+                    scope.registration_available =
+                        "Registration for this event is closed."
                 }
             }
         }
