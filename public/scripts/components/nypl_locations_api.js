@@ -50,7 +50,7 @@ function nypLocationsApi($http, $q) {
     // All amenities at NYPL
     locationsApi.amenities = function (amenity) {
         var defer = $q.defer(),
-            url = !amenity ? '/services' : '/services/' + amenity; 
+            url = !amenity ? '/amenities' : '/amenities/' + amenity; 
 
         $http.get(api + url, {cache: true})
             .success(function (data) {
@@ -66,7 +66,7 @@ function nypLocationsApi($http, $q) {
     locationsApi.amenitiesAtLibrary = function (location) {
         var defer = $q.defer();
 
-        $http.get(api + '/locations/' + location + '/services', {cache: true})
+        $http.get(api + '/locations/' + location + '/amenities', {cache: true})
             .success(function (data) {
                 defer.resolve(data);
             })

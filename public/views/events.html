@@ -65,7 +65,12 @@
         </div><!--
         --><div data-ng-if="event.registration">
            {{ 'REGISTRATION' | translate }}:
-          <event-registration how="{{event.registration}}" link="{{event._links.self.href}}">
+          <event-registration
+            type="{{event.registration.type}}"
+            open="{{event.registration.open}}"
+            start="{{event.registration.start}}"
+            link="{{event._links.self.href}}"
+            registration="{{event.registration}}">
           </event-registration>
         </div><!--
         --><div class="">

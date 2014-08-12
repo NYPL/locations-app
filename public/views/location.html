@@ -82,7 +82,7 @@
             <li class="icon-book"><span>Lending</span></li>
             <li class="icon-box-add"><span>Book drop</span></li>
           </ul> 
-          <a id="all_amenities" data-ng-href="/#/amenities/location/{{location.id}}" class="read-more">{{ 'ALL_AMENITIES' | translate }}</a> 
+          <a id="all_amenities" data-ng-href="/#/amenities/location/{{location.slug}}" class="read-more">{{ 'ALL_AMENITIES' | translate }}</a> 
         </div>
       </div>
     </div>
@@ -131,9 +131,12 @@
         <div class="">
           <aside class="event-buttons">
             <event-registration
-              how="{{event.registration}}"
+              type="{{event.registration.type}}"
+              open="{{event.registration.open}}"
+              start="{{event.registration.start}}"
               link="{{event._links.self.href}}"
-              registrationopen="{{event.registration_open}}"></event-registration>
+              registration="{{event.registration}}">
+            </event-registration>
 
             <a data-ng-href="{{calendarLink('google', event, location)}}" target="_blank" rel="nofollow" class="icon-calendar google_link">
               Google
@@ -189,7 +192,7 @@
           </ul>
  
           <div>
-            <a class="read-more" data-ng-href="/#/amenities/location/{{location.id}}">
+            <a class="read-more" data-ng-href="/#/amenities/location/{{location.slug}}">
               {{ 'ALL_AMENITIES' | translate }}
             </a>
           </div>
@@ -218,7 +221,7 @@
       </div>
     </div>
     <div class="push-half--bottom">
-      <a class="read-more" data-ng-href="">{{ 'MORE_BLOGS' | translate }}</a>
+      <a class="read-more" data-ng-href="{{location._links.blogs.all}}">{{ 'MORE_BLOGS' | translate }}</a>
     </div>
   </div>
 
