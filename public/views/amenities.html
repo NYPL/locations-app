@@ -12,15 +12,23 @@
     <div class="grid">
 
       <div class="grid__item one-whole lap-and-up-two-thirds">
-        <ul data-ng-if="amenities" class="amenity-category-list">
-          <li data-ng-repeat="amenity in amenities">
-            <a data-ng-href="/#/amenities/{{amenity._id}}">{{amenity.name}}</a>
-            <span data-ng-if="amenity._links.info">
-              <a data-ng-href="{{amenity._links.info.href}}" class="btn btn--natural whiteText">Information</a>
-            </span>
-            <span data-ng-if="amenity._links.reserve">
-              <a data-ng-href="{{amenity._links.reserve.href}}" class="amenities__reserve btn btn--natural whiteText">Reserve</a>
-            </span>
+        <ul data-ng-if="amenitiesCategories" class="amenity-category-list">
+          <li data-ng-repeat="category in amenitiesCategories">
+            <h3><span class="{{category.icon}}">{{category.name}}</span></h3>
+            <ul class="amenities-list">
+              <li data-ng-repeat="amenity in category.amenities">
+                <a data-ng-href="/#/amenities/{{amenity.id}}">{{amenity.name}}</a>
+                
+                <span data-ng-if="amenity._links.reserve">
+                  <a data-ng-href="{{amenity._links.reserve.href}}" class="amenities__reserve btn btn--natural whiteText">Reserve</a>
+                </span>
+                                
+                <span data-ng-if="amenity._links.info">
+                  <a data-ng-href="{{amenity._links.info.href}}" class="read-more">Learn more</a>
+                </span>
+
+              </li>
+            </ul>
           </li>
         </ul>
 
@@ -29,6 +37,14 @@
             <a data-ng-href="/#/{{location.slug}}">{{location.name}}</a>
           </li>
         </ul>
+      </div><!--
+
+      --><div class="grid__item one-whole lap-and-up-one-third ">
+      
+        <div class="services-callout callout">
+         <p>The Library also offers<br><span class="services-callout-2">services</span><br>of all kinds!</p>
+         <a class="services-link purpleText" href="">Find out more <span class="icon-arrow-right"></span></a>
+        </div>
       </div>
 
     </div>
