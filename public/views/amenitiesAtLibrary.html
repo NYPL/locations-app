@@ -15,7 +15,7 @@
           <li data-ng-repeat="category in amenitiesCategories">
             <h3><span class="{{category.icon}}">{{category.name}}</span></h3>
             <ul class="amenities-list">
-              <li data-ng-repeat="amenity in category.amenities">
+              <li data-ng-repeat="amenity in category.amenities | limitTo:3 ">
                 <a data-ng-href="/#/amenities/{{amenity.id}}">{{amenity.name}}</a>
                 
                 <span data-ng-if="amenity._links.reserve">

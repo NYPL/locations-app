@@ -2,9 +2,19 @@
 /*global nypl_locations, angular */
 
 // Load all the amenities available.
-function AmenitiesCtrl($rootScope, $scope, amenities, breadcrumbs) {
+function AmenitiesCtrl($http, $rootScope, $scope, amenities, breadcrumbs, nyplAmenities) {
     'use strict';
     var homeUrl;
+
+    // Mocked data for now until the amenities are sorted by categories in the API.
+    $http
+        .get('json/amenitiesAtLibrary.json')
+        .success(function (data) {
+            amenities =
+                nyplAmenities.addCategoryIcon(data.amenitiesCategories);
+            $scope.amenitiesCategories = amenities;
+            // console.log($scope.amenitiesCategories);
+        });
 
     $rootScope.title = "Amenities";
     $scope.amenities = amenities.amenities;
