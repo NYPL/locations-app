@@ -54,8 +54,8 @@
             <!-- Highlighted Amenities -->
             <td class="amenities-info">
               <ul class="highlighted-amenities-list">
-                <li data-ng-repeat="service in location._embedded.services | limitTo:3">
-                  {{service.name}}
+                <li data-ng-repeat="amenity in location._embedded.amenities | limitTo:3">
+                  {{amenity.name}}
                 </li>
               </ul>
             </td>
