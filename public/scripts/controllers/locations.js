@@ -243,7 +243,7 @@
 
         $rootScope.title = "Locations";
         $scope.view = 'list';
-        $scope.$state= $state;
+        $scope.$state = $state;
         loadLocations();
 
         $scope.scroll_map_top = function () {
@@ -315,7 +315,7 @@
         $scope.draw_user_marker = function () {
             if (nypl_geocoder_service.check_marker('user')) {
                 nypl_geocoder_service.pan_existing_marker('user');
-            }  
+            }
         };
 
         $scope.submitAddress = function (searchTerm) {
@@ -421,7 +421,6 @@
     // End LocationsCtrl
 
     function MapCtrl($scope, $timeout, nypl_geocoder_service, nyplUtility) {
-        'use strict';
 
         var loadMapMarkers = function () {
                 _.each($scope.locations, function (location) {
@@ -451,7 +450,7 @@
             },
 
             drawMap = function () {
-                $timeout(function() {
+                $timeout(function () {
                     nypl_geocoder_service.draw_map({
                         lat: 40.7532,
                         long: -73.9822
@@ -521,13 +520,10 @@
         $rootScope,
         $scope,
         $timeout,
-        // breadcrumbs,
         location,
         nyplCoordinatesService,
         nyplUtility
     ) {
-        'use strict';
-
         var userCoords,
             homeUrl,
             loadCoords = function () {

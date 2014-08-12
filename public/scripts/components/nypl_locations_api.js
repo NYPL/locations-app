@@ -50,7 +50,7 @@ function nypLocationsApi($http, $q) {
     // All amenities at NYPL
     locationsApi.amenities = function (amenity) {
         var defer = $q.defer(),
-            url = !amenity ? '/amenities' : '/amenities/' + amenity; 
+            url = !amenity ? '/amenities' : '/amenities/' + amenity;
 
         $http.get(api + url, {cache: true})
             .success(function (data) {

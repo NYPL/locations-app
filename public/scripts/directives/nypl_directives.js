@@ -138,7 +138,6 @@ function eventRegistration() {
         link: function (scope, element, attrs) {
             var today,
                 type = scope.type,
-                start = scope.start,
                 open = scope.open;
 
             scope.online = false;
@@ -148,7 +147,7 @@ function eventRegistration() {
                 scope.online = true;
             }
 
-            if (scope.open) {
+            if (open) {
                 today = new Date().toISOString();
                 if (today > open) {
                     scope.opens = 'opened';

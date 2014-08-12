@@ -12,8 +12,7 @@ var nypl_locations = angular.module('nypl_locations', [
     'nyplNavigation',
     'angulartics',
     'angulartics.google.analytics',
-    'pascalprecht.translate',
-    'ncy-angular-breadcrumb'
+    'pascalprecht.translate'
 ]);
 
 nypl_locations.constant('_', window._);
@@ -23,13 +22,11 @@ nypl_locations.config([
     '$translateProvider',
     '$stateProvider',
     '$urlRouterProvider',
-    '$breadcrumbProvider',
     function (
         $locationProvider,
         $translateProvider,
         $stateProvider,
-        $urlRouterProvider,
-        $breadcrumbProvider
+        $urlRouterProvider
     ) {
         'use strict';
 
@@ -92,10 +89,6 @@ nypl_locations.config([
                 });
         }
 
-        $breadcrumbProvider.setOptions({
-            template: 'bootstrap2'
-        });
-
         // $urlRouterProvider.when('/list', '/');
         $urlRouterProvider.otherwise('/');
         $stateProvider
@@ -104,11 +97,7 @@ nypl_locations.config([
                 abstract: true,
                 templateUrl: 'views/locations.html',
                 controller: 'LocationsCtrl',
-                label: 'Locations',
-                data: {
-                    ncyBreadcrumbLabel: 'Locations',
-                    // ncyBreadcrumbSkip: true
-                }
+                label: 'Locations'
             })
             .state('home.index', {
                 templateUrl: 'views/location-list-view.html',
@@ -135,9 +124,6 @@ nypl_locations.config([
                 label: 'Division',
                 resolve: {
                     division: LoadDivision
-                },
-                data: {
-                    ncyBreadcrumbLabel: ''
                 }
             })
             .state('amenities', {
@@ -175,10 +161,6 @@ nypl_locations.config([
                 // label: 'Location',
                 resolve: {
                     location: LoadLocation
-                },
-                data: {
-                    ncyBreadcrumbLabel: '{{location.name}}',
-                    // ncyBreadcrumbSkip: true
                 }
             })
             .state('events', {
@@ -189,10 +171,6 @@ nypl_locations.config([
                 label: 'Events',
                 resolve: {
                     location: LoadLocation
-                },
-                data: {
-                    ncyBreadcrumbLabel: '{{location.name}}',
-                    // ncyBreadcrumbSkip: true
                 }
             });
             // .otherwise({
