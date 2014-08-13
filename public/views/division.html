@@ -155,6 +155,7 @@
     </div> 
   </div>
 
+  <!-- Blogs (conditonal) -->
   <div id="container__blogs" data-ng-if="division._embedded.blogs">
     <h2 class="hdg">{{ 'BLOGS' | translate }}</h2>
     <div class="grid">
@@ -163,13 +164,17 @@
         <a data-ng-if="blog.image" data-ng-href="http://nypl.org/{{blog._links.self.href}}">
           <img class="img--left" data-ng-src="{{blog.image}}" alt="" style="max-width: 120px;" />
         </a>
-        <span class="blog_author">By </span><br />
+        <div class="blog_author">
+          <span class="blog_name">By {{blog.author.name}}<span>
+          <span class="blog_position" data-ng-if="blog.author.position">, {{blog.author.position}}</span>
+          <span class="blog_location" data-ng-if="blog.author.location">, {{blog.author.location}}</span>
+        </div>
         <time class="date" ><span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span></time>
-        <div class="desc">{{blog.body}}</div>
+        <div class="desc">{{blog.body | truncate}}</div>
       </div>
     </div>
     <div class="push-half--bottom">
-      <a class="read-more" data-ng-href="">{{ 'MORE_BLOGS' | translate }}</a>
+      <a class="read-more" data-ng-href="{{division._links.blogs.all}}">{{ 'MORE_BLOGS' | translate }}</a>
     </div>
   </div>
 
