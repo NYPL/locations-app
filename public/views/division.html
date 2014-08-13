@@ -16,16 +16,15 @@
               <span id="toggle-hours" ng-click="expand = !expand"
                 ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span>
             </h2>
-            <div class="weekly-hours zeta" collapse="expand" duration="2500">
-              <div class="{{hours.day}}" data-ng-repeat="hours in division.hours.regular">
-                <span class="day">
-                  {{hours.day}}
-                </span>
-                <span class="time">
+
+            <table class="weekly-hours zeta" collapse="expand" duration="2500">
+              <tr class="{{hours.day}} weekday" data-ng-repeat="hours in division.hours.regular" data-ng-if="$index != 7">
+                <th class="day">{{hours.day}}</th>
+                <td class="time">
                   {{ hours | timeFormat }}
-                </span>
-              </div>
-            </div>
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
       </div><!--
