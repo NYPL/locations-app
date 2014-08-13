@@ -162,20 +162,7 @@ nypl_locations.config([
                 resolve: {
                     location: LoadLocation
                 }
-            })
-            .state('events', {
-                url: '/:location/events',
-                templateUrl: '/views/events.html',
-                controller: 'LocationCtrl',
-                controllerAs: 'eventCtrl',
-                label: 'Events',
-                resolve: {
-                    location: LoadLocation
-                }
             });
-            // .otherwise({
-            //     redirectTo: '/404'
-            // });
     }
 ]);
 
