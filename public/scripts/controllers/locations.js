@@ -18,10 +18,8 @@
         var userCoords,
             userAddress,
             locations,
-            ngRepeatInit = function (sortBy) {
-                if (sortBy !== undefined) {
-                    $scope.predicate = sortBy; // Default sort upon DOM Load
-                }
+            sortListBy = function (type) {
+                $scope.predicate = type;
             },
 
             allLocationsInit = function () {
@@ -29,7 +27,7 @@
                 $scope.searchTerm = '';
                 $scope.geolocationAddressOrSearchQuery = '';
 
-                ngRepeatInit('name');
+                sortListBy('name');
 
                 _.each($scope.locations, function (location) {
                     location.distance = '';
@@ -81,7 +79,7 @@
                         $scope.searchTerm = '';
 
                         $scope.locations = locations;
-                        $scope.predicate = 'distance';
+                        sortListBy('distance');
                         nypl_geocoder_service
                             .create_userMarker(userCoords,
                                 "Your Current Location");
@@ -184,7 +182,7 @@
 
                     // Don't sort by distance or
                     // the matched results will not display first
-                    $scope.predicate = '';
+                    sortListBy('');
                 },
 
             scrollListTop = function () {
@@ -212,26 +210,11 @@
                 $scope.geolocationAddressOrSearchQuery = userAddress;
                 $scope.locations =
                     nyplUtility.addDistance($scope.locations, userCoords);
-                $scope.predicate = 'distance';
+                sortListBy('distance');
             },
 
             show_libraries_type_of = function (type) {
                 $scope.location_type = type;
-
-                if (type !== 'research') {
-                    ngRepeatInit();
-                }
-            },
-
-            scroll_to_map = function () {
-                var content = angular.element('.container__all-locations'),
-                    containerWidth = parseInt(content.css('width'), 10),
-                    top;
-
-                if (containerWidth < 601) {
-                    top = angular.element('.search__results').offset();
-                    angular.element('body').animate({scrollTop: top.top}, 1000);
-                }
             };
 
         $scope.loadLocations = function () {
@@ -264,7 +247,8 @@
                 top;
 
             if (containerWidth < 601) {
-                top = angular.element('.map-wrapper').offset();
+                top = angular.element('.map-search__results').offset() ||
+                    angular.element('.search__results').offset();
                 angular.element('body').animate({scrollTop: top.top}, 1000);
             } else {
                 top = content.offset();
@@ -274,6 +258,8 @@
 
         $scope.viewMapLibrary = function (library_id) {
             $scope.select_library_for_map = library_id;
+
+            $state.go('home.map');
 
             var location = _.where($scope.locations, { 'slug' : library_id });
             organizeLocations($scope.locations, location, 'name');
@@ -291,7 +277,7 @@
             $scope.searchMarker = false;
 
             $timeout(function () {
-                scroll_to_map();
+                $scope.scroll_map_top();
             }, 1000);
 
             // Use cached user coordinates if available
@@ -360,7 +346,7 @@
                 nypl_geocoder_service.search_result_marker(IDfilteredLocations);
 
                 $timeout(function () {
-                    scroll_to_map();
+                    $scope.scroll_map_top();
                 }, 1000);
 
                 // We're done here, go home.
@@ -385,7 +371,7 @@
                 })
                 .then(function (locations) {
                     $timeout(function () {
-                        scroll_to_map();
+                        $scope.scroll_map_top();
                     }, 1000);
                     organizeLocations(locations, filteredLocations, 'distance');
                 })
