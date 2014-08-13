@@ -1,5 +1,5 @@
 /*jslint indent: 4, maxlen: 80, nomen: true */
-/*globals nypl_locations, _, angular, jQuery, $location */
+/*globals nypl_locations, _, angular, jQuery, $location, $ */
 
 (function () {
     'use strict';
@@ -187,8 +187,20 @@
                     $scope.predicate = '';
                 },
 
+            scrollListTop = function () {
+                var scrollable_lists = [
+                        angular.element('.locations-list-view tbody'),
+                        angular.element('.locations-data-wrapper')
+                    ];
+
+                _.each(scrollable_lists, function (list) {
+                    $(list).animate({
+                        scrollTop: '0px'
+                    }, 1000);
+                });
+            },
+
             searchByUserGeolocation = function () {
-                console.log('test');
                 scrollListTop();
 
                 if ($state.current.name === 'home.map') {
@@ -220,20 +232,11 @@
                     top = angular.element('.search__results').offset();
                     angular.element('body').animate({scrollTop: top.top}, 1000);
                 }
-            },
-
-            scrollListTop = function () {
-                var scrollable_lists = [
-                        angular.element('.locations-list-view tbody'),
-                        angular.element('.locations-data-wrapper')
-                    ];
-
-                _.each(scrollable_lists, function (list) {
-                    $(list).animate({
-                        scrollTop: '0px'
-                    }, 1000);
-                });
             };
+
+        $rootScope.title = "Locations";
+        $scope.$state = $state;
+        $scope.loadLocations();
 
         $scope.loadLocations = function () {
             return nyplLocationsService
@@ -257,11 +260,7 @@
                     $location.path('/404');
                     throw error;
                 });
-        },
-
-        $rootScope.title = "Locations";
-        $scope.$state = $state;
-        $scope.loadLocations();
+        };
 
         $scope.scroll_map_top = function () {
             var content = angular.element('.container__all-locations'),
@@ -425,9 +424,9 @@
             if ($scope.researchBranches) {
                 nypl_geocoder_service.show_research_libraries();
                 show_libraries_type_of('research');
-                // if ($scope.view === 'map') {
+                if ($state.current.name === 'home.map') {
                     nypl_geocoder_service.panMap();
-                // }
+                }
             } else {
                 nypl_geocoder_service.show_all_libraries();
                 show_libraries_type_of();
@@ -478,7 +477,7 @@
 
                     nypl_geocoder_service.load_markers();
                     loadMapMarkers();
-searchByUserGeolocation();
+
                     if (!$scope.locations) {
                         $scope.loadLocations().then(function () {
                             nypl_geocoder_service.load_markers();
@@ -542,7 +541,6 @@ searchByUserGeolocation();
         nyplUtility
     ) {
         var userCoords,
-            homeUrl,
             loadCoords = function () {
                 return nyplCoordinatesService
                     .getCoordinates()
@@ -574,16 +572,6 @@ searchByUserGeolocation();
 
         $scope.location.social_media =
             nyplUtility.socialMediaColor($scope.location.social_media);
-
-        // Mocked data for library specific alert.
-        // Problem with current data is the start/end time.
-        // location.hours.exceptions = {
-        //     start: "2014-07-01T15:37:31-04:00",
-        //     end: "2014-08-10T15:37:31-04:00",
-        //     open: "",
-        //     close: "",
-        //     description: "Test library specific alert"
-        // };
 
         if (location.hours.exceptions) {
             $scope.libraryAlert = nyplUtility.alerts(location.hours.exceptions);
