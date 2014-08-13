@@ -23,7 +23,6 @@ exports.config = {
     homepage: ['test/e2e/homepage/homepage.spec.js'],
     location: ['test/e2e/location/location.spec.js'],
     division: ['test/e2e/division/division.spec.js'],
-    events: ['test/e2e/events/events.spec.js'],
     services: ['test/e2e/services/services.spec.js']
   },
 

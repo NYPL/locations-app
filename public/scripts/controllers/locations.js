@@ -593,6 +593,5 @@
         .module('nypl_locations')
         .controller('LocationsCtrl', LocationsCtrl)
         .controller('MapCtrl', MapCtrl)
-        // Load one individual location for locations and events pages
         .controller('LocationCtrl', LocationCtrl);
 })();
