@@ -85,7 +85,7 @@
                                 "Your Current Location");
 
                         if ($state.current.name === 'home.map') {
-                            $scope.draw_user_marker();
+                            $scope.drawUserMarker();
                         }
 
                         return userCoords;
@@ -202,7 +202,7 @@
                 scrollListTop();
 
                 if ($state.current.name === 'home.map') {
-                    $scope.draw_user_marker();
+                    $scope.drawUserMarker();
                 }
 
                 // Display the user address, add distance to every library
@@ -213,7 +213,9 @@
                 sortListBy('distance');
             },
 
-            show_libraries_type_of = function (type) {
+            showLibrariesTypeOf = function (type) {
+                // undefined value for type is actually okay, 
+                // as it will show all if that's the case
                 $scope.location_type = type;
             };
 
@@ -241,7 +243,7 @@
                 });
         };
 
-        $scope.scroll_map_top = function () {
+        $scope.scrollMapTop = function () {
             var content = angular.element('.container__all-locations'),
                 containerWidth = parseInt(content.css('width'), 10),
                 top;
@@ -264,7 +266,7 @@
             var location = _.where($scope.locations, { 'slug' : library_id });
             organizeLocations($scope.locations, location, 'name');
             $timeout(function () {
-                $scope.scroll_map_top();
+                $scope.scrollMapTop();
             }, 1000);
         };
 
@@ -277,11 +279,10 @@
             $scope.searchMarker = false;
 
             $timeout(function () {
-                $scope.scroll_map_top();
+                $scope.scrollMapTop();
             }, 1000);
 
             // Use cached user coordinates if available
-            // if (!userCoords) {
             loadCoords()
                 .then(loadReverseGeocoding)
                 .then(searchByUserGeolocation)
@@ -289,7 +290,6 @@
                     $scope.distanceError = error.message;
                     $scope.geolocationOn = false;
                 });
-            // }
         };
 
         $scope.clearSearch = function () {
@@ -298,18 +298,17 @@
             $scope.searchTerm = '';
             $scope.select_library_for_map = '';
 
-            show_libraries_type_of();
+            showLibrariesTypeOf();
             nypl_geocoder_service.show_all_libraries();
             nypl_geocoder_service.clear_filtered_location();
             nypl_geocoder_service.remove_searchMarker();
             nypl_geocoder_service.hide_infowindow();
             allLocationsInit();
 
-            // TODO:
-            // scroll to the top for the list on the map view
+            scrollListTop();
         };
 
-        $scope.draw_user_marker = function () {
+        $scope.drawUserMarker = function () {
             if (nypl_geocoder_service.check_marker('user')) {
                 nypl_geocoder_service.pan_existing_marker('user');
             }
@@ -326,7 +325,7 @@
             $scope.geolocationAddressOrSearchQuery = '';
             // Remove previous search marker from the map
             nypl_geocoder_service.remove_searchMarker();
-            show_libraries_type_of();
+            showLibrariesTypeOf();
             nypl_geocoder_service.show_all_libraries();
             $scope.searchMarker = false;
             $scope.researchBranches = false;
@@ -346,7 +345,7 @@
                 nypl_geocoder_service.search_result_marker(IDfilteredLocations);
 
                 $timeout(function () {
-                    $scope.scroll_map_top();
+                    $scope.scrollMapTop();
                 }, 1000);
 
                 // We're done here, go home.
@@ -371,7 +370,7 @@
                 })
                 .then(function (locations) {
                     $timeout(function () {
-                        $scope.scroll_map_top();
+                        $scope.scrollMapTop();
                     }, 1000);
                     organizeLocations(locations, filteredLocations, 'distance');
                 })
@@ -405,13 +404,13 @@
 
             if ($scope.researchBranches) {
                 nypl_geocoder_service.show_research_libraries();
-                show_libraries_type_of('research');
+                showLibrariesTypeOf('research');
                 if ($state.current.name === 'home.map') {
                     nypl_geocoder_service.panMap();
                 }
             } else {
                 nypl_geocoder_service.show_all_libraries();
-                show_libraries_type_of();
+                showLibrariesTypeOf();
             }
         };
 
@@ -470,7 +469,7 @@
                         });
                     }
 
-                    $scope.draw_user_marker();
+                    $scope.drawUserMarker();
 
                     if (nypl_geocoder_service.check_marker('user')) {
                         nypl_geocoder_service.add_marker_to_map('user');
@@ -501,7 +500,7 @@
                     }
 
                     $timeout(function () {
-                        $scope.scroll_map_top();
+                        $scope.scrollMapTop();
                     }, 1200);
                 }, 1000);
             };
@@ -512,7 +511,7 @@
             nypl_geocoder_service.pan_existing_marker(slug);
             nypl_geocoder_service.hide_search_infowindow();
             $timeout(function () {
-                $scope.scroll_map_top();
+                $scope.scrollMapTop();
             }, 800);
         };
     }
