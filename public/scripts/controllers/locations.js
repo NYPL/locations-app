@@ -234,10 +234,6 @@
                 }
             };
 
-        $rootScope.title = "Locations";
-        $scope.$state = $state;
-        $scope.loadLocations();
-
         $scope.loadLocations = function () {
             return nyplLocationsService
                 .allLocations()
@@ -433,6 +429,9 @@
             }
         };
 
+        $rootScope.title = "Locations";
+        $scope.$state = $state;
+        $scope.loadLocations();
     }
     // End LocationsCtrl
 
