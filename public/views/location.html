@@ -202,7 +202,7 @@
   </div>
 
   <!-- Blogs (conditonal) -->
-  <div id="container__blogs" data-ng-if="location.type != 'research' && location._embedded.blogs">
+  <div id="container__blogs" data-ng-if="location._embedded.blogs">
     <h2 class="hdg">{{ 'BLOGS' |translate }}</h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
