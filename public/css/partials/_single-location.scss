@@ -58,6 +58,10 @@
 	
 	.day {
 		font-style: italic;
+		padding: 0 10px 3px 0;
+	}
+	.time {
+		padding: 0px;
 	}
 
 	#toggle-hours {
@@ -92,6 +96,7 @@
 
 		.weekly-hours {
 			display: none;
+			margin-bottom: 5px; 
 
 			@include breakpoint($min, $post-palm) {
 				display: block !important;
