@@ -107,13 +107,11 @@
     <div class="grid">
 
       <div class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in location._embedded.features'>
-        <a data-ng-href="{{feature._links.web.href}}" data-ng-if="feature.image">
-
+        <a data-ng-href="{{feature._links.self.href}}" data-ng-if="feature.image">
           <img class="one-third lap-and-up-one-whole desk-one-third img--left img--outline" data-ng-src="{{feature.image}}"
-            alt="Image of {{feature.title}}">
-
+          alt="Image of {{feature.title}}">
         </a>
-        <h3 class=""><a data-ng-href="{{feature._links.web.href}}">{{feature.title}}</a></h3>
+        <h3 class=""><a data-ng-href="{{feature._links.self.href}}">{{feature.title}}</a></h3>
         <div class="desc" data-ng-bind-html="feature.description"></div>
       </div>
     </div>
