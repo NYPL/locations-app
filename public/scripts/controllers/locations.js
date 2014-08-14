@@ -161,7 +161,7 @@
                     _.each(filteredLocations, function (location) {
                         // just to differentiate between angular matched filter 
                         // results and reverse geocoding results
-                        location.highlight = 'callout';
+                        location.highlight = 'active';
                         location.distance = '';
                     });
 
