@@ -43,8 +43,12 @@
               {{ 'LIBRARY_MANAGER' | translate }}: {{location.contacts.manager}}
             </div>
           </div>
-          
-          <div data-ng-if="location.access" class="wheelchair icon-accessibility icon-color-blue">
+
+          <!-- Accessibility -->
+          <div data-ng-if="location.access == 'Fully Accessible'" class="fully accessible icon-accessibility icon-color-blue">
+            {{location.access}}
+          </div>
+          <div data-ng-if="location.access == 'Partially Accessible'" class="partially accessible icon-accessibility2 icon-color-blue">
             {{location.access}}
           </div>
 
