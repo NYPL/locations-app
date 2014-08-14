@@ -5,13 +5,12 @@
 function nyplGeocoderService($q) {
   'use strict';
 
-  var
     /** @type {object}
      * @name nyplGeocoderService.map
      * @description Google Maps Map Object
      * @private
      */
-    map,
+  var map,
     markers = [],
     filteredLocation,
     searchMarker = new google.maps.Marker({

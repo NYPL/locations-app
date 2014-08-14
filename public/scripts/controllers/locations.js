@@ -22,6 +22,12 @@
                 $scope.predicate = type;
             },
 
+            resetProperty = function (arr, property) {
+                _.each(arr, function (location) {
+                    location[property] = '';
+                });
+            },
+
             allLocationsInit = function () {
                 $scope.reverse = false;
                 $scope.searchTerm = '';
@@ -29,10 +35,8 @@
 
                 sortListBy('name');
 
-                _.each($scope.locations, function (location) {
-                    location.distance = '';
-                    location.highlight = '';
-                });
+                resetProperty($scope.locations, 'distance');
+                resetProperty($scope.locations, 'highlight');
             },
 
             checkGeolocation = function () {
@@ -45,7 +49,7 @@
                 }
             },
 
-            loadCoords = function () {
+            loadUserCoordinates = function () {
                 return nyplCoordinatesService
                     .getCoordinates()
                     .then(function (position) {
@@ -80,9 +84,8 @@
 
                         $scope.locations = locations;
                         sortListBy('distance');
-                        nyplGeocoderService
-                            .createMarker('user', userCoords,
-                                "Your Current Location");
+                        nyplGeocoderService.createMarker('user', userCoords,
+                            "Your Current Location");
 
                         if ($state.current.name === 'home.map') {
                             $scope.drawUserMarker();
@@ -121,12 +124,6 @@
                     });
             },
 
-            resetDistance = function () {
-                _.each($scope.locations, function (location) {
-                    location.distance = '';
-                });
-            },
-
             searchByCoordinates = function (searchObj) {
                 var locationsCopy = $scope.locations,
                     coords = searchObj.coords,
@@ -156,9 +153,7 @@
 
             organizeLocations =
                 function (locations, filteredLocations, sortByFilter) {
-                    _.each(locations, function (location) {
-                        location.highlight = '';
-                    });
+                    resetProperty(locations, 'highlight');
 
                     _.each(filteredLocations, function (location) {
                         // just to differentiate between angular matched filter 
@@ -194,9 +189,7 @@
                     ];
 
                 _.each(scrollable_lists, function (list) {
-                    $(list).animate({
-                        scrollTop: '0px'
-                    }, 1000);
+                    $(list).animate({scrollTop: '0px'}, 1000);
                 });
             },
 
@@ -229,18 +222,16 @@
                     $scope.locations = locations;
 
                     _.each($scope.locations, function (location) {
-                        location.hoursToday = nyplUtility.hoursToday;
-                        location.locationDest
-                            = nyplUtility.getAddressString(location);
-                    });
-
-                    _.each($scope.locations, function (location) {
                         var locationAddress = nyplUtility
                                 .getAddressString(location, true),
                             markerCoordinates = {
                                 'latitude': location.geolocation.coordinates[1],
                                 'longitude': location.geolocation.coordinates[0]
                             };
+
+                        location.hoursToday = nyplUtility.hoursToday;
+                        location.locationDest
+                            = nyplUtility.getAddressString(location);
 
                         // Initially, when the map is drawn and 
                         // markers are availble, they will be drawn too. 
@@ -304,7 +295,7 @@
             }, 1000);
 
             // Use cached user coordinates if available
-            loadCoords()
+            loadUserCoordinates()
                 .then(loadReverseGeocoding)
                 .then(searchByUserGeolocation)
                 .catch(function (error) {
@@ -361,7 +352,7 @@
                     nyplUtility.locationSearch($scope.locations, searchTerm);
 
             if (IDfilteredLocations && IDfilteredLocations.length !== 0) {
-                resetDistance();
+                resetProperty($scope.locations, 'distance');
                 organizeLocations($scope.locations, IDfilteredLocations,
                     'name');
 
@@ -409,7 +400,7 @@
                     $scope.searchMarker = false;
                     if (filteredLocations.length &&
                             error.msg !== 'query too short') {
-                        resetDistance();
+                        resetProperty($scope.locations, 'distance');
                         $scope.searchError = '';
                         // Map related work
                         nyplGeocoderService
@@ -443,10 +434,10 @@
     }
     // End LocationsCtrl
 
-    function MapCtrl($scope, $timeout, nyplGeocoderService, nyplUtility) {
+    function MapCtrl($scope, $timeout, nyplGeocoderService) {
 
         var loadMapMarkers = function () {
-                $timeout(function() {
+                $timeout(function () {
                     if ($scope.locations) {
                         nyplGeocoderService.showAllLibraries();
                     }
@@ -466,9 +457,8 @@
                         long: -73.9822
                     }, 12, 'all-locations-map');
 
-                    nyplGeocoderService
-                        .drawLegend('all-locations-map-legend');
-                    
+                    nyplGeocoderService.drawLegend('all-locations-map-legend');
+
                     if ($scope.locations) {
                         nyplGeocoderService.showAllLibraries();
                     }
@@ -525,7 +515,7 @@
         nyplUtility
     ) {
         var userCoords,
-            loadCoords = function () {
+            loadUserCoordinates = function () {
                 return nyplCoordinatesService
                     .getCoordinates()
                     .then(function (position) {
@@ -540,7 +530,7 @@
             };
 
         // Load the user's geolocation coordinates
-        loadCoords();
+        loadUserCoordinates();
 
         $scope.location = location;
         $rootScope.title = location.name;
