@@ -21,7 +21,7 @@
 	  	<!-- Locations List Data -->
 	  	<div class="locations-data-wrapper scrollable">
 
-	  		<div id="{{location.id}}" class="location-data" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse">
+	  		<div id="{{location.id}}" class="location-data {{location.highlight}}" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse">
 
 					<div class="p-org"><a data-ui-sref='location({location: location.slug})'>{{location.name}}</a></div>
 					<div class="p-adr">

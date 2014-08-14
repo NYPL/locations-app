@@ -167,7 +167,8 @@
 		}
 
 		#results {
-			background-color: rgba(0,144,196,0.15);
+			background-color: #FFFFCD;
+			border: 1px solid #EEE;
 		}
 	}
 
@@ -254,10 +255,6 @@
 				overflow: auto;
 				height: 500px;
 
-				// @include breakpoint($min, $post-palm) {
-				// 	display: table-row-group;
-				// }
-
 				tr {
 					display: block;
 					border: 1px solid #eee;
@@ -265,6 +262,10 @@
 					@include breakpoint($min, $post-palm) {
 						display: table-row;
 						border-bottom: 1px solid #eee;
+					}
+
+					&.active {
+						background-color: #FFFFED;
 					}
 
 					td {
@@ -396,6 +397,10 @@
 			.location-data {
 				border-bottom: 1px solid #eee;
 				padding: 5px 0px;
+
+				&.active {
+					background-color: #FFFFED;
+				}
 
 				.p-org {
 					font-size: 1.2rem;
