@@ -1,7 +1,7 @@
 /*jslint indent: 4, maxlen: 80, nomen: true */
 /*globals nypl_locations, google, document, _, angular */
 
-function nypl_geocoder_service($q) {
+function nyplGeocoderService($q) {
     'use strict';
 
     var map,
@@ -21,7 +21,7 @@ function nypl_geocoder_service($q) {
         infowindow = new google.maps.InfoWindow(),
         geocoder_service = {};
 
-    geocoder_service.get_coords = function (address) {
+    geocoder_service.getCoords = function (address) {
         var defer = $q.defer(),
             coords = {},
             geocoder = new google.maps.Geocoder(),
@@ -51,7 +51,7 @@ function nypl_geocoder_service($q) {
         return defer.promise;
     };
 
-    geocoder_service.get_address = function (coords) {
+    geocoder_service.getAddress = function (coords) {
         var address,
             defer = $q.defer(),
             geocoder = new google.maps.Geocoder(),
@@ -69,7 +69,7 @@ function nypl_geocoder_service($q) {
         return defer.promise;
     };
 
-    geocoder_service.draw_map = function (coords, zoom, id) {
+    geocoder_service.drawMap = function (coords, zoom, id) {
         var locationCoords = new google.maps.LatLng(coords.lat, coords.long),
             mapOptions = {
                 zoom: zoom,
@@ -84,17 +84,17 @@ function nypl_geocoder_service($q) {
         map = new google.maps.Map(document.getElementById(id), mapOptions);
     };
 
-    geocoder_service.load_markers = function () {
+    geocoder_service.loadMarkers = function () {
         var _this = this;
         // if markers are available, draw them
         if (markers) {
             _.each(markers, function (marker) {
-                _this.add_marker_to_map(marker.id);
+                _this.addMarkerToMap(marker.id);
             });
         }
     };
 
-    geocoder_service.draw_legend = function (id) {
+    geocoder_service.drawLegend = function (id) {
         var mapLegend = document.getElementById(id);
 
         map.controls[google.maps.ControlPosition.RIGHT_BOTTOM]
@@ -117,90 +117,89 @@ function nypl_geocoder_service($q) {
         map.setZoom(zoom);
     };
 
-    geocoder_service.create_userMarker = function (coords, text) {
+    geocoder_service.createUserMarker = function (coords, text) {
         var _this = this;
         panCoords = new google.maps.LatLng(coords.latitude, coords.longitude);
         userMarker.setPosition(panCoords);
-        // this.show_infowindow(userMarker, text);
         google.maps.event.addListener(userMarker, 'click', function () {
-            _this.show_infowindow(userMarker, text);
+            _this.showInfowindow(userMarker, text);
         });
         markers.push({id: 'user', marker: userMarker, text: text});
     };
 
-    geocoder_service.create_searchMarker = function (coords, text) {
+    geocoder_service.createSearchMarker = function (coords, text) {
         var searchTerm = text.replace(',', ' <br>').replace(',', ' <br>');
         panCoords = new google.maps.LatLng(coords.lat, coords.long);
         searchMarker.setPosition(panCoords);
         searchInfoWindow.setContent(searchTerm);
     };
 
-    geocoder_service.draw_searchMarker = function () {
-        this.remove_searchMarker();
+    geocoder_service.drawSearchMarker = function () {
+        this.removeSearchMarker();
 
         searchMarker.setMap(map);
         this.panMap(searchMarker);
 
         searchInfoWindow.open(map, searchMarker);
-        this.hide_infowindow();
+        this.hideInfowindow();
         google.maps.event.addListener(searchMarker, 'click', function () {
             searchInfoWindow.open(map, searchMarker);
         });
     };
 
-    geocoder_service.remove_searchMarker = function () {
+    geocoder_service.removeSearchMarker = function () {
         searchMarker.setMap(null);
     };
 
-    geocoder_service.remove_marker = function (id) {
+    geocoder_service.removeMarker = function (id) {
         var markerObj = _.where(markers, {id: id});
         markerObj[0].marker.setMap(null);
     };
 
-    geocoder_service.add_marker_to_map = function (id) {
+    geocoder_service.addMarkerToMap = function (id) {
         var markerObj = _.where(markers, {id: id});
         markerObj[0].marker.setMap(map);
     };
 
-    geocoder_service.check_searchMarker = function () {
+    geocoder_service.checkSearchMarker = function () {
         return searchMarker.getPosition() !== undefined &&
             searchMarker.getMap() !== null;
     };
 
-    geocoder_service.check_marker = function (id) {
+    geocoder_service.checkMarker = function (id) {
         var markerObj = _.where(markers, {id: id});
         return (markerObj[0] !== undefined);
     };
 
-    geocoder_service.pan_existing_marker = function (id) {
+    geocoder_service.panExistingMarker = function (id) {
         var markerObj = _.where(markers, {id: id}),
             marker = markerObj[0].marker;
 
         if (marker.getMap() === undefined || marker.getMap() === null) {
-            this.add_marker_to_map(id);
+            this.addMarkerToMap(id);
         }
 
         this.panMap(marker);
-        this.show_infowindow(markerObj[0].marker, markerObj[0].text);
+        this.showInfowindow(markerObj[0].marker, markerObj[0].text);
     };
 
-    geocoder_service.search_result_marker = function (locations) {
+    geocoder_service.searchResultMarker = function (locations) {
         var location_id = locations[0].slug;
         filteredLocation = location_id;
-        if (this.check_marker(location_id)) {
-            this.pan_existing_marker(location_id);
+        if (this.checkMarker(location_id)) {
+            this.panExistingMarker(location_id);
         }
     };
 
-    geocoder_service.clear_filtered_location = function () {
+    geocoder_service.clearFilteredLocation = function () {
         filteredLocation = undefined;
     };
 
-    geocoder_service.get_filtered_location = function () {
+    geocoder_service.getFilteredLocation = function () {
         return filteredLocation;
     };
 
-    geocoder_service.show_research_libraries = function () {
+    geocoder_service.showResearchLibraries = function () {
         var _this = this,
             // Add the 'user' marker. If it's available,
             // we do not want to remove it at all. Use slug names
@@ -208,20 +207,20 @@ function nypl_geocoder_service($q) {
 
         _.each(markers, function (marker) {
             if (!_.contains(list, marker.id)) {
-                _this.remove_marker(marker.id);
+                _this.removeMarker(marker.id);
             }
         });
     };
 
-    geocoder_service.show_all_libraries = function () {
+    geocoder_service.showAllLibraries = function () {
         var _this = this;
 
         _.each(markers, function (marker) {
-            _this.add_marker_to_map(marker.id);
+            _this.addMarkerToMap(marker.id);
         });
     };
 
-    geocoder_service.draw_marker = function (id, location, text) {
+    geocoder_service.drawMarker = function (id, location, text) {
         var _this = this,
             marker,
             position = new google.maps
@@ -241,20 +240,20 @@ function nypl_geocoder_service($q) {
         // map.data.loadGeoJson();
 
         google.maps.event.addListener(marker, 'click', function () {
-            _this.show_infowindow(marker, text);
+            _this.showInfowindow(marker, text);
         });
     };
 
-    geocoder_service.hide_search_infowindow = function () {
+    geocoder_service.hideSearchInfowindow = function () {
         searchInfoWindow.close();
     };
 
-    geocoder_service.hide_infowindow = function () {
+    geocoder_service.hideInfowindow = function () {
         infowindow.close();
     };
 
-    geocoder_service.show_infowindow = function (marker, text) {
-        this.hide_infowindow();
+    geocoder_service.showInfowindow = function (marker, text) {
+        this.hideInfowindow();
         infowindow.setContent(text);
         infowindow.open(map, marker);
     };
@@ -264,4 +263,4 @@ function nypl_geocoder_service($q) {
 
 angular
     .module('nypl_locations')
-    .factory('nypl_geocoder_service', nypl_geocoder_service);
+    .factory('nyplGeocoderService', nyplGeocoderService);
