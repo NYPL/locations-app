@@ -81,7 +81,7 @@
                         $scope.locations = locations;
                         sortListBy('distance');
                         nyplGeocoderService
-                            .createUserMarker(userCoords,
+                            .createMarker('user', userCoords,
                                 "Your Current Location");
 
                         if ($state.current.name === 'home.map') {
@@ -95,7 +95,7 @@
             // convert coordinate into address
             loadReverseGeocoding = function (userCoords) {
                 return nyplGeocoderService
-                    .getAddress({
+                    .reverseGeocoding({
                         lat: userCoords.latitude,
                         lng: userCoords.longitude
                     })
@@ -109,7 +109,7 @@
 
             // convert address to geographic coordinate
             loadGeocoding = function (searchTerm) {
-                return nyplGeocoderService.getCoordinates(searchTerm)
+                return nyplGeocoderService.geocodeAddress(searchTerm)
                     .then(function (coords) {
                         return {
                             coords: coords,
@@ -143,7 +143,9 @@
                 }
 
                 if ($state.current.name === 'home.map') {
-                    nyplGeocoderService.drawSearchMarker();
+                    nyplGeocoderService
+                        .removeSearchMarker()
+                        .drawSearchMarker();
                 }
                 $scope.searchMarker = true;
 
@@ -232,6 +234,25 @@
                             = nyplUtility.getAddressString(location);
                     });
 
+                    _.each($scope.locations, function (location) {
+                        var locationAddress = nyplUtility
+                                .getAddressString(location, true),
+                            markerCoordinates = {
+                                'latitude': location.geolocation.coordinates[1],
+                                'longitude': location.geolocation.coordinates[0]
+                            };
+
+                        // Initially, when the map is drawn and 
+                        // markers are availble, they will be drawn too. 
+                        // No need to draw them again if they exist.
+                        if (!nyplGeocoderService.checkMarker(location.slug)) {
+                            nyplGeocoderService
+                                .createMarker(location.slug,
+                                    markerCoordinates,
+                                    locationAddress);
+                        }
+                    });
+
                     checkGeolocation();
                     allLocationsInit();
 
@@ -299,10 +320,13 @@
             $scope.select_library_for_map = '';
 
             showLibrariesTypeOf();
-            nyplGeocoderService.showAllLibraries();
-            nyplGeocoderService.clearFilteredLocation();
-            nyplGeocoderService.removeSearchMarker();
-            nyplGeocoderService.hideInfowindow();
+            nyplGeocoderService
+                .showAllLibraries()
+                .clearFilteredLocation()
+                .removeSearchMarker()
+                .hideInfowindow()
+                .panMap();
+
             allLocationsInit();
 
             scrollListTop();
@@ -422,30 +446,17 @@
     function MapCtrl($scope, $timeout, nyplGeocoderService, nyplUtility) {
 
         var loadMapMarkers = function () {
-                _.each($scope.locations, function (location) {
-                    var locationAddress = nyplUtility
-                            .getAddressString(location, true),
-                        markerCoordinates = {
-                            'latitude': location.geolocation.coordinates[1],
-                            'longitude': location.geolocation.coordinates[0]
-                        };
-
-                    // Initially, when the map is drawn and 
-                    // markers are availble, they will be drawn too. 
-                    // No need to draw them again if they exist.
-                    if (!nyplGeocoderService.checkMarker(location.slug)) {
-                        nyplGeocoderService
-                            .drawMarker(location.slug,
-                                markerCoordinates,
-                                locationAddress);
+                $timeout(function() {
+                    if ($scope.locations) {
+                        nyplGeocoderService.showAllLibraries();
                     }
-                });
+                }, 1000);
             },
 
             mapInit = function () {
-                nyplGeocoderService.removeSearchMarker();
-                nyplGeocoderService.hideInfowindow();
-                nyplGeocoderService.panMap();
+                nyplGeocoderService.removeSearchMarker()
+                    .hideInfowindow()
+                    .panMap();
             },
 
             drawMap = function () {
@@ -457,22 +468,13 @@
 
                     nyplGeocoderService
                         .drawLegend('all-locations-map-legend');
-
-                    nyplGeocoderService.loadMarkers();
+                    
+                    if ($scope.locations) {
+                        nyplGeocoderService.showAllLibraries();
+                    }
                     loadMapMarkers();
 
-                    if (!$scope.locations) {
-                        $scope.loadLocations().then(function () {
-                            nyplGeocoderService.loadMarkers();
-                            loadMapMarkers();
-                        });
-                    }
-
                     $scope.drawUserMarker();
-
-                    if (nyplGeocoderService.checkMarker('user')) {
-                        nyplGeocoderService.addMarkerToMap('user');
-                    }
 
                     if (nyplGeocoderService.checkSearchMarker()) {
                         nyplGeocoderService.drawSearchMarker();
@@ -488,7 +490,6 @@
                     if ($scope.select_library_for_map) {
                         nyplGeocoderService
                             .panExistingMarker($scope.select_library_for_map);
-                        nyplGeocoderService.hideSearchInfowindow();
                     }
 
                     var filteredLocation =
