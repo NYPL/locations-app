@@ -118,7 +118,7 @@
           alt="Image of {{feature.title}}">
         </a>
         <h3 class=""><a data-ng-href="{{feature._links.self.href}}">{{feature.title}}</a></h3>
-        <div class="desc" data-ng-bind-html="feature.description"></div>
+        <div class="desc" data-ng-if="feature.body">{{feature.body}}</div>
       </div>
     </div>
   </div>
