@@ -3,7 +3,7 @@
 
   <!-- <nyplbreadcrumbs></nyplbreadcrumbs> -->
 
-  <div class="container__division-info">
+  <div class="container__div_info">
     <h1 class="p-org">{{division.name}}</h1>
     <div class="grid">
       <!-- Division Hours -->
@@ -29,32 +29,38 @@
         </div>
       </div><!--
 
+      --><div id="container__div_image" class="grid__item lap-one-half one-whole desk-one-third">
+        <!-- Division Image -->
+        <img class="img--outline" data-ng-src="{{division.image}}"
+          alt="Image of {{division.name}}" title="Image of {{division.name}}">
+      </div><!--
+      
       --><div id="container__div_address" class="grid__item lap-one-half one-whole desk-one-third">
+        
         <!-- Division address and related location data -->
         <div>{{division.location_name}}</div>
-        <div>{{division.floor}} 
-            <span data-ng-if="division.room">{{ 'ROOM' | translate }} #{{division.room}}</span>
+        <div data-ng-if="division.street_address">{{division.street_address}}</div>
+        <div data-ng-if="division.cross_street">{{division.cross_street}}</div>
+        <div data-ng-if="division.floor">{{division.floor}} 
+            <span data-ng-if="division.room">{{ 'ROOM' | translate }} {{division.room}}</span>
         </div>
-        <div>{{division.contacts.phone}}</div>
+        <div data-ng-if="division.locality">
+          {{division.locality}}, {{division.region}}, {{division.postal_code}}
+        </div>
+        <div data-ng-if="division.contacts.phone">{{division.contacts.phone}}</div>
+
+        <!-- Accessibility -->
+        <div data-ng-if="division.access == 'Fully Accessible'" class="fully accessible icon-accessibility icon-color-blue">
+          {{division.access}}
+        </div>
+        <div data-ng-if="division.access == 'Partially Accessible'" class="partially accessible icon-accessibility2 icon-color-blue">
+          {{division.access}}
+        </div>
+
         <div class="social flush beta" data-ng-if="division.social_media">
           <a class="{{social.classes}}" data-ng-href="{{social.href}}" id="social_media"
             data-ng-repeat="social in division.social_media" class="inline"></a>
         </div>
-      </div><!--
-      
-      --><div id="container__div_amenities" class="grid__item lap-one-half one-whole desk-one-third">
-        <!-- Division amenities -->
-        <div data-ng-if="division.contacts.manager">
-          {{ 'DIVISION_MANAGER' | translate}}<span>{{division.contacts.manager}}</span>
-        </div>
-
-        <ul class="top-amenities flush">
-          <li class="icon-book inline">{{ 'BOOKS' | translate }}</li>
-          <li class="icon-accessibility inline">{{ 'WHEELCHAIR' | translate }}</li>
-          <li class="icon-box-add inline">{{ 'BOOKDROP' | translate }}</li>
-        </ul>
-        <div><a id="catalog-link" class="icon-books" data-ng-if="division._links.catalog_link"
-         data-ng-href="{{division._links.catalog_link.href}}">{{ 'SHELVES' | translate }}</a></div>
       </div>
 
     </div>

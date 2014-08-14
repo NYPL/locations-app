@@ -2,3 +2,15 @@
 	clear: both;
 	margin: 24px 0px;
 }
+
+#container__div_image {
+	float: left; // Fix for proper positioning on desktop
+	display: none; // Hidden on mobile
+	margin-bottom: 34px;
+
+	@include breakpoint($min, $desktop) {
+		display: inline-block;
+		height: 245px; // constrain proportions until proper images exist
+		overflow: hidden;
+	}
+}

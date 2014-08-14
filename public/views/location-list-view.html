@@ -34,10 +34,11 @@
               </div>
 
               <!-- Accessibility -->
-              <div data-ng-if="location.access" class="loc-access">
-                <span class="wheelchair icon-accessibility icon-color-blue">
-                  {{location.access}}
-                </span>
+              <div data-ng-if="location.access == 'Fully Accessible'" class="fully accessible icon-accessibility icon-color-blue">
+                {{location.access}}
+              </div>
+              <div data-ng-if="location.access == 'Partially Accessible'" class="partially accessible icon-accessibility2 icon-color-blue">
+                {{location.access}}
               </div>
 
               <!-- Map/Directions Links -->
