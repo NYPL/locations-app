@@ -109,7 +109,7 @@
 
             // convert address to geographic coordinate
             loadGeocoding = function (searchTerm) {
-                return nyplGeocoderService.getCoords(searchTerm)
+                return nyplGeocoderService.getCoordinates(searchTerm)
                     .then(function (coords) {
                         return {
                             coords: coords,
