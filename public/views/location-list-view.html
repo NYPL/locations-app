@@ -33,6 +33,13 @@
                 Phone: {{location.contacts.phone}}
               </div>
 
+              <!-- Accessibility -->
+              <div data-ng-if="location.access" class="loc-access">
+                <span class="wheelchair icon-accessibility icon-color-blue">
+                  {{location.access}}
+                </span>
+              </div>
+
               <!-- Map/Directions Links -->
               <div class="map-link">
                 <a class="icon-map view-on-map" href="" data-ng-click="viewMapLibrary(location.slug)">

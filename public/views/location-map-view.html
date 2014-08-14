@@ -34,6 +34,13 @@
 						Phone: {{location.contacts.phone}}
 					</div>
 
+          <!-- Accessibility -->
+          <div data-ng-if="location.access" class="loc-access">
+            <span class="wheelchair icon-accessibility icon-color-blue">
+              {{location.access}}
+            </span>
+          </div>
+
           <!-- Highlighted Amenities -->
 					<div class="loc-amenities">
             <ul class="highlighted-amenities-list">
