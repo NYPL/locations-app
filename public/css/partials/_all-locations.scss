@@ -398,6 +398,10 @@
 				border-bottom: 1px solid #eee;
 				padding: 5px 0px;
 
+				&.active {
+					background-color: #FFFFED;
+				}
+
 				.p-org {
 					font-size: 1.2rem;
 					font-weight: bold;
