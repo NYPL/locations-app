@@ -7,7 +7,8 @@ module.exports = function (grunt) {
   grunt.initConfig({
     jsdoc: {
       dist: {
-        src: ['public/scripts/services/*.js'],
+        src: ['public/scripts/services/*.js',
+          'public/scripts/components/nypl_locations_api.js'],
         options: {
           destination: 'docs'
         }

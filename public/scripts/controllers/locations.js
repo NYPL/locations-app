@@ -570,7 +570,7 @@
         });
 
         _.each(location._embedded.features, function (feature) {
-            feature.description = nyplUtility.returnHTML(feature.description);
+            feature.body = nyplUtility.returnHTML(feature.body);
         });
 
         // Used for the Get Directions link to Google Maps

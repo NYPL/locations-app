@@ -1,6 +1,7 @@
 /*jslint indent: 4, maxlen: 80 */
 /*globals angular */
 
+/** @namespace nyplLocationsApi */
 function nypLocationsApi($http, $q) {
     'use strict';
 
@@ -8,6 +9,19 @@ function nypLocationsApi($http, $q) {
         apiError = "Could not reach API",
         locationsApi = {};
 
+    /** @function nyplLocationsApi.allLocations 
+     * @returns {object} Deferred promise. If it resolves, JSON response from
+     *  the API of all NYPL locations. If it is rejected, an error message
+     *  is returned saying that it "Could not reach API".
+     * @example
+     *  nypLocationsApi.allLocations()
+     *    .then(function (data) {
+     *      var locations = data.locations;
+     *    });
+     *    .catch(function (error) {
+     *      // error = "Could not reach API"
+     *    });
+     */
     locationsApi.allLocations = function () {
         var defer = $q.defer();
 
@@ -21,6 +35,20 @@ function nypLocationsApi($http, $q) {
         return defer.promise;
     };
 
+    /** @function nyplLocationsApi.singleLocation
+     * @param {string} location The slug of the location to look up.
+     * @returns {object} Deferred promise. If it resolves, JSON response from
+     *  the API of a specific NYPL locations. If it is rejected, an error
+     *  message is returned saying that it "Could not reach API".
+     * @example
+     *  nypLocationsApi.singleLocation('schwarzman')
+     *    .then(function (data) {
+     *      var location = data.location;
+     *    });
+     *    .catch(function (error) {
+     *      // error = "Could not reach API"
+     *    });
+     */
     locationsApi.singleLocation = function (location) {
         var defer = $q.defer();
 
@@ -34,6 +62,20 @@ function nypLocationsApi($http, $q) {
         return defer.promise;
     };
 
+    /** @function nyplLocationsApi.singleDivision
+     * @param {string} division The slug of the division to look up.
+     * @returns {object} Deferred promise. If it resolves, JSON response from
+     *  the API of an NYPL Division. If it is rejected, an error
+     *  message is returned saying that it "Could not reach API".
+     * @example
+     *  nypLocationsApi.singleLocation('map-division')
+     *    .then(function (data) {
+     *      var division = data.division;
+     *    });
+     *    .catch(function (error) {
+     *      // error = "Could not reach API"
+     *    });
+     */
     locationsApi.singleDivision = function (division) {
         var defer = $q.defer();
 
@@ -47,7 +89,30 @@ function nypLocationsApi($http, $q) {
         return defer.promise;
     };
 
-    // All amenities at NYPL
+    /** @function nyplLocationsApi.amenities
+     * @param {string} [amenity] The id of the amenity to look up.
+     * @returns {object} Deferred promise. If it resolves, JSON response from
+     *  the API. If no param was passed, it will return all the amenities at 
+     *  NYPL. If the param was passed, it will return a list of all the NYPL
+     *  locations where the amenity passed is available. If it is rejected,
+     *  an error message is returned saying that it "Could not reach API".
+     * @example
+     *  nypLocationsApi.amenities()
+     *    .then(function (data) {
+     *      var amenities = data;
+     *    });
+     *    .catch(function (error) {
+     *      // error = "Could not reach API"
+     *    });
+     *
+     *  nypLocationsApi.amenities('7950')
+     *    .then(function (data) {
+     *      var amenity = data;
+     *    });
+     *    .catch(function (error) {
+     *      // error = "Could not reach API"
+     *    });
+     */
     locationsApi.amenities = function (amenity) {
         var defer = $q.defer(),
             url = !amenity ? '/amenities' : '/amenities/' + amenity;
@@ -62,7 +127,21 @@ function nypLocationsApi($http, $q) {
         return defer.promise;
     };
 
-    // All amenities at one location
+    /** @function nyplLocationsApi.amenitiesAtLibrary
+     * @param {string} location The slug of the location to look up
+     *  all amenities available at that location.
+     * @returns {object} Deferred promise. If it resolves, JSON response from
+     *  the API of all amenities available at the location. If it is rejected,
+     *  an error message is returned saying that it "Could not reach API".
+     * @example
+     *  nypLocationsApi.amenitiesAtLibrary('115th-street')
+     *    .then(function (data) {
+     *      var location = data.location;
+     *    });
+     *    .catch(function (error) {
+     *      // error = "Could not reach API"
+     *    });
+     */
     locationsApi.amenitiesAtLibrary = function (location) {
         var defer = $q.defer();
 
@@ -76,6 +155,18 @@ function nypLocationsApi($http, $q) {
         return defer.promise;
     };
 
+    /** @function nyplLocationsApi.alerts
+     * @returns {object} Deferred promise. If it resolves, JSON response from
+     *  the API of alerts that display site-wide.
+     * @example
+     *  nypLocationsApi.alerts()
+     *    .then(function (data) {
+     *      var amenities = data.alerts;
+     *    });
+     *    .catch(function (error) {
+     *      // error = "Could not reach API"
+     *    });
+     */
     locationsApi.alerts = function () {
         var defer = $q.defer();
 

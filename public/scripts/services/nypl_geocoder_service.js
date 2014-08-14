@@ -1,6 +1,7 @@
 /*jslint indent: 2, maxlen: 80, nomen: true */
 /*globals nypl_locations, google, document, _, angular */
 
+/** @namespace nyplGeocoderService */
 function nyplGeocoderService($q) {
   'use strict';
 
@@ -21,6 +22,19 @@ function nyplGeocoderService($q) {
     infowindow = new google.maps.InfoWindow(),
     geocoderService = {};
 
+  /** @function nyplGeocoderService.getCoordinates
+   * @param {string} address Address or location to search for.
+   * @returns {object} Deferred promise. If it resolves, an object is returned
+   *  with coordinates and formatted address, or an error if rejected.
+   * @example
+   *  nyplGeocoderService.getCoordinates('Bryant Park')
+   *    .then(function (coords) {
+   *      // coords.lat, coords.long, coords.name
+   *    });
+   *    .catch(function (error) {
+   *      // "Query too short" or Google error status
+   *    });
+   */
   geocoderService.getCoordinates = function (address) {
     var defer = $q.defer(),
       coords = {},
@@ -30,7 +44,7 @@ function nyplGeocoderService($q) {
       bounds = new google.maps.LatLngBounds(sw_bound, ne_bound);
 
     if (address.length < 3) {
-      defer.reject({msg: "query too short"});
+      defer.reject({msg: "Query too short"});
     }
 
     geocoder.geocode({address: address, bounds: bounds, region: "US"},
@@ -49,6 +63,22 @@ function nyplGeocoderService($q) {
     return defer.promise;
   };
 
+  /** @function nyplGeocoderService.getAddress 
+   * @param {object} coords Object with lat and long properties.
+   * @returns {object} Deferred promise. If it resolves, a string of Google's
+   *  best attempt to reverse geocode coordinates into a formatted address. 
+   * @example
+   *  nyplGeocoderService.getAddress({
+   *    lat: -73.245,
+   *    long: 40.356
+   *  })
+   *  .then(function (address) {
+   *    var address = address;
+   *  });
+   *  .catch(function (error) {
+   *    // Google error status
+   *  });
+   */
   geocoderService.getAddress = function (coords) {
     var address,
       defer = $q.defer(),
