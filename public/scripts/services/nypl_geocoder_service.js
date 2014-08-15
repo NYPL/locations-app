@@ -5,11 +5,6 @@
 function nyplGeocoderService($q) {
   'use strict';
 
-    /** @type {object}
-     * @name nyplGeocoderService.map
-     * @description Google Maps Map Object
-     * @private
-     */
   var map,
     markers = [],
     filteredLocation,
@@ -19,6 +14,10 @@ function nyplGeocoderService($q) {
     searchInfoWindow = new google.maps.InfoWindow(),
     infowindow = new google.maps.InfoWindow(),
     geocoderService = {},
+
+    getMarkerFromList = function (id) {
+      return _.findWhere(markers, {id: id});
+    },
 
     /** @function showInfowindow
      * @param {object} marker Google Maps Marker object.
@@ -48,8 +47,8 @@ function nyplGeocoderService($q) {
      *  removeMarkerFromMap('baychester');
      */
     removeMarkerFromMap = function (id) {
-      var markerObj = _.where(markers, {id: id});
-      markerObj[0].marker.setMap(null);
+      var markerObj = getMarkerFromList(id);
+      markerObj.marker.setMap(null);
     },
 
     /** @function addMarkerToMap
@@ -61,8 +60,8 @@ function nyplGeocoderService($q) {
      *  addMarkerToMap('parkester');
      */
     addMarkerToMap = function (id) {
-      var markerObj = _.where(markers, {id: id});
-      markerObj[0].marker.setMap(map);
+      var markerObj = getMarkerFromList(id);
+      markerObj.marker.setMap(map);
     };
 
   /** @function nyplGeocoderService.geocodeAddress
@@ -93,7 +92,8 @@ function nyplGeocoderService($q) {
         function (result, status) {
           if (status === google.maps.GeocoderStatus.OK) {
             coords.lat  = result[0].geometry.location.k;
-            coords.long = result[0].geometry.location.A;
+            coords.long = result[0].geometry.location.B ||
+               result[0].geometry.location.A;
             coords.name = result[0].formatted_address;
 
             defer.resolve(coords);
@@ -164,6 +164,7 @@ function nyplGeocoderService($q) {
       };
 
     map = new google.maps.Map(document.getElementById(id), mapOptions);
+    return this;
   };
 
   /** @function nyplGeocoderService.drawLegend
@@ -239,7 +240,25 @@ function nyplGeocoderService($q) {
     return this;
   };
 
+  /** @function nyplGeocoderService.createMarker
+   * @param {string} id The location's slug.
+   * @param {object} location The location's coordinates as an object with
+   *  latitude and longitude properties.
+   * @param {string} text The location's address for the marker's infowindow,
+   *  with markup since the infowindow allows markup.
+   * @description This will create a Google Maps Marker and add it to the
+   *  global markers array. If the marker is the user's marker, it will have
+   *  a different icon, zIndex, and animation.
+   * @example
+   *  nyplGeocoderService.createMarker('sibl', {
+   *    latitude: 40.24,
+   *    longitude: -73.24
+   *  }, 'Science, Industry and Business Library (SIBL) 188 Madison Avenue ' +
+   *   '@ 34th Street New York, NY, 10016');
+   */
   geocoderService.createMarker = function (id, location, text) {
+    if (id === 'sibl')
+    console.log(text);
     var marker,
       position = new google.maps.LatLng(location.latitude, location.longitude),
       markerOptions = {
@@ -267,14 +286,14 @@ function nyplGeocoderService($q) {
     return this;
   };
 
-  geocoderService.checkMarker = function (id) {
-    var markerObj = _.where(markers, {id: id});
-    return (markerObj[0] !== undefined);
+  geocoderService.doesMarkerExist = function (id) {
+    return !!getMarkerFromList(id);
   };
 
   geocoderService.createSearchMarker = function (coords, text) {
     var searchTerm = text.replace(',', ' <br>').replace(',', ' <br>'),
       panCoords = new google.maps.LatLng(coords.lat, coords.long);
+
     searchMarker.setPosition(panCoords);
     searchInfoWindow.setContent(searchTerm);
   };
@@ -308,21 +327,23 @@ function nyplGeocoderService($q) {
   };
 
   geocoderService.panExistingMarker = function (id) {
-    var markerObj = _.where(markers, {id: id}),
-      marker = markerObj[0].marker;
+    var markerObj = getMarkerFromList(id),
+      marker = markerObj.marker;
 
     if (marker.getMap() === undefined || marker.getMap() === null) {
       addMarkerToMap(id);
     }
 
     this.panMap(marker);
-    showInfowindow(markerObj[0].marker, markerObj[0].text);
+    showInfowindow(markerObj.marker, markerObj.text);
+
+    return this;
   };
 
-  geocoderService.searchResultMarker = function (locations) {
-    var location_id = locations[0].slug;
+  geocoderService.searchResultMarker = function (location) {
+    var location_id = location.slug;
     filteredLocation = location_id;
-    if (this.checkMarker(location_id)) {
+    if (this.doesMarkerExist(location_id)) {
       this.panExistingMarker(location_id);
     }
   };

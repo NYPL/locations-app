@@ -8,7 +8,7 @@ module.exports = function (grunt) {
     jsdoc: {
       dist: {
         src: ['public/scripts/services/*.js',
-          'public/scripts/components/nypl_locations_api.js'],
+          'public/scripts/components/*.js'],
         options: {
           destination: 'docs'
         }

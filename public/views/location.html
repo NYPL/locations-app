@@ -102,7 +102,7 @@
         <img class="img--left img--outline" data-ng-src="{{division.image}}"
           alt="Image for {{division.name}}" title="Image for {{division.name}}" style="height: 100px;"/>
         <h4 class=""><a data-ui-sref="division({division: division.slug})">{{division.name}}</a></h4>
-        <p data-ng-if="division.hours">Hours Today: {{division.divisionHoursToday | timeFormat}}</p>
+        <p data-ng-if="division.hours">Hours Today: {{division.hoursToday | timeFormat}}</p>
       </div>
     </div>
   </div>
