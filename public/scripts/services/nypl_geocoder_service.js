@@ -196,6 +196,10 @@ function nyplGeocoderService($q) {
       position,
       zoom;
 
+    if (!map) {
+      return;
+    }
+
     if (!marker) {
       position = sasbLocation;
       zoom = 12;

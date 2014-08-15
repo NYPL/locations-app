@@ -128,9 +128,7 @@
                 if (nyplUtility.checkDistance(locationsCopy)) {
                     // The search query is too far
                     $scope.searchError = searchterm;
-                    if ($state.current.name === 'home.map') {
-                        nyplGeocoderService.panMap();
-                    }
+                    nyplGeocoderService.panMap();
                     throw (new Error('The search query is too far'));
                 }
 
@@ -284,7 +282,6 @@
             $scope.searchMarker = false;
             $scope.scrollPage();
 
-            // Use cached user coordinates if available
             loadUserCoordinates()
                 .then(loadReverseGeocoding)
                 .then(searchByUserGeolocation)
@@ -298,7 +295,7 @@
             showLibrariesTypeOf();
             nyplGeocoderService
                 .showAllLibraries()
-                .clearFilteredLocation()
+                .clearFilteredLocation();
 
             if ($state.current.name === 'home.map') {
                 nyplGeocoderService.removeSearchMarker()
@@ -344,7 +341,10 @@
                     'name');
 
                 // map related work
-                nyplGeocoderService.searchResultMarker(IDfilteredLocations[0]);
+                if ($state.current.name === 'home.map') {
+                    nyplGeocoderService
+                        .searchResultMarker(IDfilteredLocations[0]);
+                }
                 $scope.scrollPage();
 
                 // We're done here, go home.
@@ -354,11 +354,10 @@
             loadGeocoding(searchTerm)
                 .then(function (searchObj) {
                     // Map related work
-                    if (filteredLocations.length) {
-                        if ($state.current.name === 'home.map') {
-                            nyplGeocoderService.
-                                searchResultMarker(filteredLocations[0]);
-                        }
+                    if (filteredLocations.length &&
+                            $state.current.name === 'home.map') {
+                        nyplGeocoderService
+                            .searchResultMarker(filteredLocations[0]);
                     } else {
                         nyplGeocoderService.clearFilteredLocation();
                         nyplGeocoderService.createSearchMarker(
@@ -405,9 +404,7 @@
             if ($scope.researchBranches) {
                 nyplGeocoderService.showResearchLibraries();
                 showLibrariesTypeOf('research');
-                if ($state.current.name === 'home.map') {
-                    nyplGeocoderService.panMap();
-                }
+                nyplGeocoderService.panMap();
             } else {
                 nyplGeocoderService.showAllLibraries();
                 showLibrariesTypeOf();
