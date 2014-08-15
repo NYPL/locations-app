@@ -230,29 +230,6 @@ function collapse() {
     });
 }
 
-// function scrollListTop() {
-//     'use strict';
-
-//     return {
-//         restrict: 'A',
-//         require: 'ngModel',
-//         link: function (scope, element, attrs, ngModel) {
-//             console.log(attrs.ngModel);
-//             scope.$watch(attrs.ngModel, function (newVal) {
-//                 console.log(newVal);
-//                 if (newVal) {
-//                     ngModel.$setValidity('scroll', false);
-//                     // attrs.ngModel = false;
-//                     $(element).animate({scrollTop: '0px'}, 1000);
-//                     // scope.$apply(attrs.ngModel);
-//                 }
-//             });
-//             // ngModel.$setViewValue(false);
-//             // scope.$apply();
-//         }
-//     };
-// }
-
 angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
@@ -266,4 +243,3 @@ angular
     .directive('nyplSiteAlerts', nyplSiteAlerts)
     .directive('nyplLibraryAlert', nyplLibraryAlert)
     .directive('collapse', collapse);
-    // .directive('scrollListTop', scrollListTop);
