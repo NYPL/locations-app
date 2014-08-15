@@ -193,7 +193,8 @@
 
             searchByUserGeolocation = function () {
                 scrollListTop();
-
+                console.log($scope.scroll);
+                $scope.scroll = true;
                 if ($state.current.name === 'home.map') {
                     $scope.drawUserMarker();
                 }
@@ -312,13 +313,17 @@
             nyplGeocoderService
                 .showAllLibraries()
                 .clearFilteredLocation()
-                .removeSearchMarker()
-                .hideInfowindow()
-                .panMap();
+
+            if ($state.current.name === 'home.map') {
+                nyplGeocoderService.removeSearchMarker()
+                    .hideInfowindow()
+                    .panMap();
+            }
 
             allLocationsInit();
 
             scrollListTop();
+            $scope.scroll = true;
         };
 
         $scope.drawUserMarker = function () {
@@ -334,6 +339,7 @@
 
             searchTerm = nyplUtility.searchWordFilter(searchTerm);
             scrollListTop();
+            $scope.scroll = true;
 
             $scope.geolocationAddressOrSearchQuery = '';
             // Remove previous search marker from the map
@@ -412,6 +418,8 @@
 
         $scope.showResearch = function () {
             nyplGeocoderService.hideInfowindow();
+            scrollListTop();
+            $scope.scroll = true;
             $scope.researchBranches = !$scope.researchBranches;
 
             if ($scope.researchBranches) {
@@ -426,6 +434,7 @@
             }
         };
 
+        $scope.scroll = false;
         $rootScope.title = "Locations";
         $scope.$state = $state;
         $scope.loadLocations();

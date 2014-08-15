@@ -257,8 +257,6 @@ function nyplGeocoderService($q) {
    *   '@ 34th Street New York, NY, 10016');
    */
   geocoderService.createMarker = function (id, location, text) {
-    if (id === 'sibl')
-    console.log(text);
     var marker,
       position = new google.maps.LatLng(location.latitude, location.longitude),
       markerOptions = {
