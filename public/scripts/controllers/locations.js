@@ -71,10 +71,8 @@
                         if (nyplUtility.checkDistance($scope.locations)) {
                             // The user is too far away, reset everything
                             resetPage();
-                            throw (new Error(
-                                'You are not within 25 ' +
-                                    'miles of any NYPL library.'
-                            ));
+                            throw (new Error('You are not within 25 ' +
+                                    'miles of any NYPL library.'));
                         }
 
                         sortListBy('distance');
@@ -228,7 +226,8 @@
 
 
                         // Individual location exception data
-                        location.branchException = nyplUtility.branchException(location.hours);
+                        location.branchException =
+                            nyplUtility.branchException(location.hours);
 
                         // Initially, when the map is drawn and 
                         // markers are available, they will be drawn too. 
@@ -332,9 +331,9 @@
             $scope.geolocationAddressOrSearchQuery = '';
             // Remove previous search marker from the map
             nyplGeocoderService.removeMarker('search');
+            $scope.searchMarker = false;
             showLibrariesTypeOf();
             nyplGeocoderService.showAllLibraries();
-            $scope.searchMarker = false;
             $scope.researchBranches = false;
 
             var IDfilteredLocations =
@@ -351,7 +350,7 @@
                 // map related work
                 if ($state.current.name === 'home.map') {
                     nyplGeocoderService
-                        .searchResultMarker(IDfilteredLocations[0]);
+                        .searchFilterMarker(IDfilteredLocations[0].slug);
                 }
                 $scope.scrollPage();
 
@@ -365,7 +364,7 @@
                     if (filteredLocations.length &&
                             $state.current.name === 'home.map') {
                         nyplGeocoderService
-                            .searchResultMarker(filteredLocations[0]);
+                            .searchFilterMarker(filteredLocations[0].slug);
                     } else {
                         nyplGeocoderService.clearFilteredLocation();
                         nyplGeocoderService.createSearchMarker(
@@ -378,6 +377,9 @@
                 })
                 .then(function (locations) {
                     $scope.scrollPage();
+                    if (filteredLocations) {
+                        $scope.searchMarker = false;
+                    }
                     organizeLocations(locations, filteredLocations, 'distance');
                 })
                 // Catch any errors at any point
@@ -395,7 +397,7 @@
                         $scope.searchError = '';
                         // Map related work
                         nyplGeocoderService
-                            .searchResultMarker(filteredLocations[0]);
+                            .searchFilterMarker(filteredLocations[0].slug);
                         organizeLocations(locations, filteredLocations, 'name');
                     } else {
                         resetPage();
@@ -458,11 +460,13 @@
 
                     $scope.drawUserMarker();
 
-                    if (nyplGeocoderService.checkSearchMarker()) {
+                    if ($scope.userMarker) {
                         nyplGeocoderService.drawSearchMarker();
-                        $scope.searchMarker = true;
-                    } else {
-                        mapInit();
+                    }
+
+                    // TODO
+                    if ($scope.searchMarker) {
+                        nyplGeocoderService.drawSearchMarker();
                     }
 
                     if ($scope.researchBranches) {
@@ -554,8 +558,6 @@
 
         // Used for the Get Directions link to Google Maps
         $scope.locationDest = nyplUtility.getAddressString(location);
-
-        console.log($scope.location);
     }
 
     angular

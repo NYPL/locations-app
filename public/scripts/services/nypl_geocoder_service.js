@@ -48,7 +48,9 @@ function nyplGeocoderService($q) {
      */
     removeMarkerFromMap = function (id) {
       var markerObj = getMarkerFromList(id);
-      markerObj.marker.setMap(null);
+      if (geocoderService.doesMarkerExist(id)) {
+        markerObj.marker.setMap(null);
+      }
     },
 
     /** @function addMarkerToMap
@@ -61,7 +63,9 @@ function nyplGeocoderService($q) {
      */
     addMarkerToMap = function (id) {
       var markerObj = getMarkerFromList(id);
-      markerObj.marker.setMap(map);
+      if (markerObj) {
+        markerObj.marker.setMap(map);
+      }
     };
 
   /** @function nyplGeocoderService.geocodeAddress
@@ -301,14 +305,16 @@ function nyplGeocoderService($q) {
   };
 
   geocoderService.drawSearchMarker = function () {
-    searchMarker.setMap(map);
-    this.panMap(searchMarker);
+    if (this.checkSearchMarker() && !filteredLocation) {
+      searchMarker.setMap(map);
+      this.panMap(searchMarker);
 
-    searchInfoWindow.open(map, searchMarker);
-    this.hideInfowindow();
-    google.maps.event.addListener(searchMarker, 'click', function () {
       searchInfoWindow.open(map, searchMarker);
-    });
+      this.hideInfowindow();
+      google.maps.event.addListener(searchMarker, 'click', function () {
+        searchInfoWindow.open(map, searchMarker);
+      });
+    }
 
     return this;
   };
@@ -324,7 +330,9 @@ function nyplGeocoderService($q) {
   };
 
   geocoderService.removeMarker = function (id) {
-    if (!id) return this;
+    if (!id) {
+      return this;
+    }
 
     if (id === 'search') {
       searchMarker.setMap(null);
@@ -348,11 +356,10 @@ function nyplGeocoderService($q) {
     return this;
   };
 
-  geocoderService.searchResultMarker = function (location) {
-    var location_id = location.slug;
-    filteredLocation = location_id;
-    if (this.doesMarkerExist(location_id)) {
-      this.panExistingMarker(location_id);
+  geocoderService.searchFilterMarker = function (location_slug) {
+    filteredLocation = location_slug;
+    if (this.doesMarkerExist(location_slug)) {
+      this.panExistingMarker(location_slug);
     }
   };
 

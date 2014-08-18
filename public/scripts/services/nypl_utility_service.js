@@ -175,18 +175,12 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
                     todaysAlert += alert.body + "\n";
                 }
             });
-        } else {
-            alert_start = new Date(alerts.start);
-            alert_end = new Date(alerts.end);
 
-            // console.log("End date for library date: " + alert_end);
-            //if (today >= alert_start && today <= alert_end) {
-                todaysAlert += alerts.description;
-            //}
+            if (!angular.isUndefined(todaysAlert)) {
+                return todaysAlert;
+            }
         }
-        if (!angular.isUndefined(todaysAlert)) {
-            return todaysAlert;
-        }
+        return null;
     };
 
     /*
