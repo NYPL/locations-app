@@ -323,13 +323,14 @@ function nyplGeocoderService($q) {
       searchMarker.getMap() !== null;
   };
 
-  geocoderService.removeSearchMarker = function () {
-    searchMarker.setMap(null);
-    return this;
-  };
+  geocoderService.removeMarker = function (id) {
+    if (!id) return this;
 
-  geocoderService.removeUserMarker = function () {
-    removeMarkerFromMap('user');
+    if (id === 'search') {
+      searchMarker.setMap(null);
+    } else {
+      removeMarkerFromMap(id);
+    }
     return this;
   };
 

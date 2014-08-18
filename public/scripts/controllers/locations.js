@@ -30,6 +30,7 @@
             resetPage = function () {
                 $scope.searchMarker = false;
                 $scope.researchBranches = false;
+                $scope.userMarker = false;
                 $scope.reverse = false;
                 $scope.searchTerm = '';
                 $scope.geolocationAddressOrSearchQuery = '';
@@ -42,10 +43,9 @@
             },
 
             geolocationAvailable = function () {
-                // After loading all locations, check if the browser
-                // supports geolocation before the user actually tries to
-                // geolocate their location. If available, the button to
-                // geolocate appears.
+                // After loading all locations, check if the browser supports
+                // geolocation before the user tries to geolocate their
+                // location. If available, the button to geolocate appears.
                 if (nyplCoordinatesService.geolocationAvailable()) {
                     $scope.geolocationOn = true;
                 }
@@ -60,6 +60,7 @@
                         // Used for 'Get Address' link.
                         $scope.locationStart = user.coords.latitude + "," +
                                 user.coords.longitude;
+                        $scope.userMarker = true;
 
                         // add a distance property to every location
                         // from that location to the user's coordinates
@@ -134,12 +135,14 @@
 
                 if ($state.current.name === 'home.map') {
                     nyplGeocoderService
-                        .removeSearchMarker()
+                        .removeMarker('search')
                         .drawSearchMarker();
                 }
 
                 // Variable to draw a green marker on the map legend.
                 $scope.searchMarker = true;
+                $scope.userMarker = false;
+                nyplGeocoderService.removeMarker('user');
 
                 $scope.geolocationAddressOrSearchQuery = searchterm;
                 $scope.searchError = '';
@@ -282,7 +285,7 @@
             $scope.geolocationAddressOrSearchQuery = '';
 
             // Remove any existing search markers on the map.
-            nyplGeocoderService.removeSearchMarker();
+            nyplGeocoderService.removeMarker('search');
             $scope.searchMarker = false;
             $scope.scrollPage();
 
@@ -299,10 +302,11 @@
             showLibrariesTypeOf();
             nyplGeocoderService
                 .showAllLibraries()
+                .removeMarker('user')
                 .clearFilteredLocation();
 
             if ($state.current.name === 'home.map') {
-                nyplGeocoderService.removeSearchMarker()
+                nyplGeocoderService.removeMarker('search')
                     .hideInfowindow()
                     .panMap();
             }
@@ -327,7 +331,7 @@
 
             $scope.geolocationAddressOrSearchQuery = '';
             // Remove previous search marker from the map
-            nyplGeocoderService.removeSearchMarker();
+            nyplGeocoderService.removeMarker('search');
             showLibrariesTypeOf();
             nyplGeocoderService.showAllLibraries();
             $scope.searchMarker = false;
@@ -383,7 +387,7 @@
                     // first see if there are any angularjs filtered results.
                     // if there are, show results based on the angularjs filter.
                     // else, reset back to the start
-                    nyplGeocoderService.removeSearchMarker();
+                    nyplGeocoderService.removeMarker('search');
                     $scope.searchMarker = false;
                     if (filteredLocations.length &&
                             error.msg !== 'query too short') {
@@ -433,7 +437,7 @@
 
             mapInit = function () {
                 nyplGeocoderService
-                    .removeSearchMarker()
+                    .removeMarker('search')
                     .hideInfowindow()
                     .panMap();
             },
