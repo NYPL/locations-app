@@ -537,7 +537,7 @@
             nyplUtility.socialMediaColor($scope.location.social_media);
 
         if (location.hours.exceptions) {
-            $scope.libraryAlert = nyplUtility.alerts(location.hours.exceptions);
+            $scope.libraryAlert = nyplUtility.branchException(location.hours);
         }
 
         if (location.hours) {
