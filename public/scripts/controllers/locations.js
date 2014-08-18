@@ -60,7 +60,6 @@
                         // Used for 'Get Address' link.
                         $scope.locationStart = user.coords.latitude + "," +
                                 user.coords.longitude;
-                        $scope.userMarker = true;
 
                         // add a distance property to every location
                         // from that location to the user's coordinates
@@ -141,8 +140,6 @@
 
                 // Variable to draw a green marker on the map legend.
                 $scope.searchMarker = true;
-                $scope.userMarker = false;
-                nyplGeocoderService.removeUserMarker();
 
                 $scope.geolocationAddressOrSearchQuery = searchterm;
                 $scope.searchError = '';
@@ -225,6 +222,10 @@
                         location.hoursToday = nyplUtility.hoursToday;
                         location.locationDest =
                             nyplUtility.getAddressString(location);
+
+
+                        // Individual location exception data
+                        location.branchException = nyplUtility.branchException(location.hours);
 
                         // Initially, when the map is drawn and 
                         // markers are available, they will be drawn too. 

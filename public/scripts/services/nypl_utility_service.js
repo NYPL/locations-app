@@ -65,6 +65,26 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         return hoursToday;
     };
 
+    // Parse exception data and return as string
+    utility.branchException = function(hours) {
+        var exception;
+
+        if (hours) {
+            // If truthy, data exist for existing location
+            if (!hours.exceptions) {
+                return null;
+            }
+            else {
+                exception = {
+                    desc: hours.exceptions.description,
+                    start: hours.exceptions.start,
+                    end: hours.exceptions.end
+                }
+                return exception;
+            }
+        }
+    };
+
     // Line breaks are needed when displaying the address on the marker
     // for the map. The name is also a link to the location's page.
     // Line breaks are not needed when we use the address 
