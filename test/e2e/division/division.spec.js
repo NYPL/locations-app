@@ -100,8 +100,8 @@ describe('Locations: Division - Testing General Research Division',
         // Seemds like element(by.binding()) gets the text between tags,
         // even if there are two different {{bindings}} between those tags.
         expect(divisionPage.floor.getText())
-          .toEqual('Third Floor and Room #315');
-        expect(divisionPage.room.getText()).toEqual('and Room #315');
+          .toEqual('Third Floor and Room 315');
+        expect(divisionPage.room.getText()).toEqual('and Room 315');
       });
 
       it('should display four social media icons', function () {
