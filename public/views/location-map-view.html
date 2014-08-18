@@ -63,6 +63,11 @@
 							<strong>{{ location.hoursToday(location.hours) | timeFormat }}</strong>
 					</div>
 
+					<!-- Branch Messages -->
+          <div data-ng-if="location.branchException" class="loc-exceptions">
+            <p> {{ location.branchException.desc }} </p>
+          </div>
+
           <!-- Map/Directions Links -->
           <div class="map-link">
             <a class="icon-map view-on-map" href="" data-ng-click="panToLibrary(location.slug)">{{ 'VIEW_MAP' | translate}}</a>
