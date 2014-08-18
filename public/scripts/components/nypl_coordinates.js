@@ -1,26 +1,43 @@
 /*jslint indent: 2, maxlen: 80 */
 /*globals nypl_locations, angular */
 
+/** @namespace nyplCoordinatesServce */
 function nyplCoordinatesService($q, $window) {
   'use strict';
 
   var geoCoords = null,
     coordinatesService = {};
 
-  // Check if the browser has geolocation on:
-  coordinatesService.checkGeolocation = function () {
+  /** @function nyplCoordinatesServce.geolocationAvailable
+   * @returns {boolean} True if navigator and navigator.geolocation are availble
+   *  in the browser, false otherwise.
+   */
+  coordinatesService.geolocationAvailable = function () {
     return (!$window.navigator && !$window.navigator.geolocation) ?
         false :
         true;
   };
 
-  // Geolocation extraction of coordinates
-  coordinatesService.getCoordinates = function () {
+  /** @function nyplCoordinatesServce.getBrowserCoordinates
+   * @returns {object} Deferred promise. If it resolves, it will return an
+   *  object with the user's current position as latitude and longitude
+   *  properties. If it is rejected, it will return an error message based
+   *  on what kind of error occurred.
+   * @example
+   *  nyplCoordinatesService.getBrowserCoordinates()
+   *    .then(function (position) {
+   *      var userCoords = _.pick(position, 'latitude', 'longitude');
+   *    })
+   *    .catch(function (error) {
+   *      throw error;
+   *    });
+   */
+  coordinatesService.getBrowserCoordinates = function () {
     // Object containing success/failure conditions
     var defer = $q.defer();
 
     // Verify the browser supports Geolocation
-    if (!$window.navigator && !$window.navigator.geolocation) {
+    if (!this.geolocationAvailable()) {
       defer.reject(new Error("Your browser does not support Geolocation."));
     } else {
       // Use stored coords, FF bug fix
@@ -72,7 +89,16 @@ function nyplCoordinatesService($q, $window) {
     return defer.promise; // Enables 'then' callback
   };
 
-  // Calculate distance using coordinates
+  /** @function nyplCoordinatesServce.getDistance
+   * @param {number} lat1 Latitude of first location.
+   * @param {number} lon1 Longitude of first location.
+   * @param {number} lat2 Latitude of second location.
+   * @param {number} lon2 Longitude of second location.
+   * @returns {number} Distance in miles between two different locations.
+   * @example
+   *  var distance =
+   *    nyplCoordinatesService.getDistance(40.1, -73.1, 41.1, -73.2);
+   */
   coordinatesService.getDistance = function (lat1, lon1, lat2, lon2) {
     var radlat1 = Math.PI * lat1 / 180,
       radlat2 = Math.PI * lat2 / 180,

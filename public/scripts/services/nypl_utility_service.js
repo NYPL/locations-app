@@ -330,7 +330,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
     };
 
     // Iterate through lon/lat and calculate distance
-    utility.addDistance = function (locations, coords) {
+    utility.calcDistance = function (locations, coords) {
         if (!locations) {
             return [];
         }
