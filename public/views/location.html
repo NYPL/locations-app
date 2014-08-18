@@ -99,7 +99,7 @@
     <h2 class="hdg">{{ 'DIVISION_HEADER' | translate }}</h2>
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='division in location._embedded.divisions'>
-        <img class="img--left img--outline" data-ng-src="{{division.image}}"
+        <img class="img--left img--outline" src="images/pippin_fpo.jpg"
           alt="Image for {{division.name}}" title="Image for {{division.name}}" style="height: 100px;"/>
         <h4 class=""><a data-ui-sref="division({division: division.slug})">{{division.name}}</a></h4>
         <p data-ng-if="division.hours">Hours Today: {{division.hoursToday | timeFormat}}</p>
