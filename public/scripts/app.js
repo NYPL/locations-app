@@ -10,6 +10,7 @@ var nypl_locations = angular.module('nypl_locations', [
     'nyplSearch',
     'nyplSSO',
     'nyplNavigation',
+    'nyplBreadcrumbs',
     'angulartics',
     'angulartics.google.analytics',
     'pascalprecht.translate'
@@ -22,11 +23,13 @@ nypl_locations.config([
     '$translateProvider',
     '$stateProvider',
     '$urlRouterProvider',
+    '$crumbProvider',
     function (
         $locationProvider,
         $translateProvider,
         $stateProvider,
-        $urlRouterProvider
+        $urlRouterProvider,
+        $crumbProvider
     ) {
         'use strict';
 
@@ -89,6 +92,11 @@ nypl_locations.config([
                 });
         }
 
+        $crumbProvider.setOptions({
+            primaryState: {name:'Home', customUrl: 'http://nypl.org' },
+            secondaryState: {name:'Locations', customUrl: 'home.index' }
+        });
+
         // $urlRouterProvider.when('/list', '/');
         $urlRouterProvider.otherwise('/');
         $stateProvider
@@ -148,19 +156,23 @@ nypl_locations.config([
                 url: '/amenities/location/:location',
                 templateUrl: 'views/amenitiesAtLibrary.html',
                 controller: 'AmenitiesAtLibraryCtrl',
-                label: 'Location',
                 resolve: {
                     location: AmenitiesAtLibrary
+                },
+                data: {
+                    parentState: 'location',
+                    crumbName: 'Amenities'
                 }
             })
             .state('location', {
                 url: '/:location',
                 templateUrl: 'views/location.html',
                 controller: 'LocationCtrl',
-                // controllerAs: 'ctrl',
-                // label: 'Location',
                 resolve: {
                     location: LoadLocation
+                },
+                data: {
+                    crumbName: '{{location.name}}'
                 }
             });
     }
