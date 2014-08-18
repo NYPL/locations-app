@@ -272,7 +272,7 @@ function nyplGeocoderService($q) {
       markerOptions.icon =
         "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
       markerOptions.zIndex = 1000;
-      markerOptions.animation = google.maps.Animation.BOUNCE;
+      markerOptions.animation = google.maps.Animation.DROP;
     }
 
     marker = new google.maps.Marker(markerOptions);
@@ -325,6 +325,11 @@ function nyplGeocoderService($q) {
 
   geocoderService.removeSearchMarker = function () {
     searchMarker.setMap(null);
+    return this;
+  };
+
+  geocoderService.removeUserMarker = function () {
+    removeMarkerFromMap('user');
     return this;
   };
 
