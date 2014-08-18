@@ -67,18 +67,21 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
 
     // Parse exception data and return as string
     utility.branchException = function(hours) {
-        var exception;
+        var exception = {};
 
         if (hours) {
             // If truthy, data exist for existing location
             if (!hours.exceptions) {
                 return null;
             }
-            else {
-                exception = {
-                    desc: hours.exceptions.description,
-                    start: hours.exceptions.start,
-                    end: hours.exceptions.end
+            else if (hours.exceptions.description.trim() !== '') {
+                exception.desc = hours.exceptions.description;
+                // Optional set
+                if (hours.exceptions.start) {
+                    exception.start = hours.exceptions.start;
+                }
+                if (hours.exceptions.end) {
+                    exception.end = hours.exceptions.end;
                 }
                 return exception;
             }

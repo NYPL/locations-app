@@ -950,7 +950,8 @@ header {
     background-color: #ffcdcd;
     border: 1px solid #eee;
     border-radius: 2px;
-    padding: 5px; }
+    padding: 5px;
+    margin-bottom: 7px; }
     .container__all-locations .loc-exceptions p {
       padding: 2px;
       margin: 0; }

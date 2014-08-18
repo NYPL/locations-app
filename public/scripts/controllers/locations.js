@@ -554,6 +554,8 @@
 
         // Used for the Get Directions link to Google Maps
         $scope.locationDest = nyplUtility.getAddressString(location);
+
+        console.log($scope.location);
     }
 
     angular
