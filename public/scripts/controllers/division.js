@@ -11,16 +11,6 @@
         $scope.division = division;
         $rootScope.title = division.name;
 
-        // breadcrumbs.options = { "Division": division.name };
-        // homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
-        // locationUrl = {
-        //     label: division.location_name,
-        //     path: '#/' + division.location_slug
-        // };
-        // breadcrumbs.breadcrumbs.unshift(homeUrl);
-        // breadcrumbs.breadcrumbs.splice(2, 0, locationUrl);
-        // $scope.breadcrumbs = breadcrumbs;
-
         if (division.hours) {
             $scope.hoursToday = nyplUtility.hoursToday(division.hours);
         }

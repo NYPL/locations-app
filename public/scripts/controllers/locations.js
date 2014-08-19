@@ -531,12 +531,6 @@
         $scope.calendarLink = nyplUtility.calendarLink;
         $scope.icalLink = nyplUtility.icalLink;
 
-        // breadcrumbs.options = { 'Location': location.name };
-        // homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
-        // breadcrumbs.breadcrumbs[1].path = "#/" + location.slug;
-        // breadcrumbs.breadcrumbs.unshift(homeUrl);
-        // $scope.breadcrumbs = breadcrumbs;
-
         $scope.location.social_media =
             nyplUtility.socialMediaColor($scope.location.social_media);
 
