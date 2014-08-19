@@ -47,7 +47,7 @@
             <span data-ng-if="division.room">{{ 'ROOM' | translate }} {{division.room}}</span>
         </div>
         <div data-ng-if="division.locality">
-          {{division.locality}}, {{division.region}}, {{division.postal_code}}
+          {{division.locality}}, {{division.region}} {{division.postal_code}}
         </div>
         <div data-ng-if="division.contacts.manager">
           {{ 'DIVISION_MANAGER' | translate}}<span>{{division.contacts.manager}}</span>

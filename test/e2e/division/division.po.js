@@ -4,13 +4,23 @@
 var DivisionPage = function () {
   'use strict';
 
+  this.alert = element(by.binding('libraryAlert.desc'));
   this.name = element(by.binding('division.name'));
 
   this.location = element(by.binding('division.location_name'));
   this.floor = element(by.binding('division.floor'));
   this.room = element(by.binding('division.room'));
 
+  this.street_address = element(by.binding('division.street_address'));
+  this.cross_street = element(by.binding('division.cross_street'));
+  this.locality = element(by.binding('division.locality'));
+  this.region = element(by.binding('division.region'));
+  this.postal_code = element(by.binding('division.postal_code'));
+
   this.division_manager = element(by.binding('division.contacts.manager'));
+  this.telephone = element(by.binding('division.contacts.phone'));
+
+  this.accessibility = element(by.css('.accessible'));
 
   this.social_media_container = element(by.id('social_media'));
   this.social_media =
