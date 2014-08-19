@@ -29,7 +29,6 @@ var DivisionPage = function () {
 
   this.ask_librarian = element(by.css('#ask-librarian'));
   this.email_us = element(by.css('.askemail'));
-
 };
 
 module.exports = new DivisionPage();

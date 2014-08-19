@@ -224,6 +224,13 @@
                         location.locationDest =
                             nyplUtility.getAddressString(location);
 
+                        // var amenities_list = [];
+                        // _.each(location._embedded.amenities, function (amenities) {
+                        //     _.each(amenities.amenities, function (amenity) {
+                        //         amenities_list.push(amenity);
+                        //     });
+                        // });
+                        // location.amenities_list = amenities_list;
 
                         // Individual location exception data
                         location.branchException =

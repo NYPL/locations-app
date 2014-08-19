@@ -6,11 +6,30 @@ describe('Locations: Division - Testing General Research Division',
   function () {
     'use strict';
 
-    var divisionPage = require('./division.po.js');
+    var divisionPage = require('./division.po.js'),
+      // Get json for a division API call.
+      APIresponse = require('../APImocks/division.js'),
+      // Function that creates a module that is injected at run time,
+      // overrides and mocks httpbackend to mock API call. 
+      httpBackendMock = function (response) {
+        angular.module('httpBackendMock', ['ngMockE2E'])
+          .run(function ($httpBackend) {
+            $httpBackend.when('GET', 'http://evening-mesa-7447-160' +
+                '.herokuapp.com/divisions/general-research-division')
+              .respond(response);
+
+            // For everything else, don't mock
+            $httpBackend.whenGET(/^\w+.*/).passThrough();
+            $httpBackend.whenGET(/.*/).passThrough();
+            $httpBackend.whenPOST(/^\w+.*/).passThrough();
+          });
+      };
 
     describe('Good API call', function () {
-      // These tests are specific to a division
       beforeEach(function () {
+        // Pass the good JSON from the API call.
+        browser.addMockModule('httpBackendMock', httpBackendMock,
+          APIresponse.good);
         browser.get('/#/division/general-research-division');
         browser.waitForAngular();
       });
@@ -77,28 +96,11 @@ describe('Locations: Division - Testing General Research Division',
     });
 
     describe('Bad API call', function () {
-      var bad_response = require('../responses/bad_division.js');
-      var httpBackendMock = function () {
-        var bad_response = arguments[0];
-        angular.module('httpBackendMock', ['ngMockE2E'])
-          .run(function ($httpBackend) {
-            $httpBackend.when('GET', 'http://evening-mesa-7447-160' +
-                '.herokuapp.com/divisions/general-research-division')
-              .respond(bad_response);
-
-            // For everything else, don't mock
-            $httpBackend.whenGET(/^\w+.*/).passThrough();
-            $httpBackend.whenGET(/.*/).passThrough();
-            $httpBackend.whenPOST(/^\w+.*/).passThrough();
-          });
-
-          // angular.module('nypl_locations').requires.push('httpBackendMock');
-      };
       beforeEach(function () {
-        browser.addMockModule('httpBackendMock', httpBackendMock, bad_response);
+        browser.addMockModule('httpBackendMock', httpBackendMock,
+          APIresponse.bad);
         browser.get('/#/division/general-research-division');
         browser.waitForAngular();
-        browser.sleep(4000);
       });
 
       // it('should displayed closed hours', function () {
