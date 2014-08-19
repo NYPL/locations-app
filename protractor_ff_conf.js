@@ -8,8 +8,8 @@ exports.config = {
   // chromeOnly: true,
   // chromeDriver: './node_modules/protractor/selenium/chromedriver',
 
-  // if you do want a separate running selenium server, comment the two lines above
-  // and uncomment this line:
+  // if you do want a separate running selenium server,
+  // comment the two lines above and uncomment this line:
   seleniumAddress: 'http://0.0.0.0:4444/wd/hub',
 
   // Capabilities to be passed to the webdriver instance.
@@ -23,6 +23,7 @@ exports.config = {
     homepage: ['test/e2e/homepage/homepage.spec.js'],
     location: ['test/e2e/location/location.spec.js'],
     division: ['test/e2e/division/division.spec.js'],
+    nyplchat: ['test/e2e/nyplchat/nyplchat.spec.js'],
     services: ['test/e2e/services/services.spec.js']
   },
 

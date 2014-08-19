@@ -6,78 +6,7 @@ describe('Locations: Division - Testing General Research Division',
   function () {
     'use strict';
 
-    var divisionPage = require('./division.po.js'),
-      httpBackendMock = function () {
-        var bad_response = {
-          location: {
-            "_id": "GRD",
-            "_links": {},
-            "about": "",
-            "access": "Fully Accessible",
-            "contacts": {
-              "phone": "(212) 275-6975",
-              "email": "grdref@nypl.org"
-            },
-            "cross_street": null,
-            "floor": null,
-            "geolocation": {
-              "type": "Point",
-              "coordinates": [
-                -73.9822,
-                40.7532
-              ]
-            },
-            "hours": {
-              "regular": [
-                { "day": "Sun", "open": null, "close": null },
-                { "day": "Mon", "open": null, "close": null },
-                { "day": "Tue", "open": null, "close": null },
-                { "day": "Wed", "open": null, "close": null },
-                { "day": "Thu", "open": null, "close": null },
-                { "day": "Fri", "open": null, "close": null },
-                { "day": "Sat", "open": null, "close": null }
-              ],
-              "exceptions": {}
-            },
-            "id": "GRD",
-            "image": "/sites/default/files/images/stacks.jpg",
-            "locality": "New York",
-            "location_id": "SASB",
-            "location_name": "Stephen A. Schwarzman Building",
-            "location_slug": "schwarzman",
-            "name": "General Research Division",
-            "postal_code": 10018,
-            "region": "NY",
-            "room": 315,
-            "slug": "general-research-division",
-            "social_media": [],
-            "street_address": "135 East 46th Street",
-            "type": "circulating",
-            "_embedded": {
-              "services": [],
-              "events": [],
-              "exhibitions": null,
-              "blogs": [],
-              "alerts": [],
-              "divisions": []
-            }
-          }
-        };
-
-        angular.module('httpBackendMock', ['ngMockE2E'])
-          .run(function ($httpBackend) {
-            $httpBackend.when('GET', 'http://evening-mesa-7447-160' +
-                '.herokuapp.com/divisions/general-research-division')
-              .respond(bad_response);
-
-            // For everything else, don't mock
-            $httpBackend.whenGET(/^\w+.*/).passThrough();
-            $httpBackend.whenGET(/.*/).passThrough();
-            $httpBackend.whenPOST(/^\w+.*/).passThrough();
-          });
-
-        // angular.module('nypl_locations').requires.push('httpBackendMock');
-      };
+    var divisionPage = require('./division.po.js');
 
     describe('Good API call', function () {
       // These tests are specific to a division
@@ -148,10 +77,28 @@ describe('Locations: Division - Testing General Research Division',
     });
 
     describe('Bad API call', function () {
+      var bad_response = require('../responses/bad_division.js');
+      var httpBackendMock = function () {
+        var bad_response = arguments[0];
+        angular.module('httpBackendMock', ['ngMockE2E'])
+          .run(function ($httpBackend) {
+            $httpBackend.when('GET', 'http://evening-mesa-7447-160' +
+                '.herokuapp.com/divisions/general-research-division')
+              .respond(bad_response);
+
+            // For everything else, don't mock
+            $httpBackend.whenGET(/^\w+.*/).passThrough();
+            $httpBackend.whenGET(/.*/).passThrough();
+            $httpBackend.whenPOST(/^\w+.*/).passThrough();
+          });
+
+          // angular.module('nypl_locations').requires.push('httpBackendMock');
+      };
       beforeEach(function () {
-        browser.addMockModule('httpBackendMock', httpBackendMock);
+        browser.addMockModule('httpBackendMock', httpBackendMock, bad_response);
         browser.get('/#/division/general-research-division');
         browser.waitForAngular();
+        browser.sleep(4000);
       });
 
       // it('should displayed closed hours', function () {
