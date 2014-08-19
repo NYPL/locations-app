@@ -21,7 +21,7 @@ exports.config = {
   // protractor is called.
   suites: {
     homepage: ['test/e2e/homepage/homepage.spec.js'],
-    location: ['test/e2e/location/location.spec.js'],
+    location: ['test/e2e/location/circulating.spec.js', 'test/e2e/location/research.spec.js'],
     division: ['test/e2e/division/division.spec.js'],
     nyplchat: ['test/e2e/nyplchat/nyplchat.spec.js'],
     services: ['test/e2e/services/services.spec.js']
