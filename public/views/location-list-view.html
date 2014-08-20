@@ -70,8 +70,9 @@
 
             <!-- Today's Hours -->
             <td class="hours-info">
-              <div >
+              <div>
                 <p>{{ location.hoursToday(location.hours) | timeFormat }}</p>
+                <!--<p>Branch is temporarily closed.</p>-->
               </div>
               <div data-ng-if="location.branchException" class="loc-exceptions">
                 <p> {{ location.branchException.desc }} </p>
