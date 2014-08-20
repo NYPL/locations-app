@@ -24,7 +24,7 @@ exports.config = {
     location: ['test/e2e/location/circulating.spec.js', 'test/e2e/location/research.spec.js'],
     division: ['test/e2e/division/division.spec.js'],
     nyplchat: ['test/e2e/nyplchat/nyplchat.spec.js'],
-    services: ['test/e2e/services/services.spec.js']
+    amenities: ['test/e2e/amenities/all_amenities.spec.js']
   },
 
   // onPrepare: function () {

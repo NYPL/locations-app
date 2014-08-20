@@ -8,14 +8,13 @@
     function AmenitiesCtrl($http, $rootScope, $scope, amenities, nyplAmenities) {
         var homeUrl;
 
-        // Mocked data for now until the amenities are sorted by categories in the API.
+        // Mocked data for now until the amenities are sorted
+        // by categories in the API.
         $http
             .get('json/amenitiesAtLibrary.json')
             .success(function (data) {
-                amenities =
-                    nyplAmenities.addCategoryIcon(data.amenitiesCategories);
-                $scope.amenitiesCategories = amenities;
-                // console.log($scope.amenitiesCategories);
+                $scope.amenitiesCategories =
+                    nyplAmenities.addCategoryIcon(data.amenities);
             });
 
         $rootScope.title = "Amenities";
@@ -41,7 +40,7 @@
             .get('json/amenitiesAtLibrary.json')
             .success(function (data) {
                 amenities =
-                    nyplAmenities.addCategoryIcon(data.amenitiesCategories);
+                    nyplAmenities.addCategoryIcon(data.amenities);
                 $scope.amenitiesCategories = amenities;
             });
 
