@@ -1,6 +1,6 @@
-/*jslint indent: 2, maxlen: 80 */
-/*global describe, require, beforeEach, browser, it, expect, element, by */
-// Basic test template - services pages are not done
+/*jslint indent: 2, maxlen: 80, regexp: true*/
+/*global describe, require, beforeEach, browser,
+angular, it, expect, element, by */
 
 describe('Locations: Amenities', function () {
   'use strict';
@@ -42,13 +42,94 @@ describe('Locations: Amenities', function () {
 
       describe('Computer Services category', function () {
         it('should display the category name', function () {
-          
+          expect(amenitiesPage.getNthCategory(0)
+            .element(by.css('.category_title')).getText())
+            .toEqual('Computer Services');
         });
 
         it('should contain five amenities', function () {
+          expect(amenitiesPage.getNthCategory(0)
+            .element(by.css('.amenities-list')).getText())
+            .toEqual('Computers for Public Use Reserve a PC Learn more\n' +
+              'Wireless Internet Access Learn more\n' +
+              'Laptops for Public Use Reserve a Laptop Learn more\n' +
+              'Printing (from PC)\n' +
+              'Electric outlets available');
+        });
+      });
 
-          expect(amenitiesPage.amenities_categories.get(0).element(by.css('.category_title')).getText()).toEqual('Computer Services')
-          expect(amenitiesPage.amenities_categories.get(0).element(by.css('.amenity_name')).getText()).toEqual('Computer Services')
+      describe('Circulation category', function () {
+        it('should display the category name', function () {
+          expect(amenitiesPage.getNthCategory(1)
+            .element(by.css('.category_title')).getText())
+            .toEqual('Circulation');
+        });
+
+        it('should contain six amenities', function () {
+          expect(amenitiesPage.getNthCategory(1)
+            .element(by.css('.amenities-list')).getText())
+            .toEqual('Inter-Library Loan\n' +
+              'Self-service check-out Learn more\n' +
+              'Book drop box (24 hour) Learn more\n' +
+              'Book drop box (limited hours) Learn more\n' +
+              'Books in Braille\n' +
+              'Talking Books');
+        });
+      });
+
+      describe('Office Services category', function () {
+        it('should display the category name', function () {
+          expect(amenitiesPage.getNthCategory(2)
+            .element(by.css('.category_title')).getText())
+            .toEqual('Office Services');
+        });
+
+        it('should contain five amenities', function () {
+          expect(amenitiesPage.getNthCategory(2)
+            .element(by.css('.amenities-list')).getText())
+            .toEqual('Photocopiers (black/white)\n' +
+              'Photocopiers (color)\n' +
+              'Scanners\n' +
+              'Map photocopiers (up to 36" wide)\n' +
+              'Change machine');
+        });
+      });
+
+      describe('Facilities category', function () {
+        it('should display the category name', function () {
+          expect(amenitiesPage.getNthCategory(3)
+            .element(by.css('.category_title')).getText())
+            .toEqual('Facilities');
+        });
+
+        it('should contain six amenities', function () {
+          expect(amenitiesPage.getNthCategory(3)
+            .element(by.css('.amenities-list')).getText())
+            .toEqual('Public Restrooms\n' +
+              'Children\'s Only Restrooms\n' +
+              'Research Study Rooms\n' +
+              'Parking\n' +
+              'Lost and found\n' +
+              'Bicycle Rack');
+        });
+      });
+
+      describe('Assistive Technologies category', function () {
+        it('should display the category name', function () {
+          expect(amenitiesPage.getNthCategory(4)
+            .element(by.css('.category_title')).getText())
+            .toEqual('Assistive Technologies');
+        });
+
+        it('should contain six amenities', function () {
+          expect(amenitiesPage.getNthCategory(4)
+            .element(by.css('.amenities-list')).getText())
+            .toEqual('Screen magnification software (MAGic)\n' +
+              'Screen reading software (JAWS)\n' +
+              'Closed-Circuit Television Enlargers (CCTVs)\n' +
+              'Scanner/reading Rooms\n' +
+              'Brailler Translation Software\n' +
+              'Braille Embossing');
         });
       });
     });
@@ -66,5 +147,14 @@ describe('Locations: Amenities', function () {
     });
   });
 
+  describe('Bad API Call', function () {
+    beforeEach(function () {
+      browser.addMockModule('httpBackendMock', httpBackendMock,
+          APIresponse.bad);
+      browser.get('/#/amenities');
+      browser.waitForAngular();
+    });
+
+  });
 
 });

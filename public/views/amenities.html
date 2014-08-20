@@ -19,8 +19,8 @@
               <li data-ng-repeat="amenity in category.amenities">
                 <a data-ui-sref="amenity({amenity: amenity.id})">{{amenity.name}}</a>
                 
-                <span data-ng-if="amenity._links.reserve">
-                  <a data-ng-href="{{amenity._links.reserve.href}}" class="amenities__reserve btn btn--natural whiteText">Reserve</a>
+                <span data-ng-if="amenity._links.action && amenity._links.action.href">
+                  <a data-ng-href="{{amenity._links.action.href}}" class="amenities__reserve btn btn--natural whiteText">{{amenity._links.action.name}}</a>
                 </span>
                                 
                 <span data-ng-if="amenity._links.info">

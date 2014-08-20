@@ -21,10 +21,13 @@ exports.config = {
   // protractor is called.
   suites: {
     homepage: ['test/e2e/homepage/homepage.spec.js'],
-    location: ['test/e2e/location/circulating.spec.js', 'test/e2e/location/research.spec.js'],
+    location: ['test/e2e/location/circulating.spec.js',
+      'test/e2e/location/research.spec.js'],
     division: ['test/e2e/division/division.spec.js'],
     nyplchat: ['test/e2e/nyplchat/nyplchat.spec.js'],
-    amenities: ['test/e2e/amenities/all_amenities.spec.js']
+    amenities: ['test/e2e/amenities/all_amenities.spec.js',
+      'test/e2e/amenities/amenity.spec.js',
+      'test/e2e/amenities/amenities_at_branch.spec.js']
   },
 
   // onPrepare: function () {
