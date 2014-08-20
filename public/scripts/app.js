@@ -132,6 +132,10 @@ nypl_locations.config([
                 label: 'Division',
                 resolve: {
                     division: LoadDivision
+                },
+                data: {
+                    parentState: 'location',
+                    crumbName: '{{division.name}}'
                 }
             })
             .state('amenities', {
@@ -144,7 +148,7 @@ nypl_locations.config([
                 }
             })
             .state('amenity', {
-                url: '/amenities/:amenity',
+                url: '/amenities/id/:amenity',
                 templateUrl: 'views/amenities.html',
                 controller: 'AmenityCtrl',
                 label: 'Amenities',
@@ -153,7 +157,7 @@ nypl_locations.config([
                 }
             })
             .state('amenities-at-location', {
-                url: '/amenities/location/:location',
+                url: '/amenities/loc/:location',
                 templateUrl: 'views/amenitiesAtLibrary.html',
                 controller: 'AmenitiesAtLibraryCtrl',
                 resolve: {
