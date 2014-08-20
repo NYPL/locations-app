@@ -29,7 +29,7 @@ describe('Locations: Division - Testing General Research Division',
       beforeEach(function () {
         // Pass the good JSON from the API call.
         browser.addMockModule('httpBackendMock', httpBackendMock,
-          APIresponse.good);
+            APIresponse.good);
         browser.get('/#/division/general-research-division');
         browser.waitForAngular();
       });
@@ -45,6 +45,10 @@ describe('Locations: Division - Testing General Research Division',
         it('should display the name', function () {
           expect(divisionPage.name.getText())
             .toEqual('General Research Division');
+        });
+
+        it('should display the divisions image', function () {
+          expect(divisionPage.main_image.isPresent()).toBe(true);
         });
 
         it('should say what library it is located in', function () {
