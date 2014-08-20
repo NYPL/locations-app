@@ -61,6 +61,7 @@ function hoursTodayFormat() {
     'use strict';
 
     function getHoursObject(time) {
+        time = time.split(':');
         return _.object(
             ['hours', 'mins', 'meridian', 'military'],
             [((parseInt(time[0], 10) + 11) % 12 + 1),
@@ -71,7 +72,7 @@ function hoursTodayFormat() {
     }
 
     return function (elem, type) {
-        var open_time, closed_time, time, formatted_time,
+        var open_time, closed_time, formatted_time,
             now = new Date(),
             today, tomorrow,
             tomorrow_open_time, tomorrow_close_time,
@@ -84,13 +85,11 @@ function hoursTodayFormat() {
 
             // Assign open time obj
             if (today.open) {
-                time = today.open.split(':');
-                open_time = getHoursObject(time);
+                open_time = getHoursObject(today.open);
             }
             // Assign closed time obj
             if (today.close) {
-                time = today.close.split(':');
-                closed_time = getHoursObject(time);
+                closed_time = getHoursObject(today.close);
             }
 
             // If there are no open or close times, then it's closed today
@@ -102,12 +101,10 @@ function hoursTodayFormat() {
             }
 
             if (tomorrow.open !== null) {
-                time = tomorrow.open.split(':');
-                tomorrow_open_time = getHoursObject(time);
+                tomorrow_open_time = getHoursObject(tomorrow.open);
             }
             if (tomorrow.close !== null) {
-                time = tomorrow.close.split(':');
-                tomorrow_close_time = getHoursObject(time);
+                tomorrow_close_time = getHoursObject(tomorrow.close);
             }
 
             if (hour_now_military >= closed_time.military) {

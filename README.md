@@ -43,7 +43,6 @@ Third Party
 * [angulartics](http://luisfarzati.github.io/angulartics/)
   * angulartics.google.analytics
 * [Angular Translate](http://angular-translate.github.io/)
-* [ng-breadcrumbs](http://ianwalter.github.io/ng-breadcrumbs/#/)
 
 NYPL Components
 These can be found in [public/scripts/components](public/scripts/components).

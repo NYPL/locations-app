@@ -3,6 +3,8 @@
 
   <!-- <nyplbreadcrumbs></nyplbreadcrumbs> -->
 
+  <nypl-library-alert exception="division.hours.exceptions"></nypl-library-alert>
+
   <div class="container__div_info">
     <h1 class="p-org">{{division.name}}</h1>
     <div class="grid">
@@ -31,7 +33,7 @@
 
       --><div id="container__div_image" class="grid__item lap-one-half one-whole desk-one-third">
         <!-- Division Image -->
-        <img class="img--outline" data-ng-src="{{division.image}}"
+        <img class="img--outline" src="images/pippin_fpo.jpg"
           alt="Image of {{division.name}}" title="Image of {{division.name}}">
       </div><!--
       
@@ -45,7 +47,10 @@
             <span data-ng-if="division.room">{{ 'ROOM' | translate }} {{division.room}}</span>
         </div>
         <div data-ng-if="division.locality">
-          {{division.locality}}, {{division.region}}, {{division.postal_code}}
+          {{division.locality}}, {{division.region}} {{division.postal_code}}
+        </div>
+        <div data-ng-if="division.contacts.manager">
+          {{ 'DIVISION_MANAGER' | translate}}<span>{{division.contacts.manager}}</span>
         </div>
         <div data-ng-if="division.contacts.phone">{{division.contacts.phone}}</div>
 

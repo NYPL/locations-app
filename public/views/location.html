@@ -3,14 +3,15 @@
 
   <nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>
 
-  <nypl-library-alert></nypl-library-alert>
+  <nypl-library-alert exception="location.hours.exceptions"></nypl-library-alert>
 
   <!-- Location hours, address and image -->
   <div id="container__location_info">
     <h1 class="p-org">{{location.name}}</h1>
     <div class="grid">
       <div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
-        <div class="callout">
+        <!-- Display for open location -->
+        <div class="callout" data-ng-if="location.open">
           <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat:'short'}}" />
           <div id="location-hours" class="location-hours">
             <h2 class="flush--ends hdg">{{ 'REGULAR_HOURS' | translate }} <span id="toggle-hours" ng-click="expand = !expand" ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span></h2>
@@ -27,6 +28,9 @@
 	            {{ 'IDV_DIVISION_HOURS' | translate }}
 	          </p>
           </div>
+        </div>
+        <div class="callout" data-ng-if="!location.open">
+          <h2>Branch is temporarily closed.</h2>
         </div>
       </div><!--
         
@@ -58,7 +62,8 @@
             </a>
           </div>
 
-		      <a id="catalog-link" class="icon-books" data-ng-if="location._links.on_shelves"
+		      <a id="catalog-link" class="icon-books" 
+            data-ng-if="location._links.on_shelves && location.open"
             data-ng-href="{{ location._links.on_shelves.href }}">
             {{ 'SHELVES' | translate }}
           </a>
@@ -99,10 +104,10 @@
     <h2 class="hdg">{{ 'DIVISION_HEADER' | translate }}</h2>
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='division in location._embedded.divisions'>
-        <img class="img--left img--outline" data-ng-src="{{division.image}}"
+        <img class="img--left img--outline" src="images/pippin_fpo.jpg"
           alt="Image for {{division.name}}" title="Image for {{division.name}}" style="height: 100px;"/>
         <h4 class=""><a data-ui-sref="division({division: division.slug})">{{division.name}}</a></h4>
-        <p data-ng-if="division.hours">Hours Today: {{division.divisionHoursToday | timeFormat}}</p>
+        <p data-ng-if="division.hours">Hours Today: {{division.hoursToday | timeFormat}}</p>
       </div>
     </div>
   </div>
