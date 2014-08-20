@@ -81,14 +81,15 @@ describe('Locations: Division - Testing General Research Division',
           expect(divisionPage.telephone.getText()).toEqual('(917) 275-6975');
         });
 
-        it('should be fully accessible', function () {
-          expect(divisionPage.accessibility.getText())
-            .toEqual('Fully Accessible');
-          expect(divisionPage.accessibility.getAttribute('class'))
-            .toContain('icon-accessibility');
-          expect(divisionPage.accessibility.getAttribute('class'))
-            .toContain('fully');
-        })
+        it('should be fully accessible and display appropriate icon',
+          function () {
+            expect(divisionPage.accessibility.getText())
+              .toEqual('Fully Accessible');
+            expect(divisionPage.accessibility.getAttribute('class'))
+              .toContain('icon-accessibility');
+            expect(divisionPage.accessibility.getAttribute('class'))
+              .toContain('fully');
+          });
 
         it('should display four social media icons', function () {
           var social_media = divisionPage.social_media;
@@ -110,52 +111,80 @@ describe('Locations: Division - Testing General Research Division',
       });
 
       describe('About the Collection section', function () {
-        it('should display an image from the colletcion', function () {
+        it('should display the container', function () {
+          expect(divisionPage.about_container.isPresent()).toBe(true);
+        });
 
+        it('should display an image from the collection', function () {
+          expect(divisionPage.second_image.isPresent()).toBe(true);
         });
 
         it('should have a short blurb about the division', function () {
           expect(divisionPage.about_blurb.isPresent()).toBe(true);
         });
 
+        it('should have a \'Learn More\' link going to nypl.org', function () {
+          expect(divisionPage.learn_more_link.getAttribute('href'))
+            .toEqual('http://nypl.org/locations/schwarzman/general-research-division');
+        });
+
         describe('Plan your visit section', function () {
           it('should not have a Make an Appointment link', function () {
-
+            expect(divisionPage.make_appointment.isPresent()).toBe(false);
           });
 
           it('should have an Email a Librarian link', function () {
-
+            expect(divisionPage.email_librarian.getAttribute('href'))
+              .toEqual('http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?institution=13306&type=1&language=1');
           });
 
           it('should display three amenities', function () {
-
+            var amenities = ['Reserve a Computer', 'Interlibrary Loan', 'Meeting Rooms'];
+            divisionPage.division_amenities.each(function (element, index) {
+              expect(element.getText()).toEqual(amenities[index]);
+            });
           });
         });
       });
 
       describe('Featured content section', function () {
-        it('should display two featured pieces of content', function () {
+        it('should display the section', function () {
+          expect(divisionPage.features_container.isPresent()).toBe(true);
+        });
+      });
 
+      describe('Events section', function () {
+        it('should not display the container or events', function () {
+          expect(divisionPage.events_container.isPresent()).toBe(false);
+          expect(divisionPage.events.count()).toBe(0);
         });
       });
 
       describe('Blogs section', function () {
         it('should have six blogs on the page', function () {
-          var blogs = divisionPage.blogs;
-          expect(blogs.count()).toBe(6);
+          expect(divisionPage.blogs_container.isPresent()).toBe(true);
+          expect(divisionPage.blogs.count()).toBe(6);
         });
+
+        it('should have a \'See more blogs\' link going to nypl.org',
+          function () {
+            expect(divisionPage.blogs_more_link.getAttribute('href'))
+              .toEqual('http://www.nypl.org/blog/library/394');
+          });
       });
 
       describe('Footer section', function () {
         describe('Donate Now', function () {
-
+          it('should have a donate section', function () {
+            expect(divisionPage.ask_donate.isPresent()).toBe(true);
+          });
         });
 
         describe('Email a librarian link', function () {
           it('should have a link', function () {
             expect(divisionPage.ask_librarian.getAttribute('href'))
-              .toEqual('http://www.questionpoint.org/crs/servlet/org.oclc.admin' +
-                '.BuildForm?institution=13306&type=1&language=1');
+              .toEqual('http://www.questionpoint.org/crs/servlet/org.oclc.' +
+                'admin.BuildForm?institution=13306&type=1&language=1');
           });
 
           it('should be the same as the Email Us button', function () {
@@ -181,11 +210,6 @@ describe('Locations: Division - Testing General Research Division',
 
       it('should not display the division manager', function () {
         expect(divisionPage.division_manager.isPresent()).toBe(false);
-      });
-
-      it('should not have any events', function () {
-        expect(divisionPage.events_container.isPresent()).toBe(false);
-        expect(divisionPage.events.count()).toBe(0);
       });
 
       it('should not have any blogs', function () {

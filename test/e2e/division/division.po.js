@@ -5,7 +5,7 @@ var DivisionPage = function () {
   'use strict';
 
   // Top Information section
-  this.alert = element(by.binding('libraryAlert.desc'));
+  this.alert = element(by.binding('libraryAlert'));
 
   this.name = element(by.binding('division.name'));
   this.main_image = element(by.css('.main_division_image'));
@@ -32,23 +32,29 @@ var DivisionPage = function () {
 
   // About the Collection section
   this.about_container = element(by.css('.container__about'));
-  this.second_image = element(by.binding('division.image'));
+  this.second_image = element(by.css('.division_second_image'));
   this.about_blurb = element(by.binding('division.about'));
+  this.learn_more_link = element(by.css('.collection-more'));
 
   // Plan Your Visit section
   this.make_appointment = element(by.binding('division._links.concierge.href'));
-  this.email_librarian = element(by.binding('division._links.contact.href'));
-  this.division_amenities = element(by.css('division_amenities'));
+  this.email_librarian = element(by.css('#ask-librarian'));
+  this.division_amenities = element.all(by.css('.division_amenities li'));
 
   // Featured Content section
-  this.features_container = element(by.css('.container__features'));
+  this.features_container = element(by.css('#container__features'));
 
+  // Events section
   this.events_container = element(by.css('.container__events'));
   this.events = element.all(by.repeater('event in division._embedded.events'));
 
-  this.blogs_container = element(by.css('.container__blogs'));
+  // Blogs section
+  this.blogs_container = element(by.css('#container__blogs'));
   this.blogs = element.all(by.repeater('blog in division._embedded.blogs'));
+  this.blogs_more_link = element(by.css('.blogs-more'));
 
+  // Footer section
+  this.ask_donate = element(by.css('.ask-donate'));
   this.ask_librarian = element(by.css('#ask-librarian'));
   this.email_us = element(by.css('.askemail'));
 };
