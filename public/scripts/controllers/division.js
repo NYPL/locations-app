@@ -15,10 +15,6 @@
             $scope.hoursToday = nyplUtility.hoursToday(division.hours);
         }
 
-        if (division.hours.exceptions) {
-            $scope.libraryAlert = nyplUtility.branchException(division.hours);
-        }
-
         $scope.calendarLink = nyplUtility.calendarLink;
         $scope.icalLink = nyplUtility.icalLink;
         $scope.siteWideAlert = nyplUtility.alerts(division._embedded.alerts);
