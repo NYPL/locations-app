@@ -29,14 +29,41 @@ describe('Locations: Amenities', function () {
           APIresponse.good);
       browser.get('/#/amenities');
       browser.waitForAngular();
-      browser.sleep(5000);
     });
 
     it('should have a title', function () {
       expect(amenitiesPage.title.getText()).toEqual('Amenities at NYPL');
     });
 
+    describe('Amenities list', function () {
+      it('should contain five categories', function () {
+        expect(amenitiesPage.amenities_categories.count()).toBe(5);
+      });
 
+      describe('Computer Services category', function () {
+        it('should display the category name', function () {
+          
+        });
+
+        it('should contain five amenities', function () {
+
+          expect(amenitiesPage.amenities_categories.get(0).element(by.css('.category_title')).getText()).toEqual('Computer Services')
+          expect(amenitiesPage.amenities_categories.get(0).element(by.css('.amenity_name')).getText()).toEqual('Computer Services')
+        });
+      });
+    });
+
+    describe('Services Callout', function () {
+      it('should have a callout section on the right side', function () {
+        expect(amenitiesPage.services_callout.isPresent()).toBe(true);
+      });
+
+      it('should say that the library also offers services', function () {
+        expect(amenitiesPage.services_callout.getText())
+          .toEqual('The Library also offers\nservices\nof all kinds!' +
+            '\nFind out more');
+      });
+    });
   });
 
 
