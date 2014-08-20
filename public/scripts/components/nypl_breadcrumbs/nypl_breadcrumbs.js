@@ -135,7 +135,6 @@
             	currentState = currentState.parent;
             }
           }
-          
           scope.breadcrumbs = breadcrumbs;
 	      }
 
@@ -144,23 +143,24 @@
 	       * we need to either substitute it with the state named in the `scope.abstractProxyProperty` property, or
 	       * set it to `false` which means this breadcrumb level will be skipped entirely.
 	       * @param currentState
-	       * @returns {*}
 	       */
 	      function getWorkingState(currentState) {
-	          var proxyStateName;
-	          var workingState = currentState;
+	          var proxyStateName,
+	          workingState = currentState;
 
 	          if (currentState.abstract === true) {
-	              if (typeof scope.abstractProxyProperty !== 'undefined') {
-	                  proxyStateName = getObjectValue(scope.abstractProxyProperty, currentState);
-	                  if (proxyStateName) {
-	                      workingState = $state.get(proxyStateName);
-	                  } else {
-	                      workingState = false;
-	                  }
-	              } else {
-	                  workingState = false;
-	              }
+              if (typeof scope.abstractProxyProperty !== 'undefined') {
+                proxyStateName = getObjectValue(scope.abstractProxyProperty, currentState);
+                if (proxyStateName) {
+                  workingState = $state.get(proxyStateName);
+                } 
+                else {
+                  workingState = false;
+                }
+              } 
+              else {
+                workingState = false;
+              }
 	          }
 	          return workingState;
 	      }
@@ -190,7 +190,6 @@
 	          } else {
 	              // use the $interpolate service to handle any bindings in the propertyReference string.
 	              interpolationContext =  (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState;
-	              //console.log(interpolationContext);
 	              displayName = $interpolate(propertyReference)(interpolationContext);
 
 	              return displayName;
@@ -232,7 +231,7 @@
 		      		}
 	      		}
 	      		else {
-	      			return null;
+	      			return undefined;
 	      		}
 	      }
 
@@ -255,7 +254,7 @@
 						return stateSetting + '({ ' + "\"" + stateSetting + "\"" + ':' + "\"" + parentRoute + "\"" + '})';
 					}
 					else {
-						return null;
+						return undefined;
 					}
 				}
 
@@ -287,7 +286,7 @@
 		      	}
 	      	}
 	      	else {
-	      		return null;
+	      		return undefined;
 	      	}
 	      }
 
@@ -301,19 +300,19 @@
 	       * 
 	       */
 	      function getObjectValue(objectPath, context) {
-	          var i;
-	          var propertyArray = objectPath.split('.');
-	          var propertyReference = context;
+          var i,
+          propertyArray = objectPath.split('.'),
+          propertyReference = context;
 
-	          for (i = 0; i < propertyArray.length; i ++) {
-	              if (angular.isDefined(propertyReference[propertyArray[i]])) {
-	                  propertyReference = propertyReference[propertyArray[i]];
-	              } else {
-	                  // if the specified property was not found, default to the state's name
-	                  return undefined;
-	              }
-	          }
-	          return propertyReference;
+          for (i = 0; i < propertyArray.length; i ++) {
+              if (angular.isDefined(propertyReference[propertyArray[i]])) {
+                propertyReference = propertyReference[propertyArray[i]];
+              } else {
+                // if the specified property was not found, default to the state's name
+                return undefined;
+              }
+          }
+          return propertyReference;
 	      }
 
 	      /**
@@ -321,17 +320,17 @@
 	       * when using abstract states that might specify a proxy that is already there in the breadcrumbs.
 	       * @param state
 	       * @param breadcrumbs
-	       * @returns {boolean}
+	       * @returns true or false
 	       */
 	      function stateAlreadyInBreadcrumbs(state, breadcrumbs) {
-	          var i;
-	          var alreadyUsed = false;
-	          for(i = 0; i < breadcrumbs.length; i++) {
-	              if (breadcrumbs[i].route === state.name) {
-	                  alreadyUsed = true;
-	              }
-	          }
-	          return alreadyUsed;
+          var i,
+          alreadyUsed = false;
+          for(i = 0; i < breadcrumbs.length; i++) {
+            if (breadcrumbs[i].route === state.name) {
+              alreadyUsed = true;
+            }
+          }
+          return alreadyUsed;
 	      }
 		  }
 		};
