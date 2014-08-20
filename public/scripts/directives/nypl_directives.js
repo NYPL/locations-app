@@ -179,9 +179,14 @@ function nyplLibraryAlert(nyplUtility) {
         restrict: 'E',
         templateUrl: 'scripts/directives/templates/library-alert.html',
         replace: true,
-        controller: function ($scope) {
-            if ($scope.location.hours.exceptions) {
-                $scope.libraryAlert = nyplUtility.branchException($scope.location.hours);
+        scope: {
+            exception: '='
+        },
+        link: function (scope, element, attrs) {
+            if (scope.exception) {
+                if (scope.exception.description !== '') {
+                    scope.libraryAlert = scope.exception.description;
+                }
             }
         }
     };
