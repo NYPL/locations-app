@@ -125,7 +125,8 @@ describe('Locations: Division - Testing General Research Division',
 
         it('should have a \'Learn More\' link going to nypl.org', function () {
           expect(divisionPage.learn_more_link.getAttribute('href'))
-            .toEqual('http://nypl.org/locations/schwarzman/general-research-division');
+            .toEqual('http://nypl.org/locations/schwarzman/' +
+              'general-research-division');
         });
 
         describe('Plan your visit section', function () {
@@ -135,11 +136,16 @@ describe('Locations: Division - Testing General Research Division',
 
           it('should have an Email a Librarian link', function () {
             expect(divisionPage.email_librarian.getAttribute('href'))
-              .toEqual('http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?institution=13306&type=1&language=1');
+              .toEqual('http://www.questionpoint.org/crs/servlet/org.' +
+                'oclc.admin.BuildForm?institution=13306&type=1&language=1');
           });
 
           it('should display three amenities', function () {
-            var amenities = ['Reserve a Computer', 'Interlibrary Loan', 'Meeting Rooms'];
+            var amenities = [
+              'Reserve a Computer',
+              'Interlibrary Loan',
+              'Meeting Rooms'
+            ];
             divisionPage.division_amenities.each(function (element, index) {
               expect(element.getText()).toEqual(amenities[index]);
             });
