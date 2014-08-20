@@ -32,14 +32,14 @@ describe('NYPL coordinateService Module', function () {
     });
 
     /*
-     * nyplCoordinatesService.checkGeolocation()
+     * nyplCoordinatesService.geolocationAvailable()
      *
      *   Returns true if navigator and geolocation are available on the
      *   browser, false otherwise.
      */
-    describe('nyplCoordinatesService.checkGeolocation()', function () {
-      it('should have a checkGeolocation function', function () {
-        expect(angular.isFunction(nyplCoordinatesService.checkGeolocation))
+    describe('nyplCoordinatesService.geolocationAvailable()', function () {
+      it('should have a geolocationAvailable function', function () {
+        expect(angular.isFunction(nyplCoordinatesService.geolocationAvailable))
           .toBe(true);
       });
 
@@ -48,7 +48,7 @@ describe('NYPL coordinateService Module', function () {
         window.navigator = false;
         window.navigator.geolocation = false;
 
-        expect(nyplCoordinatesService.checkGeolocation()).toBe(false);
+        expect(nyplCoordinatesService.geolocationAvailable()).toBe(false);
       });
 
       it('should return true for modern browsers', function () {
@@ -56,17 +56,17 @@ describe('NYPL coordinateService Module', function () {
         window.navigator = true;
         window.navigator.geolocation = true;
 
-        expect(nyplCoordinatesService.checkGeolocation()).toBe(true);
+        expect(nyplCoordinatesService.geolocationAvailable()).toBe(true);
       });
-    }); /* End nyplCoordinatesService.checkGeolocation() */
+    }); /* End nyplCoordinatesService.geolocationAvailable() */
 
     /*
-     * nyplCoordinatesService.getCoordinates()
+     * nyplCoordinatesService.getBrowserCoordinates()
      *
      *   Returns an object with the coordinates of the user's current location.
      *   Returns an error on failure.
      */
-    describe('nyplCoordinatesService.getCoordinates()', function () {
+    describe('nyplCoordinatesService.getBrowserCoordinates()', function () {
       var geolocationMock, $rootScope;
 
       beforeEach(inject(function (_$rootScope_) {
@@ -77,13 +77,14 @@ describe('NYPL coordinateService Module', function () {
       }));
 
       // check to see if it has the expected function
-      it('should have an getCoordinates function', function () {
-        expect(angular.isFunction(nyplCoordinatesService.getCoordinates))
+      it('should have an getBrowserCoordinates function', function () {
+        expect(angular.isFunction(nyplCoordinatesService.getBrowserCoordinates))
           .toBe(true);
-        expect(typeof nyplCoordinatesService.getCoordinates).toBe('function');
+        expect(typeof nyplCoordinatesService.getBrowserCoordinates)
+          .toBe('function');
       });
 
-      describe('getCoordinates function successful', function () {
+      describe('getBrowserCoordinates function successful', function () {
         var geolocationOk;
 
         beforeEach(function () {
@@ -110,7 +111,7 @@ describe('NYPL coordinateService Module', function () {
         it('should call the browser\'s geolocation function when ' +
           'calling the service',
           function () {
-            nyplCoordinatesService.getCoordinates();
+            nyplCoordinatesService.getBrowserCoordinates();
             expect(geolocationMock.getCurrentPosition).toHaveBeenCalled();
           });
 
@@ -122,16 +123,18 @@ describe('NYPL coordinateService Module', function () {
               },
               returned_coordinates;
 
-            nyplCoordinatesService.getCoordinates().then(function (data) {
-              returned_coordinates = data;
-            });
+            nyplCoordinatesService
+              .getBrowserCoordinates()
+              .then(function (data) {
+                returned_coordinates = data;
+              });
             $rootScope.$digest();
 
             expect(returned_coordinates).toEqual(SASBLocation);
           });
-      }); /* end getCoordinates function successful */
+      }); /* end getBrowserCoordinates function successful */
 
-      describe('getCoordinates function fails', function () {
+      describe('getBrowserCoordinates function fails', function () {
         describe('Permission denied', function () {
           it('should return an error message', function () {
             var permissionDenied = function (success, failure) {
@@ -149,7 +152,7 @@ describe('NYPL coordinateService Module', function () {
                 jasmine.createSpy('getCurrentPosition')
                 .and.callFake(permissionDenied);
 
-            nyplCoordinatesService.getCoordinates()
+            nyplCoordinatesService.getBrowserCoordinates()
               .catch(function (error) {
                 returned_error_message = error;
               });
@@ -178,7 +181,7 @@ describe('NYPL coordinateService Module', function () {
                 jasmine.createSpy('getCurrentPosition')
                 .and.callFake(positionUnavailable);
 
-            nyplCoordinatesService.getCoordinates()
+            nyplCoordinatesService.getBrowserCoordinates()
               .catch(function (error) {
                 returned_error_message = error;
               });
@@ -205,7 +208,7 @@ describe('NYPL coordinateService Module', function () {
                 jasmine.createSpy('getCurrentPosition')
                 .and.callFake(requestTimeOut);
 
-            nyplCoordinatesService.getCoordinates()
+            nyplCoordinatesService.getBrowserCoordinates()
               .catch(function (error) {
                 returned_error_message = error;
               });
@@ -230,7 +233,7 @@ describe('NYPL coordinateService Module', function () {
                 jasmine.createSpy('getCurrentPosition')
                 .and.callFake(unknownError);
 
-            nyplCoordinatesService.getCoordinates()
+            nyplCoordinatesService.getBrowserCoordinates()
               .catch(function (error) {
                 returned_error_message = error;
               });
@@ -240,9 +243,9 @@ describe('NYPL coordinateService Module', function () {
             expect(returned_error_message).toEqual(error_message);
           });
         });
-      }); /* end getCoordinates function fails */
+      }); /* end getBrowserCoordinates function fails */
 
-    }); /* end nyplCoordinatesService.getCoordinates() */
+    }); /* end nyplCoordinatesService.getBrowserCoordinates() */
 
     /* 
      * nyplCoordinatesService.getDistance(lat1, lon1, lat2, lon2)
