@@ -188,6 +188,9 @@ function nyplLibraryAlert(nyplUtility) {
                     scope.libraryAlert = scope.exception.description;
                 }
             }
+            else {
+                return;
+            }
         }
     };
 }

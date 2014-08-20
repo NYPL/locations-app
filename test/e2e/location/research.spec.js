@@ -5,9 +5,26 @@ browser, it, expect, element, by, angular */
 describe('Research branch page', function () {
   'use strict';
 
-  var locationPage = require('./location.po.js');
+  var locationPage = require('./location.po.js'),
+    APIresponse = require('../APImocks/research.js'),
+    httpBackendMock = function (response) {
+      angular.module('httpBackendMock', ['ngMockE2E'])
+        .run(function ($httpBackend) {
+          $httpBackend.when('GET', 'http://evening-mesa-7447-160' +
+              '.herokuapp.com/locations/schomburg')
+            .respond(response);
+
+          // For everything else, don't mock
+          $httpBackend.whenGET(/^\w+.*/).passThrough();
+          $httpBackend.whenGET(/.*/).passThrough();
+          $httpBackend.whenPOST(/^\w+.*/).passThrough();
+        });
+    };
 
   beforeEach(function () {
+    // Pass the good JSON from the API call.
+    browser.addMockModule('httpBackendMock', httpBackendMock,
+      APIresponse.good);
     browser.get('/#/schomburg');
     browser.waitForAngular();
   });

@@ -6,82 +6,30 @@ describe('Circulating branch page', function () {
   'use strict';
 
   var locationPage = require('./location.po.js'),
-    httpBackendMock = function () {
-      var bad_response = {
-        location: {
-          "_id": "GC",
-          "_links": {},
-          "about": "",
-          "access": "Fully Accessible",
-          "contacts": {
-            "phone": "(212) 621-0670",
-            "manager": "Genoveve Stowell"
-          },
-          "cross_street": null,
-          "floor": null,
-          "geolocation": {
-            "type": "Point",
-            "coordinates": [
-              -73.974,
-              40.7539
-            ]
-          },
-          "hours": {
-            "regular": [
-              { "day": "Sun", "open": null, "close": null },
-              { "day": "Mon", "open": null, "close": null },
-              { "day": "Tue", "open": null, "close": null },
-              { "day": "Wed", "open": null, "close": null },
-              { "day": "Thu", "open": null, "close": null },
-              { "day": "Fri", "open": null, "close": null },
-              { "day": "Sat", "open": null, "close": null }
-            ],
-            "exceptions": {}
-          },
-          "id": "GC",
-          "image": "/sites/default/files/images/grand_central.jpg",
-          "lat": null,
-          "locality": "New York",
-          "long": null,
-          "name": "Grand Central Library",
-          "postal_code": 10017,
-          "region": "NY",
-          "room": null,
-          "slug": "grand-central",
-          "social_media": [],
-          "street_address": "135 East 46th Street",
-          "type": "circulating",
-          "_embedded": {
-            "services": [],
-            "events": [],
-            "exhibitions": null,
-            "blogs": [],
-            "alerts": [],
-            "divisions": []
-          }
-        }
-      };
+    APIresponse = require('../APImocks/circulating.js'),
+    httpBackendMock = function (response) {
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
-          $httpBackend.when('GET', 'http://evening-mesa-7447-160.' +
-              'herokuapp.com/locations/grand-central')
-            .respond(bad_response);
+          $httpBackend.when('GET', 'http://evening-mesa-7447-160' +
+              '.herokuapp.com/locations/grand-central')
+            .respond(response);
 
           // For everything else, don't mock
           $httpBackend.whenGET(/^\w+.*/).passThrough();
           $httpBackend.whenGET(/.*/).passThrough();
           $httpBackend.whenPOST(/^\w+.*/).passThrough();
         });
-
-      // angular.module('nypl_locations').requires.push('httpBackendMock');
     };
 
-  beforeEach(function () {
-    browser.get('/#/grand-central');
-    browser.waitForAngular();
-  });
 
   describe('basic info section', function () {
+    beforeEach(function () {
+      // Pass the good JSON from the API call.
+      browser.addMockModule('httpBackendMock', httpBackendMock,
+        APIresponse.good);
+      browser.get('/#/grand-central');
+      browser.waitForAngular();
+    });
 
     it('should display the name', function () {
       expect(locationPage.name.getText()).toEqual('Grand Central Library');

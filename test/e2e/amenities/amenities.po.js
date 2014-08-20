@@ -4,6 +4,7 @@
 var ServicesPage = function () {
   'use strict';
 
+  this.title = element(by.css('#amenities__title'));
   this.serviceName = element(by.binding('service_name'));
   this.locationName = element(by.binding('location.name'));
 
