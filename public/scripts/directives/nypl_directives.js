@@ -172,14 +172,18 @@ function nyplSiteAlerts(nyplLocationsService, nyplUtility) {
     };
 }
 
-function nyplLibraryAlert() {
+function nyplLibraryAlert(nyplUtility) {
     'use strict';
 
     return {
         restrict: 'E',
         templateUrl: 'scripts/directives/templates/library-alert.html',
         replace: true,
-        scope: true
+        controller: function ($scope) {
+            if ($scope.location.hours.exceptions) {
+                $scope.libraryAlert = nyplUtility.branchException($scope.location.hours);
+            }
+        }
     };
 }
 

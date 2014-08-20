@@ -541,10 +541,6 @@
         $scope.location.social_media =
             nyplUtility.socialMediaColor($scope.location.social_media);
 
-        if (location.hours.exceptions) {
-            $scope.libraryAlert = nyplUtility.branchException(location.hours);
-        }
-
         if (location.hours) {
             $scope.hoursToday = nyplUtility.hoursToday(location.hours);
         }
