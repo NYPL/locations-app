@@ -56,10 +56,12 @@ Always start JSdoc comments with /**
 
 ## Public function pattern
 For the functions that are returned, including the namespace in the @function assigns it to that namespace.
+
     @function namespaceName.functionName
 
 ## Private function pattern
 For private functions, denote that it's private with the @private symbol. Instead of including the namespace in the @function name, include it in the @memberof symbol.
+
     @function privateFunction
     @memberof namespaceName
 
