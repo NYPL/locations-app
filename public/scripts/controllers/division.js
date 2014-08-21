@@ -8,24 +8,20 @@
         var homeUrl,
             locationUrl;
 
-        $scope.division = division;
+        $scope.division  = division;
         $rootScope.title = division.name;
-
-        if (division.hours) {
-            $scope.hoursToday = nyplUtility.hoursToday(division.hours);
-        }
-
         $scope.calendarLink = nyplUtility.calendarLink;
         $scope.icalLink = nyplUtility.icalLink;
         $scope.siteWideAlert = nyplUtility.alerts(division._embedded.alerts);
 
+        if (division.hours) {
+            $scope.hoursToday = nyplUtility.hoursToday(division.hours);
+        }
         $scope.division.social_media =
             nyplUtility.socialMediaColor(division.social_media);
 
         $scope.has_appointment =
             nyplUtility.divisionHasAppointment(division.id);
-
-        console.log($scope.division);
     }
 
     angular

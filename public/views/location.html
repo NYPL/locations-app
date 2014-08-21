@@ -1,8 +1,9 @@
 <!-- Individual Location -->
 <div class="individual-location {{location.type}} h-card">
-
-  <!-- <nyplbreadcrumbs></nyplbreadcrumbs> -->
-
+  <!-- Breadcrumbs -->
+  <nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>
+  
+  <!-- Individual location exception messages -->
   <nypl-library-alert exception="location.hours.exceptions"></nypl-library-alert>
 
   <!-- Location hours, address and image -->

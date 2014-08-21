@@ -10,6 +10,7 @@ var nypl_locations = angular.module('nypl_locations', [
     'nyplSearch',
     'nyplSSO',
     'nyplNavigation',
+    'nyplBreadcrumbs',
     'angulartics',
     'angulartics.google.analytics',
     'pascalprecht.translate'
@@ -22,11 +23,13 @@ nypl_locations.config([
     '$translateProvider',
     '$stateProvider',
     '$urlRouterProvider',
+    '$crumbProvider',
     function (
         $locationProvider,
         $translateProvider,
         $stateProvider,
-        $urlRouterProvider
+        $urlRouterProvider,
+        $crumbProvider
     ) {
         'use strict';
 
@@ -89,6 +92,11 @@ nypl_locations.config([
                 });
         }
 
+        $crumbProvider.setOptions({
+            primaryState: {name:'Home', customUrl: 'http://nypl.org' },
+            secondaryState: {name:'Locations', customUrl: 'home.index' }
+        });
+
         // $urlRouterProvider.when('/list', '/');
         $urlRouterProvider.otherwise('/');
         $stateProvider
@@ -124,6 +132,10 @@ nypl_locations.config([
                 label: 'Division',
                 resolve: {
                     division: LoadDivision
+                },
+                data: {
+                    parentState: 'location',
+                    crumbName: '{{division.name}}'
                 }
             })
             .state('amenities', {
@@ -133,34 +145,46 @@ nypl_locations.config([
                 label: 'Amenities',
                 resolve: {
                     amenities: Amenities
+                },
+                data: {
+                    crumbName: 'Amenities'
                 }
             })
             .state('amenity', {
-                url: '/amenities/:amenity',
+                url: '/amenities/id/:amenity',
                 templateUrl: 'views/amenities.html',
                 controller: 'AmenityCtrl',
                 label: 'Amenities',
                 resolve: {
                     amenity: Amenities
+                },
+                data: {
+                    parentState: 'amenities',
+                    crumbName: '{{amenity.amenity.name}}'
                 }
+
             })
             .state('amenities-at-location', {
-                url: '/amenities/location/:location',
+                url: '/amenities/loc/:location',
                 templateUrl: 'views/amenitiesAtLibrary.html',
                 controller: 'AmenitiesAtLibraryCtrl',
-                label: 'Location',
                 resolve: {
                     location: AmenitiesAtLibrary
+                },
+                data: {
+                    parentState: 'amenities',
+                    crumbName: '{{location.name}}'
                 }
             })
             .state('location', {
                 url: '/:location',
                 templateUrl: 'views/location.html',
                 controller: 'LocationCtrl',
-                // controllerAs: 'ctrl',
-                // label: 'Location',
                 resolve: {
                     location: LoadLocation
+                },
+                data: {
+                    crumbName: '{{location.name}}'
                 }
             });
     }
