@@ -155,6 +155,7 @@ describe('Locations: Amenities', function () {
       browser.waitForAngular();
     });
 
+    // TODO: Write tests
   });
 
 });
