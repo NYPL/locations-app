@@ -144,6 +144,7 @@ describe('Locations: Amenities at a branch', function () {
       browser.waitForAngular();
     });
 
+    // TODO: Write tests
   });
 
 });
