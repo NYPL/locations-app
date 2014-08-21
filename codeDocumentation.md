@@ -49,7 +49,12 @@ Always start JSdoc comments with /**
   * @param {type} [nameOfOptionalParam] Use brackets for optional parameters.
 * @returns {type} Description of what is returned.
 * @example
+
     // Code example of how to use the code.
+    function () {
+      ...
+    }
+
 * @description Description of what the function or piece of code does.
 * @memberof namespaceName
 * @todo Description of what needs to be done to complete the piece of code.
