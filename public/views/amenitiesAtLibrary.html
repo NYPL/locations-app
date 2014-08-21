@@ -1,15 +1,14 @@
 <div class="content amenities">
   
+  <!-- Breadcrumbs -->
   <nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>
 
   <section class="grid">
-
     <div class="grid__item" id="location_name">
       <h2 data-ng-if="location.name">Amenities at <a href="/#/{{location.slug}}">{{location.name}}</a></h2>
     </div>
 
     <div class="grid">
-
       <div class="grid__item one-whole lap-and-up-two-thirds">
         <ul data-ng-if="amenitiesCategories" class="amenity-category-list">
           <li data-ng-repeat="category in amenitiesCategories">

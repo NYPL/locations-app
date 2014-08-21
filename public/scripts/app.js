@@ -145,6 +145,9 @@ nypl_locations.config([
                 label: 'Amenities',
                 resolve: {
                     amenities: Amenities
+                },
+                data: {
+                    crumbName: 'Amenities'
                 }
             })
             .state('amenity', {
@@ -154,7 +157,12 @@ nypl_locations.config([
                 label: 'Amenities',
                 resolve: {
                     amenity: Amenities
+                },
+                data: {
+                    parentState: 'amenities',
+                    crumbName: '{{amenity.amenity.name}}'
                 }
+
             })
             .state('amenities-at-location', {
                 url: '/amenities/loc/:location',

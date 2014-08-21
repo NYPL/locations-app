@@ -22,8 +22,6 @@
 
     this.$get = ['$state', '$stateParams', '$rootScope', function($state, $stateParams, $rootScope) {
 
-        var $lastViewScope = $rootScope;
-
         // Add the state in the chain if not already in and if not abstract
         var addStateToChain = function(chain, state) {
           for(var i=0, l=chain.length; i<l; i+=1) {
@@ -31,7 +29,6 @@
               return;
             }
           }
-
           // Check for abstract state
           if (!state.abstract) {
 	        	if(state.customUrl) {
@@ -42,23 +39,18 @@
         };
 
         return {
-        		// Adds provider custom states to chain
-            getConfigChain: function() {
-              var chain = []; // Initialize chain array to hold crumb elements
+      		// Adds provider custom states to chain
+          getConfigChain: function() {
+            var chain = [];
 
-              if (options.secondaryState) {
-              	addStateToChain(chain, options.secondaryState);
-              }
-              if (options.primaryState) {
-              	addStateToChain(chain, options.primaryState);
-              }
-
-              return chain;
-            },
-
-            $getLastViewScope: function() {
-                return $lastViewScope;
+            if (options.secondaryState) {
+            	addStateToChain(chain, options.secondaryState);
             }
+            if (options.primaryState) {
+            	addStateToChain(chain, options.primaryState);
+            }
+            return chain;
+          }
         };
     }];
 	}
@@ -77,10 +69,10 @@
 				scope.breadcrumbs = [];
 
 	      if ($state.$current.name !== '') {
-	          initCrumbs();
+	        initCrumbs();
 	      }
 	      scope.$on('$stateChangeSuccess', function() {
-	          initCrumbs();
+	        initCrumbs();
 	      });
 
 	      /**
@@ -181,18 +173,18 @@
 	              // default to the state's name
 	              return currentState.name;
 	          }
-	          propertyReference = getObjectValue(scope.crumbName, currentState);
 
+	          propertyReference = getObjectValue(scope.crumbName, currentState);
 	          if (propertyReference === false) {
 	              return false;
 	          } else if (typeof propertyReference === 'undefined') {
 	              return currentState.name;
 	          } else {
-	              // use the $interpolate service to handle any bindings in the propertyReference string.
-	              interpolationContext =  (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState;
-	              displayName = $interpolate(propertyReference)(interpolationContext);
+              // use the $interpolate service to handle any bindings in the propertyReference string.
+              interpolationContext =  (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState;
+              displayName = $interpolate(propertyReference)(interpolationContext);
 
-	              return displayName;
+              return displayName;
 	          }
 	      }
 
@@ -202,37 +194,37 @@
 	       * @param currentState
 	       */
 	      function getParentState(currentState) {
-	      		var currState = currentState,
-	      		parentStateSetting = currState.data.parentState,
-	      		parentStateRoute,
-	      		parentStateName,
-	      		parentStateObj = {},
-	      		context = (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState;
+      		var currState = currentState,
+      		parentStateSetting = currState.data.parentState,
+      		parentStateRoute,
+      		parentStateName,
+      		parentStateObj = {},
+      		context = (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState;
 
-	      		if ( typeof context === 'object' && parentStateSetting) {
-	      			if (!context.$stateParams) {
-	      				return null;
-	      			}
-	      			else {
-	      				parentStateName	 = getParentName(currentState);
-								parentStateRoute = getParentRoute(context, parentStateSetting);
-		      			
-		      			if ( parentStateName && parentStateRoute ) {
-			      			parentStateObj = {
-			      				displayName: parentStateName,
-			      				route: parentStateRoute
-			      			}
-			      			return parentStateObj;
-			      		}
-			      		else {
-			      			console.log('Parent state name or route is not defined');
-			      			return null;
-			      		}
+      		if ( typeof context === 'object' && parentStateSetting) {
+      			if (!context.$stateParams) {
+      				return null;
+      			}
+      			else {
+      				parentStateName	 = getParentName(currentState);
+							parentStateRoute = getParentRoute(context, parentStateSetting);
+	      			
+	      			if ( parentStateName && parentStateRoute ) {
+		      			parentStateObj = {
+		      				displayName: parentStateName,
+		      				route: parentStateRoute
+		      			}
+		      			return parentStateObj;
+		      		}
+		      		else {
+		      			console.log('Parent state name or route is not defined');
+		      			return null;
 		      		}
 	      		}
-	      		else {
-	      			return undefined;
-	      		}
+      		}
+      		else {
+      			return undefined;
+      		}
 	      }
 
 	      function getParentRoute(context, parentStateSetting) {
@@ -251,7 +243,12 @@
 								}
 							}
 						});
-						return stateSetting + '({ ' + "\"" + stateSetting + "\"" + ':' + "\"" + parentRoute + "\"" + '})';
+						if (parentRoute) {
+							return stateSetting + '({ ' + "\"" + stateSetting + "\"" + ':' + "\"" + parentRoute + "\"" + '})';
+						}
+						else {
+							return stateSetting;
+						}
 					}
 					else {
 						return undefined;
@@ -305,12 +302,12 @@
           propertyReference = context;
 
           for (i = 0; i < propertyArray.length; i ++) {
-              if (angular.isDefined(propertyReference[propertyArray[i]])) {
-                propertyReference = propertyReference[propertyArray[i]];
-              } else {
-                // if the specified property was not found, default to the state's name
-                return undefined;
-              }
+            if (angular.isDefined(propertyReference[propertyArray[i]])) {
+              propertyReference = propertyReference[propertyArray[i]];
+            } else {
+              // if the specified property was not found, default to the state's name
+              return undefined;
+            }
           }
           return propertyReference;
 	      }
