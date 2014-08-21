@@ -1,19 +1,19 @@
 # Code Documentation
 
 At the moment, AngularJS services are broken up into namespaces, instead of modules broken up into namespaces. This makes it easier to see the public functions from each service.
-Example: nyplLocationsApi
+Example: nyplLocationsService
 
-    /** @namespace nyplLocationsApi */
-    function nypLocationsApi($http, $q) {
+    /** @namespace nyplLocationsService */
+    function nyplLocationsService($http, $q) {
       var locationsApi = {};
       // ...
 
-      /** @function nyplLocationsApi.allLocations 
+      /** @function nyplLocationsService.allLocations 
        * @returns {object} Deferred promise. If it resolves, JSON response from
        *  the API of all NYPL locations. If it is rejected, an error message
        *  is returned saying that it "Could not reach API".
        * @example
-       *  nypLocationsApi.allLocations()
+       *  nyplLocationsService.allLocations()
        *    .then(function (data) {
        *      var locations = data.locations;
        *    });
@@ -51,9 +51,9 @@ Always start JSdoc comments with /**
 * @example
 
     // Code example of how to use the code.
-    function () {
+    nyplLocationsService.allLocations().then(function () {
       ...
-    }
+    });
 
 * @description Description of what the function or piece of code does.
 * @memberof namespaceName
