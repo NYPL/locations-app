@@ -53,7 +53,6 @@ Always start JSdoc comments with /**
 * @todo Description of what needs to be done to complete the piece of code.
 * @example
 
-    // Code example of how to use the code.
     nyplLocationsService.allLocations().then(function () {
       ...
     });
