@@ -305,7 +305,7 @@ function nyplGeocoderService($q) {
   };
 
   geocoderService.drawSearchMarker = function () {
-    if (this.checkSearchMarker() && !filteredLocation) {
+    if (!filteredLocation && searchMarker.getMap() === null) {
       searchMarker.setMap(map);
       this.panMap(searchMarker);
 

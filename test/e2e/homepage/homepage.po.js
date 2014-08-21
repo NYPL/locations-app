@@ -24,10 +24,6 @@ var LandingPage = function () {
   // Show only research button
   this.onlyResearch = element(by.id('onlyresearch'));
 
-  // Show More results button
-  this.showMore = element(by.id('showmore'));
-  // Results list showing X of Y message
-  this.showing = element(by.id('showing'));
   // Problem with Geolocation error
   this.distanceError = element(by.id('distance-error'));
 
@@ -41,13 +37,6 @@ var LandingPage = function () {
 
   // This is coming from the map
   this.gmapInfoWindow = element(by.css('.gm-style-iw div'));
-
-  this.clickShowMore = function (n) {
-    var i;
-    for (i = 0; i < n; i += 1) {
-      this.showMore.click();
-    }
-  };
 
   this.clear = function () {
     this.searchInput.clear();
@@ -67,15 +56,15 @@ var LandingPage = function () {
   };
 
   this.nthLocName = function (n) {
-    return this.nthLoc(n).findElement(by.css('.p-org')).getText();
+    return this.nthLoc(n).element(by.css('.p-org')).getText();
   };
 
   this.nthLocDist = function (n) {
-    return this.nthLoc(n).findElement(by.css('.distance')).getText();
+    return this.nthLoc(n).element(by.css('.distance')).getText();
   };
 
   this.nthLocViewMapBtn = function (n) {
-    return this.nthLoc(n).findElement(by.css('.icon-map'));
+    return this.nthLoc(n).element(by.css('.icon-map'));
   };
 
   this.firstLocDist = function () {

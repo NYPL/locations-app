@@ -1,7 +1,9 @@
 /*jslint indent: 2, maxlen: 80, nomen: true */
 /*globals $, window, console, jQuery, angular */
+
 (function (window, angular, undefined) {
   'use strict';
+
   function $Crumb() {
     var options = {
       primaryState: {
@@ -20,12 +22,11 @@
     };
 
     this.$get = ['$state', '$stateParams',
-                function ($state, $stateParams) {
-
+      function ($state, $stateParams) {
         // Add the state in the chain if not already in and if not abstract
         var addStateToChain = function (chain, state) {
-          var i, l;
-          for (i = 0, l = chain.length; i < l; i += 1) {
+          var i, len;
+          for (i = 0, len = chain.length; i < len; i += 1) {
             if (chain[i].name === state.name) {
               return;
             }
@@ -55,6 +56,7 @@
         };
       }];
   }
+
   function nyplBreadcrumbs($interpolate, $state, $crumb) {
     return {
       restrict: 'E',
@@ -158,13 +160,13 @@
          */
         function getParentState(currentState) {
           var currState = currentState,
-          parentStateSetting = currState.data.parentState,
-          parentStateRoute,
-          parentStateName,
-          parentStateObj = {},
-          context = (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState;
+            parentStateSetting = currState.data.parentState,
+            parentStateRoute,
+            parentStateName,
+            parentStateObj = {},
+            context = (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState;
 
-          if ( typeof context === 'object' && parentStateSetting) {
+          if (typeof context === 'object' && parentStateSetting) {
             if (!context.$stateParams) {
               return null;
             }
@@ -172,7 +174,7 @@
               parentStateName  = getParentName(currentState);
               parentStateRoute = getParentRoute(context, parentStateSetting);
               
-              if ( parentStateName && parentStateRoute ) {
+              if (parentStateName && parentStateRoute ) {
                 parentStateObj = {
                   displayName: parentStateName,
                   route: parentStateRoute
@@ -192,13 +194,13 @@
 
         function getParentRoute(context, parentStateSetting) {
           var currentContext = context,
-          stateSetting = parentStateSetting,
-          parentRoute,
-          parentNameMatched = false;
+            stateSetting = parentStateSetting,
+            parentRoute,
+            parentNameMatched = false;
 
-          if( typeof currentContext === 'object' && stateSetting) {
+          if (typeof currentContext === 'object' && stateSetting) {
             Object.keys(currentContext).forEach(function(key) {
-              if(key !== '$stateParams') {
+              if (key !== '$stateParams') {
                 Object.keys(currentContext[key]).forEach(function(key){
                   if (key.indexOf(stateSetting) !== -1) {
                     parentNameMatched = true;
@@ -226,9 +228,9 @@
 
         function getParentName(currentState) {
           var parentStateSetting = currentState.data.parentState,
-          parentStateData = $state.get(parentStateSetting),
-          context = (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState,
-          parentStateName;
+            parentStateData = $state.get(parentStateSetting),
+            context = (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState,
+            parentStateName;
 
           if (parentStateData) {
             parentStateName = $interpolate(parentStateData.data.crumbName)(context);
@@ -265,7 +267,7 @@
          */
         function stateAlreadyInBreadcrumbs(state, breadcrumbs) {
           var i,
-          alreadyUsed = false;
+            alreadyUsed = false;
           for(i = 0; i < breadcrumbs.length; i++) {
             if (breadcrumbs[i].route === state.name) {
               alreadyUsed = true;
