@@ -140,7 +140,6 @@ describe('Locations: homepage', function () {
             landingPage.currLoc.click();
             browser.sleep(1500);
 
-            landingPage.resultsNear.getText().then(console.log);
             expect(landingPage.resultsNear.isPresent()).toBe(true);
             expect(landingPage.firstLocName())
               .toEqual('Stephen A. Schwarzman Building');
@@ -273,7 +272,7 @@ describe('Locations: homepage', function () {
               .toEqual('Battery Park City Library');
 
             // It should be the only match for that search
-            expect(element.all(by.css('.locations-row.active')).count()).toBe(1);
+            expect(element.all(by.css('tr.active')).count()).toBe(1);
             expect(landingPage.locations.first().getAttribute('class'))
               .toContain('active');
           });
@@ -344,7 +343,7 @@ describe('Locations: homepage', function () {
         });
 
         it('should not have any highlighted locations', function () {
-          browser.sleep(5000)
+          browser.sleep(2000);
           expect(element.all(by.css('tr.active')).count()).toBe(0);
         });
 
