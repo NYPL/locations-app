@@ -83,7 +83,7 @@ describe('Circulating branch page', function () {
 
     it('should have a link with the slug, not abbreviation', function () {
       expect(locationPage.allAmenities.getAttribute('href'))
-        .toMatch(/amenities\/location\/grand-central/);
+        .toMatch(/amenities\/loc\/grand-central/);
     });
   });
 

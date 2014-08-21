@@ -27,7 +27,7 @@ describe('Locations: Amenity', function () {
     beforeEach(function () {
       browser.addMockModule('httpBackendMock', httpBackendMock,
           APIresponse.good);
-      browser.get('/#/amenities/7950');
+      browser.get('/#/amenities/id/7950');
     });
 
     it('should display the name of the service', function () {
@@ -56,7 +56,7 @@ describe('Locations: Amenity', function () {
     beforeEach(function () {
       browser.addMockModule('httpBackendMock', httpBackendMock,
           APIresponse.bad);
-      browser.get('/#/amenities');
+      browser.get('/#/amenities/id/7950');
       browser.waitForAngular();
     });
 

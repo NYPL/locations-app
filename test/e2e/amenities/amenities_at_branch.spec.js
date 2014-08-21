@@ -28,7 +28,7 @@ describe('Locations: Amenities at a branch', function () {
       // Pass the good JSON from the API call.
       browser.addMockModule('httpBackendMock', httpBackendMock,
           APIresponse.good);
-      browser.get('/#/amenities/location/115th-street');
+      browser.get('/#/amenities/loc/115th-street');
       browser.waitForAngular();
     });
 
@@ -140,7 +140,7 @@ describe('Locations: Amenities at a branch', function () {
     beforeEach(function () {
       browser.addMockModule('httpBackendMock', httpBackendMock,
           APIresponse.bad);
-      browser.get('/#/amenities');
+      browser.get('/#/amenities/loc/115th-street');
       browser.waitForAngular();
     });
 
