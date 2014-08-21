@@ -204,7 +204,6 @@
                     parentNameMatched = true;
                   }
                 });
-                
                 if (currentContext[key].location_slug && parentNameMatched) {
                   parentRoute = currentContext[key].location_slug;
                 }
