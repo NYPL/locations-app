@@ -5,54 +5,105 @@
       "name": "Computer Services",
       "amenities": [
         {
-          "_id":4,
+          "_id": 7950,
           "_links": {
             "self": {
-              "href":"services/4"
+              "href": "amenities/7950"
             },
             "info": {
-              "href":"http://www.nypl.org/help/computers-internet-and-wireless-access/reserving-computer"
+              "href": "help/computers-internet-and-wireless-access/reserving-computer"
             },
-            "reserve": {
-              "href":"http://pcreserve.nypl.org/"
+            "action": {
+              "name": "Reserve a PC",
+              "href": "http://pcreserve.nypl.org/"
             }
           },
-          "id":4,
-          "name":"Computers for Public Use"
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Computer Services",
+          "id": 7950,
+          "location_rank": 2,
+          "name": "Computers for Public Use",
+          "rank": 1,
+          "staff_assistance": null
         },
         {
-          "_id":6,
+          "_id": 7952,
           "_links": {
             "self": {
-              "href":"services/6"
+              "href": "amenities/7952"
             },
             "info": {
-              "href":"http://www.nypl.org/help/computers-internet-and-wireless-access/wireless-internet-access"
+              "href": "help/computers-internet-and-wireless-access/wireless-internet-access"
+            },
+            "action": {
+              "name": null,
+              "href": null
             }
           },
-          "id":6,
-          "name":"Wireless Internet Access"
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Computer Services",
+          "id": 7952,
+          "location_rank": 5,
+          "name": "Wireless Internet Access",
+          "rank": 4,
+          "staff_assistance": null
         },
         {
-          "_id":216,
+          "_id": 7953,
           "_links": {
+            "self": {
+              "href": "amenities/7953"
+            },
+            "info": {
+              "href": "help/computers-internet-and-wireless-access/reserving-computer"
+            },
+            "action": {
+              "name": "Reserve a Laptop",
+              "href": "http://pcreserve.nypl.org/"
+            }
           },
-          "id":216,
-          "name":"Laptops for Public Use"
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Computer Services",
+          "id": 7953,
+          "location_rank": 3,
+          "name": "Laptops for Public Use",
+          "rank": 2,
+          "staff_assistance": null
         },
         {
-          "_id":7,
+          "_id": 7954,
           "_links": {
+            "self": {
+              "href": "amenities/7954"
+            }
           },
-          "id":7,
-          "name":"Printing (From PC)"
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Computer Services",
+          "id": 7954,
+          "location_rank": 4,
+          "name": "Printing (from PC)",
+          "rank": 3,
+          "staff_assistance": null
         },
         {
-          "_id":9,
+          "_id": 7955,
           "_links": {
+            "self": {
+              "href": "amenities/7955"
+            }
           },
-          "id":9,
-          "name":"Electrical Outlets Available"
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Computer Services",
+          "id": 7955,
+          "location_rank": 6,
+          "name": "Electric outlets available",
+          "rank": 5,
+          "staff_assistance": null
         }
       ]
     },
@@ -61,50 +112,95 @@
       "name": "Circulation",
       "amenities": [
         {
-          "_id":434563456,
+          "_id": 7956,
           "_links": {
             "self": {
-              "href":"services/"
+              "href": "amenities/7956"
             }
           },
-          "id":4345634564,
-          "name":"Inter-Library Loan"
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Circulation",
+          "id": 7956,
+          "location_rank": 13,
+          "name": "Inter-Library Loan",
+          "rank": 6,
+          "staff_assistance": null
+        },
+        {
+          "_id": 7957,
+          "_links": {
+            "self": {
+              "href": "amenities/7957"
+            },
+            "info": {
+              "href": "help/borrowing-materials"
+            },
+            "action": {
+              "name": null,
+              "href": null
+            }
+          },
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Circulation",
+          "id": 7957,
+          "location_rank": 9,
+          "name": "Self-service check-out",
+          "rank": 7,
+          "staff_assistance": null
+        },
+        {
+          "_id": 7951,
+          "_links": {
+            "self": {
+              "href": "amenities/7951"
+            },
+            "info": {
+              "href": "help/borrowing-materials/book-drops"
+            },
+            "action": {
+              "name": null,
+              "href": null
+            }
+          },
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Circulation",
+          "id": 7951,
+          "location_rank": 2,
+          "name": "Book drop box (24 hour)",
+          "rank": 8,
+          "staff_assistance": null
+        },
+        {
+          "_id": 7958,
+          "_links": {
+            "self": {
+              "href": "amenities/7958"
+            },
+            "info": {
+              "href": "help/borrowing-materials/book-drops"
+            },
+            "action": {
+              "name": null,
+              "href": null
+            }
+          },
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Circulation",
+          "id": 7958,
+          "location_rank": 1,
+          "name": "Book drop box (limited hours)",
+          "rank": 9,
+          "staff_assistance": null
         },
         {
           "_id":62183,
           "_links": {
             "self": {
-              "href":"services/6"
-            }
-          },
-          "id":62183,
-          "name":"Self-service check-out"
-        },
-        {
-          "_id":65910,
-          "_links": {
-            "self": {
-              "href":"services/6"
-            }
-          },
-          "id":65910,
-          "name":"Book Drop Box (24 Hour)"
-        },
-        {
-          "_id":39,
-          "_links": {
-            "self": {
-              "href":"services/6"
-            }
-          },
-          "id":39,
-          "name":"Book Drop Box (Limited Hours)"
-        },
-        {
-          "_id":62183,
-          "_links": {
-            "self": {
-              "href":"services/6"
+              "href":"amenities/6"
             }
           },
           "id":62183,
@@ -114,7 +210,7 @@
           "_id":62183,
           "_links": {
             "self": {
-              "href":"services/6"
+              "href":"amenities/6"
             }
           },
           "id":62183,
@@ -127,14 +223,20 @@
       "name": "Office Services",
       "amenities": [
         {
-          "_id":4,
+          "_id": 7961,
           "_links": {
             "self": {
-              "href":"services/"
+              "href": "amenities/7961"
             }
           },
-          "id":4,
-          "name":"Photocopiers (black/white)"
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Office Services",
+          "id": 7961,
+          "location_rank": 10,
+          "name": "Photocopiers (black/white)",
+          "rank": 12,
+          "staff_assistance": null
         },
         {
           "_id":64253647,
@@ -157,24 +259,36 @@
           "name":"Scanners"
         },
         {
-          "_id":62183,
+          "_id": 7964,
           "_links": {
             "self": {
-              "href":"services/6"
+              "href": "amenities/7964"
             }
           },
-          "id":62183,
-          "name":"Map Photocopies (up to 36\" wide)"
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Office Services",
+          "id": 7964,
+          "location_rank": 11,
+          "name": "Map photocopiers (up to 36\" wide)",
+          "rank": 15,
+          "staff_assistance": null
         },
         {
-          "_id":62183,
+          "_id": 7965,
           "_links": {
             "self": {
-              "href":"services/6"
+              "href": "amenities/7965"
             }
           },
-          "id":62183,
-          "name":"Change Machine"
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Office Services",
+          "id": 7965,
+          "location_rank": 12,
+          "name": "Change machine",
+          "rank": 16,
+          "staff_assistance": null
         }
       ]
     },
@@ -183,30 +297,42 @@
       "name": "Facilities",
       "amenities": [
         {
-          "_id":4,
+          "_id": 7966,
           "_links": {
             "self": {
-              "href":"services/"
+              "href": "amenities/7966"
             }
           },
-          "id":4,
-          "name":"Public Restrooms"
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Facilities",
+          "id": 7966,
+          "location_rank": 5,
+          "name": "Public Restrooms",
+          "rank": 17,
+          "staff_assistance": null
         },
         {
-          "_id":623453578,
+          "_id": 7967,
           "_links": {
             "self": {
-              "href":"services/6"
+              "href": "amenities/7967"
             }
           },
-          "id":6345678,
-          "name":"Children's Only Restrooms"
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Facilities",
+          "id": 7967,
+          "location_rank": 6,
+          "name": "Children's Only Restrooms",
+          "rank": 18,
+          "staff_assistance": null
         },
         {
           "_id":62183,
           "_links": {
             "self": {
-              "href":"services/6"
+              "href":"amenities/6"
             }
           },
           "id":62183,
@@ -223,24 +349,36 @@
           "name":"Parking"
         },
         {
-          "_id":62183,
+          "_id": 7970,
           "_links": {
             "self": {
-              "href":"services/6"
+              "href": "amenities/7970"
             }
           },
-          "id":62183,
-          "name":"Lost and Found"
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Facilities",
+          "id": 7970,
+          "location_rank": 12,
+          "name": "Lost and found",
+          "rank": 21,
+          "staff_assistance": null
         },
         {
-          "_id":62183,
+          "_id": 7971,
           "_links": {
             "self": {
-              "href":"services/6"
+              "href": "amenities/7971"
             }
           },
-          "id":62183,
-          "name":"Bicycle Rack"
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Facilities",
+          "id": 7971,
+          "location_rank": 6,
+          "name": "Bicycle Rack",
+          "rank": 22,
+          "staff_assistance": null
         }
       ]
     },
@@ -249,24 +387,36 @@
       "name": "Assistive Technologies",
       "amenities": [
         {
-          "_id":4,
+          "_id": 7976,
           "_links": {
             "self": {
-              "href":"services/"
+              "href": "amenities/7976"
             }
           },
-          "id":4,
-          "name":"Screen magnification software (MAGic)"
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Assistive Technologies",
+          "id": 7976,
+          "location_rank": 9,
+          "name": "Screen magnification software (MAGic)",
+          "rank": 27,
+          "staff_assistance": null
         },
         {
-          "_id":623457,
+          "_id": 7977,
           "_links": {
             "self": {
-              "href":"services/6"
+              "href": "amenities/7977"
             }
           },
-          "id":623456789,
-          "name":"Screen reading software (JAWS)"
+          "accessibility_note": null,
+          "accessible": true,
+          "category": "Assistive Technologies",
+          "id": 7977,
+          "location_rank": 10,
+          "name": "Screen reading software (JAWS)",
+          "rank": 28,
+          "staff_assistance": null
         },
         {
           "_id":62183,

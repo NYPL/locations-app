@@ -24,6 +24,8 @@
 
         $scope.has_appointment =
             nyplUtility.divisionHasAppointment(division.id);
+
+        console.log($scope.division);
     }
 
     angular

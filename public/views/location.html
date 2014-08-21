@@ -11,7 +11,7 @@
     <div class="grid">
       <div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
         <!-- Display for open location -->
-        <div class="callout" data-ng-if="location.open">
+        <div class="callout branch-open" data-ng-if="location.open">
           <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat:'short'}}" />
           <div id="location-hours" class="location-hours">
             <h2 class="flush--ends hdg">{{ 'REGULAR_HOURS' | translate }} <span id="toggle-hours" ng-click="expand = !expand" ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span></h2>
@@ -29,7 +29,7 @@
 	          </p>
           </div>
         </div>
-        <div class="callout" data-ng-if="!location.open">
+        <div class="callout branch-closed" data-ng-if="!location.open">
           <h2>Branch is temporarily closed.</h2>
         </div>
       </div><!--

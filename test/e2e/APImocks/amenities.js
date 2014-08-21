@@ -276,22 +276,6 @@ var response = {
               "staff_assistance": null
             },
             {
-              "_id": 7964,
-              "_links": {
-                "self": {
-                  "href": "amenities/7964"
-                }
-              },
-              "accessibility_note": null,
-              "accessible": true,
-              "category": "Office Services",
-              "id": 7964,
-              "location_rank": 11,
-              "name": "Map photocopiers (up to 36\" wide)",
-              "rank": 15,
-              "staff_assistance": null
-            },
-            {
               "_id": 7965,
               "_links": {
                 "self": {
@@ -478,6 +462,11 @@ var response = {
           ]
         }
       ]
+    }
+  },
+  bad: {
+    amenities: {
+
     }
   }
 }

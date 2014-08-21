@@ -1,15 +1,27 @@
 /*jslint indent: 2, maxlen: 80 */
 /*globals element, by, module */
 
-var ServicesPage = function () {
+var AmenitiesPage = function () {
   'use strict';
 
+  // /amenities
   this.title = element(by.css('#amenities__title'));
-  this.serviceName = element(by.binding('service_name'));
-  this.locationName = element(by.binding('location.name'));
 
-  this.services = element.all(by.repeater('service in services'));
+  this.amenities_categories =
+    element.all(by.repeater('category in amenitiesCategories'));
+  this.getNthCategory = function (n) {
+    return this.amenities_categories.get(n);
+  };
+
+  // /amenities/:id
+  this.amenity_name = element(by.binding('amenity_name'));
   this.locations = element.all(by.repeater('location in locations'));
+
+  // /amenities/location/:location-slug
+  this.location_name = element(by.css('#location_name'));
+
+  // Services callout
+  this.services_callout = element(by.css('.services-callout'));
 };
 
-module.exports = new ServicesPage();
+module.exports = new AmenitiesPage();
