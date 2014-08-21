@@ -193,15 +193,22 @@
         function getParentRoute(context, parentStateSetting) {
           var currentContext = context,
           stateSetting = parentStateSetting,
-          parentRoute;
+          parentRoute,
+          parentNameMatched = false;
 
           if( typeof currentContext === 'object' && stateSetting) {
             Object.keys(currentContext).forEach(function(key) {
               if(key !== '$stateParams') {
-                if (currentContext[key].location_slug) {
+                Object.keys(currentContext[key]).forEach(function(key){
+                  if (key.indexOf(stateSetting) !== -1) {
+                    parentNameMatched = true;
+                  }
+                });
+                
+                if (currentContext[key].location_slug && parentNameMatched) {
                   parentRoute = currentContext[key].location_slug;
                 }
-                else if (currentContext[key].slug) {
+                else if (currentContext[key].slug && parentNameMatched) {
                   parentRoute = currentContext[key].slug;
                 }
               }
