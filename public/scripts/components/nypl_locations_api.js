@@ -1,20 +1,20 @@
 /*jslint indent: 4, maxlen: 80 */
 /*globals angular */
 
-/** @namespace nyplLocationsApi */
-function nypLocationsApi($http, $q) {
+/** @namespace nyplLocationsService */
+function nyplLocationsService($http, $q) {
     'use strict';
 
     var api = 'http://evening-mesa-7447-160.herokuapp.com',
         apiError = "Could not reach API",
         locationsApi = {};
 
-    /** @function nyplLocationsApi.allLocations 
+    /** @function nyplLocationsService.allLocations 
      * @returns {object} Deferred promise. If it resolves, JSON response from
      *  the API of all NYPL locations. If it is rejected, an error message
      *  is returned saying that it "Could not reach API".
      * @example
-     *  nypLocationsApi.allLocations()
+     *  nyplLocationsService.allLocations()
      *    .then(function (data) {
      *      var locations = data.locations;
      *    });
@@ -35,13 +35,13 @@ function nypLocationsApi($http, $q) {
         return defer.promise;
     };
 
-    /** @function nyplLocationsApi.singleLocation
+    /** @function nyplLocationsService.singleLocation
      * @param {string} location The slug of the location to look up.
      * @returns {object} Deferred promise. If it resolves, JSON response from
      *  the API of a specific NYPL locations. If it is rejected, an error
      *  message is returned saying that it "Could not reach API".
      * @example
-     *  nypLocationsApi.singleLocation('schwarzman')
+     *  nyplLocationsService.singleLocation('schwarzman')
      *    .then(function (data) {
      *      var location = data.location;
      *    });
@@ -62,13 +62,13 @@ function nypLocationsApi($http, $q) {
         return defer.promise;
     };
 
-    /** @function nyplLocationsApi.singleDivision
+    /** @function nyplLocationsService.singleDivision
      * @param {string} division The slug of the division to look up.
      * @returns {object} Deferred promise. If it resolves, JSON response from
      *  the API of an NYPL Division. If it is rejected, an error
      *  message is returned saying that it "Could not reach API".
      * @example
-     *  nypLocationsApi.singleLocation('map-division')
+     *  nyplLocationsService.singleLocation('map-division')
      *    .then(function (data) {
      *      var division = data.division;
      *    });
@@ -89,7 +89,7 @@ function nypLocationsApi($http, $q) {
         return defer.promise;
     };
 
-    /** @function nyplLocationsApi.amenities
+    /** @function nyplLocationsService.amenities
      * @param {string} [amenity] The id of the amenity to look up.
      * @returns {object} Deferred promise. If it resolves, JSON response from
      *  the API. If no param was passed, it will return all the amenities at 
@@ -97,7 +97,7 @@ function nypLocationsApi($http, $q) {
      *  locations where the amenity passed is available. If it is rejected,
      *  an error message is returned saying that it "Could not reach API".
      * @example
-     *  nypLocationsApi.amenities()
+     *  nyplLocationsService.amenities()
      *    .then(function (data) {
      *      var amenities = data;
      *    });
@@ -105,7 +105,7 @@ function nypLocationsApi($http, $q) {
      *      // error = "Could not reach API"
      *    });
      *
-     *  nypLocationsApi.amenities('7950')
+     *  nyplLocationsService.amenities('7950')
      *    .then(function (data) {
      *      var amenity = data;
      *    });
@@ -127,14 +127,14 @@ function nypLocationsApi($http, $q) {
         return defer.promise;
     };
 
-    /** @function nyplLocationsApi.amenitiesAtLibrary
+    /** @function nyplLocationsService.amenitiesAtLibrary
      * @param {string} location The slug of the location to look up
      *  all amenities available at that location.
      * @returns {object} Deferred promise. If it resolves, JSON response from
      *  the API of all amenities available at the location. If it is rejected,
      *  an error message is returned saying that it "Could not reach API".
      * @example
-     *  nypLocationsApi.amenitiesAtLibrary('115th-street')
+     *  nyplLocationsService.amenitiesAtLibrary('115th-street')
      *    .then(function (data) {
      *      var location = data.location;
      *    });
@@ -155,11 +155,11 @@ function nypLocationsApi($http, $q) {
         return defer.promise;
     };
 
-    /** @function nyplLocationsApi.alerts
+    /** @function nyplLocationsService.alerts
      * @returns {object} Deferred promise. If it resolves, JSON response from
      *  the API of alerts that display site-wide.
      * @example
-     *  nypLocationsApi.alerts()
+     *  nyplLocationsService.alerts()
      *    .then(function (data) {
      *      var amenities = data.alerts;
      *    });
@@ -186,4 +186,4 @@ function nypLocationsApi($http, $q) {
 
 angular
     .module('locationService', [])
-    .factory('nyplLocationsService', nypLocationsApi);
+    .factory('nyplLocationsService', nyplLocationsService);
