@@ -172,8 +172,8 @@ nypl_locations.config([
                     location: AmenitiesAtLibrary
                 },
                 data: {
-                    parentState: 'location',
-                    crumbName: 'Amenities'
+                    parentState: 'amenities',
+                    crumbName: '{{location.name}}'
                 }
             })
             .state('location', {
