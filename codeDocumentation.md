@@ -48,16 +48,15 @@ Always start JSdoc comments with /**
 * @param {type} nameOfParam Description of the parameter.
   * @param {type} [nameOfOptionalParam] Use brackets for optional parameters.
 * @returns {type} Description of what is returned.
+* @description Description of what the function or piece of code does.
+* @memberof namespaceName
+* @todo Description of what needs to be done to complete the piece of code.
 * @example
 
     // Code example of how to use the code.
     nyplLocationsService.allLocations().then(function () {
       ...
     });
-
-* @description Description of what the function or piece of code does.
-* @memberof namespaceName
-* @todo Description of what needs to be done to complete the piece of code.
 
 ## Public function pattern
 For the functions that are returned, including the namespace in the @function assigns it to that namespace.
