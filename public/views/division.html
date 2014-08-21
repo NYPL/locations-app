@@ -10,7 +10,7 @@
     <div class="grid">
       <!-- Division Hours -->
       <div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
-        <div class="callout">
+        <div class="callout branch-open" data-ng-if="division.open">
           <todayshours hours="{{hoursToday | hoursTodayFormat:'short'}}" />
           <div id="location-hours" class="location-hours" data-ng-if="division.hours">
             <h2 class="flush--ends hdg">
@@ -28,6 +28,9 @@
               </tr>
             </table>
           </div>
+        </div>
+        <div class="callout branch-closed" data-ng-if="!division.open">
+          <h2>Branch is temporarily closed.</h2>
         </div>
       </div><!--
 

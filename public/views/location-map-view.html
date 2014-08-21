@@ -58,12 +58,15 @@
           </div>
 
           <!-- Today's Hours -->
-					<div class="todays-hours" data-ng-if="location.open">
-							<span>{{ 'TODAYS_HOURS' | translate }}</span>:
-							<strong>{{ location.hoursToday(location.hours) | timeFormat }}</strong>
+					<div class="todays-hours branch-open" data-ng-if="location.open">
+						<span>{{ 'TODAYS_HOURS' | translate }}</span>:
+						<strong>{{ location.hoursToday(location.hours) | timeFormat }}</strong>
 					</div>
+
           <!-- Closed flag -->
-          <div data-ng-if="!location.open"><b>Branch is temporarily closed.</b></div>
+          <div data-ng-if="!location.open" class="branch-closed">
+            <b>Branch is temporarily closed.</b>
+          </div>
 
 					<!-- Branch Messages -->
           <div data-ng-if="location.branchException" class="loc-exceptions">
