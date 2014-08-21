@@ -65,6 +65,29 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         return hoursToday;
     };
 
+    // Parse exception data and return as string
+    utility.branchException = function(hours) {
+        var exception = {};
+
+        if (hours) {
+            // If truthy, data exist for existing location
+            if (!hours.exceptions) {
+                return null;
+            }
+            else if (hours.exceptions.description.trim() !== '') {
+                exception.desc = hours.exceptions.description;
+                // Optional set
+                if (hours.exceptions.start) {
+                    exception.start = hours.exceptions.start;
+                }
+                if (hours.exceptions.end) {
+                    exception.end = hours.exceptions.end;
+                }
+                return exception;
+            }
+        }
+    };
+
     // Line breaks are needed when displaying the address on the marker
     // for the map. The name is also a link to the location's page.
     // Line breaks are not needed when we use the address 
@@ -152,18 +175,12 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
                     todaysAlert += alert.body + "\n";
                 }
             });
-        } else {
-            alert_start = new Date(alerts.start);
-            alert_end = new Date(alerts.end);
 
-            // console.log("End date for library date: " + alert_end);
-            if (today >= alert_start && today <= alert_end) {
-                todaysAlert += alerts.description;
+            if (!angular.isUndefined(todaysAlert)) {
+                return todaysAlert;
             }
         }
-        if (!angular.isUndefined(todaysAlert)) {
-            return todaysAlert;
-        }
+        return null;
     };
 
     /*

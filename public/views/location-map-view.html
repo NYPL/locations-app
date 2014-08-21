@@ -9,7 +9,7 @@
 			  <div id="all-locations-map-legend" class="hide-legend">
 			    <div data-ng-if="locations"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
 			      {{ 'NYPL_MARKER' | translate }}</div>
-			    <div data-ng-if="locationStart"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
+			    <div data-ng-if="userMarker"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
 			      {{ 'USER_MARKER' | translate }}</div>
           <div data-ng-if="searchMarker"><img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png" />
 			      {{ 'SEARCH_MARKER' | translate }}</div>
@@ -58,10 +58,20 @@
           </div>
 
           <!-- Today's Hours -->
-					<div class="todays-hours">
-							<span>{{ 'TODAYS_HOURS' | translate }}</span>:
-							<strong>{{ location.hoursToday(location.hours) | timeFormat }}</strong>
+					<div class="todays-hours branch-open" data-ng-if="location.open">
+						<span>{{ 'TODAYS_HOURS' | translate }}</span>:
+						<strong>{{ location.hoursToday(location.hours) | timeFormat }}</strong>
 					</div>
+
+          <!-- Closed flag -->
+          <div data-ng-if="!location.open" class="branch-closed">
+            <b>Branch is temporarily closed.</b>
+          </div>
+
+					<!-- Branch Messages -->
+          <div data-ng-if="location.branchException" class="loc-exceptions">
+            <p> {{ location.branchException.desc }} </p>
+          </div>
 
           <!-- Map/Directions Links -->
           <div class="map-link">

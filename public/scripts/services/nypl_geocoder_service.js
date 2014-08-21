@@ -48,7 +48,9 @@ function nyplGeocoderService($q) {
      */
     removeMarkerFromMap = function (id) {
       var markerObj = getMarkerFromList(id);
-      markerObj.marker.setMap(null);
+      if (geocoderService.doesMarkerExist(id)) {
+        markerObj.marker.setMap(null);
+      }
     },
 
     /** @function addMarkerToMap
@@ -61,7 +63,9 @@ function nyplGeocoderService($q) {
      */
     addMarkerToMap = function (id) {
       var markerObj = getMarkerFromList(id);
-      markerObj.marker.setMap(map);
+      if (markerObj) {
+        markerObj.marker.setMap(map);
+      }
     };
 
   /** @function nyplGeocoderService.geocodeAddress
@@ -272,7 +276,7 @@ function nyplGeocoderService($q) {
       markerOptions.icon =
         "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
       markerOptions.zIndex = 1000;
-      markerOptions.animation = google.maps.Animation.BOUNCE;
+      markerOptions.animation = google.maps.Animation.DROP;
     }
 
     marker = new google.maps.Marker(markerOptions);
@@ -301,14 +305,16 @@ function nyplGeocoderService($q) {
   };
 
   geocoderService.drawSearchMarker = function () {
-    searchMarker.setMap(map);
-    this.panMap(searchMarker);
+    if (this.checkSearchMarker() && !filteredLocation) {
+      searchMarker.setMap(map);
+      this.panMap(searchMarker);
 
-    searchInfoWindow.open(map, searchMarker);
-    this.hideInfowindow();
-    google.maps.event.addListener(searchMarker, 'click', function () {
       searchInfoWindow.open(map, searchMarker);
-    });
+      this.hideInfowindow();
+      google.maps.event.addListener(searchMarker, 'click', function () {
+        searchInfoWindow.open(map, searchMarker);
+      });
+    }
 
     return this;
   };
@@ -323,8 +329,16 @@ function nyplGeocoderService($q) {
       searchMarker.getMap() !== null;
   };
 
-  geocoderService.removeSearchMarker = function () {
-    searchMarker.setMap(null);
+  geocoderService.removeMarker = function (id) {
+    if (!id) {
+      return this;
+    }
+
+    if (id === 'search') {
+      searchMarker.setMap(null);
+    } else {
+      removeMarkerFromMap(id);
+    }
     return this;
   };
 
@@ -342,11 +356,10 @@ function nyplGeocoderService($q) {
     return this;
   };
 
-  geocoderService.searchResultMarker = function (location) {
-    var location_id = location.slug;
-    filteredLocation = location_id;
-    if (this.doesMarkerExist(location_id)) {
-      this.panExistingMarker(location_id);
+  geocoderService.searchFilterMarker = function (location_slug) {
+    filteredLocation = location_slug;
+    if (this.doesMarkerExist(location_slug)) {
+      this.panExistingMarker(location_slug);
     }
   };
 

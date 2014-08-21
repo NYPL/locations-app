@@ -30,6 +30,7 @@
             resetPage = function () {
                 $scope.searchMarker = false;
                 $scope.researchBranches = false;
+                $scope.userMarker = false;
                 $scope.reverse = false;
                 $scope.searchTerm = '';
                 $scope.geolocationAddressOrSearchQuery = '';
@@ -42,10 +43,9 @@
             },
 
             geolocationAvailable = function () {
-                // After loading all locations, check if the browser
-                // supports geolocation before the user actually tries to
-                // geolocate their location. If available, the button to
-                // geolocate appears.
+                // After loading all locations, check if the browser supports
+                // geolocation before the user tries to geolocate their
+                // location. If available, the button to geolocate appears.
                 if (nyplCoordinatesService.geolocationAvailable()) {
                     $scope.geolocationOn = true;
                 }
@@ -60,6 +60,7 @@
                         // Used for 'Get Address' link.
                         $scope.locationStart = user.coords.latitude + "," +
                                 user.coords.longitude;
+                        $scope.userMarker = true;
 
                         // add a distance property to every location
                         // from that location to the user's coordinates
@@ -70,10 +71,8 @@
                         if (nyplUtility.checkDistance($scope.locations)) {
                             // The user is too far away, reset everything
                             resetPage();
-                            throw (new Error(
-                                'You are not within 25 ' +
-                                    'miles of any NYPL library.'
-                            ));
+                            throw (new Error('You are not within 25 ' +
+                                    'miles of any NYPL library.'));
                         }
 
                         sortListBy('distance');
@@ -134,12 +133,14 @@
 
                 if ($state.current.name === 'home.map') {
                     nyplGeocoderService
-                        .removeSearchMarker()
+                        .removeMarker('search')
                         .drawSearchMarker();
                 }
 
                 // Variable to draw a green marker on the map legend.
                 $scope.searchMarker = true;
+                $scope.userMarker = false;
+                nyplGeocoderService.removeMarker('user');
 
                 $scope.geolocationAddressOrSearchQuery = searchterm;
                 $scope.searchError = '';
@@ -223,6 +224,18 @@
                         location.locationDest =
                             nyplUtility.getAddressString(location);
 
+                        // var amenities_list = [];
+                        // _.each(location._embedded.amenities, function (amenities) {
+                        //     _.each(amenities.amenities, function (amenity) {
+                        //         amenities_list.push(amenity);
+                        //     });
+                        // });
+                        // location.amenities_list = amenities_list;
+
+                        // Individual location exception data
+                        location.branchException =
+                            nyplUtility.branchException(location.hours);
+
                         // Initially, when the map is drawn and 
                         // markers are available, they will be drawn too. 
                         // No need to draw them again if they exist.
@@ -278,7 +291,7 @@
             $scope.geolocationAddressOrSearchQuery = '';
 
             // Remove any existing search markers on the map.
-            nyplGeocoderService.removeSearchMarker();
+            nyplGeocoderService.removeMarker('search');
             $scope.searchMarker = false;
             $scope.scrollPage();
 
@@ -295,10 +308,11 @@
             showLibrariesTypeOf();
             nyplGeocoderService
                 .showAllLibraries()
+                .removeMarker('user')
                 .clearFilteredLocation();
 
             if ($state.current.name === 'home.map') {
-                nyplGeocoderService.removeSearchMarker()
+                nyplGeocoderService.removeMarker('search')
                     .hideInfowindow()
                     .panMap();
             }
@@ -323,10 +337,10 @@
 
             $scope.geolocationAddressOrSearchQuery = '';
             // Remove previous search marker from the map
-            nyplGeocoderService.removeSearchMarker();
+            nyplGeocoderService.removeMarker('search');
+            $scope.searchMarker = false;
             showLibrariesTypeOf();
             nyplGeocoderService.showAllLibraries();
-            $scope.searchMarker = false;
             $scope.researchBranches = false;
 
             var IDfilteredLocations =
@@ -343,7 +357,7 @@
                 // map related work
                 if ($state.current.name === 'home.map') {
                     nyplGeocoderService
-                        .searchResultMarker(IDfilteredLocations[0]);
+                        .searchFilterMarker(IDfilteredLocations[0].slug);
                 }
                 $scope.scrollPage();
 
@@ -357,7 +371,7 @@
                     if (filteredLocations.length &&
                             $state.current.name === 'home.map') {
                         nyplGeocoderService
-                            .searchResultMarker(filteredLocations[0]);
+                            .searchFilterMarker(filteredLocations[0].slug);
                     } else {
                         nyplGeocoderService.clearFilteredLocation();
                         nyplGeocoderService.createSearchMarker(
@@ -370,6 +384,9 @@
                 })
                 .then(function (locations) {
                     $scope.scrollPage();
+                    if (filteredLocations) {
+                        $scope.searchMarker = false;
+                    }
                     organizeLocations(locations, filteredLocations, 'distance');
                 })
                 // Catch any errors at any point
@@ -379,7 +396,7 @@
                     // first see if there are any angularjs filtered results.
                     // if there are, show results based on the angularjs filter.
                     // else, reset back to the start
-                    nyplGeocoderService.removeSearchMarker();
+                    nyplGeocoderService.removeMarker('search');
                     $scope.searchMarker = false;
                     if (filteredLocations.length &&
                             error.msg !== 'query too short') {
@@ -387,7 +404,7 @@
                         $scope.searchError = '';
                         // Map related work
                         nyplGeocoderService
-                            .searchResultMarker(filteredLocations[0]);
+                            .searchFilterMarker(filteredLocations[0].slug);
                         organizeLocations(locations, filteredLocations, 'name');
                     } else {
                         resetPage();
@@ -429,7 +446,7 @@
 
             mapInit = function () {
                 nyplGeocoderService
-                    .removeSearchMarker()
+                    .removeMarker('search')
                     .hideInfowindow()
                     .panMap();
             },
@@ -450,11 +467,13 @@
 
                     $scope.drawUserMarker();
 
-                    if (nyplGeocoderService.checkSearchMarker()) {
+                    if ($scope.userMarker) {
                         nyplGeocoderService.drawSearchMarker();
-                        $scope.searchMarker = true;
-                    } else {
-                        mapInit();
+                    }
+
+                    // TODO
+                    if ($scope.searchMarker) {
+                        nyplGeocoderService.drawSearchMarker();
                     }
 
                     if ($scope.researchBranches) {
@@ -519,18 +538,8 @@
         $scope.calendarLink = nyplUtility.calendarLink;
         $scope.icalLink = nyplUtility.icalLink;
 
-        // breadcrumbs.options = { 'Location': location.name };
-        // homeUrl = { label: 'Home', path: 'http://www.nypl.org' };
-        // breadcrumbs.breadcrumbs[1].path = "#/" + location.slug;
-        // breadcrumbs.breadcrumbs.unshift(homeUrl);
-        // $scope.breadcrumbs = breadcrumbs;
-
         $scope.location.social_media =
             nyplUtility.socialMediaColor($scope.location.social_media);
-
-        if (location.hours.exceptions) {
-            $scope.libraryAlert = nyplUtility.alerts(location.hours.exceptions);
-        }
 
         if (location.hours) {
             $scope.hoursToday = nyplUtility.hoursToday(location.hours);

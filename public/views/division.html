@@ -3,12 +3,14 @@
 
   <!-- <nyplbreadcrumbs></nyplbreadcrumbs> -->
 
+  <nypl-library-alert exception="division.hours.exceptions"></nypl-library-alert>
+
   <div class="container__div_info">
     <h1 class="p-org">{{division.name}}</h1>
     <div class="grid">
       <!-- Division Hours -->
       <div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
-        <div class="callout">
+        <div class="callout branch-open" data-ng-if="division.open">
           <todayshours hours="{{hoursToday | hoursTodayFormat:'short'}}" />
           <div id="location-hours" class="location-hours" data-ng-if="division.hours">
             <h2 class="flush--ends hdg">
@@ -27,11 +29,14 @@
             </table>
           </div>
         </div>
+        <div class="callout branch-closed" data-ng-if="!division.open">
+          <h2>Branch is temporarily closed.</h2>
+        </div>
       </div><!--
 
       --><div id="container__div_image" class="grid__item lap-one-half one-whole desk-one-third">
         <!-- Division Image -->
-        <img class="img--outline" src="images/pippin_fpo.jpg"
+        <img class="img--outline main_division_image" src="images/pippin_fpo.jpg"
           alt="Image of {{division.name}}" title="Image of {{division.name}}">
       </div><!--
       
@@ -45,7 +50,7 @@
             <span data-ng-if="division.room">{{ 'ROOM' | translate }} {{division.room}}</span>
         </div>
         <div data-ng-if="division.locality">
-          {{division.locality}}, {{division.region}}, {{division.postal_code}}
+          {{division.locality}}, {{division.region}} {{division.postal_code}}
         </div>
         <div data-ng-if="division.contacts.manager">
           {{ 'DIVISION_MANAGER' | translate}}<span>{{division.contacts.manager}}</span>
@@ -73,11 +78,11 @@
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-three-fifths">
         <h2 class="hdg">{{ 'ABOUT_COLLECTION' | translate }}</h2>
-        <img data-ng-if="division.image" class="img--left img--outline"
+        <img data-ng-if="division.image" class="img--left img--outline division_second_image"
           data-ng-src="{{division.image}}" style="max-width: 165px;" />
         <p>{{division.about}}</p>
         <div class="push-half--bottom">
-          <a class="read-more"
+          <a class="read-more collection-more"
             data-ng-href="http://nypl.org/locations/{{division.location_slug}}/{{division.slug}}">
             {{ 'MORE_ABOUT_DIVISION' | translate }}</a>
         </div>
@@ -92,7 +97,7 @@
           data-ng-href="{{division._links.contact.href}}" class="btn btn--natural whiteText" id="ask-librarian">
           {{ 'ASK_LIBRARIAN' | translate }}</a>
 
-        <ul class="flush--left push-half--top">
+        <ul class="flush--left push-half--top division_amenities">
           <li class="icon-screen2">{{ 'RESERVE_COMPUTER' | translate }}</li>
           <li class="icon-library">{{ 'ILL' | translate }}</li>
           <li class="icon-users">{{ 'MEETING_ROOMS' | translate }}</li>
@@ -177,7 +182,7 @@
       </div>
     </div>
     <div class="push-half--bottom">
-      <a class="read-more" data-ng-href="{{division._links.blogs.all}}">{{ 'MORE_BLOGS' | translate }}</a>
+      <a class="read-more blogs-more" data-ng-href="{{division._links.blogs.all}}">{{ 'MORE_BLOGS' | translate }}</a>
     </div>
   </div>
 

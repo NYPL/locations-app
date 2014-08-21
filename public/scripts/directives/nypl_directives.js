@@ -172,14 +172,26 @@ function nyplSiteAlerts(nyplLocationsService, nyplUtility) {
     };
 }
 
-function nyplLibraryAlert() {
+function nyplLibraryAlert(nyplUtility) {
     'use strict';
 
     return {
         restrict: 'E',
         templateUrl: 'scripts/directives/templates/library-alert.html',
         replace: true,
-        scope: true
+        scope: {
+            exception: '='
+        },
+        link: function (scope, element, attrs) {
+            if (scope.exception) {
+                if (scope.exception.description !== '') {
+                    scope.libraryAlert = scope.exception.description;
+                }
+            }
+            else {
+                return;
+            }
+        }
     };
 }
 

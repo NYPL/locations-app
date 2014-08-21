@@ -8,8 +8,8 @@ exports.config = {
   // chromeOnly: true,
   // chromeDriver: './node_modules/protractor/selenium/chromedriver',
 
-  // if you do want a separate running selenium server, comment the two lines above
-  // and uncomment this line:
+  // if you do want a separate running selenium server,
+  // comment the two lines above and uncomment this line:
   seleniumAddress: 'http://0.0.0.0:4444/wd/hub',
 
   // Capabilities to be passed to the webdriver instance.
@@ -21,27 +21,28 @@ exports.config = {
   // protractor is called.
   suites: {
     homepage: ['test/e2e/homepage/homepage.spec.js'],
-    location: ['test/e2e/location/location.spec.js'],
+    location: ['test/e2e/location/circulating.spec.js', 'test/e2e/location/research.spec.js'],
     division: ['test/e2e/division/division.spec.js'],
+    nyplchat: ['test/e2e/nyplchat/nyplchat.spec.js'],
     services: ['test/e2e/services/services.spec.js']
   },
 
-  onPrepare: function () {
-    'use strict';
+  // onPrepare: function () {
+  //   'use strict';
 
-    // This will generate a screenshot for every test, a json file,
-    // and an html page with all the results:
-    jasmine.getEnv().addReporter(new HtmlReporter({
-      baseDirectory: 'test/results/e2e_html_screenshots'
-    }));
+  //   // This will generate a screenshot for every test, a json file,
+  //   // and an html page with all the results:
+  //   jasmine.getEnv().addReporter(new HtmlReporter({
+  //     baseDirectory: 'test/results/e2e_html_screenshots'
+  //   }));
 
-    // Generates an xml file
-    require('jasmine-reporters');
-    jasmine.getEnv()
-      .addReporter(
-        new jasmine.JUnitXmlReporter('test/results/e2e_xml/', true, true)
-      );
-  },
+  //   // Generates an xml file
+  //   require('jasmine-reporters');
+  //   jasmine.getEnv()
+  //     .addReporter(
+  //       new jasmine.JUnitXmlReporter('test/results/e2e_xml/', true, true)
+  //     );
+  // },
 
   baseUrl: 'http://localhost:9292/',
 
