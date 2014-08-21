@@ -161,8 +161,8 @@
       </li>
     </ul>   
       
-    <div>
-      <a class="read-more">
+    <div data-ng-if="location._links.events.all">
+      <a class="read-more" data-ng-href="{{location._links.events.all}}">
         {{ 'MORE_EVENTS' | translate }}
       </a>
     </div>
