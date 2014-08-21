@@ -5,11 +5,10 @@ browser, it, expect, element, by, angular */
 describe('NYPL Chat Window', function () {
   'use strict';
 
-  var chatElem = require('./nyplchat.po.js');
+  var chatElem = require('./nyplchat.po.js'),
+    appWindow = browser.getWindowHandle();
 
   describe('Circulating page nypl chat link: Battery Park City', function () {
-    var appWindow = browser.getWindowHandle();
-
     beforeEach(function () {
       browser.get('/#/battery-park-city');
       browser.waitForAngular();
@@ -20,7 +19,18 @@ describe('NYPL Chat Window', function () {
     });
 
     it('should add an active class to the link element, if none exist', function () {
-      chatElem.chat_link.click();
+      // May seem a bit unnecessary and too much for a simple test,
+      // but it might be a good idea to close the window that pops up.
+      chatElem.chat_link.click().then(function () {
+        browser.getAllWindowHandles().then(function (handles) {
+          var newWindowHandle = handles[1];
+          browser.switchTo().window(newWindowHandle).then(function () {
+            browser.driver.close().then(function () {
+              browser.switchTo().window(appWindow);
+            });
+          });
+        });
+      });
       browser.sleep(2000);
       expect(chatElem.chat_link.getAttribute('class')).toContain('active');
     });
@@ -55,14 +65,21 @@ describe('NYPL Chat Window', function () {
     });
 
     it('should add an active class to the link element, if none exist', function () {
-      chatElem.chat_link.click();
+      chatElem.chat_link.click().then(function () {
+        browser.getAllWindowHandles().then(function (handles) {
+          var newWindowHandle = handles[1];
+          browser.switchTo().window(newWindowHandle).then(function () {
+            browser.driver.close().then(function () {
+              browser.switchTo().window(appWindow);
+            });
+          });
+        });
+      });
       browser.sleep(2000);
       expect(chatElem.chat_link.getAttribute('class')).toContain('active');
     });
 
     it('should open a new window with proper url params', function () {
-      var appWindow = browser.getWindowHandle();
-
       chatElem.chat_link.click().then(function () {
         browser.getAllWindowHandles().then(function (handles) {
           var newWindowHandle = handles[1];
@@ -92,14 +109,21 @@ describe('NYPL Chat Window', function () {
     });
 
     it('should add an active class to the link element, if none exist', function () {
-      chatElem.chat_link.click();
+      chatElem.chat_link.click().then(function () {
+        browser.getAllWindowHandles().then(function (handles) {
+          var newWindowHandle = handles[1];
+          browser.switchTo().window(newWindowHandle).then(function () {
+            browser.driver.close().then(function () {
+              browser.switchTo().window(appWindow);
+            });
+          });
+        });
+      });
       browser.sleep(2000);
       expect(chatElem.chat_link.getAttribute('class')).toContain('active');
     });
 
     it('should open a new window with proper url params', function () {
-      var appWindow = browser.getWindowHandle();
-
       chatElem.chat_link.click().then(function () {
         browser.getAllWindowHandles().then(function (handles) {
           var newWindowHandle = handles[1];
@@ -129,14 +153,21 @@ describe('NYPL Chat Window', function () {
     });
 
     it('should add an active class to the link element, if none exist', function () {
-      chatElem.chat_link.click();
+      chatElem.chat_link.click().then(function () {
+        browser.getAllWindowHandles().then(function (handles) {
+          var newWindowHandle = handles[1];
+          browser.switchTo().window(newWindowHandle).then(function () {
+            browser.driver.close().then(function () {
+              browser.switchTo().window(appWindow);
+            });
+          });
+        });
+      });
       browser.sleep(2000);
       expect(chatElem.chat_link.getAttribute('class')).toContain('active');
     });
 
     it('should open a new window with proper url params', function () {
-      var appWindow = browser.getWindowHandle();
-
       chatElem.chat_link.click().then(function () {
         browser.getAllWindowHandles().then(function (handles) {
           var newWindowHandle = handles[1];
@@ -166,14 +197,21 @@ describe('NYPL Chat Window', function () {
     });
 
     it('should add an active class to the link element, if none exist', function () {
-      chatElem.chat_link.click();
+      chatElem.chat_link.click().then(function () {
+        browser.getAllWindowHandles().then(function (handles) {
+          var newWindowHandle = handles[1];
+          browser.switchTo().window(newWindowHandle).then(function () {
+            browser.driver.close().then(function () {
+              browser.switchTo().window(appWindow);
+            });
+          });
+        });
+      });
       browser.sleep(2000);
       expect(chatElem.chat_link.getAttribute('class')).toContain('active');
     });
 
     it('should open a new window with proper url params', function () {
-      var appWindow = browser.getWindowHandle();
-
       chatElem.chat_link.click().then(function () {
         browser.getAllWindowHandles().then(function (handles) {
           var newWindowHandle = handles[1];
@@ -203,14 +241,21 @@ describe('NYPL Chat Window', function () {
     });
 
     it('should add an active class to the link element, if none exist', function () {
-      chatElem.chat_link.click();
+      chatElem.chat_link.click().then(function () {
+        browser.getAllWindowHandles().then(function (handles) {
+          var newWindowHandle = handles[1];
+          browser.switchTo().window(newWindowHandle).then(function () {
+            browser.driver.close().then(function () {
+              browser.switchTo().window(appWindow);
+            });
+          });
+        });
+      });
       browser.sleep(2000);
       expect(chatElem.chat_link.getAttribute('class')).toContain('active');
     });
 
     it('should open a new window with proper url params', function () {
-      var appWindow = browser.getWindowHandle();
-
       chatElem.chat_link.click().then(function () {
         browser.getAllWindowHandles().then(function (handles) {
           var newWindowHandle = handles[1];
