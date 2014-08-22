@@ -309,43 +309,6 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
             encodeURI(icsMSG));
     };
 
-    utility.idLocationSearch = function (locations, searchTerm) {
-        var IDFilter = [];
-
-        // search for ID
-        // This is a priority.
-        // If 'sibl' is searched, then it should display it
-        // first before anything else.
-        if (searchTerm.length >= 2 && searchTerm.length <= 4) {
-            IDFilter = _.where(
-                locations,
-                { 'id' : searchTerm.toUpperCase() }
-            );
-        }
-
-        return IDFilter;
-    };
-
-    utility.locationSearch = function (locations, searchTerm) {
-        var lazyFilter =
-                $filter('filter')(locations, searchTerm),
-            strictFilter =
-                $filter('filter')(locations, searchTerm, true);
-
-        // Check the strict and 'lazy' filter.
-        // The strict filter has a higher priority since it's
-        // a better match. The 'lazy' filter matches anything,
-        // even part of a word so 'sibl' would match with
-        // 'accesSIBLe'.
-        if (strictFilter !== undefined && strictFilter.length !== 0) {
-            // Rarely occurs but just in case there are results for
-            // both filters, the strict match should appear first
-            return _.union(strictFilter, lazyFilter);
-        }
-
-        return lazyFilter;
-    };
-
     // Iterate through lon/lat and calculate distance
     utility.calcDistance = function (locations, coords) {
         if (!locations) {
@@ -379,16 +342,6 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         return false;
     };
 
-    utility.searchWordFilter = function (query) {
-        var words = ['branch'];
-
-        _.each(words, function (word) {
-            query = query.replace(word, '');
-        });
-
-        return query;
-    };
-
     // Use ngSanitize to allow markup.
     // Must use ng-bind-html as attribute in the element.
     utility.returnHTML = function (html) {
@@ -412,6 +365,61 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
     };
 
     return utility;
+}
+
+function nyplSearch($filter) {
+    'use strict';
+
+    var search = {};
+
+    search.idLocationSearch = function (locations, searchTerm) {
+        var IDFilter = [];
+
+        // search for ID
+        // This is a priority.
+        // If 'sibl' is searched, then it should display it
+        // first before anything else.
+        if (searchTerm.length >= 2 && searchTerm.length <= 4) {
+            IDFilter = _.where(
+                locations,
+                { 'id' : searchTerm.toUpperCase() }
+            );
+        }
+
+        return IDFilter;
+    };
+
+    search.locationSearch = function (locations, searchTerm) {
+        var lazyFilter =
+                $filter('filter')(locations, searchTerm),
+            strictFilter =
+                $filter('filter')(locations, searchTerm, true);
+
+        // Check the strict and 'lazy' filter.
+        // The strict filter has a higher priority since it's
+        // a better match. The 'lazy' filter matches anything,
+        // even part of a word so 'sibl' would match with
+        // 'accesSIBLe'.
+        if (strictFilter !== undefined && strictFilter.length !== 0) {
+            // Rarely occurs but just in case there are results for
+            // both filters, the strict match should appear first
+            return _.union(strictFilter, lazyFilter);
+        }
+
+        return lazyFilter;
+    };
+
+    search.searchWordFilter = function (query) {
+        var words = ['branch'];
+
+        _.each(words, function (word) {
+            query = query.replace(word, '');
+        });
+
+        return query;
+    };
+
+    return search;
 }
 
 function nyplAmenities() {
@@ -485,5 +493,6 @@ function nyplAmenities() {
 angular
     .module('nypl_locations')
     .factory('nyplUtility', nyplUtility)
+    .factory('nyplSearch', nyplSearch)
     .factory('nyplAmenities', nyplAmenities)
     .factory('requestNotificationChannel', requestNotificationChannel);
