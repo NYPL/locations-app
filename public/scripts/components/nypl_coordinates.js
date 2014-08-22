@@ -9,8 +9,8 @@ function nyplCoordinatesService($q, $window) {
     coordinatesService = {};
 
   /** @function nyplCoordinatesServce.geolocationAvailable
-   * @returns {boolean} True if navigator and navigator.geolocation are availble
-   *  in the browser, false otherwise.
+   * @returns {boolean} True if navigator and navigator.geolocation are
+   *  available in the browser, false otherwise.
    */
   coordinatesService.geolocationAvailable = function () {
     return (!$window.navigator && !$window.navigator.geolocation) ?
