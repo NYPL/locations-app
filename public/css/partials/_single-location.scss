@@ -139,6 +139,10 @@
 
 	// Address section on top container
 	#container__address {
+		// Accessibility
+		.accessible, .not-accessible {
+			margin: .5em 0 .5em .4em;
+		}
 
 		.p-adr,
 		.wheelchair,
@@ -255,6 +259,14 @@
 	#location-secondary-img{
 		height: 300px; // constrain proportions until proper images exist
 		overflow: hidden; // constrain proportions until proper images exist
+	}
+
+	#plan-your-visit {
+		//Mobile spacing
+		margin-top: 1.25em;
+		@include breakpoint($min, $post-palm) {
+			margin-top: inherit;
+		}
 	}
 
 	// Events page for each location-hours
