@@ -204,6 +204,14 @@ describe('NYPL Directive Tests', function () {
       var crumbList = element.find('ul');
       expect(crumbList.attr('class')).toContain('breadcrumb');
     });
+
+    it('should contain attribute "crumb-name"', function (){
+      expect(element.attr('crumb-name')).toBeTruthy();
+    });  
+
+    it('should contain attribute "crumb-name" value to be "data.crumbName"', function (){
+      expect(element.attr('crumb-name')).toBe('data.crumbName');
+    });
   });
 
   /*
