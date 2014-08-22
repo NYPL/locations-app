@@ -170,6 +170,27 @@
 	}	
 }
 
+// Accessibility Icons
+.icon-accessibility {
+	padding: 3px 0px;
+	margin-right: 2px;
+
+	&:before {
+		margin: 0;
+		padding: 0px 3px;
+	}
+	&.fully {
+		background-color: #0090c4;
+		color: #FFF;
+	}
+	&.partially {
+		color: #0090c4;
+	}
+	&.none {
+		color: #d62828;
+	}
+}
+
 // Firefox specific override rules
 @-moz-document url-prefix() {
 
