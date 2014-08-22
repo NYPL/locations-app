@@ -287,15 +287,28 @@ function nyplGeocoderService($q) {
     });
   };
 
+  /** @function nyplGeocoderService.hideInfowindow
+   * @description Hides the infowindow if the current infowindow is opened.
+   */
   geocoderService.hideInfowindow = function () {
     infowindow.close();
     return this;
   };
 
+  /** @function nyplGeocoderService.doesMarkerExist
+   * @param {string} id A marker's id.
+   * @returns {boolean} True if the marker exists, false otherwise.
+   * @description Checks the markers array for the marker with the id passed.
+   */
   geocoderService.doesMarkerExist = function (id) {
     return !!getMarkerFromList(id);
   };
 
+  /** @function nyplGeocoderService.createSearchMarker
+   * @param {object} coords Object with lat and long properties.
+   * @param {string} text The text that should appear in the marker's
+   *  infowindow.
+   */
   geocoderService.createSearchMarker = function (coords, text) {
     var searchTerm = text.replace(',', ' <br>').replace(',', ' <br>'),
       panCoords = new google.maps.LatLng(coords.lat, coords.long);

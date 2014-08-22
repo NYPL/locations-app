@@ -37,7 +37,7 @@ function requestNotificationChannel($rootScope) {
     return notificationChannel;
 }
 
-function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
+function nyplUtility($window, $sce, nyplCoordinatesService) {
     'use strict';
 
     var utility = {};
@@ -66,7 +66,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
     };
 
     // Parse exception data and return as string
-    utility.branchException = function(hours) {
+    utility.branchException = function (hours) {
         var exception = {};
 
         if (hours) {
@@ -74,7 +74,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
             if (!hours.exceptions) {
                 return null;
             }
-            else if (hours.exceptions.description.trim() !== '') {
+            if (hours.exceptions.description.trim() !== '') {
                 exception.desc = hours.exceptions.description;
                 // Optional set
                 if (hours.exceptions.start) {
@@ -287,8 +287,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         if (!event || !address) {
             return '';
         }
-        var currentTime = new Date().toJSON()
-                .toString().replace(/[\-.:]/g, ''),
+        var currentTime = new Date().toJSON().toString().replace(/[\-.:]/g, ''),
             url = "http://nypl.org/" + event._links.self.href,
             icsMSG = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//NYPL//" +
                 "NONSGML v1.0//EN\n" +
@@ -380,20 +379,15 @@ function nyplSearch($filter) {
         // If 'sibl' is searched, then it should display it
         // first before anything else.
         if (searchTerm.length >= 2 && searchTerm.length <= 4) {
-            IDFilter = _.where(
-                locations,
-                { 'id' : searchTerm.toUpperCase() }
-            );
+            IDFilter = _.where(locations, { 'id' : searchTerm.toUpperCase() });
         }
 
         return IDFilter;
     };
 
     search.locationSearch = function (locations, searchTerm) {
-        var lazyFilter =
-                $filter('filter')(locations, searchTerm),
-            strictFilter =
-                $filter('filter')(locations, searchTerm, true);
+        var lazyFilter = $filter('filter')(locations, searchTerm),
+            strictFilter = $filter('filter')(locations, searchTerm, true);
 
         // Check the strict and 'lazy' filter.
         // The strict filter has a higher priority since it's

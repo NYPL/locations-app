@@ -137,9 +137,7 @@
                 }
 
                 if (isMapPage()) {
-                    nyplGeocoderService
-                        // .removeMarker('search')
-                        .drawSearchMarker();
+                    nyplGeocoderService.drawSearchMarker();
                     // Variable to draw a green marker on the map legend.
                     $scope.searchMarker = true;
                 }
@@ -425,11 +423,10 @@
             $scope.researchBranches = !$scope.researchBranches;
 
             if ($scope.researchBranches) {
-                nyplGeocoderService.showResearchLibraries();
+                nyplGeocoderService.showResearchLibraries().panMap();
                 showLibrariesTypeOf('research');
-                nyplGeocoderService.panMap();
             } else {
-                nyplGeocoderService.showAllLibraries();
+                nyplGeocoderService.showAllLibraries().panMap();
                 showLibrariesTypeOf();
             }
         };
