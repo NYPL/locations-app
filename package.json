@@ -2,11 +2,12 @@
   "name": "Locations",
   "version": "0.0.1",
   "dependencies": {
-    "protractor": "*",
+    "protractor": "^1.1.1",
     "karma-jasmine": "^0.2.2",
     "protractor-html-screenshot-reporter": "0.0.10",
     "jasmine-spec-reporter": "^0.4.0",
-    "jasmine-reporters": "^0.2.1"
+    "jasmine-reporters": "^0.2.1",
+    "karma": "^0.12.22"
   },
   "devDependencies": {
     "karma": "~0.12",
