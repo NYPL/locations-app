@@ -51,21 +51,20 @@
                 }
             },
 
+            isMapPage = function () {
+                return $state.current.name === 'home.map';
+            },
+
             loadUserCoordinates = function () {
                 return nyplCoordinatesService
                     .getBrowserCoordinates()
                     .then(function (position) {
                         user.coords = _.pick(position, 'latitude', 'longitude');
 
-                        // Used for 'Get Address' link.
-                        $scope.locationStart = user.coords.latitude + "," +
-                                user.coords.longitude;
-                        $scope.userMarker = true;
-
                         // add a distance property to every location
                         // from that location to the user's coordinates
                         $scope.locations = nyplUtility
-                                .calcDistance($scope.locations, user.coords);
+                            .calcDistance($scope.locations, user.coords);
 
                         // Must be within 25 miles
                         if (nyplUtility.checkDistance($scope.locations)) {
@@ -75,11 +74,17 @@
                                     'miles of any NYPL library.'));
                         }
 
-                        sortListBy('distance');
-                        nyplGeocoderService.createMarker('user', user.coords,
-                            "Your Current Location");
+                        // Used for 'Get Address' link.
+                        $scope.locationStart = user.coords.latitude + "," +
+                            user.coords.longitude;
+                        $scope.userMarker = true;
 
-                        if ($state.current.name === 'home.map') {
+                        sortListBy('distance');
+                        nyplGeocoderService
+                            .createMarker('user', user.coords,
+                                "Your Current Location");
+
+                        if (isMapPage()) {
                             $scope.drawUserMarker();
                         }
 
@@ -120,8 +125,7 @@
                     coords = searchObj.coords,
                     searchterm = searchObj.searchTerm;
 
-                locationsCopy =
-                    nyplUtility.calcDistance(locationsCopy, coords);
+                locationsCopy = nyplUtility.calcDistance(locationsCopy, coords);
 
                 // Must be within 25 miles or throws the error:
                 if (nyplUtility.checkDistance(locationsCopy)) {
@@ -131,14 +135,14 @@
                     throw (new Error('The search query is too far'));
                 }
 
-                if ($state.current.name === 'home.map') {
+                if (isMapPage()) {
                     nyplGeocoderService
-                        .removeMarker('search')
+                        // .removeMarker('search')
                         .drawSearchMarker();
+                    // Variable to draw a green marker on the map legend.
+                    $scope.searchMarker = true;
                 }
 
-                // Variable to draw a green marker on the map legend.
-                $scope.searchMarker = true;
                 $scope.userMarker = false;
                 nyplGeocoderService.removeMarker('user');
 
@@ -192,7 +196,7 @@
             searchByUserGeolocation = function () {
                 scrollListTop();
 
-                if ($state.current.name === 'home.map') {
+                if (isMapPage()) {
                     $scope.drawUserMarker();
                 }
 
@@ -218,19 +222,20 @@
                             markerCoordinates = {
                                 'latitude': location.geolocation.coordinates[1],
                                 'longitude': location.geolocation.coordinates[0]
-                            };
+                            },
+                            amenities_list = [];
 
                         location.hoursToday = nyplUtility.hoursToday;
                         location.locationDest =
                             nyplUtility.getAddressString(location);
 
-                        // var amenities_list = [];
-                        // _.each(location._embedded.amenities, function (amenities) {
-                        //     _.each(amenities.amenities, function (amenity) {
-                        //         amenities_list.push(amenity);
-                        //     });
-                        // });
-                        // location.amenities_list = amenities_list;
+                        _.each(location._embedded.amenities, function (amenities) {
+                            _.each(amenities.amenities, function (amenity) {
+                                amenities_list.push(amenity);
+                            });
+                        });
+
+                        location.amenities_list = amenities_list;
 
                         // Individual location exception data
                         location.branchException =
@@ -311,7 +316,7 @@
                 .removeMarker('user')
                 .clearFilteredLocation();
 
-            if ($state.current.name === 'home.map') {
+            if (isMapPage()) {
                 nyplGeocoderService.removeMarker('search')
                     .hideInfowindow()
                     .panMap();
@@ -355,7 +360,7 @@
                     'name');
 
                 // map related work
-                if ($state.current.name === 'home.map') {
+                if (isMapPage()) {
                     nyplGeocoderService
                         .searchFilterMarker(IDfilteredLocations[0].slug);
                 }
@@ -368,8 +373,7 @@
             loadGeocoding(searchTerm)
                 .then(function (searchObj) {
                     // Map related work
-                    if (filteredLocations.length &&
-                            $state.current.name === 'home.map') {
+                    if (filteredLocations.length && isMapPage()) {
                         nyplGeocoderService
                             .searchFilterMarker(filteredLocations[0].slug);
                     } else {
