@@ -206,6 +206,38 @@
                 // undefined value for type is actually okay, 
                 // as it will show all locations if that's the case
                 $scope.location_type = type;
+            },
+
+            createFilterMarker = function (slug) {
+                // store the filtered location marker if in the list view,
+                // so it can be displayed when going to the map view.
+                nyplGeocoderService.setFilterMarker(slug);
+                if (isMapPage()) {
+                    nyplGeocoderService.drawFilterMarker(slug);
+                }
+            },
+
+            performIDsearch = function (IDfilteredLocations) {
+                resetProperty($scope.locations, 'distance');
+                organizeLocations($scope.locations, IDfilteredLocations,
+                    'name');
+
+                // map related work
+                createFilterMarker(IDfilteredLocations[0].slug);
+                $scope.scrollPage();
+            },
+
+            filterMarkerOrSearchMarker = function (filteredLocations, searchObj) {
+                if (filteredLocations.length) {
+                    // Map related work
+                    createFilterMarker(filteredLocations[0].slug);
+                } else {
+                    nyplGeocoderService.clearFilteredLocation();
+                    nyplGeocoderService.createSearchMarker(
+                        searchObj.coords,
+                        searchObj.searchTerm
+                    );
+                }
             };
 
         $scope.loadLocations = function () {
@@ -354,34 +386,16 @@
                     nyplSearch.locationSearch($scope.locations, searchTerm);
 
             if (IDfilteredLocations && IDfilteredLocations.length !== 0) {
-                resetProperty($scope.locations, 'distance');
-                organizeLocations($scope.locations, IDfilteredLocations,
-                    'name');
-
-                // map related work
-                if (isMapPage()) {
-                    nyplGeocoderService
-                        .searchFilterMarker(IDfilteredLocations[0].slug);
-                }
-                $scope.scrollPage();
-
-                // We're done here, go home.
+                performIDsearch(IDfilteredLocations);
                 return;
             }
 
+            // From searchTerm, return suggested coordinates and formatted
+            // address from Google
             loadGeocoding(searchTerm)
                 .then(function (searchObj) {
-                    // Map related work
-                    if (filteredLocations.length && isMapPage()) {
-                        nyplGeocoderService
-                            .searchFilterMarker(filteredLocations[0].slug);
-                    } else {
-                        nyplGeocoderService.clearFilteredLocation();
-                        nyplGeocoderService.createSearchMarker(
-                            searchObj.coords,
-                            searchObj.searchTerm
-                        );
-                    }
+                    // Map related
+                    filterMarkerOrSearchMarker(filteredLocations, searchObj);
 
                     return searchByCoordinates(searchObj);
                 })
@@ -407,8 +421,10 @@
                         resetProperty($scope.locations, 'distance');
                         $scope.searchError = '';
                         // Map related work
+                        if (isMapPage()) {
                         nyplGeocoderService
-                            .searchFilterMarker(filteredLocations[0].slug);
+                            .drawFilterMarker(filteredLocations[0].slug);
+                        }
                         organizeLocations(locations, filteredLocations, 'name');
                     } else {
                         resetPage();
@@ -486,9 +502,7 @@
 
                     var filteredLocation =
                         nyplGeocoderService.getFilteredLocation();
-                    if (filteredLocation) {
-                        nyplGeocoderService.panExistingMarker(filteredLocation);
-                    }
+                    nyplGeocoderService.drawFilterMarker(filteredLocation);
 
                     $scope.scrollPage();
                 }, 1200);

@@ -386,14 +386,15 @@ function nyplSearch($filter) {
     };
 
     search.locationSearch = function (locations, searchTerm) {
+        // how to search the object?
+        // name, address, zipcode, locality, synonyms (amenities and divisions?)
+
         var lazyFilter = $filter('filter')(locations, searchTerm),
             strictFilter = $filter('filter')(locations, searchTerm, true);
 
-        // Check the strict and 'lazy' filter.
-        // The strict filter has a higher priority since it's
-        // a better match. The 'lazy' filter matches anything,
-        // even part of a word so 'sibl' would match with
-        // 'accesSIBLe'.
+        // Check the strict and 'lazy' filter. The strict filter has a higher
+        // priority since it's a better match. The 'lazy' filter matches
+        // anything, even part of a word. 'sibl' would match with 'accesSIBLe'.
         if (strictFilter !== undefined && strictFilter.length !== 0) {
             // Rarely occurs but just in case there are results for
             // both filters, the strict match should appear first

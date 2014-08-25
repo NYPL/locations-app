@@ -369,11 +369,16 @@ function nyplGeocoderService($q) {
     return this;
   };
 
-  geocoderService.searchFilterMarker = function (location_slug) {
+  geocoderService.setFilterMarker = function (location_slug) {
     filteredLocation = location_slug;
+    return this;
+  };
+
+  geocoderService.drawFilterMarker = function (location_slug) {
     if (this.doesMarkerExist(location_slug)) {
       this.panExistingMarker(location_slug);
     }
+    return this;
   };
 
   geocoderService.clearFilteredLocation = function () {
