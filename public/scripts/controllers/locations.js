@@ -365,17 +365,11 @@
                 return;
             }
 
+            resetPage();
+            $scope.searchTerm =  searchTerm;
+
             searchTerm = nyplSearch.searchWordFilter(searchTerm);
             scrollListTop();
-
-            $scope.geolocationAddressOrSearchQuery = '';
-            // Remove previous search marker from the map
-            nyplGeocoderService.removeMarker('search');
-            $scope.searchMarker = false;
-
-            showLibrariesTypeOf();
-            nyplGeocoderService.showAllLibraries();
-            $scope.researchBranches = false;
 
             IDfilteredLocations =
                 nyplSearch.idLocationSearch($scope.locations, searchTerm);

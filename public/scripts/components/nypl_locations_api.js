@@ -145,7 +145,8 @@ function nyplLocationsService($http, $q) {
     locationsApi.amenitiesAtLibrary = function (location) {
         var defer = $q.defer();
 
-        $http.get(api + '/locations/' + location + '/amenities', {cache: true})
+        // Not currently using /locations/:location/amenities
+        $http.get(api + '/locations/' + location, {cache: true})
             .success(function (data) {
                 defer.resolve(data);
             })
