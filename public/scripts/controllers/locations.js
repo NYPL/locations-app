@@ -443,6 +443,9 @@
                 $timeout(function () {
                     if ($scope.locations) {
                         nyplGeocoderService.showAllLibraries();
+                        if ($scope.researchBranches) {
+                            nyplGeocoderService.showResearchLibraries();
+                        }
                     }
                 }, 1200);
             },
