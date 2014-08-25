@@ -317,8 +317,14 @@ function nyplGeocoderService($q) {
     searchInfoWindow.setContent(searchTerm);
   };
 
+  /** @function nyplGeocoderService.drawSearchMarker
+   * @description If there are no filtered location to add to the map, and if
+   *  the search marker is not already on the map, then add it to the map and
+   *  pan to the marker. Also display the infowindow for that marker.
+   */
   geocoderService.drawSearchMarker = function () {
-    if (!filteredLocation && searchMarker.getMap() === null) {
+    if (!filteredLocation && (searchMarker.getMap() === undefined ||
+        searchMarker.getMap() === null)) {
       searchMarker.setMap(map);
       this.panMap(searchMarker);
 
@@ -332,16 +338,19 @@ function nyplGeocoderService($q) {
     return this;
   };
 
+  /** @function nyplGeocoderService.hideSearchInfowindow
+   * @description Public wrapper to close the search marker's infowindow.
+   */
   geocoderService.hideSearchInfowindow = function () {
     searchInfoWindow.close();
     return this;
   };
 
-  geocoderService.checkSearchMarker = function () {
-    return searchMarker.getPosition() !== undefined &&
-      searchMarker.getMap() !== null;
-  };
-
+  /** @function nyplGeocoderService.removeMarker
+   * @param {string} id A Google Maps marker's id.
+   * @description Public function to remove a specific marker from the
+   *  initialized map.
+   */
   geocoderService.removeMarker = function (id) {
     if (!id) {
       return this;

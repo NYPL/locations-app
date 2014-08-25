@@ -484,7 +484,6 @@
                         nyplGeocoderService.drawSearchMarker();
                     }
 
-                    // TODO
                     if ($scope.searchMarker) {
                         nyplGeocoderService.drawSearchMarker();
                     }
