@@ -75,7 +75,8 @@
           </div>
 
 					<!-- Branch Messages -->
-          <div data-ng-if="location.branchException" class="loc-exceptions">
+          <div data-ng-if="location.branchException && !location.open" 
+          class="loc-exceptions">
             <p> {{ location.branchException.desc }} </p>
           </div>
 
