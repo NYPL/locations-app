@@ -100,6 +100,10 @@ function nyplCoordinatesService($q, $window) {
    *    nyplCoordinatesService.getDistance(40.1, -73.1, 41.1, -73.2);
    */
   coordinatesService.getDistance = function (lat1, lon1, lat2, lon2) {
+    if (!lat1 || !lon2 || !lat2 || !lon2) {
+      return undefined;
+    }
+
     var radlat1 = Math.PI * lat1 / 180,
       radlat2 = Math.PI * lat2 / 180,
       theta = lon1 - lon2,

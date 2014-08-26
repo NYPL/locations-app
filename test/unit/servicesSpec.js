@@ -103,7 +103,7 @@ describe('NYPL Service Tests', function () {
       });
     });
 
-    it('Should expose some functions', function () {
+    it('should expose some functions', function () {
       expect(angular.isFunction(nyplGeocoderService.geocodeAddress)).toBe(true);
       expect(typeof nyplGeocoderService.geocodeAddress).toBe('function');
       expect(typeof nyplGeocoderService.reverseGeocoding).toBe('function');
@@ -117,21 +117,21 @@ describe('NYPL Service Tests', function () {
             jasmine.createSpy('geocode').and.callFake(GeoCodingOK);
         });
 
-        it('Should not be called', function () {
+        it('should not be called', function () {
           expect(GeocoderMock.prototype.geocode).not.toHaveBeenCalled();
         });
 
-        it('Should call the geocode api when calling the service', function () {
+        it('should call the geocode api when calling the service', function () {
           nyplGeocoderService.geocodeAddress('10018');
           expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
         });
 
-        it('Should return a promise', function () {
+        it('should return a promise', function () {
           var promise = nyplGeocoderService.geocodeAddress('10018');
           expect(typeof promise.then).toBe('function');
         });
 
-        it('Should accept the promise when status is OK', function () {
+        it('should accept the promise when status is OK', function () {
           var okMock = jasmine.createSpy(),
             errorMock = jasmine.createSpy();
 
@@ -142,7 +142,7 @@ describe('NYPL Service Tests', function () {
           expect(errorMock).not.toHaveBeenCalled();
         });
 
-        it('Should resolve the promise when receiving data', function () {
+        it('should resolve the promise when receiving data', function () {
           var promise_callback = jasmine.createSpy();
           // The return value was defined in the GeoCoding variable
           geocodeAddress_return_value = {
@@ -168,12 +168,12 @@ describe('NYPL Service Tests', function () {
             jasmine.createSpy('geocode').and.callFake(GeoCodingError);
         });
 
-        it('Should be called', function () {
-          nyplGeocoderService.geocodeAddress('ny');
+        it('should be called', function () {
+          nyplGeocoderService.geocodeAddress('10018');
           expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
         });
 
-        it('Should return a promise', function () {
+        it('should return a promise', function () {
           var promise = nyplGeocoderService.geocodeAddress('10018');
           expect(typeof promise.then).toBe('function');
         });
@@ -199,17 +199,17 @@ describe('NYPL Service Tests', function () {
             jasmine.createSpy('geocode').and.callFake(LatLngOk);
         });
 
-        it('Should not be called', function () {
+        it('should not be called', function () {
           expect(GeocoderMock.prototype.geocode).not.toHaveBeenCalled();
         });
 
-        it('Should be called', function () {
+        it('should be called', function () {
           nyplGeocoderService
             .reverseGeocoding({lat: 40.75298660000001, lng: -73.9821364});
           expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
         });
 
-        it('Should return a promise', function () {
+        it('should return a promise', function () {
           var promise = nyplGeocoderService.reverseGeocoding({
             lat: 40.75298660000001,
             lng: -73.9821364
@@ -217,7 +217,7 @@ describe('NYPL Service Tests', function () {
           expect(typeof promise.then).toBe('function');
         });
 
-        it('Should accept the promise when status is OK', function () {
+        it('should accept the promise when status is OK', function () {
           var okMock = jasmine.createSpy(),
             errorMock = jasmine.createSpy();
 
@@ -232,7 +232,7 @@ describe('NYPL Service Tests', function () {
         });
 
         // Not sure why the following test is not working:
-        it('Should resolve the promise when receiving data', function () {
+        it('should resolve the promise when receiving data', function () {
           var promise_callback = jasmine.createSpy(),
             // The return value was defined in the LatLngOk variable
             reverseGeocoding_return_value = '10018';
@@ -257,7 +257,7 @@ describe('NYPL Service Tests', function () {
             jasmine.createSpy('geocode').and.callFake(LatLngError);
         });
 
-        it('Should be called', function () {
+        it('should be called', function () {
           nyplGeocoderService.reverseGeocoding({
             lat: 40.75298660000001,
             lng: -73.9821364
@@ -265,7 +265,7 @@ describe('NYPL Service Tests', function () {
           expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
         });
 
-        it('Should return a promise', function () {
+        it('should return a promise', function () {
           var promise = nyplGeocoderService.reverseGeocoding({
             lat: 40.75298660000001,
             lng: -73.9821364
@@ -273,7 +273,7 @@ describe('NYPL Service Tests', function () {
           expect(typeof promise.then).toBe('function');
         });
 
-        it('Should reject the promise when status is not OK', function () {
+        it('should reject the promise when status is not OK', function () {
           var okMock = jasmine.createSpy(),
             errorMock = jasmine.createSpy();
           nyplGeocoderService.reverseGeocoding({
@@ -614,34 +614,6 @@ describe('NYPL Service Tests', function () {
     });
 
     /*
-     * nyplUtility.locationType(id)
-     *   id: The id of the location
-     *
-     *   Returns the type of library based on its id.
-     */
-    describe('nyplUtility.locationType()', function () {
-      var library_type;
-
-      it('should return circulating for a regular branch', function () {
-        // BAR = Baychester Library
-        library_type = nyplUtility.locationType('BAR');
-
-        expect(library_type).toEqual('circulating');
-      });
-
-      it('should return research for a research branch', function () {
-        library_type = nyplUtility.locationType('SIBL');
-
-        expect(library_type).toEqual('research');
-      });
-
-      it('should return circulating when no input is given', function () {
-        expect(nyplUtility.locationType()).toEqual('circulating');
-      });
-
-    });
-
-    /*
      * nyplUtility.socialMediaColor(social_media)
      *   social_media: Array of objects each with an 'href' and 'site'
      *     property used to decide what color the icon should be
@@ -866,7 +838,7 @@ describe('NYPL Service Tests', function () {
             },
             locations = [
               {id: 'AG', name: 'Aguilar Library',
-                lat: 40.7483308, long: -74.0084794},
+                geolocation: { coordinates: [-74.0084794, 40.7483308] } },
               {id: 'AL', name: 'Allerton Library',
                 lat: 40.866, long: -73.8632},
               {id: 'BAR', name: 'Baychester Library',
@@ -884,7 +856,8 @@ describe('NYPL Service Tests', function () {
 
           expect(updatedLocations).toEqual([
             {id: 'AG', name: 'Aguilar Library',
-              lat: 40.7483308, long: -74.0084794, distance: 0.01}, //4.56
+              geolocation: { coordinates: [-74.0084794, 40.7483308] },
+              distance: 0.01}, //4.56
             {id: 'AL', name: 'Allerton Library',
               lat: 40.866, long: -73.8632, distance: 11.13},
             {id: 'BAR', name: 'Baychester Library',

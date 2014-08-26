@@ -188,7 +188,7 @@ describe('NYPL Chat Window', function () {
   describe('Amenities ID:4 "Computers for Public Use" page nypl chat link', function () {
 
     beforeEach(function () {
-      browser.get('/#/amenities/7950');
+      browser.get('/#/amenities/id/7950');
       browser.waitForAngular();
     });
 
@@ -232,7 +232,7 @@ describe('NYPL Chat Window', function () {
   describe('Amenities page for Schomburg nypl chat link', function () {
 
     beforeEach(function () {
-      browser.get('/#/amenities/location/schomburg');
+      browser.get('/#/amenities/loc/schomburg');
       browser.waitForAngular();
     });
 

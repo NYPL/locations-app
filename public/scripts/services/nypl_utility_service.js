@@ -314,20 +314,25 @@ function nyplUtility($window, $sce, nyplCoordinatesService) {
             return [];
         }
 
-        var search = {
+        var searchCoordinates = {
             latitude: coords.latitude || coords.lat,
             longitude: coords.longitude || coords.long
         };
 
         _.each(locations, function (location) {
-            var locCoords = location.geolocation.coordinates,
-                locationLat = location.lat || locCoords[1],
-                locationLong = location.long || locCoords[0];
+            var locCoords = [], locationLat, locationLong;
+
+            if (location.geolocation && location.geolocation.coordinates) {
+                locCoords = location.geolocation.coordinates;
+            }
+
+            locationLat = location.lat || locCoords[1];
+            locationLong = location.long || locCoords[0];
 
             location.distance =
                 nyplCoordinatesService.getDistance(
-                    search.latitude,
-                    search.longitude,
+                    searchCoordinates.latitude,
+                    searchCoordinates.longitude,
                     locationLat,
                     locationLong
                 );

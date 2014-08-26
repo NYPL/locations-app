@@ -21,7 +21,7 @@ var DivisionPage = function () {
 
   this.division_manager = element(by.binding('division.contacts.manager'));
   this.telephone = element(by.binding('division.contacts.phone'));
-  this.accessibility = element(by.css('.accessible'));
+  this.accessibility = element(by.css('#accessibility__container div'));
 
   this.social_media_container = element(by.id('social_media'));
   this.social_media =

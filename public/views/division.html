@@ -59,17 +59,19 @@
         <div data-ng-if="division.contacts.phone">{{division.contacts.phone}}</div>
 
         <!-- Accessibility -->
-        <div data-ng-if="location.access == 'Fully Accessible'" class="accessible">
-          <span class="fully icon-accessibility"></span>
-          {{location.access}}
-        </div>
-        <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
-          <span class="partially icon-accessibility"></span>
-          {{location.access}}
-        </div>
-        <div data-ng-if="!location.access" class="not-accessible">
-          <span class="none icon-accessibility"></span>
-          Not Accessible
+        <div id="accessibility__container">
+          <div data-ng-if="location.access == 'Fully Accessible'" class="accessible">
+            <span class="fully icon-accessibility"></span>
+            {{location.access}}
+          </div>
+          <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
+            <span class="partially icon-accessibility"></span>
+            {{location.access}}
+          </div>
+          <div data-ng-if="!location.access" class="not-accessible">
+            <span class="none icon-accessibility"></span>
+            Not Accessible
+          </div>
         </div>
 
         <div class="social flush beta" data-ng-if="division.social_media">

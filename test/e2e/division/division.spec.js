@@ -84,11 +84,11 @@ describe('Locations: Division - Testing General Research Division',
         it('should be fully accessible and display appropriate icon',
           function () {
             expect(divisionPage.accessibility.getText())
-              .toEqual('Fully Accessible');
+              .toEqual('Not Accessible');
             expect(divisionPage.accessibility.getAttribute('class'))
-              .toContain('icon-accessibility');
+              .toContain('not-accessible');
             expect(divisionPage.accessibility.getAttribute('class'))
-              .toContain('fully');
+              .toContain('not-accessible');
           });
 
         it('should display four social media icons', function () {
