@@ -366,6 +366,8 @@
             }
 
             resetPage();
+            showLibrariesTypeOf();
+            nyplGeocoderService.showAllLibraries()
             $scope.searchTerm =  searchTerm;
 
             searchTerm = nyplSearch.searchWordFilter(searchTerm);
@@ -393,10 +395,12 @@
                 })
                 .then(function (locations) {
                     $scope.scrollPage();
-                    if (!filteredLocations.length && isMapPage()) {
-                        nyplGeocoderService.drawSearchMarker();
+                    if (!filteredLocations.length) {
                         // Variable to draw a green marker on the map legend.
                         $scope.searchMarker = true;
+                        if (isMapPage()) {
+                            nyplGeocoderService.drawSearchMarker();
+                        }
                     }
                     
                     organizeLocations(locations, filteredLocations, 'distance');

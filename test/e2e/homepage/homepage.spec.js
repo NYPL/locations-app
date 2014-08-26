@@ -323,7 +323,7 @@ describe('Locations: homepage', function () {
             expect(landingPage.firstLocName())
               .toEqual('Battery Park City Library');
             landingPage.clearSearch.click();
-            browser.sleep(1500);
+            browser.sleep(2500);
             expect(landingPage.firstLocName()).toEqual('115th Street Library');
           });
         });
@@ -380,7 +380,7 @@ describe('Locations: homepage', function () {
             function () {
               landingPage.mapViewBtn.click();
               browser.waitForAngular();
-              browser.sleep(2500);
+              browser.sleep(4000);
 
               expect(landingPage.firstLocName()).toEqual('West Farms Library');
               expect(landingPage.firstLocDist())
@@ -397,6 +397,7 @@ describe('Locations: homepage', function () {
             expect(landingPage.searchInput.getAttribute('value'))
               .toEqual('bronx zoo');
             landingPage.clearSearch.click();
+            browser.sleep(2000);
             expect(landingPage.searchInput.getAttribute('value'))
               .toEqual('');
           });
