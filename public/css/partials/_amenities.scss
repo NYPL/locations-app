@@ -5,6 +5,10 @@
 
 .amenity-category-list {
   list-style: none;
+  margin-left: 0;
+  @include breakpoint($min, $post-palm) {
+  	margin-left: 1em;
+  }
   
   & > li{
 	  margin-bottom: 2.5rem;
