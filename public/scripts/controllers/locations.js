@@ -365,7 +365,6 @@
                 return;
             }
 
-            resetPage();
             showLibrariesTypeOf();
             nyplGeocoderService.showAllLibraries()
             $scope.searchTerm =  searchTerm;
