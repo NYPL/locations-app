@@ -289,6 +289,9 @@ function nyplGeocoderService($q) {
 
   /** @function nyplGeocoderService.hideInfowindow
    * @description Hides the infowindow if the current infowindow is opened.
+   * @example
+   *  // ... Do some map related interaction
+   *  nyplGeocoderService.hideInfowindow();
    */
   geocoderService.hideInfowindow = function () {
     infowindow.close();
@@ -299,6 +302,11 @@ function nyplGeocoderService($q) {
    * @param {string} id A marker's id.
    * @returns {boolean} True if the marker exists, false otherwise.
    * @description Checks the markers array for the marker with the id passed.
+   * @example
+   *  if (nyplGeocoderService.doesMarkerExist('schwarzman')) {
+   *    // Do something with the marker.
+   *    nyplGeocoderService.panExistingMarker('schwarzman');
+   *  }
    */
   geocoderService.doesMarkerExist = function (id) {
     return !!getMarkerFromList(id);
@@ -308,6 +316,11 @@ function nyplGeocoderService($q) {
    * @param {object} coords Object with lat and long properties.
    * @param {string} text The text that should appear in the marker's
    *  infowindow.
+   * @example
+   *  nyplGeocoderService.createSearchMarker({
+   *    lat: 40.49, long: -74.26
+   *  }, 'Infowindow description of the marker');
+   });
    */
   geocoderService.createSearchMarker = function (coords, text) {
     var searchTerm = text.replace(',', ' <br>').replace(',', ' <br>'),
@@ -364,6 +377,11 @@ function nyplGeocoderService($q) {
     return this;
   };
 
+  /** @function nyplGeocoderService.panExistingMarker
+   * @param {string} id A location's slug.
+   * @description Using the location's slug, pan to that marker on the map.
+   *  Also display the infowindow.
+   */
   geocoderService.panExistingMarker = function (id) {
     var markerObj = getMarkerFromList(id),
       marker = markerObj.marker;
@@ -378,11 +396,21 @@ function nyplGeocoderService($q) {
     return this;
   };
 
+  /** @function nyplGeocoderService.setFilterMarker
+   * @param {string} id A location's slug.
+   * @Description Set the filtered marker's id. It is used when switching from
+   *  the list view to the map view so that the matched filtered marker
+   *  can display on the map.
+   */
   geocoderService.setFilterMarker = function (location_slug) {
     filteredLocation = location_slug;
     return this;
   };
 
+  /** @function nyplGeocoderService.drawFilterMarker
+   * @param {string} id A location's slug.
+   * @description Draws the filter matched marker if it exists.
+   */
   geocoderService.drawFilterMarker = function (location_slug) {
     if (this.doesMarkerExist(location_slug)) {
       this.panExistingMarker(location_slug);
@@ -390,11 +418,17 @@ function nyplGeocoderService($q) {
     return this;
   };
 
+  /** @function nyplGeocoderService.clearFilteredLocation
+   * @description Removes the filtered match marker id.
+   */
   geocoderService.clearFilteredLocation = function () {
     filteredLocation = undefined;
     return this;
   };
 
+  /** @function nyplGeocoderService.getFilteredLocation
+   * @returns {string} The filtered match marker's stored id.
+   */
   geocoderService.getFilteredLocation = function () {
     return filteredLocation;
   };
