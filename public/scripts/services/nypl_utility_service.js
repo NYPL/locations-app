@@ -320,12 +320,16 @@ function nyplUtility($window, $sce, nyplCoordinatesService) {
         };
 
         _.each(locations, function (location) {
+            var locCoords = location.geolocation.coordinates,
+                locationLat = location.lat || locCoords[1],
+                locationLong = location.long || locCoords[0];
+
             location.distance =
                 nyplCoordinatesService.getDistance(
                     search.latitude,
                     search.longitude,
-                    location.lat,
-                    location.long
+                    locationLat,
+                    locationLong
                 );
         });
 
