@@ -5,9 +5,12 @@
 
 // Main page wrapper (Necessary for centering grid items)
 .wrapper {
-	margin: 0 auto;
+	margin: 55px auto 0;
 	padding: 0 24px;
 	max-width: 1200px;
+	@include breakpoint($min, $post-palm) {
+		margin: 0 auto;
+	}
 }
 
 // Loader
@@ -54,7 +57,6 @@
 
 // Lokinator content wrapper
 .nypl-locations {
-	margin-top: 30px;
 	min-height: 700px;
 
 	@include breakpoint($min, $tablet) {
@@ -78,7 +80,7 @@
 	background-color: #ECE94C;
 	padding: 12px;
 	position: relative;
-	top: 25px;
+	top: 50px;
 	width: 100%;
 
 	@include breakpoint($min, $pre-tablet) {
