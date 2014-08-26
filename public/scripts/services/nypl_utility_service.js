@@ -132,9 +132,11 @@ function nyplUtility($window, $sce, nyplCoordinatesService) {
             case 'facebook':
                 sc.classes += sc.site + ' blueDarkerText';
                 break;
-            case 'youtube':
-            case 'pinterest':
-                sc.classes += sc.site + ' redText';
+            case 'foursquare':
+                sc.classes += sc.site + ' blueText';
+                break;
+            case 'instagram':
+                sc.classes += sc.site + ' blackText';
                 break;
             // Twitter and Tumblr have a 2 in their icon class
             // name: icon-twitter2, icon-tumblr2
@@ -144,8 +146,9 @@ function nyplUtility($window, $sce, nyplCoordinatesService) {
             case 'tumblr':
                 sc.classes += sc.site + '2 indigoText';
                 break;
-            case 'foursquare':
-                sc.classes += sc.site + ' blueText';
+            case 'youtube':
+            case 'pinterest':
+                sc.classes += sc.site + ' redText';
                 break;
             default:
                 sc.classes += sc.site;
