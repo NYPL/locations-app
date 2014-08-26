@@ -336,8 +336,7 @@ function nyplGeocoderService($q) {
    *  pan to the marker. Also display the infowindow for that marker.
    */
   geocoderService.drawSearchMarker = function () {
-    if (!filteredLocation && (searchMarker.getMap() === undefined ||
-        searchMarker.getMap() === null)) {
+    if (!filteredLocation) {
       searchMarker.setMap(map);
       this.panMap(searchMarker);
 

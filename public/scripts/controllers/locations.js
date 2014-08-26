@@ -17,6 +17,7 @@
         nyplSearch
     ) {
         var locations,
+            searchValues = nyplSearch.getSearchValues(),
             user = { coords: {}, address: '' },
             sortListBy = function (type) {
                 $scope.predicate = type;
@@ -95,6 +96,7 @@
 
             // convert coordinate into address
             loadReverseGeocoding = function () {
+                nyplSearch.resetSearchValues();
                 return nyplGeocoderService
                     .reverseGeocoding({
                         lat: user.coords.latitude,
@@ -102,6 +104,9 @@
                     })
                     .then(function (address) {
                         $scope.geolocationAddressOrSearchQuery = address;
+                        nyplSearch
+                            .setSearchValue('resultsNear', address)
+                            .setSearchValue('locations', $scope.locations);
 
                         return address;
                     });
@@ -109,6 +114,7 @@
 
             // convert address to geographic coordinate
             loadGeocoding = function (searchTerm) {
+                nyplSearch.setSearchValue('searchTerm', searchTerm);
                 return nyplGeocoderService.geocodeAddress(searchTerm)
                     .then(function (coords) {
                         return {
@@ -139,6 +145,7 @@
                 $scope.userMarker = false;
                 nyplGeocoderService.removeMarker('user');
 
+                nyplSearch.setSearchValue('resultsNear', searchObj.searchTerm);
                 $scope.geolocationAddressOrSearchQuery = searchterm;
                 $scope.searchError = '';
                 return locationsCopy;
@@ -170,6 +177,7 @@
                     // of the rest of the locations.
                     $scope.locations = _.union(filteredLocations, locations);
 
+                    nyplSearch.setSearchValue('locations', $scope.locations);
                     // Don't sort by distance or the matched results
                     // will not display first.
                     sortListBy('');
@@ -232,6 +240,25 @@
                         searchObj.searchTerm
                     );
                 }
+            },
+
+            loadPreviousStateOrNewState = function () {
+                if (searchValues.locations) {
+                    $scope.locations = searchValues.locations;
+                    $scope.searchTerm = searchValues.searchTerm;
+                    $scope.geolocationAddressOrSearchQuery =
+                        searchValues.resultsNear;
+                    $scope.searchMarker = searchValues.searchMarker;
+                    if ($scope.searchMarker) {
+                        nyplGeocoderService.drawSearchMarker();
+                    }
+
+                    if (!$scope.searchTerm) {
+                        sortListBy('distance');
+                    }
+                } else {
+                    $scope.loadLocations();
+                }
             };
 
         $scope.loadLocations = function () {
@@ -278,7 +305,6 @@
                         }
                     });
 
-                    geolocationAvailable();
                     resetPage();
 
                     return locations;
@@ -335,6 +361,8 @@
         };
 
         $scope.clearSearch = function () {
+            nyplSearch.resetSearchValues();
+
             showLibrariesTypeOf();
             nyplGeocoderService
                 .showAllLibraries()
@@ -365,7 +393,6 @@
                 return;
             }
 
-            resetPage();
             showLibrariesTypeOf();
             nyplGeocoderService.showAllLibraries()
             $scope.searchTerm =  searchTerm;
@@ -398,6 +425,7 @@
                     if (!filteredLocations.length) {
                         // Variable to draw a green marker on the map legend.
                         $scope.searchMarker = true;
+                        nyplSearch.setSearchValue('searchMarker', true);
                         if (isMapPage()) {
                             nyplGeocoderService.drawSearchMarker();
                         }
@@ -414,6 +442,7 @@
                     // else, reset back to the start
                     nyplGeocoderService.removeMarker('search');
                     $scope.searchMarker = false;
+                    nyplSearch.resetSearchValues();
 
                     if (filteredLocations.length &&
                             error.msg !== 'query too short') {
@@ -448,7 +477,9 @@
 
         $rootScope.title = "Locations";
         $scope.$state = $state;
-        $scope.loadLocations();
+
+        loadPreviousStateOrNewState();
+        geolocationAvailable();
     }
     // End LocationsCtrl
 
