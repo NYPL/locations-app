@@ -317,11 +317,11 @@
         };
 
         $scope.useGeolocation = function () {
-            resetPage();
-
             // Remove any existing search markers on the map.
             nyplGeocoderService.removeMarker('search');
             $scope.select_library_for_map = '';
+            $scope.searchTerm = '';
+            $scope.searchMarker = false;
 
             $scope.scrollPage();
 
@@ -365,6 +365,7 @@
                 return;
             }
 
+            $scope.geolocationAddressOrSearchQuery = '';
             showLibrariesTypeOf();
             nyplGeocoderService.showAllLibraries()
             $scope.searchTerm =  searchTerm;
