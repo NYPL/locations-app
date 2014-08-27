@@ -344,6 +344,15 @@ function nyplUtility($window, $sce, nyplCoordinatesService) {
         return locations;
     };
 
+    /** @function nyplUtility.checkDistance
+     * @param {array} locations An array with all the locations objects.
+     * @returns {boolean} True if the minimum distance property from each
+     *  location is more than 25 (miles). False otherwise.
+     * @description An array of distance values is created from the distance
+     *  property of each location. If the minimum distance is more than 25 miles
+     *  we return true; used when we want to check if we want to continue
+     *  searching or manipulating the locations.
+     */
     utility.checkDistance = function (locations) {
         var distanceArray = _.pluck(locations, 'distance');
 
@@ -417,6 +426,18 @@ function nyplSearch($filter) {
         return IDFilter;
     };
 
+    /** @function nyplSearch.locationSearch
+     * @param {array} locations An array with all the location objects.
+     * @param {string} searchTerm The search word or phrased to look for in the
+     *  locations objects.
+     * @returns {array} An array that returns filtered locations based on what
+     *  was queried and what AngularJS' filter returns.
+     * @description Using the native AngularJS filter, we do a lazy and strict
+     *  filter through the locations array. The strict filter has a higher
+     *  priority since it's a better match. The 'lazy' filter matches anything,
+     *  even part of a word. For example, 'sibl' would match with 'accesSIBLe'
+     *  which is undesirable.
+     */
     search.locationSearch = function (locations, searchTerm) {
         // how to search the object?
         // name, address, zipcode, locality, synonyms (amenities and divisions?)
@@ -424,9 +445,6 @@ function nyplSearch($filter) {
         var lazyFilter = $filter('filter')(locations, searchTerm),
             strictFilter = $filter('filter')(locations, searchTerm, true);
 
-        // Check the strict and 'lazy' filter. The strict filter has a higher
-        // priority since it's a better match. The 'lazy' filter matches
-        // anything, even part of a word. 'sibl' would match with 'accesSIBLe'.
         if (strictFilter !== undefined && strictFilter.length !== 0) {
             // Rarely occurs but just in case there are results for
             // both filters, the strict match should appear first
@@ -456,6 +474,7 @@ function nyplSearch($filter) {
     return search;
 }
 
+/** @namespace nyplAmenities */
 function nyplAmenities() {
     'use strict';
 
