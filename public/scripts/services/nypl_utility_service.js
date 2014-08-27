@@ -480,10 +480,15 @@ function nyplAmenities() {
 
     var amenities = {};
 
+    /** @function nyplAmenities.addIcon
+     * @param {array} amenities Array with amenities objects.
+     * @param {string} default_icon The default icon for an amenity.
+     * @returns {array} 
+     * @description Adds an icon class to an amenity category.
+     */
     amenities.addIcon = function (amenities, default_icon) {
         var icon = default_icon || '';
         _.each(amenities, function (amenity) {
-            // console.log(amenity);
             switch (amenity.id) {
             case 6:
                 amenity.icon = 'icon-connection';
