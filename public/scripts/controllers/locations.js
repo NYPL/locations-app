@@ -14,7 +14,8 @@
         nyplGeocoderService,
         nyplLocationsService,
         nyplUtility,
-        nyplSearch
+        nyplSearch,
+        nyplAmenities
     ) {
         var locations,
             user = { coords: {}, address: '' },
@@ -247,20 +248,14 @@
                             markerCoordinates = {
                                 'latitude': location.geolocation.coordinates[1],
                                 'longitude': location.geolocation.coordinates[0]
-                            },
-                            amenities_list = [];
+                            };
 
                         location.hoursToday = nyplUtility.hoursToday;
                         location.locationDest =
                             nyplUtility.getAddressString(location);
 
-                        _.each(location._embedded.amenities, function (amenities) {
-                            _.each(amenities.amenities, function (amenity) {
-                                amenities_list.push(amenity);
-                            });
-                        });
-
-                        location.amenities_list = amenities_list;
+                        location.amenities_list = nyplAmenities
+                            .allAmenitiesArray(location._embedded.amenities);
 
                         // Individual location exception data
                         location.branchException =
@@ -523,7 +518,8 @@
         $timeout,
         location,
         nyplCoordinatesService,
-        nyplUtility
+        nyplUtility,
+        nyplAmenities
     ) {
         var loadUserCoordinates = function () {
                 return nyplCoordinatesService
@@ -545,6 +541,12 @@
 
         $scope.location = location;
         $rootScope.title = location.name;
+console.log(location._embedded.amenities);
+        location._embedded.amenities =
+            nyplAmenities.addCategoryIcon(location._embedded.amenities);
+
+        location.amenities_list =
+            nyplAmenities.getLocationAmenities(location._embedded.amenities);
 
         $scope.calendarLink = nyplUtility.calendarLink;
         $scope.icalLink = nyplUtility.icalLink;

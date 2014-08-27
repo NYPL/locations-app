@@ -478,7 +478,12 @@ function nyplSearch($filter) {
 function nyplAmenities() {
     'use strict';
 
-    var amenities = {};
+    var amenities = {},
+        sortAmenitiesList = function (list, sortBy) {
+            return _.sortBy(list, function (item) {
+                return item[sortBy];
+            });
+        };
 
     /** @function nyplAmenities.addIcon
      * @param {array} amenities Array with amenities objects.
@@ -543,6 +548,32 @@ function nyplAmenities() {
         });
 
         return amenities;
+    };
+
+    amenities.allAmenitiesArray = function (amenitiesCategory) {
+        if (!amenitiesCategory) {
+            return;
+        }
+
+        return _.chain(amenitiesCategory)
+                .pluck('amenities')
+                .flatten(true)
+                .value();
+    };
+
+    amenities.getLocationAmenities = function (amenitiesCategory) {
+        var initial_list = this.allAmenitiesArray(amenitiesCategory),
+            amenities_list;
+
+        initial_list = sortAmenitiesList(initial_list, 'rank');
+
+        amenities_list = initial_list.splice(0,3);
+
+        initial_list = sortAmenitiesList(initial_list, 'location_rank');
+
+        amenities_list = _.union(amenities_list, initial_list.splice(0,2));
+
+        return amenities_list;
     };
 
     return amenities;
