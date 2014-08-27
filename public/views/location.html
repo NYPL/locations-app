@@ -210,10 +210,6 @@
         <!-- Display Plan your visit info only in Research and Division locations -->
         <div id="plan-your-visit">
           <h2 class="hdg">{{ 'PLAN_YOUR_VISIT' | translate }}</h2>
-          <a data-ng-if="location._links.concierge.href"
-            data-ng-href="{{location._links.concierge.href}}" class="btn btn--natural whiteText">
-            {{ 'APPOINTMENT' | translate }}
-          </a>
           <a data-ng-if="location._links.contact.href"
             data-ng-href="{{location._links.contact.href}}" class="btn btn--natural whiteText" id="ask-librarian">
             {{ 'ASK_LIBRARIAN' | translate }}
