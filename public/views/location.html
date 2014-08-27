@@ -97,7 +97,7 @@
         <div class="callout">
           <ul class="flush" data-ng-if="location.amenities_list">
             <li class="title">{{ 'AMENITIES_HEADER' | translate }}: </li>
-            <li data-ng-repeat="amenity in location.amenities_list" class="{{amenity.icon}}">
+            <li data-ng-repeat="amenity in location.amenities_list" class="{{amenity.icon}} grid__item one-fifth">
               <!-- <a data-ui-sref="amenity({amenity: amenity.id})">{{amenity.name}}</a> -->
               {{amenity.name}}
             </li>

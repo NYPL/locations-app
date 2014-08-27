@@ -521,7 +521,8 @@
         nyplUtility,
         nyplAmenities
     ) {
-        var loadUserCoordinates = function () {
+        var amenities = location._embedded.amenities,
+            loadUserCoordinates = function () {
                 return nyplCoordinatesService
                     .getBrowserCoordinates()
                     .then(function (position) {
@@ -541,12 +542,12 @@
 
         $scope.location = location;
         $rootScope.title = location.name;
-// console.log(location._embedded.amenities);
-        location._embedded.amenities =
-            nyplAmenities.addCategoryIcon(location._embedded.amenities);
 
+        // Add icons to the amenities.
+        location._embedded.amenities = nyplAmenities.addCategoryIcon(amenities);
+        // Get three institution ranked and two location ranked amenities.
         location.amenities_list =
-            nyplAmenities.getLocationAmenities(location._embedded.amenities);
+            nyplAmenities.getHighlightedAmenities(amenities, 3, 2);
 
         $scope.calendarLink = nyplUtility.calendarLink;
         $scope.icalLink = nyplUtility.icalLink;
