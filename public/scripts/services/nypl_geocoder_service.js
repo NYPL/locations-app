@@ -15,6 +15,13 @@ function nyplGeocoderService($q) {
     infowindow = new google.maps.InfoWindow(),
     geocoderService = {},
 
+    /** @function getMarkerFromList
+     * @param {string} id The location's slug used for the marker id.
+     * @returns {object} The marker object that has the id that was passed,
+     *  else an empty object.
+     * @private
+     * @memberof nyplGeocoderService
+     */
     getMarkerFromList = function (id) {
       return _.findWhere(markers, {id: id});
     },

@@ -8,7 +8,7 @@
 	margin: 55px auto 0;
 	padding: 0 24px;
 	max-width: 1200px;
-	@include breakpoint($min, $post-palm) {
+	@include breakpoint($min, $pre-tablet) {
 		margin: 0 auto;
 	}
 }

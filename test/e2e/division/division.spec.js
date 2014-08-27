@@ -68,7 +68,7 @@ describe('Locations: Division - Testing General Research Division',
 
         it('should have a floor and room number', function () {
           expect(divisionPage.floor.getText())
-            .toEqual('Third Floor and Room 315');
+            .toEqual('Third Floor, Room 315');
           expect(divisionPage.room.getText()).toEqual('and Room 315');
         });
 
