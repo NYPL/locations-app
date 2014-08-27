@@ -1,22 +1,21 @@
-nypl_locations.controller('CollectionsCtrl', [
-    '$scope',
-    '$routeParams',
-    '$rootScope',
-    'nypl_locations_service',
-    'nypl_utility',
-    function (
+/*jslint indent: 4, maxlen: 80, nomen: true */
+/*globals nypl_locations, _, angular, jQuery, $location, $ */
+
+(function () {
+    'use strict';
+
+    function CollectionsCtrl(
         $scope,
-        $routeParams,
         $rootScope,
-        nypl_locations_service,
-        nypl_utility
+        nyplLocationsService,
+        nyplUtility
     ) {
         'use strict';
 
         var divisions,
             loadDivisions = function () {
-                return nypl_locations_service
-                    .all_divisions($routeParams.division)
+                return nyplLocationsService
+                    .allDivisions()
                     .then(function (data) {
                         divisions = data.divisions;
 
@@ -53,7 +52,7 @@ nypl_locations.controller('CollectionsCtrl', [
             };
 
         $rootScope.title = "Research Collections";
-        $scope.hoursToday = nypl_utility.hoursToday;
+        $scope.hoursToday = nyplUtility.hoursToday;
         $scope.searchBy = {};
         $scope.data = [
             {
@@ -138,8 +137,10 @@ nypl_locations.controller('CollectionsCtrl', [
 
         ];
 
-
         loadDivisions();
-        
     }
-]);
+
+    angular
+        .module('nypl_locations')
+        .controller('CollectionsCtrl', CollectionsCtrl);
+})();

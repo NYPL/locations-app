@@ -138,7 +138,8 @@ nypl_locations.config([
                     crumbName: '{{division.name}}'
                 }
             })
-            .when('/research-collections', {
+            .state('research-collections', {
+                url: '/research-collections',
                 templateUrl: 'views/research_collections.html',
                 controller: 'CollectionsCtrl',
                 label: 'Collections'

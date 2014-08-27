@@ -62,6 +62,19 @@ function nyplLocationsService($http, $q) {
         return defer.promise;
     };
 
+    locationsApi.allDivisions = function () {
+        var defer = $q.defer();
+
+        $http.get(api + '/divisions', {cache: true})
+            .success(function (data) {
+                defer.resolve(data);
+            })
+            .error(function () {
+                defer.reject(apiError);
+            });
+        return defer.promise;
+    };
+
     /** @function nyplLocationsService.singleDivision
      * @param {string} division The slug of the division to look up.
      * @returns {object} Deferred promise. If it resolves, JSON response from
