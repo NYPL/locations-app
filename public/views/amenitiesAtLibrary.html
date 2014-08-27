@@ -1,0 +1,61 @@
+<div class="content amenities">
+  
+  <!-- Breadcrumbs -->
+  <nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>
+
+  <section class="grid">
+    <div class="grid__item" id="location_name">
+      <h2 data-ng-if="location.name">Amenities at <a href="/#/{{location.slug}}">{{location.name}}</a></h2>
+    </div>
+
+    <div class="grid">
+      <div class="grid__item one-whole lap-and-up-two-thirds">
+        <ul data-ng-if="amenitiesCategories" class="amenity-category-list">
+          <li data-ng-repeat="category in amenitiesCategories">
+            <h3><span class="{{category.icon}} category_title">{{category.name}}</span></h3>
+            <ul class="amenities-list">
+              <li data-ng-repeat="amenity in category.amenities | orderBy:'location_rank'">
+                <a data-ui-sref="amenity({amenity: amenity.id})">{{amenity.name}}</a>
+                
+                <span data-ng-if="amenity._links.action && amenity._links.action.href">
+                  <a data-ng-href="{{amenity._links.action.href}}" 
+                    class="amenities__reserve btn btn--natural whiteText">{{amenity._links.action.name}}</a>
+                </span>
+                                
+                <span data-ng-if="amenity._links.info">
+                  <a data-ng-href="{{amenity._links.info.href}}" class="read-more">Learn more</a>
+                </span>
+
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div><!--
+
+      --><div class="grid__item one-whole lap-and-up-one-third ">
+      
+        <div class="services-callout callout">
+         <p>The Library also offers<br><span class="services-callout-2">services</span><br>of all kinds!</p>
+         <a class="services-link purpleText" href="">Find out more <span class="icon-arrow-right"></span></a>
+        </div>
+      </div>
+
+    </div>
+    
+  </section>
+
+  <div class="ask-donate">
+    <div class="appeal grid__item one-whole lap-and-up-one-half" id="donate">
+        <p>Help us keep this library open 6 days a week!</p>
+        <button class="btn--donate" class="{{donateHref}}">Donate now</button>
+    </div><!--
+
+    --><div class="askNYPL grid__item one-whole lap-and-up-one-half " id="ask-nypl">
+        <ul>
+          <li class="asknum icon-phone">917-ASK-NYPL</li>
+          <li><librarianchatbutton /></li>
+          <li><emailusbutton link="{{division._links.contact.href}}" /></li>
+        </ul>
+    </div>
+  </div>  
+</div>

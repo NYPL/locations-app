@@ -1,246 +1,295 @@
 /* 
 ** Individual Location's page
 */
-
-// Spacing for each container
-#container__address,
-#container__image,
-#container__top_services,
-#container__events,
-#container__about,
-#container__blogs,
-#container__exhibitions {
-	margin-bottom: 24px;
-}
-
-// Image section on top container
-#container__image {
-	float: left; // Fix for proper positioning on desktop
-	display: none; // Hidden on mobile
-
-	@include breakpoint($min, $desktop) {
-		display: inline-block;
-		height: 245px; // constrain proportions until proper images exist
-		overflow: hidden;
-	}
-}
-
-// Hours section on top container
-#container__hours {
-	float: right;
-	margin-bottom: 10px;
-
-	@include breakpoint($min, $post-palm) {
-		margin-bottom: 20px;
-	}
-
-	#hours-today {
-		margin-left: -.35em;
-
-		@include breakpoint($min, $post-palm) {
-			margin-left: 0;
-		}
-
-		.hours-today {
-			font-size: 14px;
-			font-size: 1.4rem;
-
-			@include breakpoint($min, $post-palm) {
-				font-size: 16px;
-				font-size: 1.6rem;
-			}		
-
-			span {
-				vertical-align: -2px;
-			}
-		}
-	}
-	
-	.day {
-		font-style: italic;
-	}
-
-	#toggle-hours {
-		display: inline;
-		position: absolute;
-		width: 142px;
-		left: 0px;
-		top: 2px;
-		text-align: right;
-
-
-		&:hover {
-			cursor: pointer;
-		}
-
-		@include breakpoint($min, $post-palm) {
-			display: none;
-		} 
-	}
-
-	#location-hours {
-		margin: .75em 0 .75em 36px;
-
-		@include breakpoint($min, $post-palm) {
-			margin-left: 48px;
-		}
-
-		.hdg {
-			position: relative;
-			border: none;
-		}
-
-		.weekly-hours {
-			display: none;
-
-			@include breakpoint($min, $post-palm) {
-				display: block !important;
-			} 
-		}
-	}
-}
-
-
-#catalog-link {
-	background-color: lighten(#0090c4, 50%);
-	border: 1px solid transparent;
-	border-radius: 2px;
-	color: darken(#0090c4, 10%);
-	padding: 4px;
-	text-decoration: none;
-	margin-left: .35em;
-	
-	&:hover {
-		border:	1px solid #0090c4;
-	}
-}
-
-// Address section on top container
-#container__address {
-
-	.p-adr,
-	.wheelchair,
-	.map-directions {
-		margin-bottom: .75rem;
-		margin-left: .35em;
-	}
-
-	.social {
-		margin-top: .5rem;
-		margin-left: 0;
-
-		a {
-			text-decoration: none;
-		}
-	}
-
-}
-
-// Divisions section 
-#container__divisions {
-	img {
-		width: 100px;
-		height: 100px;		
-	}
-	
-	h4 {
-		margin-bottom: .5rem;
-	}
-}
-
-// Events section
-#container__events {
-
-	h3 {
-		margin-bottom: .05em;
-	}
-	.callout {
+.individual-location, .individual-division {
+	// Spacing for each container
+	#container__address,
+	#container__image,
+	#container__top_amenities,
+	#container__events,
+	#container__about,
+	#container__blogs,
+	#container__exhibitions {
 		margin-bottom: 24px;
-		
+	}
+
+	.location-alerts {
+		background-color: #ffcdcd;
+		border: 1px solid #eee;
+		border-radius: 2px;
+		padding: .5rem;
+		margin: .5rem 0;
+		text-align: center;
+
 		p {
+			max-width: 100%;
 			margin: 0;
+			padding: 3px 0px;
 		}
 	}
 
-	.event-buttons {
-		margin: 0; 
-		padding: 0;
+	// Image section on top container
+	#container__image {
+		float: left; // Fix for proper positioning on desktop
+		display: none; // Hidden on mobile
+
+		@include breakpoint($min, $desktop) {
+			display: inline-block;
+			height: 245px; // constrain proportions until proper images exist
+			overflow: hidden;
+		}
 	}
-} 
 
-// Highlighted Services section
-#container__top_services {
+	// Hours section on top container
+	#container__hours {
+		float: right;
+		margin-bottom: 10px;
 
-	@include breakpoint($min, $post-palm) {
-		margin-top: 20px;
-	}
+		@include breakpoint($min, $post-palm) {
+			margin-bottom: 20px;
+		}
 
-	.callout {
-		background-color: transparent;
-		position: relative;
+		#hours-today {
+			margin-left: -.35em;
 
-		ul {
+			@include breakpoint($min, $post-palm) {
+				margin-left: 0;
+			}
 
-			li {
-				display: block;
-				margin-bottom: .35em;
-
-				&.title {
-					font-weight: bold;
-				}
+			.hours-today {
+				font-size: 14px;
+				font-size: 1.4rem;
 
 				@include breakpoint($min, $post-palm) {
-					margin-bottom: 0;
-					margin-right: .35em;
-					display: inline;
-				}
+					font-size: 16px;
+					font-size: 1.6rem;
+				}		
 
 				span {
 					vertical-align: -2px;
 				}
 			}
 		}
+		
+		.day {
+			font-style: italic;
+			padding: 0 10px 3px 0;
+		}
+		.time {
+			padding: 0px;
+		}
 
-		.read-more {
-			display: inline-block !important;
-			margin: .35em 0;
+		#toggle-hours {
+			display: inline;
+			position: absolute;
+			width: 152px;
+			left: 0px;
+			top: 2px;
+			text-align: right;
+
+
+			&:hover {
+				cursor: pointer;
+			}
 
 			@include breakpoint($min, $post-palm) {
-				margin: 0;
-				position: absolute;
-				right: 7px;
-				top: 7px;
+				display: none;
+			} 
+		}
+
+		#location-hours {
+			margin: .75em 0 .75em 36px;
+
+			@include breakpoint($min, $post-palm) {
+				margin-left: 48px;
+			}
+
+			.hdg {
+				position: relative;
+				border: none;
+			}
+
+			.weekly-hours {
+				display: none;
+				margin-bottom: 5px; 
+
+				@include breakpoint($min, $post-palm) {
+					display: block !important;
+				} 
 			}
 		}
 	}
-}
 
-// About section
-#location-secondary-img{
-	height: 300px; // constrain proportions until proper images exist
-	overflow: hidden; // constrain proportions until proper images exist
-}
 
-// Events page for each location-hours
-.location_events_info {
-	#hours-today {
-		margin-left: -.35em;
+	#catalog-link {
+		background-color: lighten(#0090c4, 50%);
+		border: 1px solid transparent;
+		border-radius: 2px;
+		color: darken(#0090c4, 10%);
+		padding: 4px;
+		text-decoration: none;
+		margin-left: .35em;
+		
+		&:hover {
+			//border:	1px solid #0090c4;
+			background-color: #0090c4;
+			color:#fff;
+		}
+	}
 
-		@include breakpoint($min, $post-palm) {
-			margin-left: 0;
+	// Address section on top container
+	#container__address {
+		// Accessibility
+		.accessible, .not-accessible {
+			margin: .5em 0 .5em .4em;
 		}
 
-		.hours-today {
-			font-size: 14px;
-			font-size: 1.4rem;
+		.p-adr,
+		.wheelchair,
+		.map-directions {
+			margin-bottom: .75rem;
+			margin-left: .35em;
+		}
+
+		.social {
+			margin-top: .5rem;
+			margin-left: 0;
+
+			a {
+				text-decoration: none;
+			}
+		}
+
+	}
+
+	// Divisions section 
+	#container__divisions {
+		img {
+			width: 100px;
+			height: 100px;		
+		}
+		
+		h4 {
+			margin-bottom: .5rem;
+		}
+	}
+
+	// Events section
+	#container__events {
+
+		.event__title {
+			margin-bottom: .05em;
+		}
+		.callout {
+			margin-bottom: 24px;
+			
+			p {
+				margin: 0;
+			}
+		}
+
+		.event-buttons {
+			margin: 0; 
+			padding: 0;
+		}
+	} 
+
+	#container__blogs {
+		.blog__title,
+		h3 {
+			margin-bottom: .5em;
+		}
+	}
+
+	#container__exhibitions {
+		.exhibition__title {
+			margin-bottom: .05em;
+		}
+	}
+
+	// Highlighted Amenities section
+	#container__top_amenities {
+
+		@include breakpoint($min, $post-palm) {
+			margin-top: 20px;
+		}
+
+		.callout {
+			background-color: transparent;
+			position: relative;
+
+			ul {
+
+				li {
+					display: block;
+					margin-bottom: .35em;
+
+					&.title {
+						font-weight: bold;
+					}
+
+					@include breakpoint($min, $post-palm) {
+						margin-bottom: 0;
+						margin-right: .35em;
+						display: inline;
+					}
+
+					span {
+						vertical-align: -2px;
+					}
+				}
+			}
+
+			.read-more {
+				display: inline-block !important;
+				margin: .35em 0;
+
+				@include breakpoint($min, $post-palm) {
+					margin: 0;
+					position: absolute;
+					right: 7px;
+					top: 7px;
+					padding: 1px 6px;
+				}
+			}
+		}
+	}
+
+	// About section
+	#location-secondary-img{
+		height: 300px; // constrain proportions until proper images exist
+		overflow: hidden; // constrain proportions until proper images exist
+	}
+
+	#plan-your-visit {
+		//Mobile spacing
+		margin-top: 1.25em;
+		@include breakpoint($min, $post-palm) {
+			margin-top: inherit;
+		}
+	}
+
+	// Events page for each location-hours
+	.location_events_info {
+		#hours-today {
+			margin-left: -.35em;
 
 			@include breakpoint($min, $post-palm) {
-				font-size: 16px;
-				font-size: 1.6rem;
-			}		
+				margin-left: 0;
+			}
 
-			span {
-				vertical-align: -2px;
+			.hours-today {
+				font-size: 14px;
+				font-size: 1.4rem;
+
+				@include breakpoint($min, $post-palm) {
+					font-size: 16px;
+					font-size: 1.6rem;
+				}		
+
+				span {
+					vertical-align: -2px;
+				}
 			}
 		}
 	}

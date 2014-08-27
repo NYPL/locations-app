@@ -1,0 +1,14 @@
+<div class="registration-for-event">
+  <div data-ng-if="registration">
+    {{ 'REGISTRATION' | translate }}:
+    <span class="registration_type" data-ng-if="!online">{{type}}</span>
+    <a class="registration_type btn btn--natural whiteText" data-ng-if="online"
+      data-ng-href="http://nypl.org/{{link}}">
+      {{type}}
+    </a>
+
+    <div data-ng-if="online" class="registration-available">
+      <p>{{registration_available}}</p>
+    </div>
+  </div>
+</div>

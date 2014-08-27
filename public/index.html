@@ -1,6 +1,7 @@
 <!doctype html>
 <html xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="nypl_locations">
   <head>
+    <script src="//cdn.optimizely.com/js/1422121698.js"></script>
     <meta charset="utf-8">
     <title data-ng-bind="'NYPL | ' + $root.title">NYPL |</title>
     <meta name="fragment" content="!" />
@@ -20,21 +21,21 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     
-    <!-- Translate Buttons -->
-    <translatebuttons></translatebuttons>
+    <!-- Translate Buttons (Removed for internal beta) -->
+    <!--<nypl-translate></nypl-translate>-->
 
-    <!-- Alerts -->
-    <nyplalerts></nyplalerts>
+    <!-- Site Wide Alerts -->
+    <nypl-site-alerts></nypl-site-alerts>
 
     <!-- Header -->
     <div ng-include="'views/header.html'"></div>
 
     <!-- Main Navigation -->
-    <div ng-include="'views/main-navigation.html'"></div>
+    <nypl-navigation></nypl-navigation>
 
     <div class="wrapper">
       <!-- Lokinator App -->
-	    <div class="nypl-locations" data-ng-view data-autoscroll="false" scrolltop></div>
+	    <div class="nypl-locations" data-ui-view data-autoscroll="false" scrolltop></div>
     </div>
     
     <!-- Footer -->
@@ -64,21 +65,27 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrIeVzBbK8NWCbWKsi_sj3N2T_EMWEAVY&sensor=false"></script>
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <!-- <script src="bower_components/angular-resource/angular-resource.js"></script> -->
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="bower_components/angular-mocks/angular-mocks.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angularitics/src/angulartics.js"></script>
     <script src="bower_components/angularitics/src/angulartics-ga.js"></script>
     <script src="bower_components/angular-translate/angular-translate.min.js"></script>
-    <script src="bower_components/ng-breadcrumbs/dist/ng-breadcrumbs.min.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
-    
+
+    <!-- NYPL Components -->
+    <script src="scripts/components/nypl_coordinates.js"></script>
+    <script src="scripts/components/nypl_locations_api.js"></script>
+    <script src="scripts/components/nypl_search/nypl_search.js"></script>
+    <script src="scripts/components/nypl_sso/nypl_sso.js"></script>
+    <script src="scripts/components/nypl_navigation/nypl_navigation.js"></script>
+    <script src="scripts/components/nypl_breadcrumbs/nypl_breadcrumbs.js"></script>
+
     <!-- App Config -->
     <script src="scripts/app.js"></script>
     <!-- Filters -->
@@ -86,18 +93,13 @@
     <!-- Controllers -->
     <script src="scripts/controllers/locations.js"></script>
     <script src="scripts/controllers/division.js"></script>
-    <script src="scripts/controllers/services.js"></script>
     <script src="scripts/controllers/collections.js"></script>
+    <script src="scripts/controllers/amenities.js"></script>
     <!-- Services -->
-    <script src="scripts/services/nypl_coordinates_service.js"></script>
-    <script src="scripts/services/nypl_location_service.js"></script>
     <script src="scripts/services/nypl_geocoder_service.js"></script>
     <script src="scripts/services/nypl_utility_service.js"></script>
     <!-- Directives -->
     <script src="scripts/directives/nypl_directives.js"></script>
-
-    <!-- Global Header Scripts -->
-    <script src="scripts/global/global.js"></script>
 
 </body>
 </html>

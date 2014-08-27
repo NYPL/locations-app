@@ -1,0 +1,12 @@
+<ul class="breadcrumb">
+	<!-- If absolute URL is set -->
+	<li ng-repeat="crumb in breadcrumbs | filter:'http'">
+		<a href="{{ crumb.route }}">{{ crumb.displayName }}</a>
+	</li>
+  
+  <!-- ui-router state url links -->
+  <li ng-repeat="crumb in breadcrumbs | filter: '!http'" ng-class="{ active: $last }">
+  	<a ui-sref="{{ crumb.route }}" ng-if="!$last">{{ crumb.displayName }}</a>
+  	<span ng-show="$last">{{ crumb.displayName }}</span>
+  </li>
+</ul>

@@ -1,5 +1,5 @@
 /*jslint indent: 2, maxlen: 80 */
-/* globals element, by, module */
+/*globals element, by, module */
 
 var LocationPage = function () {
   'use strict';
@@ -21,6 +21,8 @@ var LocationPage = function () {
   this.hoursToday = element(by.css('.hours-today'));
   this.hours = element.all(by.repeater('hours in location.hours.regular'));
 
+  this.allAmenities = element(by.css('#all_amenities'));
+
   this.divisions_container = element(by.id('container__divisions'));
   this.divisions =
     element.all(by.repeater('division in location._embedded.divisions'));
@@ -40,6 +42,8 @@ var LocationPage = function () {
 
   this.exhibitions =
     element.all(by.repeater('exhibition in location._embedded.exhibitions'));
+
+  this.email_us = element(by.css('.askemail'));
 };
 
 module.exports = new LocationPage();

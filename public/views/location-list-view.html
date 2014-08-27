@@ -9,8 +9,8 @@
             <th class="location-title" ng-click="predicate = 'name'; reverse=!reverse">
               {{ 'LOCATION_HEADER' | translate }}
             </th>
-            <th class="services-title">
-              {{ 'SERVICES_HEADER' | translate }}
+            <th class="amenities-title">
+              {{ 'AMENITIES_HEADER' | translate }}
             </th>
             <th class="hours-title">
               {{ 'HOURS_HEADER' | translate }}
@@ -19,10 +19,10 @@
         </thead>
         <tbody>
           <!-- Repeated location row data -->
-          <tr class="locations-row {{location._id}} {{location.highlight}}" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse | limitTo: libraryLimit">
+          <tr class="locations-row {{location._id}} {{location.highlight}}" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse">
             <td class="location-info h-card">
               <!-- Library Info -->
-              <div class="p-org"><a href='/#/{{location.slug}}'>{{location.name}}</a></div>
+              <div class="p-org"><a data-ui-sref='location({ location: location.slug })'>{{location.name}}</a></div>
               <div class="p-adr">
                 <div class="p-street-address">{{location.street_address}}</div>
                 <span class="p-locality">{{location.locality}}</span>, 
@@ -33,28 +33,43 @@
                 Phone: {{location.contacts.phone}}
               </div>
 
+              <!-- Accessibility -->
+              <div data-ng-if="location.access == 'Fully Accessible'" class="accessible">
+                <span class="fully icon-accessibility"></span>
+                {{location.access}}
+              </div>
+              <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
+                <span class="partially icon-accessibility"></span>
+                {{location.access}}
+              </div>
+              <div data-ng-if="!location.access" class="not-accessible">
+                <span class="none icon-accessibility"></span>
+                Not Accessible
+              </div>
+
               <!-- Map/Directions Links -->
               <div class="map-link">
-                <a class="icon-map view-on-map" href="" data-ng-click="viewMapLibrary(location.slug)">{{ 'VIEW_MAP' | translate}}</a>
+                <a class="icon-map view-on-map" href="" data-ng-click="viewMapLibrary(location.slug)">
+                  {{ 'VIEW_MAP' | translate}}</a>
               </div>
               <div class="directions-link">
                 <a class="icon-compass" target="_blank"
-                  href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
+                  data-ng-href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
                   {{ 'DIRECTIONS' | translate }}
                 </a>
               </div>
 
               <!-- Distance -->
               <div class="distance" data-ng-if="location.distance">
-                Distance: <strong>{{location.distance}} {{ 'MILES' | translate}}</strong>
+                {{ 'DISTANCE' | translate }}: <strong>{{location.distance}} {{ 'MILES' | translate}}</strong>
               </div>  
             </td>
 
-            <!-- Highlighted Services -->
-            <td class="services-info">
-              <ul class="highlighted-services-list">
-                <li data-ng-repeat="service in location._embedded.services | limitTo:3">
-                  {{service.name}}
+            <!-- Highlighted Amenities -->
+            <td class="amenities-info">
+              <ul class="highlighted-amenities-list">
+                <li data-ng-repeat="amenity in location.amenities_list | limitTo:3 | orderBy:'rank'">
+                  {{amenity.name}}
                 </li>
               </ul>
             </td>
@@ -62,7 +77,16 @@
             <!-- Today's Hours -->
             <td class="hours-info">
               <div>
-                </p>{{ location.hoursToday(location.hours) | timeFormat }}</p>
+                <p data-ng-if="location.open" class="branch-open">
+                  {{ location.hoursToday(location.hours) | timeFormat }}
+                </p>
+                <p data-ng-if="!location.open" class="branch-closed">
+                  <b>Branch is temporarily closed.</b>
+                </p>
+              </div>
+              <div data-ng-if="location.branchException && !location.open" 
+              class="loc-exceptions">
+                <p> {{ location.branchException.desc }} </p>
               </div>
             </td>
           </tr>
@@ -73,15 +97,3 @@
 </section>
 <!-- End List View -->
 
-<!-- Pagination -->
-<div data-ng-if='locations'>
-  <div id="showing" class="grid--center grid__item">
-    {{ 'SHOWING' | translate }} {{libraryLimit}} {{ 'OF' | translate }} {{totalLocations}} {{ 'LOCATIONS' | translate }}
-  </div>
-  <div class="grid--center grid__item" data-ng-if="showMore">
-    <span id="showmore" class="btn" data-ng-click="viewMore()">
-      Show {{increaseBy}}
-    </span>
-  </div>
-</div>
-<!-- End Pagination -->

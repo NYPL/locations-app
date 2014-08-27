@@ -2,148 +2,212 @@
 /*global describe, require, beforeEach,
 browser, it, expect, element, by, angular */
 
-describe('Locations: division - Testing General Research Division',
+describe('Locations: Division - Testing General Research Division',
   function () {
     'use strict';
 
     var divisionPage = require('./division.po.js'),
-      httpBackendMock = function () {
-        var bad_response = {
-          location: {
-            "_id": "GRD",
-            "_links": {},
-            "about": "",
-            "access": "Fully Accessible",
-            "contacts": {
-              "phone": "(212) 275-6975",
-              "email": "grdref@nypl.org"
-            },
-            "cross_street": null,
-            "floor": null,
-            "geolocation": {
-              "type": "Point",
-              "coordinates": [
-                -73.9822,
-                40.7532
-              ]
-            },
-            "hours": {
-              "regular": [
-                { "day": "Sun", "open": null, "close": null },
-                { "day": "Mon", "open": null, "close": null },
-                { "day": "Tue", "open": null, "close": null },
-                { "day": "Wed", "open": null, "close": null },
-                { "day": "Thu", "open": null, "close": null },
-                { "day": "Fri", "open": null, "close": null },
-                { "day": "Sat", "open": null, "close": null }
-              ],
-              "exceptions": {}
-            },
-            "id": "GRD",
-            "image": "/sites/default/files/images/stacks.jpg",
-            "locality": "New York",
-            "location_id": "SASB",
-            "location_name": "Stephen A. Schwarzman Building",
-            "location_slug": "schwarzman",
-            "name": "General Research Division",
-            "postal_code": 10018,
-            "region": "NY",
-            "room": 315,
-            "slug": "general-research-division",
-            "social_media": [],
-            "street_address": "135 East 46th Street",
-            "type": "circulating",
-            "_embedded": {
-              "services": [],
-              "events": [],
-              "exhibitions": null,
-              "blogs": [],
-              "alerts": [],
-              "divisions": []
-            }
-          }
-        };
-
+      // Get json for a division API call.
+      APIresponse = require('../APImocks/division.js'),
+      // Function that creates a module that is injected at run time,
+      // overrides and mocks httpbackend to mock API call. 
+      httpBackendMock = function (response) {
         angular.module('httpBackendMock', ['ngMockE2E'])
           .run(function ($httpBackend) {
             $httpBackend.when('GET', 'http://evening-mesa-7447-160' +
                 '.herokuapp.com/divisions/general-research-division')
-              .respond(bad_response);
+              .respond(response);
 
             // For everything else, don't mock
             $httpBackend.whenGET(/^\w+.*/).passThrough();
             $httpBackend.whenGET(/.*/).passThrough();
             $httpBackend.whenPOST(/^\w+.*/).passThrough();
           });
-
-        // angular.module('nypl_locations').requires.push('httpBackendMock');
       };
 
     describe('Good API call', function () {
-      // These tests are specific to a division
       beforeEach(function () {
+        // Pass the good JSON from the API call.
+        browser.addMockModule('httpBackendMock', httpBackendMock,
+            APIresponse.good);
         browser.get('/#/division/general-research-division');
         browser.waitForAngular();
       });
 
-      it('should display the name', function () {
-        expect(divisionPage.name.getText())
-          .toEqual('General Research Division');
+      describe('Division top information section', function () {
+        it('should display an alert message', function () {
+          expect(divisionPage.alert.isPresent()).toBe(true);
+          // Very long and deep way to get the alert text but it works:
+          expect(divisionPage.alert.getText())
+            .toEqual(APIresponse.good.division.hours.exceptions.description);
+        });
+
+        it('should display the name', function () {
+          expect(divisionPage.name.getText())
+            .toEqual('General Research Division');
+        });
+
+        it('should display the divisions image', function () {
+          expect(divisionPage.main_image.isPresent()).toBe(true);
+        });
+
+        it('should say what library it is located in', function () {
+          expect(divisionPage.location.getText())
+            .toEqual('Stephen A. Schwarzman Building');
+        });
+
+        it('should have an address', function () {
+          expect(divisionPage.street_address.getText())
+            .toEqual('Fifth Avenue at 42nd Street');
+          expect(divisionPage.cross_street.isPresent()).toBe(false);
+          // element(by.binding()) groups together multiple data bindings
+          // if they are in the same element. That is why divisionPage.locality
+          // contains the full second part of the address.
+          expect(divisionPage.locality.getText()).toEqual('New York, NY 10018');
+        });
+
+        it('should have a floor and room number', function () {
+          expect(divisionPage.floor.getText())
+            .toEqual('Third Floor, Room 315');
+          expect(divisionPage.room.getText()).toEqual('and Room 315');
+        });
+
+        it('should have a manager', function () {
+          expect(divisionPage.division_manager.getText())
+            .toEqual('Marie Coughlin');
+        });
+
+        it('should have a telephone number', function () {
+          expect(divisionPage.telephone.getText()).toEqual('(917) 275-6975');
+        });
+
+        it('should be fully accessible and display appropriate icon',
+          function () {
+            expect(divisionPage.accessibility.getText())
+              .toEqual('Not Accessible');
+            expect(divisionPage.accessibility.getAttribute('class'))
+              .toContain('not-accessible');
+            expect(divisionPage.accessibility.getAttribute('class'))
+              .toContain('not-accessible');
+          });
+
+        it('should display four social media icons', function () {
+          var social_media = divisionPage.social_media;
+          expect(social_media.count()).toBe(4);
+          expect(divisionPage.social_media_container.isPresent()).toBe(true);
+        });
+
+        it('should display hours for today', function () {
+          expect(divisionPage.hoursToday.getText()).not.toEqual('');
+        });
+
+        it('should display hours for all seven days', function () {
+          expect(divisionPage.hours.count()).toBe(7);
+        });
+
+        it('should be closed on Sunday', function () {
+          expect(divisionPage.hours.first().getText()).toEqual('Sun Closed');
+        });
       });
 
-      it('should say what library it is located in', function () {
-        expect(divisionPage.location.getText())
-          .toEqual('Stephen A. Schwarzman Building');
+      describe('About the Collection section', function () {
+        it('should display the container', function () {
+          expect(divisionPage.about_container.isPresent()).toBe(true);
+        });
+
+        it('should display an image from the collection', function () {
+          expect(divisionPage.second_image.isPresent()).toBe(true);
+        });
+
+        it('should have a short blurb about the division', function () {
+          expect(divisionPage.about_blurb.isPresent()).toBe(true);
+        });
+
+        it('should have a \'Learn More\' link going to nypl.org', function () {
+          expect(divisionPage.learn_more_link.getAttribute('href'))
+            .toEqual('http://nypl.org/locations/schwarzman/' +
+              'general-research-division');
+        });
+
+        describe('Plan your visit section', function () {
+          it('should not have a Make an Appointment link', function () {
+            expect(divisionPage.make_appointment.isPresent()).toBe(false);
+          });
+
+          it('should have an Email a Librarian link', function () {
+            expect(divisionPage.email_librarian.getAttribute('href'))
+              .toEqual('http://www.questionpoint.org/crs/servlet/org.' +
+                'oclc.admin.BuildForm?institution=13306&type=1&language=1');
+          });
+
+          it('should display three amenities', function () {
+            var amenities = [
+              'Reserve a Computer',
+              'Interlibrary Loan',
+              'Meeting Rooms'
+            ];
+            divisionPage.division_amenities.each(function (element, index) {
+              expect(element.getText()).toEqual(amenities[index]);
+            });
+          });
+        });
       });
 
-      it('should have a floor and room number', function () {
-        // Seemds like element(by.binding()) gets the text between tags,
-        // even if there are two different {{bindings}} between those tags.
-        expect(divisionPage.floor.getText())
-          .toEqual('Third Floor and Room #315');
-        expect(divisionPage.room.getText()).toEqual('and Room #315');
+      describe('Featured content section', function () {
+        it('should display the section', function () {
+          expect(divisionPage.features_container.isPresent()).toBe(true);
+        });
       });
 
-      it('should display two social media icons', function () {
-        var social_media = divisionPage.social_media;
-        expect(social_media.count()).toBe(4);
-        expect(divisionPage.social_media_container.isPresent()).toBe(true);
+      describe('Events section', function () {
+        it('should not display the container or events', function () {
+          expect(divisionPage.events_container.isPresent()).toBe(false);
+          expect(divisionPage.events.count()).toBe(0);
+        });
       });
 
-      it('should have a manager', function () {
-        expect(divisionPage.division_manager.getText())
-          .toEqual('Marie Coughlin');
+      describe('Blogs section', function () {
+        it('should have six blogs on the page', function () {
+          expect(divisionPage.blogs_container.isPresent()).toBe(true);
+          expect(divisionPage.blogs.count()).toBe(6);
+        });
+
+        it('should have a \'See more blogs\' link going to nypl.org',
+          function () {
+            expect(divisionPage.blogs_more_link.getAttribute('href'))
+              .toEqual('http://www.nypl.org/blog/library/394');
+          });
       });
 
-      it('should display hours for today', function () {
-        expect(divisionPage.hoursToday.getText()).not.toEqual('');
-      });
+      describe('Footer section', function () {
+        describe('Donate Now', function () {
+          it('should have a donate section', function () {
+            expect(divisionPage.ask_donate.isPresent()).toBe(true);
+          });
+        });
 
-      it('should display hours for all seven days', function () {
-        var hours = divisionPage.hours;
-        expect(hours.count()).toBe(7);
-      });
+        describe('Email a librarian link', function () {
+          it('should have a link', function () {
+            expect(divisionPage.ask_librarian.getAttribute('href'))
+              .toEqual('http://www.questionpoint.org/crs/servlet/org.oclc.' +
+                'admin.BuildForm?institution=13306&type=1&language=1');
+          });
 
-      it('should have a short blurb about the division', function () {
-        expect(divisionPage.about_blurb.isPresent()).toBe(true);
-      });
-
-      it('should have six blogs on the page', function () {
-        var blogs = divisionPage.blogs;
-        expect(blogs.count()).toBe(6);
+          it('should be the same as the Email Us button', function () {
+            expect(divisionPage.ask_librarian.getAttribute('href'))
+              .toEqual(divisionPage.email_us.getAttribute('href'));
+          });
+        });
       });
     });
 
     describe('Bad API call', function () {
       beforeEach(function () {
-        browser.addMockModule('httpBackendMock', httpBackendMock);
+        browser.addMockModule('httpBackendMock', httpBackendMock,
+          APIresponse.bad);
         browser.get('/#/division/general-research-division');
         browser.waitForAngular();
       });
-
-      // it('should displayed closed hours', function () {
-      //   expect(divisionPage.hoursToday.getText()).toEqual('Closed Today');
-      // });
 
       it('should not display any social media icons', function () {
         expect(divisionPage.social_media_container.isPresent()).toBe(false);
@@ -154,16 +218,10 @@ describe('Locations: division - Testing General Research Division',
         expect(divisionPage.division_manager.isPresent()).toBe(false);
       });
 
-      it('should not have any events', function () {
-        expect(divisionPage.events_container.isPresent()).toBe(false);
-        expect(divisionPage.events.count()).toBe(0);
-      });
-
       it('should not have any blogs', function () {
         expect(divisionPage.blogs_container.isPresent()).toBe(false);
         expect(divisionPage.blogs.count()).toBe(0);
       });
-
     });
 
   });

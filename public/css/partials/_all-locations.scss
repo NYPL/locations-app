@@ -167,7 +167,8 @@
 		}
 
 		#results {
-			background-color: rgba(0,144,196,0.15);
+			background-color: #FFFFCD;
+			border: 1px solid #EEE;
 		}
 	}
 
@@ -218,14 +219,14 @@
 			}
 
 			thead {
-				display: block;
+				// display: block;
+				background: rgba(#e2dedb, .3);
 
-				@include breakpoint($min, $post-palm) {
-					display: table-header-group;
-				}
+				// @include breakpoint($min, $post-palm) {
+				// 	display: table-header-group;
+				// }
 
 				tr {
-					display: block;
 					position: absolute;
 					top: -9999px;
 					left: -9999px;
@@ -239,10 +240,11 @@
 
 					th {
 						display: block;
-						background: rgba(#e2dedb, .3);
+						width: 33%;
+						// background: rgba(#e2dedb, .3);
 
 						@include breakpoint($min, $post-palm) {
-							display: table-cell;
+							display: inline-block;
 						}
 					}
 				}
@@ -250,10 +252,8 @@
 
 			tbody {
 				display: block;
-
-				@include breakpoint($min, $post-palm) {
-					display: table-row-group;
-				}
+				overflow: auto;
+				height: 500px;
 
 				tr {
 					display: block;
@@ -262,6 +262,10 @@
 					@include breakpoint($min, $post-palm) {
 						display: table-row;
 						border-bottom: 1px solid #eee;
+					}
+
+					&.active {
+						background-color: #FFFFED;
 					}
 
 					td {
@@ -279,6 +283,7 @@
 						@include breakpoint($min, $post-palm) {
 							display: table-cell;
 							padding-left: 12px;
+							width: 30%;
 						}
 
 						&:before {
@@ -303,6 +308,7 @@
 						&:nth-of-type(1):before {
 							@include breakpoint($max, $post-palm) {
 								content: "Location";
+								top: 7%;
 							}
 						}
 
@@ -339,6 +345,11 @@
 							display: inline;
 						}
 					}
+					// Accessibility
+					.accessible, .not-accessible {
+						margin: 4px 0px;
+					}
+
 					// Hide map-link on mobile devices
 					.map-link {
 						display: block;
@@ -349,11 +360,21 @@
 					}
 				}
 
-				&.services-info {
+				&.amenities-info {
 					ul {
 						margin: 0 0 0 1.5em;
 						@include breakpoint($min, $post-palm) {
 							margin: 0 0 0 .5em;
+						}
+					}
+				}
+
+				&.hours-info {
+					p {
+						padding-top: 22px;
+
+						@include breakpoint($min, $post-tablet) {
+							padding-top: 0px;
 						}
 					}
 				}
@@ -382,12 +403,16 @@
 				border-bottom: 1px solid #eee;
 				padding: 5px 0px;
 
+				&.active {
+					background-color: #FFFFED;
+				}
+
 				.p-org {
 					font-size: 1.2rem;
 					font-weight: bold;
 				}
 
-				.highlighted-services-list {
+				.highlighted-amenities-list {
 					margin: .5em 0 .5em 1.25em;
 					list-style-type: disc;
 
@@ -397,7 +422,7 @@
 				}
 
 				.todays-hours, .distance {
-					margin: .35em 0;
+					margin: 1em 0;
 
 					span {
 						margin-right: .05em;
@@ -405,6 +430,11 @@
 					strong {
 						margin-left: .1em;
 					}
+				}
+
+				// Accessibility
+				.accessible, .not-accessible {
+					margin: 4px 0px;
 				}
 
 				.directions-link {
@@ -420,20 +450,44 @@
 
 		// Google Map
 		.map-wrapper {
-			margin: 24px 0px;
+			margin: 24px 5px;
 			@include breakpoint($min, $post-palm) {
 				margin: 0;
 			}
 			#all-locations-map {
-				height: 500px;
+				height: 260px;
 				width: 100%;
+
+				@include breakpoint($min, $post-palm) {
+					height: 500px;
+				}
 			}
 
 			#all-locations-map-legend {
-				padding: 10px;
-			  font-size: 13px;
-			  font-size: 1.3em;
+				padding: 5px;
+			  font-size: 11px;
+			  font-size: 1.1em;
 			  background: #fff;
+			  @include breakpoint($min, $post-palm) {
+			  	padding: 10px;
+				  font-size: 13px;
+				  font-size: 1.3em;
+			  }
+			  div {
+			  	margin: .5px 0px;
+			  }
+
+			  img.map-marker {
+			  	max-width: 15%;
+
+		  	 @include breakpoint($min, $post-palm) {
+		  	 	max-width: 100%;
+		  	 }
+			  }
+
+			  span {
+			  	vertical-align: top;
+			  }
 			}
 
 			.hide-legend {
@@ -448,6 +502,20 @@
 			img[src*="googleapis.com/"] {
 				max-width: none;
 			}
+		}
+	}
+
+	// Branch Exception Messages
+	.loc-exceptions {
+		background-color: #ffcdcd;
+		border: 1px solid #eee;
+		border-radius: 2px;
+		padding: 5px;
+		margin-bottom: 7px;
+
+		p {
+			padding: 2px;
+			margin: 0;
 		}
 	}
 }

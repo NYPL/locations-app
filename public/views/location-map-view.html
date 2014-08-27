@@ -5,15 +5,20 @@
   	<div class="grid__item one-whole lap-and-up-one-half">
   		<!-- Google Map -->
 	    <div class="map-wrapper">
-	    	<!-- Edwin needs to integrate map here, temporary placeholder -->
 				<div id="all-locations-map" class="nypl-map"></div>
 			  <div id="all-locations-map-legend" class="hide-legend">
-			    <div data-ng-if="locations"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
-			      {{ 'NYPL_MARKER' | translate }}</div>
-			    <div data-ng-if="locationStart"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
-			      {{ 'USER_MARKER' | translate }}</div>
-          <div data-ng-if="searchMarker"><img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png" />
-			      {{ 'SEARCH_MARKER' | translate }}</div>
+			    <div data-ng-if="locations">
+            <img class="map-marker" src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
+			      <span>{{ 'NYPL_MARKER' | translate }}</span>
+          </div>
+			    <div data-ng-if="userMarker">
+            <img class="map-marker" src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
+			      <span>{{ 'USER_MARKER' | translate }}</span>
+          </div>
+          <div data-ng-if="searchMarker">
+            <img class="map-marker" src="http://maps.google.com/mapfiles/ms/icons/green-dot.png" />
+			      <span>{{ 'SEARCH_MARKER' | translate }}</span>
+          </div>
 			  </div>
 	    </div>
 	  </div><!--
@@ -22,9 +27,9 @@
 	  	<!-- Locations List Data -->
 	  	<div class="locations-data-wrapper scrollable">
 
-	  		<div id="{{location.id}}" class="location-data" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse">
+	  		<div id="{{location.id}}" class="location-data {{location.highlight}}" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse">
 
-					<div class="p-org"><a href='/#/{{location.slug}}'>{{location.name}}</a></div>
+					<div class="p-org"><a data-ui-sref='location({location: location.slug})'>{{location.name}}</a></div>
 					<div class="p-adr">
 						<div class="p-street-address">{{location.street_address}}</div>
 						<span class="p-locality">{{location.locality}}</span>, 
@@ -35,26 +40,51 @@
 						Phone: {{location.contacts.phone}}
 					</div>
 
-          <!-- Highlighted Services -->
-					<div class="loc-services">
-            <ul class="highlighted-services-list">
-              <li data-ng-repeat="service in location._embedded.services | limitTo:3">
-                {{service.name}}
+          <!-- Accessibility -->
+          <div data-ng-if="location.access == 'Fully Accessible'" class="accessible">
+            <span class="fully icon-accessibility"></span>
+            {{location.access}}
+          </div>
+          <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
+            <span class="partially icon-accessibility"></span>
+            {{location.access}}
+          </div>
+          <div data-ng-if="!location.access" class="not-accessible">
+            <span class="none icon-accessibility"></span>
+            Not Accessible
+          </div>
+
+          <!-- Highlighted Amenities -->
+					<div class="loc-amenities">
+            <ul class="highlighted-amenities-list">
+              <li data-ng-repeat="amenity in location.amenities_list | limitTo:3 | orderBy:'rank'">
+                {{amenity.name}}
               </li>
             </ul>
 					</div>
 
           <!-- Distance -->
           <div class="distance" data-ng-if="location.distance">
-            <span>Distance</span>:
+            <span>{{ 'DISTANCE' | translate }}</span>:
             <strong>{{location.distance}} {{ 'MILES' | translate}}</strong>
           </div>
 
           <!-- Today's Hours -->
-					<div class="todays-hours">
-							<span>Today's Hours</span>:
-							<strong>{{ location.hoursToday(location.hours) | timeFormat }}</strong>
+					<div class="todays-hours branch-open" data-ng-if="location.open">
+						<span>{{ 'TODAYS_HOURS' | translate }}</span>:
+						<strong>{{ location.hoursToday(location.hours) | timeFormat }}</strong>
 					</div>
+
+          <!-- Closed flag -->
+          <div data-ng-if="!location.open" class="branch-closed">
+            <b>Branch is temporarily closed.</b>
+          </div>
+
+					<!-- Branch Messages -->
+          <div data-ng-if="location.branchException && !location.open" 
+          class="loc-exceptions">
+            <p> {{ location.branchException.desc }} </p>
+          </div>
 
           <!-- Map/Directions Links -->
           <div class="map-link">
