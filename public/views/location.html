@@ -129,7 +129,11 @@
           <img class="one-third lap-and-up-one-whole desk-one-third img--left img--outline" data-ng-src="{{feature.image}}"
           alt="Image of {{feature.title}}">
         </a>
-        <h3 class=""><a data-ng-href="{{feature._links.self.href}}">{{feature.title}}</a></h3>
+        <h3 class="feature-title">
+          <a data-ng-href="{{feature._links.self.href}}">
+            {{feature.title}}
+          </a>
+        </h3>
         <div class="desc" data-ng-bind-html="feature.body"></div>
       </div>
     </div>
@@ -140,7 +144,9 @@
     <h2 class="hdg">{{ 'EVENTS' | translate }}</h2>
     <ul class="grid">
       <li class="chunk one-whole desk-one-third" data-ng-repeat="event in location._embedded.events">
-        <h3 class="event__title"><a data-ng-href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h3>
+        <h3 class="event__title">
+          <a data-ng-href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a>
+        </h3>
         <p class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p class="desc">{{event.body}}</p>
 
@@ -167,8 +173,8 @@
         </div>
       </li>
     </ul>   
-      
-    <div data-ng-if="location._links.events.all">
+    <!-- More Events Link -->
+    <div data-ng-if="location._links.events.all" class="text--right push-half--ends">
       <a class="read-more" data-ng-href="{{location._links.events.all}}">
         {{ 'MORE_EVENTS' | translate }}
       </a>
@@ -189,9 +195,12 @@
 
           --><div class="grid__item one-whole lap-and-up-one-half">
             <p>{{location.about}}</p>
-            <div><a class="read-more" data-ng-href="http://nypl.org/locations/{{location.slug}}">
+            <!-- More Link -->
+            <div class="push-half--bottom">
+              <a class="read-more" data-ng-href="http://nypl.org/locations/{{location.slug}}">
               {{ 'ABOUT_MORE' | translate }}
-            </a></div>
+              </a>
+            </div>
           </div>
         </div>
       </div><!--
@@ -230,8 +239,11 @@
         <div class="teaser desc">{{blog.body | truncate}}</div>
       </div>
     </div>
-    <div class="push-half--bottom">
-      <a class="read-more" data-ng-href="{{location._links.blogs.all}}">{{ 'MORE_BLOGS' | translate }}</a>
+    <!-- More Link -->
+    <div class="text--right push-half--ends">
+      <a class="read-more" data-ng-href="{{location._links.blogs.all}}">
+        {{ 'MORE_BLOGS' | translate }}
+      </a>
     </div>
   </div>
 
@@ -251,8 +263,7 @@
     </div>
   </div>
 
-  <!-- Ask/Donate Directive -->
-
+  <!-- Ask/Donate -->
   <div class="ask-donate">
     <div class="appeal grid__item one-whole lap-and-up-one-half" id="donate">
       <p>Help us keep this library open 6 days a week!</p>
@@ -267,8 +278,6 @@
       </ul>
     </div>
   </div>
-
-
 
 </div>
 <!-- END Location Content -->
