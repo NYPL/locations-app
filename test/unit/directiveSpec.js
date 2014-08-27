@@ -179,18 +179,46 @@ describe('NYPL Directive Tests', function () {
    * <nyplbreadcrumbs></nyplbreadcrumbs>
    */
   describe('nyplbreadcrumbs', function () {
+    var scope, element, html, $rootScope, $compile;
+
     beforeEach(inject(function (_$compile_, _$rootScope_) {
       $compile = _$compile_;
       $rootScope = _$rootScope_;
+      html = '<nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>';
+      scope = $rootScope.$new();
+
+      element = angular.element(html);
+      $compile(element)(scope);
+      scope.$digest();
     }));
 
-    it('should compile', function () {
-      element = angular.element('<nyplbreadcrumbs></nyplbreadcrumbs>');
-      $compile(element)($rootScope);
-      $rootScope.$digest();
-
-      expect(element.attr('class')).toContain('breadcrumb');
+    it('should create an unordered list with class breadcrumb', function () {
+      var crumbList = element.find('ul');
+      expect(crumbList.attr('class')).toContain('breadcrumb');
     });
+
+    it('should contain attribute "crumb-name"', function () {
+      expect(element.attr('crumb-name')).toBeTruthy();
+    });  
+
+    it('should contain attribute "crumb-name" value to be "data.crumbName"', function () {
+      expect(element.attr('crumb-name')).toBe('data.crumbName');
+    });
+
+    it('should create an empty breadcrumbs scope array element', function () {
+      var isoScope = element.isolateScope();
+      expect(isoScope.breadcrumbs.length).toBeLessThan(1);
+    })
+
+    it('once a Crumb is inserted, it should add elements to breadcrumbs array', function () {
+      var isoScope = element.isolateScope();
+
+      isoScope.breadcrumbs.push({
+        displayName: 'Amenities',
+        route: 'amenities'
+      });
+      expect(isoScope.breadcrumbs.length).toBeGreaterThan(0);
+    })    
   });
 
   /*

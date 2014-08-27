@@ -21,16 +21,15 @@ describe('Circulating branch page', function () {
         });
     };
 
+  beforeEach(function () {
+    // Pass the good JSON from the API call.
+    browser.addMockModule('httpBackendMock', httpBackendMock,
+      APIresponse.good);
+    browser.get('/#/grand-central');
+    browser.waitForAngular();
+  });
 
   describe('basic info section', function () {
-    beforeEach(function () {
-      // Pass the good JSON from the API call.
-      browser.addMockModule('httpBackendMock', httpBackendMock,
-        APIresponse.good);
-      browser.get('/#/grand-central');
-      browser.waitForAngular();
-    });
-
     it('should display the name', function () {
       expect(locationPage.name.getText()).toEqual('Grand Central Library');
     });
@@ -83,7 +82,7 @@ describe('Circulating branch page', function () {
 
     it('should have a link with the slug, not abbreviation', function () {
       expect(locationPage.allAmenities.getAttribute('href'))
-        .toMatch(/amenities\/location\/grand-central/);
+        .toMatch(/amenities\/loc\/grand-central/);
     });
   });
 

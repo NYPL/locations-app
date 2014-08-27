@@ -99,9 +99,9 @@ describe('NYPL coordinateService Module', function () {
             return success(position);
           };
           geolocationMock.getCurrentPosition =
-              window.navigator.geolocation.getCurrentPosition =
-                jasmine.createSpy('getCurrentPosition')
-                .and.callFake(geolocationOk);
+            window.navigator.geolocation.getCurrentPosition =
+              jasmine.createSpy('getCurrentPosition')
+              .and.callFake(geolocationOk);
         });
 
         it('should not be called', function () {

@@ -7,12 +7,18 @@
 	    <div class="map-wrapper">
 				<div id="all-locations-map" class="nypl-map"></div>
 			  <div id="all-locations-map-legend" class="hide-legend">
-			    <div data-ng-if="locations"><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
-			      {{ 'NYPL_MARKER' | translate }}</div>
-			    <div data-ng-if="userMarker"><img src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
-			      {{ 'USER_MARKER' | translate }}</div>
-          <div data-ng-if="searchMarker"><img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png" />
-			      {{ 'SEARCH_MARKER' | translate }}</div>
+			    <div data-ng-if="locations">
+            <img class="map-marker" src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
+			      <span>{{ 'NYPL_MARKER' | translate }}</span>
+          </div>
+			    <div data-ng-if="userMarker">
+            <img class="map-marker" src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
+			      <span>{{ 'USER_MARKER' | translate }}</span>
+          </div>
+          <div data-ng-if="searchMarker">
+            <img class="map-marker" src="http://maps.google.com/mapfiles/ms/icons/green-dot.png" />
+			      <span>{{ 'SEARCH_MARKER' | translate }}</span>
+          </div>
 			  </div>
 	    </div>
 	  </div><!--
@@ -35,17 +41,23 @@
 					</div>
 
           <!-- Accessibility -->
-          <div data-ng-if="location.access == 'Fully Accessible'" class="fully accessible icon-accessibility icon-color-blue">
+          <div data-ng-if="location.access == 'Fully Accessible'" class="accessible">
+            <span class="fully icon-accessibility"></span>
             {{location.access}}
           </div>
-          <div data-ng-if="location.access == 'Partially Accessible'" class="partially accessible icon-accessibility2 icon-color-blue">
+          <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
+            <span class="partially icon-accessibility"></span>
             {{location.access}}
+          </div>
+          <div data-ng-if="!location.access" class="not-accessible">
+            <span class="none icon-accessibility"></span>
+            Not Accessible
           </div>
 
           <!-- Highlighted Amenities -->
 					<div class="loc-amenities">
             <ul class="highlighted-amenities-list">
-              <li data-ng-repeat="amenity in location._embedded.amenities | limitTo:3">
+              <li data-ng-repeat="amenity in location.amenities_list | limitTo:3 | orderBy:'rank'">
                 {{amenity.name}}
               </li>
             </ul>
@@ -69,7 +81,8 @@
           </div>
 
 					<!-- Branch Messages -->
-          <div data-ng-if="location.branchException" class="loc-exceptions">
+          <div data-ng-if="location.branchException && !location.open" 
+          class="loc-exceptions">
             <p> {{ location.branchException.desc }} </p>
           </div>
 

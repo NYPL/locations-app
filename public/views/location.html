@@ -1,8 +1,9 @@
 <!-- Individual Location -->
 <div class="individual-location {{location.type}} h-card">
-
-  <!-- <nyplbreadcrumbs></nyplbreadcrumbs> -->
-
+  <!-- Breadcrumbs -->
+  <nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>
+  
+  <!-- Individual location exception messages -->
   <nypl-library-alert exception="location.hours.exceptions"></nypl-library-alert>
 
   <!-- Location hours, address and image -->
@@ -49,11 +50,17 @@
           </div>
 
           <!-- Accessibility -->
-          <div data-ng-if="location.access == 'Fully Accessible'" class="fully accessible icon-accessibility icon-color-blue">
+          <div data-ng-if="location.access == 'Fully Accessible'" class="accessible">
+            <span class="fully icon-accessibility"></span>
             {{location.access}}
           </div>
-          <div data-ng-if="location.access == 'Partially Accessible'" class="partially accessible icon-accessibility2 icon-color-blue">
+          <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
+            <span class="partially icon-accessibility"></span>
             {{location.access}}
+          </div>
+          <div data-ng-if="!location.access" class="not-accessible">
+            <span class="none icon-accessibility"></span>
+            Not Accessible
           </div>
 
           <div class="map-directions">
@@ -161,8 +168,8 @@
       </li>
     </ul>   
       
-    <div>
-      <a class="read-more">
+    <div data-ng-if="location._links.events.all">
+      <a class="read-more" data-ng-href="{{location._links.events.all}}">
         {{ 'MORE_EVENTS' | translate }}
       </a>
     </div>

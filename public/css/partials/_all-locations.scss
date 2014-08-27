@@ -345,6 +345,11 @@
 							display: inline;
 						}
 					}
+					// Accessibility
+					.accessible, .not-accessible {
+						margin: 4px 0px;
+					}
+
 					// Hide map-link on mobile devices
 					.map-link {
 						display: block;
@@ -417,7 +422,7 @@
 				}
 
 				.todays-hours, .distance {
-					margin: .35em 0;
+					margin: 1em 0;
 
 					span {
 						margin-right: .05em;
@@ -425,6 +430,11 @@
 					strong {
 						margin-left: .1em;
 					}
+				}
+
+				// Accessibility
+				.accessible, .not-accessible {
+					margin: 4px 0px;
 				}
 
 				.directions-link {
@@ -440,20 +450,44 @@
 
 		// Google Map
 		.map-wrapper {
-			margin: 24px 0px;
+			margin: 24px 5px;
 			@include breakpoint($min, $post-palm) {
 				margin: 0;
 			}
 			#all-locations-map {
-				height: 500px;
+				height: 260px;
 				width: 100%;
+
+				@include breakpoint($min, $post-palm) {
+					height: 500px;
+				}
 			}
 
 			#all-locations-map-legend {
-				padding: 10px;
-			  font-size: 13px;
-			  font-size: 1.3em;
+				padding: 5px;
+			  font-size: 11px;
+			  font-size: 1.1em;
 			  background: #fff;
+			  @include breakpoint($min, $post-palm) {
+			  	padding: 10px;
+				  font-size: 13px;
+				  font-size: 1.3em;
+			  }
+			  div {
+			  	margin: .5px 0px;
+			  }
+
+			  img.map-marker {
+			  	max-width: 15%;
+
+		  	 @include breakpoint($min, $post-palm) {
+		  	 	max-width: 100%;
+		  	 }
+			  }
+
+			  span {
+			  	vertical-align: top;
+			  }
 			}
 
 			.hide-legend {

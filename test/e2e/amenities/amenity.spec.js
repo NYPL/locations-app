@@ -23,11 +23,11 @@ describe('Locations: Amenity', function () {
         });
     };
 
-  describe('One amenity page', function () {
+  describe('Good API Call', function () {
     beforeEach(function () {
       browser.addMockModule('httpBackendMock', httpBackendMock,
           APIresponse.good);
-      browser.get('/#/amenities/7950');
+      browser.get('/#/amenities/id/7950');
     });
 
     it('should display the name of the service', function () {
@@ -50,5 +50,16 @@ describe('Locations: Amenity', function () {
         .toEqual('The Library also offers\nservices\nof all kinds!' +
           '\nFind out more');
     });
+  });
+
+  describe('Bad API Call', function () {
+    beforeEach(function () {
+      browser.addMockModule('httpBackendMock', httpBackendMock,
+          APIresponse.bad);
+      browser.get('/#/amenities/id/7950');
+      browser.waitForAngular();
+    });
+
+    // TODO: Write tests
   });
 });

@@ -5,9 +5,12 @@
 
 // Main page wrapper (Necessary for centering grid items)
 .wrapper {
-	margin: 0 auto;
+	margin: 55px auto 0;
 	padding: 0 24px;
 	max-width: 1200px;
+	@include breakpoint($min, $pre-tablet) {
+		margin: 0 auto;
+	}
 }
 
 // Loader
@@ -54,7 +57,6 @@
 
 // Lokinator content wrapper
 .nypl-locations {
-	margin-top: 30px;
 	min-height: 700px;
 
 	@include breakpoint($min, $tablet) {
@@ -78,7 +80,7 @@
 	background-color: #ECE94C;
 	padding: 12px;
 	position: relative;
-	top: 25px;
+	top: 50px;
 	width: 100%;
 
 	@include breakpoint($min, $pre-tablet) {
@@ -97,6 +99,21 @@
 .breadcrumb{
 	font-size: .8rem;
 	margin-left: 0;
+	list-style-type: none;
+	padding-bottom: 2px;
+	margin-bottom: 1em;
+	border-bottom: 1px solid #E8E4E1;
+
+	li {
+		display: inline;
+
+		a {
+			text-decoration: none;
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
 }
 
 // Ask & Donate section
@@ -153,6 +170,27 @@
 			}
 		}
 	}	
+}
+
+// Accessibility Icons
+.icon-accessibility {
+	padding: 3px 0px;
+	margin-right: 2px;
+
+	&:before {
+		margin: 0;
+		padding: 0px 3px;
+	}
+	&.fully {
+		background-color: #0090c4;
+		color: #FFF;
+	}
+	&.partially {
+		color: #0090c4;
+	}
+	&.none {
+		color: #d62828;
+	}
 }
 
 // Firefox specific override rules

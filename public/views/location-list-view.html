@@ -34,11 +34,17 @@
               </div>
 
               <!-- Accessibility -->
-              <div data-ng-if="location.access == 'Fully Accessible'" class="fully accessible icon-accessibility icon-color-blue">
+              <div data-ng-if="location.access == 'Fully Accessible'" class="accessible">
+                <span class="fully icon-accessibility"></span>
                 {{location.access}}
               </div>
-              <div data-ng-if="location.access == 'Partially Accessible'" class="partially accessible icon-accessibility2 icon-color-blue">
+              <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
+                <span class="partially icon-accessibility"></span>
                 {{location.access}}
+              </div>
+              <div data-ng-if="!location.access" class="not-accessible">
+                <span class="none icon-accessibility"></span>
+                Not Accessible
               </div>
 
               <!-- Map/Directions Links -->
@@ -62,7 +68,7 @@
             <!-- Highlighted Amenities -->
             <td class="amenities-info">
               <ul class="highlighted-amenities-list">
-                <li data-ng-repeat="amenity in location._embedded.amenities | limitTo:3">
+                <li data-ng-repeat="amenity in location.amenities_list | limitTo:3 | orderBy:'rank'">
                   {{amenity.name}}
                 </li>
               </ul>
@@ -78,7 +84,8 @@
                   <b>Branch is temporarily closed.</b>
                 </p>
               </div>
-              <div data-ng-if="location.branchException" class="loc-exceptions">
+              <div data-ng-if="location.branchException && !location.open" 
+              class="loc-exceptions">
                 <p> {{ location.branchException.desc }} </p>
               </div>
             </td>

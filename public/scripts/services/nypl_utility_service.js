@@ -37,11 +37,18 @@ function requestNotificationChannel($rootScope) {
     return notificationChannel;
 }
 
-function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
+/** @namespace nyplUtility */
+function nyplUtility($window, $sce, nyplCoordinatesService) {
     'use strict';
 
     var utility = {};
 
+    /** @function nyplUtility.hoursToday
+     * @param {object} hours Object with a regular property that is an array
+     *  with the open and close times for every day.
+     * @returns {object} An object with the open and close times for the current
+     *  and tomorrow days.
+     */
     utility.hoursToday = function (hours) {
         var date = new Date(),
             today = date.getDay(),
@@ -66,7 +73,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
     };
 
     // Parse exception data and return as string
-    utility.branchException = function(hours) {
+    utility.branchException = function (hours) {
         var exception = {};
 
         if (hours) {
@@ -74,7 +81,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
             if (!hours.exceptions) {
                 return null;
             }
-            else if (hours.exceptions.description.trim() !== '') {
+            if (hours.exceptions.description.trim() !== '') {
                 exception.desc = hours.exceptions.description;
                 // Optional set
                 if (hours.exceptions.start) {
@@ -88,10 +95,15 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         }
     };
 
-    // Line breaks are needed when displaying the address on the marker
-    // for the map. The name is also a link to the location's page.
-    // Line breaks are not needed when we use the address 
-    // to get directions on Google Maps.
+    /** @function nyplUtility.getAddressString
+     * @param {object} location The full location object.
+     * @param {boolean} [nicePrint] False by default. If true is passed, the
+     *  returned string will have HTML so it displays nicely in a Google Maps
+     *  marker infowindow.
+     * @returns {string} The formatted address of the location passed. Will
+     *  contain HTML if true is passed as the second parameter, with the
+     *  location name linked
+     */
     utility.getAddressString = function (location, nicePrint) {
         if (!location) {
             return '';
@@ -113,18 +125,6 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
             location.postal_code;
     };
 
-    utility.locationType = function (id) {
-        switch (id) {
-        case 'SASB':
-        case 'LPA':
-        case 'SC':
-        case 'SIBL':
-            return 'research';
-        default:
-            return 'circulating';
-        }
-    };
-
     utility.socialMediaColor = function (social_media) {
         _.each(social_media, function (sc) {
             sc.classes = 'icon-';
@@ -132,9 +132,11 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
             case 'facebook':
                 sc.classes += sc.site + ' blueDarkerText';
                 break;
-            case 'youtube':
-            case 'pinterest':
-                sc.classes += sc.site + ' redText';
+            case 'foursquare':
+                sc.classes += sc.site + ' blueText';
+                break;
+            case 'instagram':
+                sc.classes += sc.site + ' blackText';
                 break;
             // Twitter and Tumblr have a 2 in their icon class
             // name: icon-twitter2, icon-tumblr2
@@ -144,8 +146,9 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
             case 'tumblr':
                 sc.classes += sc.site + '2 indigoText';
                 break;
-            case 'foursquare':
-                sc.classes += sc.site + ' blueText';
+            case 'youtube':
+            case 'pinterest':
+                sc.classes += sc.site + ' redText';
                 break;
             default:
                 sc.classes += sc.site;
@@ -287,8 +290,7 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         if (!event || !address) {
             return '';
         }
-        var currentTime = new Date().toJSON()
-                .toString().replace(/[\-.:]/g, ''),
+        var currentTime = new Date().toJSON().toString().replace(/[\-.:]/g, ''),
             url = "http://nypl.org/" + event._links.self.href,
             icsMSG = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//NYPL//" +
                 "NONSGML v1.0//EN\n" +
@@ -309,61 +311,33 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
             encodeURI(icsMSG));
     };
 
-    utility.idLocationSearch = function (locations, searchTerm) {
-        var IDFilter = [];
-
-        // search for ID
-        // This is a priority.
-        // If 'sibl' is searched, then it should display it
-        // first before anything else.
-        if (searchTerm.length >= 2 && searchTerm.length <= 4) {
-            IDFilter = _.where(
-                locations,
-                { 'id' : searchTerm.toUpperCase() }
-            );
-        }
-
-        return IDFilter;
-    };
-
-    utility.locationSearch = function (locations, searchTerm) {
-        var lazyFilter =
-                $filter('filter')(locations, searchTerm),
-            strictFilter =
-                $filter('filter')(locations, searchTerm, true);
-
-        // Check the strict and 'lazy' filter.
-        // The strict filter has a higher priority since it's
-        // a better match. The 'lazy' filter matches anything,
-        // even part of a word so 'sibl' would match with
-        // 'accesSIBLe'.
-        if (strictFilter !== undefined && strictFilter.length !== 0) {
-            // Rarely occurs but just in case there are results for
-            // both filters, the strict match should appear first
-            return _.union(strictFilter, lazyFilter);
-        }
-
-        return lazyFilter;
-    };
-
     // Iterate through lon/lat and calculate distance
     utility.calcDistance = function (locations, coords) {
         if (!locations) {
             return [];
         }
 
-        var search = {
+        var searchCoordinates = {
             latitude: coords.latitude || coords.lat,
             longitude: coords.longitude || coords.long
         };
 
         _.each(locations, function (location) {
+            var locCoords = [], locationLat, locationLong;
+
+            if (location.geolocation && location.geolocation.coordinates) {
+                locCoords = location.geolocation.coordinates;
+            }
+
+            locationLat = location.lat || locCoords[1];
+            locationLong = location.long || locCoords[0];
+
             location.distance =
                 nyplCoordinatesService.getDistance(
-                    search.latitude,
-                    search.longitude,
-                    location.lat,
-                    location.long
+                    searchCoordinates.latitude,
+                    searchCoordinates.longitude,
+                    locationLat,
+                    locationLong
                 );
         });
 
@@ -379,22 +353,25 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
         return false;
     };
 
-    utility.searchWordFilter = function (query) {
-        var words = ['branch'];
-
-        _.each(words, function (word) {
-            query = query.replace(word, '');
-        });
-
-        return query;
-    };
-
-    // Use ngSanitize to allow markup.
-    // Must use ng-bind-html as attribute in the element.
+    /** @function nyplUtility.returnHTML
+     * @param {string} html A string containing HTML that should be rendered.
+     * @returns {string} A trusted string with renderable HTML used in
+     *  AngularJS' markup binding.
+     * @description Using the ngSanitize module to allow markup in a string.
+     *  The second step is to use ng-bind-html="..." to display the
+     *  trusted HTMl.
+     */
     utility.returnHTML = function (html) {
         return $sce.trustAsHtml(html);
     };
 
+    /** @function nyplUtility.divisionHasAppointment
+     * @param {string} id The id of a division.
+     * @returns {boolean} True if the division is in the set that should have
+     *  appointments, false otherwise.
+     * @description Only a few divisions should have a link to make
+     *  an appointment.
+     */
     utility.divisionHasAppointment = function (id) {
         switch (id) {
         case "ARN":
@@ -412,6 +389,71 @@ function nyplUtility($filter, nyplCoordinatesService, $window, $sce) {
     };
 
     return utility;
+}
+
+/** @namespace nyplSearch */
+function nyplSearch($filter) {
+    'use strict';
+
+    var search = {};
+
+    /** @function nyplSearch.idLocationSearch
+     * @param {array} locations Array containing a list of all the
+     *  locations objects.
+     * @param {string} searchTerm The id to search for in all the locations.
+     * @returns {array} An array containing the location object with the
+     *  searched id. An empty array if there is no match.
+     * @description All the locations are being searched with a specific ID in
+     *  mind. If there is a location object where the 'id' property matches the
+     *  id that was being searched, then it is returned in an array.
+     */
+    search.idLocationSearch = function (locations, searchTerm) {
+        var IDFilter = [];
+
+        if (searchTerm.length >= 2 && searchTerm.length <= 4) {
+            IDFilter = _.where(locations, { 'id' : searchTerm.toUpperCase() });
+        }
+
+        return IDFilter;
+    };
+
+    search.locationSearch = function (locations, searchTerm) {
+        // how to search the object?
+        // name, address, zipcode, locality, synonyms (amenities and divisions?)
+
+        var lazyFilter = $filter('filter')(locations, searchTerm),
+            strictFilter = $filter('filter')(locations, searchTerm, true);
+
+        // Check the strict and 'lazy' filter. The strict filter has a higher
+        // priority since it's a better match. The 'lazy' filter matches
+        // anything, even part of a word. 'sibl' would match with 'accesSIBLe'.
+        if (strictFilter !== undefined && strictFilter.length !== 0) {
+            // Rarely occurs but just in case there are results for
+            // both filters, the strict match should appear first
+            return _.union(strictFilter, lazyFilter);
+        }
+
+        return lazyFilter;
+    };
+
+    /** @function nyplSearch.searchWordFilter
+     * @param {string} query The search word or phrase.
+     * @returns {string} The same search phrase but with stop words removed.
+     * @description Some words should be removed from a user's search query.
+     *  Those words are removed before doing any filtering or searching using 
+     *  Google's service.
+     */
+    search.searchWordFilter = function (query) {
+        var words = ['branch'];
+
+        _.each(words, function (word) {
+            query = query.replace(word, '');
+        });
+
+        return query;
+    };
+
+    return search;
 }
 
 function nyplAmenities() {
@@ -485,5 +527,6 @@ function nyplAmenities() {
 angular
     .module('nypl_locations')
     .factory('nyplUtility', nyplUtility)
+    .factory('nyplSearch', nyplSearch)
     .factory('nyplAmenities', nyplAmenities)
     .factory('requestNotificationChannel', requestNotificationChannel);

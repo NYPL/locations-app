@@ -1,8 +1,9 @@
 <!-- Individual Division -->
 <div class="individual-division">
-
-  <!-- <nyplbreadcrumbs></nyplbreadcrumbs> -->
-
+  <!-- Breadcrumbs -->
+  <nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>
+  
+  <!-- Individual location exception messages -->
   <nypl-library-alert exception="division.hours.exceptions"></nypl-library-alert>
 
   <div class="container__div_info">
@@ -58,11 +59,19 @@
         <div data-ng-if="division.contacts.phone">{{division.contacts.phone}}</div>
 
         <!-- Accessibility -->
-        <div data-ng-if="division.access == 'Fully Accessible'" class="fully accessible icon-accessibility icon-color-blue">
-          {{division.access}}
-        </div>
-        <div data-ng-if="division.access == 'Partially Accessible'" class="partially accessible icon-accessibility2 icon-color-blue">
-          {{division.access}}
+        <div id="accessibility__container">
+          <div data-ng-if="location.access == 'Fully Accessible'" class="accessible">
+            <span class="fully icon-accessibility"></span>
+            {{location.access}}
+          </div>
+          <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
+            <span class="partially icon-accessibility"></span>
+            {{location.access}}
+          </div>
+          <div data-ng-if="!location.access" class="not-accessible">
+            <span class="none icon-accessibility"></span>
+            Not Accessible
+          </div>
         </div>
 
         <div class="social flush beta" data-ng-if="division.social_media">

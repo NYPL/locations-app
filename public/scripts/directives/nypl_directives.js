@@ -61,16 +61,6 @@ function todayshours() {
     };
 }
 
-function nyplbreadcrumbs() {
-    'use strict';
-
-    return {
-        restrict: 'E',
-        templateUrl: 'scripts/directives/templates/breadcrumbs.html',
-        replace: true
-    };
-}
-
 function emailusbutton() {
     'use strict';
 
@@ -163,7 +153,7 @@ function nyplSiteAlerts(nyplLocationsService, nyplUtility) {
         // Must be global for unit test to pass. Must find better way to test.
         // scope: {},
         link: function (scope, element, attrs) {
-            var alerts;
+            var alerts, body;
             nyplLocationsService.alerts().then(function (data) {
                 alerts = data.alerts;
                 scope.sitewidealert = nyplUtility.alerts(alerts);
@@ -187,9 +177,6 @@ function nyplLibraryAlert(nyplUtility) {
                 if (scope.exception.description !== '') {
                     scope.libraryAlert = scope.exception.description;
                 }
-            }
-            else {
-                return;
             }
         }
     };
@@ -247,7 +234,6 @@ angular
     .directive('loadingWidget', loadingWidget)
     .directive('nyplTranslate', nyplTranslate)
     .directive('todayshours', todayshours)
-    .directive('nyplbreadcrumbs', nyplbreadcrumbs)
     .directive('emailusbutton', emailusbutton)
     .directive('librarianchatbutton', librarianchatbutton)
     .directive('scrolltop', scrolltop)
