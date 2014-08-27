@@ -572,7 +572,7 @@ function nyplAmenities() {
         initial_list = sortAmenitiesList(initial_list, 'location_rank');
 
         amenities_list = _.union(amenities_list, initial_list.splice(0,2));
-
+console.log(amenities_list);
         return amenities_list;
     };
 

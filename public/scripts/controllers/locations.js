@@ -541,7 +541,7 @@
 
         $scope.location = location;
         $rootScope.title = location.name;
-console.log(location._embedded.amenities);
+// console.log(location._embedded.amenities);
         location._embedded.amenities =
             nyplAmenities.addCategoryIcon(location._embedded.amenities);
 
