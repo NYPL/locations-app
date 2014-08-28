@@ -14,3 +14,24 @@
 		overflow: hidden;
 	}
 }
+
+.container__sub_divisions {
+	clear: both;
+	margin-top: 24px;
+	.subdivision-wrapper {
+		margin-bottom: 3em;
+		
+		img {
+			height: 250px;
+		}
+		
+		h4 {
+			margin-bottom: .5rem;
+		}
+
+		p {
+			max-width: 100%;
+			margin: .5em 0;
+		}
+	}
+}

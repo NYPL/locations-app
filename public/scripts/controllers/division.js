@@ -17,6 +17,14 @@
         if (division.hours) {
             $scope.hoursToday = nyplUtility.hoursToday(division.hours);
         }
+
+        // Calculate hours today for sub-divisions
+        if (division._embedded.divisions) {
+            _.each(division._embedded.divisions, function (division) {
+                division.hoursToday = nyplUtility.hoursToday(division.hours);
+            });
+        }
+
         $scope.division.social_media =
             nyplUtility.socialMediaColor(division.social_media);
 

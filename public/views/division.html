@@ -83,6 +83,22 @@
     </div>
   </div>
 
+  <!-- Sub-divisions -->
+  <div class="container__sub_divisions" data-ng-if="division._embedded.divisions">
+    <h2 class="hdg">{{ 'SUBDIVISION_HEADER' | translate }}</h2>
+    <div class="grid">
+      <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third" data-ng-repeat='subdivision in division._embedded.divisions'>
+        <div class="subdivision-wrapper">
+          <img class="img--outline" src="images/pippin_fpo.jpg"
+            alt="Image for {{subdivision.name}}" title="Image for {{subdivision.name}}"/>
+          <h4 class="subdivision-title">{{subdivision.name}}</h4>
+          <p data-ng-if="subdivision.hours">Hours Today: {{subdivision.hoursToday | timeFormat}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Division -->
   <div class="container__about">
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-three-fifths">
