@@ -60,15 +60,15 @@
 
         <!-- Accessibility -->
         <div id="accessibility__container">
-          <div data-ng-if="location.access == 'Fully Accessible'" class="accessible">
+          <div data-ng-if="division.access == 'Fully Accessible'" class="accessible">
             <span class="fully icon-accessibility"></span>
-            {{location.access}}
+            {{division.access}}
           </div>
-          <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
+          <div data-ng-if="division.access == 'Partially Accessible'" class="accessible">
             <span class="partially icon-accessibility"></span>
-            {{location.access}}
+            {{division.access}}
           </div>
-          <div data-ng-if="!location.access" class="not-accessible">
+          <div data-ng-if="!division.access" class="not-accessible">
             <span class="none icon-accessibility"></span>
             Not Accessible
           </div>
