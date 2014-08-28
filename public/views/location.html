@@ -110,11 +110,13 @@
   <div id="container__divisions" data-ng-if="location.type == 'research' && location._embedded.divisions">
     <h2 class="hdg">{{ 'DIVISION_HEADER' | translate }}</h2>
     <div class="grid">
-      <div class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='division in location._embedded.divisions'>
-        <img class="img--left img--outline" src="images/pippin_fpo.jpg"
-          alt="Image for {{division.name}}" title="Image for {{division.name}}" style="height: 100px;"/>
-        <h4 class=""><a data-ui-sref="division({division: division.slug})">{{division.name}}</a></h4>
-        <p data-ng-if="division.hours">Hours Today: {{division.hoursToday | timeFormat}}</p>
+      <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third" data-ng-repeat='division in location._embedded.divisions'>
+        <div class="division-wrapper">
+          <img class="img--outline" src="images/pippin_fpo.jpg"
+            alt="Image for {{division.name}}" title="Image for {{division.name}}"/>
+          <h4 class=""><a data-ui-sref="division({division: division.slug})">{{division.name}}</a></h4>
+          <p data-ng-if="division.hours">Hours Today: {{division.hoursToday | timeFormat}}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -196,7 +198,7 @@
           --><div class="grid__item one-whole lap-and-up-one-half">
             <p>{{location.about}}</p>
             <!-- More Link -->
-            <div class="push-half--bottom">
+            <div class="push-half--bottom text--right">
               <a class="read-more" data-ng-href="http://nypl.org/locations/{{location.slug}}">
               {{ 'ABOUT_MORE' | translate }}
               </a>
