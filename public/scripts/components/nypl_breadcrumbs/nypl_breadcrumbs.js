@@ -3,7 +3,8 @@
 
 (function (window, angular, undefined) {
   'use strict';
-
+ 
+  /** @namespace $Crumb */
   function $Crumb() {
     var options = {
       primaryState: {
@@ -16,14 +17,24 @@
       }
     };
 
-    // Extend options from provider
+    /** @function $Crumb.setOptions
+     * @param {obj} options object containing state data.
+     * @returns angular.extend() with set opts
+     * @description Extends the destination object dst 
+     *  by copying all of the properties from the src object(s) to dst
+     */
     this.setOptions = function (opts) {
       angular.extend(options, opts);
     };
 
+    /** @function $Crumb.$get
+     * @description Provider Recipe - Exposes an API for application-wide
+     *  configuration that must be made before the application starts. 
+     *  Used for re-usable services.
+     */
     this.$get = ['$state', '$stateParams',
       function ($state, $stateParams) {
-        // Add the state in the chain if not already in and if not abstract
+        // Add the state in the chain, if found simply return
         var addStateToChain = function (chain, state) {
           var i, len;
           for (i = 0, len = chain.length; i < len; i += 1) {
@@ -31,7 +42,7 @@
               return;
             }
           }
-          // Check for abstract state
+          // Does not support abstract states
           if (!state.abstract) {
             if (state.customUrl) {
               state.url = $state.href(state.name, $stateParams || {});
@@ -41,7 +52,7 @@
         };
 
         return {
-          // Adds provider custom states to chain
+          // Adds provider custom states to chain (global scope)
           getConfigChain: function () {
             var chain = [];
 
@@ -57,6 +68,7 @@
       }];
   }
 
+  /** @namespace nyplBreadcrumbs */
   function nyplBreadcrumbs($interpolate, $state, $crumb) {
     return {
       restrict: 'E',
@@ -67,13 +79,13 @@
       link: function (scope) {
         scope.breadcrumbs = [];
 
-        /**
-         * Given a string of the type 'object.property.property', 
+        /** @function getObjectValue
+         * @param {string} set string variable in directive attribute
+         * @param {obj} current state context object
+         * @returns {string}
+         * @description Given a string of the type 'object.property.property', 
          * traverse the given context (eg the current $state object) 
          * and return the value found at that path.
-         *
-         * @param objectPath
-         * @param context
          * 
          */
         function getObjectValue(objectPath, context) {
@@ -84,21 +96,19 @@
           for (i = 0; i < propertyArray.length; i += 1) {
             if (angular.isDefined(propertyReference[propertyArray[i]])) {
               propertyReference = propertyReference[propertyArray[i]];
-            } else {
-              // default to the state's name
-              return undefined;
             }
           }
           return propertyReference;
         }
 
-        /**
-        * Get the state to put in the breadcrumbs array, 
+        /** @function getWorkingState
+        * @param {obj}
+        * @return {obj, boolean}
+        * @description Get the state to put in the breadcrumbs array, 
         * taking into account that if the current state is abstract,
         * we need to either substitute it with the state named in the
         * `scope.abstractProxyProperty` property, or set it to `false`
         * which means this breadcrumb level will be skipped entirely.
-        * @param currentState
         */
         function getWorkingState(currentState) {
           var proxyStateName,
@@ -119,13 +129,14 @@
           return workingState;
         }
 
-        /**
-        * Resolve the name of the BreadCrumb of the specified state. 
+        /** @function getCrumbName
+        * @param {obj}
+        * @return {string, boolean}
+        * @description Resolve the name of the BreadCrumb of the specified state. 
         * Take the property specified by the `displayname-property`
         * attribute and look up the corresponding property 
         * on the state's config object. 
         * The specified string can be interpolated
-        * @param currentState
         */
         function getCrumbName(currentState) {
           var interpolationContext,
@@ -139,15 +150,17 @@
           }
 
           propertyReference = getObjectValue(scope.crumbName, currentState);
-
+          // use the $interpolate service to handle any bindings
+          interpolationContext =  (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState;
+            
           if (propertyReference === false) {
             return false;
           }
           else if (typeof propertyReference === 'undefined') {
             return currentState.name;
-          } else {
-            // use the $interpolate service to handle any bindings
-            interpolationContext =  (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState;
+          }
+          
+          if (interpolationContext) {
             displayName = $interpolate(propertyReference)(interpolationContext);
             return displayName;
           }
