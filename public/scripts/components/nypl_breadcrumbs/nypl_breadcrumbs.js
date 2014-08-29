@@ -79,7 +79,7 @@
       link: function (scope) {
         scope.breadcrumbs = [];
 
-        /** @function getObjectValue
+        /** @function nyplBreadcrumbs.getObjectValue
          * @param {string} set string variable in directive attribute
          * @param {obj} current state context object
          * @returns {string}
@@ -101,7 +101,7 @@
           return propertyReference;
         }
 
-        /** @function getWorkingState
+        /** @function nyplBreadcrumbs.getWorkingState
         * @param {obj}
         * @returns {obj, boolean}
         * @description Get the state to put in the breadcrumbs array, 
@@ -129,7 +129,7 @@
           return workingState;
         }
 
-        /** @function getCrumbName
+        /** @function nyplBreadcrumbs.getCrumbName
         * @param {obj}
         * @returns {string, boolean}
         * @description Resolve the name of the Breadcrumb of the specified state. 
@@ -165,7 +165,7 @@
           }
         }
 
-        /** @function getParentState
+        /** @function nyplBreadcrumbs.getParentState
          * @param {obj}
          * @returns {obj, null}
          * @description Resolve the Parent State given from the parentState property.
@@ -204,7 +204,7 @@
           return undefined;
         }
 
-        /** @function getParentRoute
+        /** @function nyplBreadcrumbs.getParentRoute
          * @param {obj}
          * @param {string}
          * @returns {obj, undefined}
@@ -245,7 +245,7 @@
           return undefined;
         }
 
-        /** @function getParentName
+        /** @function nyplBreadcrumbs.getParentName
          * @param {obj}
          * @returns {string}
          * @description Resolve the Parent name from the current state
@@ -279,7 +279,7 @@
           return undefined;
         }
 
-        /** @function stateAlreadyInBreadcrumbs
+        /** @function nyplBreadcrumbs.stateAlreadyInBreadcrumbs
          * @param {obj}
          * @param {obj}
          * @returns {boolean}
@@ -298,7 +298,7 @@
           return alreadyUsed;
         }
 
-        /** @function initCrumbs
+        /** @function nyplBreadcrumbs.initCrumbs
         * @returns {array}
         * @description Start with the current state and traverse up the path to build the
         * array of breadcrumbs that can be used in an ng-repeat in the template.
