@@ -238,11 +238,7 @@
 					@include breakpoint($min, $post-palm) {
 						margin-bottom: 0;
 						margin-right: .35em;
-						display: inline;
-					}
-
-					span {
-						vertical-align: -2px;
+						display: inline-block;
 					}
 				}
 			}
@@ -255,8 +251,7 @@
 					margin: 0;
 					position: absolute;
 					right: 7px;
-					top: 7px;
-					padding: 1px 6px;
+					top: 13px;
 				}
 			}
 		}
