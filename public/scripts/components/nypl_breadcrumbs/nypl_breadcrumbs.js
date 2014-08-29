@@ -103,7 +103,7 @@
 
         /** @function getWorkingState
         * @param {obj}
-        * @return {obj, boolean}
+        * @returns {obj, boolean}
         * @description Get the state to put in the breadcrumbs array, 
         * taking into account that if the current state is abstract,
         * we need to either substitute it with the state named in the
@@ -131,12 +131,11 @@
 
         /** @function getCrumbName
         * @param {obj}
-        * @return {string, boolean}
-        * @description Resolve the name of the BreadCrumb of the specified state. 
-        * Take the property specified by the `displayname-property`
-        * attribute and look up the corresponding property 
-        * on the state's config object. 
-        * The specified string can be interpolated
+        * @returns {string, boolean}
+        * @description Resolve the name of the Breadcrumb of the specified state. 
+        *  Take the property specified by the `displayname-property`
+        *  attribute and look up the corresponding property 
+        *  on the state's config object. The specified string can be interpolated
         */
         function getCrumbName(currentState) {
           var interpolationContext,
@@ -159,17 +158,19 @@
           else if (typeof propertyReference === 'undefined') {
             return currentState.name;
           }
-          
+
           if (interpolationContext) {
             displayName = $interpolate(propertyReference)(interpolationContext);
             return displayName;
           }
         }
 
-        /**
-         * Resolve the Parent State given from the parentState property.
-         * Extract parentState names and state ui-href properties and assign to object
-         * @param currentState
+        /** @function getParentState
+         * @param {obj}
+         * @returns {obj, null}
+         * @description Resolve the Parent State given from the parentState property.
+         *  Extract parentState names and state ui-href properties and assign to object
+         *  Utilize the currentState.parentSetting to check for validity in config
          */
         function getParentState(currentState) {
           var currState = currentState,
@@ -183,28 +184,33 @@
             if (!context.$stateParams) {
               return null;
             }
+            // Extract Parent-state properties
+            parentStateName  = getParentName(currentState);
+            parentStateRoute = getParentRoute(context, parentStateSetting);
+            
+            if (parentStateName && parentStateRoute ) {
+              parentStateObj = {
+                displayName: parentStateName,
+                route: parentStateRoute
+              }
+              return parentStateObj;
+            }
             else {
-              parentStateName  = getParentName(currentState);
-              parentStateRoute = getParentRoute(context, parentStateSetting);
-              
-              if (parentStateName && parentStateRoute ) {
-                parentStateObj = {
-                  displayName: parentStateName,
-                  route: parentStateRoute
-                }
-                return parentStateObj;
-              }
-              else {
-                console.log('Parent state name or route is not defined');
-                return null;
-              }
+              //console.log('Parent state name or route is not defined');
+              return null;
             }
           }
-          else {
-            return undefined;
-          }
+          // Undefined if not set
+          return undefined;
         }
 
+        /** @function getParentRoute
+         * @param {obj}
+         * @param {string}
+         * @returns {obj, undefined}
+         * @description Resolve the Parent route given from the parentState property.
+         *  Traverse the current state context and find matches to the parent property
+         */
         function getParentRoute(context, parentStateSetting) {
           var currentContext = context,
             stateSetting = parentStateSetting,
@@ -212,6 +218,7 @@
             parentNameMatched = false;
 
           if (typeof currentContext === 'object' && stateSetting) {
+            // Loop through context and find parent state matches
             Object.keys(currentContext).forEach(function(key) {
               if (key !== '$stateParams') {
                 Object.keys(currentContext[key]).forEach(function(key){
@@ -227,6 +234,7 @@
                 }
               }
             });
+
             if (parentRoute) {
               return stateSetting + '({ ' + "\"" + stateSetting + "\"" + ':' + "\"" + parentRoute + "\"" + '})';
             }
@@ -234,11 +242,14 @@
               return stateSetting;
             }
           }
-          else {
-            return undefined;
-          }
+          return undefined;
         }
 
+        /** @function getParentName
+         * @param {obj}
+         * @returns {string}
+         * @description Resolve the Parent name from the current state
+         */
         function getParentName(currentState) {
           var parentStateSetting = currentState.data.parentState,
             parentStateData = $state.get(parentStateSetting),
@@ -250,10 +261,10 @@
             if (parentStateName) {
               return parentStateName;
             }
-            // Not within the context interpolation, loop though obj
-            else if( typeof context === 'object') {
+            // Not within the context interpolation, loop though object
+            else if ( typeof context === 'object') {
               Object.keys(context).forEach(function(key) {
-                if(key !== '$stateParams') {
+                if (key !== '$stateParams') {
                   if (context[key].location_name) {
                     parentStateName = context[key].location_name;
                   }
@@ -262,21 +273,19 @@
                   }
                 }
               });
-
               return parentStateName; 
             }
           }
-          else {
-            return undefined;
-          }
+          return undefined;
         }
 
-        /**
-         * Check whether the current `state` has already appeared in the current breadcrumbs array. This check is necessary
-         * when using abstract states that might specify a proxy that is already there in the breadcrumbs.
-         * @param state
-         * @param breadcrumbs
-         * @returns true or false
+        /** @function stateAlreadyInBreadcrumbs
+         * @param {obj}
+         * @param {obj}
+         * @returns {boolean}
+         * @description Check whether the current `state` has already appeared in the current
+         *  breadcrumbs object. This check is necessary when using abstract states that might 
+         *  specify a proxy that is already there in the breadcrumbs.
          */
         function stateAlreadyInBreadcrumbs(state, breadcrumbs) {
           var i,
@@ -289,8 +298,9 @@
           return alreadyUsed;
         }
 
-        /**
-        * Start with the current state and traverse up the path to build the
+        /** @function initCrumbs
+        * @returns {array}
+        * @description Start with the current state and traverse up the path to build the
         * array of breadcrumbs that can be used in an ng-repeat in the template.
         */
         function initCrumbs() {
