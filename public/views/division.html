@@ -47,8 +47,11 @@
         <div>{{division.location_name}}</div>
         <div data-ng-if="division.street_address">{{division.street_address}}</div>
         <div data-ng-if="division.cross_street">{{division.cross_street}}</div>
-        <div data-ng-if="division.floor">{{division.floor}} 
-            <span data-ng-if="division.room">{{ 'ROOM' | translate }} {{division.room}}</span>
+        <div data-ng-if="division.floor">
+          <span>{{division.floor}}</span>
+          <span data-ng-if="division.room" class="room">
+            {{'ROOM' | translate}}{{division.room}}
+          </span>
         </div>
         <div data-ng-if="division.locality">
           {{division.locality}}, {{division.region}} {{division.postal_code}}
@@ -91,7 +94,9 @@
         <div class="subdivision-wrapper">
           <img class="img--outline" src="images/pippin_fpo.jpg"
             alt="Image for {{subdivision.name}}" title="Image for {{subdivision.name}}"/>
-          <h4 class="subdivision-title">{{subdivision.name}}</h4>
+          <h4 class="subdivision-title">
+            <a ui-sref="division({division: subdivision.slug})">{{subdivision.name}}</a>
+          </h4>
           <p data-ng-if="subdivision.hours">Hours Today: {{subdivision.hoursToday | timeFormat}}</p>
         </div>
       </div>
