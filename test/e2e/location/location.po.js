@@ -4,6 +4,8 @@
 var LocationPage = function () {
   'use strict';
 
+  this.alert = element(by.binding('libraryAlert'));
+
   this.name = element(by.binding('location.name'));
   this.image = element(by.css('#container__image img'));
 
@@ -13,6 +15,10 @@ var LocationPage = function () {
   this.postal_code = element(by.binding('location.postal_code'));
 
   this.manager = element(by.binding('location.contacts.manager'));
+
+  this.accessibility = element(by.css('#accessibility__container div'));
+  this.directions_link = element(by.css('.map-directions a'));
+  this.catalog_link = element(by.id('catalog-link'));
 
   this.social_media_container = element(by.id('social_media'));
   this.social_media =
@@ -27,8 +33,14 @@ var LocationPage = function () {
   this.divisions =
     element.all(by.repeater('division in location._embedded.divisions'));
 
+  this.featured_container = element(by.id('container__features'));
+  this.features =
+    element.all(by.repeater('feature in location._embedded.features'));
+
+
   this.events_container = element(by.id('container__events'));
   this.events = element.all(by.repeater('event in location._embedded.events'));
+  this.events_more_link = element(by.css('.events-more'));
 
   this.google = element.all(by.css('.google_link'));
   this.yahoo = element.all(by.css('.yahoo_link'));
@@ -36,9 +48,11 @@ var LocationPage = function () {
   this.plan_your_visit = element(by.id('plan-your-visit'));
   this.secondary_image = element(by.id('location-secondary-img'));
   this.about = element(by.binding('location.about'));
+  this.email_librarian = element(by.id('ask-librarian'));
 
   this.blogs_container = element(by.id('container__blogs'));
   this.blogs = element.all(by.repeater('blog in location._embedded.blogs'));
+  this.blogs_more_link = element(by.css('.blogs-more'));
 
   this.exhibitions =
     element.all(by.repeater('exhibition in location._embedded.exhibitions'));

@@ -5,10 +5,25 @@ describe('Locations: homepage', function () {
   "use strict";
 
   // Check ../support/landingPage.js for code
-  var landingPage = require('./homepage.po.js');
+  var landingPage = require('./homepage.po.js'),
+    APIresponse = require('../APImocks/homepage.js'),
+    httpBackendMock = function (response) {
+      angular.module('httpBackendMock', ['ngMockE2E'])
+        .run(function ($httpBackend) {
+          $httpBackend.when('GET', 'http://evening-mesa-7447-160' +
+              '.herokuapp.com/locations')
+            .respond(response);
+          // For everything else, don't mock
+          $httpBackend.whenGET(/^\w+.*/).passThrough();
+          $httpBackend.whenGET(/.*/).passThrough();
+          $httpBackend.whenPOST(/^\w+.*/).passThrough();
+        });
+    };
 
   beforeEach(function () {
-    browser.get('/');
+    // Pass the good JSON from the API call.
+    browser.addMockModule('httpBackendMock', httpBackendMock, APIresponse.good);
+    browser.get('/#/');
     browser.waitForAngular();
   });
 

@@ -1,5 +1,5 @@
 /*jslint indent: 4, maxlen: 80, nomen: true */
-/*globals nypl_locations, _, angular, jQuery, $location, $ */
+/*globals nypl_locations, _, angular, jQuery, $ */
 
 (function () {
     'use strict';
@@ -8,13 +8,13 @@
         $rootScope,
         $scope,
         $timeout,
-        $location,
         $state,
         nyplCoordinatesService,
         nyplGeocoderService,
         nyplLocationsService,
         nyplUtility,
-        nyplSearch
+        nyplSearch,
+        nyplAmenities
     ) {
         var locations,
             searchValues = nyplSearch.getSearchValues(),
@@ -274,20 +274,14 @@
                             markerCoordinates = {
                                 'latitude': location.geolocation.coordinates[1],
                                 'longitude': location.geolocation.coordinates[0]
-                            },
-                            amenities_list = [];
+                            };
 
                         location.hoursToday = nyplUtility.hoursToday;
                         location.locationDest =
                             nyplUtility.getAddressString(location);
 
-                        _.each(location._embedded.amenities, function (amenities) {
-                            _.each(amenities.amenities, function (amenity) {
-                                amenities_list.push(amenity);
-                            });
-                        });
-
-                        location.amenities_list = amenities_list;
+                        location.amenities_list = nyplAmenities
+                            .allAmenitiesArray(location._embedded.amenities);
 
                         // Individual location exception data
                         location.branchException =
@@ -310,7 +304,7 @@
                     return locations;
                 })
                 .catch(function (error) {
-                    $location.path('/404');
+                    $state.go('404');
                     throw error;
                 });
         };
@@ -343,11 +337,11 @@
         };
 
         $scope.useGeolocation = function () {
-            resetPage();
-
             // Remove any existing search markers on the map.
             nyplGeocoderService.removeMarker('search');
             $scope.select_library_for_map = '';
+            $scope.searchTerm = '';
+            $scope.searchMarker = false;
 
             $scope.scrollPage();
 
@@ -393,6 +387,7 @@
                 return;
             }
 
+            $scope.geolocationAddressOrSearchQuery = '';
             showLibrariesTypeOf();
             nyplGeocoderService.showAllLibraries()
             $scope.searchTerm =  searchTerm;
@@ -555,9 +550,11 @@
         $timeout,
         location,
         nyplCoordinatesService,
-        nyplUtility
+        nyplUtility,
+        nyplAmenities
     ) {
-        var loadUserCoordinates = function () {
+        var amenities = location._embedded.amenities,
+            loadUserCoordinates = function () {
                 return nyplCoordinatesService
                     .getBrowserCoordinates()
                     .then(function (position) {
@@ -577,6 +574,12 @@
 
         $scope.location = location;
         $rootScope.title = location.name;
+
+        // Add icons to the amenities.
+        location._embedded.amenities = nyplAmenities.addCategoryIcon(amenities);
+        // Get three institution ranked and two location ranked amenities.
+        location.amenities_list =
+            nyplAmenities.getHighlightedAmenities(amenities, 3, 2);
 
         $scope.calendarLink = nyplUtility.calendarLink;
         $scope.icalLink = nyplUtility.icalLink;

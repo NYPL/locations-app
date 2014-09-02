@@ -27,9 +27,12 @@
 	  	<!-- Locations List Data -->
 	  	<div class="locations-data-wrapper scrollable">
 
-	  		<div id="{{location.id}}" class="location-data {{location.highlight}}" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse">
+	  		<div id="{{location.id}}" class="location-data {{location.highlight}}"
+          data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse">
 
-					<div class="p-org"><a data-ui-sref='location({location: location.slug})'>{{location.name}}</a></div>
+					<div class="p-org">
+            <a data-ui-sref='location({location: location.slug})'>{{location.name}}</a>
+          </div>
 					<div class="p-adr">
 						<div class="p-street-address">{{location.street_address}}</div>
 						<span class="p-locality">{{location.locality}}</span>, 
@@ -81,14 +84,15 @@
           </div>
 
 					<!-- Branch Messages -->
-          <div data-ng-if="location.branchException && !location.open" 
-          class="loc-exceptions">
+          <div data-ng-if="location.branchException && !location.open" class="loc-exceptions">
             <p> {{ location.branchException.desc }} </p>
           </div>
 
           <!-- Map/Directions Links -->
           <div class="map-link">
-            <a class="icon-map view-on-map" href="" data-ng-click="panToLibrary(location.slug)">{{ 'VIEW_MAP' | translate}}</a>
+            <a class="icon-map view-on-map" href="" data-ng-click="panToLibrary(location.slug)">
+              {{ 'VIEW_MAP' | translate}}
+            </a>
           </div>
           <div class="directions-link">
             <a class="icon-compass" target="_blank"
@@ -96,9 +100,8 @@
               {{ 'DIRECTIONS' | translate }}
             </a>
           </div>
+	  		</div> <!-- End data-ng-repeat -->
 
-
-	  		</div>
 	    </div>
 	  </div>
   </div>

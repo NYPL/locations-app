@@ -229,6 +229,19 @@ function collapse() {
     });
 }
 
+function nyplFundraising() {
+    'use strict';
+
+    return {
+        restrict: 'E',
+        templateUrl: 'scripts/directives/templates/fundraising.html',
+        replace: true,
+        scope: {
+            fundraising: '=fundraising'
+        }
+    };
+}
+
 angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
@@ -240,4 +253,5 @@ angular
     .directive('eventRegistration', eventRegistration)
     .directive('nyplSiteAlerts', nyplSiteAlerts)
     .directive('nyplLibraryAlert', nyplLibraryAlert)
+    .directive('nyplFundraising', nyplFundraising)
     .directive('collapse', collapse);

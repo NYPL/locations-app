@@ -30,6 +30,10 @@ describe('Research branch page', function () {
   });
 
   describe('basic info section', function () {
+    it('should display an alert message', function () {
+      expect(locationPage.alert.isPresent()).toBe(true);
+    });
+
     it('should display the name', function () {
       expect(locationPage.name.getText())
         .toEqual('Schomburg Center for Research in Black Culture');
@@ -58,6 +62,24 @@ describe('Research branch page', function () {
 
     it('should not have a library manager', function () {
       expect(locationPage.manager.isPresent()).toBe(false);
+    });
+
+    it('should be Partially Accessible', function () {
+      expect(locationPage.accessibility.getText())
+        .toEqual('Partially Accessible');
+      expect(locationPage.accessibility.getAttribute('class'))
+        .toContain('accessible');
+    });
+
+    it('should have a Google Maps Directions link', function () {
+      expect(locationPage.directions_link.getAttribute('href'))
+        .toMatch(/google.com\/maps/);
+    });
+
+    it('should have an \'On Our Shelves Now\' link', function () {
+      expect(locationPage.catalog_link.getAttribute('href'))
+        .toEqual('http://nypl.bibliocommons.com/search?custom_query=' +
+          'available%3A%22Schomburg+Center%22&circ=CIRC|NON%20CIRC');
     });
 
     it('should display six social media icons', function () {
@@ -96,13 +118,28 @@ describe('Research branch page', function () {
     });
   });
 
-  describe('events section', function () {
-    it('should be not present', function () {
-      expect(locationPage.events_container.isPresent()).toBe(false);
+  describe('featured section', function () {
+    it('should be present', function () {
+      expect(locationPage.featured_container.isPresent()).toBe(true);
     });
 
-    it('should not display any event', function () {
-      expect(locationPage.events.count()).toBe(0);
+    it('should contain six featured content', function () {
+      expect(locationPage.features.count()).toBe(6);
+    });
+  });
+
+  describe('events section', function () {
+    it('should be present', function () {
+      expect(locationPage.events_container.isPresent()).toBe(true);
+    });
+
+    it('should display two events', function () {
+      expect(locationPage.events.count()).toBe(2);
+    });
+
+    it('should have a \'See more events\' link', function () {
+      expect(locationPage.events_more_link.getAttribute('href'))
+        .toEqual('http://dev.www.aws.nypl.org/events/calendar?location=64');
     });
 
     // describe('individual event', function () {
@@ -144,6 +181,11 @@ describe('Research branch page', function () {
     it('should have a "Plan Your Visit" section', function () {
       expect(locationPage.plan_your_visit.isPresent()).toBe(true);
     });
+
+    it('should have an "Email a Librarian" link', function () {
+      expect(locationPage.email_librarian.getAttribute('href'))
+        .toEqual('http://www.nypl.org/locations/tid/64/node/126585');
+    });
   });
 
   describe('blog section', function () {
@@ -153,6 +195,11 @@ describe('Research branch page', function () {
 
     it('should display six blogs', function () {
       expect(locationPage.blogs.count()).toBe(6);
+    });
+
+    it('should display a \'See more blogs\' link', function () {
+      expect(locationPage.blogs_more_link.getAttribute('href'))
+        .toEqual('http://www.nypl.org/blog/library/64');
     });
   });
 
