@@ -19,10 +19,13 @@
         </thead>
         <tbody>
           <!-- Repeated location row data -->
-          <tr class="locations-row {{location._id}} {{location.highlight}}" data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse">
+          <tr class="locations-row {{location._id}} {{location.highlight}}"
+            data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse">
             <td class="location-info h-card">
               <!-- Library Info -->
-              <div class="p-org"><a data-ui-sref='location({ location: location.slug })'>{{location.name}}</a></div>
+              <div class="p-org">
+                <a data-ui-sref='location({ location: location.slug })'>{{location.name}}</a>
+              </div>
               <div class="p-adr">
                 <div class="p-street-address">{{location.street_address}}</div>
                 <span class="p-locality">{{location.locality}}</span>, 
@@ -84,16 +87,14 @@
                   <b>Branch is temporarily closed.</b>
                 </p>
               </div>
-              <div data-ng-if="location.branchException && !location.open" 
-              class="loc-exceptions">
+              <div data-ng-if="location.branchException && !location.open" class="loc-exceptions">
                 <p> {{ location.branchException.desc }} </p>
               </div>
             </td>
-          </tr>
+          </tr> <!-- End data-ng-repeat -->
         </tbody>
       </table>
     </div>
   </div>
 </section>
 <!-- End List View -->
-

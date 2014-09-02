@@ -21,7 +21,10 @@
                 <a data-ui-sref="amenity({amenity: amenity.id})">{{amenity.name}}</a>
                 
                 <span data-ng-if="amenity._links.action && amenity._links.action.href">
-                  <a data-ng-href="{{amenity._links.action.href}}" class="amenities__reserve btn btn--natural whiteText">{{amenity._links.action.name}}</a>
+                  <a data-ng-href="{{amenity._links.action.href}}"
+                    class="amenities__reserve btn btn--natural whiteText">
+                    {{amenity._links.action.name}}
+                  </a>
                 </span>
                                 
                 <span data-ng-if="amenity._links.info">
@@ -54,17 +57,17 @@
 
   <div class="ask-donate">
     <div class="appeal grid__item one-whole lap-and-up-one-half" id="donate">
-        <p>Help us keep this library open 6 days a week!</p>
-        <button class="btn--donate" class="{{donateHref}}">Donate now</button>
+      <p>Help us keep this library open 6 days a week!</p>
+      <button class="btn--donate" class="{{donateHref}}">Donate now</button>
     </div><!--
 
     --><div class="askNYPL grid__item one-whole lap-and-up-one-half " id="ask-nypl">
-        <ul>
-          <li class="asknum icon-phone">917-ASK-NYPL</li>
-          <li><librarianchatbutton /></li>
-          <li><emailusbutton link="{{division._links.contact.href}}" /></li>
-        </ul>
+      <ul>
+        <li class="asknum icon-phone">917-ASK-NYPL</li>
+        <li><librarianchatbutton /></li>
+        <li><emailusbutton link="{{division._links.contact.href}}" /></li>
+      </ul>
     </div>
   </div>
   
-</div>  
+</div>

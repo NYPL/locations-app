@@ -1,5 +1,5 @@
 /*jslint indent: 4, maxlen: 80, nomen: true */
-/*globals nypl_locations, _, angular, jQuery, $location, $ */
+/*globals nypl_locations, _, angular, jQuery, $ */
 
 (function () {
     'use strict';
@@ -8,7 +8,6 @@
         $rootScope,
         $scope,
         $timeout,
-        $location,
         $state,
         nyplCoordinatesService,
         nyplGeocoderService,
@@ -279,7 +278,7 @@
                     return locations;
                 })
                 .catch(function (error) {
-                    $location.path('/404');
+                    $state.go('404');
                     throw error;
                 });
         };
@@ -312,11 +311,11 @@
         };
 
         $scope.useGeolocation = function () {
-            resetPage();
-
             // Remove any existing search markers on the map.
             nyplGeocoderService.removeMarker('search');
             $scope.select_library_for_map = '';
+            $scope.searchTerm = '';
+            $scope.searchMarker = false;
 
             $scope.scrollPage();
 
@@ -360,6 +359,7 @@
                 return;
             }
 
+            $scope.geolocationAddressOrSearchQuery = '';
             showLibrariesTypeOf();
             nyplGeocoderService.showAllLibraries()
             $scope.searchTerm =  searchTerm;

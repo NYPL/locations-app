@@ -4,7 +4,9 @@
     <div class="grid">
       <!-- Search Section: Search Box/Filters -->
       <form class="locations-search-form grid__item one-whole">
-        <label for="searchTerm" class="search-box-label">{{ 'EXAMPLE' | translate }}: Jefferson Market, 10018, 455 Fifth Avenue</label>
+        <label for="searchTerm" class="search-box-label">
+          {{ 'EXAMPLE' | translate }}: Jefferson Market, 10018, 455 Fifth Avenue
+        </label>
         <div class="search-box-area">
           <input class="search-box" id="searchTerm" type="text" data-ng-model="searchTerm"/>
           <span class="icon-search"></span>
@@ -22,9 +24,9 @@
     	    <div class="filters__current" data-ng-if="geolocationOn">
             <p>
               <span class="current-location-container">
-                <a id="currentloc" class="btn btn--natural whiteText" 
+                <a id="currentloc" class="btn btn--natural whiteText"
                   href="" data-ng-if="geolocationOn" data-ng-click="useGeolocation()">
-                {{ 'USER_LOCATION' | translate }}
+                  {{ 'USER_LOCATION' | translate }}
                 </a>
               </span>
               <span>{{ 'RESEARCH_TEXT' | translate}}</span>
