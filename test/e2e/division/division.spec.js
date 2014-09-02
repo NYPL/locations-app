@@ -67,9 +67,8 @@ describe('Locations: Division - Testing General Research Division',
         });
 
         it('should have a floor and room number', function () {
-          expect(divisionPage.floor.getText())
-            .toEqual('Third Floor, Room 315');
-          expect(divisionPage.room.getText()).toEqual('and Room 315');
+          expect(divisionPage.floor.getText()).toEqual('Third Floor');
+          expect(divisionPage.room.getText()).toEqual(', Room 315');
         });
 
         it('should have a manager', function () {
@@ -84,11 +83,9 @@ describe('Locations: Division - Testing General Research Division',
         it('should be fully accessible and display appropriate icon',
           function () {
             expect(divisionPage.accessibility.getText())
-              .toEqual('Not Accessible');
+              .toEqual('Fully Accessible');
             expect(divisionPage.accessibility.getAttribute('class'))
-              .toContain('not-accessible');
-            expect(divisionPage.accessibility.getAttribute('class'))
-              .toContain('not-accessible');
+              .toContain('accessible');
           });
 
         it('should display four social media icons', function () {
@@ -130,7 +127,7 @@ describe('Locations: Division - Testing General Research Division',
         });
 
         describe('Plan your visit section', function () {
-          it('should not have a Make an Appointment link', function () {
+          it('should not have a \'Make an Appointment\' link', function () {
             expect(divisionPage.make_appointment.isPresent()).toBe(false);
           });
 
