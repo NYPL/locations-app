@@ -119,9 +119,7 @@
      */
     amenities.getHighlightedAmenities = function (amenities, rank, loc_rank) {
       var initial_list = this.allAmenitiesArray(amenities),
-        amenities_list = [],
-        institution_ranked_list = [],
-        location_rank_list = [];
+        amenities_list = [];
 
       // Sort the list of all amenities by institution rank.
       initial_list = sortAmenitiesList(initial_list, 'rank');
