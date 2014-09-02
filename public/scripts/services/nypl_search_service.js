@@ -8,7 +8,22 @@
   function nyplSearch($filter) {
     'use strict';
 
-    var search = {};
+    var search = {},
+      searchValues = {};
+
+    search.setSearchValue = function (prop, val) {
+        searchValues[prop] = val;
+        return this;
+    };
+
+    search.getSearchValues = function () {
+        return searchValues;
+    };
+
+    search.resetSearchValues = function () {
+        searchValues = {};
+        return this;
+    };
 
     /** @function nyplSearch.idLocationSearch
      * @param {array} locations Array containing a list of all the
