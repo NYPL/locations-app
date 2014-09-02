@@ -15,7 +15,10 @@
         <div class="callout branch-open" data-ng-if="location.open">
           <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat:'short'}}" />
           <div id="location-hours" class="location-hours">
-            <h2 class="flush--ends hdg">{{ 'REGULAR_HOURS' | translate }} <span id="toggle-hours" ng-click="expand = !expand" ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span></h2>
+            <h2 class="flush--ends hdg">{{ 'REGULAR_HOURS' | translate }}
+              <span id="toggle-hours" ng-click="expand = !expand"
+                ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span>
+            </h2>
 
             <table class="weekly-hours zeta" collapse="expand" duration="2500">
               <tr class="{{hours.day}}" data-ng-repeat="hours in location.hours.regular" data-ng-if="$index != 7">
@@ -64,7 +67,8 @@
           </div>
 
           <div class="map-directions">
-            <a class="icon-compass" data-ng-href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">
+            <a class="icon-compass"
+              data-ng-href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">
               {{ 'DIRECTIONS' | translate }}
             </a>
           </div>
@@ -78,7 +82,7 @@
           <div class="social beta" data-ng-if="location.social_media">
             <a class="{{social.classes}}" data-ng-href="{{social.href}}" id="social_media"
               data-ng-repeat="social in location.social_media" class="inline"
-                title="{{social.site | capitalize}}"></a>
+              title="{{social.site | capitalize}}"></a>
           </div>
         </div><!--
 
@@ -99,7 +103,8 @@
             <li class="icon-book"><span>Lending</span></li>
             <li class="icon-box-add"><span>Book drop</span></li>
           </ul> 
-          <a id="all_amenities" data-ui-sref="amenities-at-location({location: location.slug})" class="read-more">{{ 'ALL_AMENITIES' | translate }}</a>
+          <a id="all_amenities" data-ui-sref="amenities-at-location({location: location.slug})"
+            class="read-more">{{ 'ALL_AMENITIES' | translate }}</a>
         </div>
       </div>
     </div>
@@ -109,7 +114,8 @@
   <div id="container__divisions" data-ng-if="location.type == 'research' && location._embedded.divisions">
     <h2 class="hdg">{{ 'DIVISION_HEADER' | translate }}</h2>
     <div class="grid">
-      <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third" data-ng-repeat='division in location._embedded.divisions'>
+      <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
+        data-ng-repeat='division in location._embedded.divisions'>
         <div class="division-wrapper">
           <img class="img--outline" src="images/pippin_fpo.jpg"
             alt="Image for {{division.name}}" title="Image for {{division.name}}"/>
@@ -124,11 +130,10 @@
   <div id="container__features" data-ng-if="location._embedded.features">
     <h2 class="hdg">{{ 'FEATURED' | translate }}</h2>
     <div class="grid">
-
       <div class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in location._embedded.features'>
         <a data-ng-href="{{feature._links.self.href}}" data-ng-if="feature.image">
-          <img class="one-third lap-and-up-one-whole desk-one-third img--left img--outline" data-ng-src="{{feature.image}}"
-          alt="Image of {{feature.title}}">
+          <img class="one-third lap-and-up-one-whole desk-one-third img--left img--outline"
+            data-ng-src="{{feature.image}}" alt="Image of {{feature.title}}" />
         </a>
         <h3 class="feature-title">
           <a data-ng-href="{{feature._links.self.href}}">
@@ -153,21 +158,23 @@
 
         <div class="">
           <aside class="event-buttons">
-            <event-registration
+            <event-registration registration="{{event.registration}}"
               type="{{event.registration.type}}"
               open="{{event.registration.open}}"
               start="{{event.registration.start}}"
-              link="{{event._links.self.href}}"
-              registration="{{event.registration}}">
+              link="{{event._links.self.href}}">
             </event-registration>
 
-            <a data-ng-href="{{calendarLink('google', event, location)}}" target="_blank" rel="nofollow" class="icon-calendar google_link">
+            <a data-ng-href="{{calendarLink('google', event, location)}}" target="_blank"
+              rel="nofollow" class="icon-calendar google_link">
               Google
             </a>
-            <a data-ng-href="{{calendarLink('yahoo', event, location)}}" target="_blank" rel="nofollow" class="icon-calendar yahoo_link">
+            <a data-ng-href="{{calendarLink('yahoo', event, location)}}" target="_blank"
+              rel="nofollow" class="icon-calendar yahoo_link">
               Yahoo
             </a>
-            <a data-ng-href="" data-ng-click="icalLink(event, location.street_address)" target="_blank" download="nypl_event.ics" rel="nofollow" class="icon-calendar">
+            <a data-ng-href="" data-ng-click="icalLink(event, location.street_address)"
+              target="_blank" download="nypl_event.ics" rel="nofollow" class="icon-calendar">
               iCal
             </a>
           </aside>
@@ -186,7 +193,8 @@
   <div id="container__about">
     <h2 class="hdg" data-ng-if="location.type == 'circulating'">{{ 'ABOUT' | translate }}</h2>
     <div class="grid">
-      <div id="about" class="grid__item one-whole" data-ng-class="{true: 'lap-and-up-two-thirds', false: ''}[location.type == 'research']">
+      <div id="about" class="grid__item one-whole"
+        data-ng-class="{true: 'lap-and-up-two-thirds', false: ''}[location.type == 'research']">
         <h2 class="hdg" data-ng-if="location.type == 'research'">{{ 'ABOUT' | translate }}</h2>
         <div class="grid">
           <div id="location-secondary-img" class="grid__item one-whole lap-and-up-one-half">
@@ -211,8 +219,8 @@
         <!-- Display Plan your visit info only in Research and Division locations -->
         <div id="plan-your-visit">
           <h2 class="hdg">{{ 'PLAN_YOUR_VISIT' | translate }}</h2>
-          <a data-ng-if="location._links.contact.href"
-            data-ng-href="{{location._links.contact.href}}" class="btn btn--natural whiteText" id="ask-librarian">
+          <a data-ng-if="location._links.contact.href" data-ng-href="{{location._links.contact.href}}"
+            class="btn btn--natural whiteText" id="ask-librarian">
             {{ 'ASK_LIBRARIAN' | translate }}
           </a>
           <ul class="flush--left gamma">
@@ -261,7 +269,9 @@
           <img class="img--left" data-ng-src="{{exhibition.image}}" style="height: 100px;"
             alt="Image for exhibition {{exhibition.title}}" title="Image for exhibition {{exhibition.title}}" />
         </a>
-        <h3 class="exhibition__title"><a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}">{{exhibition.title}}</a></h3>
+        <h3 class="exhibition__title">
+          <a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}">{{exhibition.title}}</a>
+        </h3>
         <p class="date">{{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p class="teaser desc">{{exhibition.body | truncate}}</p>
       </div>
