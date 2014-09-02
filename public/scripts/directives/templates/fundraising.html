@@ -1,0 +1,7 @@
+<div class="appeal grid__item one-whole lap-and-up-one-half" id="donate" data-ng-if="fundraising">
+  <p data-ng-if="fundraising.statements[0]">{{fundraising.statements[0]}}</p>
+  <p data-ng-if="fundraising.statements[1]">{{fundraising.statements[1]}}</p>
+  <a href="{{fundraising.link}}" class="btn btn--donate">
+    {{fundraising.button_label}}
+  </a>
+</div>
