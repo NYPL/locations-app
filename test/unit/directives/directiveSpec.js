@@ -16,8 +16,9 @@ describe('NYPL Directive Tests', function () {
     httpBackend = _$httpBackend_;
 
     httpBackend
-        .expectGET('/languages/en.json')
-        .respond('public/languages/en.json');
+      .expectGET('/languages/en.json')
+      .respond('public/languages/en.json');
+
   }));
 
   /*
