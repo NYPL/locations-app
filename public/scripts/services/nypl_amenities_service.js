@@ -24,19 +24,19 @@
       var icon = default_icon || '';
       _.each(amenities, function (amenity) {
         switch (amenity.id) {
-        case 6:
+        case 8000: // Wireless
           amenity.icon = 'icon-connection';
           break;
-        case 7953:
+        case 7980: // Laptop
           amenity.icon = 'icon-laptop';
           break;
-        case 7954:
+        case 7987: // Printing
           amenity.icon = 'icon-print';
           break;
-        case 7955:
+        case 7978: // Electrical oulets
           amenity.icon = 'icon-power-cord';
           break;
-        case 7951:
+        case 7967: // Book drop
         case 39:
           amenity.icon = 'icon-box-add';
           break;
