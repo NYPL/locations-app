@@ -1133,27 +1133,27 @@ describe('NYPL Service Tests', function () {
       it('should add icon class names to every amenity', function () {
         var amenities = [
             { 'id': 4, 'name': 'Computers for Public Use' },
-            { 'id': 6, 'name': 'Wireless Internet Access' },
-            { 'id': 216, 'name': 'Laptops for Public Use' },
-            { 'id': 7, 'name': 'Printing (From PC)' },
-            { 'id': 9, 'name': 'Electrical Outlets Available' },
-            { 'id': 65910, 'name': 'Book Drop Box (24 Hour)' },
-            { 'id': 39, 'name': 'Book Drop Box (Limited Hours)' }
+            { 'id': 8000, 'name': 'Wireless Internet Access' },
+            { 'id': 7980, 'name': 'Laptops for Public Use' },
+            { 'id': 7987, 'name': 'Printing (From PC)' },
+            { 'id': 7978, 'name': 'Electrical Outlets Available' },
+            { 'id': 39, 'name': 'Book Drop Box (24 Hour)' },
+            { 'id': 7967, 'name': 'Book Drop Box (Limited Hours)' }
           ];
 
         expect(nyplAmenities.addIcon(amenities))
           .toEqual([
             { 'id': 4, 'name': 'Computers for Public Use', 'icon': '' },
-            { 'id': 6, 'name': 'Wireless Internet Access',
+            { 'id': 8000, 'name': 'Wireless Internet Access',
               'icon': 'icon-connection' },
-            { 'id': 216, 'name': 'Laptops for Public Use',
+            { 'id': 7980, 'name': 'Laptops for Public Use',
               'icon': 'icon-laptop' },
-            { 'id': 7, 'name': 'Printing (From PC)', 'icon': 'icon-print' },
-            { 'id': 9, 'name': 'Electrical Outlets Available',
+            { 'id': 7987, 'name': 'Printing (From PC)', 'icon': 'icon-print' },
+            { 'id': 7978, 'name': 'Electrical Outlets Available',
               'icon': 'icon-power-cord' },
-            { 'id': 65910, 'name': 'Book Drop Box (24 Hour)',
+            { 'id': 39, 'name': 'Book Drop Box (24 Hour)',
               'icon': 'icon-box-add' },
-            { 'id': 39, 'name': 'Book Drop Box (Limited Hours)',
+            { 'id': 7967, 'name': 'Book Drop Box (Limited Hours)',
               'icon': 'icon-box-add' }
           ]);
       });
@@ -1161,20 +1161,20 @@ describe('NYPL Service Tests', function () {
       it('should give all amenities a default icon class', function () {
         var amenities = [
             { 'id': 4, 'name': 'Computers for Public Use' },
-            { 'id': 23, 'name': 'Wireless Internet Access' },
-            { 'id': 212, 'name': 'Laptops for Public Use' },
-            { 'id': 13, 'name': 'Printing (From PC)' }
+            { 'id': 8000, 'name': 'Wireless Internet Access' },
+            { 'id': 7980, 'name': 'Laptops for Public Use' },
+            { 'id': 234, 'name': 'Inter-Library Loan' }
           ];
 
         expect(nyplAmenities.addIcon(amenities, 'icon-class-test'))
           .toEqual([
             { 'id': 4, 'name': 'Computers for Public Use',
               'icon': 'icon-class-test' },
-            { 'id': 23, 'name': 'Wireless Internet Access',
-              'icon': 'icon-class-test' },
-            { 'id': 212, 'name': 'Laptops for Public Use',
-              'icon': 'icon-class-test' },
-            { 'id': 13, 'name': 'Printing (From PC)',
+            { 'id': 8000, 'name': 'Wireless Internet Access',
+              'icon': 'icon-connection' },
+            { 'id': 7980, 'name': 'Laptops for Public Use',
+              'icon': 'icon-laptop' },
+            { 'id': 234, 'name': 'Inter-Library Loan',
               'icon': 'icon-class-test' }
           ]);
       });
@@ -1198,7 +1198,7 @@ describe('NYPL Service Tests', function () {
                 'weight': 0,
                 'amenities': [
                   { 'id': 4, 'name': 'Computers for Public Use' },
-                  { 'id': 6, 'name': 'Wireless Internet Access' }
+                  { 'id': 8000, 'name': 'Wireless Internet Access' }
                 ]
               },
               {
@@ -1228,7 +1228,7 @@ describe('NYPL Service Tests', function () {
                 'amenities': [
                   { 'id': 4, 'name': 'Computers for Public Use',
                     'icon': 'icon-screen2' },
-                  { 'id': 6, 'name': 'Wireless Internet Access',
+                  { 'id': 8000, 'name': 'Wireless Internet Access',
                     'icon': 'icon-connection' }
                 ]
               },

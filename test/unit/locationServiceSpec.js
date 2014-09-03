@@ -318,7 +318,9 @@ describe('NYPL locationService Module', function () {
 
         httpBackend
           .expectGET('http://evening-mesa-7447-160.herokuapp.com/' +
-            'locations/sibl/amenities')
+            'locations/sibl')
+          // .expectGET('http://evening-mesa-7447-160.herokuapp.com/' +
+          //   'locations/sibl/amenities')
           .respond(mockedLocationAmenitiesAPICall);
 
         nyplLocationsService.amenitiesAtLibrary('sibl').then(function (data) {
@@ -338,7 +340,7 @@ describe('NYPL locationService Module', function () {
 
         httpBackend
           .expectGET('http://evening-mesa-7447-160.herokuapp.com/' +
-            'locations/sibl/amenities')
+            'locations/sibl')
           .respond(500);
 
         nyplLocationsService.amenitiesAtLibrary('sibl')
