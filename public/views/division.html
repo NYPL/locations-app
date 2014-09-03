@@ -182,18 +182,18 @@
   </div>
 
   <!-- Features -->
-  <div id="container__features">
+  <div id="container__features" data-ng-if="division._embedded.features">
     <h2 class="hdg">{{ 'FEATURED' | translate }}</h2>
 
     <ul class="grid">
-      <li class="grid__item one-whole lap-and-up-one-half">
-        <h3><a data-ng-href="">Special project title</a></h3>
-        <p class="desc">Ooh look, we are digitizing the dance videos! here is the second sentence in the blurb about us doing that.</p>
-      </li><!--
-
-      --><li class="grid__item one-whole lap-and-up-one-half">
-        <h3><a data-ng-href="">Special project title</a></h3>
-        <p class="desc">Ooh look, we are digitizing the dance videos! here is the second sentence in the blurb about us doing that.</p>
+      <li class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='feature in division._embedded.features'>
+        <h3 data-ng-if="feature.title">
+          <a data-ng-href="http://www.nypl.org/{{feature._links.self.href}}">{{feature.title}}</a>
+        </h3>
+        <a data-ng-if="feature.image" data-ng-href="http://nypl.org/{{feature._links.self.href}}">
+          <img class="img--left" data-ng-src="{{feature.image}}" alt="{{feature.title}}" style="max-width: 120px;" />
+        </a>
+        <p class="desc" data-ng-bind-html="feature.body"></p>
       </li>
     </ul>
   </div>
