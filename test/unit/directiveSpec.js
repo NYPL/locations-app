@@ -8,27 +8,17 @@ describe, expect, beforeEach, inject, it, angular */
 describe('NYPL Directive Tests', function () {
   'use strict';
 
-  var element, $compile, $rootScope, timeElement, httpBackend, state;
+  var element, $compile, $rootScope, timeElement, httpBackend;
 
   beforeEach(module('nypl_locations'));
   beforeEach(module('directiveTemplates'));
-  beforeEach(inject(function (_$httpBackend_, _$state_) {
+  beforeEach(inject(function (_$httpBackend_) {
     httpBackend = _$httpBackend_;
-    state = _$state_;
 
     httpBackend
       .expectGET('/languages/en.json')
       .respond('public/languages/en.json');
 
-    httpBackend
-      .expectGET('views/locations.html')
-      .respond('views/locations.html');
-
-    httpBackend
-      .expectGET('views/location-list-view.html')
-      .respond('views/location-list-view.html');
-
-    state.go('home.index');
   }));
 
   /*
