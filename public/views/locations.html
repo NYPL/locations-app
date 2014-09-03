@@ -24,7 +24,7 @@
     	    <div class="filters__current" data-ng-if="geolocationOn">
             <p>
               <span class="current-location-container">
-                <a id="currentloc" class="btn btn--natural whiteText"
+                <a id="currentloc" class="btn btn--natural"
                   href="" data-ng-if="geolocationOn" data-ng-click="useGeolocation()">
                   {{ 'USER_LOCATION' | translate }}
                 </a>
@@ -35,7 +35,7 @@
     	    <div class="filters__research">
             <p>
               <span class="only-research-container">
-                <a id="onlyresearch" class="btn btn--natural whiteText" 
+                <a id="onlyresearch" class="btn btn--natural" 
                   data-ng-class="{false: '', true: ''}[researchBranches]" href="" data-ng-click="showResearch()">
                   {{researchBranches && 'ALL_LOCATIONS' || 'RESEARCH_LOCATIONS' | translate}}
                 </a>
@@ -58,7 +58,6 @@
           <a href="">{{geolocationAddressOrSearchQuery}}</a>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -73,5 +72,4 @@
 
   <!-- Conditional | List/Map Views -->
   <section ui-view><section>
-
 </div>
