@@ -244,6 +244,8 @@
 
             loadPreviousStateOrNewState = function () {
                 if (searchValues.locations) {
+                    // Assigning the saved values to scope variables that
+                    // should get loaded.
                     $scope.locations = searchValues.locations;
                     $scope.searchTerm = searchValues.searchTerm;
                     $scope.geolocationAddressOrSearchQuery =
@@ -253,6 +255,9 @@
                         nyplGeocoderService.drawSearchMarker();
                     }
 
+                    // If the user searched by zip code, name or address,
+                    // then sort by relevancy or distance. If not, they used
+                    // geolocation so sort by distance.
                     if (!$scope.searchTerm) {
                         sortListBy('distance');
                     }

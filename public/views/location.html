@@ -159,7 +159,7 @@
     <ul class="grid">
       <li class="chunk one-whole desk-one-third" data-ng-repeat="event in location._embedded.events">
         <h3 class="event__title">
-          <a data-ng-href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a>
+          <a data-ng-href="{{event._links.self.href}}">{{event.title}}</a>
         </h3>
         <p class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p class="desc">{{event.body}}</p>
@@ -246,7 +246,7 @@
     <h2 class="hdg">{{ 'BLOGS' |translate }}</h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
-        <h3 class=""><a data-ng-href="http://nypl.org/{{blog._links.self.href}}">{{blog.title}}</a></h3>
+        <h3 class=""><a data-ng-href="{{blog._links.self.href}}">{{blog.title}}</a></h3>
         <a data-ng-if="blog.image" data-ng-href="http://nypl.org/{{blog._links.self.href}}">
           <img class="img--left" data-ng-src="{{blog.image}}" style="height: 100px;"
             alt="Image for blog post {{blog.title}}" title="Image for blog post {{blog.title}}" />
@@ -273,7 +273,7 @@
     <h2 class="hdg">{{ 'EXHIBITION' | translate }}</h2>
     <div class="grid">
       <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat='exhibition in location._embedded.exhibitions'>
-        <a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}" data-ng-if="exhibition.image">
+        <a data-ng-href="{{exhibition._links.self.href}}" data-ng-if="exhibition.image">
           <img class="img--left" data-ng-src="{{exhibition.image}}" style="height: 100px;"
             alt="Image for exhibition {{exhibition.title}}" title="Image for exhibition {{exhibition.title}}" />
         </a>

@@ -203,7 +203,7 @@
     <h2 class="hdg">{{ 'BLOGS' | translate }}</h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in division._embedded.blogs'>
-        <h3><a data-ng-href="http://nypl.org/{{blog._links.self.href}}">{{blog.title}}</a></h3>
+        <h3><a data-ng-href="{{blog._links.self.href}}">{{blog.title}}</a></h3>
         <a data-ng-if="blog.image" data-ng-href="http://nypl.org/{{blog._links.self.href}}">
           <img class="img--left" data-ng-src="{{blog.image}}" alt="" style="max-width: 120px;" />
         </a>
