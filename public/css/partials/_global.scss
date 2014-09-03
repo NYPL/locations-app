@@ -118,7 +118,17 @@
 
 // Ask & Donate section
 .ask-donate{
-	margin-top: 60px;	
+	margin-top: 60px;
+
+	.appeal {
+
+		.primary-text {
+			font-weight: bold;
+		}
+		.secondary-text {
+			font-size: 15px;
+		}
+	}
 }
 
 // AskNYPL
