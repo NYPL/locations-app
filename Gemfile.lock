@@ -1,6 +1,18 @@
+GIT
+  remote: https://bitbucket.org/rdmond/lionactor
+  revision: 32bbb04ae1c075c191294193dc96517d02ee19ab
+  specs:
+    lionactor (0.0.1)
+      faraday
+
 GEM
   remote: https://rubygems.org/
   specs:
+    faraday (0.9.0)
+      multipart-post (>= 1.2, < 3)
+    haml (4.0.2)
+      tilt
+    multipart-post (2.0.0)
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
@@ -14,4 +26,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  haml
+  lionactor!
   sinatra

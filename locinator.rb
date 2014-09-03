@@ -1,7 +1,10 @@
 require 'sinatra/base'
+require 'lionactor'
 
 class Locinator < Sinatra::Base
+  
 
+  set :haml, :format => :html5
   # Method cribbed from http://blog.alexmaccaw.com/seo-in-js-web-apps
   helpers do
     set :spider do |enabled|
@@ -12,7 +15,15 @@ class Locinator < Sinatra::Base
   end
 
   get '/', :spider => true do
-    "Escaped Fragment"
+    wanted = params['_escaped_fragment_']
+    api = Lionactor::Client.new
+    if wanted =~ /([0-9a-z\-]+)$/
+      @data = api.location($1)
+      haml :location
+    else
+      @data = api.locations
+      haml :index
+    end
   end
 
   get '/' do
