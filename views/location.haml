@@ -3,13 +3,14 @@
   %head
     %title Locations and Hours
   %body
-    %h1= @data.name
-    .address
-      .p-street-address= @data.street_address
-      %span.p-locality= @data.locality 
-      %span.p-region= @data.region
-      %span.p-postal-code= @data.postal_code
-      .p-tel= @data.contacts['phone']
-      .p-manager= "Library Manager #{@data.contacts['manager']}"
+    %div(itemscope itemtype="http://schema.org/Library")
+      %h1= @data.name
+      .address
+        .p-street-address= @data.street_address
+        %span.p-locality= @data.locality 
+        %span.p-region= @data.region
+        %span.p-postal-code= @data.postal_code
+        .p-tel= @data.contacts['phone']
+        .p-manager= "Library Manager #{@data.contacts['manager']}"
 
-    .about= @data.about
+        .about= @data.about
