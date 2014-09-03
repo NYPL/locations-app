@@ -5,40 +5,50 @@ describe, expect, beforeEach, inject, it, angular */
 /*
  * Tests for AngularJS Directives.
  */
-describe('NYPL Directive Tests', function () {
+describe('NYPL Directive Unit Tests', function () {
   'use strict';
 
-  var element, $compile, $rootScope, timeElement, httpBackend;
+  var httpBackend, compile, scope;
 
-  beforeEach(module('nypl_locations'));
-  beforeEach(module('directiveTemplates'));
-  beforeEach(inject(function (_$httpBackend_) {
-    httpBackend = _$httpBackend_;
+  beforeEach(function () {
+    module('nypl_locations');
+    module('directiveTemplates');
+    inject(function (_$httpBackend_, _$compile_, _$rootScope_) {
+      httpBackend = _$httpBackend_;
+      compile = _$compile_;
+      scope = _$rootScope_.$new();
 
-    httpBackend
-      .expectGET('/languages/en.json')
-      .respond('public/languages/en.json');
+      httpBackend
+        .expectGET('/languages/en.json')
+        .respond('public/languages/en.json');
+    });
+  });
 
-  }));
+  function createDirective(template) {
+    var element;
+
+    element = compile(template)(scope);
+    scope.$apply();
+
+    return element;
+  }
 
   /*
    * <div loading-widget></div>
    *   The loadingWidget directive is markup that displays before
    *   an http request is fulfilled, in this case showing a spinner.
    */
-  describe('loadingWidget', function () {
-    beforeEach(inject(function (_$compile_, _$rootScope_) {
-      $compile = _$compile_;
-      $rootScope = _$rootScope_;
+  describe('Directive: loadingWidget', function () {
+    var loadingWidget, template;
+
+    beforeEach(inject(function () {
+      template = '<div id="loadingWidget" loading-widget>' +
+        '<div class="loader-icon icon-spinner2"></div></div>';
+      loadingWidget = createDirective(template);
     }));
 
     it('should compile', function () {
-      element = angular.element('<div id="loadingWidget" loading-widget>' +
-        '<div class="loader-icon icon-spinner2"></div></div>');
-      $compile(element)($rootScope);
-      $rootScope.$digest();
-
-      expect(element.attr('id')).toEqual('loadingWidget');
+      expect(loadingWidget.attr('id')).toEqual('loadingWidget');
     });
   });
 
@@ -47,23 +57,21 @@ describe('NYPL Directive Tests', function () {
    *   The nyplTranslate directive displays a simple list
    *   of languages that the site can be translated into.
    */
-  describe('nyplTranslate', function () {
-    beforeEach(inject(function (_$compile_, _$rootScope_) {
-      $compile = _$compile_;
-      $rootScope = _$rootScope_;
+  describe('Directive: nyplTranslate', function () {
+    var nyplTranslate, template;
 
-      element = angular.element('<nypl-translate></nypl-translate>');
-      $compile(element)($rootScope);
-      $rootScope.$digest();
+    beforeEach(inject(function () {
+      template = '<nypl-translate></nypl-translate>';
+      nyplTranslate = createDirective(template);
     }));
 
     it('should have a translate class', function () {
-      expect(element.attr('class')).toContain('translate');
+      expect(nyplTranslate.attr('class')).toContain('translate');
     });
 
     // At the time of writing this test, we only have two languages
     it('should have two spans elements', function () {
-      expect(element.find('span').length).toBe(2);
+      expect(nyplTranslate.find('span').length).toBe(2);
     });
   });
 
@@ -77,28 +85,24 @@ describe('NYPL Directive Tests', function () {
    *   Note that testing directives means also testing the 'hoursTodayformat'
    *   since the output text depends on that filter and the data being passed
    */
-  describe('todayshours', function () {
-    beforeEach(inject(function (_$compile_, _$rootScope_) {
-      $compile = _$compile_;
-      $rootScope = _$rootScope_;
-    }));
+  describe('Directive: todayshours', function () {
+    var todayshours, template, timeElement;
 
     it('should tell you "Open today until ..." with short filter format',
       function () {
         // Returns 12 for 12pm when a library is open.
         Date.prototype.getHours = function () { return 12; };
 
-        element = angular.element('<todayshours class="' +
+        template = '<todayshours class="' +
           'grid__item one-whole " hours="{{{\'today\':' +
           '{\'open\': \'10:00\', \'close\': \'18:00\'},' +
           '\'tomorrow\':{\'open\': \'10:00\', \'close\': \'18:00\'} }' +
-          '| hoursTodayFormat:\'short\'}}" />');
-        $compile(element)($rootScope);
-        $rootScope.$digest();
+          '| hoursTodayFormat:\'short\'}}" />';
+        todayshours = createDirective(template);
 
-        timeElement = element.find('time');
+        timeElement = todayshours.find('time');
 
-        expect(element.attr('id')).toBe('hours-today');
+        expect(todayshours.attr('id')).toBe('hours-today');
         // The time element can have many classes but these are important
         expect(timeElement.attr('class')).toContain('hours-today');
         expect(timeElement.attr('class')).toContain('icon-clock');
@@ -111,17 +115,16 @@ describe('NYPL Directive Tests', function () {
         // Returns 12 for 12pm when a library is open.
         Date.prototype.getHours = function () { return 12; };
 
-        element = angular.element('<todayshours class="' +
+        template = '<todayshours class="' +
           'grid__item one-whole " hours="{{{\'today\':' +
           '{\'open\': \'10:00\', \'close\': \'18:00\'},' +
           '\'tomorrow\':{\'open\': \'10:00\', \'close\': \'18:00\'} }' +
-          '| hoursTodayFormat:\'long\'}}" />');
-        $compile(element)($rootScope);
-        $rootScope.$digest();
+          '| hoursTodayFormat:\'long\'}}" />';
+        todayshours = createDirective(template);
 
-        timeElement = element.find('time');
+        timeElement = todayshours.find('time');
 
-        expect(element.attr('id')).toBe('hours-today');
+        expect(todayshours.attr('id')).toBe('hours-today');
         // The time element can have many classes but these are important
         expect(timeElement.attr('class')).toContain('hours-today');
         expect(timeElement.attr('class')).toContain('icon-clock');
@@ -134,17 +137,16 @@ describe('NYPL Directive Tests', function () {
         // Returns 19 for 7pm after a library has closed.
         Date.prototype.getHours = function () { return 19; };
 
-        element = angular.element('<todayshours class="' +
+        template = '<todayshours class="' +
           'grid__item one-whole " hours="{{{\'today\':' +
           '{\'open\': \'10:00\', \'close\': \'18:00\'},' +
           '\'tomorrow\':{\'open\': \'10:00\', \'close\': \'18:00\'} }' +
-          '| hoursTodayFormat:\'short\'}}" />');
-        $compile(element)($rootScope);
-        $rootScope.$digest();
+          '| hoursTodayFormat:\'short\'}}" />';
+        todayshours = createDirective(template);
 
-        timeElement = element.find('time');
+        timeElement = todayshours.find('time');
 
-        expect(element.attr('id')).toBe('hours-today');
+        expect(todayshours.attr('id')).toBe('hours-today');
         // The time element can have many classes but these are important
         expect(timeElement.attr('class')).toContain('hours-today');
         expect(timeElement.attr('class')).toContain('icon-clock');
@@ -157,17 +159,16 @@ describe('NYPL Directive Tests', function () {
         // Returns 7 for 7am before a library has opened.
         Date.prototype.getHours = function () { return 7; };
 
-        element = angular.element('<todayshours class="' +
+        template = '<todayshours class="' +
           'grid__item one-whole " hours="{{{\'today\':' +
           '{\'open\': \'10:00\', \'close\': \'18:00\'},' +
           '\'tomorrow\':{\'open\': \'10:00\', \'close\': \'18:00\'} }' +
-          '| hoursTodayFormat:\'short\'}}" />');
-        $compile(element)($rootScope);
-        $rootScope.$digest();
+          '| hoursTodayFormat:\'short\'}}" />';
+        todayshours = createDirective(template);
 
-        timeElement = element.find('time');
+        timeElement = todayshours.find('time');
 
-        expect(element.attr('id')).toBe('hours-today');
+        expect(todayshours.attr('id')).toBe('hours-today');
         // The time element can have many classes but these are important
         expect(timeElement.attr('class')).toContain('hours-today');
         expect(timeElement.attr('class')).toContain('icon-clock');
@@ -179,70 +180,62 @@ describe('NYPL Directive Tests', function () {
   /*
    * <nyplbreadcrumbs></nyplbreadcrumbs>
    */
-  describe('nyplbreadcrumbs', function () {
-    var scope, element, html, $rootScope, $compile;
+  describe('Directive: nyplbreadcrumbs', function () {
+    var nyplbreadcrumbs, html;
 
-    beforeEach(inject(function (_$compile_, _$rootScope_) {
-      $compile = _$compile_;
-      $rootScope = _$rootScope_;
+    beforeEach(inject(function () {
       html = '<nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>';
-      scope = $rootScope.$new();
-
-      element = angular.element(html);
-      $compile(element)(scope);
-      scope.$digest();
+      nyplbreadcrumbs = createDirective(html);
     }));
 
     it('should create an unordered list with class breadcrumb', function () {
-      var crumbList = element.find('ul');
+      var crumbList = nyplbreadcrumbs.find('ul');
       expect(crumbList.attr('class')).toContain('breadcrumb');
     });
 
     it('should contain attribute "crumb-name"', function () {
-      expect(element.attr('crumb-name')).toBeTruthy();
-    });  
+      expect(nyplbreadcrumbs.attr('crumb-name')).toBeTruthy();
+    });
 
     it('should contain attribute "crumb-name" value to be "data.crumbName"', function () {
-      expect(element.attr('crumb-name')).toBe('data.crumbName');
+      expect(nyplbreadcrumbs.attr('crumb-name')).toBe('data.crumbName');
     });
 
     it('should create an empty breadcrumbs scope array element', function () {
-      var isoScope = element.isolateScope();
+      var isoScope = nyplbreadcrumbs.isolateScope();
       expect(isoScope.breadcrumbs.length).toBeLessThan(1);
-    })
+    });
 
     it('once a Crumb is inserted, it should add elements to breadcrumbs array', function () {
-      var isoScope = element.isolateScope();
+      var isoScope = nyplbreadcrumbs.isolateScope();
 
       isoScope.breadcrumbs.push({
         displayName: 'Amenities',
         route: 'amenities'
       });
       expect(isoScope.breadcrumbs.length).toBeGreaterThan(0);
-    })    
+    });
   });
 
   /*
    * <emailusbutton link="" />
    *   Generates a link to email a librarian.
    */
-  describe('emailusbutton', function () {
-    beforeEach(inject(function (_$compile_, _$rootScope_) {
-      $compile = _$compile_;
-      $rootScope = _$rootScope_;
+  describe('Directive: emailusbutton', function () {
+    var emailusbutton, template;
 
-      element = angular.element('<emailusbutton link="nypl.org" />');
-      $compile(element)($rootScope);
-      $rootScope.$digest();
+    beforeEach(inject(function () {
+      template = '<emailusbutton link="nypl.org" />';
+      emailusbutton = createDirective(template);
     }));
 
     it('should compile', function () {
-      expect(element.attr('class')).toContain('askemail');
+      expect(emailusbutton.attr('class')).toContain('askemail');
     });
 
     it('should create a link', function () {
-      expect(element.attr('href')).toContain('nypl.org');
-      expect(element.text()).toEqual('Email us your question');
+      expect(emailusbutton.attr('href')).toContain('nypl.org');
+      expect(emailusbutton.text()).toEqual('Email us your question');
     });
   });
 
@@ -251,22 +244,20 @@ describe('NYPL Directive Tests', function () {
    *   Generates a link element that will create a popup for the NYPL Chat
    *   widget to talk to a librarian.
    */
-  describe('librarianchatbutton', function () {
-    beforeEach(inject(function (_$compile_, _$rootScope_) {
-      $compile = _$compile_;
-      $rootScope = _$rootScope_;
+  describe('Directive: librarianchatbutton', function () {
+    var librarianchatbutton, template;
 
-      element = angular.element('<librarianchatbutton />');
-      $compile(element)($rootScope);
-      $rootScope.$digest();
+    beforeEach(inject(function () {
+      template = '<librarianchatbutton />';
+      librarianchatbutton = createDirective(template);
     }));
 
     it('should compile', function () {
-      expect(element.attr('class')).toContain('askchat');
+      expect(librarianchatbutton.attr('class')).toContain('askchat');
     });
 
     it('should create a link', function () {
-      expect(element.text()).toEqual('Chat with a librarian');
+      expect(librarianchatbutton.text()).toEqual('Chat with a librarian');
     });
   });
 
@@ -275,60 +266,58 @@ describe('NYPL Directive Tests', function () {
    *   Generates a link element that will create a popup for the NYPL Chat
    *   widget to talk to a librarian.
    */
-  describe('eventRegistration', function () {
-    beforeEach(inject(function (_$compile_, _$rootScope_) {
-      $compile = _$compile_;
-      $rootScope = _$rootScope_;
-    }));
+  describe('Directive: eventRegistration', function () {
+    var eventRegistration, template;
 
     describe('Registration type - First Come, First Served', function () {
       beforeEach(function () {
-        element = angular.element('<event-registration ' +
-          'type="First Come, First Serve" open="false" start="null"' +
-          'link="events/nypl-event" registration="{}"></event-registration>');
-        $compile(element)($rootScope);
-        $rootScope.$digest();
+        template = '<event-registration ' +
+          'type="First Come, First Serve" open="null" start="null"' +
+          'link="events/nypl-event" registration="{}"></event-registration>';
+        eventRegistration = createDirective(template);
       });
 
       it('should compile', function () {
-        expect(element.attr('class')).toContain('registration-for-event');
+        expect(eventRegistration.attr('class'))
+          .toContain('registration-for-event');
       });
 
       it('should display the type of registration', function () {
-        expect(element.find('.registration_type').text())
+        expect(eventRegistration.find('.registration_type').text())
           .toEqual('First Come, First Serve');
       });
 
       it('should not have an anchor tag', function () {
-        expect(element.find('a').length).toBe(0);
+        expect(eventRegistration.find('a').length).toBe(0);
       });
 
       it('should not have any type of registration message', function () {
-        expect(element.find('.registration-available').text()).toEqual('');
+        expect(eventRegistration.find('.registration-available').text())
+          .toEqual('');
       });
     });
 
     describe('Registration type - Online - event will open in the future',
       function () {
         beforeEach(function () {
-          element = angular.element('<event-registration type="Online" ' +
+          template = '<event-registration type="Online" ' +
             'open="true" start="2014-08-29T17:00:00Z"' +
-            'link="events/nypl-event" registration="{}"></event-registration>');
-          $compile(element)($rootScope);
-          $rootScope.$digest();
+            'link="events/nypl-event" registration="{}"></event-registration>';
+          eventRegistration = createDirective(template);
         });
 
         it('should compile', function () {
-          expect(element.attr('class')).toContain('registration-for-event');
+          expect(eventRegistration.attr('class'))
+            .toContain('registration-for-event');
         });
 
         it('should display the type of registration', function () {
-          expect(element.find('.registration_type').text().trim())
+          expect(eventRegistration.find('.registration_type').text().trim())
             .toEqual('Online');
         });
 
         it('should have a link to the event', function () {
-          expect(element.find('a').attr('href'))
+          expect(eventRegistration.find('a').attr('href'))
             .toEqual('http://nypl.org/events/nypl-event');
         });
 
@@ -338,8 +327,9 @@ describe('NYPL Directive Tests', function () {
             MockDate = Date;
           Date = function () { return date; };
 
-          expect(element.find('.registration-available').text().trim())
-            .toEqual('Registration opens on August 29, 2014 - 7:00AM');
+          expect(
+            eventRegistration.find('.registration-available').text().trim()
+          ).toEqual('Registration opens on August 29, 2014 - 7:00AM');
 
           Date = MockDate;
         });
@@ -348,24 +338,24 @@ describe('NYPL Directive Tests', function () {
     describe('Registration type - Online - registration is closed',
       function () {
         beforeEach(function () {
-          element = angular.element('<event-registration type="Online" ' +
-            'open="false" start="2014-07-29T17:00:00Z"' +
-            'link="events/nypl-event" registration="{}"></event-registration>');
-          $compile(element)($rootScope);
-          $rootScope.$digest();
+          eventRegistration = '<event-registration type="Online" ' +
+            'open="null" start="2014-07-29T17:00:00Z"' +
+            'link="events/nypl-event" registration="{}"></event-registration>';
+          eventRegistration = createDirective(template);
         });
 
         it('should compile', function () {
-          expect(element.attr('class')).toContain('registration-for-event');
+          expect(eventRegistration.attr('class'))
+            .toContain('registration-for-event');
         });
 
         it('should display the type of registration', function () {
-          expect(element.find('.registration_type').text().trim())
+          expect(eventRegistration.find('.registration_type').text().trim())
             .toEqual('Online');
         });
 
         it('should have a link to the event', function () {
-          expect(element.find('a').attr('href'))
+          expect(eventRegistration.find('a').attr('href'))
             .toEqual('http://nypl.org/events/nypl-event');
         });
 
@@ -375,8 +365,9 @@ describe('NYPL Directive Tests', function () {
             MockDate = Date;
           Date = function () { return date; };
 
-          expect(element.find('.registration-available').text().trim())
-            .toEqual('Registration for this event is closed.');
+          expect(
+            eventRegistration.find('.registration-available').text().trim()
+          ).toEqual('Registration for this event is closed.');
 
           Date = MockDate;
         });
@@ -388,13 +379,10 @@ describe('NYPL Directive Tests', function () {
    *   The nyplSiteAlerts directive displays a site-wide alert by checking all
    *   the alerts in the API and checking the current date.
    */
-  describe('nyplSiteAlerts', function () {
-    var $httpBackend,
-      date;
+  describe('Directive: nyplSiteAlerts', function () {
+    var $httpBackend, date, template, nyplSiteAlerts;
 
-    beforeEach(inject(function (_$compile_, _$rootScope_, _$httpBackend_) {
-      $compile = _$compile_;
-      $rootScope = _$rootScope_;
+    beforeEach(inject(function (_$httpBackend_) {
       $httpBackend = _$httpBackend_;
 
       $httpBackend
@@ -409,6 +397,9 @@ describe('NYPL Directive Tests', function () {
             end: "2014-07-06T01:00:00-04:00"
           }]
         });
+
+      template = "<nypl-site-alerts></nypl-site-alerts>";
+      nyplSiteAlerts = createDirective(template);
     }));
 
     it('should display a site wide alert', function () {
@@ -420,18 +411,16 @@ describe('NYPL Directive Tests', function () {
       MockDate = Date;
       Date = function () { return date; };
 
-      element = angular.element("<nypl-site-alerts></nypl-site-alerts>");
-      $compile(element)($rootScope);
       $httpBackend.flush();
-      $rootScope.$digest();
+      // scope.$digest();
 
       // For whatever reason, the sitewidealert doesn't get generated
       // in time for the $compile function to write it and for the data-ng-if
       // to verify that the value is there.
       // console.log(element);
 
-      // Currently just using the value in the $rootScope.
-      alert = $rootScope.sitewidealert;
+      // Currently just using the value in the scope.
+      alert = scope.sitewidealert;
       expect(alert)
         .toEqual('All units of the NYPL are closed July 4 - July 5.\n');
 
@@ -444,12 +433,14 @@ describe('NYPL Directive Tests', function () {
    * <nypl-library-alert></nypl-library-alert>
    *   The nyplLibraryAlert directive displays an alert for a specific location.
    */
-  describe('nyplLibraryAlert', function () {
-    beforeEach(inject(function (_$compile_, _$rootScope_) {
-      $compile = _$compile_;
-      $rootScope = _$rootScope_;
+  describe('Directive: nyplLibraryAlert', function () {
+    var nyplLibraryAlert, template;
 
-      $rootScope.libraryAlert = "Test library specific alert";
+    beforeEach(inject(function () {
+      scope.libraryAlert = "Test library specific alert";
+
+      template = "<nypl-library-alert></nypl-library-alert>";
+      nyplLibraryAlert = createDirective(template);
     }));
 
     it('should display a site wide alert', function () {
@@ -460,10 +451,6 @@ describe('NYPL Directive Tests', function () {
       date = new Date(2014, 5, 29);
       MockDate = Date;
       Date = function () { return date; };
-
-      element = angular.element("<nypl-library-alert></nypl-library-alert>");
-      $compile(element)($rootScope);
-      $rootScope.$digest();
 
       // Not sure how to test since it requires libraryAlert variable to be in
       // the scope for the directive. Doesn't seem to work if it's assigned
@@ -479,31 +466,31 @@ describe('NYPL Directive Tests', function () {
    * <div class="weekly-hours" collapse="expand" duration="2500"></div>
    *   The collapse directive creates a slide toggle animation for an element.
    */
-  describe('collapse', function () {
-    beforeEach(inject(function (_$compile_, _$rootScope_) {
-      $compile = _$compile_;
-      $rootScope = _$rootScope_;
+  describe('Directive: collapse', function () {
+    var collapse, template;
+
+    beforeEach(inject(function () {
+      template = '<div class="weekly-hours" collapse="expand" ' +
+        'duration="2500"></div>';
+      collapse = createDirective(template);
     }));
 
     it('should open and close the element by hiding it', function () {
-      element = angular.element('<div class="weekly-hours" collapse="expand" ' +
-        'duration="2500"></div>');
-      $compile(element)($rootScope);
-
       // Initially on load it is false and hidden.
-      $rootScope.expand = false;
-      $rootScope.$digest();
+      scope.expand = false;
+      scope.$digest();
 
-      expect(element.attr('class')).not.toContain('open');
-      expect(element.attr('style')).toEqual('display: none;');
+      expect(collapse.attr('class')).not.toContain('open');
+      expect(collapse.attr('style')).toEqual('display: none;');
 
       // When clicked, it slides down.
-      $rootScope.expand = true;
-      $rootScope.$digest();
+      scope.expand = true;
+      scope.$digest();
 
-      expect(element.attr('class')).toContain('open');
-      expect(element.attr('style')).toContain('display: block;');
+      expect(collapse.attr('class')).toContain('open');
+      expect(collapse.attr('style')).toContain('display: block;');
     });
   });
 
 });
+
