@@ -15,6 +15,17 @@
       - @data.each do |i|
         %tr
           %td
-            %a{:href => "/\#/#{i.slug}"}= i.name
+            %div(itemscope itemtype="http://schema.org/Library")
+              %div(itemprop="name")
+                %a(href="/\#/#{i.slug}")= i.name
+
+              %div(itemprop="address" itemscope itemtype="http://schema.org/PostalAddress")
+                %div(itemprop="streetAddress")= i.street_address
+                %span(itemprop="addressLocality")= i.locality 
+                %span(itemprop="addressRegion")= i.region
+                %span(itemprop="postalCode")= i.postal_code
+                - if ! i.contacts.nil?
+                  %div(itemprop="telephone")= i.contacts['phone']
+
           %td
             Hours
