@@ -10,7 +10,7 @@ describe('NYPL Utility Service Tests', function () {
    *   An AngularJS service with functions for simple routine and model 
    *   changes and logic that should not be in the controller.
    */
-  describe('nyplUtility', function () {
+  describe('Service: nyplUtility', function () {
     var nyplUtility, date;
 
     beforeEach(function () {

@@ -10,7 +10,7 @@ describe('NYPL Geocoder Service Tests', function () {
    * Queries Google Maps Javascript API to geocode addresses
    * and reverse geocode coordinates.
    */
-  describe('nyplGeocoderService', function () {
+  describe('Service: nyplGeocoderService', function () {
     var GeocoderMock, GeoCodingOK, GeoCodingError,
       LatLngOk, LatLngError,
       nyplGeocoderService, rootScope,

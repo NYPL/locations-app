@@ -9,7 +9,7 @@ describe('NYPL Amenities Service Tests', function () {
    * nyplAmenities
    *   AngularJS service that adds icon class names to amenities.
    */
-  describe('nyplAmenities', function () {
+  describe('Service: nyplAmenities', function () {
     var nyplAmenities;
 
     beforeEach(function () {

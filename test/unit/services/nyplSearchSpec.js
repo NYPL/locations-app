@@ -5,7 +5,7 @@ describe, expect, beforeEach, inject, it, angular, spyOn, afterEach */
 describe('NYPL Search Service Tests', function () {
   'use strict';
 
-  describe('nyplSearch', function () {
+  describe('Service: nyplSearch', function () {
     var nyplSearch, locations;
 
     beforeEach(function () {
@@ -142,5 +142,30 @@ describe('NYPL Search Service Tests', function () {
         });
     });
 
+    /*
+     * There are three functions that are used for saving, retrieving, and
+     * resetting the state for the homepage. It is simply a private object that
+     * creates a property with the value that was passed. 
+     */
+    describe('nyplSearch saved state functions', function () {
+      it('should have all three functions defined', function () {
+        expect(nyplSearch.setSearchValue).toBeDefined();
+        expect(nyplSearch.getSearchValues).toBeDefined();
+        expect(nyplSearch.resetSearchValues).toBeDefined();
+      });
+
+      it('should save and retrieve some data', function () {
+        var returnValue;
+
+        nyplSearch.setSearchValue('somePropertyName', 'someValue');
+        nyplSearch.setSearchValue('dogs', 'areCool');
+        returnValue = nyplSearch.getSearchValues();
+
+        expect(returnValue).toEqual({
+          'somePropertyName': 'someValue',
+          'dogs': 'areCool'
+        });
+      });
+    });
   });
 });
