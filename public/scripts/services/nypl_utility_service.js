@@ -1,189 +1,188 @@
-/*jslint nomen: true, indent: 4, maxlen: 80, browser: true */
+/*jslint nomen: true, indent: 2, maxlen: 80, browser: true */
 /*globals nypl_locations, angular, console, $window, _ */
 
-// Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
-function requestNotificationChannel($rootScope) {
-    'use strict';
+(function () {
+  'use strict';
 
+  // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
+  function requestNotificationChannel($rootScope) {
     // private notification messages
     var _START_REQUEST_ = '_START_REQUEST_',
-        _END_REQUEST_ = '_END_REQUEST_',
-        notificationChannel = {};
+      _END_REQUEST_ = '_END_REQUEST_',
+      notificationChannel = {};
 
     // publish start request notification
     notificationChannel.requestStarted = function () {
-        $rootScope.$broadcast(_START_REQUEST_);
+      $rootScope.$broadcast(_START_REQUEST_);
     };
 
     // publish end request notification
     notificationChannel.requestEnded = function () {
-        $rootScope.$broadcast(_END_REQUEST_);
+      $rootScope.$broadcast(_END_REQUEST_);
     };
 
     // subscribe to start request notification
     notificationChannel.onRequestStarted = function ($scope, handler) {
-        $scope.$on(_START_REQUEST_, function (event) {
-            handler(event);
-        });
+      $scope.$on(_START_REQUEST_, function (event) {
+        handler(event);
+      });
     };
 
     // subscribe to end request notification
     notificationChannel.onRequestEnded = function ($scope, handler) {
-        $scope.$on(_END_REQUEST_, function (event) {
-            handler(event);
-        });
+      $scope.$on(_END_REQUEST_, function (event) {
+        handler(event);
+      });
     };
 
     return notificationChannel;
-}
+  }
 
-/** @namespace nyplUtility */
-function nyplUtility($window, $sce, nyplCoordinatesService) {
-    'use strict';
-
+  /** @namespace nyplUtility */
+  function nyplUtility($window, $sce, nyplCoordinatesService) {
     var utility = {};
 
     /** @function nyplUtility.hoursToday
-     * @param {object} hours Object with a regular property that is an array
-     *  with the open and close times for every day.
-     * @returns {object} An object with the open and close times for the current
-     *  and tomorrow days.
+     * @param {object} hours Object with a regular property that is an
+     *  array with the open and close times for every day.
+     * @returns {object} An object with the open and close times for
+     *  the current and tomorrow days.
      */
     utility.hoursToday = function (hours) {
-        var date = new Date(),
-            today = date.getDay(),
-            tomorrow = today + 1,
-            hoursToday;
+      var date = new Date(),
+        today = date.getDay(),
+        tomorrow = today + 1,
+        hoursToday;
 
-        if (hours) {
-            hoursToday = {
-                'today': {
-                    'day': hours.regular[today].day,
-                    'open': hours.regular[today].open,
-                    'close': hours.regular[today].close
-                },
-                'tomorrow': {
-                    'day': hours.regular[tomorrow % 7].day,
-                    'open': hours.regular[tomorrow % 7].open,
-                    'close': hours.regular[tomorrow % 7].close
-                }
-            };
-        }
-        return hoursToday;
+      if (hours) {
+        hoursToday = {
+          'today': {
+            'day': hours.regular[today].day,
+            'open': hours.regular[today].open,
+            'close': hours.regular[today].close
+          },
+          'tomorrow': {
+            'day': hours.regular[tomorrow % 7].day,
+            'open': hours.regular[tomorrow % 7].open,
+            'close': hours.regular[tomorrow % 7].close
+          }
+        };
+      }
+      return hoursToday;
     };
 
     // Parse exception data and return as string
     utility.branchException = function (hours) {
-        var exception = {};
+      var exception = {};
 
-        if (hours) {
-            // If truthy, data exist for existing location
-            if (!hours.exceptions) {
-                return null;
-            }
-            if (hours.exceptions.description.trim() !== '') {
-                exception.desc = hours.exceptions.description;
-                // Optional set
-                if (hours.exceptions.start) {
-                    exception.start = hours.exceptions.start;
-                }
-                if (hours.exceptions.end) {
-                    exception.end = hours.exceptions.end;
-                }
-                return exception;
-            }
+      if (hours) {
+        // If truthy, data exist for existing location
+        if (!hours.exceptions) {
+          return null;
         }
+        if (hours.exceptions.description.trim() !== '') {
+          exception.desc = hours.exceptions.description;
+          // Optional set
+          if (hours.exceptions.start) {
+            exception.start = hours.exceptions.start;
+          }
+          if (hours.exceptions.end) {
+            exception.end = hours.exceptions.end;
+          }
+          return exception;
+        }
+      }
     };
 
     /** @function nyplUtility.getAddressString
      * @param {object} location The full location object.
-     * @param {boolean} [nicePrint] False by default. If true is passed, the
-     *  returned string will have HTML so it displays nicely in a Google Maps
-     *  marker infowindow.
-     * @returns {string} The formatted address of the location passed. Will
-     *  contain HTML if true is passed as the second parameter, with the
-     *  location name linked
+     * @param {boolean} [nicePrint] False by default. If true is passed,
+     *  the returned string will have HTML so it displays nicely in a
+     *  Google Maps marker infowindow.
+     * @returns {string} The formatted address of the location passed.
+     *  Will contain HTML if true is passed as the second parameter,
+     *  with the location name linked
      */
     utility.getAddressString = function (location, nicePrint) {
-        if (!location) {
-            return '';
-        }
+      if (!location) {
+        return '';
+      }
 
-        var addressBreak = " ",
-            linkedName = location.name;
+      var addressBreak = " ",
+        linkedName = location.name;
 
-        if (nicePrint) {
-            addressBreak = "<br />";
-            linkedName = "<a href='/#/" + location.slug +
-                "'>" + location.name + "</a>";
-        }
+      if (nicePrint) {
+        addressBreak = "<br />";
+        linkedName = "<a href='/#/" + location.slug +
+          "'>" + location.name + "</a>";
+      }
 
-        return linkedName + addressBreak +
-            location.street_address + addressBreak +
-            location.locality + ", " +
-            location.region + ", " +
-            location.postal_code;
+      return linkedName + addressBreak +
+        location.street_address + addressBreak +
+        location.locality + ", " +
+        location.region + ", " +
+        location.postal_code;
     };
 
     utility.socialMediaColor = function (social_media) {
-        _.each(social_media, function (sc) {
-            sc.classes = 'icon-';
-            switch (sc.site) {
-            case 'facebook':
-                sc.classes += sc.site + ' blueDarkerText';
-                break;
-            case 'foursquare':
-                sc.classes += sc.site + ' blueText';
-                break;
-            case 'instagram':
-                sc.classes += sc.site + ' blackText';
-                break;
-            // Twitter and Tumblr have a 2 in their icon class
-            // name: icon-twitter2, icon-tumblr2
-            case 'twitter':
-                sc.classes += sc.site + '2 blueText';
-                break;
-            case 'tumblr':
-                sc.classes += sc.site + '2 indigoText';
-                break;
-            case 'youtube':
-            case 'pinterest':
-                sc.classes += sc.site + ' redText';
-                break;
-            default:
-                sc.classes += sc.site;
-                break;
-            }
-        });
+      _.each(social_media, function (sc) {
+        sc.classes = 'icon-';
+        switch (sc.site) {
+        case 'facebook':
+          sc.classes += sc.site + ' blueDarkerText';
+          break;
+        case 'foursquare':
+          sc.classes += sc.site + ' blueText';
+          break;
+        case 'instagram':
+          sc.classes += sc.site + ' blackText';
+          break;
+        // Twitter and Tumblr have a 2 in their icon class
+        // name: icon-twitter2, icon-tumblr2
+        case 'twitter':
+          sc.classes += sc.site + '2 blueText';
+          break;
+        case 'tumblr':
+          sc.classes += sc.site + '2 indigoText';
+          break;
+        case 'youtube':
+        case 'pinterest':
+          sc.classes += sc.site + ' redText';
+          break;
+        default:
+          sc.classes += sc.site;
+          break;
+        }
+      });
 
-        return social_media;
+      return social_media;
     };
 
     utility.alerts = function (alerts) {
-        var today = new Date(),
-            todaysAlert = '',
-            alert_start,
-            alert_end;
+      var today = new Date(),
+        todaysAlert = '',
+        alert_start,
+        alert_end;
 
-        if (!alerts) {
-            return null;
-        }
-
-        if (Array.isArray(alerts)) {
-            _.each(alerts, function (alert) {
-                alert_start = new Date(alert.start);
-                alert_end = new Date(alert.end);
-
-                if (alert_start <= today && today <= alert_end) {
-                    todaysAlert += alert.body + "\n";
-                }
-            });
-
-            if (!angular.isUndefined(todaysAlert)) {
-                return todaysAlert;
-            }
-        }
+      if (!alerts) {
         return null;
+      }
+
+      if (Array.isArray(alerts)) {
+        _.each(alerts, function (alert) {
+          alert_start = new Date(alert.start);
+          alert_end = new Date(alert.end);
+
+          if (alert_start <= today && today <= alert_end) {
+            todaysAlert += alert.body + "\n";
+          }
+        });
+
+        if (!angular.isUndefined(todaysAlert)) {
+          return todaysAlert;
+        }
+      }
+      return null;
     };
 
     /*
@@ -193,155 +192,149 @@ function nyplUtility($window, $sce, nyplCoordinatesService) {
     * width (Int or String), height (Int or String)
     */
     utility.popupWindow = function (link, title, width, height) {
-        var w, h, popUp, popUp_h, popUp_w;
-        // Set width from args, defaults 300px
-        if (width === undefined) {
-            w = '300';
-        } else if (typeof width === 'string' ||
-                width instanceof String) {
-            w = width;
-        } else {
-            w = width.toString(); // convert to string
-        }
+      var w, h, popUp, popUp_h, popUp_w;
+      // Set width from args, defaults 300px
+      if (width === undefined) {
+        w = '300';
+      } else if (typeof width === 'string' || width instanceof String) {
+        w = width;
+      } else {
+        w = width.toString(); // convert to string
+      }
 
-        // Set height from args, default 500px;
-        if (height === undefined) {
-            h = '500';
-        } else if (typeof width === 'string' ||
-                width instanceof String) {
-            h = height;
-        } else {
-            h = height.toString(); // convert to string
-        }
+      // Set height from args, default 500px;
+      if (height === undefined) {
+        h = '500';
+      } else if (typeof width === 'string' || width instanceof String) {
+        h = height;
+      } else {
+        h = height.toString(); // convert to string
+      }
 
-        // Check if link and title are set and assign attributes
-        if (link && title) {
-            popUp = $window.open(
-                link,
-                title,
-                "menubar=1,resizable=1,width=" + w + ",height=" + h
-            );
-        } else if (link) {
-            // Only if link is set, default title: ''
-            popUp = $window.open(
-                link,
-                "",
-                "menubar=1,resizable=1,width=" + w + ",height=" + h
-            );
-        } else {
-            console.log(
-                'No link set, cannot initialize the popup window'
-            );
-        }
-        // Once the popup is set, center window
-        if (popUp) {
-            popUp_w = parseInt(w, 10);
-            popUp_h = parseInt(h, 10);
+      // Check if link and title are set and assign attributes
+      if (link && title) {
+        popUp = $window.open(
+          link,
+          title,
+          "menubar=1,resizable=1,width=" + w + ",height=" + h
+        );
+      } else if (link) {
+        // Only if link is set, default title: ''
+        popUp = $window.open(
+          link,
+          "",
+          "menubar=1,resizable=1,width=" + w + ",height=" + h
+        );
+      } else {
+        console.log('No link set, cannot initialize the popup window');
+      }
+      // Once the popup is set, center window
+      if (popUp) {
+        popUp_w = parseInt(w, 10);
+        popUp_h = parseInt(h, 10);
 
-            popUp.moveTo(
-                screen.width / 2 - popUp_w / 2,
-                screen.height / 2 - popUp_h / 2
-            );
-        }
+        popUp.moveTo(
+          screen.width / 2 - popUp_w / 2,
+          screen.height / 2 - popUp_h / 2
+        );
+      }
     };
 
     utility.calendarLink = function (type, event, location) {
-        if (!type || !event) {
-            return '';
-        }
-        var title = event.title,
-            start_date = event.start.replace(/[\-:]/g, ''),
-            end_date = event.end.replace(/[\-:]/g, ''),
-            body = event.body,
-            url = event._links.self.href,
-            address = location.name + " - " +
-                location.street_address + " " +
-                location.locality + ", " + location.region +
-                " " + location.postal_code,
-            calendar_link = '';
+      if (!type || !event) {
+        return '';
+      }
+      var title = event.title,
+        start_date = event.start.replace(/[\-:]/g, ''),
+        end_date = event.end.replace(/[\-:]/g, ''),
+        body = event.body,
+        url = event._links.self.href,
+        address = location.name + " - " +
+          location.street_address + " " +
+          location.locality + ", " + location.region +
+          " " + location.postal_code,
+        calendar_link = '';
 
-        switch (type) {
-        case 'google':
-            calendar_link = "https://www.google.com/calendar" +
-                "/render?action=template" +
-                "&text=" + title +
-                "&dates=" + start_date + "/" + end_date +
-                "&details=" + body +
-                "&location=" + address +
-                "&pli=1&uid=&sf=true&output=xml";
-            break;
-        case 'yahoo':
-            calendar_link = "https://calendar.yahoo.com/?v=60" +
-                "&TITLE=" + title +
-                "&ST=" + start_date +
-                "&in_loc=" + address +
-                "&in_st=" + address +
-                "&DESC=" + body +
-                "&URL=" + url;
-            break;
-        default:
-            break;
-        }
+      switch (type) {
+      case 'google':
+        calendar_link = "https://www.google.com/calendar" +
+          "/render?action=template" +
+          "&text=" + title +
+          "&dates=" + start_date + "/" + end_date +
+          "&details=" + body +
+          "&location=" + address +
+          "&pli=1&uid=&sf=true&output=xml";
+        break;
+      case 'yahoo':
+        calendar_link = "https://calendar.yahoo.com/?v=60" +
+          "&TITLE=" + title +
+          "&ST=" + start_date +
+          "&in_loc=" + address +
+          "&in_st=" + address +
+          "&DESC=" + body +
+          "&URL=" + url;
+        break;
+      default:
+        break;
+      }
 
-        return calendar_link;
+      return calendar_link;
     };
 
     utility.icalLink = function (event, address) {
-        if (!event || !address) {
-            return '';
-        }
-        var currentTime = new Date().toJSON().toString().replace(/[\-.:]/g, ''),
-            url = "http://nypl.org/" + event._links.self.href,
-            icsMSG = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//NYPL//" +
-                "NONSGML v1.0//EN\n" +
-                "METHOD:PUBLISH\n" +
-                "BEGIN:VEVENT\n" +
-                "UID:" + new Date().getTime() +
-                "\nDTSTAMP:" + currentTime + "\nATTENDEE;CN=My Self ;" +
-                "\nORGANIZER;CN=NYPL:" +
-                "\nDTSTART:" + event.start.replace(/[\-:]/g, '') +
-                "\nDTEND:" + event.end.replace(/[\-:]/g, '') +
-                "\nLOCATION:" + address +
-                "\nDESCRIPTION:" + event.body +
-                "\nURL;VALUE=URI:" + url +
-                "\nSUMMARY:" + event.title +
-                "\nEND:VEVENT\nEND:VCALENDAR";
+      if (!event || !address) {
+        return '';
+      }
+      var currentTime = new Date().toJSON().toString().replace(/[\-.:]/g, ''),
+        url = "http://nypl.org/" + event._links.self.href,
+        icsMSG = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//NYPL//" +
+          "NONSGML v1.0//EN\n" +
+          "METHOD:PUBLISH\n" +
+          "BEGIN:VEVENT\n" +
+          "UID:" + new Date().getTime() +
+          "\nDTSTAMP:" + currentTime + "\nATTENDEE;CN=My Self ;" +
+          "\nORGANIZER;CN=NYPL:" +
+          "\nDTSTART:" + event.start.replace(/[\-:]/g, '') +
+          "\nDTEND:" + event.end.replace(/[\-:]/g, '') +
+          "\nLOCATION:" + address +
+          "\nDESCRIPTION:" + event.body +
+          "\nURL;VALUE=URI:" + url +
+          "\nSUMMARY:" + event.title +
+          "\nEND:VEVENT\nEND:VCALENDAR";
 
-        $window.open('data:text/calendar;chartset=utf-8,' +
-            encodeURI(icsMSG));
+      $window.open('data:text/calendar;chartset=utf-8,' + encodeURI(icsMSG));
     };
 
     // Iterate through lon/lat and calculate distance
     utility.calcDistance = function (locations, coords) {
-        if (!locations) {
-            return [];
+      if (!locations) {
+        return [];
+      }
+
+      var searchCoordinates = {
+        latitude: coords.latitude || coords.lat,
+        longitude: coords.longitude || coords.long
+      };
+
+      _.each(locations, function (location) {
+        var locCoords = [], locationLat, locationLong;
+
+        if (location.geolocation && location.geolocation.coordinates) {
+          locCoords = location.geolocation.coordinates;
         }
 
-        var searchCoordinates = {
-            latitude: coords.latitude || coords.lat,
-            longitude: coords.longitude || coords.long
-        };
+        locationLat = location.lat || locCoords[1];
+        locationLong = location.long || locCoords[0];
 
-        _.each(locations, function (location) {
-            var locCoords = [], locationLat, locationLong;
+        location.distance = nyplCoordinatesService.getDistance(
+          searchCoordinates.latitude,
+          searchCoordinates.longitude,
+          locationLat,
+          locationLong
+        );
+      });
 
-            if (location.geolocation && location.geolocation.coordinates) {
-                locCoords = location.geolocation.coordinates;
-            }
-
-            locationLat = location.lat || locCoords[1];
-            locationLong = location.long || locCoords[0];
-
-            location.distance =
-                nyplCoordinatesService.getDistance(
-                    searchCoordinates.latitude,
-                    searchCoordinates.longitude,
-                    locationLat,
-                    locationLong
-                );
-        });
-
-        return locations;
+      return locations;
     };
 
     /** @function nyplUtility.checkDistance
@@ -354,12 +347,12 @@ function nyplUtility($window, $sce, nyplCoordinatesService) {
      *  searching or manipulating the locations.
      */
     utility.checkDistance = function (locations) {
-        var distanceArray = _.pluck(locations, 'distance');
+      var distanceArray = _.pluck(locations, 'distance');
 
-        if (_.min(distanceArray) > 25) {
-            return true;
-        }
-        return false;
+      if (_.min(distanceArray) > 25) {
+        return true;
+      }
+      return false;
     };
 
     /** @function nyplUtility.returnHTML
@@ -371,7 +364,7 @@ function nyplUtility($window, $sce, nyplCoordinatesService) {
      *  trusted HTMl.
      */
     utility.returnHTML = function (html) {
-        return $sce.trustAsHtml(html);
+      return $sce.trustAsHtml(html);
     };
 
     /** @function nyplUtility.divisionHasAppointment
@@ -382,25 +375,28 @@ function nyplUtility($window, $sce, nyplCoordinatesService) {
      *  an appointment.
      */
     utility.divisionHasAppointment = function (id) {
-        switch (id) {
-        case "ARN":
-        case "RBK":
-        case "MSS":
-        case "BRG":
-        case "PRN":
-        case "PHG":
-        case "SPN":
-        case "CPS":
-            return true;
-        default:
-            return false;
-        }
+      switch (id) {
+      case "ARN":
+      case "RBK":
+      case "MSS":
+      case "BRG":
+      case "PRN":
+      case "PHG":
+      case "SPN":
+      case "CPS":
+        return true;
+      default:
+        return false;
+      }
     };
 
     return utility;
-}
+  }
 
-angular
+  angular
     .module('nypl_locations')
     .factory('nyplUtility', nyplUtility)
     .factory('requestNotificationChannel', requestNotificationChannel);
+
+})();
+
