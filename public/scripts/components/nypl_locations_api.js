@@ -5,7 +5,7 @@
 function nyplLocationsService($http, $q) {
     'use strict';
 
-    var api = 'http://locations-api-alpha.herokuapp.com',
+    var api = 'http://evening-mesa-7447-160.herokuapp.com',
         apiError = "Could not reach API",
         locationsApi = {};
 
