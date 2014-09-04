@@ -35,6 +35,11 @@ describe('NYPL locationService Module', function () {
       });
     });
 
+    afterEach(function() {
+      httpBackend.verifyNoOutstandingExpectation();
+      httpBackend.verifyNoOutstandingRequest();
+    });
+
     /*
      * nyplLocationsService.allLocations()
      *

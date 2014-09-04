@@ -10,7 +10,7 @@ describe, expect, beforeEach, inject, it, angular */
 describe('nyplSSO module', function () {
   'use strict';
 
-  var element, $compile, $rootScope, httpBackend;
+  var element, $compile, $scope, httpBackend;
 
   beforeEach(module('nyplSSO'));
   beforeEach(module('directiveTemplates'));
@@ -30,11 +30,11 @@ describe('nyplSSO module', function () {
   describe('nypl-sso', function () {
     beforeEach(inject(function (_$compile_, _$rootScope_) {
       $compile = _$compile_;
-      $rootScope = _$rootScope_;
+      $scope = _$rootScope_;
 
       element = angular.element('<nypl-sso></nypl-sso>');
-      $compile(element)($rootScope);
-      $rootScope.$digest();
+      $compile(element)($scope);
+      $scope.$digest();
     }));
 
     it('should compile', function () {

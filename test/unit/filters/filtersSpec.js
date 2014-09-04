@@ -32,6 +32,7 @@ describe('NYPL Filter Unit Tests', function () {
     }));
 
     it('should have a timeFormat function', function () {
+      expect(timeFormatFilter).toBeDefined();
       expect(angular.isFunction(timeFormatFilter)).toBe(true);
     });
 
@@ -81,6 +82,7 @@ describe('NYPL Filter Unit Tests', function () {
     }));
 
     it('should have a dateToISOFilter function', function () {
+      expect(dateToISOFilter).toBeDefined();
       expect(angular.isFunction(dateToISOFilter)).toBe(true);
     });
 
@@ -103,6 +105,7 @@ describe('NYPL Filter Unit Tests', function () {
     }));
 
     it('should have a capitalize filter function', function () {
+      expect(capitalizeFilter).toBeDefined();
       expect(angular.isFunction(capitalizeFilter)).toBe(true);
     });
 
@@ -133,6 +136,11 @@ describe('NYPL Filter Unit Tests', function () {
     beforeEach(inject(function (_hoursTodayFormatFilter_) {
       hoursTodayFormatFilter = _hoursTodayFormatFilter_;
     }));
+
+    it('should be defined', function () {
+      expect(hoursTodayFormatFilter).toBeDefined();
+      expect(angular.isFunction(hoursTodayFormatFilter)).toBe(true);
+    });
 
     describe('when closed', function () {
       it('should be false if no input is given', function () {
@@ -304,6 +312,11 @@ describe('NYPL Filter Unit Tests', function () {
       short_blog_post = "If you think of poems as flowers, then the Aguilar " +
         "Poetry Fest was an exercise in charming cross-pollination. Sharing " +
         "was the thing.";
+
+    it('should be defined', function () {
+      expect(truncateFilter).toBeDefined();
+      expect(angular.isFunction(truncateFilter)).toBe(true);
+    });
 
     it('should return the input if it is not a string', function () {
       expect(truncateFilter(1234)).toEqual(1234);
