@@ -41,6 +41,7 @@ describe('NYPL coordinateService Module', function () {
       it('should have a geolocationAvailable function', function () {
         expect(angular.isFunction(nyplCoordinatesService.geolocationAvailable))
           .toBe(true);
+        expect(nyplCoordinatesService.geolocationAvailable).toBeDefined();
       });
 
       it('should return false due to old browser', function () {
