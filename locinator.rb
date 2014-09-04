@@ -14,16 +14,16 @@ class Locinator < Sinatra::Base
     end
   end
 
-  get '/', :spider => true do
-    wanted = params['_escaped_fragment_']
+  get %r{/(.+)$}, :spider => true do
     api = Lionactor::Client.new
-    if wanted =~ /([0-9a-z\-]+)$/
-      @data = api.location($1)
-      haml :location
-    else
-      @data = api.locations
-      haml :index
-    end
+    @data = api.location(params['captures'].first)
+    haml :location
+  end
+
+  get '/', :spider => true do
+    api = Lionactor::Client.new
+    @data = api.locations
+    haml :index
   end
 
   get '/' do
