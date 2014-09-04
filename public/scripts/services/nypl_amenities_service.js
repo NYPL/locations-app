@@ -121,6 +121,10 @@
       var initial_list = this.allAmenitiesArray(amenities),
         amenities_list = [];
 
+      if (!(amenities && rank && loc_rank)) {
+        return;
+      }
+
       // Sort the list of all amenities by institution rank.
       initial_list = sortAmenitiesList(initial_list, 'rank');
       // Retrieve the first n institution ranked amentities.
