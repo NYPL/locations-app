@@ -257,7 +257,8 @@ describe('NYPL locationService Module', function () {
             };
 
           httpBackend
-            .expectGET('http://evening-mesa-7447-160.herokuapp.com/amenities/36')
+            .expectGET('http://evening-mesa-7447-160.herokuapp.com' +
+              '/amenities/36')
             .respond(mockedAmenityAPICall);
 
           nyplLocationsService.amenities(36).then(function (data) {
@@ -276,7 +277,8 @@ describe('NYPL locationService Module', function () {
           var returned_error_message;
 
           httpBackend
-            .expectGET('http://evening-mesa-7447-160.herokuapp.com/amenities/36')
+            .expectGET('http://evening-mesa-7447-160.herokuapp.com' +
+              '/amenities/36')
             .respond(500);
 
           nyplLocationsService.amenities(36)
@@ -368,8 +370,8 @@ describe('NYPL locationService Module', function () {
                 _id: '71579',
                 scope: 'all',
                 title: 'Labor Day',
-                body: "The New York Public Library will be closed " +
-                  "August 30th through September 1st in observance of Labor Day.",
+                body: "The New York Public Library will be closed August " +
+                  "30th through September 1st in observance of Labor Day.",
                 start: "2014-08-23T00:00:00-04:00",
                 end: "2014-09-02T01:00:00-04:00"
               },
