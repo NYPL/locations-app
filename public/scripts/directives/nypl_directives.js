@@ -243,7 +243,7 @@ function nyplFundraising() {
 }
 
 /* 
-** Directive: <nypl-sidebar donate-button="" nypl-ask="" donate-url="">
+** Directive: <nypl-sidebar donate-button="" nypl-ask="" donateurl="">
 ** Usage: Inserts optional Donate button/nyplAsk widget when 'true' is
 **        passed to donate-button="" or nypl-ask="". A custom donate url
 **        can be passed for the donate-button, otherwise a default is set
