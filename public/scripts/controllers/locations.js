@@ -393,6 +393,7 @@
             }
 
             $scope.geolocationAddressOrSearchQuery = '';
+            $scope.searchError = '';
             showLibrariesTypeOf();
             nyplGeocoderService.showAllLibraries()
             $scope.searchTerm =  searchTerm;
