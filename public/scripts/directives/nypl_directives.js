@@ -259,9 +259,9 @@ function nyplSidebar() {
             donateButton: '@',
             nyplAsk: '@'
         },
-        link: function (scope, attrs) {
-            var donateUrl = "https://secure3.convio.net/nypl/site/SPageServer?pagename=donation_form&JServSessionIdr003=dwcz55yj27.app304a&s_src=FRQ14ZZ_SWBN";
-            scope.donateUrl = (attrs.donateUrl || donateUrl);
+        link: function (scope, elem, attrs) {
+            var url = "https://secure3.convio.net/nypl/site/SPageServer?pagename=donation_form&JServSessionIdr003=dwcz55yj27.app304a&s_src=FRQ14ZZ_SWBN";      
+            scope.donateUrl = (attrs.donateurl || url);      
         }
     };
 }
