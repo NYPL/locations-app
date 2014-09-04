@@ -505,5 +505,97 @@ describe('NYPL Directive Unit Tests', function () {
     });
   });
 
-});
+  /*
+   * <nypl-sidebar donate-button="" nypl-ask="" donateurl=""><nypl-sidebar>
+   * The nyplSidebar directive generates a donate button when set to `true`,
+   * a askNYPL container holding chat and email links when set to `true` and
+   * an optional donateurl which, will default to a convio global url if
+   * not set in the params.
+   */
+  describe('Directive: nyplSidebar', function () {
+    var template, nyplSidebar;
+    // All settings configured
+    describe('nyplSidebar with all settings', function (){
 
+      beforeEach(inject(function () {
+        template = '<nypl-sidebar donate-button="true" ' +
+          'nypl-ask="true" donateurl="http://nypl.org">' +
+          '</nypl-sidebar>';
+        nyplSidebar = createDirective(template);
+      }));
+
+      it('should compile', function () {
+        expect(nyplSidebar.attr('class'))
+          .toContain('nypl-sidebar');
+      });
+
+      it('should compile a donate-widget', function () {
+        expect(nyplSidebar.find('.donate-widget')).toBeTruthy();
+        expect(nyplSidebar.find('.donate-widget').length).toBe(1);
+      });
+      it('should compile a nyplAsk-widget', function () {
+        expect(nyplSidebar.find('.nypl-ask-widget')).toBeTruthy();
+        expect(nyplSidebar.find('.nypl-ask-widget').length).toBe(1);
+      });
+
+      it('should set `donate-url` to value passed in template', function (){
+        var donateUrl = nyplSidebar.find('.btn--donate');
+        expect(donateUrl.attr('href')).toContain('nypl.org');
+        expect(donateUrl.length).toBe(1);
+      });
+    });
+    // No settings configured
+    describe('nyplSidebar NO settings', function (){
+
+      beforeEach(inject(function () {
+        template = '<nypl-sidebar></nypl-sidebar>';
+        nyplSidebar = createDirective(template);
+      }));
+
+      it('should compile', function () {
+        expect(nyplSidebar.attr('class'))
+          .toContain('nypl-sidebar');
+      });
+
+      it('should NOT compile donate-widget', function () {
+        expect(nyplSidebar.find('.donate-widget').length).toBe(0);
+      });
+
+      it('should NOT compile nyplAsk-widget', function () {
+        expect(nyplSidebar.find('.nypl-ask-widget').length).toBe(0);
+      });
+
+      it('should set NOT create `donateurl` since donate-widget is not set', function (){
+        var donateUrl = nyplSidebar.find('.btn--donate');
+        expect(donateUrl.length).toBe(0);
+      });
+    });
+
+    // No donateUrl set
+    describe('nyplSidebar donate and nyplAsk active, no donateurl', function (){
+
+      beforeEach(inject(function () {
+        template = '<nypl-sidebar donate-button="true" ' +
+          'nypl-ask="true"></nypl-sidebar>';
+        nyplSidebar = createDirective(template);
+      }));
+
+      it('should compile a donate-widget', function () {
+        expect(nyplSidebar.find('.donate-widget')).toBeTruthy();
+        expect(nyplSidebar.find('.donate-widget').length).toBe(1);
+      });
+
+      it('should compile a nyplAsk-widget', function () {
+        expect(nyplSidebar.find('.nypl-ask-widget')).toBeTruthy();
+        expect(nyplSidebar.find('.nypl-ask-widget').length).toBe(1);
+      });
+
+      it('should set `donate-url` to default convio link', function (){
+        var donateUrl = nyplSidebar.find('.btn--donate');
+        expect(donateUrl.attr('href')).toContain('convio');
+        expect(donateUrl.length).toBe(1);
+      });
+    });
+  });
+
+});
