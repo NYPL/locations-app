@@ -6,23 +6,21 @@
 
   /** @namespace nyplSearch */
   function nyplSearch($filter) {
-    'use strict';
-
     var search = {},
       searchValues = {};
 
     search.setSearchValue = function (prop, val) {
-        searchValues[prop] = val;
-        return this;
+      searchValues[prop] = val;
+      return this;
     };
 
     search.getSearchValues = function () {
-        return searchValues;
+      return searchValues;
     };
 
     search.resetSearchValues = function () {
-        searchValues = {};
-        return this;
+      searchValues = {};
+      return this;
     };
 
     /** @function nyplSearch.idLocationSearch
@@ -37,6 +35,10 @@
      */
     search.idLocationSearch = function (locations, searchTerm) {
       var IDFilter = [];
+
+      if (!locations || !searchTerm) {
+        return;
+      }
 
       if (searchTerm.length >= 2 && searchTerm.length <= 4) {
         IDFilter = _.where(locations, { 'id' : searchTerm.toUpperCase() });
@@ -61,8 +63,14 @@
       // how to search the object?
       // name, address, zipcode, locality, synonyms (amenities and divisions?)
 
-      var lazyFilter = $filter('filter')(locations, searchTerm),
-        strictFilter = $filter('filter')(locations, searchTerm, true);
+      var lazyFilter, strictFilter;
+
+      if (!locations || !searchTerm || searchTerm.length < 3) {
+        return;
+      }
+
+      lazyFilter = $filter('filter')(locations, searchTerm);
+      strictFilter = $filter('filter')(locations, searchTerm, true);
 
       if (strictFilter !== undefined && strictFilter.length !== 0) {
         // Rarely occurs but just in case there are results for
@@ -82,6 +90,10 @@
      */
     search.searchWordFilter = function (query) {
       var words = ['branch'];
+
+      if (!query) {
+        return;
+      }
 
       _.each(words, function (word) {
         query = query.replace(word, '');

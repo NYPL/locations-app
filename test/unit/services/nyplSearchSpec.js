@@ -6,10 +6,19 @@ describe('NYPL Search Service Tests', function () {
   'use strict';
 
   describe('nyplSearch', function () {
-    var nyplSearch;
+    var nyplSearch, locations;
 
     beforeEach(function () {
       module('nypl_locations');
+      locations = [
+        {id: 'AG', name: 'Aguilar Library'},
+        {id: 'AL', name: 'Allerton Library'},
+        {id: 'BAR', name: 'Baychester Library'},
+        {id: 'BLC', name: 'Bronx Library Center'},
+        {id: 'KP', name: 'Kips Bay Library'},
+        {id: 'PM', name: 'Pelham Bay Library'}
+      ];
+
       // inject your service for testing.
       // The _underscores_ are a convenience thing
       // so you can have your variable name be the
@@ -28,16 +37,19 @@ describe('NYPL Search Service Tests', function () {
      *   property of one of the location objects in the locations array.
      */
     describe('nyplSearch.idLocationSearch()', function () {
+      it('should be defined', function () {
+        expect(nyplSearch.idLocationSearch).toBeDefined();
+      });
+
+      it('should return undefined if no parameters were passed', function () {
+        expect(nyplSearch.idLocationSearch()).not.toBeDefined();
+        expect(nyplSearch.idLocationSearch(locations)).not.toBeDefined();
+      });
+
       it('should return the location object that matches the id that was ' +
         'searched',
         function () {
           var search = 'bar', // Baychester
-            locations = [
-              {id: 'AG', name: 'Aguilar Library'},
-              {id: 'AL', name: 'Allerton Library'},
-              {id: 'BAR', name: 'Baychester Library'},
-              {id: 'BLC', name: 'Bronx Library Center'}
-            ],
             location;
 
           location = nyplSearch.idLocationSearch(locations, search);
@@ -47,12 +59,6 @@ describe('NYPL Search Service Tests', function () {
       it('should return an empty array if the search did not match',
         function () {
           var search = 'upper west side',
-            locations = [
-              {id: 'AG', name: 'Aguilar Library'},
-              {id: 'AL', name: 'Allerton Library'},
-              {id: 'BAR', name: 'Baychester Library'},
-              {id: 'BLC', name: 'Bronx Library Center'}
-            ],
             location;
 
           location = nyplSearch.idLocationSearch(locations, search);
@@ -70,18 +76,19 @@ describe('NYPL Search Service Tests', function () {
      *   the user searched for.
      */
     describe('nyplSearch.locationSearch()', function () {
+      it('should be defined', function () {
+        expect(nyplSearch.locationSearch).toBeDefined();
+      });
+
+      it('should return undefined if no parameters were passed', function () {
+        expect(nyplSearch.locationSearch()).not.toBeDefined();
+        expect(nyplSearch.locationSearch([])).not.toBeDefined();
+      });
+
       it('should return an array with locations that match ' +
         'what was searched for',
         function () {
           var search = 'bay',
-            locations = [
-              {id: 'AG', name: 'Aguilar Library'},
-              {id: 'AL', name: 'Allerton Library'},
-              {id: 'BAR', name: 'Baychester Library'},
-              {id: 'BLC', name: 'Bronx Library Center'},
-              {id: 'KP', name: 'Kips Bay Library'},
-              {id: 'PM', name: 'Pelham Bay Library'}
-            ],
             location;
 
           location = nyplSearch.locationSearch(locations, search);
@@ -95,14 +102,6 @@ describe('NYPL Search Service Tests', function () {
       it('should return an empty array if the search did not match',
         function () {
           var search = 'upper west side',
-            locations = [
-              {id: 'AG', name: 'Aguilar Library'},
-              {id: 'AL', name: 'Allerton Library'},
-              {id: 'BAR', name: 'Baychester Library'},
-              {id: 'BLC', name: 'Bronx Library Center'},
-              {id: 'KP', name: 'Kips Bay Library'},
-              {id: 'PM', name: 'Pelham Bay Library'}
-            ],
             location;
 
           location = nyplSearch.locationSearch(locations, search);
@@ -118,6 +117,14 @@ describe('NYPL Search Service Tests', function () {
      *   Returns a string but with a set of words removed from the string.
      */
     describe('nyplSearch.searchWordFilter()', function () {
+      it('should be defined', function () {
+        expect(nyplSearch.searchWordFilter).toBeDefined();
+      });
+
+      it('should return undefined if no parameters were passed', function () {
+        expect(nyplSearch.searchWordFilter()).not.toBeDefined();
+      });
+
       // The set of words to remove from searchs only include 'branch'
       // at the moment.
       it('should remove the word "branch" from a search', function () {

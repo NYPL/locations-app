@@ -393,6 +393,7 @@
             }
 
             $scope.geolocationAddressOrSearchQuery = '';
+            $scope.searchError = '';
             showLibrariesTypeOf();
             nyplGeocoderService.showAllLibraries()
             $scope.searchTerm =  searchTerm;
@@ -444,7 +445,7 @@
                     $scope.searchMarker = false;
                     nyplSearch.resetSearchValues();
 
-                    if (filteredLocations.length &&
+                    if (filteredLocations && filteredLocations.length &&
                             error.msg !== 'query too short') {
                         resetProperty($scope.locations, 'distance');
                         $scope.searchError = '';

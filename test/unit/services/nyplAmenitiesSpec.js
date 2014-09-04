@@ -189,48 +189,50 @@ describe('NYPL Amenities Service Tests', function () {
         'amenity category',
         function () {
           var amenitiesCategories = [
-            {
-              'name': 'Computer Services',
-              'weight': 0,
-              'amenities': [
-                { 'id': 7950, 'name': 'Computers for Public Use' },
-                { 'id': 7952, 'name': 'Wireless Internet Access' },
-                { 'id': 7954, 'name': 'Printing (From PC)' }
-              ]
-            },
-            {
-              'name': 'Circulation',
-              'weight': 1,
-              'amenities': [
-                { 'id': 234, 'name': 'Inter-Library Loan' },
-                { 'id': 1234, 'name': 'Self-service check-out' },
-                { 'id': 7951, 'name': 'Book Drop Box (24 Hour)' }
-              ]
-            },
-            {
-              'name': 'Office Services',
-              'weight': 1,
-              'amenities': [
-                { 'id': 234, 'name': 'Photocopiers (black/white)' },
-                { 'id': 1234, 'name': 'Photocopiers (color)' }
-              ]
-            },
-            {
-              'name': 'Facilities',
-              'weight': 2,
-              'amenities': [
-                { 'id': 7971, 'name': 'Bicycle Rack' }
-              ]
-            },
-            {
-              'name': 'Assitive Technologies',
-              'weight': 3,
-              'amenities': [
-                { 'id': 7976, 'name': 'Screen Magnification software (MAGic)' }
-              ]
-            }
-          ],
-          amenities_list = nyplAmenities.allAmenitiesArray(amenitiesCategories);
+              {
+                'name': 'Computer Services',
+                'weight': 0,
+                'amenities': [
+                  { 'id': 7950, 'name': 'Computers for Public Use' },
+                  { 'id': 7952, 'name': 'Wireless Internet Access' },
+                  { 'id': 7954, 'name': 'Printing (From PC)' }
+                ]
+              },
+              {
+                'name': 'Circulation',
+                'weight': 1,
+                'amenities': [
+                  { 'id': 234, 'name': 'Inter-Library Loan' },
+                  { 'id': 1234, 'name': 'Self-service check-out' },
+                  { 'id': 7951, 'name': 'Book Drop Box (24 Hour)' }
+                ]
+              },
+              {
+                'name': 'Office Services',
+                'weight': 1,
+                'amenities': [
+                  { 'id': 234, 'name': 'Photocopiers (black/white)' },
+                  { 'id': 1234, 'name': 'Photocopiers (color)' }
+                ]
+              },
+              {
+                'name': 'Facilities',
+                'weight': 2,
+                'amenities': [
+                  { 'id': 7971, 'name': 'Bicycle Rack' }
+                ]
+              },
+              {
+                'name': 'Assitive Technologies',
+                'weight': 3,
+                'amenities': [
+                  { 'id': 7976, 'name': 'Screen Magnification ' +
+                    'software (MAGic)' }
+                ]
+              }
+            ],
+            amenities_list =
+              nyplAmenities.allAmenitiesArray(amenitiesCategories);
 
           expect(amenities_list.length).toBe(10);
           expect(amenities_list).toEqual([
@@ -250,30 +252,31 @@ describe('NYPL Amenities Service Tests', function () {
       it('should return an array of all amenities, different input',
         function () {
           var amenitiesCategories = [
-            {
-              'name': 'Computer Services',
-              'weight': 0,
-              'amenities': [
-                { 'id': 7950, 'name': 'Computers for Public Use' },
-                { 'id': 7952, 'name': 'Wireless Internet Access' },
-              ]
-            },
-            {
-              'name': 'Circulation',
-              'weight': 1,
-              'amenities': [
-                { 'id': 234, 'name': 'Inter-Library Loan' }
-              ]
-            },
-            {
-              'name': 'Office Services',
-              'weight': 1,
-              'amenities': [
-                { 'id': 234, 'name': 'Photocopiers (black/white)' }
-              ]
-            }
-          ],
-          amenities_list = nyplAmenities.allAmenitiesArray(amenitiesCategories);
+              {
+                'name': 'Computer Services',
+                'weight': 0,
+                'amenities': [
+                  { 'id': 7950, 'name': 'Computers for Public Use' },
+                  { 'id': 7952, 'name': 'Wireless Internet Access' }
+                ]
+              },
+              {
+                'name': 'Circulation',
+                'weight': 1,
+                'amenities': [
+                  { 'id': 234, 'name': 'Inter-Library Loan' }
+                ]
+              },
+              {
+                'name': 'Office Services',
+                'weight': 1,
+                'amenities': [
+                  { 'id': 234, 'name': 'Photocopiers (black/white)' }
+                ]
+              }
+            ],
+            amenities_list =
+              nyplAmenities.allAmenitiesArray(amenitiesCategories);
 
           expect(amenities_list.length).toBe(4);
           expect(amenities_list).toEqual([
@@ -309,7 +312,7 @@ describe('NYPL Amenities Service Tests', function () {
             { 'id': 7952, 'name': 'Wireless Internet Access',
               'rank': 4, 'location_rank': 7 },
             { 'id': 7955, 'name': 'Electrical outlets available',
-              'rank': 5, 'location_rank': 8 },
+              'rank': 5, 'location_rank': 8 }
           ]
         },
         {
@@ -321,7 +324,7 @@ describe('NYPL Amenities Service Tests', function () {
             { 'id': 7957, 'name': 'Self-service check-out',
               'rank': 7, 'location_rank': 9 },
             { 'id': 7956, 'name': 'Inter-Library Loan',
-              'rank': 6, 'location_rank': 13 },
+              'rank': 6, 'location_rank': 13 }
           ]
         },
         {
@@ -333,7 +336,7 @@ describe('NYPL Amenities Service Tests', function () {
             { 'id': 7964, 'name': 'Map Photocopiers (up to 36" wide)',
               'rank': 15, 'location_rank': 11 },
             { 'id': 7965, 'name': 'Change machine',
-              'rank': 16, 'location_rank': 12 },
+              'rank': 16, 'location_rank': 12 }
           ]
         },
         {
@@ -345,7 +348,7 @@ describe('NYPL Amenities Service Tests', function () {
             { 'id': 7970, 'name': 'Lost and found',
               'rank': 21, 'location_rank': 4 },
             { 'id': 7975, 'name': 'Water fountain',
-              'rank': 26, 'location_rank': 14 },
+              'rank': 26, 'location_rank': 14 }
           ]
         },
         {
@@ -353,7 +356,7 @@ describe('NYPL Amenities Service Tests', function () {
           'weight': 3,
           'amenities': [
             { 'id': 7976, 'name': 'Screen Magnification software (MAGic)',
-              'rank': 27, 'location_rank': 15},
+              'rank': 27, 'location_rank': 15}
           ]
         }
       ];
@@ -368,8 +371,8 @@ describe('NYPL Amenities Service Tests', function () {
         expect(nyplAmenities.getHighlightedAmenities([], 3)).not.toBeDefined();
       });
 
-      // Gets the first x ranked amenity, then gets the first y locally ranked
-      // amenity that were not already chosen.
+      // Gets the first x ranked amenities, then gets the first y locally ranked
+      // amenities that were not already chosen.
       describe('returned highlighted amenities list', function () {
         it('should return 1 institution ranked amenity and 1 locally ranked ' +
           'amenity',
