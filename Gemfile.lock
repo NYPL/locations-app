@@ -1,6 +1,7 @@
 GIT
   remote: https://bitbucket.org/rdmond/lionactor
-  revision: 32bbb04ae1c075c191294193dc96517d02ee19ab
+  revision: 8434923c754f842b1c7ab0ca9bc5db7e26b161c6
+  tag: 0.0.1
   specs:
     lionactor (0.0.1)
       faraday
