@@ -242,6 +242,30 @@ function nyplFundraising() {
     };
 }
 
+/* 
+** Directive: <nypl-sidebar donate-button="" nypl-ask="" donate-url="">
+** Usage: Inserts optional Donate button/nyplAsk widget when 'true' is
+**        passed to donate-button="" or nypl-ask="". A custom donate url
+**        can be passed for the donate-button, otherwise a default is set
+*/
+function nyplSidebar() {
+    'use strict';
+
+    return {
+        restrict: 'E',
+        templateUrl: 'scripts/directives/templates/sidebar-widgets.html',
+        replace: true,
+        scope: {
+            donateButton: '@',
+            nyplAsk: '@'
+        },
+        link: function (scope, attrs) {
+            var donateUrl = "https://secure3.convio.net/nypl/site/SPageServer?pagename=donation_form&JServSessionIdr003=dwcz55yj27.app304a&s_src=FRQ14ZZ_SWBN";
+            scope.donateUrl = (attrs.donateUrl || donateUrl);
+        }
+    };
+}
+
 angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
@@ -254,4 +278,5 @@ angular
     .directive('nyplSiteAlerts', nyplSiteAlerts)
     .directive('nyplLibraryAlert', nyplLibraryAlert)
     .directive('nyplFundraising', nyplFundraising)
+    .directive('nyplSidebar', nyplSidebar)
     .directive('collapse', collapse);

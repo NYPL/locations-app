@@ -1,0 +1,22 @@
+<div class="nypl-sidebar">
+	<!-- Donate Button -->
+	<div data-ng-if="donateButton == 'true'" class="donate-widget">
+		<a data-ng-href="{{donateUrl}}" class="btn btn--donate btn--large">
+	  	Donate Now
+		</a>
+	</div>
+	<!-- AskNYPL -->
+	<div data-ng-if="nyplAsk == 'true'" class="nypl-ask-widget">
+		<div class="askNYPL">
+			<ul>
+				<li class="asknum icon-phone">917-ASK-NYPL</li>
+				<li>
+					<librarianchatbutton />
+				</li>
+				<li>
+					<emailusbutton link="http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=10208&type=1&language=1" />
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
