@@ -8,7 +8,8 @@ describe, expect, beforeEach, inject, it, angular */
 describe('NYPL Directive Unit Tests', function () {
   'use strict';
 
-  var httpBackend, compile, scope;
+  var httpBackend, compile, scope,
+    api = 'http://evening-mesa-7447-160.herokuapp.com';
 
   beforeEach(function () {
     module('nypl_locations');
@@ -26,9 +27,8 @@ describe('NYPL Directive Unit Tests', function () {
 
   function createDirective(template) {
     var element;
-
     element = compile(template)(scope);
-    scope.$apply();
+    scope.$digest();
 
     return element;
   }
@@ -87,17 +87,21 @@ describe('NYPL Directive Unit Tests', function () {
    */
   describe('Directive: todayshours', function () {
     var todayshours, template, timeElement;
+    beforeEach(function () {
+      scope.hoursToday = {
+        'today': {'open': '10:00', 'close': '18:00'},
+        'tomorrow': {'open': '10:00', 'close': '18:00'}
+      };
+    });
 
     it('should tell you "Open today until ..." with short filter format',
       function () {
         // Returns 12 for 12pm when a library is open.
         Date.prototype.getHours = function () { return 12; };
 
-        template = '<todayshours class="' +
-          'grid__item one-whole " hours="{{{\'today\':' +
-          '{\'open\': \'10:00\', \'close\': \'18:00\'},' +
-          '\'tomorrow\':{\'open\': \'10:00\', \'close\': \'18:00\'} }' +
-          '| hoursTodayFormat:\'short\'}}" />';
+        // hoursToday scope variable is initialized in the beforeEach above
+        template = '<todayshours class="grid__item one-whole" ' +
+          'hours="{{hoursToday | hoursTodayFormat:\'short\'}}" />';
         todayshours = createDirective(template);
 
         timeElement = todayshours.find('time');
@@ -115,11 +119,8 @@ describe('NYPL Directive Unit Tests', function () {
         // Returns 12 for 12pm when a library is open.
         Date.prototype.getHours = function () { return 12; };
 
-        template = '<todayshours class="' +
-          'grid__item one-whole " hours="{{{\'today\':' +
-          '{\'open\': \'10:00\', \'close\': \'18:00\'},' +
-          '\'tomorrow\':{\'open\': \'10:00\', \'close\': \'18:00\'} }' +
-          '| hoursTodayFormat:\'long\'}}" />';
+        template = '<todayshours class="grid__item one-whole" ' +
+          'hours="{{hoursToday | hoursTodayFormat:\'long\'}}" />';
         todayshours = createDirective(template);
 
         timeElement = todayshours.find('time');
@@ -137,11 +138,8 @@ describe('NYPL Directive Unit Tests', function () {
         // Returns 19 for 7pm after a library has closed.
         Date.prototype.getHours = function () { return 19; };
 
-        template = '<todayshours class="' +
-          'grid__item one-whole " hours="{{{\'today\':' +
-          '{\'open\': \'10:00\', \'close\': \'18:00\'},' +
-          '\'tomorrow\':{\'open\': \'10:00\', \'close\': \'18:00\'} }' +
-          '| hoursTodayFormat:\'short\'}}" />';
+        template = '<todayshours class="grid__item one-whole" ' +
+          'hours="{{hoursToday | hoursTodayFormat:\'short\'}}" />';
         todayshours = createDirective(template);
 
         timeElement = todayshours.find('time');
@@ -159,11 +157,8 @@ describe('NYPL Directive Unit Tests', function () {
         // Returns 7 for 7am before a library has opened.
         Date.prototype.getHours = function () { return 7; };
 
-        template = '<todayshours class="' +
-          'grid__item one-whole " hours="{{{\'today\':' +
-          '{\'open\': \'10:00\', \'close\': \'18:00\'},' +
-          '\'tomorrow\':{\'open\': \'10:00\', \'close\': \'18:00\'} }' +
-          '| hoursTodayFormat:\'short\'}}" />';
+        template = '<todayshours class="grid__item one-whole" ' +
+          'hours="{{hoursToday | hoursTodayFormat:\'short\'}}" />';
         todayshours = createDirective(template);
 
         timeElement = todayshours.find('time');
@@ -222,10 +217,13 @@ describe('NYPL Directive Unit Tests', function () {
    *   Generates a link to email a librarian.
    */
   describe('Directive: emailusbutton', function () {
-    var emailusbutton, template;
+    var emailusbutton, template,
+      link = 'http://www.questionpoint.org/crs/servlet/org.oclc.' +
+        'admin.BuildForm?&institution=10208&type=1&language=1';
 
     beforeEach(inject(function () {
-      template = '<emailusbutton link="nypl.org" />';
+      scope.link = link;
+      template = '<emailusbutton link="{{link}}" />';
       emailusbutton = createDirective(template);
     }));
 
@@ -234,7 +232,7 @@ describe('NYPL Directive Unit Tests', function () {
     });
 
     it('should create a link', function () {
-      expect(emailusbutton.attr('href')).toContain('nypl.org');
+      expect(emailusbutton.attr('href')).toEqual(link);
       expect(emailusbutton.text()).toEqual('Email us your question');
     });
   });
@@ -268,12 +266,21 @@ describe('NYPL Directive Unit Tests', function () {
    */
   describe('Directive: eventRegistration', function () {
     var eventRegistration, template;
+    beforeEach(function () {
+      template = '<event-registration registration="{{registration}}"' +
+        'type="{{registration.type}}" open="{{registration.open}}" ' +
+        'start="{{registation.start}}" link="{{registration.link}}">' +
+        '</event-registration>';
+    });
 
     describe('Registration type - First Come, First Served', function () {
       beforeEach(function () {
-        template = '<event-registration ' +
-          'type="First Come, First Serve" open="null" start="null"' +
-          'link="events/nypl-event" registration="{}"></event-registration>';
+        scope.registration = {
+          "type": "First Come, First Serve",
+          "open": "null",
+          "start": "null",
+          "link": "events/nypl-event"
+        }
         eventRegistration = createDirective(template);
       });
 
@@ -300,9 +307,12 @@ describe('NYPL Directive Unit Tests', function () {
     describe('Registration type - Online - event will open in the future',
       function () {
         beforeEach(function () {
-          template = '<event-registration type="Online" ' +
-            'open="true" start="2014-08-29T17:00:00Z"' +
-            'link="events/nypl-event" registration="{}"></event-registration>';
+          scope.registration = {
+            "type": "Online",
+            "open": "true",
+            "start": "2014-08-29T17:00:00Z",
+            "link": "events/nypl-event"
+          }
           eventRegistration = createDirective(template);
         });
 
@@ -338,9 +348,12 @@ describe('NYPL Directive Unit Tests', function () {
     describe('Registration type - Online - registration is closed',
       function () {
         beforeEach(function () {
-          eventRegistration = '<event-registration type="Online" ' +
-            'open="null" start="2014-07-29T17:00:00Z"' +
-            'link="events/nypl-event" registration="{}"></event-registration>';
+          scope.registration = {
+            "type": "Online",
+            "open": "null",
+            "start": "2014-07-29T17:00:00Z",
+            "link": "events/nypl-event"
+          }  
           eventRegistration = createDirective(template);
         });
 
@@ -386,7 +399,7 @@ describe('NYPL Directive Unit Tests', function () {
       $httpBackend = _$httpBackend_;
 
       $httpBackend
-        .expectGET('http://evening-mesa-7447-160.herokuapp.com/alerts')
+        .expectGET(api + '/alerts')
         .respond({
           alerts: [{
             _id: "71579",
