@@ -11,8 +11,7 @@ describe('NYPL Geocoder Service Tests', function () {
    * and reverse geocode coordinates.
    */
   describe('Service: nyplGeocoderService', function () {
-    var GeocoderMock, GeoCodingOK, GeoCodingError,
-      LatLngOk, LatLngError,
+    var GeocoderMock,
       nyplGeocoderService, rootScope,
       geocodeAddress_return_value,
       map_controls_push_mock,
@@ -37,7 +36,6 @@ describe('NYPL Geocoder Service Tests', function () {
       google.maps.Map = jasmine.createSpy('Map');
       google.maps.Marker = jasmine.createSpy('Marker');
       google.maps.Animation = jasmine.createSpy('Animation');
-      google.maps.Animation.BOUNCE = jasmine.createSpy('Bounce');
       google.maps.Animation.DROP = jasmine.createSpy('Drop');
       google.maps.GeocoderStatus = jasmine.createSpy('GeocoderStatus');
       google.maps.GeocoderStatus.OK = 'OK';
@@ -63,28 +61,6 @@ describe('NYPL Geocoder Service Tests', function () {
       google.maps.Marker.prototype.setPosition =
         jasmine.createSpy('marker.setPosition');
 
-      GeoCodingOK = function (params, callback) {
-        callback(
-          [{geometry: {location: {k: 40.75298660000001, B: -73.9821364}}}],
-          'OK'
-        );
-      };
-
-      GeoCodingError = function (params, callback) {
-        callback({result: 'Fake result'}, 'ERROR');
-      };
-
-      LatLngOk = function (params, callback) {
-        callback(
-          [{address_components: [{long_name: "10018", short_name: "10018"}]}],
-          'OK'
-        );
-      };
-
-      LatLngError = function (params, callback) {
-        callback({result: 'Fake result'}, 'ERROR');
-      };
-
       GeocoderMock = window.google.maps.Geocoder =
         jasmine.createSpy('Geocoder');
       window.google.maps.LatLng = jasmine.createSpy('LatLng');
@@ -103,13 +79,52 @@ describe('NYPL Geocoder Service Tests', function () {
     });
 
     it('should expose some functions', function () {
-      expect(angular.isFunction(nyplGeocoderService.geocodeAddress)).toBe(true);
-      expect(typeof nyplGeocoderService.geocodeAddress).toBe('function');
-      expect(typeof nyplGeocoderService.reverseGeocoding).toBe('function');
+      expect(nyplGeocoderService.geocodeAddress).toBeDefined();
+      expect(nyplGeocoderService.reverseGeocoding).toBeDefined();
+      expect(nyplGeocoderService.drawMap).toBeDefined();
+      expect(nyplGeocoderService.drawLegend).toBeDefined();
+      expect(nyplGeocoderService.panMap).toBeDefined();
+      expect(nyplGeocoderService.showResearchLibraries).toBeDefined();
+      expect(nyplGeocoderService.showAllLibraries).toBeDefined();
+      expect(nyplGeocoderService.createMarker).toBeDefined();
+      expect(nyplGeocoderService.hideInfowindow).toBeDefined();
+      expect(nyplGeocoderService.doesMarkerExist).toBeDefined();
+      expect(nyplGeocoderService.createSearchMarker).toBeDefined();
+      expect(nyplGeocoderService.drawSearchMarker).toBeDefined();
+      expect(nyplGeocoderService.hideSearchInfowindow).toBeDefined();
+      expect(nyplGeocoderService.removeMarker).toBeDefined();
+      expect(nyplGeocoderService.panExistingMarker).toBeDefined();
+      expect(nyplGeocoderService.setFilterMarker).toBeDefined();
+      expect(nyplGeocoderService.drawFilterMarker).toBeDefined();
+      expect(nyplGeocoderService.clearFilteredLocation).toBeDefined();
+      expect(nyplGeocoderService.getFilteredLocation).toBeDefined();
     });
 
     /* nyplGeocoderService.geocodeAddress */
     describe('nyplGeocoderService.geocodeAddress', function () {
+      var GeoCodingOK, GeoCodingError;
+
+      beforeEach(function () {
+        GeoCodingOK = function (params, callback) {
+          callback(
+            // The result param
+            [{geometry: {location: {k: 40.75298660000001, B: -73.9821364}},
+              formatted_address: "New York, NY 10018, USA"}],
+            // The error param
+            'OK'
+          );
+        };
+
+        GeoCodingError = function (params, callback) {
+          callback(
+            // The result param
+            {result: 'Fake result'},
+            // The status param
+            'Google Maps is unavailable'
+          );
+        };
+      });
+
       describe('geocodeAddress function successful', function () {
         beforeEach(function () {
           GeocoderMock.prototype.geocode =
@@ -142,22 +157,21 @@ describe('NYPL Geocoder Service Tests', function () {
         });
 
         it('should resolve the promise when receiving data', function () {
-          var promise_callback = jasmine.createSpy();
-          // The return value was defined in the GeoCoding variable
-          geocodeAddress_return_value = {
-            lat : 40.75298660000001,
-            long : -73.9821364,
-            // no name for zipcode search
-            name: undefined
-          };
+          var lat, long, name;
 
-          nyplGeocoderService.geocodeAddress('10018').then(promise_callback);
+          nyplGeocoderService
+            .geocodeAddress('10013')
+            .then(function (data) {
+              lat = data.lat;
+              long = data.long;
+              name = data.name;
+            });
+
           rootScope.$apply();
 
-          // promise_callback is the callback function with
-          // the resolved value from the promise
-          expect(promise_callback)
-            .toHaveBeenCalledWith(geocodeAddress_return_value);
+          expect(lat).toEqual(40.75298660000001);
+          expect(long).toEqual(-73.9821364);
+          expect(name).toEqual("New York, NY 10018, USA");
         });
       });
 
@@ -167,7 +181,11 @@ describe('NYPL Geocoder Service Tests', function () {
             jasmine.createSpy('geocode').and.callFake(GeoCodingError);
         });
 
-        it('should be called', function () {
+        it('should not be called', function () {
+          expect(GeocoderMock.prototype.geocode).not.toHaveBeenCalled();
+        });
+
+        it('should call the geocode api when calling the service', function () {
           nyplGeocoderService.geocodeAddress('10018');
           expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
         });
@@ -177,14 +195,32 @@ describe('NYPL Geocoder Service Tests', function () {
           expect(typeof promise.then).toBe('function');
         });
 
-        it('Should reject the promise when status is not OK', function () {
+        it('should reject the promise when status is not OK', function () {
           var okMock = jasmine.createSpy(),
             errorMock = jasmine.createSpy();
-          nyplGeocoderService.geocodeAddress('10018').then(okMock, errorMock);
+
+          nyplGeocoderService
+            .geocodeAddress('10018')
+            .then(okMock, errorMock);
           rootScope.$apply();
 
           expect(okMock).not.toHaveBeenCalled();
           expect(errorMock).toHaveBeenCalled();
+        });
+
+        it('should return an error', function () {
+          var returnError,
+            googleError = new Error('Google Maps is unavailable');
+
+          nyplGeocoderService.geocodeAddress('10013')
+            .then(function (data) {})
+            .catch(function (err) {
+              returnError = err;
+            });
+
+          rootScope.$apply();
+
+          expect(returnError).toEqual(googleError);
         });
       });
     });
@@ -192,10 +228,28 @@ describe('NYPL Geocoder Service Tests', function () {
 
     /* nyplGeocoderService.reverseGeocoding */
     describe('nyplGeocoderService.reverseGeocoding', function () {
+      var reverseGeoCodingOK, reverseGeoCodingError;
+
+      beforeEach(function () {
+        reverseGeoCodingOK = function (params, callback) {
+          callback(
+            [{formatted_address: "New York, NY 10018, USA"}],
+            'OK'
+          );
+        };
+
+        reverseGeoCodingError = function (params, callback) {
+          callback(
+            {result: 'Fake result'},
+            'Google Maps is unavailable'
+          );
+        };
+      });
+
       describe('reverseGeocoding function successful', function () {
         beforeEach(function () {
           GeocoderMock.prototype.geocode =
-            jasmine.createSpy('geocode').and.callFake(LatLngOk);
+            jasmine.createSpy('geocode').and.callFake(reverseGeoCodingOK);
         });
 
         it('should not be called', function () {
@@ -232,28 +286,23 @@ describe('NYPL Geocoder Service Tests', function () {
 
         // Not sure why the following test is not working:
         it('should resolve the promise when receiving data', function () {
-          var promise_callback = jasmine.createSpy(),
-            // The return value was defined in the LatLngOk variable
-            reverseGeocoding_return_value = '10018';
+          var address;
 
-
-          nyplGeocoderService.reverseGeocoding({
-            lat: 40.75298660000001,
-            lng: -73.9821364
-          }).then(promise_callback);
+          nyplGeocoderService
+            .reverseGeocoding({ lat: 40.75298660000001, lng: -73.9821364 })
+            .then(function (data) {
+              address = data;
+            });
           rootScope.$apply();
-
-          // promise_callback is the callback function
-          // with the resolved value from the promise
-          // expect(promise_callback)
-          //   .toHaveBeenCalledWith(reverseGeocoding_return_value);
+        
+          expect(address).toEqual("New York, NY 10018, USA");
         });
       });
 
       describe('reverseGeocoding function failed', function () {
         beforeEach(function () {
           GeocoderMock.prototype.geocode =
-            jasmine.createSpy('geocode').and.callFake(LatLngError);
+            jasmine.createSpy('geocode').and.callFake(reverseGeoCodingError);
         });
 
         it('should be called', function () {
@@ -275,14 +324,35 @@ describe('NYPL Geocoder Service Tests', function () {
         it('should reject the promise when status is not OK', function () {
           var okMock = jasmine.createSpy(),
             errorMock = jasmine.createSpy();
-          nyplGeocoderService.reverseGeocoding({
-            lat: 40.75298660000001,
-            lng: -73.9821364
-          }).then(okMock, errorMock);
+
+          nyplGeocoderService
+            .reverseGeocoding({
+              lat: 40.75298660000001,
+              lng: -73.9821364
+            })
+            .then(okMock, errorMock);
           rootScope.$apply();
 
           expect(okMock).not.toHaveBeenCalled();
           expect(errorMock).toHaveBeenCalled();
+        });
+
+        it('should return an error', function () {
+          var returnError,
+            googleError = new Error('Google Maps is unavailable');
+
+          nyplGeocoderService
+            .reverseGeocoding({
+              lat: 40.75298660000001,
+              lng: -73.9821364
+            })
+            .then(function (data) {})
+            .catch(function (error) {
+              returnError = error;
+            });
+          rootScope.$apply();
+
+          expect(returnError).toEqual(googleError);
         });
       });
     });
@@ -290,80 +360,51 @@ describe('NYPL Geocoder Service Tests', function () {
 
     describe('drawMap function', function () {
       it('should call the Google Maps', function () {
-        nyplGeocoderService.drawMap({ lat: 40.7532, long: -73.9822 },
-          12, 'all-locations-map');
+        document.getElementById = function () {
+          return '<div id="all-locations-map"></div>'
+        };
+        nyplGeocoderService
+          .drawMap({ lat: 40.7532, long: -73.9822 }, 12, 'all-locations-map');
 
+        expect(window.google.maps.LatLng)
+          .toHaveBeenCalledWith(40.7532, -73.9822);
         expect(window.google.maps.Map).toHaveBeenCalled();
       });
     });
-
-    // describe('load_markers function', function () {
-    //   // First we draw a marker, then when the load_markers 
-    //   // function is called it should call the addMarkerToMap function
-    //   it('should call the addMarkerToMap function from the service',
-    //     function () {
-    //       nyplGeocoderService.drawMap({ lat: 40.7532, long: -73.9822 },
-    //         12, 'all-locations-map');
-    //       nyplGeocoderService
-    //         .createMarker("schwarzman",
-    //           { 'lat': 40, 'long': -73},
-    //           "5th Avenue at 42nd St"
-    //           );
-
-    //       nyplGeocoderService.load_markers();
-    //       // if there are markers, the load_markers function
-    //       // adds markers to the map using the addMarkerToMap
-    //       // function, which in turn calls the setMap function from
-    //       // the google maps api to add the marker to the map:
-    //       expect(google.maps.Marker.prototype.setMap).toHaveBeenCalled();
-    //     });
-
-    //   // no markers are set so it shouldn't do anything
-    //   it('should NOT call the addMarkerToMap function from the service',
-    //     function () {
-    //       nyplGeocoderService.load_markers();
-    //       expect(google.maps.Marker.prototype.setMap).not.toHaveBeenCalled();
-    //     });
-    // });
 
     describe('drawLegend function', function () {
       it('should call the controls function in the Maps API',
         function () {
           nyplGeocoderService
             .drawMap({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-          document.getElementById = function () {
-            return '<div id="all-locations-map-legend" class="show-legend"' +
-                  ' style="z-index: 0; position: absolute; bottom: 15px; ' +
-                  'right: 0px;"><!-- ngIf: locations --><span data-ng-if=' +
-                  '"locations" class="ng-scope"><img src="http://maps.' +
-                  'google.com/mapfiles/ms/icons/red-dot.png">NYPL Library' +
-                  '<br></span><!-- end ngIf: locations -->' +
-                  '<!-- ngIf: locationStart --></div>';
-          };
-          nyplGeocoderService.drawLegend('test');
+
+          nyplGeocoderService.drawLegend('all-locations-map');
           expect(map_controls_push_mock).toHaveBeenCalled();
         });
     });
 
     describe('panMap function', function () {
+      beforeEach(function () {
+        nyplGeocoderService
+          .drawMap({lat: 40.7532, long: -73.9822}, 14, 'all-locations-map');
+      });
+
       it('should call the google maps api functions to pan and zoom on the map',
         function () {
-          nyplGeocoderService
-            .drawMap({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
           // the panMap function pans to SASB by default
           nyplGeocoderService.panMap();
           // When we call the panMap function, we expect to call the
           // google maps panTo and setZoom functions avaible in the API
           // for the map
 
+          expect(window.google.maps.LatLng)
+            .toHaveBeenCalledWith(40.7532, -73.9822);
           expect(google.maps.Map.prototype.panTo).toHaveBeenCalled();
-          expect(google.maps.Map.prototype.setZoom).toHaveBeenCalled();
+          expect(google.maps.Map.prototype.setZoom).toHaveBeenCalledWith(12);
         });
 
       it('should pan to a specific marker', function () {
         var marker = new google.maps.Marker({});
-        nyplGeocoderService
-          .drawMap({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
         nyplGeocoderService
           .createMarker("schwarzman",
             { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
@@ -372,46 +413,9 @@ describe('NYPL Geocoder Service Tests', function () {
 
         expect(google.maps.Marker.prototype.getPosition).toHaveBeenCalled();
         expect(google.maps.Map.prototype.panTo).toHaveBeenCalled();
-        expect(google.maps.Map.prototype.setZoom).toHaveBeenCalled();
+        expect(google.maps.Map.prototype.setZoom).toHaveBeenCalledWith(14);
       });
     });
-
-    // The search marker is the marker that is drawn when a user
-    // searches for 'Bronx Zoo', 'Chelsea Piers', 'Empire State Building', etc.
-    // There is only one search marker on the map at a time so it just simply
-    // gets its coordinates and text updated
-    // describe('draw_searchMarker function', function () {
-    //   it('should remove the existing search marker and draw another ' +
-    //     'one with updated coordinates and text',
-    //     function () {
-    //       nyplGeocoderService
-    //         .drawMap({lat: 40.7532, long: -73.9822},
-    //            12, 'all-locations-map');
-
-    //       nyplGeocoderService.draw_searchMarker(
-    //         {lat: 40.8505949, long: -73.8769982},
-    //         'bronx zoo'
-    //       );
-
-    //       // First remove the existing search marker from the map
-    //       expect(google.maps.Marker.prototype.setMap)
-    //         .toHaveBeenCalledWith(null);
-    //       // Create new google maps coordinates
-    //       expect(google.maps.LatLng)
-    //         .toHaveBeenCalledWith(40.8505949, -73.8769982, "bronx zoo");
-    //       // Update the search marker with the new coordinates
-    //       expect(google.maps.Marker.prototype.setPosition)
-    //         .toHaveBeenCalled();
-    //       // Set the search marker on the map
-    //       expect(google.maps.Marker.prototype.setMap)
-    //         .toHaveBeenCalled();
-    //       // Set the content on the infowindow and open it
-    //       expect(google.maps.InfoWindow.prototype.setContent)
-    //         .toHaveBeenCalledWith('bronx zoo');
-    //       expect(google.maps.InfoWindow.prototype.open)
-    //         .toHaveBeenCalled();
-    //     });
-    // });
 
     describe('removeMarker(\'search\') function', function () {
       it('should set the search marker map to null to remove it', function () {
