@@ -159,6 +159,10 @@
 				@include breakpoint($min, $post-palm) {
 					font-size: 36px;
 				}
+
+				a {
+					text-decoration: none;
+				}
 			}
 
 			.askchat,.askemail {
