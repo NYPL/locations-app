@@ -4,19 +4,10 @@
 (function () {
     'use strict';
 
-    // Load all the amenities available.
-    function AmenitiesCtrl($http, $rootScope, $scope, amenities, nyplAmenities) {
-        // Mocked data for now until the amenities are sorted
-        // by categories in the API.
-        $http
-            .get('json/amenitiesAtLibrary.json')
-            .success(function (data) {
-                $scope.amenitiesCategories =
-                    nyplAmenities.addCategoryIcon(data.amenities);
-            });
-
+    function AmenitiesCtrl($rootScope, $scope, amenities, nyplAmenities) {
         $rootScope.title = "Amenities";
-        $scope.amenities = amenities.amenities;
+        $scope.amenitiesCategories =
+            nyplAmenities.addCategoryIcon(amenities.amenities);
     }
 
     // Load an amenity and list all the locations

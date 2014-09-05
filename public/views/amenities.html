@@ -6,7 +6,7 @@
   <section class="grid">
 
     <div class="grid__item" id="amenities__title">
-      <h2 data-ng-if="amenities">Amenities at NYPL</h2>
+      <h2 data-ng-if="amenitiesCategories">Amenities at NYPL</h2>
       <h2 data-ng-if="amenity">{{amenity_name}}</h2>
     </div>
 
@@ -18,11 +18,11 @@
             <h3><span class="{{category.icon}} category_title">{{category.name}}</span></h3>
             <ul class="amenities-list">
               <li data-ng-repeat="amenity in category.amenities">
-                <a data-ui-sref="amenity({amenity: amenity.id})">{{amenity.name}}</a>
+                <a data-ui-sref="amenity({amenity: amenity._id})">{{amenity.name}}</a>
                 
                 <span data-ng-if="amenity._links.action && amenity._links.action.href">
                   <a data-ng-href="{{amenity._links.action.href}}"
-                    class="amenities__reserve btn btn--natural whiteText">
+                    class="amenities__reserve btn btn--natural">
                     {{amenity._links.action.name}}
                   </a>
                 </span>
