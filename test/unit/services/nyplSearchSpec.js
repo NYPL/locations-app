@@ -166,6 +166,26 @@ describe('NYPL Search Service Tests', function () {
           'dogs': 'areCool'
         });
       });
+
+      it('should save data and clear the data', function () {
+        var returnValue;
+
+        nyplSearch.setSearchValue('foo', 'bar');
+        nyplSearch.setSearchValue('dogs', 'areCool');
+        returnValue = nyplSearch.getSearchValues();
+
+        expect(returnValue).toEqual({
+          'foo': 'bar',
+          'dogs': 'areCool'
+        });
+
+        nyplSearch.resetSearchValues();
+
+        // Should clear the saved object
+        returnValue = nyplSearch.getSearchValues();
+        expect(returnValue).toEqual({});
+
+      });
     });
   });
 });

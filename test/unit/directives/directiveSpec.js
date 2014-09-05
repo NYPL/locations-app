@@ -267,7 +267,7 @@ describe('NYPL Directive Unit Tests', function () {
   describe('Directive: eventRegistration', function () {
     var eventRegistration, template;
     beforeEach(function () {
-      template = '<event-registration registration="{{registration}}"' +
+      template = '<event-registration registration="{{registration}}" ' +
         'type="{{registration.type}}" open="{{registration.open}}" ' +
         'start="{{registation.start}}" link="{{registration.link}}">' +
         '</event-registration>';
@@ -310,7 +310,7 @@ describe('NYPL Directive Unit Tests', function () {
           scope.registration = {
             "type": "Online",
             "open": "true",
-            "start": "2014-08-29T17:00:00Z",
+            "start": "2014-07-29T17:00:00Z",
             "link": "events/nypl-event"
           }
           eventRegistration = createDirective(template);
@@ -350,7 +350,7 @@ describe('NYPL Directive Unit Tests', function () {
         beforeEach(function () {
           scope.registration = {
             "type": "Online",
-            "open": "null",
+            "open": "false",
             "start": "2014-07-29T17:00:00Z",
             "link": "events/nypl-event"
           }  
