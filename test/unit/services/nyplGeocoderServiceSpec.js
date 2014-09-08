@@ -358,7 +358,7 @@ describe('NYPL Geocoder Service Tests', function () {
     });
     /* end nyplGeocoderService.reverseGeocoding */
 
-    describe('drawMap function', function () {
+    describe('nyplGeocoderService.drawMap', function () {
       it('should call the Google Maps', function () {
         document.getElementById = function () {
           return '<div id="all-locations-map"></div>'
@@ -366,13 +366,13 @@ describe('NYPL Geocoder Service Tests', function () {
         nyplGeocoderService
           .drawMap({ lat: 40.7532, long: -73.9822 }, 12, 'all-locations-map');
 
-        expect(window.google.maps.LatLng)
+        expect(google.maps.LatLng)
           .toHaveBeenCalledWith(40.7532, -73.9822);
-        expect(window.google.maps.Map).toHaveBeenCalled();
+        expect(google.maps.Map).toHaveBeenCalled();
       });
     });
 
-    describe('drawLegend function', function () {
+    describe('nyplGeocoderService.drawLegend', function () {
       it('should call the controls function in the Maps API',
         function () {
           nyplGeocoderService
@@ -383,7 +383,7 @@ describe('NYPL Geocoder Service Tests', function () {
         });
     });
 
-    describe('panMap function', function () {
+    describe('nyplGeocoderService.panMap', function () {
       beforeEach(function () {
         nyplGeocoderService
           .drawMap({lat: 40.7532, long: -73.9822}, 14, 'all-locations-map');
@@ -397,8 +397,7 @@ describe('NYPL Geocoder Service Tests', function () {
           // google maps panTo and setZoom functions avaible in the API
           // for the map
 
-          expect(window.google.maps.LatLng)
-            .toHaveBeenCalledWith(40.7532, -73.9822);
+          expect(google.maps.LatLng).toHaveBeenCalledWith(40.7532, -73.9822);
           expect(google.maps.Map.prototype.panTo).toHaveBeenCalled();
           expect(google.maps.Map.prototype.setZoom).toHaveBeenCalledWith(12);
         });
@@ -407,7 +406,7 @@ describe('NYPL Geocoder Service Tests', function () {
         var marker = new google.maps.Marker({});
         nyplGeocoderService
           .createMarker("schwarzman",
-            { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
+            { 'latitude': 40, 'longitude': -73}, "5th Avenue at 42nd St");
 
         nyplGeocoderService.panMap(marker);
 
@@ -417,7 +416,160 @@ describe('NYPL Geocoder Service Tests', function () {
       });
     });
 
-    describe('removeMarker(\'search\') function', function () {
+    describe('Functions for branch markers on map', function () {
+      var i, len, locations, location;
+      beforeEach(function () {
+        locations = [
+          {'slug': 'schwarzman',
+            'location': {'latitude': 40, 'longitude': -73},
+            'text': '5th Avenue at 42nd St'},
+          {'slug': 'schomburg',
+            'location': {'latitude': 41, 'longitude': -72},
+            'text': 'address'},
+          {'slug': 'lpa',
+            'location': {'latitude': 42, 'longitude': -71},
+            'text': 'address'},
+          {'slug': 'sibl',
+            'location': {'latitude': 43, 'longitude': -74},
+            'text': 'address'},
+          {'slug': 'baychester',
+            'location': {'latitude': 44, 'longitude': -72},
+            'text': 'address'},
+          {'slug': 'parkchester',
+            'location': {'latitude': 42, 'longitude': -72},
+            'text': 'address'},
+          {'slug': '115th-street',
+            'location': {'latitude': 40, 'longitude': -71},
+            'text': 'address'}
+        ];
+        len = locations.length;
+        for (i = 0; i < len; i++) {
+          location = locations[i];
+          nyplGeocoderService
+            .createMarker(location.slug, location.location, location.text);
+        }
+      });
+
+      describe('nyplGeocoderService.showResearchLibraries', function () {
+        it('should remove all markers from the map except research markers',
+          function () {
+            // Can't test that the markers were removed from the map, instead
+            // I am checking to see that .setMap(null) was called three times
+            // since it should exclude the four research libraries.
+            nyplGeocoderService.showResearchLibraries();
+            expect(google.maps.Marker.prototype.setMap.calls.count())
+              .toEqual(3);
+          });
+      });
+
+      describe('nyplGeocoderService.showAllLibraries', function () {
+        it('should show all the libraries after the showResearchLibraries ' +
+          'function is called',
+          function () {
+            nyplGeocoderService.showResearchLibraries();
+            expect(google.maps.Marker.prototype.setMap.calls.count())
+              .toEqual(3);
+
+            // It was previously called three times and now it is expected to
+            // be called seven more times.
+            nyplGeocoderService.showAllLibraries();
+            expect(google.maps.Marker.prototype.setMap.calls.count())
+              .toEqual(10);
+          });
+      });
+
+    });
+  
+    describe('nyplGeocoderService.createMarker', function () {
+      it('should create a branch marker', function () {
+        nyplGeocoderService.createMarker('schwarzman',
+          { 'lat': 40.7532, 'long': -73.9822}, '5th Avenue at 42nd St');
+
+        expect(google.maps.LatLng).toHaveBeenCalled();
+        expect(google.maps.Marker).toHaveBeenCalled();
+        expect(google.maps.event.addListener).toHaveBeenCalled();
+      });
+
+      it('should set the user marker on the map', function () {
+        nyplGeocoderService.createMarker('user',
+          { 'lat': 40.7532, 'long': -73.9822}, '5th Avenue at 42nd St');
+
+        expect(google.maps.LatLng).toHaveBeenCalled();
+        expect(google.maps.Marker).toHaveBeenCalled();
+        expect(google.maps.event.addListener).toHaveBeenCalled();
+      });
+    });
+  
+    describe('nyplGeocoderService.hideInfowindow', function () {
+      it('should close a Google Maps InfoWindow', function () {
+        nyplGeocoderService.hideInfowindow();
+        expect(infowindow_close_mock).toHaveBeenCalled();
+      });
+    });
+
+    describe('nyplGeocoderService.doesMarkerExist', function () {
+      var i, len, locations, location;
+      beforeEach(function () {
+        locations = [
+          {'slug': 'schwarzman',
+            'location': {'latitude': 40, 'longitude': -73},
+            'text': '5th Avenue at 42nd St'},
+          {'slug': 'lpa',
+            'location': {'latitude': 42, 'longitude': -71},
+            'text': 'address'}
+        ];
+        len = locations.length;
+        for (i = 0; i < len; i++) {
+          location = locations[i];
+          nyplGeocoderService
+            .createMarker(location.slug, location.location, location.text);
+        }
+      });
+
+      it('should return true because the branch marker exists', function () {
+          var exists = nyplGeocoderService.doesMarkerExist('schwarzman');
+          expect(exists).toBe(true);
+      });
+
+      it('should return false because the marker does not exist', function () {
+          var exists = nyplGeocoderService.doesMarkerExist('grand-central');
+          expect(exists).toBe(false);
+      });
+    });
+
+    describe('nyplGeocoderService.createSearchMarker', function () {
+      it('should create a marker for the user\'s search query', function () {
+        nyplGeocoderService
+          .createSearchMarker({'latitude': 40, 'longitude': -73}, 'Bryant Park');
+
+        expect(google.maps.LatLng).toHaveBeenCalled();
+        expect(google.maps.Marker.prototype.setPosition).toHaveBeenCalled();
+        expect(infowindow_setContent_mock).toHaveBeenCalledWith('Bryant Park');
+      });
+    });
+
+    describe('nyplGeocoderService.drawSearchMarker', function () {
+      it('should add the search marker to the map', function () {
+        nyplGeocoderService.hideInfowindow = jasmine.createSpy('hideInfowindow');
+        nyplGeocoderService
+          .createSearchMarker({'latitude': 40, 'longitude': -73}, 'Bryant Park');
+        nyplGeocoderService.drawSearchMarker();
+
+        expect(google.maps.Marker.prototype.setMap).toHaveBeenCalled();
+        expect(infowindow_open_mock).toHaveBeenCalled();
+        expect(nyplGeocoderService.hideInfowindow).toHaveBeenCalled();
+        expect(google.maps.event.addListener).toHaveBeenCalled();
+      });
+    });
+
+    describe('nyplGeocoderService.hideSearchInfowindow', function () {
+      it('should close a marker\'s InfoWindow', function () {
+        nyplGeocoderService.hideSearchInfowindow();
+        expect(infowindow_close_mock).toHaveBeenCalled();
+      });
+    });
+
+    describe('nyplGeocoderService.removeMarker', function () {
       it('should set the search marker map to null to remove it', function () {
         nyplGeocoderService
           .drawMap({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
@@ -430,12 +582,8 @@ describe('NYPL Geocoder Service Tests', function () {
 
         expect(google.maps.Marker.prototype.setMap).toHaveBeenCalledWith(null);
       });
-    });
 
-    // This differs from the search marker so that it will not be in the same
-    // set as the location markers when manipulating them
-    describe('removeMarker function', function () {
-      it('should remove a marker that was on the map', function () {
+      it('should remove a branch marker that was on the map', function () {
         nyplGeocoderService
           .drawMap({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
         nyplGeocoderService.createMarker("schwarzman",
@@ -447,27 +595,6 @@ describe('NYPL Geocoder Service Tests', function () {
       });
     });
 
-    describe('doesMarkerExist function', function () {
-      it('should return false because no markers exist', function () {
-        nyplGeocoderService
-          .drawMap({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-        var marker = nyplGeocoderService.doesMarkerExist('schwarzman');
-
-        expect(marker).toBe(false);
-      });
-
-      it('should return true because the marker exists and was drawn',
-        function () {
-          nyplGeocoderService
-            .drawMap({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-          nyplGeocoderService.createMarker("schwarzman",
-            { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
-          var marker = nyplGeocoderService.doesMarkerExist('schwarzman');
-
-          expect(marker).toBe(true);
-        });
-    });
-
     describe('panExistingMarker', function () {
       it('should pan to a marker that is already on the map and open ' +
         'the infowindow',
@@ -477,10 +604,7 @@ describe('NYPL Geocoder Service Tests', function () {
           nyplGeocoderService.createMarker("schwarzman",
             { 'lat': 40, 'long': -73}, "5th Avenue at 42nd St");
 
-          // Must make sure it's an existing marker
-          if (nyplGeocoderService.doesMarkerExist('schwarzman')) {
-            nyplGeocoderService.panExistingMarker('schwarzman');
-          }
+          nyplGeocoderService.panExistingMarker('schwarzman');
 
           // When we call it, we pan to that marker and
           // open the infowindow with text
@@ -491,6 +615,56 @@ describe('NYPL Geocoder Service Tests', function () {
             .toHaveBeenCalledWith("5th Avenue at 42nd St");
           expect(infowindow_open_mock).toHaveBeenCalled();
         });
+    });
+
+    // The next set of four tests are related to a search hitting a match on
+    // the locations object array. The first match is saved so that the marker
+    // can display when switching between the list and map view.
+    describe('nyplGeocoderService.setFilterMarker', function () {
+      it('should save a filtered marker\'s value', function () {
+        nyplGeocoderService.setFilterMarker('schwarzman');
+
+        var returnValue = nyplGeocoderService.getFilteredLocation();
+        expect(returnValue).toEqual('schwarzman');
+      });
+    });
+
+    describe('nyplGeocoderService.drawFilterMarker', function () {
+      it('should pan to the filtered marker on the map', function () {
+        nyplGeocoderService.createMarker('schwarzman',
+          { 'lat': 40.7532, 'long': -73.9822}, '5th Avenue at 42nd St');
+
+        nyplGeocoderService.setFilterMarker('schwarzman');
+        nyplGeocoderService.drawFilterMarker('schwarzman');
+
+        expect(infowindow_close_mock).toHaveBeenCalled();
+        expect(infowindow_setContent_mock)
+          .toHaveBeenCalledWith("5th Avenue at 42nd St");
+        expect(infowindow_open_mock).toHaveBeenCalled();
+      });
+    });
+
+    describe('nyplGeocoderService.clearFilteredLocation', function () {
+      it('should remove any saved filtered marker', function () {
+        var returnValue;
+
+        nyplGeocoderService.setFilterMarker('lpa');
+        returnValue = nyplGeocoderService.getFilteredLocation();
+        expect(returnValue).toEqual('lpa');
+
+        nyplGeocoderService.clearFilteredLocation();
+        returnValue = nyplGeocoderService.getFilteredLocation();
+        expect(returnValue).not.toBeDefined();
+      });
+    });
+
+    describe('nyplGeocoderService.getFilteredLocation', function () {
+      it('should retrieve a filtered marker\'s value', function () {
+        nyplGeocoderService.setFilterMarker('grand-central');
+
+        var returnValue = nyplGeocoderService.getFilteredLocation();
+        expect(returnValue).toEqual('grand-central');
+      });
     });
   });
   /* end nyplGeocoderService called directly */
