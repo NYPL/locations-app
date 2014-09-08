@@ -5,6 +5,7 @@ module.exports = function (grunt) {
   'use strict';
 
   grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
     jsdoc: {
       dist: {
         src: ['public/scripts/services/*.js',
@@ -17,7 +18,17 @@ module.exports = function (grunt) {
     ngAnnotate: {
       locinator: {
         files: {
-          'public/annotate/app.annotate.js': ['public/scripts/**/*.js']
+          'public/dist/app.annotate.js': ['public/scripts/**/*.js']
+        }
+      }
+    },
+    uglify: {
+      options: {
+        banner: '/*! Locinator <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+      },
+      dist: {
+        files: {
+          'public/dist/app.min.js': ['public/dist/app.annotate.js']
         }
       }
     }
@@ -26,6 +37,7 @@ module.exports = function (grunt) {
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-ng-annotate');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
   grunt.registerTask('default', [
     'jsdoc', 'ngAnnotate'
