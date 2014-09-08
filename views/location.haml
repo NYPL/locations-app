@@ -27,15 +27,15 @@
             %td Day
             %td Hours
             %tbody
-              - @data.hours['regular'].each do |day|
-                - if day["open"].nil?
+              - @data.hours.each do |day|
+                - if day.closedOn?
                   %tr
-                    %td= day["day"]
+                    %td= day.day
                     %td Closed
                 - else
-                  %tr(itemprop="openingHours" content="#{day['day'][0..1]} #{day['open']}-#{day['close']}")
-                    %td= day["day"]
-                    %td #{day["open"]}-#{day["close"]}
+                  %tr(itemprop="openingHours" content="")
+                    %td= day.day
+                    %td #{day.open}-#{day.close}
 
       %h2 Amenities
       %ul
