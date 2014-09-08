@@ -13,12 +13,22 @@ module.exports = function (grunt) {
           destination: 'docs'
         }
       }
+    },
+    ngAnnotate: {
+      locinator: {
+        files: {
+          'public/annotate/app.annotate.js': ['public/scripts/**/*.js']
+        }
+      }
     }
   });
 
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-jsdoc');
+  grunt.loadNpmTasks('grunt-ng-annotate');
 
-  grunt.registerTask('default', []);
+  grunt.registerTask('default', [
+    'jsdoc', 'ngAnnotate'
+  ]);
 
 };
