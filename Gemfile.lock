@@ -1,9 +1,9 @@
 GIT
   remote: https://bitbucket.org/rdmond/lionactor
-  revision: 0ce8be34c4abb4426d20cf7060020f80484445ea
-  tag: 0.0.2
+  revision: b416695216689e0ffa2d650f4b7bbaae0225f0e2
+  tag: 0.0.3
   specs:
-    lionactor (0.0.2)
+    lionactor (0.0.3)
       faraday
 
 GEM
