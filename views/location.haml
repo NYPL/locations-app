@@ -47,6 +47,9 @@
                 %li(itemprop="makesOffer" itemscope itemtype="http://schema.org/Offer")
                   %span(itemprop="name")= a["name"]
 
+      %div
+        %a(href="./#/amenities/loc/#{@data.slug}") See all amenities
+
 
       %h2 About
       %div(itemprop="description")= @data.about
