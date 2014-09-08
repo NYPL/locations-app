@@ -14,6 +14,13 @@ class Locinator < Sinatra::Base
     end
   end
 
+  get %r{/amenities/loc/(.+)$} do
+    api = Lionactor::Client.new
+    @loc = api.location(params['captures'].first)
+    @data = api.amenities(params['captures'].first)
+    haml :amenities_one_location
+  end
+  
   get %r{/division/(.+)$}, :spider => true do
     api = Lionactor::Client.new
     @data = api.division(params['captures'].first)
