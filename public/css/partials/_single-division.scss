@@ -16,12 +16,20 @@
 }
 
 #container__div_address {
-	.room {
-		margin-left: -5px;
+	.div_name {
+		margin-left: .55em;
+	}
+
+	.div_loc_info {
+		margin-left: .55em;
+
+		.room {
+			margin-left: -5px;
+		}
 	}
 
 	#accessibility__container {
-		margin: .5em 0;
+		margin: .5em 0 .5em .55em;
 	}
 }
 

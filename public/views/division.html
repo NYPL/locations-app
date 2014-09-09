@@ -43,22 +43,24 @@
       --><div id="container__div_address" class="grid__item lap-one-half one-whole desk-one-third">
         
         <!-- Division address and related location data -->
-        <div>{{division.location_name}}</div>
-        <div data-ng-if="division.street_address">{{division.street_address}}</div>
-        <div data-ng-if="division.cross_street">{{division.cross_street}}</div>
-        <div data-ng-if="division.floor">
-          <span>{{division.floor}}</span>
-          <span data-ng-if="division.room" class="room">
-            {{'ROOM' | translate}} {{division.room}}
-          </span>
+        <div class="div_name">{{division.location_name}}</div>
+        <div class="div_loc_info">
+          <div data-ng-if="division.street_address">{{division.street_address}}</div>
+          <div data-ng-if="division.cross_street">{{division.cross_street}}</div>
+          <div data-ng-if="division.floor">
+            <span>{{division.floor}}</span>
+            <span data-ng-if="division.room" class="room">
+              {{'ROOM' | translate}} {{division.room}}
+            </span>
+          </div>
+          <div data-ng-if="division.locality">
+            {{division.locality}}, {{division.region}} {{division.postal_code}}
+          </div>
+          <div data-ng-if="division.contacts.manager">
+            {{'DIVISION_MANAGER' | translate}}<span>{{division.contacts.manager}}</span>
+          </div>
+          <div data-ng-if="division.contacts.phone">{{division.contacts.phone}}</div>
         </div>
-        <div data-ng-if="division.locality">
-          {{division.locality}}, {{division.region}} {{division.postal_code}}
-        </div>
-        <div data-ng-if="division.contacts.manager">
-          {{'DIVISION_MANAGER' | translate}}<span>{{division.contacts.manager}}</span>
-        </div>
-        <div data-ng-if="division.contacts.phone">{{division.contacts.phone}}</div>
 
         <!-- Accessibility -->
         <div id="accessibility__container">
