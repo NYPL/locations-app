@@ -276,6 +276,12 @@ describe('NYPL coordinateService Module', function () {
           expect(result).toBe(0.92);
           expect(result).not.toBe(null);
         });
+
+      it('should return undefined if a value is missing', function () {
+        var result = nyplCoordinatesService.getDistance();
+
+        expect(result).not.toBeDefined();
+      });
     }); /* End nyplCoordinatesService.getDistance() */
 
   }); /* End nyplCoordinatesService */

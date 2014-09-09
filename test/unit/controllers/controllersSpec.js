@@ -35,6 +35,15 @@ describe('Locinator controllers', function () {
 
     beforeEach(module('nypl_locations'));
 
+    // var interceptedPath;
+    // beforeEach(module(function ($provider) {
+    //   $provider.provide('$location', {
+    //     path: function (p) {
+    //       interceptedPath = p;
+    //     }
+    //   });
+    // }));
+
     beforeEach(inject(function (
       _nyplLocationsService_,
       _$httpBackend_,
