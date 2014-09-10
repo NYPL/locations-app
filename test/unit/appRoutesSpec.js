@@ -5,24 +5,28 @@ describe, expect, beforeEach, inject, it, angular, spyOn */
 describe('DivisionCtrl', function () {
   'use strict';
 
-  var scope, DivisionCtrl, interceptedPath;
+  var $rootScope, $injector, $state, DivisionCtrl, interceptedPath, state = 'home.map';
 
 
   beforeEach(function () {
     module('nypl_locations');
 
-    module(function ($provider) {
-      $provider.provide('$location', {
-        path: function (p) {
-          interceptedPath = p;
-        }
-      });
+    // module(function ($provider) {
+    //   $provider.provide('$location', {
+    //     path: function (p) {
+    //       interceptedPath = p;
+    //     }
+    //   });
 
-    });
-
+    // });
+    inject(function (_$rootScope_, _$state_, _$injector_) {
+      $state = _$state_;
+      $rootScope = _$rootScope_;
+      $injector = _$injector_;
+    })
   });
 
   it('should go to a location', function () {
-
+    expect($state.href(state)).toEqual('#/map');
   });
 });
