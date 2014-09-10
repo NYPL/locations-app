@@ -66,17 +66,6 @@ nypl_locations.config([
                 });
         }
 
-        function AmenitiesAtLibrary(nyplLocationsService, $stateParams) {
-            return nyplLocationsService
-                .amenitiesAtLibrary($stateParams.location)
-                .then(function (data) {
-                    return data.location;
-                })
-                .catch(function (error) {
-                    throw error;
-                });
-        }
-
         function Amenities(nyplLocationsService, $stateParams) {
             return nyplLocationsService
                 .amenities($stateParams.amenity)
@@ -168,7 +157,7 @@ nypl_locations.config([
                 templateUrl: 'views/amenitiesAtLibrary.html',
                 controller: 'AmenitiesAtLibraryCtrl',
                 resolve: {
-                    location: AmenitiesAtLibrary
+                    location: LoadLocation
                 },
                 data: {
                     parentState: 'amenities',
