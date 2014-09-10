@@ -319,16 +319,14 @@
                 containerWidth = parseInt(content.css('width'), 10),
                 top;
 
+            // only scroll the page on mobile
             if (containerWidth < 601) {
                 top = angular.element('.map-search__results').offset() ||
                     angular.element('.search__results').offset();
-            } else {
-                top = content.offset();
+                $timeout(function () {
+                    angular.element('body').animate({scrollTop: top.top}, 1000);
+                }, 1000);
             }
-
-            $timeout(function () {
-                angular.element('body').animate({scrollTop: top.top}, 1000);
-            }, 1000);
         };
 
         $scope.viewMapLibrary = function (library_id) {
