@@ -213,6 +213,7 @@
             createFilterMarker = function (slug) {
                 // store the filtered location marker if in the list view,
                 // so it can be displayed when going to the map view.
+                $scope.select_library_for_map = '';
                 nyplGeocoderService.setFilterMarker(slug);
                 if (isMapPage()) {
                     nyplGeocoderService.drawFilterMarker(slug);
@@ -333,6 +334,7 @@
             var location = _.where($scope.locations, { 'slug' : library_id });
             $scope.select_library_for_map = library_id;
 
+            $scope.searchMarker = false;
             $state.go('home.map');
 
             organizeLocations($scope.locations, location, 'name');
@@ -529,9 +531,9 @@
                     if ($scope.select_library_for_map) {
                         nyplGeocoderService
                             .panExistingMarker($scope.select_library_for_map);
+                    } else {
+                        nyplGeocoderService.drawFilterMarker(filteredLocation);
                     }
-
-                    nyplGeocoderService.drawFilterMarker(filteredLocation);
 
                     $scope.scrollPage();
                 }, 1200);
