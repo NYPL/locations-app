@@ -5,14 +5,10 @@
     'use strict';
 
     function DivisionCtrl($rootScope, $scope, division, nyplUtility) {
-        var homeUrl,
-            locationUrl;
-
         $scope.division  = division;
         $rootScope.title = division.name;
         $scope.calendarLink = nyplUtility.calendarLink;
         $scope.icalLink = nyplUtility.icalLink;
-        $scope.siteWideAlert = nyplUtility.alerts(division._embedded.alerts);
 
         if (division.hours) {
             $scope.hoursToday = nyplUtility.hoursToday(division.hours);

@@ -92,6 +92,8 @@
           return exception;
         }
       }
+
+      return null;
     };
 
     /** @function nyplUtility.getAddressString
@@ -241,7 +243,7 @@
     };
 
     utility.calendarLink = function (type, event, location) {
-      if (!type || !event) {
+      if (!type || !event || !location) {
         return '';
       }
       var title = event.title,
@@ -300,9 +302,11 @@
           "\nDESCRIPTION:" + event.body +
           "\nURL;VALUE=URI:" + url +
           "\nSUMMARY:" + event.title +
-          "\nEND:VEVENT\nEND:VCALENDAR";
+          "\nEND:VEVENT\nEND:VCALENDAR",
+        icalLink = 'data:text/calendar;chartset=utf-8,' + encodeURI(icsMSG);
 
-      $window.open('data:text/calendar;chartset=utf-8,' + encodeURI(icsMSG));
+      $window.open(icalLink);
+      return icalLink;
     };
 
     // Iterate through lon/lat and calculate distance

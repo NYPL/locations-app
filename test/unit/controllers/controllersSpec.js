@@ -33,50 +33,43 @@ describe('Locinator controllers', function () {
       httpBackend,
       nypl_geocoder_mock;
 
-    beforeEach(module('nypl_locations'));
+    beforeEach(function () {
+      module('nypl_locations')
 
-    // var interceptedPath;
-    // beforeEach(module(function ($provider) {
-    //   $provider.provide('$location', {
-    //     path: function (p) {
-    //       interceptedPath = p;
-    //     }
-    //   });
-    // }));
+      inject(function (
+        _nyplLocationsService_,
+        _$httpBackend_,
+        _$rootScope_,
+        _$controller_
+      ) {
 
-    beforeEach(inject(function (
-      _nyplLocationsService_,
-      _$httpBackend_,
-      $rootScope,
-      $controller
-    ) {
+        nyplLocationsService = _nyplLocationsService_;
+        httpBackend = _$httpBackend_;
+        scope = _$rootScope_.$new();
 
-      nyplLocationsService = _nyplLocationsService_;
-      httpBackend = _$httpBackend_;
-      scope = $rootScope.$new();
+        nypl_geocoder_mock = {
+          get_coords: function () { return; },
+          draw_map: function () { return; },
+          remove_searchMarker: function () { return; },
+          load_markers: function () { return; },
+          check_marker: function () { return; },
+          draw_marker: function () { return; },
+          draw_legend: function () { return; },
+          hide_infowindow: function () { return; },
+          panMap: function () { return; }
+        };
 
-      nypl_geocoder_mock = {
-        get_coords: function () { return; },
-        draw_map: function () { return; },
-        remove_searchMarker: function () { return; },
-        load_markers: function () { return; },
-        check_marker: function () { return; },
-        draw_marker: function () { return; },
-        draw_legend: function () { return; },
-        hide_infowindow: function () { return; },
-        panMap: function () { return; }
-      };
+        locationsCtrl = _$controller_('LocationsCtrl', {
+          $scope: scope,
+          nyplLocationsService: nyplLocationsService,
+          nypl_geocoder_service: nypl_geocoder_mock
+        });
 
-      locationsCtrl = $controller('LocationsCtrl', {
-        $scope: scope,
-        nyplLocationsService: nyplLocationsService,
-        nypl_geocoder_service: nypl_geocoder_mock
+        httpBackend
+          .expectGET('/languages/en.json')
+          .respond('public/languages/en.json');
       });
-
-      httpBackend
-        .expectGET('/languages/en.json')
-        .respond('public/languages/en.json');
-    }));
+    });
 
     it('Should expose nyplLocationsService functions', function () {
       expect(typeof nyplLocationsService.allLocations).toBe('function');
@@ -124,39 +117,41 @@ describe('Locinator controllers', function () {
     function () {
       var nypl_geocoder_mock, $q, scope, defer, $httpBackend;
 
-      beforeEach(module('nypl_locations'));
+      beforeEach(function () {
+        module('nypl_locations');
 
-      beforeEach(inject(function (
-        $controller,
-        _$rootScope_,
-        _$q_,
-        _$httpBackend_
-      ) {
-        $q = _$q_;
-        $httpBackend = _$httpBackend_;
-        scope = _$rootScope_.$new();
-        nypl_geocoder_mock = {
-          get_coords: function () {
-            defer = $q.defer();
-            return defer.promise;
-          },
-          draw_map: function () { return; },
-          remove_searchMarker: function () { return; },
-          load_markers: function () { return; },
-          show_all_libraries: function () { return; }
-        };
+        inject(function (
+          $controller,
+          _$rootScope_,
+          _$q_,
+          _$httpBackend_
+        ) {
+          $q = _$q_;
+          $httpBackend = _$httpBackend_;
+          scope = _$rootScope_.$new();
+          nypl_geocoder_mock = {
+            get_coords: function () {
+              defer = $q.defer();
+              return defer.promise;
+            },
+            draw_map: function () { return; },
+            remove_searchMarker: function () { return; },
+            load_markers: function () { return; },
+            show_all_libraries: function () { return; }
+          };
 
-        spyOn(nypl_geocoder_mock, 'get_coords').and.callThrough();
+          spyOn(nypl_geocoder_mock, 'get_coords').and.callThrough();
 
-        $controller('LocationsCtrl', {
-          '$scope': scope,
-          'nypl_geocoder_service': nypl_geocoder_mock
-        });
+          $controller('LocationsCtrl', {
+            '$scope': scope,
+            'nypl_geocoder_service': nypl_geocoder_mock
+          });
 
-        $httpBackend
-          .expectGET('/languages/en.json')
-          .respond('public/languages/en.json');
-      }));
+          $httpBackend
+            .expectGET('/languages/en.json')
+            .respond('public/languages/en.json');
+        })
+      });
 
       // it('should get coordinates from a zipcode',
       //   inject(function () {
