@@ -5,7 +5,7 @@ describe, expect, beforeEach, inject, it, angular */
 /*
  * The following tests are for custom AngularJS filters.
  */
-describe('NYPL Filter Tests', function () {
+describe('NYPL Filter Unit Tests', function () {
   'use strict';
 
   // Load App dependency
@@ -26,12 +26,13 @@ describe('NYPL Filter Tests', function () {
    *   Returns a string of nicely military-formatted time. If there is
    *   no open time in the input object, 'Closed' is returned.
    */
-  describe('timeFormat', function () {
+  describe('Filter: timeFormat', function () {
     beforeEach(inject(function (_timeFormatFilter_) {
       timeFormatFilter = _timeFormatFilter_;
     }));
 
     it('should have a timeFormat function', function () {
+      expect(timeFormatFilter).toBeDefined();
       expect(angular.isFunction(timeFormatFilter)).toBe(true);
     });
 
@@ -75,12 +76,13 @@ describe('NYPL Filter Tests', function () {
    *
    *   Returns the date in ISO format.
    */
-  describe('dateToISO', function () {
+  describe('Filter: dateToISO', function () {
     beforeEach(inject(function (_dateToISOFilter_) {
       dateToISOFilter = _dateToISOFilter_;
     }));
 
     it('should have a dateToISOFilter function', function () {
+      expect(dateToISOFilter).toBeDefined();
       expect(angular.isFunction(dateToISOFilter)).toBe(true);
     });
 
@@ -97,12 +99,13 @@ describe('NYPL Filter Tests', function () {
    *   Returns a string with every word capitalized. If the input is not
    *   a string, it returns the input untouched.
    */
-  describe('capitalize', function () {
+  describe('Filter: capitalize', function () {
     beforeEach(inject(function (_capitalizeFilter_) {
       capitalizeFilter = _capitalizeFilter_;
     }));
 
     it('should have a capitalize filter function', function () {
+      expect(capitalizeFilter).toBeDefined();
       expect(angular.isFunction(capitalizeFilter)).toBe(true);
     });
 
@@ -129,10 +132,15 @@ describe('NYPL Filter Tests', function () {
    *   when the library opens, when it is open until, and what time
    *   it is open tomorrow - if tomorrow data is available.
    */
-  describe('hoursTodayFormat', function () {
+  describe('Filter: hoursTodayFormat', function () {
     beforeEach(inject(function (_hoursTodayFormatFilter_) {
       hoursTodayFormatFilter = _hoursTodayFormatFilter_;
     }));
+
+    it('should be defined', function () {
+      expect(hoursTodayFormatFilter).toBeDefined();
+      expect(angular.isFunction(hoursTodayFormatFilter)).toBe(true);
+    });
 
     describe('when closed', function () {
       it('should be false if no input is given', function () {
@@ -288,7 +296,7 @@ describe('NYPL Filter Tests', function () {
    *   Returns shortened text by a given length and adds ellipsis
    *   to the end of the truncated text.
    */
-  describe('truncate', function () {
+  describe('Filter: truncate', function () {
     beforeEach(inject(function (_truncateFilter_) {
       truncateFilter = _truncateFilter_;
     }));
@@ -304,6 +312,11 @@ describe('NYPL Filter Tests', function () {
       short_blog_post = "If you think of poems as flowers, then the Aguilar " +
         "Poetry Fest was an exercise in charming cross-pollination. Sharing " +
         "was the thing.";
+
+    it('should be defined', function () {
+      expect(truncateFilter).toBeDefined();
+      expect(angular.isFunction(truncateFilter)).toBe(true);
+    });
 
     it('should return the input if it is not a string', function () {
       expect(truncateFilter(1234)).toEqual(1234);

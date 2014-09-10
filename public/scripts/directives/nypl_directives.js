@@ -136,7 +136,7 @@ function eventRegistration($filter) {
                         $filter('date')(scope.start, 'MMMM d, y - h:mma');
                 } else {
                     scope.registration_available =
-                        "Registration for this event is closed."
+                        "Registration for this event is closed.";
                 }
             }
         }
@@ -153,7 +153,7 @@ function nyplSiteAlerts(nyplLocationsService, nyplUtility) {
         // Must be global for unit test to pass. Must find better way to test.
         // scope: {},
         link: function (scope, element, attrs) {
-            var alerts, body;
+            var alerts;
             nyplLocationsService.alerts().then(function (data) {
                 alerts = data.alerts;
                 scope.sitewidealert = nyplUtility.alerts(alerts);
@@ -229,6 +229,43 @@ function collapse() {
     });
 }
 
+function nyplFundraising() {
+    'use strict';
+
+    return {
+        restrict: 'E',
+        templateUrl: 'scripts/directives/templates/fundraising.html',
+        replace: true,
+        scope: {
+            fundraising: '=fundraising'
+        }
+    };
+}
+
+/* 
+** Directive: <nypl-sidebar donate-button="" nypl-ask="" donateurl="">
+** Usage: Inserts optional Donate button/nyplAsk widget when 'true' is
+**        passed to donate-button="" or nypl-ask="". A custom donate url
+**        can be passed for the donate-button, otherwise a default is set
+*/
+function nyplSidebar() {
+    'use strict';
+
+    return {
+        restrict: 'E',
+        templateUrl: 'scripts/directives/templates/sidebar-widgets.html',
+        replace: true,
+        scope: {
+            donateButton: '@',
+            nyplAsk: '@'
+        },
+        link: function (scope, elem, attrs) {
+            var url = "https://secure3.convio.net/nypl/site/SPageServer?pagename=donation_form&JServSessionIdr003=dwcz55yj27.app304a&s_src=FRQ14ZZ_SWBN";      
+            scope.donateUrl = (attrs.donateurl || url);      
+        }
+    };
+}
+
 angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
@@ -240,4 +277,6 @@ angular
     .directive('eventRegistration', eventRegistration)
     .directive('nyplSiteAlerts', nyplSiteAlerts)
     .directive('nyplLibraryAlert', nyplLibraryAlert)
+    .directive('nyplFundraising', nyplFundraising)
+    .directive('nyplSidebar', nyplSidebar)
     .directive('collapse', collapse);

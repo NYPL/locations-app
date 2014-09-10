@@ -16,11 +16,17 @@ describe('NYPL coordinateService Module', function () {
    * browser's current location, and computes coordinate distance.
    */
   describe('nyplCoordinatesService', function () {
-    var nyplCoordinatesService;
+    var nyplCoordinatesService, $window;
 
     beforeEach(function () {
       // load the module.
       module('coordinateService');
+
+      $window = {navigator: { geolocation: jasmine.createSpy()} };
+
+      module(function($provide) {
+        $provide.value('$window', $window);
+      });
 
       // inject your service for testing.
       // The _underscores_ are a convenience thing
@@ -38,24 +44,21 @@ describe('NYPL coordinateService Module', function () {
      *   browser, false otherwise.
      */
     describe('nyplCoordinatesService.geolocationAvailable()', function () {
+
       it('should have a geolocationAvailable function', function () {
         expect(angular.isFunction(nyplCoordinatesService.geolocationAvailable))
           .toBe(true);
+        expect(nyplCoordinatesService.geolocationAvailable).toBeDefined();
       });
 
       it('should return false due to old browser', function () {
         // Old browsers don't have the navigator api
-        window.navigator = false;
-        window.navigator.geolocation = false;
-
+        $window.navigator = false;
+        $window.navigator.geolocation = false;
         expect(nyplCoordinatesService.geolocationAvailable()).toBe(false);
       });
 
       it('should return true for modern browsers', function () {
-        // Modern browsers have the navigator api
-        window.navigator = true;
-        window.navigator.geolocation = true;
-
         expect(nyplCoordinatesService.geolocationAvailable()).toBe(true);
       });
     }); /* End nyplCoordinatesService.geolocationAvailable() */
@@ -71,9 +74,9 @@ describe('NYPL coordinateService Module', function () {
 
       beforeEach(inject(function (_$rootScope_) {
         $rootScope = _$rootScope_;
-        window.navigator = jasmine.createSpy('navigator');
+        $window.navigator = jasmine.createSpy('navigator');
         geolocationMock =
-          window.navigator.geolocation = jasmine.createSpy('geolocation');
+          $window.navigator.geolocation = jasmine.createSpy('geolocation');
       }));
 
       // check to see if it has the expected function
@@ -275,6 +278,12 @@ describe('NYPL coordinateService Module', function () {
           expect(result).toBe(0.92);
           expect(result).not.toBe(null);
         });
+
+      it('should return undefined if a value is missing', function () {
+        var result = nyplCoordinatesService.getDistance();
+
+        expect(result).not.toBeDefined();
+      });
     }); /* End nyplCoordinatesService.getDistance() */
 
   }); /* End nyplCoordinatesService */

@@ -1,3 +1,4 @@
 source "https://rubygems.org"
-gem 'rack', '1.1.0'
-gem 'rack-try_static'
+gem 'sinatra'
+gem 'haml'
+gem 'lionactor', :git => 'https://bitbucket.org/rdmond/lionactor', :tag => '0.0.5'

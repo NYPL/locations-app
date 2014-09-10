@@ -10,7 +10,7 @@ describe, expect, beforeEach, inject, it, angular */
 describe('nyplSearch module', function () {
   'use strict';
 
-  var element, $compile, $rootScope, httpBackend;
+  var element, $compile, $scope, httpBackend;
 
   beforeEach(module('nyplSearch'));
   beforeEach(module('directiveTemplates'));
@@ -30,11 +30,11 @@ describe('nyplSearch module', function () {
   describe('nypl-search', function () {
     beforeEach(inject(function (_$compile_, _$rootScope_) {
       $compile = _$compile_;
-      $rootScope = _$rootScope_;
+      $scope = _$rootScope_.$new();
 
       element = angular.element('<nypl-search></nypl-search>');
-      $compile(element)($rootScope);
-      $rootScope.$digest();
+      $compile(element)($scope);
+      $scope.$digest();
     }));
 
     it('should compile', function () {

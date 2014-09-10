@@ -6,7 +6,7 @@
   <section class="grid">
 
     <div class="grid__item" id="amenities__title">
-      <h2 data-ng-if="amenities">Amenities at NYPL</h2>
+      <h2 data-ng-if="amenitiesCategories">Amenities at NYPL</h2>
       <h2 data-ng-if="amenity">{{amenity_name}}</h2>
     </div>
 
@@ -18,10 +18,13 @@
             <h3><span class="{{category.icon}} category_title">{{category.name}}</span></h3>
             <ul class="amenities-list">
               <li data-ng-repeat="amenity in category.amenities">
-                <a data-ui-sref="amenity({amenity: amenity.id})">{{amenity.name}}</a>
+                <a data-ui-sref="amenity({amenity: amenity._id})">{{amenity.name}}</a>
                 
                 <span data-ng-if="amenity._links.action && amenity._links.action.href">
-                  <a data-ng-href="{{amenity._links.action.href}}" class="amenities__reserve btn btn--natural whiteText">{{amenity._links.action.name}}</a>
+                  <a data-ng-href="{{amenity._links.action.href}}"
+                    class="amenities__reserve btn btn--natural">
+                    {{amenity._links.action.name}}
+                  </a>
                 </span>
                                 
                 <span data-ng-if="amenity._links.info">
@@ -43,28 +46,16 @@
       --><div class="grid__item one-whole lap-and-up-one-third ">
       
         <div class="services-callout callout">
-         <p>The Library also offers<br><span class="services-callout-2">services</span><br>of all kinds!</p>
-         <a class="services-link purpleText" href="">Find out more <span class="icon-arrow-right"></span></a>
+          <p>
+            The Library also offers<br><span class="services-callout-2">services</span><br>of all kinds!
+          </p>
+          <a class="services-link purpleText" href="">
+            Find out more <span class="icon-arrow-right"></span>
+          </a>
         </div>
+        <!-- Sidebar Widgets -->
+        <nypl-sidebar donate-button="true" nypl-ask="true"></nypl-sidebar>
       </div>
-
     </div>
-    
-  </section>
-
-  <div class="ask-donate">
-    <div class="appeal grid__item one-whole lap-and-up-one-half" id="donate">
-        <p>Help us keep this library open 6 days a week!</p>
-        <button class="btn--donate" class="{{donateHref}}">Donate now</button>
-    </div><!--
-
-    --><div class="askNYPL grid__item one-whole lap-and-up-one-half " id="ask-nypl">
-        <ul>
-          <li class="asknum icon-phone">917-ASK-NYPL</li>
-          <li><librarianchatbutton /></li>
-          <li><emailusbutton link="{{division._links.contact.href}}" /></li>
-        </ul>
-    </div>
-  </div>
-  
-</div>  
+  </section> 
+</div>

@@ -752,7 +752,42 @@ var response = {
                     "type": "research"
                 }
             ], 
-            "events": [], 
+            "events": [
+                {
+                    _id: 267055,
+                    _links: {
+                        self: {
+                            href: "events/programs/2014/09/05/first-fridays"
+                        }
+                    },
+                    body: "Our popular monthly social gathering features live music, signature drinks, and extended viewing hours in our galleries. FIRST COME, FIRST SEATED For all free events, we generally overbook to ensure a full house. All registered seats are released 15 to 30 minutes before start time, so we recommend that you arrive early.",
+                    end: "2014-09-05T22:00:00Z",
+                    id: 267055,
+                    image: null,
+                    registration: null,
+                    start: "2014-09-05T22:00:00Z",
+                    title: "First Fridays"
+                },
+                {
+                    _id: 266043,
+                    _links: {
+                        self: {
+                            href: "events/programs/2014/11/13/estate-and-gift-planning-seminar"
+                        }
+                    },
+                    body: "Are you working on your estate plans or need to update them? How can you best provide for family and loved ones while also supporting your favorite charities? Do you understand the probate process or want to avoid it? Are you confused by the continued estate tax changes? Most importantly, what will be your legacy?",
+                    end: "2014-11-14T00:30:00Z",
+                    id: 266043,
+                    image: null,
+                    registration: {
+                        type: "Phone or in-person",
+                        start: null,
+                        open: null
+                    },
+                    start: "2014-11-13T23:00:00Z",
+                    title: "Estate and Gift Planning Seminar"
+                }
+            ], 
             "exhibitions": [], 
             "features": [
                 {
@@ -851,7 +886,8 @@ var response = {
                 "href": "http://www.nypl.org/locations/tid/64/node/126585"
             }, 
             "events": {
-                "href": "locations/schomburg/events"
+                "href": "locations/schomburg/events",
+                "all": "http://dev.www.aws.nypl.org/events/calendar?location=64"
             }, 
             "exhibitions": {
                 "href": "locations/schomburg/exhibitions"

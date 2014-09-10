@@ -60,6 +60,23 @@ describe('Circulating branch page', function () {
         .toEqual('Library Manager: Genoveve Stowell');
     });
 
+    it('should be Fully Accessible', function () {
+      expect(locationPage.accessibility.getText()).toEqual('Fully Accessible');
+      expect(locationPage.accessibility.getAttribute('class'))
+        .toContain('accessible');
+    });
+
+    it('should have a Google Maps Directions link', function () {
+      expect(locationPage.directions_link.getAttribute('href'))
+        .toMatch(/google.com\/maps/);
+    });
+
+    it('should have an \'On Our Shelves Now\' link', function () {
+      expect(locationPage.catalog_link.getAttribute('href'))
+        .toEqual('http://nypl.bibliocommons.com/search?custom_query=' +
+          'available%3A%22Grand+Central%22&circ=CIRC|NON%20CIRC');
+    });
+
     it('should display five social media icons', function () {
       expect(locationPage.social_media_container.isPresent()).toBe(true);
       expect(locationPage.social_media.count()).toBe(5);
@@ -100,6 +117,11 @@ describe('Circulating branch page', function () {
 
     it('should display six events', function () {
       expect(locationPage.events.count()).toBe(6);
+    });
+
+    it('should have a \'See more events\' link', function () {
+      expect(locationPage.events_more_link.getAttribute('href'))
+        .toEqual('http://dev.www.aws.nypl.org/events/calendar?location=871');
     });
 
     describe('individual event', function () {
@@ -150,6 +172,10 @@ describe('Circulating branch page', function () {
 
     it('should display six blogs', function () {
       expect(locationPage.blogs.count()).toBe(6);
+    });
+    it('should display the \'See more blogs\' link', function () {
+      expect(locationPage.blogs_more_link.getAttribute('href'))
+        .toEqual('http://www.nypl.org/blog/library/871');
     });
   });
 

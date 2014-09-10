@@ -1,0 +1,69 @@
+!!!
+%html
+  %head
+    %title NYPL | #{@data.name}
+  %body
+    %div(itemscope itemtype="http://schema.org/Library")
+      %h1(itemprop="name")= @data.name
+      %div(itemprop="image" itemscope itemtype="http://schema.org/ImageObject")
+        %img(src="#{@data.image}" itemprop="contentUrl")
+      %div(itemprop="address" itemscope itemtype="http://schema.org/PostalAddress")
+        %div(itemprop="streetAddress")= @data.street_address
+        %span(itemprop="addressLocality")= @data.locality 
+        %span(itemprop="addressRegion")= @data.region
+        %span(itemprop="postalCode")= @data.postal_code
+        %div(itemprop="telephone")= @data.contacts['phone']
+      %div(itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates")
+        %meta(itemprop="longitude" content="#{@data.geolocation['coordinates'][0]}")
+        %meta(itemprop="latitude" content="#{@data.geolocation['coordinates'][1]}")
+      %div(itemprop="contactPoint" itemscope itemtype="http://schema.org/ContactPoint")
+        %span(itemprop="contactType") Library Manager
+        %span(itemprop="name")= @data.contacts['manager']
+        
+      %h2 Hours
+      %table
+        %thead
+          %tr
+            %td Day
+            %td Hours
+            %tbody
+              - @data.hours.each do |day|
+                - if day.closedOn?
+                  %tr
+                    %td= day.day
+                    %td Closed
+                - else
+                  %tr(itemprop="openingHours" content="")
+                    %td= day.day
+                    %td #{day.open}-#{day.close}
+
+      %h2 Amenities
+      %ul
+        - @data._embedded["amenities"].each do |cat|
+          %li
+            #{cat["name"]}
+            %ul
+              - cat["amenities"].each do |a|
+                %li(itemprop="makesOffer" itemscope itemtype="http://schema.org/Offer")
+                  %span(itemprop="name")= a["name"]
+
+      %div
+        %a(href="./#/amenities/loc/#{@data.slug}") See all amenities
+
+
+      %h2 About
+      %div(itemprop="description")= @data.about
+
+      - if @data._embedded["features"].count > 0
+        %h2 Features
+        %ul
+          - @data._embedded["features"].each do |f|
+            %li
+              - if f['_links'].nil?
+                %h3= f["title"]
+              - else
+                %h3
+                  %a(href="#{f['_links']['self']['href']}")= f["title"]
+              - if ! f["image"].nil?
+                %img(src="#{f['image']}")
+              %div= f["body"]

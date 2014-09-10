@@ -15,17 +15,16 @@
           <todayshours hours="{{hoursToday | hoursTodayFormat:'short'}}" />
           <div id="location-hours" class="location-hours" data-ng-if="division.hours">
             <h2 class="flush--ends hdg">
-              {{ 'REGULAR_HOURS' | translate }} 
+              {{'REGULAR_HOURS' | translate}} 
               <span id="toggle-hours" ng-click="expand = !expand"
                 ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span>
             </h2>
 
             <table class="weekly-hours zeta" collapse="expand" duration="2500">
-              <tr class="{{hours.day}} weekday" data-ng-repeat="hours in division.hours.regular" data-ng-if="$index != 7">
+              <tr class="{{hours.day}} weekday" data-ng-repeat="hours in division.hours.regular"
+                data-ng-if="$index != 7">
                 <th class="day">{{hours.day}}</th>
-                <td class="time">
-                  {{ hours | timeFormat }}
-                </td>
+                <td class="time">{{ hours | timeFormat }}</td>
               </tr>
             </table>
           </div>
@@ -44,31 +43,36 @@
       --><div id="container__div_address" class="grid__item lap-one-half one-whole desk-one-third">
         
         <!-- Division address and related location data -->
-        <div>{{division.location_name}}</div>
-        <div data-ng-if="division.street_address">{{division.street_address}}</div>
-        <div data-ng-if="division.cross_street">{{division.cross_street}}</div>
-        <div data-ng-if="division.floor">{{division.floor}} 
-            <span data-ng-if="division.room">{{ 'ROOM' | translate }} {{division.room}}</span>
+        <div class="div_name">{{division.location_name}}</div>
+        <div class="div_loc_info">
+          <div data-ng-if="division.street_address">{{division.street_address}}</div>
+          <div data-ng-if="division.cross_street">{{division.cross_street}}</div>
+          <div data-ng-if="division.floor">
+            <span>{{division.floor}}</span>
+            <span data-ng-if="division.room" class="room">
+              {{'ROOM' | translate}} {{division.room}}
+            </span>
+          </div>
+          <div data-ng-if="division.locality">
+            {{division.locality}}, {{division.region}} {{division.postal_code}}
+          </div>
+          <div data-ng-if="division.contacts.manager">
+            {{'DIVISION_MANAGER' | translate}}<span>{{division.contacts.manager}}</span>
+          </div>
+          <div data-ng-if="division.contacts.phone">{{division.contacts.phone}}</div>
         </div>
-        <div data-ng-if="division.locality">
-          {{division.locality}}, {{division.region}} {{division.postal_code}}
-        </div>
-        <div data-ng-if="division.contacts.manager">
-          {{ 'DIVISION_MANAGER' | translate}}<span>{{division.contacts.manager}}</span>
-        </div>
-        <div data-ng-if="division.contacts.phone">{{division.contacts.phone}}</div>
 
         <!-- Accessibility -->
         <div id="accessibility__container">
-          <div data-ng-if="location.access == 'Fully Accessible'" class="accessible">
+          <div data-ng-if="division.access == 'Fully Accessible'" class="accessible">
             <span class="fully icon-accessibility"></span>
-            {{location.access}}
+            {{division.access}}
           </div>
-          <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
+          <div data-ng-if="division.access == 'Partially Accessible'" class="accessible">
             <span class="partially icon-accessibility"></span>
-            {{location.access}}
+            {{division.access}}
           </div>
-          <div data-ng-if="!location.access" class="not-accessible">
+          <div data-ng-if="!division.access" class="not-accessible">
             <span class="none icon-accessibility"></span>
             Not Accessible
           </div>
@@ -83,6 +87,25 @@
     </div>
   </div>
 
+  <!-- Sub-divisions -->
+  <div class="container__sub_divisions" data-ng-if="division._embedded.divisions">
+    <h2 class="hdg">{{ 'SUBDIVISION_HEADER' | translate }}</h2>
+    <div class="grid">
+      <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
+        data-ng-repeat='subdivision in division._embedded.divisions'>
+        <div class="subdivision-wrapper">
+          <img class="img--outline" src="images/pippin_fpo.jpg"
+            alt="Image for {{subdivision.name}}" title="Image for {{subdivision.name}}"/>
+          <h4 class="subdivision-title">
+            <a ui-sref="division({division: subdivision.slug})">{{subdivision.name}}</a>
+          </h4>
+          <p data-ng-if="subdivision.hours">Hours Today: {{subdivision.hoursToday | timeFormat}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Division -->
   <div class="container__about">
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-three-fifths">
@@ -90,7 +113,7 @@
         <img data-ng-if="division.image" class="img--left img--outline division_second_image"
           data-ng-src="{{division.image}}" style="max-width: 165px;" />
         <p>{{division.about}}</p>
-        <div class="push-half--bottom">
+        <div class="push-half--bottom text--right">
           <a class="read-more collection-more"
             data-ng-href="http://nypl.org/locations/{{division.location_slug}}/{{division.slug}}">
             {{ 'MORE_ABOUT_DIVISION' | translate }}</a>
@@ -100,13 +123,15 @@
       --><div class="grid__item one-whole lap-and-up-two-fifths">
         <h2 class="hdg">{{ 'PLAN_YOUR_VISIT' | translate }}</h2>
         <a data-ng-if="division._links.concierge.href && has_appointment"
-          data-ng-href="{{division._links.concierge.href}}" class="btn btn--natural whiteText">
-          {{ 'APPOINTMENT' | translate }}</a>
+          data-ng-href="{{division._links.concierge.href}}" class="btn btn--natural">
+          {{ 'APPOINTMENT' | translate }}
+        </a>
         <a data-ng-if="division._links.contact.href"
-          data-ng-href="{{division._links.contact.href}}" class="btn btn--natural whiteText" id="ask-librarian">
-          {{ 'ASK_LIBRARIAN' | translate }}</a>
+          data-ng-href="{{division._links.contact.href}}" class="btn btn--natural" id="ask-librarian">
+          {{ 'ASK_LIBRARIAN' | translate }}
+        </a>
 
-        <ul class="flush--left push-half--top division_amenities">
+        <ul class="flush--left push-half--top division_amenities gamma">
           <li class="icon-screen2">{{ 'RESERVE_COMPUTER' | translate }}</li>
           <li class="icon-library">{{ 'ILL' | translate }}</li>
           <li class="icon-users">{{ 'MEETING_ROOMS' | translate }}</li>
@@ -121,53 +146,56 @@
     <ul class="grid">
       <li class="grid__item one-whole desk-one-third"
         data-ng-repeat="event in division._embedded.events">
-        <h3 class="event__title"><a data-ng-href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a></h3>
+        <h3 class="event__title">
+          <a data-ng-href="http://nypl.org/{{event._links.self.href}}">{{event.title}}</a>
+        </h3>
         <img data-ng-if="event.image" class="img--outline img--left" 
           data-ng-src="{{event.image}}" alt="" style="height: 100px;" />
         <p class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p class="desc">{{event.body}}</p>
         <div data-ng-if="event.registration">
-           {{ 'REGISTRATION' | translate }}:
-          <event-registration
+          {{ 'REGISTRATION' | translate }}:
+          <event-registration registration="{{event.registration}}"
             type="{{event.registration.type}}"
             open="{{event.registration.open}}"
             start="{{event.registration.start}}"
-            link="{{event._links.self.href}}"
-            registration="{{event.registration}}">
+            link="{{event._links.self.href}}">
           </event-registration>
         </div><!--
+
         --><div class="">
           <a data-ng-href="{{calendarLink('google', event, location)}}"
             target="_blank" rel="nofollow" class="icon-calendar google_link">Google</a>
           <a data-ng-href="{{calendarLink('yahoo', event, location)}}"
             target="_blank" rel="nofollow" class="icon-calendar yahoo_link">Yahoo</a>
-          <a href="" data-ng-click="icalLink(event, location.street_address)" target="_blank" download="nypl_event.ics" 
-            class="icon-calendar" rel="nofollow">
-            iCal</a>
+          <a href="" data-ng-click="icalLink(event, location.street_address)"
+            target="_blank" download="nypl_event.ics" class="icon-calendar" rel="nofollow">
+            iCal
+          </a>
         </div>
       </li>
     </ul>
       
-    <div class="push-half--bottom">
-      <a class="read-more">
+    <div class="text--right push-half--ends">
+      <a class="read-more events-more">
         {{ 'MORE_EVENTS' | translate }}
       </a>
     </div>
   </div>
 
   <!-- Features -->
-  <div id="container__features">
+  <div id="container__features" data-ng-if="division._embedded.features">
     <h2 class="hdg">{{ 'FEATURED' | translate }}</h2>
 
     <ul class="grid">
-      <li class="grid__item one-whole lap-and-up-one-half">
-        <h3><a data-ng-href="">Special project title</a></h3>
-        <p class="desc">Ooh look, we are digitizing the dance videos! here is the second sentence in the blurb about us doing that.</p>
-      </li><!--
-
-      --><li class="grid__item one-whole lap-and-up-one-half">
-        <h3><a data-ng-href="">Special project title</a></h3>
-        <p class="desc">Ooh look, we are digitizing the dance videos! here is the second sentence in the blurb about us doing that.</p>
+      <li class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='feature in division._embedded.features'>
+        <h3 data-ng-if="feature.title">
+          <a data-ng-href="http://www.nypl.org/{{feature._links.self.href}}">{{feature.title}}</a>
+        </h3>
+        <a data-ng-if="feature.image" data-ng-href="http://nypl.org/{{feature._links.self.href}}">
+          <img class="img--left" data-ng-src="{{feature.image}}" alt="{{feature.title}}" style="max-width: 120px;" />
+        </a>
+        <p class="desc" data-ng-bind-html="feature.body"></p>
       </li>
     </ul>
   </div>
@@ -177,7 +205,7 @@
     <h2 class="hdg">{{ 'BLOGS' | translate }}</h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in division._embedded.blogs'>
-        <h3><a data-ng-href="http://nypl.org/{{blog._links.self.href}}">{{blog.title}}</a></h3>
+        <h3><a data-ng-href="{{blog._links.self.href}}">{{blog.title}}</a></h3>
         <a data-ng-if="blog.image" data-ng-href="http://nypl.org/{{blog._links.self.href}}">
           <img class="img--left" data-ng-src="{{blog.image}}" alt="" style="max-width: 120px;" />
         </a>
@@ -190,23 +218,26 @@
         <div class="desc">{{blog.body | truncate}}</div>
       </div>
     </div>
-    <div class="push-half--bottom">
-      <a class="read-more blogs-more" data-ng-href="{{division._links.blogs.all}}">{{ 'MORE_BLOGS' | translate }}</a>
+    <!-- More Blogs Link -->
+    <div class="text--right push-half--ends">
+      <a class="read-more blogs-more" data-ng-href="{{division._links.blogs.all}}">
+        {{ 'MORE_BLOGS' | translate }}
+      </a>
     </div>
   </div>
 
+  <!-- Ask/Donate -->
   <div class="ask-donate">
-    <div class="appeal grid__item one-whole lap-and-up-one-half" id="donate">
-        <p>Help us keep this library open 6 days a week!</p>
-        <button class="btn--donate" class="{{donateHref}}">Donate now</button>
-    </div><!--
+    <nypl-fundraising fundraising="division.fundraising"></nypl-fundraising><!--
 
     --><div class="askNYPL grid__item one-whole lap-and-up-one-half " id="ask-nypl">
-        <ul>
-          <li class="asknum icon-phone">917-ASK-NYPL</li>
-          <li><librarianchatbutton /></li>
-          <li><emailusbutton link="{{division._links.contact.href}}" /></li>
-        </ul>
+      <ul>
+        <li class="asknum icon-phone">
+          <a href="tel:917-275-6975">917-ASK-NYPL</a>
+        </li>
+        <li><librarianchatbutton /></li>
+        <li><emailusbutton link="{{division._links.contact.href}}" /></li>
+      </ul>
     </div>
   </div>
 

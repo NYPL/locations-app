@@ -57,8 +57,8 @@
 			}
 
 			.hours-today {
-				font-size: 14px;
-				font-size: 1.4rem;
+				font-size: 13px;
+				font-size: 1.3rem;
 
 				@include breakpoint($min, $post-palm) {
 					font-size: 16px;
@@ -66,7 +66,7 @@
 				}		
 
 				span {
-					vertical-align: -2px;
+					vertical-align: 1px;
 				}
 			}
 		}
@@ -159,18 +159,25 @@
 				text-decoration: none;
 			}
 		}
-
 	}
 
 	// Divisions section 
 	#container__divisions {
-		img {
-			width: 100px;
-			height: 100px;		
-		}
-		
-		h4 {
-			margin-bottom: .5rem;
+		.division-wrapper {
+			margin-bottom: 3em;
+			
+			img {
+				height: 250px;		
+			}
+			
+			h4 {
+				margin-bottom: .5rem;
+			}
+
+			p {
+				max-width: 100%;
+				margin: .5em 0;
+			}
 		}
 	}
 
@@ -231,11 +238,7 @@
 					@include breakpoint($min, $post-palm) {
 						margin-bottom: 0;
 						margin-right: .35em;
-						display: inline;
-					}
-
-					span {
-						vertical-align: -2px;
+						display: inline-block;
 					}
 				}
 			}
@@ -248,8 +251,7 @@
 					margin: 0;
 					position: absolute;
 					right: 7px;
-					top: 7px;
-					padding: 1px 6px;
+					top: 13px;
 				}
 			}
 		}

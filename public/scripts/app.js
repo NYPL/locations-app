@@ -44,50 +44,46 @@ nypl_locations.config([
         });
         $translateProvider.preferredLanguage('en');
 
-        function LoadLocation(nyplLocationsService, $stateParams, $location) {
+        function LoadLocation(nyplLocationsService, $stateParams) {
             return nyplLocationsService
                 .singleLocation($stateParams.location)
                 .then(function (data) {
                     return data.location;
                 })
                 .catch(function (err) {
-                    $location.path('/404');
                     throw err;
                 });
         }
 
-        function LoadDivision(nyplLocationsService, $stateParams, $location) {
+        function LoadDivision(nyplLocationsService, $stateParams) {
             return nyplLocationsService
                 .singleDivision($stateParams.division)
                 .then(function (data) {
                     return data.division;
                 })
                 .catch(function (err) {
-                    $location.path('/404');
                     throw err;
                 });
         }
 
-        function AmenitiesAtLibrary(nyplLocationsService, $stateParams, $location) {
+        function AmenitiesAtLibrary(nyplLocationsService, $stateParams) {
             return nyplLocationsService
                 .amenitiesAtLibrary($stateParams.location)
                 .then(function (data) {
                     return data.location;
                 })
                 .catch(function (error) {
-                    $location.path('/404');
                     throw error;
                 });
         }
 
-        function Amenities(nyplLocationsService, $stateParams, $location) {
+        function Amenities(nyplLocationsService, $stateParams) {
             return nyplLocationsService
                 .amenities($stateParams.amenity)
                 .then(function (data) {
                     return data;
                 })
                 .catch(function (error) {
-                    $location.path('/404');
                     throw error;
                 });
         }
@@ -97,8 +93,13 @@ nypl_locations.config([
             secondaryState: {name:'Locations', customUrl: 'home.index' }
         });
 
-        // $urlRouterProvider.when('/list', '/');
-        $urlRouterProvider.otherwise('/');
+        // This next line breaks unit tests which doesn't make sense since
+        // unit tests should not test the whole app. BUT since we are testing
+        // directives and using $rootscope.$digest or $rootscope.$apply,
+        // it will run the app. It may not be necessary for the app though
+        // since, in the run phase, if there is an error when changing state,
+        // the app will go to the 404 state.
+        // $urlRouterProvider.otherwise('/404');
         $stateProvider
             .state('home', {
                 url: '/',
@@ -110,13 +111,11 @@ nypl_locations.config([
             .state('home.index', {
                 templateUrl: 'views/location-list-view.html',
                 url: '',
-                // controller: 'LocationsCtrl',
                 label: 'Locations'
             })
             .state('home.list', {
                 templateUrl: 'views/location-list-view.html',
                 url: 'list',
-                // controller: 'LocationsCtrl',
                 label: 'Locations'
             })
             .state('home.map', {
@@ -186,9 +185,19 @@ nypl_locations.config([
                 data: {
                     crumbName: '{{location.name}}'
                 }
+            })
+            .state('404', {
+                url: '/404',
+                templateUrl: 'views/404.html'
             });
     }
 ]);
+
+nypl_locations.run(function ($state, $rootScope) {
+    $rootScope.$on('$stateChangeError', function () {
+        $state.go('404');
+    });
+});
 
 // Declare an http interceptor that will signal
 // the start and end of each request

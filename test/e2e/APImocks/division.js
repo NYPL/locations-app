@@ -2,109 +2,44 @@
 /*globals element, by, module */
 
 var response = {
-  bad: {
-    division: {
-      "_id": "GRD",
-      "_links": {},
-      "about": "",
-      "access": "Fully Accessible",
-      "contacts": {
-        "phone": "(212) 275-6975",
-        "email": "grdref@nypl.org"
-      },
-      "cross_street": null,
-      "floor": null,
-      "geolocation": {
-        "type": "Point",
-        "coordinates": [
-          -73.9822,
-          40.7532
-        ]
-      },
-      "hours": {
-        "regular": [
-          { "day": "Sun", "open": null, "close": null },
-          { "day": "Mon", "open": null, "close": null },
-          { "day": "Tue", "open": null, "close": null },
-          { "day": "Wed", "open": null, "close": null },
-          { "day": "Thu", "open": null, "close": null },
-          { "day": "Fri", "open": null, "close": null },
-          { "day": "Sat", "open": null, "close": null }
-        ]
-      },
-      "id": "GRD",
-      "image": "/sites/default/files/images/stacks.jpg",
-      "locality": "New York",
-      "location_id": "SASB",
-      "location_name": "Stephen A. Schwarzman Building",
-      "location_slug": "schwarzman",
-      "name": "General Research Division",
-      "postal_code": 10018,
-      "region": "NY",
-      "room": 315,
-      "slug": "general-research-division",
-      "social_media": [],
-      "street_address": "135 East 46th Street",
-      "type": "circulating",
-      "_embedded": {
-        "services": [],
-        "events": [],
-        "exhibitions": null,
-        "blogs": [],
-        "alerts": [],
-        "divisions": []
-      }
-    }
-  },
   good: {
     division: {
       _id: "GRD",
       _links: {
-        self: {
-          href: "divisions/general-research-division"
+        "self": {
+          "href": "divisions/general-research-division"
         },
-        amenities: {
-          href: "divisions/general-research-division/amenities"
+        "amenities": {
+          "href": "divisions/general-research-division/amenities"
         },
-        blogs: {
-          href: "divisions/general-research-division/blogs",
-          all: "http://www.nypl.org/blog/library/394"
+        "blogs": {
+          "href": "divisions/general-research-division/blogs",
+          "all": "http://www.nypl.org/blog/library/394"
         },
-        events: {
-          href: "divisions/general-research-division/events"
+        "events": {
+          "href": "divisions/general-research-division/events",
+          "all": "http://dev.www.aws.nypl.org/events/calendar?location=394"
         },
-        exhibitions: {
-          href: "divisions/general-research-division/exhibitions"
+        "exhibitions": {
+          "href": "divisions/general-research-division/exhibitions"
         },
-        alerts: {
-          href: "divisions/general-research-division/alerts"
+        "on_shelves": {
+          "href": "http://nypl.bibliocommons.com/search?custom_query=available%3A%22General+Research+Division%22&circ=CIRC|NON%20CIRC"
         },
-        on_shelves: {
-          href: "http://nypl.bibliocommons.com/search?custom_query=available" +
-            "%3A%22General+Research+Division%22&circ=CIRC|NON%20CIRC"
+        "contact": {
+          "href": "http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?institution=13306&type=1&language=1"
         },
-        contact: {
-          href: "http://www.questionpoint.org/crs/servlet/org.oclc.admin.Bui" +
-            "ldForm?institution=13306&type=1&language=1"
-        },
-        concierge: {
-          href: "http://www.nypl.org/ask-nypl/make-appointment-librarian"
+        "concierge": {
+          "href": "http://www.nypl.org/ask-nypl/make-appointment-librarian"
         }
       },
-      about: "The General Research Division serves as the central research " +
-        "hub in the Stephen A. Schwarzman Building. The division welcomes " +
-        "hundreds of visitors each day, including scholars, writers, graduate" +
-        " and undergraduate students, general readers, tourists, and those " +
-        "who might simply be looking for the answer to a nagging question. " +
-        "Our staff of librarians is on hand to help with research questions " +
-        "and to instruct patrons in navigating the Catalog and our numerous " +
-        "electronic databases.",
+      about: "The General Research Division serves as the central research hub in the Stephen A. Schwarzman Building. The division welcomes hundreds of visitors each day, including scholars, writers, graduate and undergraduate students, general readers, tourists, and those who might simply be looking for the answer to a nagging question. Our staff of librarians is on hand to help with research questions and to instruct patrons in navigating the Catalog and our numerous electronic databases.",
       access: "Fully Accessible",
       contacts: {
         phone: "(917) 275-6975",
         manager: "Marie Coughlin"
       },
-      cross_street: null,
+      cross_street: "",
       floor: "Third Floor",
       geolocation: {
         type: "Point",
@@ -115,41 +50,41 @@ var response = {
       },
       hours: {
         regular: [
-        {
-          day: "Sun",
-          open: null,
-          close: null
-        },
-        {
-          day: "Mon",
-          open: "10:00",
-          close: "17:45"
-        },
-        {
-          day: "Tue",
-          open: "10:00",
-          close: "19:45"
-        },
-        {
-          day: "Wed",
-          open: "10:00",
-          close: "19:45"
-        },
-        {
-          day: "Thu",
-          open: "10:00",
-          close: "17:45"
-        },
-        {
-          day: "Fri",
-          open: "10:00",
-          close: "17:45"
-        },
-        {
-          day: "Sat",
-          open: "10:00",
-          close: "17:45"
-        }
+          {
+            day: "Sun",
+            open: null,
+            close: null
+          },
+          {
+            day: "Mon",
+            open: "10:00",
+            close: "17:45"
+          },
+          {
+            day: "Tue",
+            open: "10:00",
+            close: "19:45"
+          },
+          {
+            day: "Wed",
+            open: "10:00",
+            close: "19:45"
+          },
+          {
+            day: "Thu",
+            open: "10:00",
+            close: "17:45"
+          },
+          {
+            day: "Fri",
+            open: "10:00",
+            close: "17:45"
+          },
+          {
+            day: "Sat",
+            open: "10:00",
+            close: "17:45"
+          }
         ],
         exceptions: {
           start: "2014-08-19T10:07:24-04:00",
@@ -365,6 +300,60 @@ var response = {
             end: "2014-12-26T23:59:00-05:00"
           }
         ]
+      }
+    }
+  },
+  bad: {
+    division: {
+      "_id": "GRD",
+      "_links": {},
+      "about": "",
+      "access": "Fully Accessible",
+      "contacts": {
+        "phone": "(212) 275-6975",
+        "manager": "Marie Coughlin"
+      },
+      "cross_street": "",
+      "floor": "Third Floor",
+      "geolocation": {
+        "type": "Point",
+        "coordinates": [
+          -73.9822,
+          40.7532
+        ]
+      },
+      "hours": {
+        "regular": [
+          { "day": "Sun", "open": null, "close": null },
+          { "day": "Mon", "open": null, "close": null },
+          { "day": "Tue", "open": null, "close": null },
+          { "day": "Wed", "open": null, "close": null },
+          { "day": "Thu", "open": null, "close": null },
+          { "day": "Fri", "open": null, "close": null },
+          { "day": "Sat", "open": null, "close": null }
+        ]
+      },
+      "id": "GRD",
+      "image": "/sites/default/files/images/stacks.jpg",
+      "locality": "New York",
+      "location_id": "SASB",
+      "location_name": "Stephen A. Schwarzman Building",
+      "location_slug": "schwarzman",
+      "name": "General Research Division",
+      "postal_code": 10018,
+      "region": "NY",
+      "room": 315,
+      "slug": "general-research-division",
+      "social_media": [],
+      "street_address": "135 East 46th Street",
+      "type": "circulating",
+      "_embedded": {
+        "services": [],
+        "events": [],
+        "exhibitions": null,
+        "blogs": [],
+        "alerts": [],
+        "divisions": []
       }
     }
   }
