@@ -118,6 +118,10 @@ header {
 					&.login-button {
 						background-color: #5e564b;
 
+						.label {
+							display: inline-block;
+						}
+
 						&:hover {
 							background-color: #9b958f;
 						}
