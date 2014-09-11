@@ -5,7 +5,7 @@
     'use strict';
     /** @namespace nyplLocationsService */
     function nyplLocationsService($http, $q) {
-        var api = 'http://evening-mesa-7447-160.herokuapp.com',
+        var api = 'http://locations-api-beta.nypl.org',
             apiError = "Could not reach API",
             locationsApi = {};
 

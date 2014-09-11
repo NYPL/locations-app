@@ -10,7 +10,7 @@ describe, expect, beforeEach, inject, it, angular, spyOn, afterEach */
 describe('NYPL locationService Module', function () {
   'use strict';
 
-  var api = 'http://evening-mesa-7447-160.herokuapp.com',
+  var api = 'http://locations-api-beta.nypl.org',
     jsonpCallback = '?callback=JSON_CALLBACK';
 
   /*

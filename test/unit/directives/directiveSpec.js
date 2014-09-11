@@ -9,7 +9,7 @@ describe('NYPL Directive Unit Tests', function () {
   'use strict';
 
   var httpBackend, compile, scope,
-    api = 'http://evening-mesa-7447-160.herokuapp.com',
+    api = 'http://locations-api-beta.nypl.org',
     jsonpCallback = '?callback=JSON_CALLBACK';
 
   beforeEach(function () {
