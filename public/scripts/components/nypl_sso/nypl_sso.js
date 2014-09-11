@@ -1,7 +1,7 @@
 /*jslint indent: 2, maxlen: 80, nomen: true */
 /*globals $, window, console, jQuery, angular */
 
-function nyplSSO() {
+function nyplSSO(ssoStatus) {
   'use strict';
 
   return {
@@ -10,6 +10,9 @@ function nyplSSO() {
     replace: true,
     templateUrl: 'scripts/components/nypl_sso/nypl_sso.html',
     link: function (scope, element, attrs) {
+      ssoStatus.remember('Edwin');
+      console.log(ssoStatus.remember());
+
       // Toggle Desktop Login Form
       element.find('.login-button').click(function () {
         element.find('.sso-login').toggleClass('visible');
@@ -46,6 +49,32 @@ function nyplSSO() {
   };
 }
 
+function ssoStatus($cookies) {
+  var ssoStatus = {};
+
+  ssoStatus.login = function () {
+    return $cookies.bc_username;
+  };
+
+  ssoStatus.logged_in = function () {
+    return this.login() !== undefined && this.login() !== null;
+  };
+
+  ssoStatus.remember = function (name) {
+    if (name) {
+      return $cookies.remember_me = name;
+    }
+    return $cookies.remember_me;
+  };
+
+  ssoStatus.remembered = function () {
+    return $cookies.remember_me !== null && $cookies.remember_me !== undefined;
+  };
+
+  return ssoStatus;
+}
+
 angular
   .module('nyplSSO', [])
+  .service('ssoStatus', ssoStatus)
   .directive('nyplSso', nyplSSO);

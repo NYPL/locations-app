@@ -256,6 +256,32 @@ header {
 					}
 				}
 
+				.logged-in-menu {
+	        // display: none;
+	        width: 167px;
+	        border: 2px solid #5e564b;
+	        background-color: #e5e1da;
+	        position: absolute;
+	        list-style-type: none;
+	        right: 82px;
+	        z-index: 2001;
+	        padding: 15px 10px;
+
+	        li a {
+	          margin: 0px 0px 10px 0px;
+	          padding: 0px;
+	          color: #000000;
+	          font-size: 14px;
+	          font-size: 1.4rem;
+	          float: none;
+	          text-transform: none; 
+	        }
+
+	        li a:hover {
+	          text-decoration: underline;
+	        }
+	      }
+
 			}
 		}
 	}

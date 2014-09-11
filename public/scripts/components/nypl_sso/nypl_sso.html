@@ -7,7 +7,7 @@
 
     <!-- SSO Login -->
     <div class='sso-login'>
-        <div class='login-form'> 
+        <div class='login-form' data-ng-if-not="bc_logged_in"> 
             <form action="/" method="post" id="bc-sso-login-form--2" accept-charset="UTF-8">
                 <div>
                     <div class="form-item form-type-textfield form-item-name">
@@ -33,5 +33,15 @@
                 </div>
             </form>
         </div>
+        <ul class="logged-in-menu" data-ng-if="bc_logged_in">
+            <li><a href="http://nypl.bibliocommons.com/user/account">Personal Information</a></li>
+            <li><a href="http://nypl.bibliocommons.com/user/saved_searches">Saved Searches</a></li>
+            <li><a href="http://nypl.bibliocommons.com/user/preferences">Preferences</a></li>
+            <li><a href="http://nypl.bibliocommons.com/user/privacy">Privacy</a></li>
+            <li><a href="http://nypl.bibliocommons.com/user/reminders">Reminders</a></li>
+            <li><a href="http://nypl.bibliocommons.com/communitycredits">Community Credits</a></li>
+            <li><a href="http://nypl.bibliocommons.com/carts/order_history">Order History</a></li>
+            <li><a href="http://www.nypl.org/bc_sso/logout" id="sso-logout">Log out</a></li>
+        </ul>
     </div>
 </div>
