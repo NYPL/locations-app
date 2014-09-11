@@ -9,11 +9,16 @@ function nyplSSO(ssoStatus) {
     replace: true,
     templateUrl: 'scripts/components/nypl_sso/nypl_sso.html',
     link: function (scope, element, attrs) {
-      ssoStatus.remember('Edwin');
-      console.log(ssoStatus.remember());
+      // ssoStatus.remember('Edwin');
+      // console.log(ssoStatus.remember());
 
       var ssoLoginElement = $('.sso-login');
       var ssoUserButton = $('.login-button');
+
+      scope.bc_logged_in = false;
+      if (ssoStatus.logged_in()) {
+        scope.bc_logged_in = true;
+      }
 
       function initForm(options) {
         var defaults = {
@@ -77,10 +82,10 @@ function nyplSSO(ssoStatus) {
 
           // Set the button label
         if (logged_in) {
-          ssoUserButton.find('.label').text(ssoStatus.remember());
+          ssoUserButton.find('.label').text(ssoStatus.login());
           ssoUserButton.addClass('logged-in');
         } else {
-          ssoUserButton.find('.label').text("Log In");
+          ssoUserButton.find('.label').text("LOG IN");
         }
           
           // the mobile nav button should close the login form on mobile
@@ -99,14 +104,6 @@ function nyplSSO(ssoStatus) {
       $('.login-button').click(function () {
         element.find('.sso-login').toggleClass('visible');
       });
-
-      // Toggle Mobile Login Form
-      $('.mobile-login').click(function () {
-        element.find('.sso-login').toggleClass('visible');
-      });
-
-
-
 
       // Toggle Mobile Navigation
       $('.nav-open-button').click(function () {
@@ -141,7 +138,7 @@ function ssoStatus($cookies) {
 
   ssoStatus.login = function () {
     // next line for testing if logged in
-    $cookies.bc_username = 'Edwin';
+    // $cookies.bc_username = 'Edwin';
     return $cookies.bc_username;
   };
 

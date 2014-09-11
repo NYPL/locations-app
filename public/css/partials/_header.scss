@@ -156,17 +156,10 @@ header {
 			.sso-login {
 				position: relative;
 				z-index: 3;
+				display: none;
 
-				&.visible {
-					// Login form when visible
-					.login-form {
-						display: block;
-					}
-				}
-
-				// Login Form
 				.login-form {
-					display: none;
+					display: block;
 					background-color: #e5e1da;
 					width: 100%;
 					padding: 0;
@@ -261,7 +254,7 @@ header {
 				}
 
 				.logged-in-menu {
-	        // display: none;
+	        display: none;
 	        width: 167px;
 	        border: 2px solid #5e564b;
 	        background-color: #e5e1da;
@@ -275,8 +268,8 @@ header {
 	          margin: 0px 0px 10px 0px;
 	          padding: 0px;
 	          color: #000000;
-	          font-size: 14px;
-	          font-size: 1.4rem;
+	          font-size: 9px;
+	          font-size: 0.9rem;
 	          float: none;
 	          text-transform: none; 
 	        }
@@ -286,6 +279,18 @@ header {
 	        }
 	      }
 
+	      &.logged-in {
+	        .login-form {
+	          display: none;
+	        }
+	        .logged-in-menu {
+	          display: block;
+	        }
+	      }
+
+	      &.visible {
+	        display: block;
+	      }
 			}
 		}
 	}
