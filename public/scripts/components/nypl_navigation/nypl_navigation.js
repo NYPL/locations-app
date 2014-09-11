@@ -1,7 +1,7 @@
 /*jslint indent: 2, maxlen: 80, nomen: true */
 /*globals $, window, console, jQuery, angular */
 
-function nyplNavigation() {
+function nyplNavigation(ssoStatus, $window) {
   'use strict';
 
   return {
@@ -19,6 +19,21 @@ function nyplNavigation() {
           $(this).removeClass('openDropDown');
         }
       );
+
+      // Toggle Mobile Login Form
+      $('.mobile-login').click(function () {
+        console.log(ssoStatus.logged_in());
+        if (ssoStatus.logged_in()) {
+          $window.location.href = "http://www.nypl.org/bc_sso/logout";
+        } else {
+          $('.sso-login').toggleClass('visible');
+        }
+      });
+
+
+      if (ssoStatus.logged_in()) {
+        $('.mobile-login').find('a').text('Log Out');//.attr('href', 'http://www.nypl.org/bc_sso/logout');
+      }
     }
   };
 }
