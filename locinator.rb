@@ -1,9 +1,11 @@
+require 'date'
 require 'sinatra/base'
+require 'sinatra/jsonp'
 require 'lionactor'
 
 class Locinator < Sinatra::Base
   
-
+  helpers Sinatra::Jsonp
   set :haml, :format => :html5
   # Method cribbed from http://blog.alexmaccaw.com/seo-in-js-web-apps
   helpers do
@@ -50,6 +52,18 @@ class Locinator < Sinatra::Base
     @data = api.locations
     haml :index
   end
+
+  get '/config' do
+    tz = DateTime.now().strftime("%z")
+    response = {
+      "config" => {
+        "tz_offset" => tz,
+        "api_root" => ENV['API_ROOT']
+      }
+    }
+    jsonp response
+  end
+    
 
   get '/' do
     File.read(File.join('public', 'index.html'))
