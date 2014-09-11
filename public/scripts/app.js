@@ -115,7 +115,7 @@ nypl_locations.config([
                 label: 'Locations'
             })
             .state('division', {
-                url: '/division/:division',
+                url: '/divisions/:division',
                 templateUrl: 'views/division.html',
                 controller: 'DivisionCtrl',
                 label: 'Division',
