@@ -36,10 +36,51 @@ function nyplNavigation(ssoStatus, $window) {
         // $('.mobile-login').find('a').text('Log Out')
         //  .attr('href', 'http://www.nypl.org/bc_sso/logout');
       }
+
+    }
+  };
+}
+
+function nyplCollapsedButtons() {
+  'use strict';
+
+  return {
+    restrict: 'E',
+    scope: {},
+    replace: true,
+    templateUrl: 'scripts/components/nypl_navigation/nypl_collapsed_buttons.html',
+    link: function (scope, element, attrs) {
+      // Toggle Mobile Navigation
+      var navBtn = element.find('.nav-open-button'),
+        searchBtn = element.find('.search-open-button');
+
+      navBtn.click(function () {
+        $(this).toggleClass('open');
+        searchBtn.removeClass('open');
+        $('#search-block-form-input').removeClass('open-search');
+        $('.search-options-resp').removeClass('open');
+        $('#search-top').removeClass('open');
+        $('#main-nav').toggleClass('open-navigation');
+        $('.sso-login').removeClass('visible');
+        return false;
+      });
+
+      // Toggle Mobile Search
+      searchBtn.click(function () {
+        $(this).toggleClass('open');
+        navBtn.removeClass('open');
+        $('#main-nav').removeClass('open-navigation');
+        $('#search-block-form-input').toggleClass('open-search');
+        $('#search-top').toggleClass('open');
+        $('.sso-login').removeClass('visible');
+        return false;
+      });
+
     }
   };
 }
 
 angular
   .module('nyplNavigation', [])
-  .directive('nyplNavigation', nyplNavigation);
+  .directive('nyplNavigation', nyplNavigation)
+  .directive('nyplCollapsedButtons', nyplCollapsedButtons);
