@@ -22,7 +22,6 @@ function nyplNavigation(ssoStatus, $window) {
 
       // Toggle Mobile Login Form
       $('.mobile-login').click(function () {
-        console.log(ssoStatus.logged_in());
         if (ssoStatus.logged_in()) {
           $window.location.href = "http://www.nypl.org/bc_sso/logout";
         } else {
@@ -30,9 +29,12 @@ function nyplNavigation(ssoStatus, $window) {
         }
       });
 
-
+      scope.menuLabel = 'Log In';
       if (ssoStatus.logged_in()) {
-        $('.mobile-login').find('a').text('Log Out');//.attr('href', 'http://www.nypl.org/bc_sso/logout');
+        scope.menuLabel = 'Log Out';
+        // Might not need this.
+        // $('.mobile-login').find('a').text('Log Out')
+        //  .attr('href', 'http://www.nypl.org/bc_sso/logout');
       }
     }
   };
