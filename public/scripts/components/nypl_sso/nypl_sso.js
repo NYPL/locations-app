@@ -88,7 +88,7 @@
     };
 
     ssoStatus.logged_in = function () {
-      return (this.login() && this.login() !== null);
+      return !!(this.login() && this.login() !== null);
     };
 
     ssoStatus.remember = function (name) {
@@ -100,7 +100,7 @@
 
     ssoStatus.remembered = function () {
       var remember_me = this.remember();
-      return (remember_me && remember_me !== null);
+      return !!(remember_me && remember_me !== null);
     };
 
     ssoStatus.forget = function () {

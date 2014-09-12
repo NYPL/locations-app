@@ -65,7 +65,7 @@ describe('Locinator State Routing', function () {
 
     it('should go to a division page', function () {
       expect($state.href('division', {division: 'map-division'}))
-        .toEqual('#/division/map-division');
+        .toEqual('#/divisions/map-division');
     });
 
     it('should go to an amenity page', function () {

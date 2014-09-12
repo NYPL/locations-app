@@ -10,27 +10,168 @@ describe, expect, beforeEach, inject, it, angular */
 describe('nyplSSO module', function () {
   'use strict';
 
-  var element, $compile, $scope, httpBackend;
+  var element, $compile, $scope, httpBackend, ssoStatus;
 
   beforeEach(module('nyplSSO'));
   beforeEach(module('directiveTemplates'));
-  beforeEach(inject(function (_$httpBackend_) {
+  beforeEach(inject(function (_$httpBackend_, _ssoStatus_) {
     httpBackend = _$httpBackend_;
+    ssoStatus = _ssoStatus_;
 
     httpBackend
         .expectGET('/languages/en.json')
         .respond('public/languages/en.json');
   }));
 
+  describe('Service: ssoStatus', function () {
+    function loggedIn() {
+      return 'edwinguzman';
+    }
+    function notLoggedIn() {
+      return;
+    }
+
+    it('should expose some functions', function () {
+      expect(ssoStatus.login).toBeDefined();
+      expect(ssoStatus.logged_in).toBeDefined();
+      expect(ssoStatus.remember).toBeDefined();
+      expect(ssoStatus.remembered).toBeDefined();
+      expect(ssoStatus.forget).toBeDefined();
+    });
+
+    describe('ssoStatus.login()', function () {
+      it('should retrieve a username since logged in', function () {
+        $.cookie = jasmine.createSpy('cookie').and.callFake(loggedIn);
+        expect(ssoStatus.login()).toEqual('edwinguzman');
+      });
+
+      it('should not retrieve any username since not logged in', function () {
+        $.cookie = jasmine.createSpy('cookie').and.callFake(notLoggedIn);
+        expect(ssoStatus.login()).not.toBeDefined();
+      });
+    });
+
+    describe('ssoStatus.logged_in()', function () {
+      it('should return false since not logged in', function () {
+        $.cookie = jasmine.createSpy('cookie').and.callFake(notLoggedIn);
+        expect(ssoStatus.logged_in()).toBe(false);
+      });
+
+      it('should return true since logged in', function () {
+        $.cookie = jasmine.createSpy('cookie').and.callFake(loggedIn);
+        expect(ssoStatus.logged_in()).toBe(true);
+      });
+    });
+
+    describe('ssoStatus.remember()', function () {
+      it('should store the username in a cookie', function () {
+        $.cookie = jasmine.createSpy('cookie');
+
+        ssoStatus.remember('edwinguzman')
+        expect($.cookie).toHaveBeenCalledWith('remember_me', 'edwinguzman');
+      });
+
+      it('should return the username', function () {
+        var obj = {},
+          callback = function (key, val) {
+            if (val) {
+              obj[key] = val;
+            } else {
+              return obj[key];
+            }
+          };
+
+        $.cookie = jasmine.createSpy('cookie').and.callFake(callback);
+
+        // Set the cookie
+        ssoStatus.remember('edwinguzman');
+        // Retrieve the cookie
+        expect(ssoStatus.remember()).toEqual('edwinguzman');
+      });
+
+      it('should not return if no cookie was set', function () {
+        var obj = {},
+          callback = function (key, val) {
+            if (val) {
+              obj[key] = val;
+            } else {
+              return obj[key];
+            }
+          };
+
+        $.cookie = jasmine.createSpy('cookie').and.callFake(callback);
+
+        // Retrieve the cookie
+        expect(ssoStatus.remember()).not.toBeDefined();
+      });
+    });
+
+    describe('ssoStatus.remembered()', function () {
+      beforeEach(function () {
+        var obj = {},
+          callback = function (key, val) {
+            if (val) {
+              obj[key] = val;
+            } else {
+              return obj[key];
+            }
+          };
+
+        $.cookie = jasmine.createSpy('cookie').and.callFake(callback);
+      });
+
+      it('should return false since not remembered', function () {
+        expect(ssoStatus.remembered()).toBe(false);
+      });
+
+      it('should return true since remembered is set', function () {
+        ssoStatus.remember('edwinguzman');
+        expect(ssoStatus.remembered()).toBe(true);
+      });
+    });
+
+    describe('ssoStatus.forget()', function () {
+      beforeEach(function () {
+        var obj = {},
+          callback = function (key, val) {
+            if (val) {
+              obj[key] = val;
+            } else {
+              return obj[key];
+            }
+          },
+          remove = function (val) {
+            if (obj[val]) {
+              delete obj.val;
+              return true;
+            }
+            return false;
+          };
+
+        $.cookie = jasmine.createSpy('cookie').and.callFake(callback);
+        $.removeCookie = jasmine.createSpy('removeCookie').and.callFake(remove);
+      });
+
+      it('should return false when deleting a cookie which is not set', function () {
+        expect(ssoStatus.forget()).toBe(false);
+      });
+
+      it('should return true when deleting a cookie which is set', function () {
+        ssoStatus.remember('edwinguzman');
+        expect(ssoStatus.forget()).toBe(true);
+      });
+    });
+  });
+
   /*
    * <nypl-sso></nypl-sso>
    *   The nypl-sso directive displays the login and donate buttons and has
    *   DOM manipulation to show and hide the login form.
    */
-  describe('nypl-sso', function () {
+  describe('Directive: nypl-sso', function () {
     beforeEach(inject(function (_$compile_, _$rootScope_) {
       $compile = _$compile_;
-      $scope = _$rootScope_;
+      $scope = _$rootScope_.$new();
 
       element = angular.element('<nypl-sso></nypl-sso>');
       $compile(element)($scope);
