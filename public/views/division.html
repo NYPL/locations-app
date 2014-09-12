@@ -36,7 +36,7 @@
 
       --><div id="container__div_image" class="grid__item lap-one-half one-whole desk-one-third">
         <!-- Division Image -->
-        <img class="img--outline main_division_image" src="images/pippin_fpo.jpg"
+        <img class="img--outline main_division_image" data-ng-src="{{division.images.interior}}"
           alt="Image of {{division.name}}" title="Image of {{division.name}}">
       </div><!--
       
@@ -110,8 +110,8 @@
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-three-fifths">
         <h2 class="hdg">{{ 'ABOUT_COLLECTION' | translate }}</h2>
-        <img data-ng-if="division.image" class="img--left img--outline division_second_image"
-          data-ng-src="{{division.image}}" style="max-width: 165px;" />
+        <img data-ng-if="division.images" class="img--left img--outline division_second_image"
+          data-ng-src="{{division.images['collection-item']}}" style="max-width: 165px;" />
         <p>{{division.about}}</p>
         <div class="push-half--bottom text--right">
           <a class="read-more collection-more"
