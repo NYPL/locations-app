@@ -39,7 +39,7 @@ describe('Google analytics configuration', function () {
       element(by.linkText('Stephen A. Schwarzman Building')).click();
       element(by.linkText('George Arents Collection')).click();
       expect(browser.executeScript('return window.ga_msg[1][2];'))
-        .toEqual('/division/arents-collection');
+        .toEqual('/divisions/arents-collection');
 
     });
 
