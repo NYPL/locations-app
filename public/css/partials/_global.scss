@@ -86,12 +86,14 @@
 	@include breakpoint($min, $pre-tablet) {
 		width: auto;
 		top: inherit;
+		margin-bottom: 10px;
 	}
 
 	p {
-		margin: .5em 0;
+		margin: .25em 0;
 		text-align: center;
 		max-width: none;
+		font-size: 13px;
 	}
 }
 
