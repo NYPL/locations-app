@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function nyplNavigation(ssoStatus, $window) {
+  function nyplNavigation(ssoStatus, $window, $location) {
     return {
       restrict: 'E',
       scope: {},
@@ -24,7 +24,8 @@
         // Toggle Mobile Login Form
         $('.mobile-login').click(function () {
           if (ssoStatus.logged_in()) {
-            $window.location.href = "http://www.nypl.org/bc_sso/logout";
+            $window.location.href = "https://nypl.bibliocommons.com/" +
+              "user/logout?destination=" + $location.absUrl();
           } else {
             $('.sso-login').toggleClass('visible');
           }
