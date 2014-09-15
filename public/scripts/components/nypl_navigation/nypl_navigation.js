@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function nyplNavigation(ssoStatus, $window, $location) {
+  function nyplNavigation(ssoStatus, $window, $location, $rootScope) {
     return {
       restrict: 'E',
       scope: {},
@@ -21,11 +21,17 @@
           }
         );
 
+        var logout_url;
+        $rootScope.$watch('current_url', function () {
+          logout_url = "https://nypl.bibliocommons.com/user/logout" +
+            "?destination=" + $rootScope.current_url;
+        })
+
         // Toggle Mobile Login Form
-        $('.mobile-login').click(function () {
+        $('.mobile-login').click(function (e) {
+          e.preventDefault();
           if (ssoStatus.logged_in()) {
-            $window.location.href = "https://nypl.bibliocommons.com/" +
-              "user/logout?destination=" + $location.absUrl();
+            $window.location.href = logout_url;
           } else {
             $('.sso-login').toggleClass('visible');
           }
@@ -34,9 +40,6 @@
         scope.menuLabel = 'Log In';
         if (ssoStatus.logged_in()) {
           scope.menuLabel = 'Log Out';
-          // Might not need this.
-          // $('.mobile-login').find('a').text('Log Out')
-          //  .attr('href', 'http://www.nypl.org/bc_sso/logout');
         }
 
       }
