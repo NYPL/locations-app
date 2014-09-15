@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function nyplSSO(ssoStatus, $window, $location) {
+  function nyplSSO(ssoStatus, $window, $location, $rootScope) {
     return {
       restrict: 'E',
       scope: {},
@@ -15,6 +15,8 @@
           ssoUserButton = $('.login-button');
 
         function makeForm(username, pin, checkbox, button) {
+          var current_url = '';
+
           if (ssoStatus.remembered()) {
             username.val(ssoStatus.remember()); // Fill in username
             checkbox.attr("checked", true); // Mark the checkbox
@@ -27,17 +29,20 @@
             }
           });
 
+          $rootScope.$watch('current_url', function () {
+            current_url = $rootScope.current_url;
+          });
+
           // Submit the login form
           button.click(function (e) {
+            var url = 'https://nypl.bibliocommons.com/user/login?destination=';
             e.preventDefault();
 
             if (checkbox.is(':checked')) {
               ssoStatus.remember(username.val());
             }
 
-            var url = 'https://nypl.bibliocommons.com/user/login?destination=' +
-              $location.absUrl() + '&';
-
+            url += current_url.replace('#', '%23') + '&';
             url += 'name=' + username.val();
             url += '&user_pin=' + pin.val();
 
