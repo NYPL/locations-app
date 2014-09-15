@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function nyplSSO(ssoStatus, $window, $location, $rootScope) {
+  function nyplSSO(ssoStatus, $window, $rootScope) {
     return {
       restrict: 'E',
       scope: {},
