@@ -24,7 +24,8 @@ module.exports = function (config) {
       'public/bower_components/angular-translate/angular-translate.min.js',
       'public/bower_components/angular-translate-loader-static-files/' +
         'angular-translate-loader-static-files.min.js',
-      'public/bower_components/angular-animate/angular-animate.js'
+      'public/bower_components/angular-animate/angular-animate.js',
+      'public/bower_components/angular-cookies/angular-cookies.min.js'
     ],
 
     exclude : [

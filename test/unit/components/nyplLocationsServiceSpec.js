@@ -10,7 +10,8 @@ describe, expect, beforeEach, inject, it, angular, spyOn, afterEach */
 describe('NYPL locationService Module', function () {
   'use strict';
 
-  var api = 'http://evening-mesa-7447-160.herokuapp.com';
+  var api = 'http://locations-api-beta.nypl.org',
+    jsonpCallback = '?callback=JSON_CALLBACK';
 
   /*
    * nyplLocationsService is an Angularjs service that calls and returns 
@@ -58,7 +59,7 @@ describe('NYPL locationService Module', function () {
           };
 
         httpBackend
-          .expectGET(api + '/locations')
+          .whenJSONP(api + '/locations' + jsonpCallback)
           .respond(mockedAllLocationsAPICall);
 
         nyplLocationsService.allLocations()
@@ -76,7 +77,7 @@ describe('NYPL locationService Module', function () {
         var returned_error_message;
 
         httpBackend
-          .expectGET(api + '/locations')
+          .whenJSONP(api + '/locations' + jsonpCallback)
           .respond(500);
 
         nyplLocationsService.allLocations()
@@ -107,7 +108,7 @@ describe('NYPL locationService Module', function () {
           };
 
         httpBackend
-          .expectGET(api +'/locations/hudson-park')
+          .whenJSONP(api +'/locations/hudson-park' + jsonpCallback)
           .respond(mockedOneLocationAPICall);
 
         nyplLocationsService.singleLocation('hudson-park')
@@ -124,7 +125,7 @@ describe('NYPL locationService Module', function () {
         var returned_error_message;
 
         httpBackend
-          .expectGET(api + '/locations/hudson-park')
+          .whenJSONP(api + '/locations/hudson-park' + jsonpCallback)
           .respond(500);
 
         nyplLocationsService.singleLocation('hudson-park')
@@ -156,7 +157,7 @@ describe('NYPL locationService Module', function () {
           };
 
         httpBackend
-          .expectGET(api + '/divisions/map-division')
+          .whenJSONP(api + '/divisions/map-division' + jsonpCallback)
           .respond(mockedOneDivisionAPICall);
 
         nyplLocationsService.singleDivision('map-division')
@@ -173,7 +174,7 @@ describe('NYPL locationService Module', function () {
         var returned_error_message;
 
         httpBackend
-          .expectGET(api + '/divisions/map-division')
+          .whenJSONP(api + '/divisions/map-division' + jsonpCallback)
           .respond(500);
 
         nyplLocationsService.singleDivision('map-division')
@@ -211,7 +212,7 @@ describe('NYPL locationService Module', function () {
             };
 
           httpBackend
-            .expectGET(api + '/amenities')
+            .whenJSONP(api + '/amenities' + jsonpCallback)
             .respond(mockedAmenitiesAPICall);
 
           nyplLocationsService.amenities().then(function (data) {
@@ -228,7 +229,7 @@ describe('NYPL locationService Module', function () {
           var returned_error_message;
 
           httpBackend
-            .expectGET(api + '/amenities')
+            .whenJSONP(api + '/amenities' + jsonpCallback)
             .respond(500);
 
           nyplLocationsService.amenities()
@@ -260,7 +261,7 @@ describe('NYPL locationService Module', function () {
             };
 
           httpBackend
-            .expectGET(api + '/amenities/36')
+            .whenJSONP(api + '/amenities/36' + jsonpCallback)
             .respond(mockedAmenityAPICall);
 
           nyplLocationsService.amenities(36).then(function (data) {
@@ -279,7 +280,7 @@ describe('NYPL locationService Module', function () {
           var returned_error_message;
 
           httpBackend
-            .expectGET(api + '/amenities/36')
+            .whenJSONP(api + '/amenities/36' + jsonpCallback)
             .respond(500);
 
           nyplLocationsService.amenities(36)
@@ -320,9 +321,7 @@ describe('NYPL locationService Module', function () {
           };
 
         httpBackend
-          .expectGET(api + '/locations/sibl')
-          // .expectGET('http://evening-mesa-7447-160.herokuapp.com/' +
-          //   'locations/sibl/amenities')
+          .whenJSONP(api + '/locations/sibl/amenities' + jsonpCallback)
           .respond(mockedLocationAmenitiesAPICall);
 
         nyplLocationsService.amenitiesAtLibrary('sibl').then(function (data) {
@@ -341,7 +340,7 @@ describe('NYPL locationService Module', function () {
         var returned_error_message;
 
         httpBackend
-          .expectGET(api + '/locations/sibl')
+          .whenJSONP(api + '/locations/sibl/amenities' + jsonpCallback)
           .respond(500);
 
         nyplLocationsService.amenitiesAtLibrary('sibl')
@@ -387,7 +386,7 @@ describe('NYPL locationService Module', function () {
           };
 
         httpBackend
-          .expectGET(api + '/alerts')
+          .whenJSONP(api + '/alerts' + jsonpCallback)
           .respond(mocked_alerts_API_call);
 
         nyplLocationsService.alerts().then(function (data) {
@@ -404,7 +403,7 @@ describe('NYPL locationService Module', function () {
         var returned_error_message;
 
         httpBackend
-          .expectGET(api + '/alerts')
+          .whenJSONP(api + '/alerts' + jsonpCallback)
           .respond(500);
 
         nyplLocationsService.alerts()

@@ -127,6 +127,21 @@ describe('NYPL Amenities Service Tests', function () {
                   { 'id': 234, 'name': 'Photocopiers (black/white)' },
                   { 'id': 1234, 'name': 'Photocopiers (color)' }
                 ]
+              },
+              {
+                'name': 'Facilities',
+                'weight': 1,
+                'amenities': [
+                  { 'id': 7980, 'name': 'Public Restrooms' }
+                ]
+              },
+              {
+                'name': 'Assistive Technologies',
+                'weight': 1,
+                'amenities': [
+                  {'id': 7990, 'name': 'Screen Magnification software (MAGic)'},
+                  {'id': 1234, 'name': 'Screen Reading software (JAWS)'}
+                ]
               }
             ];
 
@@ -163,6 +178,26 @@ describe('NYPL Amenities Service Tests', function () {
                     'icon': 'icon-copy' },
                   { 'id': 1234, 'name': 'Photocopiers (color)',
                     'icon': 'icon-copy' }
+                ]
+              },
+              {
+                'name': 'Facilities',
+                'weight': 1,
+                'icon': 'icon-library',
+                'amenities': [
+                  { 'id': 7980, 'name': 'Public Restrooms',
+                    'icon': 'icon-library'}
+                ]
+              },
+              {
+                'name': 'Assistive Technologies',
+                'weight': 1,
+                'icon': 'icon-accessibility2',
+                'amenities': [
+                  {'id': 7990, 'name': 'Screen Magnification software (MAGic)',
+                    'icon': 'icon-accessibility2'},
+                  {'id': 1234, 'name': 'Screen Reading software (JAWS)',
+                    'icon': 'icon-accessibility2'}
                 ]
               }
             ]);

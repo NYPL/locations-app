@@ -9,7 +9,8 @@ describe('NYPL Directive Unit Tests', function () {
   'use strict';
 
   var httpBackend, compile, scope,
-    api = 'http://evening-mesa-7447-160.herokuapp.com';
+    api = 'http://locations-api-beta.nypl.org',
+    jsonpCallback = '?callback=JSON_CALLBACK';
 
   beforeEach(function () {
     module('nypl_locations');
@@ -279,7 +280,7 @@ describe('NYPL Directive Unit Tests', function () {
           "type": "First Come, First Serve",
           "open": "null",
           "start": "null",
-          "link": "events/nypl-event"
+          "link": "http://www.nypl.org/events/nypl-event"
         }
         eventRegistration = createDirective(template);
       });
@@ -311,7 +312,7 @@ describe('NYPL Directive Unit Tests', function () {
             "type": "Online",
             "open": "true",
             "start": "2014-07-29T17:00:00Z",
-            "link": "events/nypl-event"
+            "link": "http://www.nypl.org/events/nypl-event"
           }
           eventRegistration = createDirective(template);
         });
@@ -328,7 +329,7 @@ describe('NYPL Directive Unit Tests', function () {
 
         it('should have a link to the event', function () {
           expect(eventRegistration.find('a').attr('href'))
-            .toEqual('http://nypl.org/events/nypl-event');
+            .toEqual('http://www.nypl.org/events/nypl-event');
         });
 
         it('should tell you when registration opens', function () {
@@ -352,7 +353,7 @@ describe('NYPL Directive Unit Tests', function () {
             "type": "Online",
             "open": "false",
             "start": "2014-07-29T17:00:00Z",
-            "link": "events/nypl-event"
+            "link": "http://www.nypl.org/events/nypl-event"
           }  
           eventRegistration = createDirective(template);
         });
@@ -369,7 +370,7 @@ describe('NYPL Directive Unit Tests', function () {
 
         it('should have a link to the event', function () {
           expect(eventRegistration.find('a').attr('href'))
-            .toEqual('http://nypl.org/events/nypl-event');
+            .toEqual('http://www.nypl.org/events/nypl-event');
         });
 
         it('should tell you when registration opens', function () {
@@ -399,7 +400,7 @@ describe('NYPL Directive Unit Tests', function () {
       $httpBackend = _$httpBackend_;
 
       $httpBackend
-        .expectGET(api + '/alerts')
+        .whenJSONP(api + '/alerts' + jsonpCallback)
         .respond({
           alerts: [{
             _id: "71579",

@@ -138,6 +138,38 @@ describe('NYPL coordinateService Module', function () {
       }); /* end getBrowserCoordinates function successful */
 
       describe('getBrowserCoordinates function fails', function () {
+        describe('Geolocation is not available', function () {
+          it('should fail on older browsers without geolocation', function () {
+            var returned_error_message,
+              error_message =
+                new Error('Your browser does not support Geolocation.')
+
+            geolocationMock.getCurrentPosition =
+              window.navigator.geolocation.getCurrentPosition =
+                jasmine.createSpy('getCurrentPosition');
+
+            // Old browsers don't have the navigator api
+            $window.navigator = false;
+            $window.navigator.geolocation = false;
+
+            nyplCoordinatesService
+              .getBrowserCoordinates()
+              .then(function (data) {})
+              .catch(function (error) {
+                returned_error_message = error;
+              });
+              $rootScope.$digest();
+
+            // getBrowserCoordinates() calls geolocationAvailable() before
+            // performing a coordinate lookup.
+            expect(nyplCoordinatesService.geolocationAvailable()).toBe(false);
+            // We don't expect to call the getCurrentPosition function
+            // since the browser doesn't support geolocation
+            expect(geolocationMock.getCurrentPosition).not.toHaveBeenCalled();
+            expect(returned_error_message).toEqual(error_message);
+          })
+        });
+
         describe('Permission denied', function () {
           it('should return an error message', function () {
             var permissionDenied = function (success, failure) {
