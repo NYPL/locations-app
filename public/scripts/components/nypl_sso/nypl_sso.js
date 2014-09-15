@@ -4,19 +4,17 @@
 (function () {
   'use strict';
 
-  function nyplSSO(ssoStatus) {
+  function nyplSSO(ssoStatus, $window, $location) {
     return {
       restrict: 'E',
       scope: {},
       replace: true,
       templateUrl: 'scripts/components/nypl_sso/nypl_sso.html',
       link: function (scope, element, attrs) {
-        // ssoStatus.remember('Edwin');
-
         var ssoLoginElement = $('.sso-login'),
           ssoUserButton = $('.login-button');
 
-        function makeForm(username, checkbox, button) {
+        function makeForm(username, pin, checkbox, button) {
           if (ssoStatus.remembered()) {
             username.val(ssoStatus.remember()); // Fill in username
             checkbox.attr("checked", true); // Mark the checkbox
@@ -30,16 +28,27 @@
           });
 
           // Submit the login form
-          button.click(function () {
+          button.click(function (e) {
+            e.preventDefault();
+
             if (checkbox.is(':checked')) {
               ssoStatus.remember(username.val());
             }
+
+            var url = 'https://nypl.bibliocommons.com/user/login?destination=' +
+              $location.absUrl() + '&';
+
+            url += 'name=' + username.val();
+            url += '&user_pin=' + pin.val();
+
+            $window.location.href = url;
           });
         }
 
         function initForm(options) {
           var defaults = {
               username: '#username',
+              pin: '#pin',
               remember_checkbox: '#remember_me',
               login_button: '#login-form-submit'
             },
@@ -51,17 +60,22 @@
 
           makeForm(
             $(settings.username),
+            $(settings.pin),
             $(settings.remember_checkbox),
             $(settings.login_button)
           );
         }
 
         function userButton(options) {
+          var current_url = $window.location.hash;
+
           // Set the button label
           scope.header_button_label = "LOG IN";
 
           if (ssoStatus.logged_in()) {
             scope.header_button_label = ssoStatus.login();
+            scope.logout_url = "https://nypl.bibliocommons.com/user/logout" +
+              "?destination=" + $location.absUrl();
             ssoUserButton.addClass('logged-in');
           }
 
@@ -93,7 +107,7 @@
 
     ssoStatus.remember = function (name) {
       if (name) {
-        return $.cookie('remember_me', name);
+        return $.cookie('remember_me', name, {path: '/'});
       }
       return $.cookie('remember_me');
     };
@@ -104,7 +118,7 @@
     };
 
     ssoStatus.forget = function () {
-      return $.removeCookie('remember_me');
+      return $.removeCookie('remember_me', {path: '/'});
     };
 
     return ssoStatus;
