@@ -72,15 +72,16 @@
         }
 
         function userButton(options) {
-          var current_url = $window.location.hash;
+          $rootScope.$watch('current_url', function () {
+            scope.logout_url = "https://nypl.bibliocommons.com/user/logout" +
+              "?destination=" + $rootScope.current_url;
+          })
 
           // Set the button label
           scope.header_button_label = "LOG IN";
 
           if (ssoStatus.logged_in()) {
             scope.header_button_label = ssoStatus.login();
-            scope.logout_url = "https://nypl.bibliocommons.com/user/logout" +
-              "?destination=" + $location.absUrl();
             ssoUserButton.addClass('logged-in');
           }
 
@@ -101,8 +102,6 @@
     var ssoStatus = {};
 
     ssoStatus.login = function () {
-      // next line for testing if logged in
-      // $.cookie('bc_username', 'edwinguzman');
       return $.cookie('bc_username');
     };
 
