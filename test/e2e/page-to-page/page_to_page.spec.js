@@ -89,18 +89,15 @@ describe('Locations: Page to Page tests', function () {
         expect(browser.getCurrentUrl())
           .toEqual('http://localhost:9292/#/muhlenberg');
 
-        element(by.css('.nypl-logo a')).click();
+        browser.navigate().back();
         browser.waitForAngular();
         expect(browser.getLocationAbsUrl())
-          .toEqual('http://localhost:9292/#/');
+          .toEqual('http://localhost:9292/#/map');
 
         expect(landingPage.searchInput.getAttribute('value'))
           .toEqual('jefferson market');
         expect(landingPage.firstLocName()).toEqual('Jefferson Market Library');
         expect(landingPage.nthLocName(1)).toEqual('Hudson Park Library');
-        expect(element.all(by.css('tr.active')).count()).toBe(1);
-        expect(landingPage.locations.first().getAttribute('class'))
-          .toContain('active');
         expect(landingPage.resultsNear.getText())
           .toEqual('Showing search results near Jefferson Market Garden, ' +
             'New York, NY 10011, USA');
