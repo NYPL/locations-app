@@ -282,7 +282,7 @@
             alt="Image for exhibition {{exhibition.title}}" title="Image for exhibition {{exhibition.title}}" />
         </a>
         <h3 class="exhibition__title">
-          <a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}">{{exhibition.title}}</a>
+          <a data-ng-href="{{exhibition._links.self.href}}">{{exhibition.title}}</a>
         </h3>
         <p class="date">{{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
         <p class="teaser desc">{{exhibition.body | truncate}}</p>
