@@ -266,6 +266,31 @@ function nyplSidebar() {
     };
 }
 
+function nyplAutofill() {
+    'use strict';
+
+    return {
+        restrict: 'E',
+        templateUrl: 'scripts/directives/templates/autofill.html',
+        require: 'ngModel',
+        scope: {
+            data: '=',
+            ngModel: '=',
+            mapView: '&'
+        },
+        link: function (scope, elem, attrs, ngModel) {
+
+            scope.$watch('ngModel', function (value) {
+                // Ensure ngModel is defined 
+                if ((value !== null) && (value !== undefined) && (value !== '')) {
+                    
+                }
+            });
+        }
+    };
+
+}
+
 angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
@@ -279,4 +304,5 @@ angular
     .directive('nyplLibraryAlert', nyplLibraryAlert)
     .directive('nyplFundraising', nyplFundraising)
     .directive('nyplSidebar', nyplSidebar)
+    .directive('nyplAutofill', nyplAutofill)
     .directive('collapse', collapse);

@@ -1,12 +1,12 @@
 
-<div class="autofill-container">
-	<div class="location-item" ng-repeat="item in items | filter:searchFilter(ngModel)">
+<div class="autofill-container" data-ng-if="ngModel">
+	<div class="location-item" ng-repeat="item in data | filter:ngModel | orderBy:'name'">
 	  <p class="location-name">
 	  	<a data-ui-sref='location({ location: item.slug })'>
 	  		{{item.name}}
 	  	</a>
 	  </p>
-	    <a class="icon-map view-on-map" data-ng-click="viewMapLibrary(item.slug)">
+	    <a class="icon-map view-on-map" data-ng-click="mapView(item[slug])">
         {{ 'VIEW_MAP' | translate}}
       </a>
 	</div>
