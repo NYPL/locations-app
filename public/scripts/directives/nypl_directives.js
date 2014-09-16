@@ -266,16 +266,16 @@ function nyplSidebar() {
     };
 }
 
-function nyplAutofill() {
+function nyplAutofill($filter) {
     'use strict';
 
     return {
-        restrict: 'E',
+        restrict: 'AEC',
         templateUrl: 'scripts/directives/templates/autofill.html',
-        require: 'ngModel',
+        require: '?ngModel',
         scope: {
             data: '=',
-            ngModel: '=',
+            model: '=ngModel',
             mapView: '&'
         },
         link: function (scope, elem, attrs, ngModel) {
@@ -286,6 +286,33 @@ function nyplAutofill() {
                     
                 }
             });
+        },
+        controller: function($scope) {
+            var lazyFilter;
+            $scope.lookahead = '';
+
+
+            /* *
+             * Watch the model and look for an appropriate suggestion in the specified source array.
+             */
+            $scope.$watch('model', function(value) {
+
+                if ((value !== null) && (value !== undefined) && (value !== '')) {
+                    if (value.length > 2) {
+
+                        Object.keys($scope.data).forEach(function(key) {
+
+                           if ( ($scope.data[key].name + '').substring(0, value.length).toLowerCase() == value.toLowerCase()) {
+                                console.log(value + ($scope.data[key].name + '').substring(value.length));
+                            return $scope.lookahead = value + ($scope.data[key].name + '').substring(value.length);
+                           }
+                            
+                        });
+                    }
+                }
+ 
+            });
+
         }
     };
 

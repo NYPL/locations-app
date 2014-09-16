@@ -1,6 +1,7 @@
 
-<div class="autofill-container" data-ng-if="ngModel">
-	<div class="location-item" ng-repeat="item in data | filter:ngModel | orderBy:'name'">
+<div class="autofill-container" data-ng-if="model">
+	<div>{{lookahead}}</div>
+	<div class="location-item" ng-repeat="item in data | filter:model | orderBy:'name'">
 	  <p class="location-name">
 	  	<a data-ui-sref='location({ location: item.slug })'>
 	  		{{item.name}}
@@ -11,6 +12,6 @@
       </a>
 	</div>
 	<div class="geolocation-search">
-		<p>Search for locations near {{ngModel}}</p>
+		<p>Search for locations near {{model}}</p>
 	</div>
 </div>
