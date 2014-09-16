@@ -10,7 +10,6 @@ describe('Locations: Page to Page tests', function () {
     amenitiesPage = require('../amenities/amenities.po.js');
 
   beforeEach(function () {
-    // Pass the good JSON from the API call.
     browser.get('/#/');
     browser.waitForAngular();
   });
