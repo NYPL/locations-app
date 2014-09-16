@@ -1,0 +1,16 @@
+
+<div class="autofill-container">
+	<div class="location-item" ng-repeat="item in items | filter:searchFilter(ngModel)">
+	  <p class="location-name">
+	  	<a data-ui-sref='location({ location: item.slug })'>
+	  		{{item.name}}
+	  	</a>
+	  </p>
+	    <a class="icon-map view-on-map" data-ng-click="viewMapLibrary(item.slug)">
+        {{ 'VIEW_MAP' | translate}}
+      </a>
+	</div>
+	<div class="geolocation-search">
+		<p>Search for locations near {{ngModel}}</p>
+	</div>
+</div>
