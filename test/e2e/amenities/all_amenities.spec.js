@@ -12,13 +12,15 @@ describe('Locations: Amenities', function () {
     httpBackendMock = function (response) {
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
+          $httpBackend
+            .whenJSONP('http://locations-api-beta.nypl.org' +
+                '/amenities?callback=JSON_CALLBACK')
+            .respond(response);
+
           // For everything else, don't mock
           $httpBackend.whenGET(/^\w+.*/).passThrough();
           $httpBackend.whenGET(/.*/).passThrough();
           $httpBackend.whenPOST(/^\w+.*/).passThrough();
-
-          $httpBackend.when('GET', 'json/amenitiesAtLibrary.json')
-            .respond(response);
         });
     };
 

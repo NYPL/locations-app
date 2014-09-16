@@ -1,6 +1,6 @@
 <div class='login-donate'>
   <a class='login-button'>
-    <span class="label">LOG IN</span>
+    <span class="label">{{header_button_label}}</span>
     <img class="logged-in-arrow" src="http://www.nypl.org/sites/all/themes/nypl_new/images/site-icons/down-triangle_15.png" />
   </a>
   <a class='donate-button' href='https://secure3.convio.net/nypl/site/SPageServer?pagename=donation_form&JServSessionIdr003=dwcz55yj27.app304a&s_src=FRQ14ZZ_SWBN'>DONATE</a>
@@ -40,7 +40,7 @@
       <li><a href="http://nypl.bibliocommons.com/user/reminders">Reminders</a></li>
       <li><a href="http://nypl.bibliocommons.com/communitycredits">Community Credits</a></li>
       <li><a href="http://nypl.bibliocommons.com/carts/order_history">Order History</a></li>
-      <li><a href="http://www.nypl.org/bc_sso/logout" id="sso-logout">Log out</a></li>
+      <li><a data-ng-href="{{logout_url}}" id="sso-logout">Log out</a></li>
     </ul>
   </div>
 </div>

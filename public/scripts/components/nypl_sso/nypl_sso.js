@@ -1,47 +1,22 @@
 /*jslint indent: 2, maxlen: 80, nomen: true */
 /*globals $, window, console, jQuery, angular */
 
-function nyplSSO(ssoStatus) {
+(function () {
   'use strict';
-  return {
-    restrict: 'E',
-    scope: {},
-    replace: true,
-    templateUrl: 'scripts/components/nypl_sso/nypl_sso.html',
-    link: function (scope, element, attrs) {
-      // ssoStatus.remember('Edwin');
-      // console.log(ssoStatus.remember());
 
-      var ssoLoginElement = $('.sso-login');
-      var ssoUserButton = $('.login-button');
+  function nyplSSO(ssoStatus, $window, $location, $rootScope) {
+    return {
+      restrict: 'E',
+      scope: {},
+      replace: true,
+      templateUrl: 'scripts/components/nypl_sso/nypl_sso.html',
+      link: function (scope, element, attrs) {
+        var ssoLoginElement = $('.sso-login'),
+          ssoUserButton = $('.login-button');
 
-      scope.bc_logged_in = false;
-      if (ssoStatus.logged_in()) {
-        scope.bc_logged_in = true;
-      }
+        function makeForm(username, pin, checkbox, button) {
+          var current_url = '';
 
-      function initForm(options) {
-        var defaults = {
-            username: '#username',
-            remember_checkbox: '#remember_me',
-            login_button: '#login-form-submit'
-          }, 
-          settings = $.extend({}, defaults, options);
-
-        ssoLoginElement.data('sso_details', settings);
-
-        if (ssoStatus.logged_in()) {
-          ssoLoginElement.addClass('logged-in');
-        }
-
-        makeForm(
-          $(settings.username),
-          $(settings.remember_checkbox),
-          $(settings.login_button)
-        );
-
-
-        function makeForm(username, checkbox, button) {
           if (ssoStatus.remembered()) {
             username.val(ssoStatus.remember()); // Fill in username
             checkbox.attr("checked", true); // Mark the checkbox
@@ -53,118 +28,110 @@ function nyplSSO(ssoStatus) {
               ssoStatus.forget();
             }
           });
-          
+
+          $rootScope.$watch('current_url', function () {
+            current_url = $rootScope.current_url;
+          });
+
           // Submit the login form
           button.click(function (e) {
+            var url = 'https://nypl.bibliocommons.com/user/login?destination=';
             e.preventDefault();
-            // Save Cookie
+
             if (checkbox.is(':checked')) {
               ssoStatus.remember(username.val());
             }
+
+            url += current_url.replace('#', '%23') + '&';
+            url += 'name=' + username.val();
+            url += '&user_pin=' + pin.val();
+
+            $window.location.href = url;
           });
         }
-      }
 
-      function userButton(options) {
-        var defaults = {
-          logged_in_menu: '.logged-in-menu',
-          login_form: '.login-form',
-          mobile: false,
-          navBtn: $('.nav-open-button'),
-          formClass: ''
-        };
-        var settings = $.extend({}, defaults, options);
-        ssoUserButton.data('sso_user_button', settings);
+        function initForm(options) {
+          var defaults = {
+              username: '#username',
+              pin: '#pin',
+              remember_checkbox: '#remember_me',
+              login_button: '#login-form-submit'
+            },
+            settings = $.extend({}, defaults, options);
 
-        // login is the username if the user is logged in, or null
-        var login = ssoStatus.login();
-        var logged_in = (login !== null && login !== undefined);
+          if (ssoStatus.logged_in()) {
+            ssoLoginElement.addClass('logged-in');
+          }
+
+          makeForm(
+            $(settings.username),
+            $(settings.pin),
+            $(settings.remember_checkbox),
+            $(settings.login_button)
+          );
+        }
+
+        function userButton(options) {
+          $rootScope.$watch('current_url', function () {
+            scope.logout_url = "https://nypl.bibliocommons.com/user/logout" +
+              "?destination=" + $rootScope.current_url;
+          })
 
           // Set the button label
-        if (logged_in) {
-          ssoUserButton.find('.label').text(ssoStatus.login());
-          ssoUserButton.addClass('logged-in');
-        } else {
-          ssoUserButton.find('.label').text("LOG IN");
+          scope.header_button_label = "LOG IN";
+
+          if (ssoStatus.logged_in()) {
+            scope.header_button_label = ssoStatus.login();
+            ssoUserButton.addClass('logged-in');
+          }
+
+          // Toggle Desktop Login Form
+          ssoUserButton.click(function () {
+            ssoLoginElement.toggleClass('visible');
+          });
         }
-          
-          // the mobile nav button should close the login form on mobile
-          // settings.navBtn.on('click', function () {
-          //   settings.details.sso_details('hide');
-          // });
-          // methods.logout('#sso-logout');
+
+        initForm();
+        userButton();
 
       }
+    };
+  }
 
-      initForm();
-      userButton();
+  function ssoStatus() {
+    var ssoStatus = {};
 
+    ssoStatus.login = function () {
+      return $.cookie('bc_username');
+    };
 
-      // Toggle Desktop Login Form
-      $('.login-button').click(function () {
-        element.find('.sso-login').toggleClass('visible');
-      });
+    ssoStatus.logged_in = function () {
+      return !!(this.login() && this.login() !== null);
+    };
 
-      // Toggle Mobile Navigation
-      $('.nav-open-button').click(function () {
-        $(this).toggleClass('open');
-        $('.search-open-button').removeClass('open');
-        $('#search-block-form-input').removeClass('open-search');
-        $('.search-options-resp').removeClass('open');
-        $('#search-top').removeClass('open');
-        $('#main-nav').toggleClass('open-navigation');
-        $('.sso-login').removeClass('visible');
-        return false;
-      });
+    ssoStatus.remember = function (name) {
+      if (name) {
+        return $.cookie('remember_me', name, {path: '/'});
+      }
+      return $.cookie('remember_me');
+    };
 
-      // Toggle Mobile Search
-      $('.search-open-button').click(function () {
-        $(this).toggleClass('open');
-        $('.nav-open-button').removeClass('open');
-        $('#main-nav').removeClass('open-navigation');
-        $('#search-block-form-input').toggleClass('open-search');
-        $('#search-top').toggleClass('open');
-        $('.sso-login').removeClass('visible');
-        return false;
-      });
+    ssoStatus.remembered = function () {
+      var remember_me = this.remember();
+      return !!(remember_me && remember_me !== null);
+    };
 
+    ssoStatus.forget = function () {
+      return $.removeCookie('remember_me', {path: '/'});
+    };
 
-    }
-  };
-}
+    return ssoStatus;
+  }
 
-function ssoStatus($cookies) {
-  var ssoStatus = {};
+  angular
+    .module('nyplSSO', [])
+    .service('ssoStatus', ssoStatus)
+    .directive('nyplSso', nyplSSO);
 
-  ssoStatus.login = function () {
-    // next line for testing if logged in
-    // $cookies.bc_username = 'Edwin';
-    return $cookies.bc_username;
-  };
+})();
 
-  ssoStatus.logged_in = function () {
-    return this.login() !== undefined && this.login() !== null;
-  };
-
-  ssoStatus.remember = function (name) {
-    if (name) {
-      return $cookies.remember_me = name;
-    }
-    return $cookies.remember_me;
-  };
-
-  ssoStatus.remembered = function () {
-    return $cookies.remember_me !== null && $cookies.remember_me !== undefined;
-  };
-
-  ssoStatus.forget = function () {
-    return delete $cookies.remember_me;
-  };
-
-  return ssoStatus;
-}
-
-angular
-  .module('nyplSSO', [])
-  .service('ssoStatus', ssoStatus)
-  .directive('nyplSso', nyplSSO);

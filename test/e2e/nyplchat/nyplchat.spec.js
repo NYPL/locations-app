@@ -100,7 +100,7 @@ describe('NYPL Chat Window', function () {
   describe('Division page nypl chat link: Lionel Pincus and Princess Firyal Map Division', function () {
 
     beforeEach(function () {
-      browser.get('/#/division/map-division');
+      browser.get('/#/divisions/map-division');
       browser.waitForAngular();
     });
 

@@ -3,6 +3,7 @@
 
 (function () {
     'use strict';
+
     /** @namespace nyplLocationsService */
     function nyplLocationsService($http, $q) {
         var api = 'http://locations-api-beta.nypl.org',

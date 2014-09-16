@@ -10,8 +10,9 @@ describe('Circulating branch page', function () {
     httpBackendMock = function (response) {
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
-          $httpBackend.when('GET', 'http://evening-mesa-7447-160' +
-              '.herokuapp.com/locations/grand-central')
+          $httpBackend
+            .whenJSONP('http://locations-api-beta.nypl.org' +
+              '/locations/grand-central?callback=JSON_CALLBACK')
             .respond(response);
 
           // For everything else, don't mock

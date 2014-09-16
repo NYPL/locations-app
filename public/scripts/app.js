@@ -3,7 +3,7 @@
 
 var nypl_locations = angular.module('nypl_locations', [
     'ngSanitize',
-    'ngCookies',
+    // 'ngCookies',
     'ui.router',
     'ngAnimate',
     'locationService',
@@ -183,7 +183,10 @@ nypl_locations.config([
     }
 ]);
 
-nypl_locations.run(function ($state, $rootScope) {
+nypl_locations.run(function ($state, $rootScope, $location) {
+    $rootScope.$on('$stateChangeSuccess', function () {
+        $rootScope.current_url = $location.absUrl();
+    });
     $rootScope.$on('$stateChangeError', function () {
         $state.go('404');
     });
