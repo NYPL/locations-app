@@ -1,30 +1,42 @@
-// better spacing
-.amenities h3 {
-  margin: 0.5em 0 0;
-}
-
 .amenity-category-list {
-  list-style: none;
-  margin-left: 0;
-  @include breakpoint($min, $post-palm) {
-  	margin-left: 1em;
-  }
-  
-  & > li{
-	  margin-bottom: 2.5rem;
-  }
-}
+	margin-top: 10px;
+	
+	.amenity-box {
+		margin-bottom: 1.5em;
 
-.amenities-list > li {
-	margin: 1rem 0;
-}
+		h3 {
+			margin: 0.5em 0 0;
+		}
 
-// normalize the reserve button
-.amenities__reserve{
-	font-size: .9rem;
-	padding: 3px 9px;
-}
+		.amenities-list {
+			margin: 0 0 0 1.75em;
 
+			& > li {
+				margin: 1rem 0;
+
+				.amenity-links {
+					display: block;
+
+					& > span {
+						display: inline;
+
+						.read-more {
+							padding: 3px 9px;
+							margin-top: 6px;
+						}
+
+						// normalize the reserve button
+						.amenities__reserve {
+							font-size: .9rem;
+							padding: 3px 9px;
+							margin-left: 0;
+						}
+					}
+				}
+			}
+		}
+	}
+}
 
 // services "ad"
 .services-callout{
