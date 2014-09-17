@@ -23,9 +23,12 @@ describe('Locations: Header SSO Login', function () {
 
       header.loginBtn.click();
 
-      var cookieObj = browser.manage().getCookie('remember_me')
-      expect(cookieObj.name)
-        .toEqual('edwinguzman');
+      var cookieObj = browser.manage().getCookie('remember_me');
+      cookieObj.then(function (data) {
+        expect(data.name).toEqual('remember_me');
+        expect(data.value).toEqual('edwinguzman');
+      });
+
     });
 
   });
