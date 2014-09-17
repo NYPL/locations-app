@@ -1,6 +1,6 @@
 
 <div class="autofill-container" data-ng-if="model">
-	<div>{{lookahead}}</div>
+	<div class="lookahead">{{lookahead}}</div>
 	<div class="location-item" ng-repeat="item in data | filter:model | orderBy:'name'">
 	  <p class="location-name">
 	  	<a data-ui-sref='location({ location: item.slug })'>

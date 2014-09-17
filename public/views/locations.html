@@ -11,6 +11,8 @@
           <input class="search-box" id="searchTerm" type="text" data-ng-model="searchTerm"/>
           <span class="icon-search"></span>
           <span id="clear-search" class="icon-cancel-circle" data-ng-click="clearSearch()"></span>
+
+        <nypl-autofill data="locations" data-ng-model="searchTerm" map-view="viewMapLibrary(slug)"></nypl-autofill>
         </div>
 
         <div class="search-button-area">
@@ -43,8 +45,6 @@
             </p>
           </div>
         </div>
-
-        <nypl-autofill data="locations" data-ng-model="searchTerm" map-view="viewMapLibrary(slug)"></nypl-autofill>
       </form><!--
 
       --><div class="search__results grid__item one-whole">
