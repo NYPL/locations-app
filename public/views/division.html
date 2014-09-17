@@ -151,7 +151,7 @@
         </h3>
         <img data-ng-if="event.image" class="img--outline img--left" 
           data-ng-src="{{event.image}}" alt="" style="height: 100px;" />
-        <p class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        <time class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
         <p class="desc">{{event.body}}</p>
         <div data-ng-if="event.registration">
           {{ 'REGISTRATION' | translate }}:

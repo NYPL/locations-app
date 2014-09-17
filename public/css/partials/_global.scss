@@ -65,16 +65,26 @@
 }
 
 // general "chunk" styling
-.chunk{
-	.desc{
+.chunk {
+	.desc {
 		color: #7d7872;
 	}
 	
-	.date{
+	.date {
 		font-style: italic;
 		margin-bottom: .5rem;
 	}
 }
+
+time {
+	&.date {
+		color: #7d7872;
+		font-style: italic;
+		margin-bottom: .5rem;
+		display: inline-block;
+	}
+}
+
 
 .nypl-alerts {
 	background-color: #ECE94C;

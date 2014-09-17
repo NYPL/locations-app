@@ -161,7 +161,7 @@
         <h3 class="event__title">
           <a data-ng-href="{{event._links.self.href}}">{{event.title}}</a>
         </h3>
-        <p class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        <time class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
         <p class="desc">{{event.body}}</p>
 
         <div class="">
@@ -284,7 +284,7 @@
         <h3 class="exhibition__title">
           <a data-ng-href="{{exhibition._links.self.href}}">{{exhibition.title}}</a>
         </h3>
-        <p class="date">{{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        <time class="date">{{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
         <p class="teaser desc">{{exhibition.body | truncate}}</p>
       </div>
     </div>
