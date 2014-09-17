@@ -8,17 +8,16 @@ describe('Locations: Header SSO Login', function () {
     locationPage = require('../location/location.po.js'),
     divisionPage = require('../division/division.po.js'),
     amenitiesPage = require('../amenities/amenities.po.js'),
-    header = require('./header.po.js');
+    header = require('./header.po.js'),
+    cookieObj;
+
+  afterEach(function () {
+    browser.manage().deleteCookie('remember_me');
+    browser.manage().deleteCookie('bc_username');
+  });
 
   describe('Login header form', function () {
-    afterEach(function () {
-      browser.manage().deleteCookie('remember_me');
-      browser.manage().deleteCookie('bc_username');
-    });
-
     describe('Remember me checkbox', function () {
-      var cookieObj;
-
       it('should be empty without a cookie set', function () {
         browser.get('/#/');
         browser.waitForAngular();
@@ -33,50 +32,51 @@ describe('Locations: Header SSO Login', function () {
 
         expect(header.username.getAttribute('value')).toEqual('');
         expect(header.pin.getAttribute('value')).toEqual('');
-        expect(header.remember_me.getAttribute('checked')).toEqual(null);
+        expect(header.remember_me.isSelected()).toBe(false);
       });
 
-      it('should fill out the form since the cookie is set', function () {
-        browser.get('/#/');
-        browser.manage().addCookie('remember_me', 'edwinguzman');
-        browser.waitForAngular();
-
-        header.loginBtn.click();
-
-        cookieObj = browser.manage().getCookie('remember_me');
-        cookieObj.then(function (data) {
-          expect(data.name).toEqual('remember_me');
-          expect(data.value).toEqual('edwinguzman');
-        });
-
-        expect(header.username.getAttribute('value')).toEqual('edwinguzman');
-        expect(header.pin.getAttribute('value')).toEqual('');
-        expect(header.remember_me.getAttribute('checked')).toEqual('true');
-      });
-
-      it('should delete the cookie when there is initially a cookie and the ' +
-        'checkbox has been unselected',
-        function () {
+      describe('Remember me cookie is set', function () {
+        beforeEach(function () {
           browser.get('/#/');
           browser.manage().addCookie('remember_me', 'edwinguzman');
           browser.waitForAngular();
+        });
 
+        it('should fill out the form since the cookie is set', function () {
           header.loginBtn.click();
 
           cookieObj = browser.manage().getCookie('remember_me');
           cookieObj.then(function (data) {
             expect(data.name).toEqual('remember_me');
+            expect(data.value).toEqual('edwinguzman');
           });
-          expect(header.remember_me.getAttribute('checked')).toEqual('true');
 
-          header.remember_me.click();
-
-          // The checkbox was unselected and the cookie should now be deleted.
-          cookieObj = browser.manage().getCookie('remember_me');
-          cookieObj.then(function (data) {
-            expect(data).toBe(null);
-          });
+          expect(header.username.getAttribute('value')).toEqual('edwinguzman');
+          expect(header.pin.getAttribute('value')).toEqual('');
+          expect(header.remember_me.isSelected()).toBe(true);
         });
+
+        it('should delete the cookie when there is initially a cookie and ' +
+          'the checkbox has been unselected',
+          function () {
+
+            header.loginBtn.click();
+
+            cookieObj = browser.manage().getCookie('remember_me');
+            cookieObj.then(function (data) {
+              expect(data.name).toEqual('remember_me');
+            });
+            expect(header.remember_me.isSelected()).toBe(true);
+
+            header.remember_me.click();
+
+            // The checkbox was unselected and the cookie should now be deleted.
+            cookieObj = browser.manage().getCookie('remember_me');
+            cookieObj.then(function (data) {
+              expect(data).toBe(null);
+            });
+          });
+      });
     });
 
     /* A note on how visibility works:
@@ -123,6 +123,7 @@ describe('Locations: Header SSO Login', function () {
       describe('Logged in', function () {
         beforeEach(function () {
           browser.get('/#/');
+          // Mock the logged in cookie from Bibliocommons.
           browser.manage().addCookie('bc_username', 'edwinguzman');
           browser.waitForAngular();
         });
@@ -157,8 +158,6 @@ describe('Locations: Header SSO Login', function () {
     // since we don't want to click on the 'Submit' button and go through
     // the redirects from Bibliocommons.
     describe('Mock log in and log out', function () {
-      var cookieObj;
-
       it('should log you in', function () {
         browser.get('/#/');
         browser.waitForAngular();
@@ -189,5 +188,104 @@ describe('Locations: Header SSO Login', function () {
     });
 
   }); /* End Login Header */
+
+  describe('Navigating the site', function () {
+    describe('Not logged in', function () {
+      it('should keep you logged out', function () {
+        browser.get('/#/');
+        browser.waitForAngular();
+
+        expect(header.loginBtn.getText()).toEqual('LOG IN');
+        cookieObj = browser.manage().getCookie('bc_username');
+        cookieObj.then(function (data) {
+          expect(data).toBe(null);
+        });
+        expect(header.login_form.getCssValue('display')).toEqual('block');
+
+        landingPage.onlyResearch.click()
+        browser.sleep(1000);
+        landingPage.nthLocLink(3).click();
+        browser.waitForAngular();
+        expect(browser.getCurrentUrl())
+          .toEqual('http://localhost:9292/#/schwarzman');
+
+        expect(header.loginBtn.getText()).toEqual('LOG IN');
+        cookieObj = browser.manage().getCookie('bc_username');
+        cookieObj.then(function (data) {
+          expect(data).toBe(null);
+        });
+        expect(header.login_form.getCssValue('display')).toEqual('block');
+
+        locationPage.divisions.get(0).element(by.css('h4 a')).click();
+        browser.waitForAngular();
+        expect(browser.getLocationAbsUrl()).toEqual('http://localhost:9292/#/' +
+          'divisions/pforzheimer-collection-shelley-and-his-circle');
+
+        expect(header.loginBtn.getText()).toEqual('LOG IN');
+        cookieObj = browser.manage().getCookie('bc_username');
+        cookieObj.then(function (data) {
+          expect(data).toBe(null);
+        });
+        expect(header.login_form.getCssValue('display')).toEqual('block');
+      });
+    });
+
+    describe('Logged in', function () {
+      it('should keep you logged in', function () {
+        browser.get('/#/');
+        browser.manage().addCookie('bc_username', 'edwinguzman');
+        browser.waitForAngular();
+
+        expect(header.loginBtn.getText()).toEqual('edwinguzman');
+        cookieObj = browser.manage().getCookie('bc_username');
+        cookieObj.then(function (data) {
+          expect(data.name).toEqual('bc_username');
+          expect(data.value).toEqual('edwinguzman');
+        });
+        expect(header.logged_in_menu.getCssValue('display')).toEqual('block');
+
+        landingPage.onlyResearch.click()
+        browser.sleep(1000);
+        landingPage.nthLocLink(3).click();
+        browser.waitForAngular();
+        expect(browser.getCurrentUrl())
+          .toEqual('http://localhost:9292/#/schwarzman');
+
+        expect(header.loginBtn.getText()).toEqual('edwinguzman');
+        cookieObj = browser.manage().getCookie('bc_username');
+        cookieObj.then(function (data) {
+          expect(data.name).toEqual('bc_username');
+            expect(data.value).toEqual('edwinguzman');
+        });
+        expect(header.logged_in_menu.getCssValue('display')).toEqual('block');
+
+        locationPage.divisions.get(0).element(by.css('h4 a')).click();
+        browser.waitForAngular();
+        expect(browser.getLocationAbsUrl()).toEqual('http://localhost:9292/#/' +
+          'divisions/pforzheimer-collection-shelley-and-his-circle');
+
+        expect(header.loginBtn.getText()).toEqual('edwinguzman');
+        cookieObj = browser.manage().getCookie('bc_username');
+        cookieObj.then(function (data) {
+          expect(data.name).toEqual('bc_username');
+            expect(data.value).toEqual('edwinguzman');
+        });
+        expect(header.logged_in_menu.getCssValue('display')).toEqual('block');
+
+        element(by.css('.nypl-logo a')).click();
+        browser.waitForAngular();
+        expect(browser.getLocationAbsUrl())
+          .toEqual('http://localhost:9292/#/');
+
+        expect(header.loginBtn.getText()).toEqual('edwinguzman');
+        cookieObj = browser.manage().getCookie('bc_username');
+        cookieObj.then(function (data) {
+          expect(data.name).toEqual('bc_username');
+          expect(data.value).toEqual('edwinguzman');
+        });
+        expect(header.logged_in_menu.getCssValue('display')).toEqual('block');
+      })
+    });
+  }); /* End Navigating the site */
 
 });
