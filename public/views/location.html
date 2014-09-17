@@ -190,7 +190,7 @@
       </li>
     </ul>   
     <!-- More Events Link -->
-    <div data-ng-if="location._links.events.all" class="text--right push-half--ends">
+    <div data-ng-if="location._links.events.all" class="text--right">
       <a class="read-more events-more" data-ng-href="{{location._links.events.all}}">
         {{ 'MORE_EVENTS' | translate }}
       </a>
@@ -217,7 +217,7 @@
           --><div class="grid__item one-whole lap-and-up-one-half">
             <p>{{location.about}}</p>
             <!-- More Link -->
-            <div class="push-half--bottom text--right">
+            <div class="text--right">
               <a class="read-more" data-ng-href="http://nypl.org/locations/{{location.slug}}">
               {{ 'ABOUT_MORE' | translate }}
               </a>
@@ -265,7 +265,7 @@
       </div>
     </div>
     <!-- More Link -->
-    <div class="text--right push-half--ends">
+    <div class="text--right">
       <a class="read-more blogs-more" data-ng-href="{{location._links.blogs.all}}">
         {{ 'MORE_BLOGS' | translate }}
       </a>
