@@ -11,8 +11,8 @@
     </div>
 
     <div class="grid">
-      <div class="amenity-category-list" data-ng-if="amenitiesCategories">
-        <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="category in amenitiesCategories">
+      <div class="amenity-category-list">
+        <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="category in amenitiesCategories" data-ng-if="amenitiesCategories">
           <div class="amenity-box feature-brick">
             <h3>
               <span class="{{category.icon}} category_title">{{category.name}}</span>
