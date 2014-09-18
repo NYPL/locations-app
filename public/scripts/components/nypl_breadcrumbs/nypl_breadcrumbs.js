@@ -232,9 +232,16 @@
             });
 
             // Get the slug for the parent route
-            if (parentData._embedded.parent) {
-              parentRoute = parentData._embedded.parent.slug;
-              return divisionState + '({ ' + "\"" + divisionState + "\"" + ':' + "\"" + parentRoute + "\"" + '})';
+            if (parentData._embedded !== undefined) {
+              if (parentData._embedded.parent) {
+                if (parentData._embedded.parent.slug) {
+                  parentRoute = parentData._embedded.parent.slug;
+                  return divisionState + 
+                          '({ ' + "\"" + divisionState +
+                           "\"" + ':' + "\"" + parentRoute +
+                            "\"" + '})';
+                }
+              }
             }
             return undefined;
           }
@@ -255,9 +262,13 @@
             });
 
             // Get the slug for the parent route
-            if (parentData._embedded.parent) {
-              parentName = parentData._embedded.parent.name;
-              return parentName;
+            if (parentData._embedded !== undefined) {
+              if (parentData._embedded.parent) {
+                if (parentData._embedded.parent.name) {
+                  parentName = parentData._embedded.parent.name;
+                  return parentName;
+                }
+              }
             }
             return undefined;
           }
@@ -284,12 +295,27 @@
                 parentData = currentContext[key];
               }
             });
+
             // Get the slug for the parent route
-            if (parentData._embedded.location.slug) {
-              parentRoute = parentData._embedded.location.slug;
-              return stateSetting + '({ ' + "\"" + stateSetting + "\"" + ':' + "\"" + parentRoute + "\"" + '})';
+            if (parentData.amenity) {
+              if (parentData.amenity.id) {
+                parentRoute = parentData.amenity.id;
+              }
             }
-            return undefined;
+            else if (parentData._embedded) {
+              if (parentData._embedded.location) {
+                if (parentData._embedded.location.slug) {
+                  parentRoute = parentData._embedded.location.slug;
+                }
+              }
+            }
+
+            if (parentRoute) {
+              return stateSetting + '({ ' + "\"" +
+                     stateSetting + "\"" + ':' + "\"" +
+                      parentRoute + "\"" + '})';
+            }
+            return stateSetting;
           }
           return undefined;
         }
@@ -320,11 +346,24 @@
                 }
               });
               
-              if (parentData._embedded.location.name) {
-                parentStateName = parentData._embedded.location.name;
+
+              if (parentData.amenity) {
+                if (parentData.amenity.name) {
+                  parentStateName = parentData.amenity.name;
+                }
+              }
+              else if (parentData._embedded) {
+                if (parentData._embedded.location) {
+                  if (parentData._embedded.location.name) {
+                    parentStateName = parentData._embedded.location.name;
+                  }
+                }
               }
 
-              return parentStateName;
+              if (parentStateName) {
+                return parentStateName;
+              }
+              return parentStateSetting;
             }
           }
           return undefined;
