@@ -9,11 +9,11 @@ var Header = function () {
 
   this.username = element(by.id('username'));
   this.pin = element(by.id('pin'));
-  this.remember_me = element(by.id('remember_me'));
+  this.rememberMe = element(by.id('remember_me'));
 
-  this.sso_login_container = element(by.css('.sso-login'));
-  this.login_form = element(by.css('.login-form'));
-  this.logged_in_menu = element(by.css('.logged-in-menu'));
+  this.ssoLoginContainer = element(by.css('.sso-login'));
+  this.loginForm = element(by.css('.login-form'));
+  this.loggedInMenu = element(by.css('.logged-in-menu'));
 
 };
 

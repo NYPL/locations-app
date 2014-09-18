@@ -32,7 +32,7 @@ describe('Locations: Header SSO Login', function () {
 
         expect(header.username.getAttribute('value')).toEqual('');
         expect(header.pin.getAttribute('value')).toEqual('');
-        expect(header.remember_me.isSelected()).toBe(false);
+        expect(header.rememberMe.isSelected()).toBe(false);
       });
 
       describe('Remember me cookie is set', function () {
@@ -53,7 +53,7 @@ describe('Locations: Header SSO Login', function () {
 
           expect(header.username.getAttribute('value')).toEqual('edwinguzman');
           expect(header.pin.getAttribute('value')).toEqual('');
-          expect(header.remember_me.isSelected()).toBe(true);
+          expect(header.rememberMe.isSelected()).toBe(true);
         });
 
         it('should delete the cookie when there is initially a cookie and ' +
@@ -66,9 +66,9 @@ describe('Locations: Header SSO Login', function () {
             cookieObj.then(function (data) {
               expect(data.name).toEqual('remember_me');
             });
-            expect(header.remember_me.isSelected()).toBe(true);
+            expect(header.rememberMe.isSelected()).toBe(true);
 
-            header.remember_me.click();
+            header.rememberMe.click();
 
             // The checkbox was unselected and the cookie should now be deleted.
             cookieObj = browser.manage().getCookie('remember_me');
@@ -101,22 +101,22 @@ describe('Locations: Header SSO Login', function () {
         });
 
         it('should not have the "logged-in" class for the form', function () {
-          expect(header.sso_login_container.getAttribute('class'))
+          expect(header.ssoLoginContainer.getAttribute('class'))
             .not.toContain('logged-in');
         });
 
         it('should open the login form when not logged in', function () {
-          expect(header.sso_login_container.getCssValue('display'))
+          expect(header.ssoLoginContainer.getCssValue('display'))
             .toEqual('none');
-          expect(header.login_form.getCssValue('display')).toEqual('block');
-          expect(header.logged_in_menu.getCssValue('display')).toEqual('none');
+          expect(header.loginForm.getCssValue('display')).toEqual('block');
+          expect(header.loggedInMenu.getCssValue('display')).toEqual('none');
 
           header.loginBtn.click();
 
-          expect(header.sso_login_container.getCssValue('display'))
+          expect(header.ssoLoginContainer.getCssValue('display'))
             .toEqual('block');
-          expect(header.login_form.getCssValue('display')).toEqual('block');
-          expect(header.logged_in_menu.getCssValue('display')).toEqual('none');
+          expect(header.loginForm.getCssValue('display')).toEqual('block');
+          expect(header.loggedInMenu.getCssValue('display')).toEqual('none');
         });
       });
 
@@ -133,22 +133,22 @@ describe('Locations: Header SSO Login', function () {
         });
 
         it('should have the "logged-in" class for the form', function () {
-          expect(header.sso_login_container.getAttribute('class'))
+          expect(header.ssoLoginContainer.getAttribute('class'))
             .toContain('logged-in');
         });
 
         it('should display the Bibliocommons menu when logged in', function () {
-          expect(header.sso_login_container.getCssValue('display'))
+          expect(header.ssoLoginContainer.getCssValue('display'))
             .toEqual('none');
-          expect(header.login_form.getCssValue('display')).toEqual('none');
-          expect(header.logged_in_menu.getCssValue('display')).toEqual('block');
+          expect(header.loginForm.getCssValue('display')).toEqual('none');
+          expect(header.loggedInMenu.getCssValue('display')).toEqual('block');
 
           header.loginBtn.click();
 
-          expect(header.sso_login_container.getCssValue('display'))
+          expect(header.ssoLoginContainer.getCssValue('display'))
             .toEqual('block');
-          expect(header.login_form.getCssValue('display')).toEqual('none');
-          expect(header.logged_in_menu.getCssValue('display')).toEqual('block');
+          expect(header.loginForm.getCssValue('display')).toEqual('none');
+          expect(header.loggedInMenu.getCssValue('display')).toEqual('block');
 
         });
       });
@@ -183,7 +183,7 @@ describe('Locations: Header SSO Login', function () {
         expect(header.loginBtn.getText()).toEqual('edwinguzman');
         header.loginBtn.click();
 
-        expect(header.logged_in_menu.getCssValue('display')).toEqual('block');
+        expect(header.loggedInMenu.getCssValue('display')).toEqual('block');
       });
     });
 
@@ -200,7 +200,7 @@ describe('Locations: Header SSO Login', function () {
         cookieObj.then(function (data) {
           expect(data).toBe(null);
         });
-        expect(header.login_form.getCssValue('display')).toEqual('block');
+        expect(header.loginForm.getCssValue('display')).toEqual('block');
 
         landingPage.onlyResearch.click()
         browser.sleep(1000);
@@ -214,7 +214,7 @@ describe('Locations: Header SSO Login', function () {
         cookieObj.then(function (data) {
           expect(data).toBe(null);
         });
-        expect(header.login_form.getCssValue('display')).toEqual('block');
+        expect(header.loginForm.getCssValue('display')).toEqual('block');
 
         locationPage.divisions.get(0).element(by.css('h4 a')).click();
         browser.waitForAngular();
@@ -226,7 +226,7 @@ describe('Locations: Header SSO Login', function () {
         cookieObj.then(function (data) {
           expect(data).toBe(null);
         });
-        expect(header.login_form.getCssValue('display')).toEqual('block');
+        expect(header.loginForm.getCssValue('display')).toEqual('block');
       });
     });
 
@@ -242,7 +242,7 @@ describe('Locations: Header SSO Login', function () {
           expect(data.name).toEqual('bc_username');
           expect(data.value).toEqual('edwinguzman');
         });
-        expect(header.logged_in_menu.getCssValue('display')).toEqual('block');
+        expect(header.loggedInMenu.getCssValue('display')).toEqual('block');
 
         landingPage.onlyResearch.click()
         browser.sleep(1000);
@@ -257,7 +257,7 @@ describe('Locations: Header SSO Login', function () {
           expect(data.name).toEqual('bc_username');
             expect(data.value).toEqual('edwinguzman');
         });
-        expect(header.logged_in_menu.getCssValue('display')).toEqual('block');
+        expect(header.loggedInMenu.getCssValue('display')).toEqual('block');
 
         locationPage.divisions.get(0).element(by.css('h4 a')).click();
         browser.waitForAngular();
@@ -270,7 +270,7 @@ describe('Locations: Header SSO Login', function () {
           expect(data.name).toEqual('bc_username');
             expect(data.value).toEqual('edwinguzman');
         });
-        expect(header.logged_in_menu.getCssValue('display')).toEqual('block');
+        expect(header.loggedInMenu.getCssValue('display')).toEqual('block');
 
         element(by.css('.nypl-logo a')).click();
         browser.waitForAngular();
@@ -283,7 +283,7 @@ describe('Locations: Header SSO Login', function () {
           expect(data.name).toEqual('bc_username');
           expect(data.value).toEqual('edwinguzman');
         });
-        expect(header.logged_in_menu.getCssValue('display')).toEqual('block');
+        expect(header.loggedInMenu.getCssValue('display')).toEqual('block');
       })
     });
   }); /* End Navigating the site */
