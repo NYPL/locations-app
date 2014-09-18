@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="callout branch-closed" data-ng-if="!division.open">
-          <h2>Branch is temporarily closed.</h2>
+          <h2>Division is temporarily closed.</h2>
         </div>
       </div><!--
 
@@ -43,18 +43,18 @@
       --><div id="container__div_address" class="grid__item lap-one-half one-whole desk-one-third">
         
         <!-- Division address and related location data -->
-        <div class="div_name">{{division.location_name}}</div>
+        <div class="div_name">{{location.name}}</div>
         <div class="div_loc_info">
-          <div data-ng-if="division.street_address">{{division.street_address}}</div>
-          <div data-ng-if="division.cross_street">{{division.cross_street}}</div>
+          <div data-ng-if="location.street_address">{{location.street_address}}</div>
+          <div data-ng-if="location.cross_street">{{location.cross_street}}</div>
           <div data-ng-if="division.floor">
             <span>{{division.floor}}</span>
             <span data-ng-if="division.room" class="room">
               {{'ROOM' | translate}} {{division.room}}
             </span>
           </div>
-          <div data-ng-if="division.locality">
-            {{division.locality}}, {{division.region}} {{division.postal_code}}
+          <div data-ng-if="location.locality">
+            {{location.locality}}, {{location.region}} {{location.postal_code}}
           </div>
           <div data-ng-if="division.contacts.manager">
             {{'DIVISION_MANAGER' | translate}}<span>{{division.contacts.manager}}</span>
@@ -94,7 +94,8 @@
       <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
         data-ng-repeat='subdivision in division._embedded.divisions'>
         <div class="subdivision-wrapper">
-          <img class="img--outline" src="images/pippin_fpo.jpg"
+          <img data-ng-if="subdivision.images.interior"
+          class="img--outline" data-ng-src="{{subdivision.images.interior}}"
             alt="Image for {{subdivision.name}}" title="Image for {{subdivision.name}}"/>
           <h4 class="subdivision-title">
             <a ui-sref="division({division: subdivision.slug})">{{subdivision.name}}</a>
@@ -110,7 +111,7 @@
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-three-fifths">
         <h2 class="hdg">{{ 'ABOUT_COLLECTION' | translate }}</h2>
-        <img data-ng-if="division.images" class="img--left img--outline division_second_image"
+        <img data-ng-if="division.images.collection_item" class="img--left img--outline division_second_image"
           data-ng-src="{{division.images.collection_item}}" style="max-width: 165px;" />
         <p>{{division.about}}</p>
         <div class="text--right">
@@ -228,7 +229,7 @@
 
   <!-- Ask/Donate -->
   <div class="ask-donate">
-    <nypl-fundraising fundraising="division.fundraising"></nypl-fundraising><!--
+    <nypl-fundraising fundraising="location.fundraising"></nypl-fundraising><!--
 
     --><div class="askNYPL grid__item one-whole lap-and-up-one-half " id="ask-nypl">
       <ul>
