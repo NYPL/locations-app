@@ -12,8 +12,9 @@ describe('Locations: Amenity', function () {
     httpBackendMock = function (response) {
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
-          $httpBackend.when('GET', 'http://evening-mesa-7447-160.herokuapp' +
-              '.com/amenities/7950')
+          $httpBackend
+            .whenJSONP('http://locations-api-beta.nypl.org' +
+              '/amenities/7950?callback=JSON_CALLBACK')
             .respond(response);
 
           // For everything else, don't mock

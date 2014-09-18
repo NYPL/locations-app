@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  /** @namespace nyplCoordinatesServce */
+  /** @namespace nyplCoordinatesService */
   function nyplCoordinatesService($q, $window) {
     var geoCoords = null,
       coordinatesService = {};

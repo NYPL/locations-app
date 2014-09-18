@@ -2,8 +2,8 @@
   <div data-ng-if="registration">
     {{ 'REGISTRATION' | translate }}:
     <span class="registration_type" data-ng-if="!online">{{type}}</span>
-    <a class="registration_type btn btn--natural whiteText" data-ng-if="online"
-      data-ng-href="http://nypl.org/{{link}}">
+    <a class="registration_type btn btn--natural" data-ng-if="online"
+      data-ng-href="{{link}}">
       {{type}}
     </a>
 

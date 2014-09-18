@@ -89,7 +89,7 @@
         </div><!--
 
         --><div id="container__image" class="grid__item desk-one-third">
-          <img class="img--outline" data-ng-src="{{location.image}}"
+          <img class="img--outline" data-ng-src="{{location.images.exterior}}"
             alt="Image of {{location.name}}" title="Image of {{location.name}}">
         </div>
     </div>
@@ -125,7 +125,7 @@
       <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
         data-ng-repeat='division in location._embedded.divisions'>
         <div class="division-wrapper">
-          <img class="img--outline" src="images/pippin_fpo.jpg"
+          <img class="img--outline" data-ng-src="{{division.images.interior}}"
             alt="Image for {{division.name}}" title="Image for {{division.name}}"/>
           <h4 class=""><a data-ui-sref="division({division: division.slug})">{{division.name}}</a></h4>
           <p data-ng-if="division.hours">Hours Today: {{division.hoursToday | timeFormat}}</p>
@@ -161,7 +161,7 @@
         <h3 class="event__title">
           <a data-ng-href="{{event._links.self.href}}">{{event.title}}</a>
         </h3>
-        <p class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        <time class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
         <p class="desc">{{event.body}}</p>
 
         <div class="">
@@ -190,7 +190,7 @@
       </li>
     </ul>   
     <!-- More Events Link -->
-    <div data-ng-if="location._links.events.all" class="text--right push-half--ends">
+    <div data-ng-if="location._links.events.all" class="text--right">
       <a class="read-more events-more" data-ng-href="{{location._links.events.all}}">
         {{ 'MORE_EVENTS' | translate }}
       </a>
@@ -199,21 +199,25 @@
 
   <!-- About (multi-view conditional) -->
   <div id="container__about">
-    <h2 class="hdg" data-ng-if="location.type == 'circulating'">{{ 'ABOUT' | translate }}</h2>
+    <h2 class="hdg" data-ng-if="location.type == 'circulating'">
+      {{ 'ABOUT' | translate }}
+    </h2>
     <div class="grid">
       <div id="about" class="grid__item one-whole"
         data-ng-class="{true: 'lap-and-up-two-thirds', false: ''}[location.type == 'research']">
-        <h2 class="hdg" data-ng-if="location.type == 'research'">{{ 'ABOUT' | translate }}</h2>
+        <h2 class="hdg" data-ng-if="location.type == 'research'">
+          {{ 'ABOUT' | translate }}
+        </h2>
         <div class="grid">
-          <div id="location-secondary-img" class="grid__item one-whole lap-and-up-one-half">
+          <div id="location-secondary-img" class="grid__item one-whole lap-and-up-one-half" data-ng-if="location.images.interior">
             <img class="img--outline" title="Image of {{location.name}}"
-              data-ng-src="{{location.image}}" alt="Image of {{location.name}}">
+              data-ng-src="{{location.images.interior}}" alt="Image of {{location.name}}">
           </div><!--
 
           --><div class="grid__item one-whole lap-and-up-one-half">
             <p>{{location.about}}</p>
             <!-- More Link -->
-            <div class="push-half--bottom text--right">
+            <div class="text--right">
               <a class="read-more" data-ng-href="http://nypl.org/locations/{{location.slug}}">
               {{ 'ABOUT_MORE' | translate }}
               </a>
@@ -261,7 +265,7 @@
       </div>
     </div>
     <!-- More Link -->
-    <div class="text--right push-half--ends">
+    <div class="text--right">
       <a class="read-more blogs-more" data-ng-href="{{location._links.blogs.all}}">
         {{ 'MORE_BLOGS' | translate }}
       </a>
@@ -269,7 +273,7 @@
   </div>
 
   <!-- Exhibitions (conditional) -->
-  <div id="container__exhibitions" data-ng-if="location.type == 'research' && location._embedded.exhibitions">
+  <div id="container__exhibitions" data-ng-if="location._embedded.exhibitions">
     <h2 class="hdg">{{ 'EXHIBITION' | translate }}</h2>
     <div class="grid">
       <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat='exhibition in location._embedded.exhibitions'>
@@ -278,9 +282,9 @@
             alt="Image for exhibition {{exhibition.title}}" title="Image for exhibition {{exhibition.title}}" />
         </a>
         <h3 class="exhibition__title">
-          <a data-ng-href="http://nypl.org/{{exhibition._links.self.href}}">{{exhibition.title}}</a>
+          <a data-ng-href="{{exhibition._links.self.href}}">{{exhibition.title}}</a>
         </h3>
-        <p class="date">{{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</p>
+        <time class="date">{{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
         <p class="teaser desc">{{exhibition.body | truncate}}</p>
       </div>
     </div>

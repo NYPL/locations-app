@@ -177,6 +177,19 @@ describe('NYPL Filter Unit Tests', function () {
         });
     });
 
+    describe('when not using a "short" or "long" format', function () {
+      it('should output the default setting', function () {
+        // Returns 13 for 1pm in the afternoon when a library is open.
+        Date.prototype.getHours = function () { return 13; };
+
+        expect(hoursTodayFormatFilter({
+          'today': {'open': '10:00', 'close': '18:00'},
+          'tomorrow': {'open': '10:00', 'close': '18:00'}
+        }))
+        .toEqual('10:00am-6:00pm');
+      });
+    });
+
     /*
      * The only big difference between short and long is the wording 
      * when the library is currently opened.
@@ -195,6 +208,17 @@ describe('NYPL Filter Unit Tests', function () {
           .toEqual('Open today until 6pm');
       });
 
+      it('should display the open times for today with minutes', function () {
+        // Returns 13 for 1pm in the afternoon when a library is open.
+        Date.prototype.getHours = function () { return 13; };
+
+        expect(hoursTodayFormatFilter({
+          'today': {'open': '10:00', 'close': '18:45'},
+          'tomorrow': {'open': '10:00', 'close': '18:45'}
+        }, 'short'))
+          .toEqual('Open today until 6:45pm');
+      });
+
       it('should display the open times for tomorrow', function () {
         // Returns 19 for 7pm after a library has closed.
         Date.prototype.getHours = function () { return 19; };
@@ -204,6 +228,17 @@ describe('NYPL Filter Unit Tests', function () {
           'tomorrow': {'open': '10:00', 'close': '18:00'}
         }, 'short'))
           .toEqual('Open tomorrow 10am-6pm');
+      });
+
+      it('should display the open times for tomorrow with minutes', function () {
+        // Returns 19 for 7pm after a library has closed.
+        Date.prototype.getHours = function () { return 19; };
+
+        expect(hoursTodayFormatFilter({
+          'today': {'open': '10:30', 'close': '18:30'},
+          'tomorrow': {'open': '10:30', 'close': '18:30'}
+        }, 'short'))
+          .toEqual('Open tomorrow 10:30am-6:30pm');
       });
 
       it('should display the open times for later today', function () {
@@ -220,7 +255,7 @@ describe('NYPL Filter Unit Tests', function () {
 
     describe('when opened and using the "long" format', function () {
       it('should display that it is currently open when checking during ' +
-        'open hours - short format',
+        'open hours',
         function () {
           // Returns 13 for 1pm in the afternoon when a library is open.
           Date.prototype.getHours = function () { return 13; };
@@ -228,12 +263,25 @@ describe('NYPL Filter Unit Tests', function () {
           expect(hoursTodayFormatFilter({
             'today': {'open': '10:00', 'close': '18:00'},
             'tomorrow': {'open': '10:00', 'close': '18:00'}
-          }, 'short'))
-              .toEqual('Open today until 6pm');
+          }, 'long'))
+              .toEqual('Open today 10am-6pm');
         });
 
       it('should display that it is currently open when checking during ' +
-        'open hours - long format',
+        'open hours with minutes',
+        function () {
+          // Returns 13 for 1pm in the afternoon when a library is open.
+          Date.prototype.getHours = function () { return 13; };
+
+          expect(hoursTodayFormatFilter({
+            'today': {'open': '10:30', 'close': '18:45'},
+            'tomorrow': {'open': '10:30', 'close': '18:45'}
+          }, 'long'))
+              .toEqual('Open today 10:30am-6:45pm');
+        });
+
+      it('should display that it is currently open when checking during ' +
+        'open hours',
         function () {
           // Returns 13 for 1pm in the afternoon when a library is open.
           Date.prototype.getHours = function () { return 13; };
@@ -267,7 +315,7 @@ describe('NYPL Filter Unit Tests', function () {
           expect(hoursTodayFormatFilter({
             'today': {'open': '10:00', 'close': '18:00'},
             'tomorrow': {'open': '10:00', 'close': '18:00'}
-          }, 'short'))
+          }, 'long'))
             .toEqual('Open today 10am-6pm');
         });
     });
@@ -347,14 +395,20 @@ describe('NYPL Filter Unit Tests', function () {
           expect(truncateFilter(blog_post, 150, ' ->').substring(147))
             .toEqual(' ->');
         });
+
+      it('should return the same string if a length option is added but is' +
+        'greater than the length of the text',
+        function () {
+          expect(blog_post.length).toEqual(487);
+          expect(truncateFilter(blog_post, 500).length).toBe(487);
+        });
     });
 
-    describe('short blog post', function () {
-      it('should return the same string since it\'s less than 200 characters',
-        function () {
-          expect(short_blog_post.length).toEqual(132);
-          expect(truncateFilter(short_blog_post).length).toEqual(132);
-        });
+    describe('short blog post less than 200 characters', function () {
+      it('should return the same string', function () {
+        expect(short_blog_post.length).toEqual(132);
+        expect(truncateFilter(short_blog_post).length).toEqual(132);
+      });
     });
   }); /* End truncate */
 

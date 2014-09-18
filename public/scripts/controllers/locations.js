@@ -213,6 +213,7 @@
             createFilterMarker = function (slug) {
                 // store the filtered location marker if in the list view,
                 // so it can be displayed when going to the map view.
+                $scope.select_library_for_map = '';
                 nyplGeocoderService.setFilterMarker(slug);
                 if (isMapPage()) {
                     nyplGeocoderService.drawFilterMarker(slug);
@@ -319,22 +320,21 @@
                 containerWidth = parseInt(content.css('width'), 10),
                 top;
 
+            // only scroll the page on mobile
             if (containerWidth < 601) {
                 top = angular.element('.map-search__results').offset() ||
                     angular.element('.search__results').offset();
-            } else {
-                top = content.offset();
+                $timeout(function () {
+                    angular.element('body').animate({scrollTop: top.top}, 1000);
+                }, 1000);
             }
-
-            $timeout(function () {
-                angular.element('body').animate({scrollTop: top.top}, 1000);
-            }, 1000);
         };
 
         $scope.viewMapLibrary = function (library_id) {
             var location = _.where($scope.locations, { 'slug' : library_id });
             $scope.select_library_for_map = library_id;
 
+            $scope.searchMarker = false;
             $state.go('home.map');
 
             organizeLocations($scope.locations, location, 'name');
@@ -531,9 +531,9 @@
                     if ($scope.select_library_for_map) {
                         nyplGeocoderService
                             .panExistingMarker($scope.select_library_for_map);
+                    } else {
+                        nyplGeocoderService.drawFilterMarker(filteredLocation);
                     }
-
-                    nyplGeocoderService.drawFilterMarker(filteredLocation);
 
                     $scope.scrollPage();
                 }, 1200);

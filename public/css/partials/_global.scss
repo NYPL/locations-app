@@ -60,21 +60,31 @@
 	min-height: 700px;
 
 	@include breakpoint($min, $tablet) {
-		margin-top: 20px;
+		margin-top: 8px;
 	}
 }
 
 // general "chunk" styling
-.chunk{
-	.desc{
+.chunk {
+	.desc {
 		color: #7d7872;
 	}
 	
-	.date{
+	.date {
 		font-style: italic;
 		margin-bottom: .5rem;
 	}
 }
+
+time {
+	&.date {
+		color: #7d7872;
+		font-style: italic;
+		margin-bottom: .5rem;
+		display: inline-block;
+	}
+}
+
 
 .nypl-alerts {
 	background-color: #ECE94C;
@@ -86,12 +96,14 @@
 	@include breakpoint($min, $pre-tablet) {
 		width: auto;
 		top: inherit;
+		margin-bottom: 10px;
 	}
 
 	p {
-		margin: .5em 0;
+		margin: .25em 0;
 		text-align: center;
 		max-width: none;
+		font-size: 13px;
 	}
 }
 

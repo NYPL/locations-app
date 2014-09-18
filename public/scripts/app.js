@@ -3,6 +3,7 @@
 
 var nypl_locations = angular.module('nypl_locations', [
     'ngSanitize',
+    // 'ngCookies',
     'ui.router',
     'ngAnimate',
     'locationService',
@@ -66,17 +67,6 @@ nypl_locations.config([
                 });
         }
 
-        function AmenitiesAtLibrary(nyplLocationsService, $stateParams) {
-            return nyplLocationsService
-                .amenitiesAtLibrary($stateParams.location)
-                .then(function (data) {
-                    return data.location;
-                })
-                .catch(function (error) {
-                    throw error;
-                });
-        }
-
         function Amenities(nyplLocationsService, $stateParams) {
             return nyplLocationsService
                 .amenities($stateParams.amenity)
@@ -125,7 +115,7 @@ nypl_locations.config([
                 label: 'Locations'
             })
             .state('division', {
-                url: '/division/:division',
+                url: '/divisions/:division',
                 templateUrl: 'views/division.html',
                 controller: 'DivisionCtrl',
                 label: 'Division',
@@ -168,7 +158,7 @@ nypl_locations.config([
                 templateUrl: 'views/amenitiesAtLibrary.html',
                 controller: 'AmenitiesAtLibraryCtrl',
                 resolve: {
-                    location: AmenitiesAtLibrary
+                    location: LoadLocation
                 },
                 data: {
                     parentState: 'amenities',
@@ -193,7 +183,10 @@ nypl_locations.config([
     }
 ]);
 
-nypl_locations.run(function ($state, $rootScope) {
+nypl_locations.run(function ($state, $rootScope, $location) {
+    $rootScope.$on('$stateChangeSuccess', function () {
+        $rootScope.current_url = $location.absUrl();
+    });
     $rootScope.$on('$stateChangeError', function () {
         $state.go('404');
     });

@@ -3,9 +3,10 @@
 
 (function () {
     'use strict';
+
     /** @namespace nyplLocationsService */
     function nyplLocationsService($http, $q) {
-        var api = 'http://evening-mesa-7447-160.herokuapp.com',
+        var api = 'http://locations-api-beta.nypl.org',
             apiError = "Could not reach API",
             locationsApi = {};
 
@@ -25,11 +26,15 @@
         locationsApi.allLocations = function () {
             var defer = $q.defer();
 
-            $http.get(api + '/locations', {cache: true})
+            $http.jsonp(
+                    api + '/locations' + '?callback=JSON_CALLBACK',
+                    {cache: true}
+                )
                 .success(function (data) {
                     defer.resolve(data);
                 })
-                .error(function () {
+                .error(function (data, status) {
+                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
@@ -52,11 +57,15 @@
         locationsApi.singleLocation = function (location) {
             var defer = $q.defer();
 
-            $http.get(api + '/locations/' + location, {cache: true})
+            $http.jsonp(
+                    api + '/locations/' + location + '?callback=JSON_CALLBACK',
+                    {cache: true}
+                )
                 .success(function (data) {
                     defer.resolve(data);
                 })
-                .error(function () {
+                .error(function (data, status) {
+                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
@@ -79,11 +88,15 @@
         locationsApi.singleDivision = function (division) {
             var defer = $q.defer();
 
-            $http.get(api + '/divisions/' + division, {cache: true})
+            $http.jsonp(
+                    api + '/divisions/' + division + '?callback=JSON_CALLBACK',
+                    {cache: true}
+                )
                 .success(function (data) {
                     defer.resolve(data);
                 })
-                .error(function () {
+                .error(function (data, status) {
+                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
@@ -118,11 +131,12 @@
             var defer = $q.defer(),
                 url = !amenity ? '/amenities' : '/amenities/' + amenity;
 
-            $http.get(api + url, {cache: true})
+            $http.jsonp(api + url + '?callback=JSON_CALLBACK', {cache: true})
                 .success(function (data) {
                     defer.resolve(data);
                 })
-                .error(function () {
+                .error(function (data, status) {
+                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
@@ -147,12 +161,15 @@
         locationsApi.amenitiesAtLibrary = function (location) {
             var defer = $q.defer();
 
-            // Not currently using /locations/:location/amenities
-            $http.get(api + '/locations/' + location, {cache: true})
+            $http.jsonp(
+                    api + '/locations/' + location + '/amenities' + '?callback=JSON_CALLBACK',
+                    {cache: true}
+                )
                 .success(function (data) {
                     defer.resolve(data);
                 })
-                .error(function () {
+                .error(function (data, status) {
+                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
@@ -173,11 +190,15 @@
         locationsApi.alerts = function () {
             var defer = $q.defer();
 
-            $http.get(api + '/alerts', {cache: true})
+            $http.jsonp(
+                    api + '/alerts' + '?callback=JSON_CALLBACK',
+                    {cache: true}
+                )
                 .success(function (data) {
                     defer.resolve(data);
                 })
-                .error(function () {
+                .error(function (data, status) {
+                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;

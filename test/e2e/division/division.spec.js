@@ -14,8 +14,9 @@ describe('Locations: Division - Testing General Research Division',
       httpBackendMock = function (response) {
         angular.module('httpBackendMock', ['ngMockE2E'])
           .run(function ($httpBackend) {
-            $httpBackend.when('GET', 'http://evening-mesa-7447-160' +
-                '.herokuapp.com/divisions/general-research-division')
+            $httpBackend
+              .whenJSONP('http://locations-api-beta.nypl.org' +
+                '/divisions/general-research-division?callback=JSON_CALLBACK')
               .respond(response);
 
             // For everything else, don't mock
@@ -30,7 +31,7 @@ describe('Locations: Division - Testing General Research Division',
         // Pass the good JSON from the API call.
         browser.addMockModule('httpBackendMock', httpBackendMock,
             APIresponse.good);
-        browser.get('/#/division/general-research-division');
+        browser.get('/#/divisions/general-research-division');
         browser.waitForAngular();
       });
 
@@ -202,7 +203,7 @@ describe('Locations: Division - Testing General Research Division',
       beforeEach(function () {
         browser.addMockModule('httpBackendMock', httpBackendMock,
           APIresponse.bad);
-        browser.get('/#/division/general-research-division');
+        browser.get('/#/divisions/general-research-division');
         browser.waitForAngular();
       });
 

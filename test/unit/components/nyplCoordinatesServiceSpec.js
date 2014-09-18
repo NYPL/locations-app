@@ -16,11 +16,17 @@ describe('NYPL coordinateService Module', function () {
    * browser's current location, and computes coordinate distance.
    */
   describe('nyplCoordinatesService', function () {
-    var nyplCoordinatesService;
+    var nyplCoordinatesService, $window;
 
     beforeEach(function () {
       // load the module.
       module('coordinateService');
+
+      $window = {navigator: { geolocation: jasmine.createSpy()} };
+
+      module(function($provide) {
+        $provide.value('$window', $window);
+      });
 
       // inject your service for testing.
       // The _underscores_ are a convenience thing
@@ -38,6 +44,7 @@ describe('NYPL coordinateService Module', function () {
      *   browser, false otherwise.
      */
     describe('nyplCoordinatesService.geolocationAvailable()', function () {
+
       it('should have a geolocationAvailable function', function () {
         expect(angular.isFunction(nyplCoordinatesService.geolocationAvailable))
           .toBe(true);
@@ -46,17 +53,12 @@ describe('NYPL coordinateService Module', function () {
 
       it('should return false due to old browser', function () {
         // Old browsers don't have the navigator api
-        window.navigator = false;
-        window.navigator.geolocation = false;
-
+        $window.navigator = false;
+        $window.navigator.geolocation = false;
         expect(nyplCoordinatesService.geolocationAvailable()).toBe(false);
       });
 
       it('should return true for modern browsers', function () {
-        // Modern browsers have the navigator api
-        window.navigator = true;
-        window.navigator.geolocation = true;
-
         expect(nyplCoordinatesService.geolocationAvailable()).toBe(true);
       });
     }); /* End nyplCoordinatesService.geolocationAvailable() */
@@ -72,9 +74,9 @@ describe('NYPL coordinateService Module', function () {
 
       beforeEach(inject(function (_$rootScope_) {
         $rootScope = _$rootScope_;
-        window.navigator = jasmine.createSpy('navigator');
+        $window.navigator = jasmine.createSpy('navigator');
         geolocationMock =
-          window.navigator.geolocation = jasmine.createSpy('geolocation');
+          $window.navigator.geolocation = jasmine.createSpy('geolocation');
       }));
 
       // check to see if it has the expected function
@@ -136,6 +138,38 @@ describe('NYPL coordinateService Module', function () {
       }); /* end getBrowserCoordinates function successful */
 
       describe('getBrowserCoordinates function fails', function () {
+        describe('Geolocation is not available', function () {
+          it('should fail on older browsers without geolocation', function () {
+            var returned_error_message,
+              error_message =
+                new Error('Your browser does not support Geolocation.')
+
+            geolocationMock.getCurrentPosition =
+              window.navigator.geolocation.getCurrentPosition =
+                jasmine.createSpy('getCurrentPosition');
+
+            // Old browsers don't have the navigator api
+            $window.navigator = false;
+            $window.navigator.geolocation = false;
+
+            nyplCoordinatesService
+              .getBrowserCoordinates()
+              .then(function (data) {})
+              .catch(function (error) {
+                returned_error_message = error;
+              });
+              $rootScope.$digest();
+
+            // getBrowserCoordinates() calls geolocationAvailable() before
+            // performing a coordinate lookup.
+            expect(nyplCoordinatesService.geolocationAvailable()).toBe(false);
+            // We don't expect to call the getCurrentPosition function
+            // since the browser doesn't support geolocation
+            expect(geolocationMock.getCurrentPosition).not.toHaveBeenCalled();
+            expect(returned_error_message).toEqual(error_message);
+          })
+        });
+
         describe('Permission denied', function () {
           it('should return an error message', function () {
             var permissionDenied = function (success, failure) {
@@ -276,6 +310,12 @@ describe('NYPL coordinateService Module', function () {
           expect(result).toBe(0.92);
           expect(result).not.toBe(null);
         });
+
+      it('should return undefined if a value is missing', function () {
+        var result = nyplCoordinatesService.getDistance();
+
+        expect(result).not.toBeDefined();
+      });
     }); /* End nyplCoordinatesService.getDistance() */
 
   }); /* End nyplCoordinatesService */

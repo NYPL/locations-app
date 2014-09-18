@@ -1,0 +1,18 @@
+!!!
+%html
+  %head
+    %title NYPL | Amenities
+  %body
+    %h1 Amenities
+
+    %ul
+      - @data.each do |cat|
+        %li
+          cat.name
+          %ul
+            - cat.amenities.each do |a|
+              %li
+                %a{:href => "../#/amenities/id/#{a['_id']}"}= a['name']
+        
+
+

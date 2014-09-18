@@ -222,6 +222,19 @@ describe('NYPL Geocoder Service Tests', function () {
 
           expect(returnError).toEqual(googleError);
         });
+
+        it('should fail if the query is too short', function () {
+          var returnError, errorMessage = 'Query too short';
+
+          nyplGeocoderService.geocodeAddress('ba')
+            .then(function (data) {})
+            .catch(function (error) {
+              returnError = error.msg;
+            });
+          rootScope.$apply();
+
+          expect(returnError).toEqual(errorMessage);
+        });
       });
     });
     /* end nyplGeocoderService.geocodeAddress */
@@ -570,6 +583,10 @@ describe('NYPL Geocoder Service Tests', function () {
     });
 
     describe('nyplGeocoderService.removeMarker', function () {
+      it('should not perform anything if no id was passed', function () {
+        expect(nyplGeocoderService.removeMarker()).toEqual(nyplGeocoderService);
+      });
+
       it('should set the search marker map to null to remove it', function () {
         nyplGeocoderService
           .drawMap({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');

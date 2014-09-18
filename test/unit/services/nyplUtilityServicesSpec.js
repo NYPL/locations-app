@@ -82,6 +82,52 @@ describe('NYPL Utility Service Tests', function () {
       });
     });
 
+    describe('nyplUtility.branchException', function () {
+      var noExceptionshours = {
+          regular: [
+            {close: null, day: "Sun", open: null },
+            {close: "18:00", day: "Mon", open: "10:00" }
+          ]
+        },
+        hours = {
+          regular: [
+            {close: null, day: "Sun", open: null },
+            {close: "18:00", day: "Mon", open: "10:00" },
+            {close: "18:00", day: "Tue", open: "10:00" },
+            {close: "18:00", day: "Wed", open: "10:00" },
+            {close: "17:00", day: "Thu", open: "11:00" },
+            {close: "18:00", day: "Fri", open: "10:00" },
+            {close: "17:00", day: "Sat", open: "09:00" }
+          ],
+          exceptions: {
+            start: "2014-09-10T10:45:10-04:00",
+            end: "2014-09-11T00:00:00-04:00",
+            description: "The Rose Main Reading Room and the Bill Blass " +
+              "Public Catalog Room in the Stephen A. Schwarzman Building " +
+              "will be temporarily closed."
+          }
+        };
+
+      it('should return null if no input was passed', function () {
+        expect(nyplUtility.branchException()).toBe(null);
+      });
+
+      it('should return null if no exceptions are availble', function () {
+        expect(nyplUtility.branchException(noExceptionshours)).toBe(null);
+      });
+
+      it('should return an object with description and times', function () {
+        expect(nyplUtility.branchException(hours)).toEqual({
+          desc: 'The Rose Main Reading Room and the Bill Blass ' +
+            'Public Catalog Room in the Stephen A. Schwarzman Building ' +
+            'will be temporarily closed.',
+          start: '2014-09-10T10:45:10-04:00',
+          end : '2014-09-11T00:00:00-04:00'
+        });
+      });
+
+    });
+
     /*
      * nyplUtility.getAddressString(location, nicePrint)
      *   location: A location object.
@@ -143,7 +189,9 @@ describe('NYPL Utility Service Tests', function () {
         {href: "http://foursquare.com/venue/1029658", site: "foursquare"},
         {href: "http://www.youtube.com/NewYorkPublicLibrary", site: "youtube"},
         {href: "http://nypl.bibliocommons.com/lists/" +
-          "show/87528911_nypl_115th_street", site: "bibliocommons"}
+          "show/87528911_nypl_115th_street", site: "bibliocommons"},
+        {href: "http://www.instagram.com/nypl", site: "instagram"},
+        {href: "http://www.tumblr.com/", site: "tumblr"}
       ];
 
       it('should add an icon class and a text color class', function () {
@@ -160,7 +208,12 @@ describe('NYPL Utility Service Tests', function () {
               site: "youtube", classes: "icon-youtube redText"},
             {href: "http://nypl.bibliocommons.com/lists/show/" +
               "87528911_nypl_115th_street", site: "bibliocommons",
-              classes: "icon-bibliocommons"}
+              classes: "icon-bibliocommons"},
+            {href: "http://www.instagram.com/nypl", site: "instagram",
+              classes: "icon-instagram blackText"},
+            {href: "http://www.tumblr.com/", site: "tumblr",
+              classes: "icon-tumblr2 indigoText"}
+
           ];
 
         expect(modified_social_media).toEqual(expected_social_media);
@@ -221,8 +274,12 @@ describe('NYPL Utility Service Tests', function () {
         });
 
       it('should return null if no input is given', function () {
-        expect(nyplUtility.alerts()).toEqual(null);
+        expect(nyplUtility.alerts()).toBe(null);
       });
+
+      it('should return null if the input is not an array', function () {
+        expect(nyplUtility.alerts('this is not a valid alert')).toBe(null);
+      })
     });
 
     // describe('nyplUtility.popupWindow', function () {
@@ -300,7 +357,15 @@ describe('NYPL Utility Service Tests', function () {
 
       it('should return an empty string if no event is given', function () {
         expect(nyplUtility.calendarLink()).toEqual('');
+        expect(nyplUtility.calendarLink('yahoo')).toEqual('');
+        expect(nyplUtility.calendarLink('yahoo', nypl_event)).toEqual('');
       });
+
+      it('should return an empty string is google or yahoo were not passed',
+        function () {
+          expect(nyplUtility.calendarLink('someOtherService', nypl_event, location))
+            .toEqual('');
+        });
     });
 
     /*
@@ -327,8 +392,11 @@ describe('NYPL Utility Service Tests', function () {
         },
         address = "203 West 115th Street";
 
-      // it('should return a formatted string for ical', function () {
-      // });
+      it('should return an empty string if no event or adress was passed',
+        function () {
+          expect(nyplUtility.icalLink()).toEqual('');
+          expect(nyplUtility.icalLink(nypl_event)).toEqual('');
+        });
     });
 
     /*
@@ -452,8 +520,9 @@ describe('NYPL Utility Service Tests', function () {
       it('should return html from a string', function () {
         var html = "<p>hello world</p>";
 
-        // TODO: not sure how to test yet since it must use Angular's
-        // ng-bind-html in the element that it will be placed.
+        expect(
+          nyplUtility.returnHTML('<p>hello world</p>').$$unwrapTrustedValue()
+        ).toEqual('<p>hello world</p>');
       });
     });
 
