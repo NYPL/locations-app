@@ -255,27 +255,30 @@ header {
 
 				.logged-in-menu {
 	        display: none;
-	        width: 167px;
+	        width: 200px;
 	        border: 2px solid #5e564b;
 	        background-color: #e5e1da;
 	        position: absolute;
 	        list-style-type: none;
 	        right: 82px;
-	        z-index: 2001;
-	        padding: 15px 10px;
+	        z-index: 4;
+	        padding: 12px 10px;
 
-	        li a {
-	          margin: 0px 0px 10px 0px;
-	          padding: 0px;
-	          color: #000000;
-	          font-size: 9px;
-	          font-size: 0.9rem;
-	          float: none;
-	          text-transform: none; 
-	        }
+	        li {
+	        	margin: 5px 0px;
 
-	        li a:hover {
-	          text-decoration: underline;
+	        	a {
+		          margin: 0px;
+		          padding: 0px;
+		          color: #000000;
+		          font-size: 9px;
+		          font-size: 0.9rem;
+		          float: none;
+		          text-decoration: none;
+		          &:hover {
+		          	text-decoration: underline;
+		          }
+	        	}
 	        }
 	      }
 

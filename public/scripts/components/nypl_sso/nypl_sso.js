@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function nyplSSO(ssoStatus, $window, $location, $rootScope) {
+  function nyplSSO(ssoStatus, $window, $rootScope) {
     return {
       restrict: 'E',
       scope: {},
@@ -98,17 +98,32 @@
     };
   }
 
+  /** @namespace ssoStatus */
   function ssoStatus() {
     var ssoStatus = {};
 
+    /** @function ssoStatus.login
+     * @returns {string} User's usename from the bc_username cookie. If the
+     *  user is not logged in, undefined will be returned.
+     */
     ssoStatus.login = function () {
       return $.cookie('bc_username');
     };
 
+    /** @function ssoStatus.logged_in
+     * @returns {boolean} True if the user is logged in and false otherwise.
+     */
     ssoStatus.logged_in = function () {
       return !!(this.login() && this.login() !== null);
     };
 
+    /** @function ssoStatus.remember
+     * @param {string} [name] A setter and getter. Sets the user's username
+     *  if the parameter was passed. If no parameter was passed, it will return
+     *  the username from the remember_me cookie.
+     * @returns {string} User's usename from the bc_username cookie. If the
+     *  user is not logged in, undefined will be returned.
+     */
     ssoStatus.remember = function (name) {
       if (name) {
         return $.cookie('remember_me', name, {path: '/'});
@@ -116,11 +131,20 @@
       return $.cookie('remember_me');
     };
 
+    /** @function ssoStatus.remembered
+     * @returns {boolean} Returns true if the user clicked on the 'Remember me'
+     *  checkbox and the cookie is set, false otherwise.
+     */
     ssoStatus.remembered = function () {
       var remember_me = this.remember();
       return !!(remember_me && remember_me !== null);
     };
 
+    /** @function ssoStatus.forget
+     * @returns {boolean} Delete the 'remember_me' cookie if the 'Remember me'
+     *  checkbox was unselected when submitting the form. Returns true if
+     *  deleting was successful, false if deleting the cookie failed.
+     */
     ssoStatus.forget = function () {
       return $.removeCookie('remember_me', {path: '/'});
     };

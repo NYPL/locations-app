@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function nyplNavigation(ssoStatus, $window, $location, $rootScope) {
+  function nyplNavigation(ssoStatus, $window, $rootScope) {
     return {
       restrict: 'E',
       scope: {},
