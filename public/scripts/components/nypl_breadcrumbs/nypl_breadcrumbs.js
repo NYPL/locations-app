@@ -177,6 +177,8 @@
             parentStateSetting = currState.data.parentState,
             parentStateRoute,
             parentStateName,
+            parentDivisionName,
+            parentDivisionRoute,
             parentStateObj = {},
             context = (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState;
 
@@ -186,13 +188,25 @@
             }
             // Extract Parent-state properties
             parentStateName  = getParentName(currentState);
-            parentStateRoute = getParentRoute(context, parentStateSetting);
-            
-            if (parentStateName && parentStateRoute ) {
+            parentStateRoute = getParentRoute(context, parentStateSetting);   
+
+            // Extract parent division if available
+            parentDivisionName  = getParentDivisionName(context); 
+            parentDivisionRoute = getParentDivisionRoute(context);
+
+            if (parentStateName && parentStateRoute) {
+              // Create parent object
               parentStateObj = {
                 displayName: parentStateName,
                 route: parentStateRoute
               }
+
+              if (parentDivisionName && parentDivisionRoute) {
+                parentStateObj.division = {
+                  name: parentDivisionName,
+                  route: parentDivisionRoute
+                }
+              } 
               return parentStateObj;
             }
             else {
@@ -200,7 +214,53 @@
               return null;
             }
           }
-          // Undefined if not set
+          return undefined;
+        }
+
+        function getParentDivisionRoute(context) {
+          var currentContext = context,
+            divisionState = 'division',
+            parentRoute,
+            parentData;
+
+          if (typeof currentContext === 'object') {
+            // Loop through context and find parent data
+            Object.keys(currentContext).forEach(function(key) {
+              if (key !== '$stateParams') {
+                parentData = currentContext[key];
+              }
+            });
+
+            // Get the slug for the parent route
+            if (parentData._embedded.parent) {
+              parentRoute = parentData._embedded.parent.slug;
+              return divisionState + '({ ' + "\"" + divisionState + "\"" + ':' + "\"" + parentRoute + "\"" + '})';
+            }
+            return undefined;
+          }
+          return undefined;
+        }
+
+        function getParentDivisionName(context) {
+          var currentContext = context,
+            parentName,
+            parentData;
+
+          if (typeof currentContext === 'object') {
+            // Loop through context and find parent data
+            Object.keys(currentContext).forEach(function(key) {
+              if (key !== '$stateParams') {
+                parentData = currentContext[key];
+              }
+            });
+
+            // Get the slug for the parent route
+            if (parentData._embedded.parent) {
+              parentName = parentData._embedded.parent.name;
+              return parentName;
+            }
+            return undefined;
+          }
           return undefined;
         }
 
@@ -215,32 +275,21 @@
           var currentContext = context,
             stateSetting = parentStateSetting,
             parentRoute,
-            parentNameMatched = false;
+            parentData;
 
           if (typeof currentContext === 'object' && stateSetting) {
-            // Loop through context and find parent state matches
+            // Loop through context and find parent data
             Object.keys(currentContext).forEach(function(key) {
               if (key !== '$stateParams') {
-                Object.keys(currentContext[key]).forEach(function(key){
-                  if (key.indexOf(stateSetting) !== -1) {
-                    parentNameMatched = true;
-                  }
-                });
-                if (currentContext[key].location_slug && parentNameMatched) {
-                  parentRoute = currentContext[key].location_slug;
-                }
-                else if (currentContext[key].slug && parentNameMatched) {
-                  parentRoute = currentContext[key].slug;
-                }
+                parentData = currentContext[key];
               }
             });
-
-            if (parentRoute) {
+            // Get the slug for the parent route
+            if (parentData._embedded.location.slug) {
+              parentRoute = parentData._embedded.location.slug;
               return stateSetting + '({ ' + "\"" + stateSetting + "\"" + ':' + "\"" + parentRoute + "\"" + '})';
             }
-            else {
-              return stateSetting;
-            }
+            return undefined;
           }
           return undefined;
         }
@@ -254,7 +303,8 @@
           var parentStateSetting = currentState.data.parentState,
             parentStateData = $state.get(parentStateSetting),
             context = (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState,
-            parentStateName;
+            parentStateName,
+            parentData;
 
           if (parentStateData) {
             parentStateName = $interpolate(parentStateData.data.crumbName)(context);
@@ -263,17 +313,18 @@
             }
             // Not within the context interpolation, loop though object
             else if ( typeof context === 'object') {
+              // Loop through context and find parent data
               Object.keys(context).forEach(function(key) {
                 if (key !== '$stateParams') {
-                  if (context[key].location_name) {
-                    parentStateName = context[key].location_name;
-                  }
-                  else if (context[key].name) {
-                    parentStateName = context[key].name;
-                  }
+                  parentData = context[key];
                 }
               });
-              return parentStateName; 
+              
+              if (parentData._embedded.location.name) {
+                parentStateName = parentData._embedded.location.name;
+              }
+
+              return parentStateName;
             }
           }
           return undefined;
@@ -328,6 +379,13 @@
               displayName: parentState.displayName,
               route: parentState.route
             });
+
+            if (parentState.division) {
+              breadcrumbs.push({
+                displayName: parentState.division.name,
+                route: parentState.division.route
+              });
+            }
           }
 
           // If the current-state is active and not empty

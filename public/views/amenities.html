@@ -39,6 +39,14 @@
         </div><!--
 
         --><div class="grid__item one-whole lap-and-up-one-third">
+          <div data-ng-if="locations" class="amenity-location-list feature-brick">
+            <div data-ng-repeat="location in locations">
+              <a data-ui-sref="location({location: location.slug})">{{location.name}}</a>
+            </div>
+          </div>
+        </div><!--
+
+        --><div class="grid__item one-whole lap-and-up-one-third">
           <div class="services-callout callout">
             <p>
               The Library also offers
