@@ -40,9 +40,9 @@
 
         --><div class="grid__item one-whole lap-and-up-one-third">
           <div data-ng-if="locations" class="amenity-location-list feature-brick">
-            <li data-ng-repeat="location in locations">
+            <div data-ng-repeat="location in locations">
               <a data-ui-sref="location({location: location.slug})">{{location.name}}</a>
-            </li>
+            </div>
           </div>
         </div><!--
 
