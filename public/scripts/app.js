@@ -49,7 +49,6 @@ nypl_locations.config([
             return nyplLocationsService
                 .singleLocation($stateParams.location)
                 .then(function (data) {
-                    console.log(data);
                     return data.location;
                 })
                 .catch(function (err) {
@@ -61,7 +60,6 @@ nypl_locations.config([
             return nyplLocationsService
                 .singleDivision($stateParams.division)
                 .then(function (data) {
-                    console.log(data);
                     return data.division;
                 })
                 .catch(function (err) {
@@ -73,7 +71,6 @@ nypl_locations.config([
             return nyplLocationsService
                 .amenities($stateParams.amenity)
                 .then(function (data) {
-                    console.log(data);
                     return data;
                 })
                 .catch(function (error) {
