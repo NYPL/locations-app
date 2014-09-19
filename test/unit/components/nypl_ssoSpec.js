@@ -68,7 +68,8 @@ describe('nyplSSO module', function () {
         $.cookie = jasmine.createSpy('cookie');
 
         ssoStatus.remember('edwinguzman')
-        expect($.cookie).toHaveBeenCalledWith('remember_me', 'edwinguzman');
+        expect($.cookie)
+          .toHaveBeenCalledWith('remember_me', 'edwinguzman', {path: '/'});
       });
 
       it('should return the username', function () {

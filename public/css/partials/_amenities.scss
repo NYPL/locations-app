@@ -1,45 +1,111 @@
-// better spacing
-.amenities h3 {
-  margin: 0.5em 0 0;
-}
-
-.amenity-category-list {
-  list-style: none;
-  margin-left: 0;
-  @include breakpoint($min, $post-palm) {
-  	margin-left: 1em;
-  }
-  
-  & > li{
-	  margin-bottom: 2.5rem;
-  }
-}
-
-.amenities-list > li {
-	margin: 1rem 0;
-}
-
-// normalize the reserve button
-.amenities__reserve{
-	font-size: .9rem;
-	padding: 3px 9px;
-}
-
-
-// services "ad"
-.services-callout{
-	font-size: 1.5rem;
-	text-align: center;
+.amenities {
+	margin-top: 10px;
 	
-	.services-link{
-		text-decoration: none;
-		
-		&:hover{
-			text-decoration: underline;
+	.amenity-category-list {
+
+		.amenity-box {
+			padding: 10px;
+			border: 1px solid #e2dedb;
+			margin-bottom: 1.5em;
+
+			h3 {
+				margin: 0.05em 0 0;		
+				
+				@include breakpoint($min, $pre-laptop) {
+					font-size: 1.8rem;
+				}
+			}
+
+			.amenities-list {
+				margin: 0 0 0 2em;
+
+				& > li {
+					margin: 1rem 0;
+
+					& > a {
+
+						@include breakpoint($min, $pre-laptop) {
+							font-size: 1.1rem;
+						}
+					}
+
+					.amenity-links {
+						display: block;
+
+						& > span {
+							display: inline;
+
+							.read-more {
+								padding: 3px 9px;
+								margin-top: 6px;
+							}
+
+							// normalize the reserve button
+							.amenities__reserve {
+								font-size: .9rem;
+								padding: 3px 9px;
+								margin-left: 0;
+							}
+						}
+					}
+				}
+			}
 		}
 	}
-}
-.services-callout-2{
-	font-size: 2rem;
-	font-weight: bold;
+
+	.amenity-location-list {
+
+		.amenity-box {
+			padding: 10px;
+			border: 1px solid #e2dedb;
+			margin-bottom: 1.5em;
+
+			h3 {
+				margin: 0.05em 0 0;		
+				
+				@include breakpoint($min, $pre-laptop) {
+					font-size: 1.8rem;
+				}
+			}
+
+			.amenities-list {
+				margin: 0 0 0 2em;
+				padding: 0;
+				li {
+					margin: 1rem 0;
+					a {
+						@include breakpoint($min, $pre-tablet) {
+							font-size: 1.1rem;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// services "ad"
+	.services-callout {
+		padding: .5em;
+		border: 1px solid #e2dedb;
+		font-size: 1.5rem;
+		text-align: center;
+
+		.services-callout-2 {
+			font-size: 2rem;
+			font-weight: bold;
+		}
+		
+		.services-link {
+			text-decoration: none;
+			display: block;
+			
+			&:hover {
+				text-decoration: underline;
+			}
+
+			span {
+				vertical-align: -3px;
+			}
+		}
+	}
 }

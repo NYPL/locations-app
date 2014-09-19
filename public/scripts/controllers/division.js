@@ -6,6 +6,8 @@
 
     function DivisionCtrl($rootScope, $scope, division, nyplUtility) {
         $scope.division  = division;
+        $scope.location =  division._embedded.location;
+
         $rootScope.title = division.name;
         $scope.calendarLink = nyplUtility.calendarLink;
         $scope.icalLink = nyplUtility.icalLink;

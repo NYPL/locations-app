@@ -4,10 +4,19 @@
 (function () {
     'use strict';
 
-    function AmenitiesCtrl($rootScope, $scope, amenities, nyplAmenities) {
+    function AmenitiesCtrl($http, $rootScope, $scope, amenities, nyplAmenities) {
         $rootScope.title = "Amenities";
-        $scope.amenitiesCategories =
-            nyplAmenities.addCategoryIcon(amenities.amenities);
+        if (!amenities.length) {
+            $http
+                .get('json/amenitiesAtLibrary.json')
+                .success(function (data) {
+                    $scope.amenitiesCategories =
+                        nyplAmenities.addCategoryIcon(data.amenities);
+                });
+        } else {
+            $scope.amenitiesCategories =
+                nyplAmenities.addCategoryIcon(location._embedded.amenities);
+        }
     }
 
     // Load an amenity and list all the locations
