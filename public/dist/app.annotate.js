@@ -3,6 +3,7 @@
 
 var nypl_locations = angular.module('nypl_locations', [
     'ngSanitize',
+    // 'ngCookies',
     'ui.router',
     'ngAnimate',
     'locationService',
@@ -68,18 +69,6 @@ nypl_locations.config([
         }
         LoadDivision.$inject = ["nyplLocationsService", "$stateParams"];
 
-        function AmenitiesAtLibrary(nyplLocationsService, $stateParams) {
-            return nyplLocationsService
-                .amenitiesAtLibrary($stateParams.location)
-                .then(function (data) {
-                    return data.location;
-                })
-                .catch(function (error) {
-                    throw error;
-                });
-        }
-        AmenitiesAtLibrary.$inject = ["nyplLocationsService", "$stateParams"];
-
         function Amenities(nyplLocationsService, $stateParams) {
             return nyplLocationsService
                 .amenities($stateParams.amenity)
@@ -129,7 +118,7 @@ nypl_locations.config([
                 label: 'Locations'
             })
             .state('division', {
-                url: '/division/:division',
+                url: '/divisions/:division',
                 templateUrl: 'views/division.html',
                 controller: 'DivisionCtrl',
                 label: 'Division',
@@ -172,7 +161,7 @@ nypl_locations.config([
                 templateUrl: 'views/amenitiesAtLibrary.html',
                 controller: 'AmenitiesAtLibraryCtrl',
                 resolve: {
-                    location: AmenitiesAtLibrary
+                    location: LoadLocation
                 },
                 data: {
                     parentState: 'amenities',
@@ -197,7 +186,10 @@ nypl_locations.config([
     }
 ]);
 
-nypl_locations.run(["$state", "$rootScope", function ($state, $rootScope) {
+nypl_locations.run(["$state", "$rootScope", "$location", function ($state, $rootScope, $location) {
+    $rootScope.$on('$stateChangeSuccess', function () {
+        $rootScope.current_url = $location.absUrl();
+    });
     $rootScope.$on('$stateChangeError', function () {
         $state.go('404');
     });
@@ -452,6 +444,8 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
             parentStateSetting = currState.data.parentState,
             parentStateRoute,
             parentStateName,
+            parentDivisionName,
+            parentDivisionRoute,
             parentStateObj = {},
             context = (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState;
 
@@ -461,13 +455,25 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
             }
             // Extract Parent-state properties
             parentStateName  = getParentName(currentState);
-            parentStateRoute = getParentRoute(context, parentStateSetting);
-            
-            if (parentStateName && parentStateRoute ) {
+            parentStateRoute = getParentRoute(context, parentStateSetting);   
+
+            // Extract parent division if available
+            parentDivisionName  = getParentDivisionName(context); 
+            parentDivisionRoute = getParentDivisionRoute(context);
+
+            if (parentStateName && parentStateRoute) {
+              // Create parent object
               parentStateObj = {
                 displayName: parentStateName,
                 route: parentStateRoute
               }
+
+              if (parentDivisionName && parentDivisionRoute) {
+                parentStateObj.division = {
+                  name: parentDivisionName,
+                  route: parentDivisionRoute
+                }
+              } 
               return parentStateObj;
             }
             else {
@@ -475,7 +481,53 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
               return null;
             }
           }
-          // Undefined if not set
+          return undefined;
+        }
+
+        function getParentDivisionRoute(context) {
+          var currentContext = context,
+            divisionState = 'division',
+            parentRoute,
+            parentData;
+
+          if (typeof currentContext === 'object') {
+            // Loop through context and find parent data
+            Object.keys(currentContext).forEach(function(key) {
+              if (key !== '$stateParams') {
+                parentData = currentContext[key];
+              }
+            });
+
+            // Get the slug for the parent route
+            if (parentData._embedded.parent) {
+              parentRoute = parentData._embedded.parent.slug;
+              return divisionState + '({ ' + "\"" + divisionState + "\"" + ':' + "\"" + parentRoute + "\"" + '})';
+            }
+            return undefined;
+          }
+          return undefined;
+        }
+
+        function getParentDivisionName(context) {
+          var currentContext = context,
+            parentName,
+            parentData;
+
+          if (typeof currentContext === 'object') {
+            // Loop through context and find parent data
+            Object.keys(currentContext).forEach(function(key) {
+              if (key !== '$stateParams') {
+                parentData = currentContext[key];
+              }
+            });
+
+            // Get the slug for the parent route
+            if (parentData._embedded.parent) {
+              parentName = parentData._embedded.parent.name;
+              return parentName;
+            }
+            return undefined;
+          }
           return undefined;
         }
 
@@ -490,32 +542,21 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
           var currentContext = context,
             stateSetting = parentStateSetting,
             parentRoute,
-            parentNameMatched = false;
+            parentData;
 
           if (typeof currentContext === 'object' && stateSetting) {
-            // Loop through context and find parent state matches
+            // Loop through context and find parent data
             Object.keys(currentContext).forEach(function(key) {
               if (key !== '$stateParams') {
-                Object.keys(currentContext[key]).forEach(function(key){
-                  if (key.indexOf(stateSetting) !== -1) {
-                    parentNameMatched = true;
-                  }
-                });
-                if (currentContext[key].location_slug && parentNameMatched) {
-                  parentRoute = currentContext[key].location_slug;
-                }
-                else if (currentContext[key].slug && parentNameMatched) {
-                  parentRoute = currentContext[key].slug;
-                }
+                parentData = currentContext[key];
               }
             });
-
-            if (parentRoute) {
+            // Get the slug for the parent route
+            if (parentData._embedded.location.slug) {
+              parentRoute = parentData._embedded.location.slug;
               return stateSetting + '({ ' + "\"" + stateSetting + "\"" + ':' + "\"" + parentRoute + "\"" + '})';
             }
-            else {
-              return stateSetting;
-            }
+            return undefined;
           }
           return undefined;
         }
@@ -529,7 +570,8 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
           var parentStateSetting = currentState.data.parentState,
             parentStateData = $state.get(parentStateSetting),
             context = (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState,
-            parentStateName;
+            parentStateName,
+            parentData;
 
           if (parentStateData) {
             parentStateName = $interpolate(parentStateData.data.crumbName)(context);
@@ -538,17 +580,18 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
             }
             // Not within the context interpolation, loop though object
             else if ( typeof context === 'object') {
+              // Loop through context and find parent data
               Object.keys(context).forEach(function(key) {
                 if (key !== '$stateParams') {
-                  if (context[key].location_name) {
-                    parentStateName = context[key].location_name;
-                  }
-                  else if (context[key].name) {
-                    parentStateName = context[key].name;
-                  }
+                  parentData = context[key];
                 }
               });
-              return parentStateName; 
+              
+              if (parentData._embedded.location.name) {
+                parentStateName = parentData._embedded.location.name;
+              }
+
+              return parentStateName;
             }
           }
           return undefined;
@@ -603,6 +646,13 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
               displayName: parentState.displayName,
               route: parentState.route
             });
+
+            if (parentState.division) {
+              breadcrumbs.push({
+                displayName: parentState.division.name,
+                route: parentState.division.route
+              });
+            }
           }
 
           // If the current-state is active and not empty
@@ -654,7 +704,7 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
 (function () {
   'use strict';
 
-  /** @namespace nyplCoordinatesServce */
+  /** @namespace nyplCoordinatesService */
   function nyplCoordinatesService($q, $window) {
     var geoCoords = null,
       coordinatesService = {};
@@ -785,9 +835,10 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
 
 (function () {
     'use strict';
+
     /** @namespace nyplLocationsService */
     function nyplLocationsService($http, $q) {
-        var api = 'http://evening-mesa-7447-160.herokuapp.com',
+        var api = 'http://locations-api-beta.nypl.org',
             apiError = "Could not reach API",
             locationsApi = {};
 
@@ -807,11 +858,15 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
         locationsApi.allLocations = function () {
             var defer = $q.defer();
 
-            $http.get(api + '/locations', {cache: true})
+            $http.jsonp(
+                    api + '/locations' + '?callback=JSON_CALLBACK',
+                    {cache: true}
+                )
                 .success(function (data) {
                     defer.resolve(data);
                 })
-                .error(function () {
+                .error(function (data, status) {
+                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
@@ -834,11 +889,15 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
         locationsApi.singleLocation = function (location) {
             var defer = $q.defer();
 
-            $http.get(api + '/locations/' + location, {cache: true})
+            $http.jsonp(
+                    api + '/locations/' + location + '?callback=JSON_CALLBACK',
+                    {cache: true}
+                )
                 .success(function (data) {
                     defer.resolve(data);
                 })
-                .error(function () {
+                .error(function (data, status) {
+                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
@@ -861,11 +920,15 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
         locationsApi.singleDivision = function (division) {
             var defer = $q.defer();
 
-            $http.get(api + '/divisions/' + division, {cache: true})
+            $http.jsonp(
+                    api + '/divisions/' + division + '?callback=JSON_CALLBACK',
+                    {cache: true}
+                )
                 .success(function (data) {
                     defer.resolve(data);
                 })
-                .error(function () {
+                .error(function (data, status) {
+                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
@@ -900,11 +963,12 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
             var defer = $q.defer(),
                 url = !amenity ? '/amenities' : '/amenities/' + amenity;
 
-            $http.get(api + url, {cache: true})
+            $http.jsonp(api + url + '?callback=JSON_CALLBACK', {cache: true})
                 .success(function (data) {
                     defer.resolve(data);
                 })
-                .error(function () {
+                .error(function (data, status) {
+                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
@@ -929,12 +993,15 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
         locationsApi.amenitiesAtLibrary = function (location) {
             var defer = $q.defer();
 
-            // Not currently using /locations/:location/amenities
-            $http.get(api + '/locations/' + location, {cache: true})
+            $http.jsonp(
+                    api + '/locations/' + location + '/amenities' + '?callback=JSON_CALLBACK',
+                    {cache: true}
+                )
                 .success(function (data) {
                     defer.resolve(data);
                 })
-                .error(function () {
+                .error(function (data, status) {
+                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
@@ -955,11 +1022,15 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
         locationsApi.alerts = function () {
             var defer = $q.defer();
 
-            $http.get(api + '/alerts', {cache: true})
+            $http.jsonp(
+                    api + '/alerts' + '?callback=JSON_CALLBACK',
+                    {cache: true}
+                )
                 .success(function (data) {
                     defer.resolve(data);
                 })
-                .error(function () {
+                .error(function (data, status) {
+                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
@@ -980,247 +1051,427 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
 /*jslint indent: 2, maxlen: 80, nomen: true */
 /*globals $, window, console, jQuery, angular */
 
-function nyplNavigation() {
+(function () {
   'use strict';
 
-  return {
-    restrict: 'E',
-    scope: {},
-    replace: true,
-    templateUrl: 'scripts/components/nypl_navigation/nypl_navigation.html',
-    link: function (scope, element, attrs) {
-      // Open/Close Main Navigation
-      $('.dropDown').hover(
-        function () {
-          $(this).addClass('openDropDown');
-        },
-        function () {
-          $(this).removeClass('openDropDown');
-        }
-      );
-    }
-  };
-}
+  function nyplNavigation(ssoStatus, $window, $rootScope) {
+    return {
+      restrict: 'E',
+      scope: {},
+      replace: true,
+      templateUrl: 'scripts/components/nypl_navigation/nypl_navigation.html',
+      link: function (scope, element, attrs) {
+        // Open/Close Main Navigation
+        $('.dropDown').hover(
+          function () {
+            $(this).addClass('openDropDown');
+          },
+          function () {
+            $(this).removeClass('openDropDown');
+          }
+        );
 
-angular
-  .module('nyplNavigation', [])
-  .directive('nyplNavigation', nyplNavigation);
+        var logout_url;
+        $rootScope.$watch('current_url', function () {
+          logout_url = "https://nypl.bibliocommons.com/user/logout" +
+            "?destination=" + $rootScope.current_url;
+        })
 
-/*jslint indent: 2, maxlen: 80, nomen: true */
-/*globals $, window, console, jQuery, angular */
-
-function nyplSearch() {
-  'use strict';
-
-  return {
-    restrict: 'E',
-    scope: {},
-    replace: true,
-    templateUrl: 'scripts/components/nypl_search/nypl_search.html',
-    link: function (scope, element, attrs) {
-      var o = {};
-
-      // Set search box placeholder based on selected item
-      function setPrompt(lmnt) {
-        var item = lmnt.closest('li');
-        if (item.hasClass('search-the-catalog')) {
-          return o.term.attr('placeholder', o.prompt.catalog);
-        }
-
-        if (item.hasClass('search-the-website')) {
-          return o.term.attr('placeholder', o.prompt.site);
-        }
-
-        return o.term.attr('placeholder', o.prompt.default_val);
-      }
-
-      // Get the search term from the input box. Returns '' if the
-      // term is undefined
-      function searchTerm() {
-        return $.trim(o.term.val());
-      }
-
-      // Set error state in the search input box
-      function setError(err) {
-        if (err === undefined) {
-          err = 'Please enter a search term';
-        }
-        return o.term.addClass('error').attr('placeholder', err);
-      }
-
-      // Clear error state in the search input box
-      function clearError() {
-        return o.term.removeClass('error').attr('placeholder', '');
-      }
-
-      // The element referred to by mobile_flag should be hidden by
-      // a media query. Checking whether or not it is visible will tell
-      // us if that mediq query is active
-      function isMobile() {
-        return !o.mobile_flag.is(':visible');
-      }
-
-      // Get text of the active search scope selection.
-      // choice: optional element to use
-      function getChoice(choice) {
-        if (choice === undefined) {
-          choice = o.choices.find('input[type=radio]:checked').parent();
-        }
-        return $.trim(choice.text()).toLowerCase();
-      }
-
-      // Execute the search
-      function doSearch(scope) {
-        var term = searchTerm(),
-          target;
-
-        if (scope === undefined) {
-          scope = getChoice();
-        }
-
-        // Don't perform search if no term has been entered
-        if (term.length === 0) {
-          setError();
-          return false;
-        }
-
-        if (scope === 'nypl.org') {
-          target = window.location.protocol + '//' + 'nypl.org'
-            + '/search/apachesolr_search/' + term;
-        } else {
-          // Bibliocommons by default
-          target = 'http://nypl.bibliocommons.com/search?t=smart&q='
-            + term + '&commit=Search&searchOpt=catalogue';
-        }
-        window.location = target;
-        return false;
-      }
-
-      function init() {
-        angular.element('html').click(function () {
-          element.find('.pseudo-select').removeClass('open');
-          element.find('.error').removeClass('error');
-        });
-
-        var lmnt = element;
-
-        o.term = lmnt.find('#search-block-form-input');
-        o.search_button = lmnt.find('.search_button');
-        o.choices = lmnt.find('.pseudo-select');
-        o.mobile_flag = lmnt.find('.search-button');
-        o.prompt = {
-          default_val: o.term.attr("placeholder"),
-          catalog: "Search the catalog",
-          site: "Search NYPL.org"
-        };
-
-        // Don't let clicks get out of the search box
-        lmnt.click(function (e) {
-          e.stopPropagation();
-        });
-
-        // Override default submit, fire search button click event 
-        // instead
-        lmnt.find("#search-block-form").submit(function () {
-          o.search_button.click();
-          return false;
-        });
-
-        // Open search scope pane when you click into the
-        // search input
-        o.term.focus(function (e) {
-          o.choices.addClass('open');
-        });
-
-        // If the error class has been set on the input box, remove it
-        // when the user clicks into it
-        o.term.focus(function () {
-          clearError();
-        });
-
-        // Setup click action on submit button.
-        lmnt.find('.search-button').click(function () {
-          return doSearch();
-        });
-
-        // Setup click action on radio butons
-        o.choices.find('li input').click(function () {
-          setPrompt(angular.element(this));
-        });
-
-        // Setup click action on list items (will be active when items are
-        // as buttons on narrow screens
-        o.choices.find('li').click(function () {
-          if (isMobile()) {
-            if (searchTerm().length === 0) {
-              setError();
-            } else {
-              doSearch(getChoice(angular.element(this)));
-            }
+        // Toggle Mobile Login Form
+        $('.mobile-login').click(function (e) {
+          e.preventDefault();
+          if (ssoStatus.logged_in()) {
+            $window.location.href = logout_url;
+          } else {
+            $('.sso-login').toggleClass('visible');
           }
         });
+
+        scope.menuLabel = 'Log In';
+        if (ssoStatus.logged_in()) {
+          scope.menuLabel = 'Log Out';
+        }
+
       }
+    };
+  }
+  nyplNavigation.$inject = ["ssoStatus", "$window", "$rootScope"];
 
-      init();
-    }
-  };
-}
+  function nyplCollapsedButtons() {
+    return {
+      restrict: 'E',
+      scope: {},
+      replace: true,
+      templateUrl: 'scripts/components/nypl_navigation/nypl_collapsed_buttons.html',
+      link: function (scope, element, attrs) {
+        // Toggle Mobile Navigation
+        var navBtn = element.find('.nav-open-button'),
+          searchBtn = element.find('.search-open-button');
 
-angular
-  .module('nyplSearch', [])
-  .directive('nyplSearch', nyplSearch);
+        navBtn.click(function () {
+          $(this).toggleClass('open');
+          searchBtn.removeClass('open');
+          $('#search-block-form-input').removeClass('open-search');
+          $('.search-options-resp').removeClass('open');
+          $('#search-top').removeClass('open');
+          $('#main-nav').toggleClass('open-navigation');
+          $('.sso-login').removeClass('visible');
+          return false;
+        });
+
+        // Toggle Mobile Search
+        searchBtn.click(function () {
+          $(this).toggleClass('open');
+          navBtn.removeClass('open');
+          $('#search-block-form-input').toggleClass('open-search');
+          $('#search-top').toggleClass('open');
+          $('#main-nav').removeClass('open-navigation');
+          $('.sso-login').removeClass('visible');
+          return false;
+        });
+
+      }
+    };
+  }
+
+  angular
+    .module('nyplNavigation', [])
+    .directive('nyplNavigation', nyplNavigation)
+    .directive('nyplCollapsedButtons', nyplCollapsedButtons);
+
+})();
+
 
 /*jslint indent: 2, maxlen: 80, nomen: true */
 /*globals $, window, console, jQuery, angular */
 
-function nyplSSO() {
+(function () {
   'use strict';
 
-  return {
-    restrict: 'E',
-    scope: {},
-    replace: true,
-    templateUrl: 'scripts/components/nypl_sso/nypl_sso.html',
-    link: function (scope, element, attrs) {
-      // Toggle Desktop Login Form
-      element.find('.login-button').click(function () {
-        element.find('.sso-login').toggleClass('visible');
-      });
+  function nyplSearch() {
+    return {
+      restrict: 'E',
+      scope: {},
+      replace: true,
+      templateUrl: 'scripts/components/nypl_search/nypl_search.html',
+      link: function (scope, element, attrs) {
+        var o = {};
 
-      // Toggle Mobile Login Form
-      $('.mobile-login').click(function () {
-        element.find('.sso-login').toggleClass('visible');
-      });
+        // Set search box placeholder based on selected item
+        function setPrompt(lmnt) {
+          var item = lmnt.closest('li');
+          if (item.hasClass('search-the-catalog')) {
+            return o.term.attr('placeholder', o.prompt.catalog);
+          }
 
-      // Toggle Mobile Navigation
-      $('.nav-open-button').click(function () {
-        $(this).toggleClass('open');
-        $('.search-open-button').removeClass('open');
-        $('#search-block-form-input').removeClass('open-search');
-        $('.search-options-resp').removeClass('open');
-        $('#search-top').removeClass('open');
-        $('#main-nav').toggleClass('open-navigation');
-        $('.sso-login').removeClass('visible');
-        return false;
-      });
+          if (item.hasClass('search-the-website')) {
+            return o.term.attr('placeholder', o.prompt.site);
+          }
 
-      // Toggle Mobile Search
-      $('.search-open-button').click(function () {
-        $(this).toggleClass('open');
-        $('.nav-open-button').removeClass('open');
-        $('#main-nav').removeClass('open-navigation');
-        $('#search-block-form-input').toggleClass('open-search');
-        $('#search-top').toggleClass('open');
-        $('.sso-login').removeClass('visible');
-        return false;
-      });
-    }
-  };
-}
+          return o.term.attr('placeholder', o.prompt.default_val);
+        }
 
-angular
-  .module('nyplSSO', [])
-  .directive('nyplSso', nyplSSO);
+        // Get the search term from the input box. Returns '' if the
+        // term is undefined
+        function searchTerm() {
+          return $.trim(o.term.val());
+        }
+
+        // Set error state in the search input box
+        function setError(err) {
+          if (err === undefined) {
+            err = 'Please enter a search term';
+          }
+          return o.term.addClass('error').attr('placeholder', err);
+        }
+
+        // Clear error state in the search input box
+        function clearError() {
+          return o.term.removeClass('error').attr('placeholder', '');
+        }
+
+        // The element referred to by mobile_flag should be hidden by
+        // a media query. Checking whether or not it is visible will tell
+        // us if that mediq query is active
+        function isMobile() {
+          return !o.mobile_flag.is(':visible');
+        }
+
+        // Get text of the active search scope selection.
+        // choice: optional element to use
+        function getChoice(choice) {
+          if (choice === undefined) {
+            choice = o.choices.find('input[type=radio]:checked').parent();
+          }
+          return $.trim(choice.text()).toLowerCase();
+        }
+
+        // Execute the search
+        function doSearch(scope) {
+          var term = searchTerm(),
+            target;
+
+          if (scope === undefined) {
+            scope = getChoice();
+          }
+
+          // Don't perform search if no term has been entered
+          if (term.length === 0) {
+            setError();
+            return false;
+          }
+
+          if (scope === 'nypl.org') {
+            target = window.location.protocol + '//' + 'nypl.org'
+              + '/search/apachesolr_search/' + term;
+          } else {
+            // Bibliocommons by default
+            target = 'http://nypl.bibliocommons.com/search?t=smart&q='
+              + term + '&commit=Search&searchOpt=catalogue';
+          }
+          window.location = target;
+          return false;
+        }
+
+        function init() {
+          angular.element('html').click(function () {
+            element.find('.pseudo-select').removeClass('open');
+            element.find('.error').removeClass('error');
+          });
+
+          var lmnt = element;
+
+          o.term = lmnt.find('#search-block-form-input');
+          o.search_button = lmnt.find('.search_button');
+          o.choices = lmnt.find('.pseudo-select');
+          o.mobile_flag = lmnt.find('.search-button');
+          o.prompt = {
+            default_val: o.term.attr("placeholder"),
+            catalog: "Search the catalog",
+            site: "Search NYPL.org"
+          };
+
+          // Don't let clicks get out of the search box
+          lmnt.click(function (e) {
+            e.stopPropagation();
+          });
+
+          // Override default submit, fire search button click event 
+          // instead
+          lmnt.find("#search-block-form").submit(function () {
+            o.search_button.click();
+            return false;
+          });
+
+          // Open search scope pane when you click into the
+          // search input
+          o.term.focus(function (e) {
+            o.choices.addClass('open');
+          });
+
+          // If the error class has been set on the input box, remove it
+          // when the user clicks into it
+          o.term.focus(function () {
+            clearError();
+          });
+
+          // Setup click action on submit button.
+          lmnt.find('.search-button').click(function () {
+            return doSearch();
+          });
+
+          // Setup click action on radio butons
+          o.choices.find('li input').click(function () {
+            setPrompt(angular.element(this));
+          });
+
+          // Setup click action on list items (will be active when items are
+          // as buttons on narrow screens
+          o.choices.find('li').click(function () {
+            if (isMobile()) {
+              if (searchTerm().length === 0) {
+                setError();
+              } else {
+                doSearch(getChoice(angular.element(this)));
+              }
+            }
+          });
+        }
+
+        init();
+      }
+    };
+  }
+
+  angular
+    .module('nyplSearch', [])
+    .directive('nyplSearch', nyplSearch);
+
+})();
+
+
+/*jslint indent: 2, maxlen: 80, nomen: true */
+/*globals $, window, console, jQuery, angular */
+
+(function () {
+  'use strict';
+
+  function nyplSSO(ssoStatus, $window, $rootScope) {
+    return {
+      restrict: 'E',
+      scope: {},
+      replace: true,
+      templateUrl: 'scripts/components/nypl_sso/nypl_sso.html',
+      link: function (scope, element, attrs) {
+        var ssoLoginElement = $('.sso-login'),
+          ssoUserButton = $('.login-button');
+
+        function makeForm(username, pin, checkbox, button) {
+          var current_url = '';
+
+          if (ssoStatus.remembered()) {
+            username.val(ssoStatus.remember()); // Fill in username
+            checkbox.attr("checked", true); // Mark the checkbox
+          }
+          
+          // If the checkbox is unchecked, remove the cookie
+          checkbox.click(function () {
+            if (!$(this).is(':checked')) {
+              ssoStatus.forget();
+            }
+          });
+
+          $rootScope.$watch('current_url', function () {
+            current_url = $rootScope.current_url;
+          });
+
+          // Submit the login form
+          button.click(function (e) {
+            var url = 'https://nypl.bibliocommons.com/user/login?destination=';
+            e.preventDefault();
+
+            if (checkbox.is(':checked')) {
+              ssoStatus.remember(username.val());
+            }
+
+            url += current_url.replace('#', '%23') + '&';
+            url += 'name=' + username.val();
+            url += '&user_pin=' + pin.val();
+
+            $window.location.href = url;
+          });
+        }
+
+        function initForm(options) {
+          var defaults = {
+              username: '#username',
+              pin: '#pin',
+              remember_checkbox: '#remember_me',
+              login_button: '#login-form-submit'
+            },
+            settings = $.extend({}, defaults, options);
+
+          if (ssoStatus.logged_in()) {
+            ssoLoginElement.addClass('logged-in');
+          }
+
+          makeForm(
+            $(settings.username),
+            $(settings.pin),
+            $(settings.remember_checkbox),
+            $(settings.login_button)
+          );
+        }
+
+        function userButton(options) {
+          $rootScope.$watch('current_url', function () {
+            scope.logout_url = "https://nypl.bibliocommons.com/user/logout" +
+              "?destination=" + $rootScope.current_url;
+          })
+
+          // Set the button label
+          scope.header_button_label = "LOG IN";
+
+          if (ssoStatus.logged_in()) {
+            scope.header_button_label = ssoStatus.login();
+            ssoUserButton.addClass('logged-in');
+          }
+
+          // Toggle Desktop Login Form
+          ssoUserButton.click(function () {
+            ssoLoginElement.toggleClass('visible');
+          });
+        }
+
+        initForm();
+        userButton();
+
+      }
+    };
+  }
+  nyplSSO.$inject = ["ssoStatus", "$window", "$rootScope"];
+
+  /** @namespace ssoStatus */
+  function ssoStatus() {
+    var ssoStatus = {};
+
+    /** @function ssoStatus.login
+     * @returns {string} User's usename from the bc_username cookie. If the
+     *  user is not logged in, undefined will be returned.
+     */
+    ssoStatus.login = function () {
+      return $.cookie('bc_username');
+    };
+
+    /** @function ssoStatus.logged_in
+     * @returns {boolean} True if the user is logged in and false otherwise.
+     */
+    ssoStatus.logged_in = function () {
+      return !!(this.login() && this.login() !== null);
+    };
+
+    /** @function ssoStatus.remember
+     * @param {string} [name] A setter and getter. Sets the user's username
+     *  if the parameter was passed. If no parameter was passed, it will return
+     *  the username from the remember_me cookie.
+     * @returns {string} User's usename from the bc_username cookie. If the
+     *  user is not logged in, undefined will be returned.
+     */
+    ssoStatus.remember = function (name) {
+      if (name) {
+        return $.cookie('remember_me', name, {path: '/'});
+      }
+      return $.cookie('remember_me');
+    };
+
+    /** @function ssoStatus.remembered
+     * @returns {boolean} Returns true if the user clicked on the 'Remember me'
+     *  checkbox and the cookie is set, false otherwise.
+     */
+    ssoStatus.remembered = function () {
+      var remember_me = this.remember();
+      return !!(remember_me && remember_me !== null);
+    };
+
+    /** @function ssoStatus.forget
+     * @returns {boolean} Delete the 'remember_me' cookie if the 'Remember me'
+     *  checkbox was unselected when submitting the form. Returns true if
+     *  deleting was successful, false if deleting the cookie failed.
+     */
+    ssoStatus.forget = function () {
+      return $.removeCookie('remember_me', {path: '/'});
+    };
+
+    return ssoStatus;
+  }
+
+  angular
+    .module('nyplSSO', [])
+    .service('ssoStatus', ssoStatus)
+    .directive('nyplSso', nyplSSO);
+
+})();
+
 
 /*jslint indent: 4, maxlen: 80 */
 /*global nypl_locations, angular */
@@ -1228,12 +1479,21 @@ angular
 (function () {
     'use strict';
 
-    function AmenitiesCtrl($rootScope, $scope, amenities, nyplAmenities) {
+    function AmenitiesCtrl($http, $rootScope, $scope, amenities, nyplAmenities) {
         $rootScope.title = "Amenities";
-        $scope.amenitiesCategories =
-            nyplAmenities.addCategoryIcon(amenities.amenities);
+        if (!amenities.length) {
+            $http
+                .get('json/amenitiesAtLibrary.json')
+                .success(function (data) {
+                    $scope.amenitiesCategories =
+                        nyplAmenities.addCategoryIcon(data.amenities);
+                });
+        } else {
+            $scope.amenitiesCategories =
+                nyplAmenities.addCategoryIcon(location._embedded.amenities);
+        }
     }
-    AmenitiesCtrl.$inject = ["$rootScope", "$scope", "amenities", "nyplAmenities"];
+    AmenitiesCtrl.$inject = ["$http", "$rootScope", "$scope", "amenities", "nyplAmenities"];
 
     // Load an amenity and list all the locations
     // where the amenity can be found.
@@ -1281,14 +1541,12 @@ angular
     'use strict';
 
     function DivisionCtrl($rootScope, $scope, division, nyplUtility) {
-        var homeUrl,
-            locationUrl;
-
         $scope.division  = division;
+        $scope.location =  division._embedded.location;
+
         $rootScope.title = division.name;
         $scope.calendarLink = nyplUtility.calendarLink;
         $scope.icalLink = nyplUtility.icalLink;
-        $scope.siteWideAlert = nyplUtility.alerts(division._embedded.alerts);
 
         if (division.hours) {
             $scope.hoursToday = nyplUtility.hoursToday(division.hours);
@@ -1529,6 +1787,7 @@ angular
             createFilterMarker = function (slug) {
                 // store the filtered location marker if in the list view,
                 // so it can be displayed when going to the map view.
+                $scope.select_library_for_map = '';
                 nyplGeocoderService.setFilterMarker(slug);
                 if (isMapPage()) {
                     nyplGeocoderService.drawFilterMarker(slug);
@@ -1635,22 +1894,21 @@ angular
                 containerWidth = parseInt(content.css('width'), 10),
                 top;
 
+            // only scroll the page on mobile
             if (containerWidth < 601) {
                 top = angular.element('.map-search__results').offset() ||
                     angular.element('.search__results').offset();
-            } else {
-                top = content.offset();
+                $timeout(function () {
+                    angular.element('body').animate({scrollTop: top.top}, 1000);
+                }, 1000);
             }
-
-            $timeout(function () {
-                angular.element('body').animate({scrollTop: top.top}, 1000);
-            }, 1000);
         };
 
         $scope.viewMapLibrary = function (library_id) {
             var location = _.where($scope.locations, { 'slug' : library_id });
             $scope.select_library_for_map = library_id;
 
+            $scope.searchMarker = false;
             $state.go('home.map');
 
             organizeLocations($scope.locations, location, 'name');
@@ -1848,9 +2106,9 @@ angular
                     if ($scope.select_library_for_map) {
                         nyplGeocoderService
                             .panExistingMarker($scope.select_library_for_map);
+                    } else {
+                        nyplGeocoderService.drawFilterMarker(filteredLocation);
                     }
-
-                    nyplGeocoderService.drawFilterMarker(filteredLocation);
 
                     $scope.scrollPage();
                 }, 1200);
@@ -2453,20 +2711,20 @@ angular
       var icon = default_icon || '';
       _.each(amenities, function (amenity) {
         switch (amenity.id) {
-        case 7952: // Wireless
+        case 7967: // Wireless
           amenity.icon = 'icon-connection';
           break;
-        case 7953: // Laptop
+        case 7965: // Laptop
           amenity.icon = 'icon-laptop';
           break;
-        case 7954: // Printing
+        case 7966: // Printing
           amenity.icon = 'icon-print';
           break;
-        case 7955: // Electrical oulets
+        case 7968: // Electrical oulets
           amenity.icon = 'icon-power-cord';
           break;
-        case 7958: // Book drop
-        case 7951:
+        case 7972: // Book drop
+        case 7971:
           amenity.icon = 'icon-box-add';
           break;
         default:
@@ -3243,6 +3501,8 @@ angular
           return exception;
         }
       }
+
+      return null;
     };
 
     /** @function nyplUtility.getAddressString
@@ -3392,7 +3652,7 @@ angular
     };
 
     utility.calendarLink = function (type, event, location) {
-      if (!type || !event) {
+      if (!type || !event || !location) {
         return '';
       }
       var title = event.title,
@@ -3451,9 +3711,11 @@ angular
           "\nDESCRIPTION:" + event.body +
           "\nURL;VALUE=URI:" + url +
           "\nSUMMARY:" + event.title +
-          "\nEND:VEVENT\nEND:VCALENDAR";
+          "\nEND:VEVENT\nEND:VCALENDAR",
+        icalLink = 'data:text/calendar;chartset=utf-8,' + encodeURI(icsMSG);
 
-      $window.open('data:text/calendar;chartset=utf-8,' + encodeURI(icsMSG));
+      $window.open(icalLink);
+      return icalLink;
     };
 
     // Iterate through lon/lat and calculate distance

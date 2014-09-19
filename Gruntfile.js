@@ -39,8 +39,8 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-ng-annotate');
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
-  grunt.registerTask('default', [
-    'jsdoc', 'ngAnnotate'
+  grunt.registerTask('buildJS', [
+    'ngAnnotate', 'uglify'
   ]);
 
 };
