@@ -1,57 +1,111 @@
-.amenity-category-list {
+.amenities {
 	margin-top: 10px;
 	
-	.amenity-box {
-		margin-bottom: 1.5em;
+	.amenity-category-list {
 
-		h3 {
-			margin: 0.5em 0 0;
-		}
+		.amenity-box {
+			padding: 10px;
+			border: 1px solid #e2dedb;
+			margin-bottom: 1.5em;
 
-		.amenities-list {
-			margin: 0 0 0 1.75em;
+			h3 {
+				margin: 0.05em 0 0;		
+				
+				@include breakpoint($min, $pre-laptop) {
+					font-size: 1.8rem;
+				}
+			}
 
-			& > li {
-				margin: 1rem 0;
+			.amenities-list {
+				margin: 0 0 0 2em;
 
-				.amenity-links {
-					display: block;
+				& > li {
+					margin: 1rem 0;
 
-					& > span {
-						display: inline;
+					& > a {
 
-						.read-more {
-							padding: 3px 9px;
-							margin-top: 6px;
+						@include breakpoint($min, $pre-laptop) {
+							font-size: 1.1rem;
 						}
+					}
 
-						// normalize the reserve button
-						.amenities__reserve {
-							font-size: .9rem;
-							padding: 3px 9px;
-							margin-left: 0;
+					.amenity-links {
+						display: block;
+
+						& > span {
+							display: inline;
+
+							.read-more {
+								padding: 3px 9px;
+								margin-top: 6px;
+							}
+
+							// normalize the reserve button
+							.amenities__reserve {
+								font-size: .9rem;
+								padding: 3px 9px;
+								margin-left: 0;
+							}
 						}
 					}
 				}
 			}
 		}
 	}
-}
 
-// services "ad"
-.services-callout{
-	font-size: 1.5rem;
-	text-align: center;
-	
-	.services-link{
-		text-decoration: none;
-		
-		&:hover{
-			text-decoration: underline;
+	.amenity-location-list {
+
+		.amenity-box {
+			padding: 10px;
+			border: 1px solid #e2dedb;
+			margin-bottom: 1.5em;
+
+			h3 {
+				margin: 0.05em 0 0;		
+				
+				@include breakpoint($min, $pre-laptop) {
+					font-size: 1.8rem;
+				}
+			}
+
+			.amenities-list {
+				margin: 0 0 0 2em;
+				padding: 0;
+				li {
+					margin: 1rem 0;
+					a {
+						@include breakpoint($min, $pre-tablet) {
+							font-size: 1.1rem;
+						}
+					}
+				}
+			}
 		}
 	}
-}
-.services-callout-2{
-	font-size: 2rem;
-	font-weight: bold;
+
+	// services "ad"
+	.services-callout {
+		padding: .5em;
+		border: 1px solid #e2dedb;
+		font-size: 1.5rem;
+		text-align: center;
+
+		.services-callout-2 {
+			font-size: 2rem;
+			font-weight: bold;
+		}
+		
+		.services-link {
+			text-decoration: none;
+			display: block;
+			
+			&:hover {
+				text-decoration: underline;
+			}
+
+			span {
+				vertical-align: -3px;
+			}
+		}
+	}
 }

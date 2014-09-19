@@ -16,7 +16,8 @@ describe('NYPL Search Service Tests', function () {
         {id: 'BAR', name: 'Baychester Library'},
         {id: 'BLC', name: 'Bronx Library Center'},
         {id: 'KP', name: 'Kips Bay Library'},
-        {id: 'PM', name: 'Pelham Bay Library'}
+        {id: 'PM', name: 'Pelham Bay Library'},
+        {id: 'PKR', name: 'Parkchester Library'}
       ];
 
       // inject your service for testing.
