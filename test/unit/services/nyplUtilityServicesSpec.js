@@ -282,9 +282,55 @@ describe('NYPL Utility Service Tests', function () {
       })
     });
 
-    // describe('nyplUtility.popupWindow', function () {
-    //   // Not sure how to test just yet
-    // });
+    describe('nyplUtility.popupWindow', function () {
+      var nyplChatLink;
+      beforeEach(function () {
+        window.open = jasmine.createSpy('window.open');
+        window.moveTo = jasmine.createSpy('window.moveTo');
+        nyplChatLink = 'http://www.nypl.org/ask-librarian';
+      });
+
+      it('should have a popupWindow function', function () {
+        expect(nyplUtility.popupWindow).toBeDefined();
+      });
+
+      it('should return if no link was passed', function () {
+        expect(nyplUtility.popupWindow()).not.toBeDefined();
+      });
+
+      it('should open a window with an empty title, default width and height',
+        function () {
+          nyplUtility.popupWindow(nyplChatLink);
+
+          expect(window.open).toHaveBeenCalled();
+          expect(window.open).toHaveBeenCalledWith(
+            nyplChatLink, '', 'menubar=1,resizable=1,width=300,height=500'
+          );
+        });
+
+      it('should open a window with a title', function () {
+        nyplUtility.popupWindow(nyplChatLink, 'NYPL Chat');
+
+        expect(window.open).toHaveBeenCalled();
+        expect(window.open).toHaveBeenCalledWith(
+          nyplChatLink,
+          'NYPL Chat',
+          'menubar=1,resizable=1,width=300,height=500'
+        );
+        expect(window.moveTo).toHaveBeenCalled();
+      });
+
+      it('should open a window with a set width and height', function () {
+        nyplUtility.popupWindow(nyplChatLink, 'NYPL Chat', 210, 450);
+
+        expect(window.open).toHaveBeenCalled();
+        expect(window.open).toHaveBeenCalledWith(
+          nyplChatLink,
+          'NYPL Chat',
+          'menubar=1,resizable=1,width=210,height=450'
+        );
+      });
+    });
 
     /*
      * nyplUtility.calendarLink(type, event, location)
