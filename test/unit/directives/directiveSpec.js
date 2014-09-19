@@ -59,11 +59,17 @@ describe('NYPL Directive Unit Tests', function () {
    *   of languages that the site can be translated into.
    */
   describe('Directive: nyplTranslate', function () {
-    var nyplTranslate, template;
+    var nyplTranslate, template, $translate, englishLink, spanishLink;
 
-    beforeEach(inject(function () {
+    beforeEach(inject(function (_$translate_) {
+      $translate = _$translate_;
+      $translate.use = jasmine.createSpy('$translate.use');
+
       template = '<nypl-translate></nypl-translate>';
       nyplTranslate = createDirective(template);
+
+      englishLink = nyplTranslate.find('a')[0];
+      spanishLink = nyplTranslate.find('a')[1];
     }));
 
     it('should have a translate class', function () {
@@ -73,6 +79,18 @@ describe('NYPL Directive Unit Tests', function () {
     // At the time of writing this test, we only have two languages
     it('should have two spans elements', function () {
       expect(nyplTranslate.find('span').length).toBe(2);
+    });
+
+    it('should display the Spanish translation', function () {
+      spanishLink.click();
+
+      expect($translate.use).toHaveBeenCalledWith('es');
+    });
+
+    it('should display the English translation', function () {
+      englishLink.click();
+
+      expect($translate.use).toHaveBeenCalledWith('en');
     });
   });
 
@@ -244,9 +262,12 @@ describe('NYPL Directive Unit Tests', function () {
    *   widget to talk to a librarian.
    */
   describe('Directive: librarianchatbutton', function () {
-    var librarianchatbutton, template;
+    var librarianchatbutton, template, nyplUtility;
 
-    beforeEach(inject(function () {
+    beforeEach(inject(function (_nyplUtility_) {
+      nyplUtility = _nyplUtility_;
+      nyplUtility.popupWindow = jasmine.createSpy('popupWindow');
+
       template = '<librarianchatbutton />';
       librarianchatbutton = createDirective(template);
     }));
@@ -257,6 +278,34 @@ describe('NYPL Directive Unit Tests', function () {
 
     it('should create a link', function () {
       expect(librarianchatbutton.text()).toEqual('Chat with a librarian');
+    });
+
+    it('should call the nyplUtility service to open a new window', function () {
+      librarianchatbutton.click();
+
+      expect(nyplUtility.popupWindow).toHaveBeenCalledWith(
+        'http://www.nypl.org/ask-librarian', 'NYPL Chat', 210, 450);
+    });
+  });
+
+  /*
+   * <div scrolltop></div>
+   */
+  describe('Directive: scrolltop', function () {
+    var scrolltop, template, $state;
+
+    beforeEach(inject(function (_$state_) {
+      $state = _$state_;
+      window.scrollTo = jasmine.createSpy('window.scrollTo');
+
+      template = '<div scrolltop></div>';
+      scrolltop = createDirective(template);
+    }));
+
+    it('should scroll to the top on state change', function () {
+      $state.go('home.map');
+
+      expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
     });
   });
 
@@ -451,28 +500,16 @@ describe('NYPL Directive Unit Tests', function () {
     var nyplLibraryAlert, template;
 
     beforeEach(inject(function () {
-      scope.libraryAlert = "Test library specific alert";
-
-      template = "<nypl-library-alert></nypl-library-alert>";
+      scope.alert = {
+        description: "Test library specific alert"
+      };
+      template = "<nypl-library-alert exception='alert'></nypl-library-alert>";
       nyplLibraryAlert = createDirective(template);
     }));
 
-    it('should display a site wide alert', function () {
-      var date, MockDate;
-
-      // Override the date function so we can test a real alert
-      // Store a copy so we can return the original one later
-      date = new Date(2014, 5, 29);
-      MockDate = Date;
-      Date = function () { return date; };
-
-      // Not sure how to test since it requires libraryAlert variable to be in
-      // the scope for the directive. Doesn't seem to work if it's assigned
-      // to the $rootScope, however.
-      // console.log($rootScope);
-
-      // Use the native Date function again
-      Date = MockDate;
+    it('should display an alert', function () {
+      // Doesn't work because I'm not testing correctly but not sure how.
+      // expect(scope.libraryAlert).toEqual("Test library specific alert");
     });
   });
 

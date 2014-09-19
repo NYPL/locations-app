@@ -11,14 +11,6 @@ describe('Locinator State Routing', function () {
   beforeEach(function () {
     module('nypl_locations');
 
-    // module(function ($provider) {
-    //   $provider.provide('$location', {
-    //     path: function (p) {
-    //       interceptedPath = p;
-    //     }
-    //   });
-
-    // });
     inject(function (_$rootScope_, _$state_, _$injector_, _$httpBackend_, _$templateCache_) {
       $state = _$state_;
       $rootScope = _$rootScope_;
