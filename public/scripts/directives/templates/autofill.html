@@ -1,17 +1,19 @@
-
-<div class="autofill-container" data-ng-if="model">
-	<div class="lookahead">{{lookahead}}</div>
+<div class="lookahead" data-ng-if="model">
+	<p><span>{{inputValue}}</span>{{lookahead}}</p>
+	<p class="hidden">{{completeWord}}</p>
+</div>
+<div class="autofill-container" data-ng-if="model && showAutofill">
 	<div class="location-item" ng-repeat="item in data | filter:model | orderBy:'name'">
-	  <p class="location-name">
+	  <div class="location-name">
 	  	<a data-ui-sref='location({ location: item.slug })'>
 	  		{{item.name}}
 	  	</a>
-	  </p>
-	    <a class="icon-map view-on-map" data-ng-click="mapView(item[slug])">
-        {{ 'VIEW_MAP' | translate}}
-      </a>
+	  </div>
+    <a class="icon-map view-on-map" data-ng-click="mapView(item[slug])">
+      {{ 'VIEW_MAP' | translate}}
+    </a>
 	</div>
 	<div class="geolocation-search">
-		<p>Search for locations near {{model}}</p>
+		<p>Search for locations near <b>{{model}}</b></p>
 	</div>
 </div>

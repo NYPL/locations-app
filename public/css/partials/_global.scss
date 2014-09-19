@@ -218,6 +218,79 @@ time {
 	}
 }
 
+.autofill-container {
+	position: absolute;
+	width: 100%;
+	z-index: 1;
+	background-color: #fcfaf7;
+	border: 1px solid #CCC;
+	padding: 10px;
+
+	.location-item {
+		border-bottom: 1px solid #eee;
+		margin: 0;
+		padding: 10px 0px;
+
+		.location-name {
+			margin: 5px 0px;
+			padding: 0;
+			display: block;
+			@include breakpoint($min, $mobile-phone) {
+				margin: 0;
+				display: inline-block;
+			}
+		}
+		.view-on-map {
+			display: block;
+			@include breakpoint($min, $mobile-phone) {
+				display: inline-block;
+				position: absolute;
+				right: 15px;
+			}
+			&:hover {
+				cursor: pointer;
+			}
+		}
+	}
+
+	.geolocation-search {
+		padding: 5px 0 0 0;
+
+		&:hover {
+			cursor: pointer;
+		}
+
+		p {
+			margin: 0;
+			max-width: none;
+		}
+	}
+}
+
+.lookahead {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 45px;
+
+	p {
+		color: #ccc;
+		position: relative;
+		margin: 0;
+		padding: 0;
+		top: 11px;
+		left: 31px;
+
+		&.hidden {
+			display: none;
+		}
+
+		span {
+			color: transparent !important;
+		}
+	}
+}
+
 // Firefox specific override rules
 @-moz-document url-prefix() {
 

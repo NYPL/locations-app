@@ -278,19 +278,15 @@ function nyplAutofill($filter) {
             model: '=ngModel',
             mapView: '&'
         },
-        link: function (scope, elem, attrs, ngModel) {
-
-            scope.$watch('ngModel', function (value) {
-                // Ensure ngModel is defined 
-                if ((value !== null) && (value !== undefined) && (value !== '')) {
-                    
-                }
-            });
+        link: function ($scope, elem, attrs, ctrl) {
+            
         },
         controller: function($scope) {
-            var lazyFilter;
             $scope.lookahead = '';
-
+            $scope.inputValue = '';
+            $scope.completeWord = '';
+            $scope.showAutofill = false;
+            var inputBox = angular.element(document.getElementById('searchTerm'));
 
             /* *
              * Watch the model and look for an appropriate suggestion in the specified source array.
@@ -303,15 +299,32 @@ function nyplAutofill($filter) {
                         Object.keys($scope.data).forEach(function(key) {
 
                            if ( ($scope.data[key].name + '').substring(0, value.length).toLowerCase() == value.toLowerCase()) {
-                                console.log(value + ($scope.data[key].name + '').substring(value.length));
-                            return $scope.lookahead = value + ($scope.data[key].name + '').substring(value.length);
+                            $scope.inputValue = value;
+                            $scope.lookahead = ($scope.data[key].name + '').substring(value.length);
+                            return $scope.completeWord = $scope.inputValue + $scope.lookahead;
                            }
-                            
                         });
                     }
                 }
- 
+
+                inputBox.bind("keydown keypress", function (event) {
+                    $scope.showAutofill = true;
+                    if (event.which === 13) {
+
+                        if ( $scope.completeWord === $scope.model ||
+                             $scope.completeWord === '' ||
+                             $scope.model === ''
+                            ) return;
+
+                        event.preventDefault();
+                        $scope.model = $scope.completeWord;
+                        $scope.showAutofill = false;
+                    }
+                });
+
             });
+
+
 
         }
     };
