@@ -250,6 +250,14 @@ describe('NYPL Directive Unit Tests', function () {
       expect(nyplUtility.popupWindow).toHaveBeenCalledWith(
         'http://www.nypl.org/ask-librarian', 'NYPL Chat', 210, 450);
     });
+
+    it('should add an active class when clicked', function () {
+      expect(librarianchatbutton.attr('class')).not.toContain('active');
+
+      librarianchatbutton.click();
+
+      expect(librarianchatbutton.attr('class')).toContain('active');
+    });
   });
 
   /*
