@@ -567,7 +567,6 @@ describe('NYPL Directive Unit Tests', function () {
     }));
 
     it('should compile', function () {
-      console.log(nyplFundraising);
       // expect(nyplFundraising.scope().fundraising).toEqual('donate');
     });
   });
