@@ -43,13 +43,17 @@ describe('NYPL Directive Unit Tests', function () {
     var loadingWidget, template;
 
     beforeEach(inject(function () {
-      template = '<div id="loadingWidget" loading-widget>' +
+      template = '<div id="loadingWidget" loading-widget class="show">' +
         '<div class="loader-icon icon-spinner2"></div></div>';
       loadingWidget = createDirective(template);
     }));
 
     it('should compile', function () {
       expect(loadingWidget.attr('id')).toEqual('loadingWidget');
+    });
+
+    it('should remove the show class initially', function () {
+      expect(loadingWidget.attr('class')).not.toContain('show');
     });
   });
 
@@ -378,7 +382,7 @@ describe('NYPL Directive Unit Tests', function () {
 
         it('should have a link to the event', function () {
           expect(eventRegistration.find('a').attr('href'))
-            .toEqual('http://www.nypl.org/events/nypl-event');
+            .toEqual('http://www.nypl.org/events/nypl-event#register');
         });
 
         it('should tell you when registration opens', function () {
@@ -419,7 +423,7 @@ describe('NYPL Directive Unit Tests', function () {
 
         it('should have a link to the event', function () {
           expect(eventRegistration.find('a').attr('href'))
-            .toEqual('http://www.nypl.org/events/nypl-event');
+            .toEqual('http://www.nypl.org/events/nypl-event#register');
         });
 
         it('should tell you when registration opens', function () {
@@ -521,8 +525,7 @@ describe('NYPL Directive Unit Tests', function () {
     var collapse, template;
 
     beforeEach(inject(function () {
-      template = '<div class="weekly-hours" collapse="expand" ' +
-        'duration="2500"></div>';
+      template = '<div class="weekly-hours" collapse="expand"></div>';
       collapse = createDirective(template);
     }));
 
@@ -540,6 +543,32 @@ describe('NYPL Directive Unit Tests', function () {
 
       expect(collapse.attr('class')).toContain('open');
       expect(collapse.attr('style')).toContain('display: block;');
+    });
+  });
+
+  /*
+   * <nypl-fundraising fundraising="location.fundraising"></nypl-fundraising>
+   */
+  describe('Directive: nyplFundraising', function () {
+    var nyplFundraising, template;
+
+    beforeEach(inject(function () {
+      scope.fundraising = {
+        "_id": 100,
+        "statement": "Help us keep this library open 6 days a week!",
+        "appeal": "",
+        "button_label": "Donate Now",
+        "link": "https://secure3.convio.net/nypl/site/SPageServer"
+      };
+
+      template = '<nypl-fundraising fundraising="fundraising">' +
+        '</nypl-fundraising>';
+      nyplFundraising = createDirective(template);
+    }));
+
+    it('should compile', function () {
+      console.log(nyplFundraising);
+      // expect(nyplFundraising.scope().fundraising).toEqual('donate');
     });
   });
 
