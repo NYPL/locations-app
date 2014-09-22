@@ -40,27 +40,27 @@ describe('NYPL Amenities Service Tests', function () {
       it('should add icon class names to every amenity', function () {
         var amenities = [
             { 'id': 7950, 'name': 'Computers for Public Use' },
-            { 'id': 7952, 'name': 'Wireless Internet Access' },
-            { 'id': 7953, 'name': 'Laptops for Public Use' },
-            { 'id': 7954, 'name': 'Printing (From PC)' },
-            { 'id': 7955, 'name': 'Electrical Outlets Available' },
-            { 'id': 7951, 'name': 'Book Drop Box (24 Hour)' },
-            { 'id': 7958, 'name': 'Book Drop Box (Limited Hours)' }
+            { 'id': 7967, 'name': 'Wireless Internet Access' },
+            { 'id': 7965, 'name': 'Laptops for Public Use' },
+            { 'id': 7966, 'name': 'Printing (From PC)' },
+            { 'id': 7968, 'name': 'Electrical Outlets Available' },
+            { 'id': 7972, 'name': 'Book Drop Box (24 Hour)' },
+            { 'id': 7971, 'name': 'Book Drop Box (Limited Hours)' }
           ];
 
         expect(nyplAmenities.addIcon(amenities))
           .toEqual([
             { 'id': 7950, 'name': 'Computers for Public Use', 'icon': '' },
-            { 'id': 7952, 'name': 'Wireless Internet Access',
+            { 'id': 7967, 'name': 'Wireless Internet Access',
               'icon': 'icon-connection' },
-            { 'id': 7953, 'name': 'Laptops for Public Use',
+            { 'id': 7965, 'name': 'Laptops for Public Use',
               'icon': 'icon-laptop' },
-            { 'id': 7954, 'name': 'Printing (From PC)', 'icon': 'icon-print' },
-            { 'id': 7955, 'name': 'Electrical Outlets Available',
+            { 'id': 7966, 'name': 'Printing (From PC)', 'icon': 'icon-print' },
+            { 'id': 7968, 'name': 'Electrical Outlets Available',
               'icon': 'icon-power-cord' },
-            { 'id': 7951, 'name': 'Book Drop Box (24 Hour)',
+            { 'id': 7972, 'name': 'Book Drop Box (24 Hour)',
               'icon': 'icon-box-add' },
-            { 'id': 7958, 'name': 'Book Drop Box (Limited Hours)',
+            { 'id': 7971, 'name': 'Book Drop Box (Limited Hours)',
               'icon': 'icon-box-add' }
           ]);
       });
@@ -68,8 +68,8 @@ describe('NYPL Amenities Service Tests', function () {
       it('should give all amenities a default icon class', function () {
         var amenities = [
             { 'id': 7950, 'name': 'Computers for Public Use' },
-            { 'id': 7952, 'name': 'Wireless Internet Access' },
-            { 'id': 7953, 'name': 'Laptops for Public Use' },
+            { 'id': 7967, 'name': 'Wireless Internet Access' },
+            { 'id': 7965, 'name': 'Laptops for Public Use' },
             { 'id': 234, 'name': 'Inter-Library Loan' }
           ];
 
@@ -77,9 +77,9 @@ describe('NYPL Amenities Service Tests', function () {
           .toEqual([
             { 'id': 7950, 'name': 'Computers for Public Use',
               'icon': 'icon-class-test' },
-            { 'id': 7952, 'name': 'Wireless Internet Access',
+            { 'id': 7967, 'name': 'Wireless Internet Access',
               'icon': 'icon-connection' },
-            { 'id': 7953, 'name': 'Laptops for Public Use',
+            { 'id': 7965, 'name': 'Laptops for Public Use',
               'icon': 'icon-laptop' },
             { 'id': 234, 'name': 'Inter-Library Loan',
               'icon': 'icon-class-test' }
@@ -109,7 +109,7 @@ describe('NYPL Amenities Service Tests', function () {
                 'weight': 0,
                 'amenities': [
                   { 'id': 7950, 'name': 'Computers for Public Use' },
-                  { 'id': 7952, 'name': 'Wireless Internet Access' }
+                  { 'id': 7967, 'name': 'Wireless Internet Access' }
                 ]
               },
               {
@@ -154,7 +154,7 @@ describe('NYPL Amenities Service Tests', function () {
                 'amenities': [
                   { 'id': 7950, 'name': 'Computers for Public Use',
                     'icon': 'icon-screen2' },
-                  { 'id': 7952, 'name': 'Wireless Internet Access',
+                  { 'id': 7967, 'name': 'Wireless Internet Access',
                     'icon': 'icon-connection' }
                 ]
               },
@@ -229,8 +229,8 @@ describe('NYPL Amenities Service Tests', function () {
                 'weight': 0,
                 'amenities': [
                   { 'id': 7950, 'name': 'Computers for Public Use' },
-                  { 'id': 7952, 'name': 'Wireless Internet Access' },
-                  { 'id': 7954, 'name': 'Printing (From PC)' }
+                  { 'id': 7967, 'name': 'Wireless Internet Access' },
+                  { 'id': 7966, 'name': 'Printing (From PC)' }
                 ]
               },
               {
@@ -239,7 +239,7 @@ describe('NYPL Amenities Service Tests', function () {
                 'amenities': [
                   { 'id': 234, 'name': 'Inter-Library Loan' },
                   { 'id': 1234, 'name': 'Self-service check-out' },
-                  { 'id': 7951, 'name': 'Book Drop Box (24 Hour)' }
+                  { 'id': 7972, 'name': 'Book Drop Box (24 Hour)' }
                 ]
               },
               {
@@ -272,11 +272,11 @@ describe('NYPL Amenities Service Tests', function () {
           expect(amenities_list.length).toBe(10);
           expect(amenities_list).toEqual([
             { 'id': 7950, 'name': 'Computers for Public Use' },
-            { 'id': 7952, 'name': 'Wireless Internet Access' },
-            { 'id': 7954, 'name': 'Printing (From PC)' },
+            { 'id': 7967, 'name': 'Wireless Internet Access' },
+            { 'id': 7966, 'name': 'Printing (From PC)' },
             { 'id': 234, 'name': 'Inter-Library Loan' },
             { 'id': 1234, 'name': 'Self-service check-out' },
-            { 'id': 7951, 'name': 'Book Drop Box (24 Hour)' },
+            { 'id': 7972, 'name': 'Book Drop Box (24 Hour)' },
             { 'id': 234, 'name': 'Photocopiers (black/white)' },
             { 'id': 1234, 'name': 'Photocopiers (color)' },
             { 'id': 7971, 'name': 'Bicycle Rack' },
@@ -292,7 +292,7 @@ describe('NYPL Amenities Service Tests', function () {
                 'weight': 0,
                 'amenities': [
                   { 'id': 7950, 'name': 'Computers for Public Use' },
-                  { 'id': 7952, 'name': 'Wireless Internet Access' }
+                  { 'id': 7967, 'name': 'Wireless Internet Access' }
                 ]
               },
               {
@@ -316,7 +316,7 @@ describe('NYPL Amenities Service Tests', function () {
           expect(amenities_list.length).toBe(4);
           expect(amenities_list).toEqual([
             { 'id': 7950, 'name': 'Computers for Public Use' },
-            { 'id': 7952, 'name': 'Wireless Internet Access' },
+            { 'id': 7967, 'name': 'Wireless Internet Access' },
             { 'id': 234, 'name': 'Inter-Library Loan' },
             { 'id': 234, 'name': 'Photocopiers (black/white)' }
           ]);
@@ -340,13 +340,13 @@ describe('NYPL Amenities Service Tests', function () {
           'amenities': [
             { 'id': 7950, 'name': 'Computers for Public Use',
               'rank': 1, 'location_rank': 1 },
-            { 'id': 7950, 'name': 'Laptops for Public Use',
+            { 'id': 7965, 'name': 'Laptops for Public Use',
               'rank': 2, 'location_rank': 5 },
-            { 'id': 7954, 'name': 'Printing (From PC)',
+            { 'id': 7966, 'name': 'Printing (From PC)',
               'rank': 3, 'location_rank': 6 },
-            { 'id': 7952, 'name': 'Wireless Internet Access',
+            { 'id': 7967, 'name': 'Wireless Internet Access',
               'rank': 4, 'location_rank': 7 },
-            { 'id': 7955, 'name': 'Electrical outlets available',
+            { 'id': 7968, 'name': 'Electrical outlets available',
               'rank': 5, 'location_rank': 8 }
           ]
         },
@@ -354,7 +354,7 @@ describe('NYPL Amenities Service Tests', function () {
           'name': 'Circulation',
           'weight': 1,
           'amenities': [
-            { 'id': 7951, 'name': 'Book Drop Box (24 Hour)',
+            { 'id': 7972, 'name': 'Book Drop Box (24 Hour)',
               'rank': 8, 'location_rank': 2 },
             { 'id': 7957, 'name': 'Self-service check-out',
               'rank': 7, 'location_rank': 9 },
@@ -418,7 +418,7 @@ describe('NYPL Amenities Service Tests', function () {
             expect(highlightedAmenities).toEqual([
               { 'id': 7950, 'name': 'Computers for Public Use',
                 'rank': 1, 'location_rank': 1 },
-              { 'id': 7951, 'name': 'Book Drop Box (24 Hour)',
+              { 'id': 7972, 'name': 'Book Drop Box (24 Hour)',
                 'rank': 8, 'location_rank': 2 }
             ]);
           });
@@ -432,11 +432,11 @@ describe('NYPL Amenities Service Tests', function () {
             expect(highlightedAmenities).toEqual([
               { 'id': 7950, 'name': 'Computers for Public Use',
                 'rank': 1, 'location_rank': 1 },
-              { 'id': 7950, 'name': 'Laptops for Public Use',
+              { 'id': 7965, 'name': 'Laptops for Public Use',
                 'rank': 2, 'location_rank': 5 },
-              { 'id': 7954, 'name': 'Printing (From PC)',
+              { 'id': 7966, 'name': 'Printing (From PC)',
                 'rank': 3, 'location_rank': 6 },
-              { 'id': 7951, 'name': 'Book Drop Box (24 Hour)',
+              { 'id': 7972, 'name': 'Book Drop Box (24 Hour)',
                 'rank': 8, 'location_rank': 2 },
               { 'id': 7971, 'name': 'Bicycle Rack',
                 'rank': 22, 'location_rank': 3 }
@@ -452,11 +452,11 @@ describe('NYPL Amenities Service Tests', function () {
             expect(highlightedAmenities).toEqual([
               { 'id': 7950, 'name': 'Computers for Public Use',
                 'rank': 1, 'location_rank': 1 },
-              { 'id': 7950, 'name': 'Laptops for Public Use',
+              { 'id': 7965, 'name': 'Laptops for Public Use',
                 'rank': 2, 'location_rank': 5 },
-              { 'id': 7954, 'name': 'Printing (From PC)',
+              { 'id': 7966, 'name': 'Printing (From PC)',
                 'rank': 3, 'location_rank': 6 },
-              { 'id': 7951, 'name': 'Book Drop Box (24 Hour)',
+              { 'id': 7972, 'name': 'Book Drop Box (24 Hour)',
                 'rank': 8, 'location_rank': 2 },
               { 'id': 7971, 'name': 'Bicycle Rack',
                 'rank': 22, 'location_rank': 3 }
@@ -472,13 +472,13 @@ describe('NYPL Amenities Service Tests', function () {
             expect(highlightedAmenities).toEqual([
               { 'id': 7950, 'name': 'Computers for Public Use',
                 'rank': 1, 'location_rank': 1 },
-              { 'id': 7950, 'name': 'Laptops for Public Use',
+              { 'id': 7965, 'name': 'Laptops for Public Use',
                 'rank': 2, 'location_rank': 5 },
-              { 'id': 7954, 'name': 'Printing (From PC)',
+              { 'id': 7966, 'name': 'Printing (From PC)',
                 'rank': 3, 'location_rank': 6 },
-              { 'id': 7952, 'name': 'Wireless Internet Access',
+              { 'id': 7967, 'name': 'Wireless Internet Access',
                 'rank': 4, 'location_rank': 7 },
-              { 'id': 7951, 'name': 'Book Drop Box (24 Hour)',
+              { 'id': 7972, 'name': 'Book Drop Box (24 Hour)',
                 'rank': 8, 'location_rank': 2 }
             ]);
           });

@@ -93,7 +93,10 @@ var response = {
         }
       },
       id: "GRD",
-      image: "http://www.nypl.org/sites/default/files/images/stacks.jpeg",
+      images: {
+        interior: "http://www.nypl.org/sites/default/files/images/stacks.jpeg",
+        collection_item: "http://www.nypl.org/sites/default/files/images/stacks.jpeg"
+      },
       locality: "New York",
       location_id: "SASB",
       location_name: "Stephen A. Schwarzman Building",

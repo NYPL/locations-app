@@ -195,6 +195,11 @@
     */
     utility.popupWindow = function (link, title, width, height) {
       var w, h, popUp, popUp_h, popUp_w;
+
+      if (!link) {
+        return;
+      }
+
       // Set width from args, defaults 300px
       if (width === undefined) {
         w = '300';
@@ -227,9 +232,8 @@
           "",
           "menubar=1,resizable=1,width=" + w + ",height=" + h
         );
-      } else {
-        console.log('No link set, cannot initialize the popup window');
       }
+
       // Once the popup is set, center window
       if (popUp) {
         popUp_w = parseInt(w, 10);
