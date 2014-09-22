@@ -266,65 +266,113 @@ function nyplSidebar() {
     };
 }
 
-function nyplAutofill($filter) {
+function nyplAutofill($timeout) {
     'use strict';
 
     return {
         restrict: 'AEC',
         templateUrl: 'scripts/directives/templates/autofill.html',
-        require: '?ngModel',
         scope: {
             data: '=',
             model: '=ngModel',
             mapView: '&'
         },
-        link: function ($scope, elem, attrs, ctrl) {
-            
-        },
-        controller: function($scope) {
-            $scope.lookahead = '';
-            $scope.inputValue = '';
-            $scope.completeWord = '';
-            $scope.showAutofill = false;
-            var inputBox = angular.element(document.getElementById('searchTerm'));
+        link: function ($scope, elem, attrs, controller) {
+
+            var input  = angular.element(document.getElementById('searchTerm')),
+                submit = angular.element(document.getElementById('find-location'));
+
+            input.bind('focus', function() {
+                $scope.$apply( function() { $scope.focused = true; });
+            });
+
+            input.bind('blur', function() {
+                $scope.$apply( function() { $scope.focused = false; });
+            });
+
+            input.bind('keyup', function(e) {
+                // Tab & Enter keys
+                if (e.keyCode === 9 || e.keyCode === 13) {
+                    $scope.$apply( function() {
+                        if (controller.setSearchText($scope.model)) {
+                            $timeout(function() {
+                                submit.triggerHandler('click');
+                            }, 100);
+                        }
+                        else {
+
+                        }
+                    });
+                }
+
+                // Escape key
+                if (e.keyCode === 27) {
+                    $scope.$apply( function() { $scope.focused = false; });
+                }
+            });
+
+            // Tab, Enter and Escape keys
+            input.bind('keydown', function(e) {
+                if (e.keyCode === 9 || e.keyCode === 13 || e.keyCode === 27) {
+                    e.preventDefault();
+                };
+            });
+
+            $scope.locationName = function(element) {
+                if(!$scope.model) return true;
+                return element.name.toLowerCase().indexOf($scope.model.toLowerCase()) >= 0;
+                //return element.name.substring(0, $scope.model.length).toLowerCase() 
+                               // === $scope.model.toLowerCase();
+            };
 
             /* *
              * Watch the model and look for an appropriate suggestion in the specified source array.
              */
             $scope.$watch('model', function(value) {
-
-                if ((value !== null) && (value !== undefined) && (value !== '')) {
-                    if (value.length > 2) {
-
-                        Object.keys($scope.data).forEach(function(key) {
-
-                           if ( ($scope.data[key].name + '').substring(0, value.length).toLowerCase() == value.toLowerCase()) {
-                            $scope.inputValue = value;
-                            $scope.lookahead = ($scope.data[key].name + '').substring(value.length);
-                            return $scope.completeWord = $scope.inputValue + $scope.lookahead;
-                           }
-                        });
-                    }
-                }
-
-                inputBox.bind("keydown keypress", function (event) {
-                    $scope.showAutofill = true;
-                    if (event.which === 13) {
-
-                        if ( $scope.completeWord === $scope.model ||
-                             $scope.completeWord === '' ||
-                             $scope.model === ''
-                            ) return;
-
-                        event.preventDefault();
-                        $scope.model = $scope.completeWord;
-                        $scope.showAutofill = false;
-                    }
-                });
-
+                controller.updateSearchText($scope.data, value);
             });
 
+        },
+        controller: function($scope) {
+            $scope.lookahead = '',
+            $scope.inputValue = '',
+            $scope.completeWord = '';
+            var elements, filteredStrict;
 
+            this.setSearchText = function(model) {
+                if ( $scope.completeWord === $scope.model || 
+                    $scope.completeWord === '' || 
+                    $scope.model === '') return;
+                return $scope.model = $scope.completeWord;
+            };
+
+            // todo
+            this.matchSearchText = function() {
+
+            };
+
+            this.updateSearchText = function(data, searchTerm) {
+                if (searchTerm === '' || !searchTerm || !data) return;
+
+                if (searchTerm.length > 2) {
+                    elements = _.chain(data).pluck('name').flatten(true).value();
+                    filteredStrict = _.filter(elements, function(elem){
+                        return elem.substring(0, searchTerm.length).toLowerCase() 
+                                === searchTerm.toLowerCase();
+                    });
+
+                    if (filteredStrict[0]) {
+                        $scope.lookahead  = filteredStrict[0].substring(searchTerm.length);
+                        $scope.inputValue = searchTerm;       
+                    }
+                    else {
+                        $scope.lookahead = "",
+                        $scope.inputValue = "";
+                    }
+
+                    return $scope.completeWord = $scope.inputValue + $scope.lookahead;
+                }
+            }
 
         }
     };

@@ -2,8 +2,8 @@
 	<p><span>{{inputValue}}</span>{{lookahead}}</p>
 	<p class="hidden">{{completeWord}}</p>
 </div>
-<div class="autofill-container" data-ng-if="model && showAutofill">
-	<div class="location-item" ng-repeat="item in data | filter:model | orderBy:'name'">
+<div class="autofill-container" data-ng-if="model && focused">
+	<div class="location-item" ng-repeat="item in data | filter: locationName | orderBy: 'name'">
 	  <div class="location-name">
 	  	<a data-ui-sref='location({ location: item.slug })'>
 	  		{{item.name}}
