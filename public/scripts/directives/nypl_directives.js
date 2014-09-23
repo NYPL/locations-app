@@ -300,12 +300,14 @@ function nyplAutofill($timeout) {
                 if (e.keyCode === 9 || e.keyCode === 13) {
                     $scope.$apply( function() {
                         if (controller.setSearchText($scope.model)) {
-                            $timeout(function() {
+                            $timeout( function() {
                                 submit.triggerHandler('click');
                             }, 100);
                         }
-                        else {
-
+                        else if (controller.matchFirstSearchItem($scope.data, $scope.model)) {
+                            $timeout( function() {
+                                submit.triggerHandler('click');
+                            }, 100);
                         }
                     });
                 }
@@ -313,7 +315,7 @@ function nyplAutofill($timeout) {
                 // Right Arrow
                 if (e.keyCode === 39) {
                     $scope.$apply( function() { 
-                        controller.setSearchText($scope.model); 
+                        controller.setSearchText($scope.model);
                     });
                 }
 
@@ -344,22 +346,22 @@ function nyplAutofill($timeout) {
             $scope.locationName = function(elem) {
                 if(!$scope.model) return true;
                 return elem.name.toLowerCase().indexOf($scope.model.toLowerCase()) >= 0;
-                //return element.name.substring(0, $scope.model.length).toLowerCase() 
+                //return elem.name.substring(0, $scope.model.length).toLowerCase() 
                                // === $scope.model.toLowerCase();
             };
 
-            /* *
-             * Watch the model and look for an appropriate suggestion in the specified source
-             */
-            $scope.$watch('model', function(value) {
-                controller.updateSearchText($scope.data, value);
-            });
+            function initAutofill() {
+                $scope.$watch('model', function(value) {
+                    controller.updateSearchText($scope.data, value);
+                });
 
-            $scope.$on('$stateChangeSuccess', function () {
-                controller.resetSearchTerms();
-                $scope.focused = false;
-            });
+                $scope.$on('$stateChangeSuccess', function() {
+                    controller.resetSearchTerms();
+                    $scope.focused = false;
+                });
+            }
 
+            initAutofill();
         },
         controller: function($scope) {
             $scope.lookahead = '',
@@ -375,8 +377,19 @@ function nyplAutofill($timeout) {
             };
 
             // Todo
-            this.matchSearchText = function() {
+            this.matchFirstSearchItem = function(data, searchTerm) {
+                if (searchTerm === '' || !searchTerm || !data) return;
 
+                if (searchTerm.length > 0) {
+                    elements = _.chain(data).pluck('name').flatten(true).value();
+                    elements = _.filter(elements, function(elem) {
+                        return elem.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0;
+                    });
+
+                    if (elements[0]) {
+                        return $scope.model = elements[0];
+                    }
+                };
             };
 
             this.resetSearchTerms = function() {
