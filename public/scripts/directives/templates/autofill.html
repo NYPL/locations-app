@@ -9,11 +9,11 @@
 	  		{{item.name}}
 	  	</a>
 	  </div>
-    <a class="icon-map view-on-map" data-ng-click="mapView(item[slug])">
+    <a class="icon-map view-on-map" data-ng-click="mapView({slug: item.slug})">
       {{ 'VIEW_MAP' | translate}}
     </a>
 	</div>
-	<div class="geolocation-search">
+	<div class="geolocation-search" data-ng-click="geoSearch({term: model})">
 		<p>Search for locations near <b>{{model}}</b></p>
 	</div>
 </div>

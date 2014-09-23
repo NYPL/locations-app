@@ -275,19 +275,24 @@ function nyplAutofill($timeout) {
         scope: {
             data: '=',
             model: '=ngModel',
-            mapView: '&'
+            mapView: '&',
+            geoSearch: '&'
         },
         link: function ($scope, elem, attrs, controller) {
-
+            $scope.focused = false;
             var input  = angular.element(document.getElementById('searchTerm')),
-                submit = angular.element(document.getElementById('find-location'));
+                submit = angular.element(document.getElementById('find-location')),
+                html   = angular.element(document.getElementsByTagName('html'));
+
 
             input.bind('focus', function() {
-                $scope.$apply( function() { $scope.focused = true; });
+                $scope.$apply( function() { 
+                    $scope.focused = true;
+                });
             });
 
-            input.bind('blur', function() {
-                $scope.$apply( function() { $scope.focused = false; });
+            input.bind('click', function(e) {
+                e.stopPropagation();
             });
 
             input.bind('keyup', function(e) {
@@ -307,7 +312,9 @@ function nyplAutofill($timeout) {
 
                 // Right Arrow
                 if (e.keyCode === 39) {
-                    $scope.$apply( function() { controller.setSearchText($scope.model); });
+                    $scope.$apply( function() { 
+                        controller.setSearchText($scope.model); 
+                    });
                 }
 
                 // Backspace
@@ -328,6 +335,12 @@ function nyplAutofill($timeout) {
                 };
             });
 
+            html.bind('click', function(e) {
+                $scope.$apply( function() {
+                    $scope.focused = false;
+                });
+            });     
+
             $scope.locationName = function(elem) {
                 if(!$scope.model) return true;
                 return elem.name.toLowerCase().indexOf($scope.model.toLowerCase()) >= 0;
@@ -336,10 +349,15 @@ function nyplAutofill($timeout) {
             };
 
             /* *
-             * Watch the model and look for an appropriate suggestion in the specified source array.
+             * Watch the model and look for an appropriate suggestion in the specified source
              */
             $scope.$watch('model', function(value) {
                 controller.updateSearchText($scope.data, value);
+            });
+
+            $scope.$on('$stateChangeSuccess', function () {
+                controller.resetSearchTerms();
+                $scope.focused = false;
             });
 
         },
@@ -369,7 +387,7 @@ function nyplAutofill($timeout) {
             this.updateSearchText = function(data, searchTerm) {
                 if (searchTerm === '' || !searchTerm || !data) return;
 
-                if (searchTerm.length > 2) {
+                if (searchTerm.length > 0) {
                     elements = _.chain(data).pluck('name').flatten(true).value();
                     filteredStrict = _.filter(elements, function(elem) {
                         return elem.substring(0, searchTerm.length).toLowerCase() 
@@ -383,7 +401,6 @@ function nyplAutofill($timeout) {
                     else {
                         this.resetSearchTerms();
                     }
-
                     return $scope.completeWord = $scope.currentWord + $scope.lookahead;
                 }
             }
