@@ -2,9 +2,19 @@ require 'date'
 require 'sinatra/base'
 require 'sinatra/jsonp'
 require 'lionactor'
+require 'erb'
 
 class Locinator < Sinatra::Base
-  
+  configure do
+    configs = JSON.parse(File.read('locinator.json'))
+    if configs["environments"].has_key?(ENV['LOCINATOR_ENV'])
+      set :env_config, configs["environments"][ENV['LOCINATOR_ENV']]
+    else
+      set :env_config, 
+        configs["environments"][configs["environments"]["default"]]
+    end
+  end
+
   helpers Sinatra::Jsonp
   set :haml, :format => :html5
   # Method cribbed from http://blog.alexmaccaw.com/seo-in-js-web-apps
@@ -66,7 +76,7 @@ class Locinator < Sinatra::Base
     
 
   get '/' do
-    File.read(File.join('public', 'index.html'))
+    erb :index
   end
   
 
