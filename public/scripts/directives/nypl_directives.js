@@ -305,9 +305,14 @@ function nyplAutofill($timeout) {
                     });
                 }
 
+                // Right Arrow
+                if (e.keyCode === 39) {
+                    $scope.$apply( function() { controller.setSearchText($scope.model); });
+                }
+
                 // Backspace
                 if (e.keyCode === 8) {
-                    $scope.$apply( function() { $scope.lookahead = '' });
+                    $scope.$apply( function() { $scope.lookahead = ''; });
                 }
 
                 // Escape key
@@ -323,9 +328,9 @@ function nyplAutofill($timeout) {
                 };
             });
 
-            $scope.locationName = function(element) {
+            $scope.locationName = function(elem) {
                 if(!$scope.model) return true;
-                return element.name.toLowerCase().indexOf($scope.model.toLowerCase()) >= 0;
+                return elem.name.toLowerCase().indexOf($scope.model.toLowerCase()) >= 0;
                 //return element.name.substring(0, $scope.model.length).toLowerCase() 
                                // === $scope.model.toLowerCase();
             };
@@ -340,7 +345,7 @@ function nyplAutofill($timeout) {
         },
         controller: function($scope) {
             $scope.lookahead = '',
-            $scope.inputValue = '',
+            $scope.currentWord = '',
             $scope.completeWord = '';
             var elements, filteredStrict;
 
@@ -351,31 +356,35 @@ function nyplAutofill($timeout) {
                 return $scope.model = $scope.completeWord;
             };
 
-            // todo
+            // Todo
             this.matchSearchText = function() {
 
             };
+
+            this.resetSearchTerms = function() {
+                $scope.lookahead = '';
+                $scope.currentWord = '';
+            }
 
             this.updateSearchText = function(data, searchTerm) {
                 if (searchTerm === '' || !searchTerm || !data) return;
 
                 if (searchTerm.length > 2) {
                     elements = _.chain(data).pluck('name').flatten(true).value();
-                    filteredStrict = _.filter(elements, function(elem){
+                    filteredStrict = _.filter(elements, function(elem) {
                         return elem.substring(0, searchTerm.length).toLowerCase() 
                                 === searchTerm.toLowerCase();
                     });
 
                     if (filteredStrict[0]) {
-                        $scope.lookahead  = filteredStrict[0].substring(searchTerm.length);
-                        $scope.inputValue = searchTerm;       
+                        $scope.lookahead   = filteredStrict[0].substring(searchTerm.length);
+                        $scope.currentWord = searchTerm;       
                     }
                     else {
-                        $scope.lookahead = "",
-                        $scope.inputValue = "";
+                        this.resetSearchTerms();
                     }
 
-                    return $scope.completeWord = $scope.inputValue + $scope.lookahead;
+                    return $scope.completeWord = $scope.currentWord + $scope.lookahead;
                 }
             }
 
