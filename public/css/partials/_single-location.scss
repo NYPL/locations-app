@@ -242,7 +242,7 @@
 
 				@include breakpoint($min, $pre-tablet) {
 					display: table-cell;
-					vertical-align: middle;
+					vertical-align: top;
 				}
 
 				li {
@@ -263,7 +263,7 @@
 					margin-top: 0;
 					width: 145px;
 					display: table-cell;
-					vertical-align: middle;
+					vertical-align: top;
 					text-align: right;
 				}
 			}
