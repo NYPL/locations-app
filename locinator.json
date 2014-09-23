@@ -1,0 +1,30 @@
+{
+  "environments": {
+    "default": "production",
+    "production": {
+      "url": "locations-beta.nypl.org",
+      "api": "http://locations-api-beta.nypl.org",
+      "nyplbase": "http://ux-static.nypl.org/nyplbase/0.1.1/css/nyplbase.min.css",
+      "optimizely": "//cdn.optimizely.com/js/1422121698.js",
+      "google_analytics": "UA-1420324-123",
+      "angular_src": "ux-static"
+    },
+    "qa": {
+      "url": "locations-beta-dev.herokuapp.com",
+      "api": "http://locations-api-alpha.herokuapp.com",
+      "nyplbase": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.1/css/nyplbase.min.css",
+      "optimizely": null,
+      "google_analytics": null,
+      "angular_src": "ux-static-staging"
+    },
+    "local": {
+      "api": "http://locations-api-alpha.herokuapp.com",
+      "nyplbase": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.1/css/nyplbase.min.css",
+      "optimizely": null,
+      "google_analytics": null,
+      "angular_src": "bower"
+    }
+  },
+  "divisions_with_appointments": ["ARN", "RBK", "MSS", "BRG", "PRN", "PHG", "SPN", "CPS"]
+
+}
