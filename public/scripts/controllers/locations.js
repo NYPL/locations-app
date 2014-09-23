@@ -384,11 +384,9 @@
             }
         };
 
-        $scope.submitAddress = function (searchTerm) {
-            var IDfilteredLocations,
-                filteredLocations;
-
-            if (!searchTerm) {
+        $scope.geocodeAddress = function (searchTerm) {
+            // What should be the minimum lenght of the search?
+            if (!searchTerm || searchTerm.length < 3) {
                 return;
             }
 
@@ -400,17 +398,6 @@
 
             searchTerm = nyplSearch.searchWordFilter(searchTerm);
             scrollListTop();
-
-            IDfilteredLocations =
-                nyplSearch.idLocationSearch($scope.locations, searchTerm);
-            // Filter the locations by the search term using Angularjs
-            filteredLocations =
-                nyplSearch.locationSearch($scope.locations, searchTerm);
-
-            if (IDfilteredLocations && IDfilteredLocations.length !== 0) {
-                performIDsearch(IDfilteredLocations);
-                return;
-            }
 
             // From searchTerm, return suggested coordinates and formatted
             // address from Google
