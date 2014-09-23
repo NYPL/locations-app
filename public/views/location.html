@@ -100,17 +100,14 @@
     <div class="grid">
       <div class="grid__item one-whole">
         <div class="callout">
-
           <div class='amenities-title'>
             <span>{{ 'AMENITIES_HEADER' | translate }}: </span>
           </div>
-
           <ul data-ng-if="location.amenities_list">
             <li data-ng-repeat="amenity in location.amenities_list" class="{{amenity.icon}}">
               <a data-ui-sref="amenity({amenity: amenity.id})">{{amenity.name}}</a>
             </li>
           </ul>
-
           <ul data-ng-if="location.amenities_list.length === 0">
             <li class="icon-book"><span>Lending</span></li>
             <li class="icon-box-add"><span>Book drop</span></li>
