@@ -12,7 +12,7 @@
           <span class="icon-search"></span>
           <span id="clear-search" class="icon-cancel-circle" data-ng-click="clearSearch()"></span>
 
-        <nypl-autofill data="locations" data-ng-model="searchTerm" map-view="viewMapLibrary(slug)" geo-search="submitAddress(term)">
+        <nypl-autofill data="locations" data-ng-model="searchTerm" map-view="viewMapLibrary(slug)" geo-search="geocodeAddress(term)">
         </nypl-autofill>
         </div>
 
