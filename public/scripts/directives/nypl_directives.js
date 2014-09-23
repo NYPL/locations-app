@@ -305,6 +305,11 @@ function nyplAutofill($timeout) {
                     });
                 }
 
+                // Backspace
+                if (e.keyCode === 8) {
+                    $scope.$apply( function() { $scope.lookahead = '' });
+                }
+
                 // Escape key
                 if (e.keyCode === 27) {
                     $scope.$apply( function() { $scope.focused = false; });
