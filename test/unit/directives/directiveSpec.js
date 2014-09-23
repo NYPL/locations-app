@@ -43,13 +43,17 @@ describe('NYPL Directive Unit Tests', function () {
     var loadingWidget, template;
 
     beforeEach(inject(function () {
-      template = '<div id="loadingWidget" loading-widget>' +
+      template = '<div id="loadingWidget" loading-widget class="show">' +
         '<div class="loader-icon icon-spinner2"></div></div>';
       loadingWidget = createDirective(template);
     }));
 
     it('should compile', function () {
       expect(loadingWidget.attr('id')).toEqual('loadingWidget');
+    });
+
+    it('should remove the show class initially', function () {
+      expect(loadingWidget.attr('class')).not.toContain('show');
     });
   });
 
@@ -192,46 +196,6 @@ describe('NYPL Directive Unit Tests', function () {
   }); /* End todayshours */
 
   /*
-   * <nyplbreadcrumbs></nyplbreadcrumbs>
-   */
-  describe('Directive: nyplbreadcrumbs', function () {
-    var nyplbreadcrumbs, html;
-
-    beforeEach(inject(function () {
-      html = '<nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>';
-      nyplbreadcrumbs = createDirective(html);
-    }));
-
-    it('should create an unordered list with class breadcrumb', function () {
-      var crumbList = nyplbreadcrumbs.find('ul');
-      expect(crumbList.attr('class')).toContain('breadcrumb');
-    });
-
-    it('should contain attribute "crumb-name"', function () {
-      expect(nyplbreadcrumbs.attr('crumb-name')).toBeTruthy();
-    });
-
-    it('should contain attribute "crumb-name" value to be "data.crumbName"', function () {
-      expect(nyplbreadcrumbs.attr('crumb-name')).toBe('data.crumbName');
-    });
-
-    it('should create an empty breadcrumbs scope array element', function () {
-      var isoScope = nyplbreadcrumbs.isolateScope();
-      expect(isoScope.breadcrumbs.length).toBeLessThan(1);
-    });
-
-    it('once a Crumb is inserted, it should add elements to breadcrumbs array', function () {
-      var isoScope = nyplbreadcrumbs.isolateScope();
-
-      isoScope.breadcrumbs.push({
-        displayName: 'Amenities',
-        route: 'amenities'
-      });
-      expect(isoScope.breadcrumbs.length).toBeGreaterThan(0);
-    });
-  });
-
-  /*
    * <emailusbutton link="" />
    *   Generates a link to email a librarian.
    */
@@ -285,6 +249,14 @@ describe('NYPL Directive Unit Tests', function () {
 
       expect(nyplUtility.popupWindow).toHaveBeenCalledWith(
         'http://www.nypl.org/ask-librarian', 'NYPL Chat', 210, 450);
+    });
+
+    it('should add an active class when clicked', function () {
+      expect(librarianchatbutton.attr('class')).not.toContain('active');
+
+      librarianchatbutton.click();
+
+      expect(librarianchatbutton.attr('class')).toContain('active');
     });
   });
 
@@ -378,7 +350,7 @@ describe('NYPL Directive Unit Tests', function () {
 
         it('should have a link to the event', function () {
           expect(eventRegistration.find('a').attr('href'))
-            .toEqual('http://www.nypl.org/events/nypl-event');
+            .toEqual('http://www.nypl.org/events/nypl-event#register');
         });
 
         it('should tell you when registration opens', function () {
@@ -419,7 +391,7 @@ describe('NYPL Directive Unit Tests', function () {
 
         it('should have a link to the event', function () {
           expect(eventRegistration.find('a').attr('href'))
-            .toEqual('http://www.nypl.org/events/nypl-event');
+            .toEqual('http://www.nypl.org/events/nypl-event#register');
         });
 
         it('should tell you when registration opens', function () {
@@ -521,8 +493,7 @@ describe('NYPL Directive Unit Tests', function () {
     var collapse, template;
 
     beforeEach(inject(function () {
-      template = '<div class="weekly-hours" collapse="expand" ' +
-        'duration="2500"></div>';
+      template = '<div class="weekly-hours" collapse="expand"></div>';
       collapse = createDirective(template);
     }));
 
@@ -540,6 +511,31 @@ describe('NYPL Directive Unit Tests', function () {
 
       expect(collapse.attr('class')).toContain('open');
       expect(collapse.attr('style')).toContain('display: block;');
+    });
+  });
+
+  /*
+   * <nypl-fundraising fundraising="location.fundraising"></nypl-fundraising>
+   */
+  describe('Directive: nyplFundraising', function () {
+    var nyplFundraising, template;
+
+    beforeEach(inject(function () {
+      scope.fundraising = {
+        "_id": 100,
+        "statement": "Help us keep this library open 6 days a week!",
+        "appeal": "",
+        "button_label": "Donate Now",
+        "link": "https://secure3.convio.net/nypl/site/SPageServer"
+      };
+
+      template = '<nypl-fundraising fundraising="fundraising">' +
+        '</nypl-fundraising>';
+      nyplFundraising = createDirective(template);
+    }));
+
+    it('should compile', function () {
+      // expect(nyplFundraising.scope().fundraising).toEqual('donate');
     });
   });
 
