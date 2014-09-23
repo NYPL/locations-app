@@ -217,7 +217,7 @@
 	// Highlighted Amenities section
 	#container__top_amenities {
 
-		@include breakpoint($min, $post-palm) {
+		@include breakpoint($min, $pre-tablet) {
 			margin-top: 20px;
 		}
 
@@ -225,33 +225,46 @@
 			background-color: transparent;
 			position: relative;
 
+			.amenities-title {
+				font-weight: bold;
+				margin-bottom: 5px;
+				@include breakpoint($min, $pre-tablet) {
+					margin-bottom: 0;
+					display: table-cell;
+					width: 167px;
+					vertical-align: top;
+				}
+			}
+
 			ul {
+				margin: 0 2px;
+				padding: 0;
+
+				@include breakpoint($min, $pre-tablet) {
+					display: table-cell;
+					vertical-align: middle;
+				}
 
 				li {
 					display: block;
-					margin-bottom: .35em;
+					margin-bottom: .5em;
 
-					&.title {
-						font-weight: bold;
-					}
-
-					@include breakpoint($min, $post-palm) {
+					@include breakpoint($min, $pre-tablet) {
 						margin-bottom: 0;
 						margin-right: .35em;
-						display: inline-block;
+						display: inline-table;
 					}
 				}
 			}
 
-			.read-more {
-				display: inline-block !important;
-				margin: .35em 0;
-
-				@include breakpoint($min, $post-palm) {
-					margin: 0;
-					position: absolute;
-					right: 7px;
-					top: 13px;
+			.amenities-all-link {
+				margin-top: 10px;
+				@include breakpoint($min, $pre-tablet) {
+					margin-top: 0;
+					width: 145px;
+					display: table-cell;
+					vertical-align: middle;
+					text-align: right;
 				}
 			}
 		}
