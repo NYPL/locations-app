@@ -399,52 +399,34 @@
             searchTerm = nyplSearch.searchWordFilter(searchTerm);
             scrollListTop();
 
-            // From searchTerm, return suggested coordinates and formatted
-            // address from Google
+            $state.go('home.map');
             loadGeocoding(searchTerm)
                 .then(function (searchObj) {
-                    // Map related
-                    filterMarkerOrSearchMarker(filteredLocations, searchObj);
+                    nyplGeocoderService.createSearchMarker(
+                        searchObj.coords,
+                        searchObj.searchTerm
+                    );
 
                     return searchByCoordinates(searchObj);
                 })
                 .then(function (locations) {
                     $scope.scrollPage();
-                    if (!filteredLocations.length) {
-                        // Variable to draw a green marker on the map legend.
-                        $scope.searchMarker = true;
-                        nyplSearch.setSearchValue('searchMarker', true);
-                        if (isMapPage()) {
-                            nyplGeocoderService.drawSearchMarker();
-                        }
+                    // Variable to draw a green marker on the map legend.
+                    $scope.searchMarker = true;
+                    nyplSearch.setSearchValue('searchMarker', true);
+                    if (isMapPage()) {
+                        nyplGeocoderService.drawSearchMarker();
                     }
                     
-                    organizeLocations(locations, filteredLocations, 'distance');
+                    organizeLocations(locations, [], 'distance');
                 })
                 // Catch any errors at any point
                 .catch(function (error) {
-                    // google maps api is down or geocoding did not return
-                    // any significant results,
-                    // first see if there are any angularjs filtered results.
-                    // if there are, show results based on the angularjs filter.
-                    // else, reset back to the start
                     nyplGeocoderService.removeMarker('search');
                     $scope.searchMarker = false;
                     nyplSearch.resetSearchValues();
 
-                    if (filteredLocations && filteredLocations.length &&
-                            error.msg !== 'query too short') {
-                        resetProperty($scope.locations, 'distance');
-                        $scope.searchError = '';
-                        // Map related work
-                        if (isMapPage()) {
-                            nyplGeocoderService
-                                .drawFilterMarker(filteredLocations[0].slug);
-                        }
-                        organizeLocations(locations, filteredLocations, 'name');
-                    } else {
-                        resetPage();
-                    }
+                    resetPage();
                 });
         };
 
