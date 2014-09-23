@@ -18,16 +18,23 @@ describe('nyplNavigation module', function () {
         .respond('public/languages/en.json');
   }));
 
+  function createDirective(template) {
+    var element;
+    element = $compile(template)($scope);
+    $scope.$digest();
+
+    return element;
+  }
+
   describe('Directive: nyplCollapsedButtons', function () {
-    var nyplCollapsedButtons, search_btn, nav_btn;
+    var nyplCollapsedButtons, search_btn, nav_btn, html;
 
     beforeEach(inject(function (_$compile_, _$rootScope_) {
       $compile = _$compile_;
       $scope = _$rootScope_.$new();
 
-      element = angular.element('<nypl-collapsed-buttons />');
-      $compile(element)($scope);
-      $scope.$digest();
+      html = '<nypl-collapsed-buttons />';
+      element = createDirective(html);
 
       nyplCollapsedButtons = element.find('div');
       search_btn = angular.element(nyplCollapsedButtons[0]);
@@ -97,24 +104,49 @@ describe('nyplNavigation module', function () {
       });
   });
 
-  // describe('Directive: nyplNavigation', function () {
-  //   var nyplNavigation;
+  describe('Directive: nyplNavigation', function () {
+    var nyplNavigation, html;
 
-  //   beforeEach(inject(function (_$compile_, _$rootScope_) {
-  //     $compile = _$compile_;
-  //     $scope = _$rootScope_.$new();
+    describe('Logged in', function () {
+      beforeEach(inject(function (_$compile_, _$rootScope_, _ssoStatus_) {
+        spyOn(_ssoStatus_, 'logged_in').and.callFake(function () {
+          return false;
+        });
 
-  //     nyplNavigation = angular.element('<nypl-navigation></nypl-navigation>');
-  //     $compile(nyplNavigation)($scope);
-  //     $scope.$digest();
+        $compile = _$compile_;
+        $scope = _$rootScope_.$new();
 
-  //   }));
+        html = '<nypl-navigation></nypl-navigation>';
+        nyplNavigation = createDirective(html);
+      }));
 
-  //   it('should compile', function () {
-  //     // console.log(nyplNavigation);
-  //     // expect(element.attr('id')).toContain('main-nav');
-  //   });
+      it('should compile', function () {
+        expect(nyplNavigation.attr('id')).toContain('main-nav');
+      });
 
-  // });
+      it('should say say Log In for the menut button initially', function () {
+        expect(nyplNavigation.find('.mobile-login').text().trim()).toEqual('Log In');
+      });
+    });
+
+    describe('Not logged in', function () {
+      beforeEach(inject(function (_$compile_, _$rootScope_, _ssoStatus_) {
+        spyOn(_ssoStatus_, 'logged_in').and.callFake(function () {
+          return true;
+        });
+
+        $compile = _$compile_;
+        $scope = _$rootScope_.$new();
+
+        html = '<nypl-navigation></nypl-navigation>';
+        nyplNavigation = createDirective(html);
+      }));
+
+      it('should say say Log Out for the menut button when logged in', function () {
+        expect(nyplNavigation.find('.mobile-login').text().trim()).toEqual('Log Out');
+      });
+    });
+
+  });
 
 });
