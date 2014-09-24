@@ -283,7 +283,7 @@
   <div id="container__exhibitions" data-ng-if="location._embedded.exhibitions">
     <h2 class="hdg">{{ 'EXHIBITION' | translate }}</h2>
     <div class="grid">
-      <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat='exhibition in location._embedded.exhibitions'>
+      <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat="exhibition in location._embedded.exhibitions | orderBy:'-start'">
         <a data-ng-href="{{exhibition._links.self.href}}" data-ng-if="exhibition.image">
           <img class="img--left" data-ng-src="{{exhibition.image}}" style="height: 100px;"
             alt="Image for exhibition {{exhibition.title}}" title="Image for exhibition {{exhibition.title}}" />
@@ -291,7 +291,7 @@
         <h3 class="exhibition__title">
           <a data-ng-href="{{exhibition._links.self.href}}">{{exhibition.title}}</a>
         </h3>
-        <time class="date">{{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
+        <time class="date">{{exhibition.start | date:'EEEE, MMMM d, y, h:mma'}}</time>
         <p class="teaser desc">{{exhibition.body | truncate}}</p>
       </div>
     </div>
