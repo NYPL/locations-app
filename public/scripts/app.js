@@ -83,6 +83,15 @@ nypl_locations.config([
             secondaryState: {name:'Locations', customUrl: 'home.index' }
         });
 
+        $urlRouterProvider.rule(function ($injector, $location) {
+            var path = $location.url();
+
+            // Remove trailing slash if found
+            if (path[path.length - 1] === '/') {
+                return path.slice(0, -1);
+            }
+        })
+
         // This next line breaks unit tests which doesn't make sense since
         // unit tests should not test the whole app. BUT since we are testing
         // directives and using $rootscope.$digest or $rootscope.$apply,
