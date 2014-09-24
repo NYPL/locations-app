@@ -315,7 +315,9 @@ function nyplAutofill($timeout) {
                 // Right Arrow
                 if (e.keyCode === 39) {
                     $scope.$apply( function() { 
-                        controller.setSearchText($scope.model);
+                        if (!controller.setSearchText($scope.model)) {
+                            controller.matchFirstSearchItem($scope.data, $scope.model);
+                        }
                     });
                 }
 
@@ -393,7 +395,7 @@ function nyplAutofill($timeout) {
             };
 
             this.resetSearchTerms = function() {
-                $scope.lookahead = '';
+                $scope.lookahead   = '';
                 $scope.currentWord = '';
             }
 
