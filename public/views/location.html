@@ -291,7 +291,7 @@
         <h3 class="exhibition__title">
           <a data-ng-href="{{exhibition._links.self.href}}">{{exhibition.title}}</a>
         </h3>
-        <time class="date">{{exhibition.start | date:'EEEE, MMMM d, y, h:mma'}}</time>
+        <time class="date">{{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
         <p class="teaser desc">{{exhibition.body | truncate}}</p>
       </div>
     </div>
