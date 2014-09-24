@@ -4,7 +4,9 @@
 (function () {
     'use strict';
 
-    function DivisionCtrl($rootScope, $scope, division, nyplUtility) {
+    function DivisionCtrl($rootScope, $scope, $timeout, config, division, nyplUtility) {
+        var divisionsWithApt = config.divisions_with_appointments;
+
         $scope.division  = division;
         $scope.location =  division._embedded.location;
 
@@ -27,7 +29,7 @@
             nyplUtility.socialMediaColor(division.social_media);
 
         $scope.has_appointment =
-            nyplUtility.divisionHasAppointment(division.id);
+            nyplUtility.divisionHasAppointment(divisionsWithApt, division.id);
     }
 
     angular

@@ -12,8 +12,8 @@
 
         locationsApi.getConfig = function () {
             var defer = $q.defer();
-            $http
-                .get('/config', {cache: true})
+
+            $http.get('/config', {cache: true})
                 .success(function (data) {
                     api = data.config.api_root;
                     defer.resolve(data.config);
@@ -215,10 +215,8 @@
         return locationsApi;
     }
 
-
     angular
         .module('locationService', [])
         .factory('nyplLocationsService', nyplLocationsService);
 
 })();
-

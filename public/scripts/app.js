@@ -78,11 +78,7 @@ nypl_locations.config([
         }
 
         function getConfig(nyplLocationsService) {
-            return nyplLocationsService
-                .getConfig()
-                .then(function (data) {
-                    return data.config;
-                });
+            return nyplLocationsService.getConfig();
         }
 
         $crumbProvider.setOptions({

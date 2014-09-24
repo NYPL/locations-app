@@ -382,20 +382,8 @@
      * @description Only a few divisions should have a link to make
      *  an appointment.
      */
-    utility.divisionHasAppointment = function (id) {
-      switch (id) {
-      case "ARN":
-      case "RBK":
-      case "MSS":
-      case "BRG":
-      case "PRN":
-      case "PHG":
-      case "SPN":
-      case "CPS":
-        return true;
-      default:
-        return false;
-      }
+    utility.divisionHasAppointment = function (divisionsWithApts, id) {
+      return _.contains(divisionsWithApts, id);
     };
 
     return utility;
