@@ -14,6 +14,7 @@ class Locinator < Sinatra::Base
         configs["environments"][configs["environments"]["default"]]
     end
     set :divisions_with_appointments, configs["divisions_with_appointments"]
+    set :featured_amenities, configs["featured_amenities"]
   end
 
   helpers Sinatra::Jsonp
@@ -71,6 +72,7 @@ class Locinator < Sinatra::Base
         "tz_offset" => tz,
         "api_root" => settings.env_config["api"],
         "divisions_with_appointments" => settings.divisions_with_appointments,
+        "featured_amenities" => settings.featured_amenities
       }
     }
     jsonp response
