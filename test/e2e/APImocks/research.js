@@ -957,7 +957,10 @@ var response = {
             ]
         }, 
         "id": "SC", 
-        "image": "http://www.nypl.org/sites/default/files/images/schomburgfacade_1.jpg", 
+        "images": {
+            "interior": "http://www.nypl.org/sites/default/files/images/schomburgfacade_1.jpg",
+            "exterior": "http://www.nypl.org/sites/default/files/images/schomburgfacade_1.jpg"
+        },
         "locality": "New York", 
         "name": "Schomburg Center for Research in Black Culture", 
         "open": true, 

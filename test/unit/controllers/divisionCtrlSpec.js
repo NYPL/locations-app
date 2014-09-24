@@ -24,7 +24,9 @@ var  mockGeneralResearchDivision = {
       }
     },
     id: "GRD",
-    image: "http://www.nypl.org/sites/default/files/images/stacks.jpeg",
+    images: {
+      interior: "http://www.nypl.org/sites/default/files/images/stacks.jpeg"
+    },
     locality: "New York",
     location_id: "SASB",
     location_name: "Stephen A. Schwarzman Building",
@@ -63,7 +65,9 @@ var  mockGeneralResearchDivision = {
       ]
     },
     id: "RBK",
-    image: "http://www.nypl.org/sites/default/files/emblemssquirrel.jpg",
+    images: {
+      interior: "http://www.nypl.org/sites/default/files/emblemssquirrel.jpg"
+    },
     locality: "New York",
     location_id: "SASB",
     location_name: "Stephen A. Schwarzman Building",

@@ -184,7 +184,7 @@
 
           if (typeof context === 'object' && parentStateSetting) {
             if (!context.$stateParams) {
-              return null;
+              return undefined;
             }
             // Extract Parent-state properties
             parentStateName  = getParentName(currentState);
@@ -200,19 +200,19 @@
                 displayName: parentStateName,
                 route: parentStateRoute
               }
+            }
 
-              if (parentDivisionName && parentDivisionRoute) {
-                parentStateObj.division = {
-                  name: parentDivisionName,
-                  route: parentDivisionRoute
-                }
-              } 
+            if (parentDivisionName && parentDivisionRoute) {
+              parentStateObj.division = {
+                name: parentDivisionName,
+                route: parentDivisionRoute
+              }
+            }
+
+            if (parentStateObj) {
               return parentStateObj;
             }
-            else {
-              //console.log('Parent state name or route is not defined');
-              return null;
-            }
+            return undefined;
           }
           return undefined;
         }
@@ -414,11 +414,14 @@
           // Extract parent state if available
           parentState = getParentState(currentState);
           if (parentState) {
-            breadcrumbs.push({
-              displayName: parentState.displayName,
-              route: parentState.route
-            });
-
+            // Parent data
+            if (parentState.displayName && parentState.route) {
+              breadcrumbs.push({
+                displayName: parentState.displayName,
+                route: parentState.route
+              });
+            }
+            // Division data
             if (parentState.division) {
               breadcrumbs.push({
                 displayName: parentState.division.name,

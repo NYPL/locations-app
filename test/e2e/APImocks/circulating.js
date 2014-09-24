@@ -141,7 +141,10 @@ var response = {
         ]
       }, 
       "id": "GC", 
-      "image": "http://www.nypl.org/sites/default/files/images/grand_central.jpg", 
+      "images": {
+        "interior": "http://www.nypl.org/sites/default/files/images/grand_central.jpg",
+        "exterior": "http://www.nypl.org/sites/default/files/images/grand_central.jpg"
+      },
       "locality": "New York", 
       "name": "Grand Central Library",
       "open": true,

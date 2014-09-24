@@ -49,6 +49,7 @@ describe('NYPL Utility Service Tests', function () {
       // check to see if it has the expected function
       it('should have an hoursToday() function', function () {
         expect(angular.isFunction(nyplUtility.hoursToday)).toBe(true);
+        expect(nyplUtility.hoursToday).toBeDefined();
       });
 
       it('should return today\'s and tomorrow\'s open and close times ' +
@@ -108,6 +109,10 @@ describe('NYPL Utility Service Tests', function () {
           }
         };
 
+      it('should have the branchException function available', function () {
+        expect(nyplUtility.branchException).toBeDefined();
+      });
+
       it('should return null if no input was passed', function () {
         expect(nyplUtility.branchException()).toBe(null);
       });
@@ -149,6 +154,10 @@ describe('NYPL Utility Service Tests', function () {
         region: "NY",
         postal_code: "10026"
       };
+
+      it('should have the getAddressString function available', function () {
+        expect(nyplUtility.getAddressString).toBeDefined();
+      });
 
       it('should print the address for a marker', function () {
         var marker_address = nyplUtility.getAddressString(location, true);
@@ -193,6 +202,10 @@ describe('NYPL Utility Service Tests', function () {
         {href: "http://www.instagram.com/nypl", site: "instagram"},
         {href: "http://www.tumblr.com/", site: "tumblr"}
       ];
+
+      it('should have the socialMediaColor function available', function () {
+        expect(nyplUtility.socialMediaColor).toBeDefined();
+      });
 
       it('should add an icon class and a text color class', function () {
         var modified_social_media = nyplUtility.socialMediaColor(social_media),
@@ -249,6 +262,10 @@ describe('NYPL Utility Service Tests', function () {
             "30th through September 1st in observance of Labor Day"
         };
 
+      it('should have the alerts function available', function () {
+        expect(nyplUtility.alerts).toBeDefined();
+      });
+
       it('should display the Independence Day alert - array of alerts',
         function () {
           date = new Date(2014, 5, 29);
@@ -282,9 +299,64 @@ describe('NYPL Utility Service Tests', function () {
       })
     });
 
-    // describe('nyplUtility.popupWindow', function () {
-    //   // Not sure how to test just yet
-    // });
+    describe('nyplUtility.popupWindow', function () {
+      var nyplChatLink;
+      beforeEach(function () {
+        window.open = jasmine.createSpy('window.open');
+        nyplChatLink = 'http://www.nypl.org/ask-librarian';
+      });
+
+      it('should have a popupWindow function', function () {
+        expect(nyplUtility.popupWindow).toBeDefined();
+      });
+
+      it('should return if no link was passed', function () {
+        expect(nyplUtility.popupWindow()).not.toBeDefined();
+      });
+
+      it('should open a window with an empty title, default width and height',
+        function () {
+          nyplUtility.popupWindow(nyplChatLink);
+
+          expect(window.open).toHaveBeenCalled();
+          expect(window.open).toHaveBeenCalledWith(
+            nyplChatLink, '', 'menubar=1,resizable=1,width=300,height=500'
+          );
+        });
+
+      it('should open a window with a title', function () {
+        nyplUtility.popupWindow(nyplChatLink, 'NYPL Chat');
+
+        expect(window.open).toHaveBeenCalled();
+        expect(window.open).toHaveBeenCalledWith(
+          nyplChatLink,
+          'NYPL Chat',
+          'menubar=1,resizable=1,width=300,height=500'
+        );
+      });
+
+      it('should open a window with a set width and height', function () {
+        nyplUtility.popupWindow(nyplChatLink, 'NYPL Chat', 210, 450);
+
+        expect(window.open).toHaveBeenCalled();
+        expect(window.open).toHaveBeenCalledWith(
+          nyplChatLink,
+          'NYPL Chat',
+          'menubar=1,resizable=1,width=210,height=450'
+        );
+      });
+
+      it('should accept width and height as strings', function () {
+        nyplUtility.popupWindow(nyplChatLink, 'NYPL Chat', '210', '450');
+
+        expect(window.open).toHaveBeenCalled();
+        expect(window.open).toHaveBeenCalledWith(
+          nyplChatLink,
+          'NYPL Chat',
+          'menubar=1,resizable=1,width=210,height=450'
+        );
+      });
+    });
 
     /*
      * nyplUtility.calendarLink(type, event, location)
@@ -319,6 +391,10 @@ describe('NYPL Utility Service Tests', function () {
           region: "NY",
           postal_code: 10014
         };
+
+      it('should have the calendarLink function available', function () {
+        expect(nyplUtility.calendarLink).toBeDefined();
+      });
 
       it('should return a url to create a Google Calendar given ' +
         'an event and address',
@@ -392,11 +468,24 @@ describe('NYPL Utility Service Tests', function () {
         },
         address = "203 West 115th Street";
 
+      beforeEach(function () {
+        window.open = jasmine.createSpy('window.open');
+      });
+
+      it('should have the icalLink function availble', function () {
+        expect(nyplUtility.icalLink).toBeDefined();
+      });
+
       it('should return an empty string if no event or adress was passed',
         function () {
           expect(nyplUtility.icalLink()).toEqual('');
           expect(nyplUtility.icalLink(nypl_event)).toEqual('');
         });
+
+      it('should call the window.open function', function () {
+        nyplUtility.icalLink(nypl_event, address);
+        expect(window.open).toHaveBeenCalled();
+      });
     });
 
     /*
@@ -452,6 +541,10 @@ describe('NYPL Utility Service Tests', function () {
           ]);
         });
 
+      it('should have the calcDistance function available', function () {
+        expect(nyplUtility.calcDistance).toBeDefined();
+      });
+
       it('should return an empty array if no params are passed', function () {
         var empty_result = nyplUtility.calcDistance();
 
@@ -467,6 +560,10 @@ describe('NYPL Utility Service Tests', function () {
      *   that was search is more than 25 miles, false otherwise.
      */
     describe('nyplUtility.checkDistance()', function () {
+      it('should have the checkDistance function available', function () {
+        expect(nyplUtility.checkDistance).toBeDefined();
+      });
+
       it('should return false because the minimum distance is less ' +
         'than 25 miles',
         function () {
@@ -517,6 +614,10 @@ describe('NYPL Utility Service Tests', function () {
      *   Returns HTML as returned by the ngSanitize function trustAsHtml.
      */
     describe('nyplUtility.returnHTML()', function () {
+      it('should have the returnHTML function available', function () {
+        expect(nyplUtility.returnHTML).toBeDefined();
+      });
+
       it('should return html from a string', function () {
         var html = "<p>hello world</p>";
 
@@ -535,6 +636,10 @@ describe('NYPL Utility Service Tests', function () {
      *   'Make an Appointment' link on its page.
      */
     describe('nyplUtility.divisionHasAppointment()', function () {
+      it('should have the divisionHasAppointment function available', function () {
+        expect(nyplUtility.divisionHasAppointment).toBeDefined();
+      });
+
       it('should return false because Map Division should not have the link',
         function () {
           expect(nyplUtility.divisionHasAppointment('MAP')).toBe(false);

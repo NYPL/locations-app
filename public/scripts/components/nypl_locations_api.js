@@ -34,7 +34,6 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
@@ -65,7 +64,6 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
@@ -96,7 +94,6 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
@@ -136,7 +133,6 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
@@ -169,7 +165,6 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
@@ -198,7 +193,6 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    console.log(status);
                     defer.reject(apiError);
                 });
             return defer.promise;
