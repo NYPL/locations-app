@@ -75,11 +75,13 @@
             </a>
           </div>
 
-		      <a id="catalog-link" class="icon-books" 
-            data-ng-if="location._links.on_shelves && location.open"
-            data-ng-href="{{ location._links.on_shelves.href }}">
-            {{ 'SHELVES' | translate }}
-          </a>
+          <div class="on-shelves" data-ng-if="location.type != 'research'">
+  		      <a id="catalog-link" class="icon-books" 
+              data-ng-if="location._links.on_shelves && location.open"
+              data-ng-href="{{ location._links.on_shelves.href }}">
+              {{ 'SHELVES' | translate }}
+            </a>
+          </div>
 
           <div class="social beta" data-ng-if="location.social_media">
             <a class="{{social.classes}}" data-ng-href="{{social.href}}" id="social_media"
