@@ -29,5 +29,6 @@
   "featured_amenities": {
     "global": 3,
     "local": 2
-  }
+  },
+  "research_order": ["SASB", "LPA", "SC", "SIBL"]
 }
