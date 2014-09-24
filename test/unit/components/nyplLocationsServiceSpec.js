@@ -33,6 +33,17 @@ describe('NYPL locationService Module', function () {
       inject(function (_nyplLocationsService_, _$httpBackend_) {
         nyplLocationsService = _nyplLocationsService_;
         httpBackend = _$httpBackend_;
+
+        httpBackend
+          .expectGET('/config')
+          .respond({
+            config: {
+              api_root: api
+            }
+          });
+
+        nyplLocationsService.getConfig();
+        httpBackend.flush();
       });
     });
 

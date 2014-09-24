@@ -636,18 +636,23 @@ describe('NYPL Utility Service Tests', function () {
      *   'Make an Appointment' link on its page.
      */
     describe('nyplUtility.divisionHasAppointment()', function () {
+      var divisions_with_appointments =
+        ["ARN","RBK","MSS","BRG","PRN","PHG","SPN","CPS"];
+
       it('should have the divisionHasAppointment function available', function () {
         expect(nyplUtility.divisionHasAppointment).toBeDefined();
       });
 
       it('should return false because Map Division should not have the link',
         function () {
-          expect(nyplUtility.divisionHasAppointment('MAP')).toBe(false);
+          expect(nyplUtility.divisionHasAppointment(divisions_with_appointments, 'MAP'))
+            .toBe(false);
         });
 
       it('should return true because Arents Division should have the link',
         function () {
-          expect(nyplUtility.divisionHasAppointment('ARN')).toBe(true);
+          expect(nyplUtility.divisionHasAppointment(divisions_with_appointments, 'ARN'))
+            .toBe(true);
         });
     });
 
