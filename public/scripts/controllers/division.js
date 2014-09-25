@@ -4,7 +4,7 @@
 (function () {
     'use strict';
 
-    function DivisionCtrl($rootScope, $scope, $timeout, config, division, nyplUtility) {
+    function DivisionCtrl($rootScope, $scope, config, division, nyplUtility) {
         var divisionsWithApt = config.divisions_with_appointments;
 
         $scope.division  = division;
