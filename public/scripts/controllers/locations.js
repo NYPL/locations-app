@@ -19,6 +19,7 @@
     ) {
         var locations,
             searchValues = nyplSearch.getSearchValues(),
+            research_order = config.research_order || ['SASB', 'LPA', 'SC', 'SIBL'],
             user = { coords: {}, address: '' },
             sortListBy = function (type) {
                 $scope.predicate = type;
@@ -294,6 +295,9 @@
                         location.branchException =
                             nyplUtility.branchException(location.hours);
 
+                        location.research_order =
+                            nyplUtility.researchLibraryOrder(location.id, research_order);
+
                         // Initially, when the map is drawn and 
                         // markers are available, they will be drawn too. 
                         // No need to draw them again if they exist.
@@ -471,6 +475,7 @@
             if ($scope.researchBranches) {
                 nyplGeocoderService.showResearchLibraries().panMap();
                 showLibrariesTypeOf('research');
+                sortListBy('research_order');
             } else {
                 nyplGeocoderService.showAllLibraries().panMap();
                 showLibrariesTypeOf();
