@@ -317,8 +317,7 @@
                             nyplUtility.branchException(location.hours);
 
                         location.research_order =
-                            nyplUtility.researchLibraryOrder(location.id, research_order);
-
+                            nyplUtility.researchLibraryOrder(research_order, location.id);
                         // Initially, when the map is drawn and 
                         // markers are available, they will be drawn too. 
                         // No need to draw them again if they exist.
