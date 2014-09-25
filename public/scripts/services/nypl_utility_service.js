@@ -386,7 +386,7 @@
       return _.contains(divisionsWithApts, id);
     };
 
-    utility.researchLibraryOrder = function (id, research_order) {
+    utility.researchLibraryOrder = function (research_order, id) {
       return _.indexOf(research_order, id);
     };
 
