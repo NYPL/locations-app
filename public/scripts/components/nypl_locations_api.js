@@ -6,9 +6,23 @@
 
     /** @namespace nyplLocationsService */
     function nyplLocationsService($http, $q) {
-        var api = 'http://locations-api-beta.nypl.org',
+        var api = '',
             apiError = "Could not reach API",
             locationsApi = {};
+
+        locationsApi.getConfig = function () {
+            var defer = $q.defer();
+
+            $http.get('/config', {cache: true})
+                .success(function (data) {
+                    api = data.config.api_root;
+                    defer.resolve(data.config);
+                })
+                .error(function (data, status) {
+                    defer.reject(apiError);
+                });
+            return defer.promise;
+        }
 
         /** @function nyplLocationsService.allLocations 
          * @returns {object} Deferred promise. If it resolves, JSON response
@@ -201,10 +215,8 @@
         return locationsApi;
     }
 
-
     angular
         .module('locationService', [])
         .factory('nyplLocationsService', nyplLocationsService);
 
 })();
-

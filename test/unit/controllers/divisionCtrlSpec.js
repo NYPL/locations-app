@@ -99,10 +99,30 @@ var  mockGeneralResearchDivision = {
 describe('DivisionCtrl', function () {
   'use strict';
 
-  var scope, DivisionCtrl;
+  var scope, DivisionCtrl, httpBackend, nyplLocationsService;
 
   beforeEach(function () {
     module('nypl_locations');
+    inject(function (_nyplLocationsService_, _$httpBackend_) {
+      httpBackend = _$httpBackend_;
+      nyplLocationsService = _nyplLocationsService_;
+
+      httpBackend
+        .expectGET('/languages/en.json')
+        .respond('public/languages/en.json');
+
+      httpBackend
+        .expectGET('/config')
+        .respond({
+          config: {
+            api_root: 'http://locations-api-beta.nypl.org',
+            divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN","PHG","SPN","CPS"]
+          }
+        });
+
+      nyplLocationsService.getConfig();
+      httpBackend.flush();
+    })
   });
 
   describe('General Research Division', function () {
@@ -113,6 +133,8 @@ describe('DivisionCtrl', function () {
       scope = _$rootScope_.$new();
       DivisionCtrl = _$controller_('DivisionCtrl', {
         $scope: scope,
+        config: {api_root: 'http://locations-api-beta.nypl.org',
+          divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN","PHG","SPN","CPS"]},
         division: mockGeneralResearchDivision
       });
     }));
@@ -163,6 +185,8 @@ describe('DivisionCtrl', function () {
       scope = _$rootScope_.$new();
       DivisionCtrl = _$controller_('DivisionCtrl', {
         $scope: scope,
+        config: {api_root: 'http://locations-api-beta.nypl.org',
+          divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN","PHG","SPN","CPS"]},
         division: mockRareBookDivision
       });
     }));
