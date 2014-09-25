@@ -4,7 +4,7 @@
 (function () {
     'use strict';
 
-    function AmenitiesCtrl($rootScope, $scope, amenities, nyplAmenities) {
+    function AmenitiesCtrl($rootScope, $scope, amenities, config, nyplAmenities) {
         $rootScope.title = "Amenities";
 
         $scope.amenitiesCategories =
@@ -13,7 +13,7 @@
 
     // Load an amenity and list all the locations
     // where the amenity can be found.
-    function AmenityCtrl($rootScope, $scope, amenity) {
+    function AmenityCtrl($rootScope, $scope, amenity, config) {
         var name = amenity.amenity.name;
 
         $rootScope.title = name;
@@ -23,7 +23,7 @@
     }
 
     // Load one location and list all the amenities found in that location.
-    function AmenitiesAtLibraryCtrl($http, $rootScope, $scope, location, nyplAmenities) {
+    function AmenitiesAtLibraryCtrl($http, $rootScope, $scope, config, location, nyplAmenities) {
         // Temporary until all the locations have proper data
         if (!location._embedded.amenities.length) {
             $http

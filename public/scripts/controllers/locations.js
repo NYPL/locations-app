@@ -9,6 +9,7 @@
         $scope,
         $timeout,
         $state,
+        config,
         nyplCoordinatesService,
         nyplGeocoderService,
         nyplLocationsService,
@@ -484,7 +485,7 @@
     }
     // End LocationsCtrl
 
-    function MapCtrl($scope, $timeout, nyplGeocoderService) {
+    function MapCtrl($scope, $timeout, config, nyplGeocoderService) {
 
         var loadMapMarkers = function () {
                 $timeout(function () {
@@ -554,6 +555,7 @@
         $rootScope,
         $scope,
         $timeout,
+        config,
         location,
         nyplCoordinatesService,
         nyplUtility,
