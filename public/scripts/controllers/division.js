@@ -12,6 +12,11 @@
         $scope.calendarLink = nyplUtility.calendarLink;
         $scope.icalLink = nyplUtility.icalLink;
 
+        if (division.hours.exceptions) {
+            division.hours.exceptions.description =
+                nyplUtility.returnHTML(division.hours.exceptions.description);
+        }
+
         if (division.hours) {
             $scope.hoursToday = nyplUtility.hoursToday(division.hours);
         }

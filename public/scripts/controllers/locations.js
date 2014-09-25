@@ -581,6 +581,11 @@
         $scope.location = location;
         $rootScope.title = location.name;
 
+        if (location.hours.exceptions) {
+            location.hours.exceptions.description =
+                nyplUtility.returnHTML(location.hours.exceptions.description);
+        }
+
         // Add icons to the amenities.
         location._embedded.amenities = nyplAmenities.addCategoryIcon(amenities);
         // Get three institution ranked and two location ranked amenities.
