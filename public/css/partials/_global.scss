@@ -24,11 +24,6 @@
 	left: 0;
 	bottom: 0;
 	right: 0;
-	-webkit-transition: all .5s ease;
-	-moz-transition: all .5s ease;
-	-ms-transition: all .5s ease;
-	-o-transition: all .5s ease;
-	transition: all .5s ease;
 	color: #fff;
 	text-align: center;
 
@@ -45,13 +40,15 @@
 		height: 40px;
 		margin-top: -27.5px;
 		margin-left: -20px;
-		font-size: 2em;
+		font-size: 2.5em;
 		left: 50%;
 		top: 40%;
-		-webkit-animation: spin 2s infinite linear;
-		-moz-animation: spin 2s infinite linear;
-		-o-animation: spin 2s infinite linear;
-		animation: spin 2s infinite linear;
+    -webkit-animation: spin 2.5s linear reverse infinite;
+    animation: spin 2.5s linear reverse infinite;
+	}
+
+	[data-icon]:before, [class^="icon-"]:before, [class*=" icon-"]:before {
+		margin: 0;
 	}
 }
 
@@ -231,37 +228,13 @@ time {
 }
 
 // Spin Animation
-@-moz-keyframes spin {
-  0% {
-    -moz-transform: rotate(0deg);
-  }
-  100% {
-    -moz-transform: rotate(360deg);
-  }
-}
+
 @-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
+  from { }
+  to { -webkit-transform: rotate(360deg); }
 }
-@-o-keyframes spin {
-  0% {
-    -o-transform: rotate(0deg);
-  }
-  100% {
-    -o-transform: rotate(360deg);
-  }
-}
+
 @keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
+  from { }
+  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
 }
