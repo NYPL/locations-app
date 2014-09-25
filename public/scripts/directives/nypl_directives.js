@@ -33,19 +33,6 @@ function loadingWidget(requestNotificationChannel) {
     };
 }
 
-function nyplFeedback() {
-    'use strict';
-
-    return {
-        restrict: 'E',
-        templateUrl: 'scripts/directives/templates/nyplFeedback.html',
-        replace: true,
-        link: function (scope, element, attrs) {
-
-        }
-    };
-}
-
 function nyplTranslate() {
     'use strict';
 

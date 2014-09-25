@@ -8,6 +8,7 @@ var nypl_locations = angular.module('nypl_locations', [
     'ngAnimate',
     'locationService',
     'coordinateService',
+    'nyplFeedback',
     'nyplSearch',
     'nyplSSO',
     'nyplNavigation',
