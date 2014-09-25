@@ -272,8 +272,15 @@
             return nyplLocationsService
                 .allLocations()
                 .then(function (data) {
+                    // Config amenity data
+                    var amenitiesCount = {
+                        global: config.featured_amenities.global || 3,
+                        local: config.featured_amenities.local || 2
+                    }
+
                     locations = data.locations;
                     $scope.locations = locations;
+
 
                     _.each($scope.locations, function (location) {
                         var locationAddress =
@@ -287,8 +294,13 @@
                         location.locationDest =
                             nyplUtility.getAddressString(location);
 
-                        location.amenities_list = nyplAmenities
-                            .allAmenitiesArray(location._embedded.amenities);
+                        location.amenities_list =
+                            nyplAmenities.
+                            getHighlightedAmenities(
+                                location._embedded.amenities,
+                                amenitiesCount.global,
+                                amenitiesCount.local
+                            );
 
                         // Individual location exception data
                         location.branchException =
@@ -305,6 +317,7 @@
                                     locationAddress);
                         }
                     });
+
 
                     resetPage();
 
