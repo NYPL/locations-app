@@ -278,13 +278,13 @@
 
                     if (config) {
                         if (config.featured_amenities) {
-                            amenitiesCount.global = config.featured_amenities.global;
-                            amenitiesCount.local  = config.featured_amenities.local;
+                            amenitiesCount.global = config.featured_amenities.global || 3;
+                            amenitiesCount.local  = config.featured_amenities.local || 2;
                         }
                     }
                     else {
-                        amenitiesCount.global = 4;
-                        amenitiesCount.local  = 1;
+                        amenitiesCount.global = 3;
+                        amenitiesCount.local  = 2;
                     }
 
                     console.log(amenitiesCount);
