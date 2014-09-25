@@ -276,6 +276,10 @@
 		@include breakpoint($min, $post-palm) {
 			margin-top: inherit;
 		}
+
+		ul {
+			margin-left: 25px;
+		}
 	}
 
 	// Events page for each location-hours
