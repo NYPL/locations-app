@@ -246,10 +246,11 @@
             class="btn" id="ask-librarian">
             {{ 'ASK_LIBRARIAN' | translate }}
           </a>
-          <ul class="flush--left gamma">
-            <li class="icon-screen2">{{ 'RESERVE_COMPUTER' | translate }}</li>
-            <li class="icon-library">{{ 'ILL' | translate }}</li>
-            <li class="icon-users">{{ 'MEETING_ROOMS' | translate }}</li>
+          <!-- Plan your visit items -->
+          <ul class="soft-half--ends delta" data-ng-if="location.plan_your_visit">
+            <li data-ng-repeat="item in location.plan_your_visit">
+              <a data-ng-src="{{item.url}}">{{item.label}}</a>
+            </li>
           </ul>
         </div>
       </div>
