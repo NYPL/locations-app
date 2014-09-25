@@ -25,6 +25,21 @@
                 $scope.predicate = type;
             },
 
+            getAmenityConfig = function (config, globalDefault, localDefault) {
+                var obj = {},
+                    global = globalDefault || 3,
+                    local  = localDefault || 2;
+                if (config.featured_amenities) {
+                    obj.global = config.featured_amenities.global || global;
+                    obj.local  = config.featured_amenities.local || local;
+                }
+                else {
+                    obj.global = global;
+                    obj.local  = local;
+                }
+                return obj;
+            },
+
             resetProperty = function (arr, property) {
                 _.each(arr, function (location) {
                     location[property] = '';
@@ -275,6 +290,7 @@
                 .then(function (data) {
                     locations = data.locations;
                     $scope.locations = locations;
+                    var amenitiesCount = getAmenityConfig(config);
 
                     _.each($scope.locations, function (location) {
                         var locationAddress =
@@ -288,8 +304,13 @@
                         location.locationDest =
                             nyplUtility.getAddressString(location);
 
-                        location.amenities_list = nyplAmenities
-                            .allAmenitiesArray(location._embedded.amenities);
+                        location.amenities_list =
+                            nyplAmenities.
+                            getHighlightedAmenities(
+                                location._embedded.amenities,
+                                amenitiesCount.global,
+                                amenitiesCount.local
+                            );
 
                         // Individual location exception data
                         location.branchException =
@@ -309,6 +330,7 @@
                                     locationAddress);
                         }
                     });
+
 
                     resetPage();
 
