@@ -24,6 +24,23 @@
                 $scope.predicate = type;
             },
 
+            getAmenityConfig = function (config, globalDefault, localDefault) {
+                var obj = {},
+                    global = globalDefault || 3,
+                    local  = localDefault || 2;
+                if (config) {
+                    if (config.featured_amenities) {
+                        obj.global = config.featured_amenities.global || global;
+                        obj.local  = config.featured_amenities.local || local;
+                    }
+                }
+                else {
+                    obj.global = global;
+                    obj.local  = local;
+                }
+                return obj;
+            },
+
             resetProperty = function (arr, property) {
                 _.each(arr, function (location) {
                     location[property] = '';
@@ -274,20 +291,7 @@
                 .then(function (data) {
                     locations = data.locations;
                     $scope.locations = locations;
-                    var amenitiesCount = {};
-
-                    if (config) {
-                        if (config.featured_amenities) {
-                            amenitiesCount.global = config.featured_amenities.global || 3;
-                            amenitiesCount.local  = config.featured_amenities.local || 2;
-                        }
-                    }
-                    else {
-                        amenitiesCount.global = 3;
-                        amenitiesCount.local  = 2;
-                    }
-
-                    console.log(amenitiesCount);
+                    var amenitiesCount = getAmenityConfig(config);
 
                     _.each($scope.locations, function (location) {
                         var locationAddress =
