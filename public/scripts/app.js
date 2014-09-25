@@ -194,7 +194,7 @@ nypl_locations.config([
     }
 ]);
 
-nypl_locations.run(function ($state, $rootScope, $location, nyplLocationsService) {
+nypl_locations.run(function ($state, $rootScope, $location) {
     $rootScope.$on('$stateChangeSuccess', function () {
         $rootScope.current_url = $location.absUrl();
     });
