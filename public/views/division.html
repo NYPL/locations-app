@@ -94,9 +94,11 @@
       <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
         data-ng-repeat='subdivision in division._embedded.divisions'>
         <div class="subdivision-wrapper">
-          <img data-ng-if="subdivision.images.interior"
-          class="img--outline" data-ng-src="{{subdivision.images.interior}}"
+          <a ui-sref="division({division: subdivision.slug})">
+            <img data-ng-if="subdivision.images.interior" class="img--outline" 
+            data-ng-src="{{subdivision.images.interior}}"
             alt="Image for {{subdivision.name}}" title="Image for {{subdivision.name}}"/>
+          </a>
           <h4 class="subdivision-title">
             <a ui-sref="division({division: subdivision.slug})">{{subdivision.name}}</a>
           </h4>

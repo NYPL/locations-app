@@ -132,9 +132,13 @@
       <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
         data-ng-repeat='division in location._embedded.divisions'>
         <div class="division-wrapper">
-          <img class="img--outline" data-ng-src="{{division.images.interior}}"
+          <a data-ui-sref="division({division: division.slug})">
+            <img class="img--outline" data-ng-src="{{division.images.interior}}"
             alt="Image for {{division.name}}" title="Image for {{division.name}}"/>
-          <h4 class=""><a data-ui-sref="division({division: division.slug})">{{division.name}}</a></h4>
+          </a>
+          <h4>
+            <a data-ui-sref="division({division: division.slug})">{{division.name}}</a>
+          </h4>
           <p data-ng-if="division.hours">Hours Today: {{division.hoursToday | timeFormat}}</p>
         </div>
       </div>
