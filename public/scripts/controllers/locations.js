@@ -28,11 +28,9 @@
                 var obj = {},
                     global = globalDefault || 3,
                     local  = localDefault || 2;
-                if (config) {
-                    if (config.featured_amenities) {
-                        obj.global = config.featured_amenities.global || global;
-                        obj.local  = config.featured_amenities.local || local;
-                    }
+                if (config.featured_amenities) {
+                    obj.global = config.featured_amenities.global || global;
+                    obj.local  = config.featured_amenities.local || local;
                 }
                 else {
                     obj.global = global;
