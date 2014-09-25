@@ -215,9 +215,13 @@
           <img class="img--left" data-ng-src="{{blog.image}}" alt="" style="max-width: 120px;" />
         </a>
         <div class="blog_author">
-          <span class="blog_name">By {{blog.author.name}}<span>
-          <span class="blog_position" data-ng-if="blog.author.position">, {{blog.author.position}}</span>
-          <span class="blog_location" data-ng-if="blog.author.location">, {{blog.author.location}}</span>
+          <span class="blog_name">By {{blog.author.name}}</span>
+          <span class="blog_position" data-ng-if="blog.author.position">
+            , {{blog.author.position}}
+          </span>
+          <span class="blog_location" data-ng-if="blog.author.location">
+            , {{blog.author.location}}
+          </span>
         </div>
         <time class="date" ><span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span></time>
         <div class="desc">{{blog.body | truncate}}</div>
