@@ -6,21 +6,26 @@
 
     /** @namespace nyplLocationsService */
     function nyplLocationsService($http, $q) {
-        var api = '',
+        var api,
             apiError = "Could not reach API",
             locationsApi = {};
 
         locationsApi.getConfig = function () {
             var defer = $q.defer();
 
-            $http.get('/config', {cache: true})
-                .success(function (data) {
-                    api = data.config.api_root;
-                    defer.resolve(data.config);
-                })
-                .error(function (data, status) {
-                    defer.reject(apiError);
-                });
+            if (api) {
+                defer.resolve(api);
+            } else {
+                $http.get('/config', {cache: true})
+                    .success(function (data) {
+                        api = data.config.api_root;
+                        defer.resolve(data.config);
+                    })
+                    .error(function (data, status) {
+                        defer.reject(apiError);
+                    });
+            }
+
             return defer.promise;
         }
 
