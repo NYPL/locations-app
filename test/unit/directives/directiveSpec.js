@@ -415,9 +415,10 @@ describe('NYPL Directive Unit Tests', function () {
    *   the alerts in the API and checking the current date.
    */
   describe('Directive: nyplSiteAlerts', function () {
-    var $httpBackend, date, template, nyplSiteAlerts;
+    var $httpBackend, date, template, nyplSiteAlerts, $timeout;
 
-    beforeEach(inject(function (_$httpBackend_) {
+    beforeEach(inject(function (_$httpBackend_, _$timeout_) {
+      $timeout = _$timeout_;
       $httpBackend = _$httpBackend_;
 
       $httpBackend
@@ -447,7 +448,6 @@ describe('NYPL Directive Unit Tests', function () {
       Date = function () { return date; };
 
       $httpBackend.flush();
-      // scope.$digest();
 
       // For whatever reason, the sitewidealert doesn't get generated
       // in time for the $compile function to write it and for the data-ng-if
@@ -455,9 +455,11 @@ describe('NYPL Directive Unit Tests', function () {
       // console.log(element);
 
       // Currently just using the value in the scope.
-      alert = scope.sitewidealert;
-      expect(alert)
-        .toEqual('All units of the NYPL are closed July 4 - July 5.\n');
+      $timeout(function () {
+        alert = scope.sitewidealert;
+        expect(alert)
+          .toEqual('All units of the NYPL are closed July 4 - July 5.\n');
+        }, 1000);
 
       // Use the native Date function again
       Date = MockDate;
