@@ -71,6 +71,45 @@
       return hoursToday;
     };
 
+    utility.formatDate = function(startDate, endDate) {
+      var formattedDate,
+          months = ['January', 'February', 'March', 'April', 'May', 'June',
+                  'July', 'August', 'September', 'October', 'November', 'December'];
+
+      if (startDate && endDate) {
+        var sDate = new Date(startDate),
+          eDate   = new Date(endDate),
+          today   = new Date(),
+          nDays = Math.round(((eDate.valueOf()-today.valueOf()) / 1000 / 86400) - 0.5);
+
+        if (!nDays) return;
+        // First check if input is within 365 days
+        if (nDays <= 365) {
+          // Millisecond comparison between date.time property
+          if (sDate.getTime() <= today.getTime() && eDate.getTime() >= today.getTime()) {
+            // Current Event
+            formattedDate = "Now through " + months[eDate.getUTCMonth()] + " " +
+                            eDate.getUTCDate() + ", " + eDate.getUTCFullYear();
+          }
+          else if (sDate.getTime() > today.getTime() && eDate.getTime() >= today.getTime()) {
+            // Upcoming Event
+            formattedDate = "Opening " + months[sDate.getUTCMonth()] + " " +
+                            sDate.getUTCDate() + ", " + sDate.getUTCFullYear();
+          }
+          else {
+            // Past Event
+            formattedDate = months[sDate.getUTCMonth()] + " " + sDate.getUTCDate() + ", " + 
+                            sDate.getUTCFullYear() + " through " + months[eDate.getUTCMonth()] +
+                            " " + eDate.getUTCDate() + ", " + eDate.getUTCFullYear();
+          }
+        }
+        else {
+          formattedDate = "Ongoing";
+        }
+      };
+      return formattedDate;
+    }
+
     // Parse exception data and return as string
     utility.branchException = function (hours) {
       var exception = {};

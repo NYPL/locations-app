@@ -632,6 +632,15 @@
             $scope.hoursToday = nyplUtility.hoursToday(location.hours);
         }
 
+        // Build exhibition pretty date
+        if (location._embedded.exhibitions) {
+            _.each(location._embedded.exhibitions, function (exh) {
+                if (exh.start && exh.end) {
+                    exh.prettyDate = nyplUtility.formatDate(exh.start, exh.end);
+                }
+            });
+        }
+
         _.each(location._embedded.divisions, function (division) {
             division.hoursToday = nyplUtility.hoursToday(division.hours);
         });
