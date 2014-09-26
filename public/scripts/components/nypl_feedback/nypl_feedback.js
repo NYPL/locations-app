@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function nyplFeedback($sce) {
+  function nyplFeedback($sce, $rootScope) {
     return {
       restrict: 'E',
       templateUrl: 'scripts/components/nypl_feedback/nypl_feedback.html',
@@ -24,6 +24,14 @@
         } else {
           element.addClass('right');
         }
+
+        $rootScope.$watch('close_feedback', function (newVal, oldVal) {
+          if (newVal) {
+            $rootScope.close_feedback = false;
+            element.removeClass('open');
+            scope.feedback = 'Feedback';
+          }
+        });
 
         element.find('a').click(function () {
           element.toggleClass('open');

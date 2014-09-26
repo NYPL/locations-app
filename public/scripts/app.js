@@ -98,7 +98,7 @@ nypl_locations.config([
 
         // This next line breaks unit tests which doesn't make sense since
         // unit tests should not test the whole app. BUT since we are testing
-        // directives and using $rootscope.$digest or $rootscope.$apply,
+        // directives and using $rootScope.$digest or $rootScope.$apply,
         // it will run the app. It may not be necessary for the app though
         // since, in the run phase, if there is an error when changing state,
         // the app will go to the 404 state.
@@ -205,6 +205,9 @@ nypl_locations.config([
 ]);
 
 nypl_locations.run(function ($state, $rootScope, $location) {
+    $rootScope.$on('$stateChangeStart', function () {
+        $rootScope.close_feedback = true;
+    });
     $rootScope.$on('$stateChangeSuccess', function () {
         $rootScope.current_url = $location.absUrl();
     });
