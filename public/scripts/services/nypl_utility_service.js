@@ -76,11 +76,15 @@
           months = ['January', 'February', 'March', 'April', 'May', 'June',
                   'July', 'August', 'September', 'October', 'November', 'December'];
 
+      this.numDaysFromToday = function(date, today) {
+        return Math.round(((date.valueOf()-today.valueOf()) / 1000 / 86400) - 0.5);
+      };
+
       if (startDate && endDate) {
         var sDate = new Date(startDate),
           eDate   = new Date(endDate),
           today   = new Date(),
-          nDays = Math.round(((eDate.valueOf()-today.valueOf()) / 1000 / 86400) - 0.5);
+          nDays   = this.numDaysFromToday(eDate, today);
 
         if (!nDays) return;
         // First check if input is within 365 days

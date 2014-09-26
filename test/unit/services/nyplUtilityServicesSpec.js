@@ -656,7 +656,66 @@ describe('NYPL Utility Service Tests', function () {
         });
     });
 
+
+    /*
+     * nyplUtility.formatDate(startDate, endDate)
+     *   startDate: A string containing unix timestamp (UTC zone).
+     *   endDate: A string containing unix timestamp (UTC zone).
+     *
+     *   Returns a formatted string based off the comparison between the current
+     *   day and the starting/end dates.
+     */
+    describe('nyplUtility.formatDate()', function () {
+      var mockedStartDate, mockedEndDate, formattedDate;
+      // todaysDate: September 26, 2014
+
+      // check to see if it has the expected function
+      it('should have an formatDate() function', function () {
+        expect(angular.isFunction(nyplUtility.formatDate)).toBe(true);
+        expect(nyplUtility.formatDate).toBeDefined();
+      });
+
+      // check to see if it has the expected function
+      it('should calculate an event already started with an' + 
+        ' end date less than 365 days from today', function () {
+        mockedStartDate = '2014-09-05T00:00:00Z', // September 5th, 2014
+        mockedEndDate = '2014-10-18T00:00:00Z', // October 18, 2014
+        formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
+
+        expect(formattedDate).toEqual("Now through October 18, 2014");
+      });
+
+      // check to see if it has the expected function
+      it('should calculate an upcoming event with an end ' + 
+        'date less than 365 days from today', function () {
+        mockedStartDate = '2015-02-27T00:00:00Z', // February 27th, 2015
+        mockedEndDate = '2015-04-18T00:00:00Z', // April 18, 2015
+        formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
+
+        expect(formattedDate).toEqual("Opening February 27, 2015");
+      });
+
+      // check to see if it has the expected function
+      it('should calculate an event already past today\'s date and' + 
+        ' less than 365 days from today', function () {
+        mockedStartDate = '2014-08-27T00:00:00Z', // August 27, 2014
+        mockedEndDate = '2014-09-20T00:00:00Z', // September 20, 2014
+        formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
+
+        expect(formattedDate).toEqual("August 27, 2014 through September 20, 2014");
+      });
+
+
+      it('should calculate an ongoing event that has an end date of' + 
+        ' more than 365 days from today\'s date', function () {
+        mockedStartDate = '1998-01-01T00:00:00Z ', // January 01, 1998
+        mockedEndDate = '2048-12-31T00:00:00Z', // December 31, 2048
+        formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
+
+        expect(formattedDate).toEqual("Ongoing");
+      });
+    })
+
   }); /* End nyplUtility service */
 
 });
-
