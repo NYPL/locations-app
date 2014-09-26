@@ -656,6 +656,43 @@ describe('NYPL Utility Service Tests', function () {
         });
     });
 
+    /*
+     * nyplUtility.researchLibraryOrder(research_order, id)
+     */
+    describe('nyplUtility.researchLibraryOrder()', function () {
+      var research_order = ['SASB', 'LPA', 'SC', 'SIBL'];
+
+      it('should have the researchLibraryOrder function available', function () {
+        expect(nyplUtility.researchLibraryOrder).toBeDefined();
+      });
+
+      it('should return 0 for SASB', function () {
+        expect(nyplUtility.researchLibraryOrder(research_order, 'SASB'))
+          .toEqual(0);
+      });
+
+      it('should return 1 for LPA', function () {
+        expect(nyplUtility.researchLibraryOrder(research_order, 'LPA'))
+          .toEqual(1);
+      });
+
+      it('should return 2 for SC', function () {
+        expect(nyplUtility.researchLibraryOrder(research_order, 'SC'))
+          .toEqual(2);
+      });
+
+      it('should return 3 for SIBL', function () {
+        expect(nyplUtility.researchLibraryOrder(research_order, 'SIBL'))
+          .toEqual(3);
+      });
+
+      it('should return -1 for any other library ID', function () {
+        expect(nyplUtility.researchLibraryOrder(research_order, 'GC'))
+          .toEqual(-1);
+      });
+
+    });
+
   }); /* End nyplUtility service */
 
 });
