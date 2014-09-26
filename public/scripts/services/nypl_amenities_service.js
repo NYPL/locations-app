@@ -10,38 +10,38 @@
     var amenities = {},
       sortAmenitiesList = function (list, sortBy) {
         return _.sortBy(list, function (item) {
+          if (!item[sortBy]) {
+            return item.amenity[sortBy];
+          }
           return item[sortBy];
         });
       };
 
-    /** @function nyplAmenities.addIcon
+    /** @function nyplAmenities.addSpecialIcon
      * @param {array} amenities Array with amenities objects.
-     * @param {string} default_icon The default icon for an amenity.
      * @returns {array} 
      * @description Adds an icon class to an amenity category.
      */
-    amenities.addIcon = function (amenities, default_icon) {
-      var icon = default_icon || '';
+    amenities.addSpecialIcon = function (amenities) {
       _.each(amenities, function (amenity) {
-        switch (amenity.id) {
-        case 7967: // Wireless
-          amenity.icon = 'icon-connection';
+        switch (amenity.amenity.id) {
+        case 7952: // Wireless
+          amenity.amenity.icon = 'icon-connection';
           break;
         case 7965: // Laptop
-          amenity.icon = 'icon-laptop';
+          amenity.amenity.icon = 'icon-laptop';
           break;
-        case 7966: // Printing
-          amenity.icon = 'icon-print';
+        case 7954: // Printing
+          amenity.amenity.icon = 'icon-print';
           break;
-        case 7968: // Electrical oulets
-          amenity.icon = 'icon-power-cord';
+        case 7955: // Electrical oulets
+          amenity.amenity.icon = 'icon-power-cord';
           break;
-        case 7972: // Book drop
-        case 7971:
-          amenity.icon = 'icon-box-add';
+        case 7958: // Book drop
+        case 7951:
+          amenity.amenity.icon = 'icon-box-add';
           break;
         default:
-          amenity.icon = icon;
           break;
         }
       });
@@ -49,11 +49,10 @@
       return amenities;
     };
 
-    amenities.addCategoryIcon = function (amenities) {
-      var self = this;
-      _.each(amenities, function (amenityCategory) {
+    amenities.addAmenitiesIcon = function (amenities) {
+      _.each(amenities, function (amenity) {
         var icon = '';
-        switch (amenityCategory.name) {
+        switch (amenity.amenity.category) {
         case 'Computer Services':
           icon = 'icon-screen2';
           break;
@@ -71,15 +70,16 @@
           break;
         }
 
-        amenityCategory.icon = icon;
-        amenityCategory.amenities =
-          self.addIcon(amenityCategory.amenities, icon);
+        amenity.amenity.icon = icon;
       });
+
+      amenities = this.addSpecialIcon(amenities);
 
       return amenities;
     };
 
     /** @function nyplAmenities.allAmenitiesArray
+     * @deprecated 
      * @param {array} amenitiesCategories Array with amenities categories, each
      *  category with it's own amenities property which is an array of
      *  amenities under that category.
@@ -118,7 +118,7 @@
      *      .getHighlightedAmenities(location._embedded.amenities, 3, 2);
      */
     amenities.getHighlightedAmenities = function (amenities, rank, loc_rank) {
-      var initial_list = this.allAmenitiesArray(amenities),
+      var initial_list = amenities,
         amenities_list = [];
 
       if (!(amenities && rank && loc_rank)) {
@@ -134,7 +134,6 @@
       initial_list = sortAmenitiesList(initial_list, 'location_rank');
       // Retrieve the first n location ranked amenities and add
       initial_list = initial_list.splice(0, loc_rank);
-
       // Combine the two arrays, listing the institution ranked amenities first.
       amenities_list = _.union(amenities_list, initial_list);
 

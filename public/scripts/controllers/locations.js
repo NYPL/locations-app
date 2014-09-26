@@ -617,7 +617,8 @@
         }
 
         // Add icons to the amenities.
-        location._embedded.amenities = nyplAmenities.addCategoryIcon(amenities);
+        location._embedded.amenities = nyplAmenities.addAmenitiesIcon(amenities);
+
         // Get three institution ranked and two location ranked amenities.
         location.amenities_list =
             nyplAmenities.getHighlightedAmenities(amenities, 3, 2);
