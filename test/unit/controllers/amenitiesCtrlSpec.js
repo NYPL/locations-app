@@ -273,6 +273,9 @@ var  mockAllAmenities = {
         },
       ]
     }
+  },
+  config = {
+    api_root: "http://locations-api-beta.nypl.org"
   };
 
 
@@ -291,7 +294,8 @@ describe('Amenities Controllers', function () {
       nyplAmenities = _nyplAmenities_;
       AmenitiesCtrl = _$controller_('AmenitiesCtrl', {
         $scope: scope,
-        amenities: mockAllAmenities
+        amenities: mockAllAmenities,
+        config: config
       });
     }));
 
@@ -314,7 +318,8 @@ describe('Amenities Controllers', function () {
       scope = _$rootScope_.$new();
       AmenityCtrl = _$controller_('AmenityCtrl', {
         $scope: scope,
-        amenity: mockOneAmenity
+        amenity: mockOneAmenity,
+        config: config
       });
     }));
 
@@ -342,6 +347,7 @@ describe('Amenities Controllers', function () {
       nyplAmenities = _nyplAmenities_;
       AmenitiesAtLibraryCtrl = _$controller_('AmenitiesAtLibraryCtrl', {
         $scope: scope,
+        config: config,
         location: mockAmenitiesAtLibrary
       });
     }));
