@@ -265,3 +265,76 @@ time {
     transform: rotate(360deg);
   }
 }
+
+
+#nyplFeedback {
+	position: fixed;
+	z-index: 1000;
+	bottom: 0;
+	width: 390px;
+
+	&.left {
+		left: -300px;
+		-webkit-transition: left 0.3s ease;
+		-moz-transition: left 0.3s ease;
+		-ms-transition: left 0.3s ease;
+		-o-transition: left 0.3s ease;
+		transition: left 0.3s ease;
+
+		&.open {
+			left: 0px;
+		}
+
+		a {
+			right: 0;
+		}
+	}
+
+	&.right {
+		right: -390px;
+		-webkit-transition: right 0.3s ease;
+		-moz-transition: right 0.3s ease;
+		-ms-transition: right 0.3s ease;
+		-o-transition: right 0.3s ease;
+		transition: right 0.3s ease;
+
+		&.open {
+			right: -90px;
+		}
+
+		a {
+			right: 390px;
+		}
+	}
+
+	a {
+		display: block;
+		position: absolute;
+		bottom: 0;
+		color: #fff;
+		background-color: #5e564b;
+		padding: 10px;
+		width: 90px;
+		text-decoration: none;
+		-webkit-transition: background-color 0.3s ease;
+		-moz-transition: background-color 0.3s ease;
+		-ms-transition: background-color 0.3s ease;
+		-o-transition: background-color 0.3s ease;
+		transition: background-color 0.3s ease;
+
+		&:hover {
+			background-color: #9b958f;
+		}
+	}
+
+	.embedded {
+		iframe {
+			bottom: 0;
+			position: absolute;
+			min-height: 500px;
+		}
+	}
+
+}
+
+

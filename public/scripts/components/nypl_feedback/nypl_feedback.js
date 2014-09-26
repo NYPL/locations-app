@@ -4,16 +4,33 @@
 (function () {
   'use strict';
 
-  function nyplFeedback() {
+  function nyplFeedback($sce) {
     return {
       restrict: 'E',
       templateUrl: 'scripts/components/nypl_feedback/nypl_feedback.html',
       replace: true,
+      scope: {
+        height: '@',
+        width: '@',
+        url: '@',
+        side: '@'
+      },
       link: function (scope, element, attrs) {
-        // angular.element('body')
-        // .append(
-        //   angular.element('<script src="https://www.surveymonkey.com/jsEmbed.aspx?sm=wgm6MpPvYEOBmkziK9HOKA_3d_3d"> </script>')
-        //   );
+        scope.trusted_url = $sce.trustAsResourceUrl(scope.url);
+        scope.feedback = 'Feedback';
+
+        if (scope.side === 'left') {
+          element.addClass('left');
+        } else {
+          element.addClass('right');
+        }
+
+        element.find('a').click(function () {
+          element.toggleClass('open');
+          scope.feedback = element.hasClass('open') ? 'Close' : 'Feedback';
+
+          scope.$apply();
+        });
       }
     };
   }
