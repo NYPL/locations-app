@@ -159,7 +159,7 @@ function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
                     alerts = data.alerts;
                     scope.sitewidealert = nyplUtility.alerts(alerts);
                 });
-            }, 500);
+            }, 200);
         }
     };
 }

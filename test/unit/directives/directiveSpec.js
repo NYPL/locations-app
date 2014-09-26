@@ -459,7 +459,7 @@ describe('NYPL Directive Unit Tests', function () {
         alert = scope.sitewidealert;
         expect(alert)
           .toEqual('All units of the NYPL are closed July 4 - July 5.\n');
-        }, 1000);
+      }, 200);
 
       // Use the native Date function again
       Date = MockDate;
