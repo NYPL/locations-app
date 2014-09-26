@@ -167,6 +167,16 @@ function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
 function nyplLibraryAlert(nyplUtility) {
     'use strict';
 
+    function alertExpired(startDate, endDate) {
+        var sDate = new Date(startDate),
+          eDate   = new Date(endDate),
+          today   = new Date();
+        if (sDate.getTime() <= today.getTime() && eDate.getTime() >= today.getTime()) {
+            return false;
+        }
+        return true;
+    };
+
     return {
         restrict: 'E',
         templateUrl: 'scripts/directives/templates/library-alert.html',
@@ -176,7 +186,8 @@ function nyplLibraryAlert(nyplUtility) {
         },
         link: function (scope, element, attrs) {
             if (scope.exception) {
-                if (scope.exception.description !== '') {
+                scope.alertExpired = alertExpired(scope.exception.start, scope.exception.end);
+                if (scope.exception.description !== '' && scope.alertExpired === false) {
                     scope.libraryAlert = scope.exception.description;
                 }
             }
