@@ -17,65 +17,62 @@
         });
       };
 
-    /** @function nyplAmenities.addSpecialIcon
-     * @param {array} amenities Array with amenities objects.
-     * @returns {array} 
-     * @description Adds an icon class to an amenity category.
-     */
-    amenities.addSpecialIcon = function (amenities) {
-      _.each(amenities, function (amenity) {
-        switch (amenity.amenity.id) {
-        case 7952: // Wireless
-          amenity.amenity.icon = 'icon-connection';
-          break;
-        case 7965: // Laptop
-          amenity.amenity.icon = 'icon-laptop';
-          break;
-        case 7954: // Printing
-          amenity.amenity.icon = 'icon-print';
-          break;
-        case 7955: // Electrical oulets
-          amenity.amenity.icon = 'icon-power-cord';
-          break;
-        case 7958: // Book drop
-        case 7951:
-          amenity.amenity.icon = 'icon-box-add';
-          break;
-        default:
-          break;
-        }
-      });
+    amenities.addAmenitiesIcon = function (amenity) {
+      amenity.icon = this.getCategoryIcon(amenity.category);
+      // amenity.icon = this.getAmenityIcon(amenity.id);
 
-      return amenities;
+      return amenity;
     };
 
-    amenities.addAmenitiesIcon = function (amenities) {
-      _.each(amenities, function (amenity) {
-        var icon = '';
-        switch (amenity.amenity.category) {
-        case 'Computer Services':
-          icon = 'icon-screen2';
-          break;
-        case 'Circulation':
-          icon = 'icon-book';
-          break;
-        case 'Office Services':
-          icon = 'icon-copy';
-          break;
-        case 'Facilities':
-          icon = 'icon-library';
-          break;
-        case 'Assistive Technologies':
-          icon = 'icon-accessibility2';
-          break;
-        }
+    amenities.getCategoryIcon = function (category) {
+      var icon = '';
 
-        amenity.amenity.icon = icon;
-      });
+      switch (category) {
+      case 'Computer Services':
+        icon = 'icon-screen2';
+        break;
+      case 'Circulation':
+        icon = 'icon-book';
+        break;
+      case 'Office Services':
+        icon = 'icon-copy';
+        break;
+      case 'Facilities':
+        icon = 'icon-library';
+        break;
+      case 'Assistive Technologies':
+        icon = 'icon-accessibility2';
+        break;
+      }
 
-      amenities = this.addSpecialIcon(amenities);
+      return icon;
+    };
 
-      return amenities;
+    amenities.getAmenityIcon = function (id) {
+      var icon = '';
+
+      switch (id) {
+      case 7952: // Wireless
+        icon = 'icon-connection';
+        break;
+      case 7965: // Laptop
+        icon = 'icon-laptop';
+        break;
+      case 7954: // Printing
+        icon = 'icon-print';
+        break;
+      case 7955: // Electrical oulets
+        icon = 'icon-power-cord';
+        break;
+      case 7958: // Book drop
+      case 7951:
+        icon = 'icon-box-add';
+        break;
+      default:
+        break;
+      }
+
+      return icon;
     };
 
     /** @function nyplAmenities.allAmenitiesArray
@@ -86,19 +83,40 @@
      * @returns {array} An array with all the amenities plucked from every
      *  category at a single top level, without any categories involved.
      */
-    amenities.allAmenitiesArray = function (amenitiesCategories) {
-      if (!amenitiesCategories) {
+    amenities.allAmenitiesArray = function (amenities) {
+      if (!amenities) {
         return;
       }
 
-      return _.chain(amenitiesCategories)
+      return _.chain(amenities)
               // Get the 'amenities' property from every amenity category
-              .pluck('amenities')
+              .pluck('amenity')
               // Flatten every array of amenities from each category into
               // a single array.
               .flatten(true)
               // Return the result.
               .value();
+    };
+
+    amenities.createAmenitiesCategories = function (amenities) {
+      var categoryName = ['Computer Services', 'Circulation', 'Office Services',
+        'Facilities', 'Assistive Technologies'],
+        categories = [],
+        categoryObj,
+        self = this;
+
+      _.each(categoryName, function (category) {
+        categoryObj = {};
+        categoryObj.amenities = _.where(amenities, {'category': category});
+        categoryObj.name = category;
+        categoryObj.icon = self.getCategoryIcon(category);
+
+        if (categoryObj.amenities.length) {
+          categories.push(categoryObj);
+        }
+      });
+
+      return categories;
     };
 
     /** @function nyplAmenities.getHighlightedAmenities

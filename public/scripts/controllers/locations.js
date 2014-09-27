@@ -617,7 +617,9 @@
         }
 
         // Add icons to the amenities.
-        location._embedded.amenities = nyplAmenities.addAmenitiesIcon(amenities);
+        _.each(location._embedded.amenities, function (amenity) {
+            amenity.amenity = nyplAmenities.addAmenitiesIcon(amenity.amenity);
+        });
 
         // Get three institution ranked and two location ranked amenities.
         location.amenities_list =
