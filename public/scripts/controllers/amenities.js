@@ -33,7 +33,7 @@
         .get('json/amenitiesAtLibrary.json')
         .success(function (data) {
           $scope.amenitiesCategories =
-            nyplAmenities.addCategoryIcon(data.amenities);
+            nyplAmenities.createAmenitiesCategories(data.amenities);
         });
     } else {
       // Add icons to the amenities.

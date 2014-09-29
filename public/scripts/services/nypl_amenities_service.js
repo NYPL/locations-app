@@ -14,12 +14,15 @@
         { amenity: { name: 'Printing (from PC)', id: 7950 } }
       ],
       sortAmenitiesList = function (list, sortBy) {
-        if (typeof list !== 'Array') {
+        if (!(list instanceof Array)) {
           return;
         }
 
         return _.sortBy(list, function (item) {
-          if (!item[sortBy]) {
+          if (!item.amenity) {
+            return;
+          }
+          if (!item.amenity[sortBy]) {
             return item.amenity[sortBy];
           }
           return item[sortBy];
@@ -152,7 +155,7 @@
       var initial_list = amenities,
         amenities_list = [];
 
-      if (!(amenities.length && rank && loc_rank && amenities.rank)) {
+      if (!(amenities.length && rank && loc_rank)) {
         return; // default_amenities;
       }
 
