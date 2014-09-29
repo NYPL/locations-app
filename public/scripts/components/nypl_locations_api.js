@@ -22,7 +22,7 @@
                         defer.resolve(data.config);
                     })
                     .error(function (data, status) {
-                        defer.reject(apiError);
+                        defer.reject(apiError + ': config');
                     });
             }
 
@@ -53,7 +53,7 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    defer.reject(apiError);
+                    defer.reject(apiError + ': locations');
                 });
             return defer.promise;
         };
@@ -83,7 +83,7 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    defer.reject(apiError);
+                    defer.reject(apiError + ': location');
                 });
             return defer.promise;
         };
@@ -113,7 +113,7 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    defer.reject(apiError);
+                    defer.reject(apiError + ': division');
                 });
             return defer.promise;
         };
@@ -152,7 +152,7 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    defer.reject(apiError);
+                    defer.reject(apiError + ': amenities');
                 });
             return defer.promise;
         };
@@ -184,7 +184,7 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    defer.reject(apiError);
+                    defer.reject(apiError + ': library-amenity');
                 });
             return defer.promise;
         };
@@ -212,7 +212,7 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    defer.reject(apiError);
+                    defer.reject(apiError + ': site-wide alerts');
                 });
             return defer.promise;
         };
