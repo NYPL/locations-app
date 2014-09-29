@@ -8,6 +8,11 @@
   function nyplAmenities() {
 
     var amenities = {},
+      default_amenities = [
+        { amenity: { name: 'Computers for Public Use', id: 7950 } },
+        { amenity: { name: 'Wireless Internet Access', id: 7950 } },
+        { amenity: { name: 'Printing (from PC)', id: 7950 } }
+      ],
       sortAmenitiesList = function (list, sortBy) {
         if (typeof list !== 'Array') {
           return;
@@ -148,7 +153,7 @@
         amenities_list = [];
 
       if (!(amenities.length && rank && loc_rank && amenities.rank)) {
-        return;
+        return; // default_amenities;
       }
 
       // Sort the list of all amenities by institution rank.
