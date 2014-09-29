@@ -18,7 +18,7 @@ describe('NYPL locationService Module', function () {
    * data from different API endpoints.
    */
   describe('nyplLocationsService', function () {
-    var error_message = 'Could not reach API',
+    var error_message = 'Could not reach API: ',
       nyplLocationsService,
       httpBackend;
 
@@ -98,7 +98,7 @@ describe('NYPL locationService Module', function () {
           });
         httpBackend.flush();
 
-        expect(returned_error_message).toEqual(error_message);
+        expect(returned_error_message).toEqual(error_message + 'locations');
       });
     }); /* End nyplLocationsService.allLocations() */
 
@@ -145,7 +145,7 @@ describe('NYPL locationService Module', function () {
           });
         httpBackend.flush();
 
-        expect(returned_error_message).toEqual(error_message);
+        expect(returned_error_message).toEqual(error_message + 'location');
       });
     }); /* End nyplLocationsService.singleLocation(location) */
 
@@ -194,7 +194,7 @@ describe('NYPL locationService Module', function () {
           });
         httpBackend.flush();
 
-        expect(returned_error_message).toEqual(error_message);
+        expect(returned_error_message).toEqual(error_message + 'division');
       });
     }); /* End nyplLocationsService.singleDivision(division) */
 
@@ -249,7 +249,7 @@ describe('NYPL locationService Module', function () {
             });
           httpBackend.flush();
 
-          expect(returned_error_message).toEqual(error_message);
+          expect(returned_error_message).toEqual(error_message + 'amenities');
         });
       }); /* End lookup for all amenities */
 
@@ -300,7 +300,7 @@ describe('NYPL locationService Module', function () {
             });
           httpBackend.flush();
 
-          expect(returned_error_message).toEqual(error_message);
+          expect(returned_error_message).toEqual(error_message + 'amenities');
         });
       }); /* End lookup for one amenity */
     }); /* End nyplLocationsService.amenities(amenity) */
@@ -360,7 +360,7 @@ describe('NYPL locationService Module', function () {
           });
         httpBackend.flush();
 
-        expect(returned_error_message).toEqual(error_message);
+        expect(returned_error_message).toEqual(error_message + 'library-amenity');
       });
     }); /* nyplLocationsServices.amenitiesAtLibrary(location) */
 
@@ -423,7 +423,7 @@ describe('NYPL locationService Module', function () {
           });
         httpBackend.flush();
 
-        expect(returned_error_message).toEqual(error_message);
+        expect(returned_error_message).toEqual(error_message + 'site-wide alerts');
       });
     }); /* nyplLocationsService.alerts() */
 
