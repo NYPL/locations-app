@@ -22,6 +22,10 @@
       };
 
     amenities.addAmenitiesIcon = function (amenity) {
+      if (!amenity || !amenity.category) {
+        return;
+      }
+
       amenity.icon = this.getCategoryIcon(amenity.category);
       // amenity.icon = this.getAmenityIcon(amenity.id);
 
