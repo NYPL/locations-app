@@ -36,13 +36,8 @@
             nyplAmenities.createAmenitiesCategories(data.amenities);
         });
     } else {
-      // Add icons to the amenities.
-      // _.each(location._embedded.amenities, function (amenity) {
-      //   amenity.amenity = nyplAmenities.addAmenitiesIcon(amenity.amenity);
-      // });
-
-      // console.log(location._embedded.amenities);
       updatedAmenities = nyplAmenities.allAmenitiesArray(location._embedded.amenities);
+
       $scope.amenitiesCategories =
         nyplAmenities.createAmenitiesCategories(updatedAmenities);
     }

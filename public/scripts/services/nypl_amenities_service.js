@@ -35,13 +35,13 @@
       }
 
       amenity.icon = this.getCategoryIcon(amenity.category);
-      // amenity.icon = this.getAmenityIcon(amenity.id);
+      amenity.icon = this.getAmenityIcon(amenity.id, amenity.icon);
 
       return amenity;
     };
 
-    amenities.getCategoryIcon = function (category) {
-      var icon = '';
+    amenities.getCategoryIcon = function (category, default_icon) {
+      var icon = default_icon || '';
 
       switch (category) {
       case 'Computer Services':
@@ -64,8 +64,8 @@
       return icon;
     };
 
-    amenities.getAmenityIcon = function (id) {
-      var icon = '';
+    amenities.getAmenityIcon = function (id, default_icon) {
+      var icon = default_icon || '';
 
       switch (id) {
       case 7952: // Wireless

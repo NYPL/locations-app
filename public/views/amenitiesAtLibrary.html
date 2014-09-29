@@ -21,7 +21,7 @@
               <li data-ng-repeat="amenity in category.amenities | orderBy:'location_rank'">
                 <a data-ui-sref="amenity({amenity: amenity.id})">{{amenity.name}}</a>
                 <div class="amenity-links">
-                  <span data-ng-if="amenity._links.action && amenity._links.action.href">
+                  <span data-ng-if="amenity._links.action && amenity._links.action.name">
                     <a data-ng-href="{{amenity._links.action.href}}" 
                       class="amenities__reserve btn btn--natural">
                       {{amenity._links.action.name}}
