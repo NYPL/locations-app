@@ -9,6 +9,10 @@
 
     var amenities = {},
       sortAmenitiesList = function (list, sortBy) {
+        if (typeof list !== 'Array') {
+          return;
+        }
+
         return _.sortBy(list, function (item) {
           if (!item[sortBy]) {
             return item.amenity[sortBy];
@@ -139,7 +143,7 @@
       var initial_list = amenities,
         amenities_list = [];
 
-      if (!(amenities && rank && loc_rank)) {
+      if (!(amenities.length && rank && loc_rank && amenities.rank)) {
         return;
       }
 
