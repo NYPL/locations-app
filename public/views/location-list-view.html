@@ -70,7 +70,7 @@
 
             <!-- Highlighted Amenities -->
             <td class="amenities-info">
-              <ul class="highlighted-amenities-list">
+              <ul class="highlighted-amenities-list" data-ng-if="location.amenities_list && location.open">
                 <li data-ng-repeat="amenity in location.amenities_list | limitTo:5">
                   {{amenity.amenity.name}}
                 </li>
