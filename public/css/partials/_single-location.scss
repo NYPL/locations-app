@@ -164,6 +164,7 @@
 
 	// Divisions section 
 	#container__divisions {
+		clear: both;
 		.division-wrapper {
 			margin-bottom: 3em;
 			
@@ -184,7 +185,7 @@
 
 	// Events section
 	#container__events {
-
+		clear: both;
 		.event__title {
 			margin-bottom: .05em;
 		}
@@ -219,9 +220,14 @@
 	}
 
 	#container__exhibitions {
+		clear: both;
 		.exhibition__title {
 			margin-bottom: .05em;
 		}
+	}
+
+	#container__features {
+		clear: both;
 	}
 
 	// Highlighted Amenities section
