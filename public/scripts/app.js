@@ -185,6 +185,10 @@ nypl_locations.config([
                     crumbName: '{{location.name}}'
                 }
             })
+            .state('404', {
+                url: '/404',
+                templateUrl: 'views/404.html'
+            })
             .state('location', {
                 url: '/:location',
                 templateUrl: 'views/location.html',
@@ -196,10 +200,6 @@ nypl_locations.config([
                 data: {
                     crumbName: '{{location.name}}'
                 }
-            })
-            .state('404', {
-                url: '/404',
-                templateUrl: 'views/404.html'
             });
     }
 ]);
