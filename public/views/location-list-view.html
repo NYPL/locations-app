@@ -24,7 +24,11 @@
             <td class="location-info h-card">
               <!-- Library Info -->
               <div class="p-org">
-                <a data-ui-sref='location({ location: location.slug })'>{{location.name}}</a>
+                <a data-ui-sref='location({ location: location.slug })'
+                  analytics-on analytics-category="Homepage"
+                  analytics-event="click" analytics-label="Homepage list: {{location.slug}}">
+                  {{location.name}}
+                </a>
               </div>
               <div class="p-adr">
                 <div class="p-street-address">{{location.street_address}}</div>
