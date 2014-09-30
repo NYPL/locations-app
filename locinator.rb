@@ -81,7 +81,7 @@ class Locinator < Sinatra::Base
   end
     
 
-  get '/' do
+  get %r{/.*$} do
     erb :index
   end
   
