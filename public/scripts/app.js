@@ -3,11 +3,11 @@
 
 var nypl_locations = angular.module('nypl_locations', [
     'ngSanitize',
-    // 'ngCookies',
     'ui.router',
     'ngAnimate',
     'locationService',
     'coordinateService',
+    'nyplFeedback',
     'nyplSearch',
     'nyplSSO',
     'nyplNavigation',
@@ -45,7 +45,7 @@ nypl_locations.config([
         });
         $translateProvider.preferredLanguage('en');
 
-        function LoadLocation(nyplLocationsService, $stateParams) {
+        function LoadLocation($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
                 .singleLocation($stateParams.location)
                 .then(function (data) {
@@ -56,7 +56,7 @@ nypl_locations.config([
                 });
         }
 
-        function LoadDivision(nyplLocationsService, $stateParams) {
+        function LoadDivision($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
                 .singleDivision($stateParams.division)
                 .then(function (data) {
@@ -67,7 +67,7 @@ nypl_locations.config([
                 });
         }
 
-        function Amenities(nyplLocationsService, $stateParams) {
+        function Amenities($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
                 .amenities($stateParams.amenity)
                 .then(function (data) {
@@ -78,14 +78,27 @@ nypl_locations.config([
                 });
         }
 
+        function getConfig(nyplLocationsService) {
+            return nyplLocationsService.getConfig();
+        }
+
         $crumbProvider.setOptions({
             primaryState: {name:'Home', customUrl: 'http://nypl.org' },
             secondaryState: {name:'Locations', customUrl: 'home.index' }
         });
 
+        $urlRouterProvider.rule(function ($injector, $location) {
+            var path = $location.url();
+
+            // Remove trailing slash if found
+            if (path[path.length - 1] === '/') {
+                return path.slice(0, -1);
+            }
+        })
+
         // This next line breaks unit tests which doesn't make sense since
         // unit tests should not test the whole app. BUT since we are testing
-        // directives and using $rootscope.$digest or $rootscope.$apply,
+        // directives and using $rootScope.$digest or $rootScope.$apply,
         // it will run the app. It may not be necessary for the app though
         // since, in the run phase, if there is an error when changing state,
         // the app will go to the 404 state.
@@ -96,7 +109,10 @@ nypl_locations.config([
                 abstract: true,
                 templateUrl: 'views/locations.html',
                 controller: 'LocationsCtrl',
-                label: 'Locations'
+                label: 'Locations',
+                resolve: {
+                    config: getConfig
+                }
             })
             .state('home.index', {
                 templateUrl: 'views/location-list-view.html',
@@ -120,6 +136,7 @@ nypl_locations.config([
                 controller: 'DivisionCtrl',
                 label: 'Division',
                 resolve: {
+                    config: getConfig,
                     division: LoadDivision
                 },
                 data: {
@@ -133,6 +150,7 @@ nypl_locations.config([
                 controller: 'AmenitiesCtrl',
                 label: 'Amenities',
                 resolve: {
+                    config: getConfig,
                     amenities: Amenities
                 },
                 data: {
@@ -145,6 +163,7 @@ nypl_locations.config([
                 controller: 'AmenityCtrl',
                 label: 'Amenities',
                 resolve: {
+                    config: getConfig,
                     amenity: Amenities
                 },
                 data: {
@@ -158,6 +177,7 @@ nypl_locations.config([
                 templateUrl: 'views/amenitiesAtLibrary.html',
                 controller: 'AmenitiesAtLibraryCtrl',
                 resolve: {
+                    config: getConfig,
                     location: LoadLocation
                 },
                 data: {
@@ -165,25 +185,29 @@ nypl_locations.config([
                     crumbName: '{{location.name}}'
                 }
             })
+            .state('404', {
+                url: '/404',
+                templateUrl: 'views/404.html'
+            })
             .state('location', {
                 url: '/:location',
                 templateUrl: 'views/location.html',
                 controller: 'LocationCtrl',
                 resolve: {
+                    config: getConfig,
                     location: LoadLocation
                 },
                 data: {
                     crumbName: '{{location.name}}'
                 }
-            })
-            .state('404', {
-                url: '/404',
-                templateUrl: 'views/404.html'
             });
     }
 ]);
 
 nypl_locations.run(function ($state, $rootScope, $location) {
+    $rootScope.$on('$stateChangeStart', function () {
+        $rootScope.close_feedback = true;
+    });
     $rootScope.$on('$stateChangeSuccess', function () {
         $rootScope.current_url = $location.absUrl();
     });

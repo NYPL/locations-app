@@ -9,6 +9,7 @@
         $scope,
         $timeout,
         $state,
+        config,
         nyplCoordinatesService,
         nyplGeocoderService,
         nyplLocationsService,
@@ -18,6 +19,7 @@
     ) {
         var locations,
             searchValues = nyplSearch.getSearchValues(),
+            research_order = config.research_order || ['SASB', 'LPA', 'SC', 'SIBL'],
             user = { coords: {}, address: '' },
             sortListBy = function (type) {
                 $scope.predicate = type;
@@ -273,6 +275,7 @@
                 .then(function (data) {
                     locations = data.locations;
                     $scope.locations = locations;
+                    var amenitiesCount = nyplAmenities.getAmenityConfig(config);
 
                     _.each($scope.locations, function (location) {
                         var locationAddress =
@@ -286,12 +289,20 @@
                         location.locationDest =
                             nyplUtility.getAddressString(location);
 
-                        location.amenities_list = nyplAmenities
-                            .allAmenitiesArray(location._embedded.amenities);
+                        location.amenities_list =
+                            nyplAmenities.
+                                getHighlightedAmenities(
+                                    location._embedded.amenities,
+                                    amenitiesCount.global,
+                                    amenitiesCount.local
+                                );
 
                         // Individual location exception data
                         location.branchException =
                             nyplUtility.branchException(location.hours);
+
+                        location.research_order =
+                            nyplUtility.researchLibraryOrder(research_order, location.id);
 
                         // Initially, when the map is drawn and 
                         // markers are available, they will be drawn too. 
@@ -304,6 +315,7 @@
                                     locationAddress);
                         }
                     });
+
 
                     resetPage();
 
@@ -516,9 +528,11 @@
             if ($scope.researchBranches) {
                 nyplGeocoderService.showResearchLibraries().panMap();
                 showLibrariesTypeOf('research');
+                sortListBy('research_order');
             } else {
                 nyplGeocoderService.showAllLibraries().panMap();
                 showLibrariesTypeOf();
+                sortListBy('name');
             }
         };
 
@@ -530,7 +544,7 @@
     }
     // End LocationsCtrl
 
-    function MapCtrl($scope, $timeout, nyplGeocoderService) {
+    function MapCtrl($scope, $timeout, config, nyplGeocoderService) {
 
         var loadMapMarkers = function () {
                 $timeout(function () {
@@ -600,12 +614,14 @@
         $rootScope,
         $scope,
         $timeout,
+        config,
         location,
         nyplCoordinatesService,
         nyplUtility,
         nyplAmenities
     ) {
         var amenities = location._embedded.amenities,
+            amenitiesCount = nyplAmenities.getAmenityConfig(config),
             loadUserCoordinates = function () {
                 return nyplCoordinatesService
                     .getBrowserCoordinates()
@@ -627,11 +643,23 @@
         $scope.location = location;
         $rootScope.title = location.name;
 
+        if (location.hours.exceptions) {
+            location.hours.exceptions.description =
+                nyplUtility.returnHTML(location.hours.exceptions.description);
+        }
+
         // Add icons to the amenities.
-        location._embedded.amenities = nyplAmenities.addCategoryIcon(amenities);
+        _.each(location._embedded.amenities, function (amenity) {
+            amenity.amenity = nyplAmenities.addAmenitiesIcon(amenity.amenity);
+        });
+
         // Get three institution ranked and two location ranked amenities.
         location.amenities_list =
-            nyplAmenities.getHighlightedAmenities(amenities, 3, 2);
+            nyplAmenities.getHighlightedAmenities(
+                amenities,
+                amenitiesCount.global,
+                amenitiesCount.local
+            );
 
         $scope.calendarLink = nyplUtility.calendarLink;
         $scope.icalLink = nyplUtility.icalLink;
@@ -641,6 +669,15 @@
 
         if (location.hours) {
             $scope.hoursToday = nyplUtility.hoursToday(location.hours);
+        }
+
+        // Build exhibition pretty date
+        if (location._embedded.exhibitions) {
+            _.each(location._embedded.exhibitions, function (exh) {
+                if (exh.start && exh.end) {
+                    exh.prettyDate = nyplUtility.formatDate(exh.start, exh.end);
+                }
+            });
         }
 
         _.each(location._embedded.divisions, function (division) {

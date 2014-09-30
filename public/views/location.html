@@ -75,11 +75,13 @@
             </a>
           </div>
 
-		      <a id="catalog-link" class="icon-books" 
-            data-ng-if="location._links.on_shelves && location.open"
-            data-ng-href="{{ location._links.on_shelves.href }}">
-            {{ 'SHELVES' | translate }}
-          </a>
+          <div class="on-shelves" data-ng-if="location.type != 'research'">
+  		      <a id="catalog-link" class="icon-books" 
+              data-ng-if="location._links.on_shelves && location.open"
+              data-ng-href="{{ location._links.on_shelves.href }}">
+              {{ 'SHELVES' | translate }}
+            </a>
+          </div>
 
           <div class="social beta" data-ng-if="location.social_media">
             <a class="{{social.classes}}" data-ng-href="{{social.href}}" id="social_media"
@@ -96,23 +98,28 @@
   </div>
 
   <!-- Highlighted Amenities -->
-  <div id="container__top_amenities">
+  <div id="container__top_amenities" data-ng-if="location.amenities_list && location.open">
     <div class="grid">
       <div class="grid__item one-whole">
         <div class="callout">
-          <ul class="flush seven-eighths" data-ng-if="location.amenities_list">
-            <li class="title">{{ 'AMENITIES_HEADER' | translate }}: </li>
-            <li data-ng-repeat="amenity in location.amenities_list" class="{{amenity.icon}}">
-              <a data-ui-sref="amenity({amenity: amenity.id})">{{amenity.name}}</a>
+          <div class='amenities-title'>
+            <span>{{ 'AMENITIES_HEADER' | translate }}: </span>
+          </div>
+          <ul data-ng-if="location.amenities_list">
+            <li data-ng-repeat="amenity in location.amenities_list" class="{{amenity.amenity.icon}}">
+              <a data-ui-sref="amenity({amenity: amenity.amenity.id})">{{amenity.amenity.name}}</a>
             </li>
           </ul>
-          <ul class="flush" data-ng-if="location.amenities_list.length === 0">
-            <li class="title">{{ 'AMENITIES_HEADER' | translate }}: </li>
+          <ul data-ng-if="location.amenities_list.length === 0">
             <li class="icon-book"><span>Lending</span></li>
             <li class="icon-box-add"><span>Book drop</span></li>
-          </ul> 
-          <a id="all_amenities" data-ui-sref="amenities-at-location({location: location.slug})"
-            class="read-more">{{ 'ALL_AMENITIES' | translate }}</a>
+          </ul>
+          <div class="amenities-all-link">
+            <a id="all_amenities" data-ui-sref="amenities-at-location({location: location.slug})"
+            class="read-more">
+              {{ 'ALL_AMENITIES' | translate }}
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -125,9 +132,13 @@
       <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
         data-ng-repeat='division in location._embedded.divisions'>
         <div class="division-wrapper">
-          <img class="img--outline" data-ng-src="{{division.images.interior}}"
+          <a data-ui-sref="division({division: division.slug})">
+            <img class="img--outline" data-ng-src="{{division.images.interior}}"
             alt="Image for {{division.name}}" title="Image for {{division.name}}"/>
-          <h4 class=""><a data-ui-sref="division({division: division.slug})">{{division.name}}</a></h4>
+          </a>
+          <h4>
+            <a data-ui-sref="division({division: division.slug})">{{division.name}}</a>
+          </h4>
           <p data-ng-if="division.hours">Hours Today: {{division.hoursToday | timeFormat}}</p>
         </div>
       </div>
@@ -232,13 +243,14 @@
         <div id="plan-your-visit">
           <h2 class="hdg">{{ 'PLAN_YOUR_VISIT' | translate }}</h2>
           <a data-ng-if="location._links.contact.href" data-ng-href="{{location._links.contact.href}}"
-            class="btn btn--natural" id="ask-librarian">
+            class="btn" id="ask-librarian">
             {{ 'ASK_LIBRARIAN' | translate }}
           </a>
-          <ul class="flush--left gamma">
-            <li class="icon-screen2">{{ 'RESERVE_COMPUTER' | translate }}</li>
-            <li class="icon-library">{{ 'ILL' | translate }}</li>
-            <li class="icon-users">{{ 'MEETING_ROOMS' | translate }}</li>
+          <!-- Plan your visit items -->
+          <ul class="soft-half--ends delta" data-ng-if="location.plan_your_visit">
+            <li data-ng-repeat="item in location.plan_your_visit">
+              <a data-ng-href="{{item.url}}">{{item.label}}</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -250,15 +262,19 @@
     <h2 class="hdg">{{ 'BLOGS' |translate }}</h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
-        <h3 class=""><a data-ng-href="{{blog._links.self.href}}">{{blog.title}}</a></h3>
+        <h3><a data-ng-href="{{blog._links.self.href}}">{{blog.title}}</a></h3>
         <a data-ng-if="blog.image" data-ng-href="http://nypl.org/{{blog._links.self.href}}">
           <img class="img--left" data-ng-src="{{blog.image}}" style="height: 100px;"
             alt="Image for blog post {{blog.title}}" title="Image for blog post {{blog.title}}" />
         </a>
         <div class="blog_author">
-          <span class="blog_name">By {{blog.author.name}}<span>
-          <span class="blog_position" data-ng-if="blog.author.position">, {{blog.author.position}}</span>
-          <span class="blog_location" data-ng-if="blog.author.location">, {{blog.author.location}}</span>
+          <span class="blog_name">By {{blog.author.name}}</span>
+          <span class="blog_position" data-ng-if="blog.author.position">
+            , {{blog.author.position}}
+          </span>
+          <span class="blog_location" data-ng-if="blog.author.location">
+            , {{blog.author.location}}
+          </span>
         </div>
         <time class="date" ><span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span></time>
         <div class="teaser desc">{{blog.body | truncate}}</div>
@@ -276,7 +292,7 @@
   <div id="container__exhibitions" data-ng-if="location._embedded.exhibitions">
     <h2 class="hdg">{{ 'EXHIBITION' | translate }}</h2>
     <div class="grid">
-      <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat='exhibition in location._embedded.exhibitions'>
+      <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat="exhibition in location._embedded.exhibitions | orderBy:'-start'">
         <a data-ng-href="{{exhibition._links.self.href}}" data-ng-if="exhibition.image">
           <img class="img--left" data-ng-src="{{exhibition.image}}" style="height: 100px;"
             alt="Image for exhibition {{exhibition.title}}" title="Image for exhibition {{exhibition.title}}" />
@@ -284,7 +300,7 @@
         <h3 class="exhibition__title">
           <a data-ng-href="{{exhibition._links.self.href}}">{{exhibition.title}}</a>
         </h3>
-        <time class="date">{{exhibition.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
+        <time class="date">{{exhibition.prettyDate}}</time>
         <p class="teaser desc">{{exhibition.body | truncate}}</p>
       </div>
     </div>

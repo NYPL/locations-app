@@ -1,0 +1,113 @@
+<!doctype html>
+<html xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="nypl_locations">
+  <head>
+    <% if ! settings.env_config["optimizely"].nil? %>
+    <script src="<%= settings.env_config["optimizely"] %>"></script>
+    <% end %>
+    <meta charset="utf-8">
+    <title data-ng-bind="'NYPL | ' + $root.title">NYPL |</title>
+    <meta name="fragment" content="!" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.ico">
+    <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.1/css/nyplbase.min.css">
+    <link rel="stylesheet" href="/css/locations.min.css">
+
+    <!-- Angular Hash fallback (need to test on heroku) -->
+    <!--<base href="/">-->
+  </head>
+  <body>
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    
+    <!-- Translate Buttons (Removed for internal beta) -->
+    <!--<nypl-translate></nypl-translate>-->
+
+    <!-- Site Wide Alerts -->
+    <nypl-site-alerts></nypl-site-alerts>
+
+    <nypl-feedback data-url="https://www.surveymonkey.com/s/8T3CYMV" data-side="right"
+        data-height="660" data-width="300"></nypl-feedback>
+
+    <!-- Header -->
+    <div ng-include="'views/header.html'"></div>
+
+    <!-- Main Navigation -->
+    <nypl-navigation></nypl-navigation>
+
+    <div class="wrapper">
+      <!-- Lokinator App -->
+	    <div class="nypl-locations" data-ui-view data-autoscroll="false" scrolltop></div>
+    </div>
+    
+    <!-- Footer -->
+    <div ng-include="'views/footer.html'"></div>
+
+    <!-- Loading Directive -->
+    <div id="loadingWidget" loading-widget>
+        <div class="loader-icon icon-spinner2"></div>
+    </div>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-1420324-123', 'shrouded-caverns-5062.herokuapp.com');
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrIeVzBbK8NWCbWKsi_sj3N2T_EMWEAVY&sensor=false"></script>
+    <script src="bower_components/jquery/jquery.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <!-- endbower -->
+    <!-- Other components -->
+    <script src="vendor/jquery.cookies.js"></script>
+    <!-- end other components -->
+    <!-- endbuild -->
+
+<% if settings.env_config["angular_src"] == "bower" %>
+<%= erb :angular_bower %>
+<% elsif settings.env_config["angular_src"] == "ux-static-staging" %>
+<%= erb :angular_ux_static_staging %>
+<% else %>
+<%= erb :angular_ux_static %>
+<% end %>
+
+    <!-- NYPL Components -->
+    <script src="scripts/components/nypl_coordinates.js"></script>
+    <script src="scripts/components/nypl_locations_api.js"></script>
+    <script src="scripts/components/nypl_search/nypl_search.js"></script>
+    <script src="scripts/components/nypl_sso/nypl_sso.js"></script>
+    <script src="scripts/components/nypl_navigation/nypl_navigation.js"></script>
+    <script src="scripts/components/nypl_breadcrumbs/nypl_breadcrumbs.js"></script>
+    <script src="scripts/components/nypl_feedback/nypl_feedback.js"></script>
+
+    <!-- App Config -->
+    <script src="scripts/app.js"></script>
+    <!-- Filters -->
+    <script src="scripts/filters/nypl_filters.js"></script>
+    <!-- Controllers -->
+    <script src="scripts/controllers/locations.js"></script>
+    <script src="scripts/controllers/division.js"></script>
+    <script src="scripts/controllers/amenities.js"></script>
+    <!-- Services -->
+    <script src="scripts/services/nypl_geocoder_service.js"></script>
+    <script src="scripts/services/nypl_utility_service.js"></script>
+    <script src="scripts/services/nypl_amenities_service.js"></script>
+    <script src="scripts/services/nypl_search_service.js"></script>
+    <!-- Directives -->
+    <script src="scripts/directives/nypl_directives.js"></script>
+
+</body>
+</html>

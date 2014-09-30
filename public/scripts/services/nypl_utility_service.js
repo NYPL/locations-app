@@ -71,6 +71,49 @@
       return hoursToday;
     };
 
+    utility.formatDate = function(startDate, endDate) {
+      var formattedDate,
+          months = ['January', 'February', 'March', 'April', 'May', 'June',
+                  'July', 'August', 'September', 'October', 'November', 'December'];
+
+      this.numDaysFromToday = function(date, today) {
+        return Math.round(((date.valueOf()-today.valueOf()) / 1000 / 86400) - 0.5);
+      };
+
+      if (startDate && endDate) {
+        var sDate = new Date(startDate),
+          eDate   = new Date(endDate),
+          today   = new Date(),
+          nDays   = this.numDaysFromToday(eDate, today);
+
+        if (!nDays) return;
+        // First check if input is within 365 days
+        if (nDays <= 365) {
+          // Millisecond comparison between date.time property
+          if (sDate.getTime() <= today.getTime() && eDate.getTime() >= today.getTime()) {
+            // Current Event
+            formattedDate = "Now through " + months[eDate.getUTCMonth()] + " " +
+                            eDate.getUTCDate() + ", " + eDate.getUTCFullYear();
+          }
+          else if (sDate.getTime() > today.getTime() && eDate.getTime() >= today.getTime()) {
+            // Upcoming Event
+            formattedDate = "Opening " + months[sDate.getUTCMonth()] + " " +
+                            sDate.getUTCDate() + ", " + sDate.getUTCFullYear();
+          }
+          else {
+            // Past Event
+            formattedDate = months[sDate.getUTCMonth()] + " " + sDate.getUTCDate() + ", " + 
+                            sDate.getUTCFullYear() + " through " + months[eDate.getUTCMonth()] +
+                            " " + eDate.getUTCDate() + ", " + eDate.getUTCFullYear();
+          }
+        }
+        else {
+          formattedDate = "Ongoing";
+        }
+      };
+      return formattedDate;
+    }
+
     // Parse exception data and return as string
     utility.branchException = function (hours) {
       var exception = {};
@@ -382,20 +425,12 @@
      * @description Only a few divisions should have a link to make
      *  an appointment.
      */
-    utility.divisionHasAppointment = function (id) {
-      switch (id) {
-      case "ARN":
-      case "RBK":
-      case "MSS":
-      case "BRG":
-      case "PRN":
-      case "PHG":
-      case "SPN":
-      case "CPS":
-        return true;
-      default:
-        return false;
-      }
+    utility.divisionHasAppointment = function (divisionsWithApts, id) {
+      return _.contains(divisionsWithApts, id);
+    };
+
+    utility.researchLibraryOrder = function (research_order, id) {
+      return _.indexOf(research_order, id);
     };
 
     return utility;

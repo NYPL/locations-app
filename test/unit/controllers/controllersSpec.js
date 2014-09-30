@@ -31,7 +31,10 @@ describe('Locinator controllers', function () {
       locationsCtrl,
       nyplLocationsService,
       httpBackend,
-      nypl_geocoder_mock;
+      nypl_geocoder_mock,
+      config = {
+        api_root: "http://locations-api-beta.nypl.org"
+      };
 
     beforeEach(function () {
       module('nypl_locations')
@@ -61,6 +64,7 @@ describe('Locinator controllers', function () {
 
         locationsCtrl = _$controller_('LocationsCtrl', {
           $scope: scope,
+          config: config,
           nyplLocationsService: nyplLocationsService,
           nypl_geocoder_service: nypl_geocoder_mock
         });
@@ -143,8 +147,9 @@ describe('Locinator controllers', function () {
           spyOn(nypl_geocoder_mock, 'get_coords').and.callThrough();
 
           $controller('LocationsCtrl', {
-            '$scope': scope,
-            'nypl_geocoder_service': nypl_geocoder_mock
+            $scope: scope,
+            config: config,
+            nypl_geocoder_service: nypl_geocoder_mock
           });
 
           $httpBackend

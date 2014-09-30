@@ -143,7 +143,7 @@ function eventRegistration($filter) {
     };
 }
 
-function nyplSiteAlerts(nyplLocationsService, nyplUtility) {
+function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
     'use strict';
 
     return {
@@ -154,16 +154,28 @@ function nyplSiteAlerts(nyplLocationsService, nyplUtility) {
         // scope: {},
         link: function (scope, element, attrs) {
             var alerts;
-            nyplLocationsService.alerts().then(function (data) {
-                alerts = data.alerts;
-                scope.sitewidealert = nyplUtility.alerts(alerts);
-            });
+            $timeout(function () {
+                nyplLocationsService.alerts().then(function (data) {
+                    alerts = data.alerts;
+                    scope.sitewidealert = nyplUtility.alerts(alerts);
+                });
+            }, 200);
         }
     };
 }
 
 function nyplLibraryAlert(nyplUtility) {
     'use strict';
+
+    function alertExpired(startDate, endDate) {
+        var sDate = new Date(startDate),
+          eDate   = new Date(endDate),
+          today   = new Date();
+        if (sDate.getTime() <= today.getTime() && eDate.getTime() >= today.getTime()) {
+            return false;
+        }
+        return true;
+    };
 
     return {
         restrict: 'E',
@@ -174,7 +186,8 @@ function nyplLibraryAlert(nyplUtility) {
         },
         link: function (scope, element, attrs) {
             if (scope.exception) {
-                if (scope.exception.description !== '') {
+                scope.alertExpired = alertExpired(scope.exception.start, scope.exception.end);
+                if (scope.exception.description !== '' && scope.alertExpired === false) {
                     scope.libraryAlert = scope.exception.description;
                 }
             }
