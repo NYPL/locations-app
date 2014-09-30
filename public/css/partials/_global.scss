@@ -226,11 +226,16 @@ time {
 	.location-item {
 		border-bottom: 1px solid #eee;
 		margin: 0;
-		padding: 10px 0px;
+		padding: 10px;
+		position: relative;
+
+		&.active {
+			background-color: #FFFFCD;
+		}
 
 		.location-name {
 			margin: 5px 0px;
-			padding: 0;
+			padding: 5px;
 			display: block;
 			@include breakpoint($min, $mobile-phone) {
 				margin: 0;
@@ -243,6 +248,7 @@ time {
 				display: inline-block;
 				position: absolute;
 				right: 15px;
+				top: 18px;
 			}
 			&:hover {
 				cursor: pointer;
