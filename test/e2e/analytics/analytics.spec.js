@@ -88,7 +88,6 @@ describe('Google analytics configuration', function () {
       landingPage.geolocation.click();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        console.log(ga)
         expect(ga[0][1]).toEqual('event');
         expect(ga[0][2]).toEqual('Homepage');
         expect(ga[0][3]).toEqual('click');
@@ -127,7 +126,6 @@ describe('Google analytics configuration', function () {
       browser.waitForAngular();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        console.log(ga);
         // ga[0] is the search event
         // ga[1] should be clicking on the library name from the list, in this
         // case the selected library should be Mid-Manhattan Library
