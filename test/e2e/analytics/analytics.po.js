@@ -5,7 +5,7 @@ var LandingPage = function () {
   'use strict';
 
   this.branch_link = element(
-    by.css('.locations-list-view .locations-row:first-child a:first-child')
+    by.css('.locations-list-view .locations-row:first-child .p-org a')
   );
 
   this.research = element(by.css('.filters__research a'));

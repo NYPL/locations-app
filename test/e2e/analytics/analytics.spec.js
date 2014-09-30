@@ -8,7 +8,7 @@ describe('Google analytics configuration', function () {
   var landingPage = require('./analytics.po.js');
 
   beforeEach(function () {
-    browser.get('/');
+    browser.get('/#/');
     browser.waitForAngular();
   });
 
@@ -30,24 +30,40 @@ describe('Google analytics configuration', function () {
 
     it('should log a branch path as a page view', function () {
       landingPage.branch_link.click();
-      expect(browser.executeScript('return window.ga_msg[0][2];'))
-        .toEqual('/115th-street');
+      browser.waitForAngular();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][1]).toEqual('pageview')
+        expect(ga[0][2]).toEqual('/115th-street');
+      });
     });
 
     it('should log a division path as a page view', function () {
       landingPage.research.click();
-      element(by.linkText('Stephen A. Schwarzman Building')).click();
-      element(by.linkText('George Arents Collection')).click();
-      expect(browser.executeScript('return window.ga_msg[1][2];'))
-        .toEqual('/divisions/arents-collection');
 
+      element(by.linkText('Stephen A. Schwarzman Building')).click();
+      browser.waitForAngular();
+
+      element(by.linkText('General Research Division')).click();
+      browser.waitForAngular();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[1][1]).toEqual('pageview');
+        expect(ga[1][2]).toEqual('/divisions/general-research-division');
+      });
     });
 
     it('should log amenities path as a page view', function () {
       landingPage.branch_link.click();
+      browser.waitForAngular();
+
       element(by.linkText('See all amenities')).click();
-      expect(browser.executeScript('return window.ga_msg[1][2];'))
-        .toEqual('/amenities/location/115th-street');
+      browser.waitForAngular();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[1][1]).toEqual('pageview');
+        expect(ga[1][2]).toEqual('/amenities/loc/115th-street');
+      });
     });
       
   });
