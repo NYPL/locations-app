@@ -35,7 +35,7 @@ nypl_locations.config([
         'use strict';
 
         // uses the HTML5 History API, remove hash (need to test)
-        // $locationProvider.html5Mode(true);
+        $locationProvider.html5Mode(true);
 
         // Lazy loads static files with English being
         // the first language that gets loaded.
