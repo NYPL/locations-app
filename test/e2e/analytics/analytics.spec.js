@@ -33,8 +33,8 @@ describe('Google analytics configuration', function () {
       browser.waitForAngular();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[0][1]).toEqual('pageview')
-        expect(ga[0][2]).toEqual('/115th-street');
+        expect(ga[1][1]).toEqual('pageview')
+        expect(ga[1][2]).toEqual('/115th-street');
       });
     });
 
@@ -48,8 +48,8 @@ describe('Google analytics configuration', function () {
       browser.waitForAngular();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[1][1]).toEqual('pageview');
-        expect(ga[1][2]).toEqual('/divisions/general-research-division');
+        expect(ga[3][1]).toEqual('pageview');
+        expect(ga[3][2]).toEqual('/divisions/general-research-division');
       });
     });
 
@@ -61,8 +61,8 @@ describe('Google analytics configuration', function () {
       browser.waitForAngular();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[1][1]).toEqual('pageview');
-        expect(ga[1][2]).toEqual('/amenities/loc/115th-street');
+        expect(ga[2][1]).toEqual('pageview');
+        expect(ga[2][2]).toEqual('/amenities/loc/115th-street');
       });
     });
       
