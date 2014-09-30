@@ -279,7 +279,7 @@ function nyplSidebar() {
     };
 }
 
-function nyplAutofill($timeout) {
+function nyplAutofill($timeout, $state) {
     'use strict';
 
     return {
@@ -293,6 +293,7 @@ function nyplAutofill($timeout) {
         },
         link: function ($scope, elem, attrs, controller) {
             $scope.focused = false;
+            $scope.activated = false;
             $scope.filtered = [];
             var input  = angular.element(document.getElementById('searchTerm')),
                 submit = angular.element(document.getElementById('find-location')),
@@ -310,12 +311,24 @@ function nyplAutofill($timeout) {
 
             input.bind('keyup', function(e) {
                 // Tab & Enter keys
-                if (e.keyCode === 9 || e.keyCode === 13) {
+                if (e.keyCode === 13) {
                     $scope.$apply( function() {
-                        if (controller.setSearchText($scope.model)) {
+                        if ($scope.activated) {
+                            $state.go(
+                                'location', 
+                                { location: $scope.active.slug }
+                            );
+                        }
+                        else if (controller.setSearchText($scope.model)) {
                             $timeout( function() {
-                                submit.triggerHandler('click');
+                               $state.go(
+                                    'location', 
+                                    { location: $scope.items[0].slug }
+                                );
                             }, 100);
+                        }
+                        else {
+                            // Geolocation Search only
                         }
                     });
                 }
@@ -334,7 +347,10 @@ function nyplAutofill($timeout) {
 
                 // Escape key
                 if (e.keyCode === 27) {
-                    $scope.$apply( function() { $scope.focused = false; });
+                    $scope.$apply( function() { 
+                        $scope.focused = false;
+                        $scope.activated = false;
+                    });
                 }
             });
 
@@ -348,15 +364,17 @@ function nyplAutofill($timeout) {
                 if (e.keyCode === 38) {
                     e.preventDefault();
                     $scope.$apply(function() { 
-                        controller.activatePreviousItem(); 
+                        controller.activatePreviousItem();
+                        $scope.activated = true;
                     });
                 }
 
                 // Down Arrow
                 if (e.keyCode === 40) {
                     e.preventDefault();
-                    $scope.$apply(function() { 
+                    $scope.$apply(function() {
                         controller.activateNextItem();
+                        $scope.activated = true;
                     });
                 }
             });
@@ -369,7 +387,9 @@ function nyplAutofill($timeout) {
 
             function initAutofill() {
                 $scope.$watch('filtered', function(item) {
-                    controller.activate(item.length ? item[0] : null);
+                    if ($scope.activated) {
+                        controller.activate(item.length ? item[0] : null);
+                    }
                 });
 
                 $scope.$watch('model', function(value) {
@@ -390,7 +410,7 @@ function nyplAutofill($timeout) {
             $scope.currentWord = '',
             $scope.completeWord = '';
             $scope.items;
-            var elements, filteredElements;
+            var elements;
 
             this.activate = function(item) {
                 $scope.active = item;
@@ -426,20 +446,19 @@ function nyplAutofill($timeout) {
                 if (searchTerm === '' || !searchTerm || !data) return;
 
                 if (searchTerm.length > 1) {
-                    elements = _.chain(data).pluck('name').flatten(true).value();
-                    filteredElements = _.chain(data).flatten(true).value();
+                    elements = _.chain(data).flatten(true).value();
                     $scope.items = _.filter(elements, function(elem) {
-                        return elem.substring(0, searchTerm.length).toLowerCase() 
-                                === searchTerm.toLowerCase();
+                        return elem.name.substring(0, searchTerm.length).toLowerCase() 
+                            === searchTerm.toLowerCase();
                     });
 
-                    $scope.filtered = _.filter(filteredElements, function(elem) {
+                    $scope.filtered = _.filter(elements, function(elem) {
                         return elem.name.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0;
                     });
 
                     if ($scope.items[0]) {
-                        $scope.lookahead   = $scope.items[0].substring(searchTerm.length);
-                        $scope.currentWord = searchTerm;       
+                        $scope.lookahead   = $scope.items[0].name.substring(searchTerm.length);
+                        $scope.currentWord = searchTerm;
                     }
                     else {
                         this.resetSearchTerms();

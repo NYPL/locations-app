@@ -3,7 +3,8 @@
 	<p class="hidden">{{completeWord}}</p>
 </div>
 <div class="autofill-container" data-ng-if="model.length > 1 && focused">
-	<div class="location-item" ng-repeat="item in filtered" ng-class="(item.slug==active.slug) ? 'active' : ''">
+	<div class="location-item" ng-repeat="item in filtered" 
+	ng-class="(item.id==active.id && activated) ? 'active' : ''">
 	  <div class="location-name">
 	  	<a data-ui-sref='location({ location: item.slug })'>
 	  		{{item.name}}
