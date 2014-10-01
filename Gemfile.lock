@@ -13,6 +13,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     haml (4.0.5)
       tilt
+    json (1.5.5)
     kgio (2.9.2)
     multi_json (1.10.1)
     multipart-post (2.0.0)
@@ -38,6 +39,7 @@ PLATFORMS
 
 DEPENDENCIES
   haml
+  json
   lionactor!
   sinatra
   sinatra-jsonp
