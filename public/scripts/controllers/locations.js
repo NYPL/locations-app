@@ -206,6 +206,7 @@
                 $scope.location_type = type;
             },
 
+            // Deprecated
             createFilterMarker = function (slug) {
                 // store the filtered location marker if in the list view,
                 // so it can be displayed when going to the map view.
@@ -216,6 +217,7 @@
                 }
             },
 
+            // Deprecated
             performIDsearch = function (IDfilteredLocations) {
                 resetProperty($scope.locations, 'distance');
                 organizeLocations($scope.locations, IDfilteredLocations,
@@ -226,6 +228,7 @@
                 $scope.scrollPage();
             },
 
+            // Deprecated
             filterMarkerOrSearchMarker = function (filteredLocations, searchObj) {
                 if (filteredLocations.length) {
                     // Map related work
@@ -350,9 +353,7 @@
         $scope.useGeolocation = function () {
             // Remove any existing search markers on the map.
             nyplGeocoderService.removeMarker('search');
-            $scope.select_library_for_map = '';
-            $scope.searchTerm = '';
-            $scope.searchMarker = false;
+            resetPage();
 
             $scope.scrollPage();
             scrollListTop();
