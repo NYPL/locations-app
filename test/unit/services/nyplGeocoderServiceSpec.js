@@ -61,11 +61,10 @@ describe('NYPL Geocoder Service Tests', function () {
       google.maps.Marker.prototype.setPosition =
         jasmine.createSpy('marker.setPosition');
 
-      GeocoderMock = window.google.maps.Geocoder =
+      GeocoderMock = window.google.maps.Geocoder = 
         jasmine.createSpy('Geocoder');
       window.google.maps.LatLng = jasmine.createSpy('LatLng');
-      window.google.maps.LatLngBounds =
-        jasmine.createSpy('LatLngBounds');
+      window.google.maps.LatLngBounds = jasmine.createSpy('LatLngBounds');
 
       inject(function ($rootScope, _nyplGeocoderService_, _$httpBackend_) {
         nyplGeocoderService = _nyplGeocoderService_;
@@ -75,6 +74,18 @@ describe('NYPL Geocoder Service Tests', function () {
         httpBackend
           .expectGET('/languages/en.json')
           .respond('public/languages/en.json');
+
+        httpBackend
+          .expectGET('/config')
+          .respond('/config');
+
+        httpBackend
+          .expectGET('views/locations.html')
+          .respond('public/views/locations.html');
+
+        httpBackend
+          .expectGET('views/location-list-view.html')
+          .respond('public/views/location-list-view.html');
       });
     });
 
