@@ -83,14 +83,13 @@
                             user.coords.longitude;
                         $scope.userMarker = true;
 
+                        $state.go('home.map');
                         sortListBy('distance');
                         nyplGeocoderService
                             .createMarker('user', user.coords,
                                 "Your Current Location");
 
-                        if (isMapPage()) {
-                            $scope.drawUserMarker();
-                        }
+                        $scope.drawUserMarker();
 
                         return user.coords;
                     });
@@ -194,16 +193,6 @@
                 _.each(scrollable_lists, function (list) {
                     $(list).animate({scrollTop: '0px'}, 1000);
                 });
-            },
-
-            searchByUserGeolocation = function () {
-                scrollListTop();
-
-                if (isMapPage()) {
-                    $scope.drawUserMarker();
-                }
-
-                sortListBy('distance');
             },
 
             showLibrariesTypeOf = function (type) {
@@ -361,10 +350,10 @@
             $scope.searchMarker = false;
 
             $scope.scrollPage();
+            scrollListTop();
 
             loadUserCoordinates()
                 .then(loadReverseGeocoding)
-                .then(searchByUserGeolocation)
                 .catch(function (error) {
                     $scope.distanceError = error.message;
                     $scope.geolocationOn = false;
@@ -575,10 +564,6 @@
                     loadMapMarkers();
 
                     $scope.drawUserMarker();
-
-                    if ($scope.userMarker) {
-                        nyplGeocoderService.drawSearchMarker();
-                    }
 
                     if ($scope.searchMarker) {
                         nyplGeocoderService.drawSearchMarker();

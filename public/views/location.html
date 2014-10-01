@@ -229,7 +229,7 @@
             <p>{{location.about}}</p>
             <!-- More Link -->
             <div class="text--right">
-              <a class="read-more" data-ng-href="http://nypl.org/locations/{{location.slug}}">
+              <a class="read-more" data-ng-href="{{location._links.self.about}}">
               {{ 'ABOUT_MORE' | translate }}
               </a>
             </div>

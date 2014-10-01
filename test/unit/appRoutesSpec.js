@@ -35,43 +35,43 @@ describe('Locinator State Routing', function () {
 
   describe('Routing', function () {
     it('should go to the home page', function () {
-      expect($state.href('home.index')).toEqual('#/');
+      expect($state.href('home.index')).toEqual('/');
     });
 
     it('should go to the map page', function () {
-      expect($state.href('home.map')).toEqual('#/map');
+      expect($state.href('home.map')).toEqual('/map');
     });
 
     it('should go to the list page', function () {
-      expect($state.href('home.list')).toEqual('#/list');
+      expect($state.href('home.list')).toEqual('/list');
     });
 
     it('should go to the all amenities page', function () {
-      expect($state.href('amenities')).toEqual('#/amenities');
+      expect($state.href('amenities')).toEqual('/amenities');
     });
 
     it('should go to a location page', function () {
       expect($state.href('location', {location: 'schwarzman'}))
-        .toEqual('#/schwarzman');
+        .toEqual('/schwarzman');
     });
 
     it('should go to a division page', function () {
       expect($state.href('division', {division: 'map-division'}))
-        .toEqual('#/divisions/map-division');
+        .toEqual('/divisions/map-division');
     });
 
     it('should go to an amenity page', function () {
       expect($state.href('amenity', {amenity: '7950'}))
-        .toEqual('#/amenities/id/7950');
+        .toEqual('/amenities/id/7950');
     });
 
     it('should go to an amenities at location page', function () {
       expect($state.href('amenities-at-location', {location: 'grand-central'}))
-        .toEqual('#/amenities/loc/grand-central');
+        .toEqual('/amenities/loc/grand-central');
     });
 
     it('should go to a 404 page', function () {
-      expect($state.href('404')).toEqual('#/404');
+      expect($state.href('404')).toEqual('/404');
     });
   });
 

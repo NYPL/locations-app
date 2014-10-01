@@ -8,7 +8,7 @@ describe('Google analytics configuration', function () {
   var landingPage = require('./analytics.po.js');
 
   beforeEach(function () {
-    browser.get('/');
+    browser.get('/#/');
     browser.waitForAngular();
   });
 
@@ -30,25 +30,113 @@ describe('Google analytics configuration', function () {
 
     it('should log a branch path as a page view', function () {
       landingPage.branch_link.click();
-      expect(browser.executeScript('return window.ga_msg[0][2];'))
-        .toEqual('/115th-street');
+      browser.waitForAngular();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[1][1]).toEqual('pageview')
+        expect(ga[1][2]).toEqual('/115th-street');
+      });
     });
 
     it('should log a division path as a page view', function () {
       landingPage.research.click();
-      element(by.linkText('Stephen A. Schwarzman Building')).click();
-      element(by.linkText('George Arents Collection')).click();
-      expect(browser.executeScript('return window.ga_msg[1][2];'))
-        .toEqual('/divisions/arents-collection');
 
+      element(by.linkText('Stephen A. Schwarzman Building')).click();
+      browser.waitForAngular();
+
+      element(by.linkText('General Research Division')).click();
+      browser.waitForAngular();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[3][1]).toEqual('pageview');
+        expect(ga[3][2]).toEqual('/divisions/general-research-division');
+      });
     });
 
     it('should log amenities path as a page view', function () {
       landingPage.branch_link.click();
+      browser.waitForAngular();
+
       element(by.linkText('See all amenities')).click();
-      expect(browser.executeScript('return window.ga_msg[1][2];'))
-        .toEqual('/amenities/location/115th-street');
+      browser.waitForAngular();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[2][1]).toEqual('pageview');
+        expect(ga[2][2]).toEqual('/amenities/loc/115th-street');
+      });
     });
       
+  });
+
+  describe('Homepage event tracking', function () {
+    beforeEach(function () {
+      browser.executeScript(mockGA());
+    });
+
+    it('should track a click event on the research only button', function () {
+      landingPage.research.click();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][1]).toEqual('event');
+        expect(ga[0][2]).toEqual('Homepage');
+        expect(ga[0][3]).toEqual('click');
+        expect(ga[0][4]).toEqual('Research Branches');
+      });
+    });
+
+    it('should track a click event on geolocation search', function () {
+      landingPage.geolocation.click();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][1]).toEqual('event');
+        expect(ga[0][2]).toEqual('Homepage');
+        expect(ga[0][3]).toEqual('click');
+        expect(ga[0][4]).toEqual('Geolocation');
+      });
+    });
+
+    it('should track a search with a library search', function () {
+      landingPage.search('aguilar');
+
+      // Tracks event when the 'Find a library!' button is clicked:
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][1]).toEqual('event');
+        expect(ga[0][2]).toEqual('Search');
+        expect(ga[0][3]).toEqual('click');
+        expect(ga[0][4]).toEqual('aguilar');
+      });
+    });
+
+    it('should track a search with a location search', function () {
+      landingPage.search('upper east side');
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][1]).toEqual('event');
+        expect(ga[0][2]).toEqual('Search');
+        expect(ga[0][3]).toEqual('click');
+        expect(ga[0][4]).toEqual('upper east side');
+      });
+    });
+
+    it('should track a click on a library name on the homepage list', function () {
+      landingPage.search('mid manhattan');
+      browser.sleep(1000);
+
+      landingPage.branch_link.click();
+      browser.waitForAngular();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        // ga[0] is the search event
+        // ga[1] should be clicking on the library name from the list, in this
+        // case the selected library should be Mid-Manhattan Library
+        expect(ga[1][1]).toEqual('event');
+        expect(ga[1][3]).toEqual('click');
+        expect(ga[1][4]).toEqual('Homepage list: mid-manhattan-library');
+
+        // ga[2] is tracking the pageview
+        expect(ga[2][1]).toEqual('pageview');
+        expect(ga[2][2]).toEqual('/mid-manhattan-library');
+      });
+    });
   });
 });

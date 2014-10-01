@@ -29,7 +29,8 @@ exports.config = {
       'test/e2e/amenities/amenity.spec.js',
       'test/e2e/amenities/amenities_at_branch.spec.js'],
     pagetopage: ['test/e2e/page-to-page/page_to_page.spec.js'],
-    sso: ['test/e2e/page-to-page/sso_cookies.spec.js']
+    sso: ['test/e2e/page-to-page/sso_cookies.spec.js'],
+    analytics: ['test/e2e/analytics/analytics.spec.js']
   },
 
   // onPrepare: function () {
