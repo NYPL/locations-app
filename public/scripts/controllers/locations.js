@@ -64,44 +64,49 @@
                     .getBrowserCoordinates()
                     .then(function (position) {
                         user.coords = _.pick(position, 'latitude', 'longitude');
-
-                        // add a distance property to every location
-                        // from that location to the user's coordinates
-                        $scope.locations = nyplUtility
-                            .calcDistance($scope.locations, user.coords);
-
-                        // Must be within 25 miles
-                        if (nyplUtility.checkDistance($scope.locations)) {
-                            // The user is too far away, reset everything
-                            resetPage();
-                            throw (new Error('You are not within 25 ' +
-                                    'miles of any NYPL library.'));
-                        }
-
-                        // Used for 'Get Address' link.
-                        $scope.locationStart = user.coords.latitude + "," +
-                            user.coords.longitude;
-                        $scope.userMarker = true;
-
-                        $state.go('home.map');
-                        sortListBy('distance');
-                        nyplGeocoderService
-                            .createMarker('user', user.coords,
-                                "Your Current Location");
-
-                        $scope.drawUserMarker();
-
-                        return user.coords;
+                        return user;
                     });
             },
 
+            checkUserDistance = function (user) {
+                // add a distance property to every location
+                // from that location to the user's coordinates
+                $scope.locations =
+                    nyplUtility.calcDistance($scope.locations, user.coords);
+
+                // Must be within 25 miles
+                if (nyplUtility.checkDistance($scope.locations)) {
+                    // The user is too far away, reset everything
+                    resetPage();
+                    throw (new Error('You are not within 25 ' +
+                        'miles of any NYPL library.'));
+                }
+
+                return user.coords;
+            },
+
+            loadUserVariables = function () {
+                // Used for 'Get Address' link.
+                $scope.locationStart =
+                    user.coords.latitude + "," + user.coords.longitude;
+                $scope.userMarker = true;
+
+                $state.go('home.map');
+                sortListBy('distance');
+                nyplGeocoderService
+                    .createMarker(
+                        'user', user.coords, "Your Current Location");
+
+                $scope.drawUserMarker();
+            },
+
             // convert coordinate into address
-            loadReverseGeocoding = function () {
+            loadReverseGeocoding = function (coords) {
                 nyplSearch.resetSearchValues();
                 return nyplGeocoderService
                     .reverseGeocoding({
-                        lat: user.coords.latitude,
-                        lng: user.coords.longitude
+                        lat: coords.latitude,
+                        lng: coords.longitude
                     })
                     .then(function (address) {
                         $scope.geolocationAddressOrSearchQuery = address;
@@ -353,7 +358,9 @@
             scrollListTop();
 
             loadUserCoordinates()
+                .then(checkUserDistance)
                 .then(loadReverseGeocoding)
+                .then(loadUserVariables)
                 .catch(function (error) {
                     $scope.distanceError = error.message;
                     $scope.geolocationOn = false;
