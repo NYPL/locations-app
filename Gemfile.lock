@@ -40,6 +40,7 @@ PLATFORMS
 DEPENDENCIES
   haml
   json
+  kgio
   lionactor!
   sinatra
   sinatra-jsonp
