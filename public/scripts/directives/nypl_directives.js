@@ -334,6 +334,7 @@ function nyplAutofill($timeout, $state) {
                         }
                         else {
                             // Geocoding Search only
+                            $scope.geoSearch({term: $scope.model});
                         }
                     });
                 }
