@@ -257,7 +257,11 @@ time {
 	}
 
 	.geolocation-search {
-		padding: 5px 0 0 0;
+		padding: 10px;
+		
+		&.active {
+			background-color: #FFFFCD;
+		}
 
 		&:hover {
 			cursor: pointer;

@@ -314,10 +314,15 @@ function nyplAutofill($timeout, $state) {
                 if (e.keyCode === 13) {
                     $scope.$apply( function() {
                         if ($scope.activated) {
-                            $state.go(
-                                'location', 
-                                { location: $scope.active.slug }
-                            );
+                            if ($scope.active.slug){
+                                $state.go(
+                                    'location', 
+                                    { location: $scope.active.slug }
+                                );
+                            }
+                            else {
+                                console.log($scope.active);
+                            }
                         }
                         else if (controller.setSearchText($scope.model)) {
                             $timeout( function() {
@@ -328,7 +333,7 @@ function nyplAutofill($timeout, $state) {
                             }, 100);
                         }
                         else {
-                            // Geolocation Search only
+                            // Geocoding Search only
                         }
                     });
                 }
@@ -350,6 +355,7 @@ function nyplAutofill($timeout, $state) {
                     $scope.$apply( function() { 
                         $scope.focused = false;
                         $scope.activated = false;
+                        $scope.listActivated = false;
                     });
                 }
             });
@@ -364,8 +370,19 @@ function nyplAutofill($timeout, $state) {
                 if (e.keyCode === 38) {
                     e.preventDefault();
                     $scope.$apply(function() { 
-                        controller.activatePreviousItem();
-                        $scope.activated = true;
+                        if (!$scope.listActivated) {
+                            controller.activateItem();
+                            $scope.activated = true;
+                        }
+
+                        if(!$scope.active) {
+                            controller.activate($scope.currentWord);
+                            $scope.geocodingactive = true;
+                        }
+                        else {
+                            $scope.geocodingactive = false;
+                            controller.activatePreviousItem();
+                        }
                     });
                 }
 
@@ -373,8 +390,21 @@ function nyplAutofill($timeout, $state) {
                 if (e.keyCode === 40) {
                     e.preventDefault();
                     $scope.$apply(function() {
-                        controller.activateNextItem();
-                        $scope.activated = true;
+                        if (!$scope.listActivated) {
+                            controller.activateItem();
+                            $scope.activated = true;                         
+                        }
+                        else {
+                            controller.activateNextItem();
+                        }
+                        
+                        if(!$scope.active) {
+                            $scope.active = $scope.currentWord;
+                            $scope.geocodingactive = true;
+                        }
+                        else {
+                            $scope.geocodingactive = false;
+                        }
                     });
                 }
             });
@@ -386,12 +416,6 @@ function nyplAutofill($timeout, $state) {
             });
 
             function initAutofill() {
-                $scope.$watch('filtered', function(item) {
-                    if ($scope.activated) {
-                        controller.activate(item.length ? item[0] : null);
-                    }
-                });
-
                 $scope.$watch('model', function(value) {
                     controller.updateSearchText($scope.data, value);
                     $scope.focused = true;
@@ -410,7 +434,7 @@ function nyplAutofill($timeout, $state) {
             $scope.currentWord = '',
             $scope.completeWord = '';
             $scope.items;
-            var elements;
+            $scope.listActivated = false;
 
             this.activate = function(item) {
                 $scope.active = item;
@@ -420,14 +444,33 @@ function nyplAutofill($timeout, $state) {
                 return $scope.active === item;
             };
 
+            this.activateItem = function() {
+                var index = $scope.filtered.indexOf($scope.active);
+                this.activate($scope.filtered[0]);
+                $scope.listActivated = true;
+            }
+
             this.activateNextItem = function() {
                 var index = $scope.filtered.indexOf($scope.active);
-                this.activate($scope.filtered[(index + 1) % $scope.filtered.length]);
+                if (index === -1) {
+                    this.activate($scope.filtered[$scope.filtered.length]);
+                }
+                else {
+                    this.activate($scope.filtered[index + 1]);
+                }
             };
 
             this.activatePreviousItem = function() {
                 var index = $scope.filtered.indexOf($scope.active);
-                this.activate($scope.filtered[index === 0 ? $scope.filtered.length - 1 : index - 1]);
+                if(index === -1) {
+                    this.activate($scope.filtered[$scope.filtered.length - 1]);
+                }
+                else if (index === 0) {
+                    this.activate($scope.filtered[index]);
+                }
+                else {
+                    this.activate($scope.filtered[index - 1]);
+                }
             };
 
             this.setSearchText = function(model) {
@@ -446,13 +489,12 @@ function nyplAutofill($timeout, $state) {
                 if (searchTerm === '' || !searchTerm || !data) return;
 
                 if (searchTerm.length > 1) {
-                    elements = _.chain(data).flatten(true).value();
-                    $scope.items = _.filter(elements, function(elem) {
+                    $scope.items = _.filter(data, function(elem) {
                         return elem.name.substring(0, searchTerm.length).toLowerCase() 
                             === searchTerm.toLowerCase();
                     });
 
-                    $scope.filtered = _.filter(elements, function(elem) {
+                    $scope.filtered = _.filter(data, function(elem) {
                         return elem.name.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0;
                     });
 
