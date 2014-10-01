@@ -113,6 +113,16 @@ describe('DivisionCtrl', function () {
           }
         });
 
+      // TODO:
+      // Find out why this is needed:
+      httpBackend
+        .expectGET('views/locations.html')
+        .respond('public/views/locations.html');
+
+      httpBackend
+        .expectGET('views/location-list-view.html')
+        .respond('public/views/location-list-view.html');
+
       nyplLocationsService.getConfig();
       httpBackend.flush();
     })
