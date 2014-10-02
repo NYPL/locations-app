@@ -23,6 +23,18 @@ describe('NYPL Directive Unit Tests', function () {
       httpBackend
         .expectGET('/languages/en.json')
         .respond('public/languages/en.json');
+
+      httpBackend
+        .expectGET('/config')
+        .respond('/config');
+
+      httpBackend
+        .expectGET('views/locations.html')
+        .respond('public/views/locations.html');
+
+      httpBackend
+        .expectGET('views/location-list-view.html')
+        .respond('public/views/location-list-view.html');
     });
   });
 
@@ -414,57 +426,57 @@ describe('NYPL Directive Unit Tests', function () {
    *   The nyplSiteAlerts directive displays a site-wide alert by checking all
    *   the alerts in the API and checking the current date.
    */
-  describe('Directive: nyplSiteAlerts', function () {
-    var $httpBackend, date, template, nyplSiteAlerts, $timeout;
+  // describe('Directive: nyplSiteAlerts', function () {
+  //   var $httpBackend, date, template, nyplSiteAlerts, $timeout;
 
-    beforeEach(inject(function (_$httpBackend_, _$timeout_) {
-      $timeout = _$timeout_;
-      $httpBackend = _$httpBackend_;
+  //   beforeEach(inject(function (_$httpBackend_, _$timeout_) {
+  //     $timeout = _$timeout_;
+  //     $httpBackend = _$httpBackend_;
 
-      $httpBackend
-        .whenJSONP(api + '/alerts' + jsonpCallback)
-        .respond({
-          alerts: [{
-            _id: "71579",
-            scope: "all",
-            title: "Independence Day",
-            body: "All units of the NYPL are closed July 4 - July 5.",
-            start: "2014-06-27T00:00:00-04:00",
-            end: "2014-07-06T01:00:00-04:00"
-          }]
-        });
+  //     $httpBackend
+  //       .whenJSONP(api + '/alerts' + jsonpCallback)
+  //       .respond({
+  //         alerts: [{
+  //           _id: "71579",
+  //           scope: "all",
+  //           title: "Independence Day",
+  //           body: "All units of the NYPL are closed July 4 - July 5.",
+  //           start: "2014-06-27T00:00:00-04:00",
+  //           end: "2014-07-06T01:00:00-04:00"
+  //         }]
+  //       });
 
-      template = "<nypl-site-alerts></nypl-site-alerts>";
-      nyplSiteAlerts = createDirective(template);
-    }));
+  //     template = "<nypl-site-alerts></nypl-site-alerts>";
+  //     nyplSiteAlerts = createDirective(template);
+  //   }));
 
-    it('should display a site wide alert', function () {
-      var MockDate, alert;
+  //   it('should display a site wide alert', function () {
+  //     var MockDate, alert;
 
-      // Override the date function so we can test a real alert
-      // Store a copy so we can return the original one later
-      date = new Date(2014, 5, 29);
-      MockDate = Date;
-      Date = function () { return date; };
+  //     // Override the date function so we can test a real alert
+  //     // Store a copy so we can return the original one later
+  //     date = new Date(2014, 5, 29);
+  //     MockDate = Date;
+  //     Date = function () { return date; };
 
-      $httpBackend.flush();
+  //     $httpBackend.flush();
 
-      // For whatever reason, the sitewidealert doesn't get generated
-      // in time for the $compile function to write it and for the data-ng-if
-      // to verify that the value is there.
-      // console.log(element);
+  //     // For whatever reason, the sitewidealert doesn't get generated
+  //     // in time for the $compile function to write it and for the data-ng-if
+  //     // to verify that the value is there.
+  //     // console.log(element);
 
-      // Currently just using the value in the scope.
-      $timeout(function () {
-        alert = scope.sitewidealert;
-        expect(alert)
-          .toEqual('All units of the NYPL are closed July 4 - July 5.\n');
-      }, 200);
+  //     // Currently just using the value in the scope.
+  //     $timeout(function () {
+  //       alert = scope.sitewidealert;
+  //       expect(alert)
+  //         .toEqual('All units of the NYPL are closed July 4 - July 5.\n');
+  //     }, 200);
 
-      // Use the native Date function again
-      Date = MockDate;
-    });
-  });
+  //     // Use the native Date function again
+  //     Date = MockDate;
+  //   });
+  // });
 
   /*
    * <nypl-library-alert></nypl-library-alert>

@@ -22,7 +22,7 @@
             analytics-label="{{searchTerm}}"
             data-ng-click="geocodeAddress(searchTerm)">
             {{ 'MAIN_SEARCH_BTN' | translate }}
-          </button>
+          </button>            
         </div>
 
         <div class="search-filters" data-ng-if="locations">
@@ -32,8 +32,8 @@
               <span class="current-location-container">
                 <a id="currentloc" class="btn btn--natural"
                   href="" data-ng-if="geolocationOn" data-ng-click="useGeolocation()"
-                  analytics-on analytics-category="Homepage" analytics-event="click"
-                  analytics-label="Geolocation">
+                  analytics-on analytics-category="Locations" analytics-event="Filter by"
+                  analytics-label="Near me">
                   {{ 'USER_LOCATION' | translate }}
                 </a>
               </span>
@@ -45,8 +45,8 @@
               <span class="only-research-container">
                 <a id="onlyresearch" class="btn btn--natural" 
                   data-ng-class="{false: '', true: ''}[researchBranches]" href="" data-ng-click="showResearch()"
-                  analytics-on analytics-category="Homepage" analytics-event="click"
-                  analytics-label="Research Branches">
+                  analytics-on analytics-category="Locations" analytics-event="Filter by"
+                  analytics-label="Research">
                   {{researchBranches && 'ALL_LOCATIONS' || 'RESEARCH_LOCATIONS' | translate}}
                 </a>
               </span>
@@ -74,10 +74,16 @@
   <!-- Views Control Section -->
   <section class="views-tab-controls">
     <div class="list-view-btn" data-ui-sref=".list"
-      data-ng-class="{active: $state.includes('home.index') || $state.includes('home.list')}">
-      List View</div>
-    <div class="map-view-btn" data-ui-sref=".map"
-      data-ng-class="{active: $state.includes('home.map')}">Map View</div>
+      data-ng-class="{active: $state.includes('home.index') || $state.includes('home.list')}"
+      analytics-on="click" analytics-category="Locations" analytics-event="View"
+      analytics-label="List view">
+      List View
+    </div>
+    <div class="map-view-btn" data-ui-sref=".map" data-ng-class="{active: $state.includes('home.map')}"
+      analytics-on="click" analytics-category="Locations" analytics-event="View"
+      analytics-label="Map view">
+      Map View
+    </div>
   </section>
 
   <!-- Conditional | List/Map Views -->

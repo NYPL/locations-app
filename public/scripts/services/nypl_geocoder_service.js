@@ -407,6 +407,7 @@
 
     /** @function nyplGeocoderService.setFilterMarker
      * @param {string} id A location's slug.
+     * @deprecated
      * @Description Set the filtered marker's id. It is used when switching from
      *  the list view to the map view so that the matched filtered marker
      *  can display on the map.
@@ -417,6 +418,7 @@
     };
 
     /** @function nyplGeocoderService.drawFilterMarker
+    * @deprecated
      * @param {string} id A location's slug.
      * @description Draws the filter matched marker if it exists.
      */
@@ -428,6 +430,7 @@
     };
 
     /** @function nyplGeocoderService.clearFilteredLocation
+    * @deprecated
      * @description Removes the filtered match marker id.
      */
     geocoderService.clearFilteredLocation = function () {
@@ -436,6 +439,7 @@
     };
 
     /** @function nyplGeocoderService.getFilteredLocation
+    * @deprecated
      * @returns {string} The filtered match marker's stored id.
      */
     geocoderService.getFilteredLocation = function () {

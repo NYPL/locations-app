@@ -31,7 +31,11 @@
           data-ng-repeat="location in locations | filter:{type:location_type} | orderBy:predicate:reverse">
 
 					<div class="p-org">
-            <a data-ui-sref='location({location: location.slug})'>{{location.name}}</a>
+            <a data-ui-sref='location({location: location.slug})'
+              analytics-on="click" analytics-category="Locations"
+              analytics-event="Click" analytics-label="{{location.name}}">
+              {{location.name}}
+            </a>
           </div>
 					<div class="p-adr">
 						<div class="p-street-address">{{location.street_address}}</div>
@@ -96,7 +100,9 @@
           </div>
           <div class="directions-link">
             <a class="icon-compass" target="_blank"
-              href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
+              href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}"
+              analytics-on="click" analytics-category="Locations"
+              analytics-event="Directions" analytics-label="{{location.name}}">
               {{ 'DIRECTIONS' | translate }}
             </a>
           </div>

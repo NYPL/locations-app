@@ -16,9 +16,12 @@ var LandingPage = function () {
     this.findIt.click();
   };
 
+  this.geolocation = element(by.id('currentloc'));
   this.research = element(by.css('.filters__research a'));
 
-  this.geolocation = element(by.id('currentloc'));
+  this.listViewBtn = element(by.css('.list-view-btn'));
+  this.mapViewBtn = element(by.css('.map-view-btn'));
+
 };
 
 module.exports = new LandingPage();
