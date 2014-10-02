@@ -257,9 +257,11 @@
 
                     // If the user searched by zip code, name or address,
                     // then sort by relevancy or distance. If not, they used
-                    // geolocation so sort by distance.
-                    if (!$scope.searchTerm) {
+                    // geolocation so sort by distance. Default is by name.
+                    if ($scope.geolocationAddressOrSearchQuery) {
                         sortListBy('distance');
+                    } else {
+                        sortListBy('name');
                     }
                 } else {
                     $scope.loadLocations();
@@ -313,8 +315,8 @@
                         }
                     });
 
-
                     resetPage();
+                    nyplSearch.setSearchValue('locations', $scope.locations);
 
                     return locations;
                 })
