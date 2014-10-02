@@ -301,9 +301,7 @@ function nyplAutofill($timeout, $state) {
             $scope.currentIndex;
 
             var input  = angular.element(document.getElementById('searchTerm')),
-                submit = angular.element(document.getElementById('find-location')),
-                html   = angular.element(document.getElementsByTagName('html')),
-                term;
+                html   = angular.element(document.getElementsByTagName('html'));
 
             input.bind('focus', function() {
                 $scope.$apply( function() { 
@@ -371,7 +369,7 @@ function nyplAutofill($timeout, $state) {
                 // Escape key
                 if (e.keyCode === 27) {
                     $scope.$apply( function() { 
-                        $scope.focused = false;
+                        controller.unfocus();
                         $scope.activated = false;
                     });
                 }
@@ -406,18 +404,14 @@ function nyplAutofill($timeout, $state) {
                         else {
                             controller.activateNextItem();
                         }
-
-                        if(!$scope.active && $scope.activated) {
-                            $scope.active = controller.activate($scope.model);
-                            $scope.geocodingactive = true;
-                        }
+                        controller.activateGeocodingItem();
                     });
                 }
             });
 
             html.bind('click', function(e) {
                 $scope.$apply( function() {
-                    $scope.focused = false;
+                    controller.unfocus();
                 });
             });
 
@@ -429,7 +423,7 @@ function nyplAutofill($timeout, $state) {
 
                 $scope.$on('$stateChangeSuccess', function() {
                     controller.resetSearchTerms();
-                    $scope.focused = false;
+                    controller.unfocus();
                 });
             }
 
@@ -477,6 +471,13 @@ function nyplAutofill($timeout, $state) {
                     $scope.active = this.activate($scope.filtered[$scope.currentIndex]);
                 }
             };
+
+            this.activateGeocodingItem = function () {
+                if(!$scope.active && $scope.activated) {
+                    $scope.active = this.activate($scope.model);
+                    $scope.geocodingactive = true;
+                }
+            }
 
             this.setSearchText = function(model) {
                 if ( $scope.completeWord === $scope.model || 
