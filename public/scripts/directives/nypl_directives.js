@@ -279,7 +279,7 @@ function nyplSidebar() {
     };
 }
 
-function nyplAutofill($timeout, $state) {
+function nyplAutofill($state) {
     'use strict';
 
     return {
