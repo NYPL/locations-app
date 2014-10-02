@@ -100,7 +100,9 @@
             alt="Image for {{subdivision.name}}" title="Image for {{subdivision.name}}"/>
           </a>
           <h4 class="subdivision-title">
-            <a ui-sref="division({division: subdivision.slug})">{{subdivision.name}}</a>
+            <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})">
+              {{subdivision.name}}
+            </a>
           </h4>
           <p data-ng-if="subdivision.hours">Hours Today: {{subdivision.hoursToday | timeFormat}}</p>
         </div>
