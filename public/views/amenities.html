@@ -18,7 +18,7 @@
               <span class="{{category.icon}} category_title">{{category.name}}</span>
             </h3>
             <ul class="amenities-list">
-              <li data-ng-repeat="amenity in category.amenities | orderBy:'location_rank'">
+              <li data-ng-repeat="amenity in category.amenities | orderBy:'rank'">
                 <a data-ui-sref="amenity({amenity: amenity.id})">{{amenity.name}}</a>
                 <div class="amenity-links">
                   <span data-ng-if="amenity._links.action && amenity._links.action.name && amenity._links.action.href">
@@ -44,7 +44,7 @@
               <span class="icon-library">Locations</span>
             </h3>
             <ul class="amenities-list">
-              <li data-ng-repeat="location in locations">
+              <li data-ng-repeat="location in locations | orderBy:'name'">
                 <a data-ui-sref="location({location: location.slug})">{{location.name}}</a>
               </li>
             </ul>
