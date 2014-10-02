@@ -319,9 +319,13 @@ function nyplAutofill($timeout, $state) {
                 // Tab & Enter keys
                 if (e.keyCode === 13) {
                     $scope.$apply( function() {
+                        // User has pressed up/down arrows
                         if ($scope.activated) {
                             // Transition to location page
                             if ($scope.active.slug){
+                                $scope.activated = false;
+                                controller.unfocus();
+                                $scope.model = $scope.active.name;
                                 $state.go(
                                     'location', 
                                     { location: $scope.active.slug }
@@ -329,23 +333,25 @@ function nyplAutofill($timeout, $state) {
                             }
                             else {
                                 //Geocoding Search
-                                $scope.geoSearch({term: $scope.active});
+                                $scope.geoSearch({term: $scope.model});
+                                $scope.geocodingactive = false;
+                                $scope.activated = false;
+                                controller.unfocus();
                             }
                         }
+                        // User has pressed enter with autofill
                         else if (controller.setSearchText($scope.model)) {
-                            $timeout( function() {
-                               $state.go(
-                                    'location', 
-                                    { location: $scope.items[0].slug }
-                                );
-                            }, 100);
+                            $scope.model = $scope.items[0].name;
+                            $state.go(
+                                'location', 
+                                { location: $scope.items[0].slug }
+                            );
                         }
+                        // No autofill, down/up arrows not pressed
                         else {
                             // Geocoding Search only
-                            $timeout( function() {
-                                console.log('here');
-                                submit.triggerHandler('click');
-                            }, 100);
+                            $scope.geoSearch({term: $scope.model});
+                            controller.unfocus();
                         }
                     });
                 }
@@ -433,6 +439,10 @@ function nyplAutofill($timeout, $state) {
             $scope.lookahead = '',
             $scope.currentWord = '',
             $scope.completeWord = '';
+
+            this.unfocus = function() {
+                return $scope.focused = false;
+            }
 
             this.activate = function(item) {
                 return item;
