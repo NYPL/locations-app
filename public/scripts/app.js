@@ -56,6 +56,20 @@ nypl_locations.config([
                 });
         }
 
+        function LoadSubDivision($q, $stateParams, config, nyplLocationsService) {
+            var division    = nyplLocationsService
+                                .singleDivision($stateParams.division),
+                subdivision = nyplLocationsService
+                                .singleDivision($stateParams.subdivision);
+
+            return $q.all([division, subdivision]).then(function (data) {
+                var div = data[0],division,
+                    subdiv = data[1].division;
+
+                return subdiv;
+            });
+        }
+
         function LoadDivision($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
                 .singleDivision($stateParams.division)
@@ -129,6 +143,20 @@ nypl_locations.config([
                 url: 'map',
                 controller: 'MapCtrl',
                 label: 'Locations'
+            })
+            .state('subdivision', {
+                url: '/divisions/:division/:subdivision',
+                templateUrl: 'views/division.html',
+                controller: 'DivisionCtrl',
+                label: 'Division',
+                resolve: {
+                    config: getConfig,
+                    division: LoadSubDivision
+                },
+                data: {
+                    parentState: 'location',
+                    crumbName: '{{division.name}}'
+                }
             })
             .state('division', {
                 url: '/divisions/:division',
