@@ -294,10 +294,16 @@ function nyplAutofill($timeout, $state) {
         link: function ($scope, elem, attrs, controller) {
             $scope.focused = false;
             $scope.activated = false;
+            $scope.geocodingactive = false;
             $scope.filtered = [];
+            $scope.items;
+            $scope.active;
+            $scope.currentIndex;
+
             var input  = angular.element(document.getElementById('searchTerm')),
                 submit = angular.element(document.getElementById('find-location')),
-                html   = angular.element(document.getElementsByTagName('html'));
+                html   = angular.element(document.getElementsByTagName('html')),
+                term;
 
             input.bind('focus', function() {
                 $scope.$apply( function() { 
@@ -314,6 +320,7 @@ function nyplAutofill($timeout, $state) {
                 if (e.keyCode === 13) {
                     $scope.$apply( function() {
                         if ($scope.activated) {
+                            // Transition to location page
                             if ($scope.active.slug){
                                 $state.go(
                                     'location', 
@@ -321,7 +328,8 @@ function nyplAutofill($timeout, $state) {
                                 );
                             }
                             else {
-                                console.log($scope.active);
+                                //Geocoding Search
+                                $scope.geoSearch({term: $scope.active});
                             }
                         }
                         else if (controller.setSearchText($scope.model)) {
@@ -334,6 +342,10 @@ function nyplAutofill($timeout, $state) {
                         }
                         else {
                             // Geocoding Search only
+                            $timeout( function() {
+                                console.log('here');
+                                submit.triggerHandler('click');
+                            }, 100);
                         }
                     });
                 }
@@ -355,7 +367,6 @@ function nyplAutofill($timeout, $state) {
                     $scope.$apply( function() { 
                         $scope.focused = false;
                         $scope.activated = false;
-                        $scope.listActivated = false;
                     });
                 }
             });
@@ -369,18 +380,11 @@ function nyplAutofill($timeout, $state) {
                 // Up Arrow
                 if (e.keyCode === 38) {
                     e.preventDefault();
-                    $scope.$apply(function() { 
-                        if (!$scope.listActivated) {
-                            controller.activateItem();
-                            $scope.activated = true;
-                        }
-
-                        if(!$scope.active) {
-                            controller.activate($scope.currentWord);
-                            $scope.geocodingactive = true;
+                    $scope.$apply(function() {
+                        if (!$scope.activated) {
+                            controller.activateFirstItem();
                         }
                         else {
-                            $scope.geocodingactive = false;
                             controller.activatePreviousItem();
                         }
                     });
@@ -390,20 +394,16 @@ function nyplAutofill($timeout, $state) {
                 if (e.keyCode === 40) {
                     e.preventDefault();
                     $scope.$apply(function() {
-                        if (!$scope.listActivated) {
-                            controller.activateItem();
-                            $scope.activated = true;                         
+                        if (!$scope.activated) {
+                            controller.activateFirstItem();
                         }
                         else {
                             controller.activateNextItem();
                         }
-                        
-                        if(!$scope.active) {
-                            $scope.active = $scope.currentWord;
+
+                        if(!$scope.active && $scope.activated) {
+                            $scope.active = controller.activate($scope.model);
                             $scope.geocodingactive = true;
-                        }
-                        else {
-                            $scope.geocodingactive = false;
                         }
                     });
                 }
@@ -433,43 +433,38 @@ function nyplAutofill($timeout, $state) {
             $scope.lookahead = '',
             $scope.currentWord = '',
             $scope.completeWord = '';
-            $scope.items;
-            $scope.listActivated = false;
 
             this.activate = function(item) {
-                $scope.active = item;
+                return item;
             };
 
-            this.isActive = function(item) {
-                return $scope.active === item;
-            };
-
-            this.activateItem = function() {
-                var index = $scope.filtered.indexOf($scope.active);
-                this.activate($scope.filtered[0]);
-                $scope.listActivated = true;
+            this.activateFirstItem = function() {
+                $scope.active = $scope.filtered[0];
+                $scope.currentIndex = $scope.filtered.indexOf($scope.active);
+                $scope.activated = true;
             }
 
             this.activateNextItem = function() {
-                var index = $scope.filtered.indexOf($scope.active);
-                if (index === -1) {
-                    this.activate($scope.filtered[$scope.filtered.length]);
+                $scope.geocodingactive = false;
+                if ($scope.currentIndex < $scope.filtered.length && $scope.currentIndex >= 0) {
+                    $scope.currentIndex = $scope.filtered.indexOf($scope.active) + 1;
+                    $scope.active = this.activate($scope.filtered[$scope.currentIndex]);
                 }
                 else {
-                    this.activate($scope.filtered[index + 1]);
+                    $scope.active = undefined;
+                    $scope.currentIndex = -1;
                 }
             };
 
             this.activatePreviousItem = function() {
-                var index = $scope.filtered.indexOf($scope.active);
-                if(index === -1) {
-                    this.activate($scope.filtered[$scope.filtered.length - 1]);
+                $scope.geocodingactive = false;
+                if ($scope.currentIndex === -1) {
+                    $scope.currentIndex = $scope.filtered.length - 1;
+                    $scope.active = this.activate($scope.filtered[$scope.currentIndex]);         
                 }
-                else if (index === 0) {
-                    this.activate($scope.filtered[index]);
-                }
-                else {
-                    this.activate($scope.filtered[index - 1]);
+                else if ($scope.currentIndex <= $scope.filtered.length && $scope.currentIndex > 0) {
+                    $scope.currentIndex = $scope.currentIndex - 1;
+                    $scope.active = this.activate($scope.filtered[$scope.currentIndex]);
                 }
             };
 
@@ -485,18 +480,26 @@ function nyplAutofill($timeout, $state) {
                 $scope.currentWord = '';
             }
 
+            this.filterStartsWith = function(data, searchTerm) {
+                return _.filter(data, function(elem) {
+                    return elem.name.substring(0, searchTerm.length).toLowerCase() 
+                        === searchTerm.toLowerCase();
+                });
+            }
+
+            this.filterTermWithin = function(data, searchTerm) {
+                return _.filter(data, function(elem) {
+                    return elem.name.toLowerCase().
+                        indexOf(searchTerm.toLowerCase()) >= 0;
+                });
+            }
+
             this.updateSearchText = function(data, searchTerm) {
                 if (searchTerm === '' || !searchTerm || !data) return;
 
                 if (searchTerm.length > 1) {
-                    $scope.items = _.filter(data, function(elem) {
-                        return elem.name.substring(0, searchTerm.length).toLowerCase() 
-                            === searchTerm.toLowerCase();
-                    });
-
-                    $scope.filtered = _.filter(data, function(elem) {
-                        return elem.name.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0;
-                    });
+                    $scope.items = this.filterStartsWith(data, searchTerm);
+                    $scope.filtered = this.filterTermWithin(data, searchTerm);
 
                     if ($scope.items[0]) {
                         $scope.lookahead   = $scope.items[0].name.substring(searchTerm.length);
