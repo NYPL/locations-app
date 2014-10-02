@@ -115,8 +115,8 @@
     };
 
     amenities.createAmenitiesCategories = function (amenities) {
-      var categoryName = ['Computer Services', 'Circulation', 'Office Services',
-        'Facilities', 'Assistive Technologies'],
+      var categoryName = ['Computer Services', 'Circulation',
+          'Printing and Copy Services', 'Facilities', 'Assistive Technologies'],
         categories = [],
         categoryObj,
         self = this;
@@ -155,7 +155,7 @@
       var initial_list = amenities,
         amenities_list = [];
 
-      if (!(amenities && amenities.length && rank && loc_rank)) {
+      if (!(amenities.length && rank && loc_rank)) {
         return; // default_amenities;
       }
 
