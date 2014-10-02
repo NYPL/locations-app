@@ -20,7 +20,7 @@
         var locations,
             searchValues = nyplSearch.getSearchValues(),
             research_order =
-                config.research_order ||['SASB', 'LPA', 'SC', 'SIBL'],
+                config.research_order || ['SASB', 'LPA', 'SC', 'SIBL'],
             user = { coords: {}, address: '' },
             sortListBy = function (type) {
                 $scope.predicate = type;
@@ -228,6 +228,20 @@
                 $scope.scrollPage();
             },
 
+            // Deprecated
+            filterMarkerOrSearchMarker = function (filteredLocations, searchObj) {
+                if (filteredLocations.length) {
+                    // Map related work
+                    createFilterMarker(filteredLocations[0].slug);
+                } else {
+                    nyplGeocoderService.clearFilteredLocation();
+                    nyplGeocoderService.createSearchMarker(
+                        searchObj.coords,
+                        searchObj.searchTerm
+                    );
+                }
+            },
+
             loadPreviousStateOrNewState = function () {
                 if (searchValues.locations) {
                     // Assigning the saved values to scope variables that
@@ -427,6 +441,84 @@
                 });
         };
 
+        // Deprecated
+        $scope.submitAddress = function (searchTerm) {
+            var IDfilteredLocations,
+                filteredLocations;
+
+            if (!searchTerm) {
+                return;
+            }
+
+            $scope.geolocationAddressOrSearchQuery = '';
+            $scope.searchError = '';
+            showLibrariesTypeOf();
+            nyplGeocoderService.showAllLibraries()
+            $scope.searchTerm =  searchTerm;
+
+            searchTerm = nyplSearch.searchWordFilter(searchTerm);
+            scrollListTop();
+
+            IDfilteredLocations =
+                nyplSearch.idLocationSearch($scope.locations, searchTerm);
+            // Filter the locations by the search term using Angularjs
+            filteredLocations =
+                nyplSearch.locationSearch($scope.locations, searchTerm);
+
+            if (IDfilteredLocations && IDfilteredLocations.length !== 0) {
+                performIDsearch(IDfilteredLocations);
+                return;
+            }
+
+            // From searchTerm, return suggested coordinates and formatted
+            // address from Google
+            loadGeocoding(searchTerm)
+                .then(function (searchObj) {
+                    // Map related
+                    filterMarkerOrSearchMarker(filteredLocations, searchObj);
+
+                    return searchByCoordinates(searchObj);
+                })
+                .then(function (locations) {
+                    $scope.scrollPage();
+                    if (!filteredLocations.length) {
+                        // Variable to draw a green marker on the map legend.
+                        $scope.searchMarker = true;
+                        nyplSearch.setSearchValue('searchMarker', true);
+                        if (isMapPage()) {
+                            nyplGeocoderService.drawSearchMarker();
+                        }
+                    }
+                    
+                    organizeLocations(locations, filteredLocations, 'distance');
+                })
+                // Catch any errors at any point
+                .catch(function (error) {
+                    // google maps api is down or geocoding did not return
+                    // any significant results,
+                    // first see if there are any angularjs filtered results.
+                    // if there are, show results based on the angularjs filter.
+                    // else, reset back to the start
+                    nyplGeocoderService.removeMarker('search');
+                    $scope.searchMarker = false;
+                    nyplSearch.resetSearchValues();
+
+                    if (filteredLocations && filteredLocations.length &&
+                            error.msg !== 'query too short') {
+                        resetProperty($scope.locations, 'distance');
+                        $scope.searchError = '';
+                        // Map related work
+                        if (isMapPage()) {
+                            nyplGeocoderService
+                                .drawFilterMarker(filteredLocations[0].slug);
+                        }
+                        organizeLocations(locations, filteredLocations, 'name');
+                    } else {
+                        resetPage();
+                    }
+                });
+        };
+
         $scope.showResearch = function () {
             nyplGeocoderService.hideInfowindow();
             scrollListTop();
@@ -467,9 +559,6 @@
 
             drawMap = function () {
                 $timeout(function () {
-                    var filteredLocation =
-                        nyplGeocoderService.getFilteredLocation();
-
                     nyplGeocoderService
                         .drawMap({
                             lat: 40.7532,
@@ -495,8 +584,6 @@
                     if ($scope.select_library_for_map) {
                         nyplGeocoderService
                             .panExistingMarker($scope.select_library_for_map);
-                    } else {
-                        nyplGeocoderService.drawFilterMarker(filteredLocation);
                     }
 
                     $scope.scrollPage();
