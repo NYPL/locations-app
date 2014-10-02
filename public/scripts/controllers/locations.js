@@ -92,7 +92,9 @@
                     user.coords.latitude + "," + user.coords.longitude;
                 $scope.userMarker = true;
 
-                $state.go('home.map');
+                if (!isMapPage()) {
+                    $state.go('home.map');
+                }
                 sortListBy('distance');
                 nyplGeocoderService
                     .createMarker('user', user.coords, "Your Current Location");
@@ -272,9 +274,9 @@
             return nyplLocationsService
                 .allLocations()
                 .then(function (data) {
+                    var amenitiesCount = nyplAmenities.getAmenityConfig(config);
                     locations = data.locations;
                     $scope.locations = locations;
-                    var amenitiesCount = nyplAmenities.getAmenityConfig(config);
 
                     _.each($scope.locations, function (location) {
                         var locationAddress =
@@ -346,7 +348,10 @@
             $scope.select_library_for_map = library_id;
 
             $scope.searchMarker = false;
-            $state.go('home.map');
+
+            if (!isMapPage()) {
+                $state.go('home.map');
+            }
 
             organizeLocations($scope.locations, location, 'name');
             $scope.scrollPage();
@@ -410,7 +415,10 @@
             searchTerm = nyplSearch.searchWordFilter(searchTerm);
             scrollListTop();
 
-            $state.go('home.map');
+            if (!isMapPage()) {
+                $state.go('home.map');
+            }
+
             loadGeocoding(searchTerm)
                 .then(function (searchObj) {
                     nyplGeocoderService.createSearchMarker(
@@ -425,9 +433,7 @@
                     // Variable to draw a green marker on the map legend.
                     $scope.searchMarker = true;
                     nyplSearch.setSearchValue('searchMarker', true);
-                    if (isMapPage()) {
-                        nyplGeocoderService.drawSearchMarker();
-                    }
+                    nyplGeocoderService.drawSearchMarker();
                     
                     organizeLocations(locations, [], 'distance');
                 })

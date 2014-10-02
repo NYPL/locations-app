@@ -76,8 +76,8 @@ describe('NYPL Amenities Service Tests', function () {
               { 'id': 7967, 'name': 'Wireless Internet Access', 'category': 'Computer Services' },
               { 'id': 234, 'name': 'Inter-Library Loan', 'category': 'Circulation' },
               { 'id': 1234, 'name': 'Self-service check-out', 'category': 'Circulation' },
-              { 'id': 234, 'name': 'Photocopiers (black/white)', 'category': 'Office Services' },
-              { 'id': 1234, 'name': 'Photocopiers (color)', 'category': 'Office Services' },
+              { 'id': 234, 'name': 'Photocopiers (black/white)', 'category': 'Printing and Copy Services' },
+              { 'id': 1234, 'name': 'Photocopiers (color)', 'category': 'Printing and Copy Services' },
               { 'id': 7980, 'name': 'Public Restrooms', 'category': 'Facilities' },
               {'id': 7990, 'name': 'Screen Magnification software (MAGic)', 'category': 'Assistive Technologies'},
               {'id': 1234, 'name': 'Screen Reading software (JAWS)', 'category': 'Assistive Technologies'}
@@ -114,8 +114,14 @@ describe('NYPL Amenities Service Tests', function () {
           expect(nyplAmenities.getAmenityIcon(amenities[0].id))
             .toEqual('icon-connection');
 
+          expect(nyplAmenities.getAmenityIcon(amenities[1].id))
+            .toEqual('icon-laptop');
+
           expect(nyplAmenities.getAmenityIcon(amenities[2].id))
             .toEqual('icon-power-cord');
+
+          expect(nyplAmenities.getAmenityIcon(amenities[3].id))
+            .toEqual('icon-print');
 
           expect(nyplAmenities.getAmenityIcon(amenities[4].id))
             .toEqual('icon-box-add');
@@ -214,7 +220,7 @@ describe('NYPL Amenities Service Tests', function () {
                 staff_assistance: null,
                 amenity: {
                   'id': 234, 'name': 'Photocopiers (black/white)',
-                  'category': 'Office Services', 'rank': 1
+                  'category': 'Printing and Copy Services', 'rank': 1
                 }
               },
               {
@@ -257,7 +263,7 @@ describe('NYPL Amenities Service Tests', function () {
             { 'id': 7972, 'name': 'Book Drop Box (24 Hour)',
               'category': 'Circulation', 'rank': 1 },
             { 'id': 234, 'name': 'Photocopiers (black/white)',
-              'category': 'Office Services', 'rank': 1 },
+              'category': 'Printing and Copy Services', 'rank': 1 },
             { 'id': 7971, 'name': 'Bicycle Rack',
               'category': 'Facilities', 'rank': 1 },
             { 'id': 7976, 'name': 'Screen Magnification software (MAGic)',
@@ -306,7 +312,7 @@ describe('NYPL Amenities Service Tests', function () {
                 staff_assistance: null,
                 amenity: {
                   'id': 234, 'name': 'Photocopiers (black/white)',
-                  'category': 'Office Services', 'rank': 1
+                  'category': 'Printing and Copy Services', 'rank': 1
                 }
               },
             ],
@@ -322,7 +328,7 @@ describe('NYPL Amenities Service Tests', function () {
             { 'id': 234, 'name': 'Inter-Library Loan',
               'category': 'Circulation', 'rank': 1 },
             { 'id': 234, 'name': 'Photocopiers (black/white)',
-              'category': 'Office Services', 'rank': 1 }
+              'category': 'Printing and Copy Services', 'rank': 1 }
           ]);
         });
     }); /* End nyplAmenities.allAmenitiesArray() */
@@ -379,7 +385,7 @@ describe('NYPL Amenities Service Tests', function () {
           staff_assistance: null,
           amenity: {
             'id': 234, 'name': 'Photocopiers (black/white)',
-            'category': 'Office Services', 'rank': 4
+            'category': 'Printing and Copy Services', 'rank': 4
           }
         }
       ];
@@ -473,7 +479,7 @@ describe('NYPL Amenities Service Tests', function () {
                 staff_assistance: null,
                 amenity: {
                   'id': 234, 'name': 'Photocopiers (black/white)',
-                  'category': 'Office Services', 'rank': 4
+                  'category': 'Printing and Copy Services', 'rank': 4
                 }
               }
             ]);
