@@ -114,14 +114,31 @@
               .value();
     };
 
+    amenities.getAmenityCategories = function (amenities) {
+      if (!amenities) {
+        return;
+      }
+
+      return _.chain(amenities)
+              .pluck('category')
+              .flatten(true)
+              .unique()
+              .value();
+    }
+
     amenities.createAmenitiesCategories = function (amenities) {
-      var categoryName = ['Computer Services', 'Circulation',
-          'Printing and Copy Services', 'Facilities', 'Assistive Technologies'],
+      var categoryNames,
         categories = [],
         categoryObj,
         self = this;
 
-      _.each(categoryName, function (category) {
+      if (!amenities) {
+        return;
+      }
+
+      categoryNames = this.getAmenityCategories(amenities);
+
+      _.each(categoryNames, function (category) {
         categoryObj = {};
         categoryObj.amenities = _.where(amenities, {'category': category});
         categoryObj.name = category;
