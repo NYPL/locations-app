@@ -21,6 +21,7 @@
     $scope.amenity = amenityProper;
     $scope.locations = amenityProper._embedded.locations;
     $scope.amenity_name = name;
+    console.log(amenityProper);
   }
 
   // Load one location and list all the amenities found in that location.
