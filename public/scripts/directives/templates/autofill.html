@@ -14,7 +14,8 @@
       {{ 'VIEW_MAP' | translate}}
     </a>
 	</div>
-	<div class="geolocation-search" data-ng-click="geoSearch({term: model})" ng-class="(geocodingactive) ? 'active' : ''">
+	<div class="geolocation-search" data-ng-click="geoSearch({term: model})" 
+	ng-class="(geocodingactive) ? 'active' : ''">
 		<p>Search for locations near <b>{{model}}</b></p>
 	</div>
 </div>
