@@ -96,14 +96,23 @@
         geocoder = new google.maps.Geocoder(),
         sw_bound = new google.maps.LatLng(40.49, -74.26),
         ne_bound = new google.maps.LatLng(40.91, -73.77),
-        bounds = new google.maps.LatLngBounds(sw_bound, ne_bound);
+        bounds = new google.maps.LatLngBounds(sw_bound, ne_bound),
+        geocodeOptions = {
+          address: address,
+          bounds: bounds,
+          region: "US",
+          componentRestrictions: {
+            'country': 'US',
+            'locality': 'New York'
+          }
+        };
 
       if (address.length < 3) {
         defer.reject({msg: "Query too short"});
       } else {
-        geocoder.geocode({address: address, bounds: bounds, region: "US"},
-          function (result, status) {
+        geocoder.geocode(geocodeOptions, function (result, status) {
             if (status === google.maps.GeocoderStatus.OK) {
+              console.log(result);
               coords.lat  = result[0].geometry.location.k;
               coords.long = result[0].geometry.location.B ||
                  result[0].geometry.location.A;
