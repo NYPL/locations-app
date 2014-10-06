@@ -19,7 +19,8 @@
     ) {
         var locations,
             searchValues = nyplSearch.getSearchValues(),
-            research_order = config.research_order || ['SASB', 'LPA', 'SC', 'SIBL'],
+            research_order =
+                config.research_order || ['SASB', 'LPA', 'SC', 'SIBL'],
             user = { coords: {}, address: '' },
             sortListBy = function (type) {
                 $scope.predicate = type;
@@ -91,11 +92,12 @@
                     user.coords.latitude + "," + user.coords.longitude;
                 $scope.userMarker = true;
 
-                $state.go('home.map');
+                if (!isMapPage()) {
+                    $state.go('home.map');
+                }
                 sortListBy('distance');
                 nyplGeocoderService
-                    .createMarker(
-                        'user', user.coords, "Your Current Location");
+                    .createMarker('user', user.coords, "Your Current Location");
 
                 $scope.drawUserMarker();
             },
@@ -257,9 +259,11 @@
 
                     // If the user searched by zip code, name or address,
                     // then sort by relevancy or distance. If not, they used
-                    // geolocation so sort by distance.
-                    if (!$scope.searchTerm) {
+                    // geolocation so sort by distance. Default is by name.
+                    if ($scope.geolocationAddressOrSearchQuery) {
                         sortListBy('distance');
+                    } else {
+                        sortListBy('name');
                     }
                 } else {
                     $scope.loadLocations();
@@ -270,9 +274,9 @@
             return nyplLocationsService
                 .allLocations()
                 .then(function (data) {
+                    var amenitiesCount = nyplAmenities.getAmenityConfig(config);
                     locations = data.locations;
                     $scope.locations = locations;
-                    var amenitiesCount = nyplAmenities.getAmenityConfig(config);
 
                     _.each($scope.locations, function (location) {
                         var locationAddress =
@@ -313,8 +317,8 @@
                         }
                     });
 
-
                     resetPage();
+                    nyplSearch.setSearchValue('locations', $scope.locations);
 
                     return locations;
                 })
@@ -344,7 +348,10 @@
             $scope.select_library_for_map = library_id;
 
             $scope.searchMarker = false;
-            $state.go('home.map');
+
+            if (!isMapPage()) {
+                $state.go('home.map');
+            }
 
             organizeLocations($scope.locations, location, 'name');
             $scope.scrollPage();
@@ -408,7 +415,10 @@
             searchTerm = nyplSearch.searchWordFilter(searchTerm);
             scrollListTop();
 
-            $state.go('home.map');
+            if (!isMapPage()) {
+                $state.go('home.map');
+            }
+
             loadGeocoding(searchTerm)
                 .then(function (searchObj) {
                     nyplGeocoderService.createSearchMarker(
@@ -423,9 +433,7 @@
                     // Variable to draw a green marker on the map legend.
                     $scope.searchMarker = true;
                     nyplSearch.setSearchValue('searchMarker', true);
-                    if (isMapPage()) {
-                        nyplGeocoderService.drawSearchMarker();
-                    }
+                    nyplGeocoderService.drawSearchMarker();
                     
                     organizeLocations(locations, [], 'distance');
                 })
@@ -439,6 +447,7 @@
                 });
         };
 
+        // Deprecated
         $scope.submitAddress = function (searchTerm) {
             var IDfilteredLocations,
                 filteredLocations;
@@ -602,9 +611,6 @@
 
             drawMap = function () {
                 $timeout(function () {
-                    var filteredLocation =
-                        nyplGeocoderService.getFilteredLocation();
-
                     nyplGeocoderService
                         .drawMap({
                             lat: 40.7532,
@@ -630,8 +636,6 @@
                     if ($scope.select_library_for_map) {
                         nyplGeocoderService
                             .panExistingMarker($scope.select_library_for_map);
-                    } else {
-                        nyplGeocoderService.drawFilterMarker(filteredLocation);
                     }
 
                     $scope.scrollPage();

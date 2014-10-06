@@ -50,7 +50,7 @@
       case 'Circulation':
         icon = 'icon-book';
         break;
-      case 'Office Services':
+      case 'Printing and Copy Services':
         icon = 'icon-copy';
         break;
       case 'Facilities':
@@ -172,7 +172,7 @@
       var initial_list = amenities,
         amenities_list = [];
 
-      if (!(amenities.length && rank && loc_rank)) {
+      if (!(amenities && amenities.length && rank && loc_rank)) {
         return; // default_amenities;
       }
 

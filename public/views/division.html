@@ -94,13 +94,15 @@
       <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
         data-ng-repeat='subdivision in division._embedded.divisions'>
         <div class="subdivision-wrapper">
-          <a ui-sref="division({division: subdivision.slug})">
+          <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})">
             <img data-ng-if="subdivision.images.interior" class="img--outline" 
             data-ng-src="{{subdivision.images.interior}}"
             alt="Image for {{subdivision.name}}" title="Image for {{subdivision.name}}"/>
           </a>
           <h4 class="subdivision-title">
-            <a ui-sref="division({division: subdivision.slug})">{{subdivision.name}}</a>
+            <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})">
+              {{subdivision.name}}
+            </a>
           </h4>
           <p data-ng-if="subdivision.hours">Hours Today: {{subdivision.hoursToday | timeFormat}}</p>
         </div>
@@ -118,7 +120,7 @@
         <p>{{division.about}}</p>
         <div class="text--right">
           <a class="read-more collection-more"
-            data-ng-href="http://nypl.org/locations/{{division.location_slug}}/{{division.slug}}">
+            data-ng-href="{{division._links.self.about}}">
             {{ 'MORE_ABOUT_DIVISION' | translate }}</a>
         </div>
       </div><!--
@@ -173,7 +175,7 @@
             target="_blank" rel="nofollow" class="icon-calendar google_link">Google</a>
           <a data-ng-href="{{calendarLink('yahoo', event, location)}}"
             target="_blank" rel="nofollow" class="icon-calendar yahoo_link">Yahoo</a>
-          <a href="" data-ng-click="icalLink(event, location.street_address)"
+          <a href="#" data-ng-click="icalLink(event, location.street_address)"
             target="_blank" download="nypl_event.ics" class="icon-calendar" rel="nofollow">
             iCal
           </a>
@@ -216,12 +218,8 @@
         </a>
         <div class="blog_author">
           <span class="blog_name">By {{blog.author.name}}</span>
-          <span class="blog_position" data-ng-if="blog.author.position">
-            , {{blog.author.position}}
-          </span>
-          <span class="blog_location" data-ng-if="blog.author.location">
-            , {{blog.author.location}}
-          </span>
+          <span class="blog_position" data-ng-if="blog.author.position">, {{blog.author.position}}</span>
+          <span class="blog_location" data-ng-if="blog.author.location">, {{blog.author.location}}</span>
         </div>
         <time class="date" ><span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span></time>
         <div class="desc">{{blog.body | truncate}}</div>
