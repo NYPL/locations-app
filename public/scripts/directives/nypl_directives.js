@@ -305,7 +305,7 @@ function nyplAutofill($state) {
 
             input.bind('focus', function() {
                 $scope.$apply( function() { 
-                    $scope.focused = true;
+                    controller.openAutofill();
                 });
             });
 
@@ -322,7 +322,7 @@ function nyplAutofill($state) {
                             // Transition to location page
                             if ($scope.active.slug){
                                 $scope.activated = false;
-                                controller.unfocus();
+                                controller.closeAutofill();
                                 $scope.model = $scope.active.name;
                                 $state.go(
                                     'location', 
@@ -334,12 +334,13 @@ function nyplAutofill($state) {
                                 $scope.geoSearch({term: $scope.model});
                                 $scope.geocodingactive = false;
                                 $scope.activated = false;
-                                controller.unfocus();
+                                controller.closeAutofill();
                             }
                         }
                         // User has pressed enter with autofill
                         else if (controller.setSearchText($scope.model)) {
                             $scope.model = $scope.items[0].name;
+                            controller.closeAutofill();
                             $state.go(
                                 'location', 
                                 { location: $scope.items[0].slug }
@@ -349,7 +350,7 @@ function nyplAutofill($state) {
                         else {
                             // Geocoding Search only
                             $scope.geoSearch({term: $scope.model});
-                            controller.unfocus();
+                            controller.closeAutofill();
                         }
                     });
                 }
@@ -369,7 +370,7 @@ function nyplAutofill($state) {
                 // Escape key
                 if (e.keyCode === 27) {
                     $scope.$apply( function() { 
-                        controller.unfocus();
+                        controller.closeAutofill();
                         $scope.activated = false;
                     });
                 }
@@ -411,19 +412,18 @@ function nyplAutofill($state) {
 
             html.bind('click', function(e) {
                 $scope.$apply( function() {
-                    controller.unfocus();
+                    controller.closeAutofill();
                 });
             });
 
             function initAutofill() {
-                $scope.$watch('model', function(value) {
-                    controller.updateSearchText($scope.data, value);
-                    $scope.focused = true;
+                $scope.$watch('model', function(newValue, oldValue) {
+                    controller.updateSearchText($scope.data, newValue);
                 });
 
                 $scope.$on('$stateChangeSuccess', function() {
                     controller.resetSearchTerms();
-                    controller.unfocus();
+                    controller.closeAutofill();
                 });
             }
 
@@ -434,9 +434,14 @@ function nyplAutofill($state) {
             $scope.currentWord = '',
             $scope.completeWord = '';
 
-            this.unfocus = function() {
+            this.closeAutofill = function() {
                 return $scope.focused = false;
             }
+
+            this.openAutofill = function() {
+                return $scope.focused = true;
+            }
+
 
             this.activate = function(item) {
                 return item;
