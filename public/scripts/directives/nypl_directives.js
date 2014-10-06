@@ -334,7 +334,9 @@ function nyplAutofill($state) {
                                 $scope.geoSearch({term: $scope.model});
                                 $scope.geocodingactive = false;
                                 $scope.activated = false;
-                                controller.closeAutofill();
+                                if(input.blur()) { 
+                                    controller.closeAutofill();
+                                }
                             }
                         }
                         // User has pressed enter with autofill
@@ -350,7 +352,9 @@ function nyplAutofill($state) {
                         else {
                             // Geocoding Search only
                             $scope.geoSearch({term: $scope.model});
-                            controller.closeAutofill();
+                            if(input.blur()) {
+                                controller.closeAutofill();
+                            }
                         }
                     });
                 }
