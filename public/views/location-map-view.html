@@ -33,7 +33,7 @@
 					<div class="p-org">
             <a data-ui-sref='location({location: location.slug})'
               analytics-on="click" analytics-category="Locations"
-              analytics-event="Click" analytics-label="{{location.name}}">
+              analytics-event="Click" analytics-label="{{location.name}} (map)">
               {{location.name}}
             </a>
           </div>
@@ -94,7 +94,9 @@
 
           <!-- Map/Directions Links -->
           <div class="map-link">
-            <a class="icon-map view-on-map" href="" data-ng-click="panToLibrary(location.slug)">
+            <a class="icon-map view-on-map" href="" data-ng-click="panToLibrary(location.slug)"
+              analytics-on="click" analytics-category="Locations"
+              analytics-event="View map" analytics-label="{{location.name}} (map)">
               {{ 'VIEW_MAP' | translate}}
             </a>
           </div>
@@ -102,7 +104,7 @@
             <a class="icon-compass" target="_blank"
               href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}"
               analytics-on="click" analytics-category="Locations"
-              analytics-event="Directions" analytics-label="{{location.name}}">
+              analytics-event="Directions" analytics-label="{{location.name}} (map)">
               {{ 'DIRECTIONS' | translate }}
             </a>
           </div>
