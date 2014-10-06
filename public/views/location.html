@@ -228,7 +228,9 @@
     </ul>   
     <!-- More Events Link -->
     <div data-ng-if="location._links.events.all" class="text--right">
-      <a class="read-more events-more" data-ng-href="{{location._links.events.all}}">
+      <a class="read-more events-more" data-ng-href="{{location._links.events.all}}"
+        analytics-on="click" analytics-category="Locations"
+        analytics-event="Event" analytics-label="See all">
         {{ 'MORE_EVENTS' | translate }}
       </a>
     </div>
@@ -255,8 +257,10 @@
             <p>{{location.about}}</p>
             <!-- More Link -->
             <div class="text--right">
-              <a class="read-more" data-ng-href="{{location._links.self.about}}">
-              {{ 'ABOUT_MORE' | translate }}
+              <a class="read-more" data-ng-href="{{location._links.self.about}}"
+                analytics-on="click" analytics-category="Locations"
+                analytics-event="Click" analytics-label="Learn More">
+                {{ 'ABOUT_MORE' | translate }}
               </a>
             </div>
           </div>
@@ -275,7 +279,11 @@
           <!-- Plan your visit items -->
           <ul class="soft-half--ends delta" data-ng-if="location.plan_your_visit">
             <li data-ng-repeat="item in location.plan_your_visit">
-              <a data-ng-href="{{item.url}}">{{item.label}}</a>
+              <a data-ng-href="{{item.url}}"
+                analytics-on="click" analytics-category="Locations"
+                analytics-event="Plan Your visit" analytics-label="{{item.url}}">
+                {{item.label}}
+              </a>
             </li>
           </ul>
         </div>
@@ -304,7 +312,9 @@
     </div>
     <!-- More Link -->
     <div class="text--right">
-      <a class="read-more blogs-more" data-ng-href="{{location._links.blogs.all}}">
+      <a class="read-more blogs-more" data-ng-href="{{location._links.blogs.all}}"
+        analytics-on="click" analytics-category="Locations"
+        analytics-event="Click" analytics-label="See all">
         {{ 'MORE_BLOGS' | translate }}
       </a>
     </div>
