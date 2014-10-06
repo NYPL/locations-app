@@ -26,7 +26,7 @@
               <div class="p-org">
                 <a data-ui-sref='location({ location: location.slug })'
                   analytics-on="click" analytics-category="Locations"
-                  analytics-event="Click" analytics-label="{{location.name}}">
+                  analytics-event="Click" analytics-label="{{location.name}} (list)">
                   {{location.name}}
                 </a>
               </div>
@@ -58,14 +58,14 @@
               <div class="map-link">
                 <a class="icon-map view-on-map" href="" data-ng-click="viewMapLibrary(location.slug)"
                   analytics-on="click" analytics-category="Locations"
-                  analytics-event="View map" analytics-label="{{location.name}}">
+                  analytics-event="View map" analytics-label="{{location.name}} (list)">
                   {{ 'VIEW_MAP' | translate}}</a>
               </div>
               <div class="directions-link">
                 <a class="icon-compass" target="_blank"
                   data-ng-href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}"
                   analytics-on="click" analytics-category="Locations"
-                  analytics-event="Directions" analytics-label="{{location.name}}">
+                  analytics-event="Directions" analytics-label="{{location.name}} (list)">
                   {{ 'DIRECTIONS' | translate }}
                 </a>
               </div>
