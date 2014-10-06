@@ -273,10 +273,19 @@ time {
 
 		&.open {
 			right: -90px;
+
+			a {
+				right: 390px;
+			}
 		}
 
 		a {
-			right: 390px;
+			right: 440px;
+			-webkit-transition: right 0.3s ease;
+			-moz-transition: right 0.3s ease;
+			-ms-transition: right 0.3s ease;
+			-o-transition: right 0.3s ease;
+			transition: right 0.3s ease;
 		}
 	}
 
