@@ -403,12 +403,6 @@ time {
 				@include breakpoint($min, $post-palm) {
 					right: 90px;
 				}
-
-				-webkit-transition: right 0.3s ease;
-				-moz-transition: right 0.3s ease;
-				-ms-transition: right 0.3s ease;
-				-o-transition: right 0.3s ease;
-				transition: right 0.3s ease;
 			}
 		}
 	}
@@ -420,6 +414,12 @@ time {
 			max-height: 350px;
 			width: 100%;
 			right: 0px;
+
+			-webkit-transition: right 0.3s ease;
+			-moz-transition: right 0.3s ease;
+			-ms-transition: right 0.3s ease;
+			-o-transition: right 0.3s ease;
+			transition: right 0.3s ease;
 
 			@include breakpoint($min, $post-palm) {
 				right: auto;
