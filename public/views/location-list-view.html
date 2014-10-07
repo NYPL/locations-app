@@ -46,8 +46,15 @@
                 {{location.access}}
               </div>
               <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
-                <span class="partially icon-accessibility"></span>
-                {{location.access}}
+                
+                <div data-ng-if="location.accessibility_note">
+	                <span class="partially icon-accessibility"></span>
+	                {{location.accessibility_note}}
+                </div>
+                <div data-ng-if="!location.accessibility_note">
+	               <span class="partially icon-accessibility"></span>
+	               {{location.access}}
+                </div>
               </div>
               <div data-ng-if="!location.access" class="not-accessible">
                 <span class="none icon-accessibility"></span>
