@@ -213,19 +213,19 @@
             <a data-ng-href="{{calendarLink('google', event, location)}}"
               target="_blank" rel="nofollow" class="icon-calendar google_link"
               analytics-on="click" analytics-category="Locations"
-              analytics-event="Add to Google" analytics-label="">
+              analytics-event="Add to Google" analytics-label="{{event._links.self.href}}">
               Google
             </a>
             <a data-ng-href="{{calendarLink('yahoo', event, location)}}"
               target="_blank" rel="nofollow" class="icon-calendar yahoo_link"
               analytics-on="click" analytics-category="Locations"
-              analytics-event="Add to Yahoo" analytics-label="">
+              analytics-event="Add to Yahoo" analytics-label="{{event._links.self.href}}">
               Yahoo
             </a>
             <a href="#" data-ng-click="icalLink(event, location.street_address)"
               target="_blank" download="nypl_event.ics" class="icon-calendar" rel="nofollow"
               analytics-on="click" analytics-category="Locations"
-              analytics-event="Add to iCal" analytics-label="">
+              analytics-event="Add to iCal" analytics-label="{{event._links.self.href}}">
               iCal
             </a>
           </aside>
