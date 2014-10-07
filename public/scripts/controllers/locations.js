@@ -351,6 +351,10 @@
 
             if (!isMapPage()) {
                 $state.go('home.map');
+            } else {
+                nyplGeocoderService
+                    .hideSearchInfowindow()
+                    .panExistingMarker(library_id);
             }
 
             organizeLocations($scope.locations, location, 'name');
