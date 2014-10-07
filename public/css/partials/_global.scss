@@ -327,7 +327,11 @@ time {
 	position: fixed;
 	z-index: 1000;
 	bottom: 0;
-	width: 390px;
+	width: 100%;
+
+	@include breakpoint ($min, $post-palm) {
+		width: 390px;
+	}
 
 	&.left {
 		left: -300px;
@@ -368,6 +372,7 @@ time {
 	}
 
 	a {
+		z-index: 1000;
 		display: block;
 		position: absolute;
 		height: 60px;
@@ -378,11 +383,11 @@ time {
 		padding: 10px;
 		width: 100%;
 		text-decoration: none;
-		-webkit-transition: background-color 0.3s ease;
-		-moz-transition: background-color 0.3s ease;
-		-ms-transition: background-color 0.3s ease;
-		-o-transition: background-color 0.3s ease;
-		transition: background-color 0.3s ease;
+		-webkit-transition: background-color 0.5s ease;
+		-moz-transition: background-color 0.5s ease;
+		-ms-transition: background-color 0.5s ease;
+		-o-transition: background-color 0.5s ease;
+		transition: background-color 0.5s ease;
 
 		@include breakpoint($min, $post-palm) {
 			bottom: 50px;
@@ -398,9 +403,10 @@ time {
 	&.open {
 		.embedded {
 			iframe {
-				right: 390px;
+				bottom: 60px;
 
 				@include breakpoint($min, $post-palm) {
+					bottom: 0px;
 					right: 90px;
 				}
 			}
@@ -409,17 +415,18 @@ time {
 
 	.embedded {
 		iframe {
-			bottom: 60px;
+			z-index: 999;
+			bottom: -290px;
 			position: absolute;
 			max-height: 350px;
 			width: 100%;
-			right: 0px;
+			right: 390px;
 
-			-webkit-transition: right 0.3s ease;
-			-moz-transition: right 0.3s ease;
-			-ms-transition: right 0.3s ease;
-			-o-transition: right 0.3s ease;
-			transition: right 0.3s ease;
+			-webkit-transition: bottom 0.5s ease;
+			-moz-transition: bottom 0.5s ease;
+			-ms-transition: bottom 0.5s ease;
+			-o-transition: bottom 0.5s ease;
+			transition: bottom 0.5s ease;
 
 			@include breakpoint($min, $post-palm) {
 				right: auto;
