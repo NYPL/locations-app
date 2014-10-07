@@ -107,23 +107,19 @@
           }
         };
 
-      if (address.length < 3) {
-        defer.reject({msg: "Query too short"});
-      } else {
-        geocoder.geocode(geocodeOptions, function (result, status) {
-            if (status === google.maps.GeocoderStatus.OK) {
-              // console.log(result);
-              coords.lat  = result[0].geometry.location.k;
-              coords.long = result[0].geometry.location.B ||
-                 result[0].geometry.location.A;
-              coords.name = result[0].formatted_address;
+      geocoder.geocode(geocodeOptions, function (result, status) {
+          if (status === google.maps.GeocoderStatus.OK) {
+            // console.log(result);
+            coords.lat  = result[0].geometry.location.k;
+            coords.long = result[0].geometry.location.B ||
+               result[0].geometry.location.A;
+            coords.name = result[0].formatted_address;
 
-              defer.resolve(coords);
-            } else {
-              defer.reject(new Error(status));
-            }
-          });
-      }
+            defer.resolve(coords);
+          } else {
+            defer.reject(new Error(status));
+          }
+        });
 
       return defer.promise;
     };

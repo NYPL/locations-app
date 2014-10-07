@@ -531,7 +531,7 @@
 
         $scope.geocodeAddress = function (searchTerm) {
             // What should be the minimum lenght of the search?
-            if (!searchTerm || searchTerm.length < 3) {
+            if (!searchTerm) {
                 return;
             }
 
