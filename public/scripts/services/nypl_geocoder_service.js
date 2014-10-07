@@ -112,7 +112,7 @@
       } else {
         geocoder.geocode(geocodeOptions, function (result, status) {
             if (status === google.maps.GeocoderStatus.OK) {
-              console.log(result);
+              // console.log(result);
               coords.lat  = result[0].geometry.location.k;
               coords.long = result[0].geometry.location.B ||
                  result[0].geometry.location.A;

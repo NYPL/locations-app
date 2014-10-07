@@ -519,7 +519,6 @@ function nyplAutofill($state) {
 
                 if (searchTerm.length > 1) {
                     $scope.items = this.filterStartsWith(data, searchTerm);
-                    console.log($scope.items);
                     $scope.filtered = this.filterTermWithin(data, searchTerm);
 
                     if ($scope.items[0]) {
