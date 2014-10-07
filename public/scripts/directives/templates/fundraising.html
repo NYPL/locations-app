@@ -6,7 +6,9 @@
   <p data-ng-if="fundraising.statement" class="primary-text">
   	{{fundraising.statement}}
   </p>
-  <a href="{{fundraising.link}}" class="btn btn--donate">
+  <a href="{{fundraising.link}}" class="btn btn--donate"
+    analytics-on="click" analytics-category="Locations"
+    analytics-event="Click" analytics-label="Fundraising">
     {{fundraising.button_label}}
   </a>
 </div>

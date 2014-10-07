@@ -96,13 +96,17 @@
       <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
         data-ng-repeat='subdivision in division._embedded.divisions'>
         <div class="subdivision-wrapper">
-          <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})">
+          <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})"
+            analytics-on="click" analytics-category="Locations"
+            analytics-event="Division Image" analytics-label="{{division.name}}">
             <img data-ng-if="subdivision.images.interior" class="img--outline" 
             data-ng-src="{{subdivision.images.interior}}"
             alt="Image for {{subdivision.name}}" title="Image for {{subdivision.name}}"/>
           </a>
           <h4 class="subdivision-title">
-            <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})">
+            <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})"
+              analytics-on="click" analytics-category="Locations"
+              analytics-event="Division Title" analytics-label="{{division.name}}">
               {{subdivision.name}}
             </a>
           </h4>
