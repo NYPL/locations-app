@@ -279,23 +279,22 @@ describe('Google analytics configuration', function () {
         locationPage.directions_link.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
             expect(ga[0][2]).toEqual('Locations');
-            expect(ga[0][3]).toEqual('Click');
+            expect(ga[0][3]).toEqual('Directions');
             expect(ga[0][4]).toEqual('115th Street Library (location)');
           });
         });
       });
+    });
 
-      it('should track social media click events', function () {
-        locationPage.social_media.each(function (social_media) {
-          console.log(social_media);
-          social_media.click();
-          browser.sleep(500);
-          browser.executeScript('return window.ga_msg;').then(function (ga) {
-            console.log(ga);
-          });
+    it('should track social media click events', function () {
+      locationPage.social_media.each(function (social_media) {
+        console.log(social_media);
+        social_media.click();
+        browser.sleep(500);
+        browser.executeScript('return window.ga_msg;').then(function (ga) {
+          console.log(ga);
         });
       });
-
     });
 
   });

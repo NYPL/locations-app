@@ -138,12 +138,18 @@
       <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
         data-ng-repeat='division in location._embedded.divisions'>
         <div class="division-wrapper">
-          <a data-ui-sref="division({division: division.slug})">
+          <a data-ui-sref="division({division: division.slug})"
+            analytics-on="click" analytics-category="Locations"
+            analytics-event="Division Image" analytics-label="{{division.name}}">
             <img class="img--outline" data-ng-src="{{division.images.interior}}"
-            alt="Image for {{division.name}}" title="Image for {{division.name}}"/>
+              alt="Image for {{division.name}}" title="Image for {{division.name}}"/>
           </a>
           <h4>
-            <a data-ui-sref="division({division: division.slug})">{{division.name}}</a>
+            <a data-ui-sref="division({division: division.slug})"
+              analytics-on="click" analytics-category="Locations"
+              analytics-event="Division Title" analytics-label="{{division.name}}">
+              {{division.name}}
+            </a>
           </h4>
           <p data-ng-if="division.hours">Hours Today: {{division.hoursToday | timeFormat}}</p>
         </div>
@@ -186,7 +192,7 @@
             {{event.title}}
           </a>
         </h3>
-        <a data-ng-href="http://nypl.org/{{event._links.self.href}}"
+        <a data-ng-href="{{event._links.self.href}}"
           analytics-on="click" analytics-category="Locations"
           analytics-event="Event image" analytics-label="{{event._links.self.href}}">
           <img data-ng-if="event.image" class="img--outline img--left" 
@@ -273,7 +279,9 @@
         <div id="plan-your-visit">
           <h2 class="hdg">{{ 'PLAN_YOUR_VISIT' | translate }}</h2>
           <a data-ng-if="location._links.contact.href" data-ng-href="{{location._links.contact.href}}"
-            class="btn" id="ask-librarian">
+            class="btn" id="ask-librarian"
+            analytics-on="click" analytics-category="Locations"
+            analytics-event="Click" analytics-label="Email Librarian">
             {{ 'ASK_LIBRARIAN' | translate }}
           </a>
           <!-- Plan your visit items -->
@@ -296,8 +304,16 @@
     <h2 class="hdg">{{ 'BLOGS' |translate }}</h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
-        <h3><a data-ng-href="{{blog._links.self.href}}">{{blog.title}}</a></h3>
-        <a data-ng-if="blog.image" data-ng-href="http://nypl.org/{{blog._links.self.href}}">
+        <h3>
+          <a data-ng-href="{{blog._links.self.href}}"
+            analytics-on="click" analytics-category="Locations"
+            analytics-event="Blog title" analytics-label="{{blog._links.self.href}}">
+            {{blog.title}}
+          </a>
+        </h3>
+        <a data-ng-if="blog.image" data-ng-href="{{blog._links.self.href}}"
+          analytics-on="click" analytics-category="Locations"
+          analytics-event="Blog image" analytics-label="{{blog._links.self.href}}">
           <img class="img--left" data-ng-src="{{blog.image}}" style="height: 100px;"
             alt="Image for blog post {{blog.title}}" title="Image for blog post {{blog.title}}" />
         </a>
@@ -325,12 +341,18 @@
     <h2 class="hdg">{{ 'EXHIBITION' | translate }}</h2>
     <div class="grid">
       <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat="exhibition in location._embedded.exhibitions | orderBy:'-start'">
-        <a data-ng-href="{{exhibition._links.self.href}}" data-ng-if="exhibition.image">
+        <a data-ng-href="{{exhibition._links.self.href}}" data-ng-if="exhibition.image"
+          analytics-on="click" analytics-category="Locations"
+          analytics-event="Exhibition image" analytics-label="{{exhibition._links.self.href}}">
           <img class="img--left" data-ng-src="{{exhibition.image}}" style="height: 100px;"
             alt="Image for exhibition {{exhibition.title}}" title="Image for exhibition {{exhibition.title}}" />
         </a>
         <h3 class="exhibition__title">
-          <a data-ng-href="{{exhibition._links.self.href}}">{{exhibition.title}}</a>
+          <a data-ng-href="{{exhibition._links.self.href}}"
+            analytics-on="click" analytics-category="Locations"
+            analytics-event="Exhibition title" analytics-label="{{exhibition._links.self.href}}">
+            {{exhibition.title}}
+          </a>
         </h3>
         <time class="date">{{exhibition.prettyDate}}</time>
         <p class="teaser desc">{{exhibition.body | truncate}}</p>
