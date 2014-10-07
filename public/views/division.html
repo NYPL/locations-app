@@ -223,24 +223,24 @@
   <!-- Features -->
   <div id="container__features" data-ng-if="division._embedded.features">
     <h2 class="hdg">{{ 'FEATURED' | translate }}</h2>
-
-    <ul class="grid">
-      <li class="grid__item one-whole lap-and-up-one-half" data-ng-repeat='feature in division._embedded.features'>
-        <h3 data-ng-if="feature.title">
+    <div class="grid">
+      <div class="chunk one-whole desk-one-third" data-ng-repeat='feature in division._embedded.features'>
+        <a data-ng-if="feature.image" data-ng-href="{{feature._links.self.href}}"
+          analytics-on="click" analytics-category="Locations"
+          analytics-event="Feature image" analytics-label="{{feature._links.self.href}}">
+          <img class="img--left img--outline one-third lap-and-up-one-whole desk-one-third"
+            data-ng-src="{{feature.image}}" alt="{{feature.title}}"/>
+        </a>
+        <h3 class="feature-title" data-ng-if="feature.title">
           <a data-ng-href="{{feature._links.self.href}}"
             analytics-on="click" analytics-category="Locations"
             analytics-event="Feature title" analytics-label="{{feature._links.self.href}}">
             {{feature.title}}
           </a>
         </h3>
-        <a data-ng-if="feature.image" data-ng-href="{{feature._links.self.href}}"
-          analytics-on="click" analytics-category="Locations"
-          analytics-event="Feature image" analytics-label="{{feature._links.self.href}}">
-          <img class="img--left" data-ng-src="{{feature.image}}" alt="{{feature.title}}" style="max-width: 120px;" />
-        </a>
-        <p class="desc" data-ng-bind-html="feature.body"></p>
-      </li>
-    </ul>
+        <div class="desc" data-ng-bind-html="feature.body"></div>
+      </div>
+    </div>
   </div>
 
   <!-- Blogs (conditonal) -->
