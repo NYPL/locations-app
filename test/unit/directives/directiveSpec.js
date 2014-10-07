@@ -646,4 +646,47 @@ describe('NYPL Directive Unit Tests', function () {
     });
   });
 
+  /*
+   * <nypl-autofill></nypl-autofill>
+   */
+  describe('Directive: nyplAutofill', function () {
+    var autofill, template, ctrl;
+
+    /*beforeEach(inject(function () {
+      template = "<nypl-autofill data='locations'" + 
+        " data-ng-model='searchTerm'" + 
+        " map-view='viewMapLibrary(slug)'" + 
+        " geo-search='geocodeAddress(term)'>" + 
+        "</nypl-autofill>";
+
+      autofill = createDirective(template);
+
+      //ctrl = autofill.controller("nyplAutofill");
+      //console.log(ctrl);
+    }));*/
+
+    beforeEach(inject(function($rootScope, $compile) {
+      scope = $rootScope.$new();
+      template = "<nypl-autofill data='locations'" + 
+        " data-ng-model='searchTerm'" + 
+        " map-view='viewMapLibrary(slug)'" + 
+        " geo-search='geocodeAddress(term)'>" + 
+        "</nypl-autofill>";
+      autofill = $compile(template)(scope);
+      scope.$digest();
+    }));
+
+    it('should compile lookahead and autofill containers', function () {
+      expect(autofill.find('.lookahead')).toBeTruthy();
+      expect(autofill.find('.autofill-container')).toBeTruthy();
+    });
+
+    it('should display autofill container', function () {
+      scope.searchTerm = "grand";
+      scope.$digest();
+      var isolated = autofill.isolateScope();
+      console.log(isolated);
+    });
+  });
+
 });

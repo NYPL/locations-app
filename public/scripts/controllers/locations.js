@@ -525,6 +525,52 @@
                 });
         };
 
+        $scope.geocodeAddress = function (searchTerm) {
+            // What should be the minimum lenght of the search?
+            if (!searchTerm || searchTerm.length < 3) {
+                return;
+            }
+
+            $scope.geolocationAddressOrSearchQuery = '';
+            $scope.searchError = '';
+            showLibrariesTypeOf();
+            nyplGeocoderService.showAllLibraries()
+            $scope.searchTerm =  searchTerm;
+
+            searchTerm = nyplSearch.searchWordFilter(searchTerm);
+            scrollListTop();
+
+            $state.go('home.map');
+            loadGeocoding(searchTerm)
+                .then(function (searchObj) {
+                    nyplGeocoderService.createSearchMarker(
+                        searchObj.coords,
+                        searchObj.searchTerm
+                    );
+
+                    return searchByCoordinates(searchObj);
+                })
+                .then(function (locations) {
+                    $scope.scrollPage();
+                    // Variable to draw a green marker on the map legend.
+                    $scope.searchMarker = true;
+                    nyplSearch.setSearchValue('searchMarker', true);
+                    if (isMapPage()) {
+                        nyplGeocoderService.drawSearchMarker();
+                    }
+                    
+                    organizeLocations(locations, [], 'distance');
+                })
+                // Catch any errors at any point
+                .catch(function (error) {
+                    nyplGeocoderService.removeMarker('search');
+                    $scope.searchMarker = false;
+                    nyplSearch.resetSearchValues();
+
+                    resetPage();
+                });
+        };
+
         $scope.showResearch = function () {
             nyplGeocoderService.hideInfowindow();
             scrollListTop();

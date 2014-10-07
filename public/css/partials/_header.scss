@@ -155,7 +155,7 @@ header {
 			// SSO
 			.sso-login {
 				position: relative;
-				z-index: 3;
+				z-index: 4;
 				display: none;
 
 				.login-form {
@@ -318,7 +318,6 @@ header {
 		background-color: transparent;
 		right: 0px;
 		top: 84px !important;
-		z-index: 2;
 		box-shadow: none;
 	}
 
