@@ -58,6 +58,7 @@ var LocationPage = function () {
   this.exhibitions =
     element.all(by.repeater('exhibition in location._embedded.exhibitions'));
 
+  this.askNYPL = element(by.css('.askchat'));
   this.email_us = element(by.css('.askemail'));
 };
 

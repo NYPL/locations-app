@@ -98,7 +98,7 @@
         <div class="subdivision-wrapper">
           <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})"
             analytics-on="click" analytics-category="Locations"
-            analytics-event="Division Image" analytics-label="{{division.name}}">
+            analytics-event="Division Image" analytics-label="{{subdivision.name}}">
             <img data-ng-if="subdivision.images.interior" class="img--outline" 
             data-ng-src="{{subdivision.images.interior}}"
             alt="Image for {{subdivision.name}}" title="Image for {{subdivision.name}}"/>
@@ -106,7 +106,7 @@
           <h4 class="subdivision-title">
             <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})"
               analytics-on="click" analytics-category="Locations"
-              analytics-event="Division Title" analytics-label="{{division.name}}">
+              analytics-event="Division Title" analytics-label="{{subdivision.name}}">
               {{subdivision.name}}
             </a>
           </h4>

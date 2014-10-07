@@ -279,7 +279,7 @@ function nyplSidebar() {
     };
 }
 
-function nyplAutofill($state) {
+function nyplAutofill($state, $analytics) {
     'use strict';
 
     return {
@@ -343,6 +343,8 @@ function nyplAutofill($state) {
                         else if (controller.setSearchText($scope.model)) {
                             $scope.model = $scope.items[0].name;
                             controller.closeAutofill();
+                            $analytics.eventTrack('Accept',
+                                { category: 'Locations', label: $scope.model });
                             $state.go(
                                 'location', 
                                 { location: $scope.items[0].slug }

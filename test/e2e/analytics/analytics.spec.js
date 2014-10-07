@@ -59,8 +59,8 @@ describe('Google analytics configuration', function () {
       browser.waitForAngular();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[3][1]).toEqual('pageview');
-        expect(ga[3][2]).toEqual('/divisions/general-research-division');
+        expect(ga[4][1]).toEqual('pageview');
+        expect(ga[4][2]).toEqual('/divisions/general-research-division');
       });
     });
 
@@ -190,12 +190,12 @@ describe('Google analytics configuration', function () {
           // ga[0] is the pageview to the map page (from the search)
           // ga[1] is the click event on the library name from the list
           // ga[2] is the pageview event
-          expect(ga[1][2]).toEqual('Locations');
-          expect(ga[1][3]).toEqual('Click');
-          expect(ga[1][4]).toEqual('Mid-Manhattan Library (map)');
+          expect(ga[2][2]).toEqual('Locations');
+          expect(ga[2][3]).toEqual('Click');
+          expect(ga[2][4]).toEqual('Mid-Manhattan Library (map)');
 
-          expect(ga[2][1]).toEqual('pageview');
-          expect(ga[2][2]).toEqual('/mid-manhattan-library');
+          expect(ga[3][1]).toEqual('pageview');
+          expect(ga[3][2]).toEqual('/mid-manhattan-library');
         });
       });
 
@@ -244,9 +244,9 @@ describe('Google analytics configuration', function () {
         browser.sleep(500);
 
         browser.executeScript('return window.ga_msg;').then(function (ga) {
-          expect(ga[1][2]).toEqual('Locations');
-          expect(ga[1][3]).toEqual('Directions');
-          expect(ga[1][4]).toEqual('Mid-Manhattan Library (map)');
+          expect(ga[2][2]).toEqual('Locations');
+          expect(ga[2][3]).toEqual('Directions');
+          expect(ga[2][4]).toEqual('Mid-Manhattan Library (map)');
         });
       });
     });
@@ -287,13 +287,110 @@ describe('Google analytics configuration', function () {
     });
 
     it('should track social media click events', function () {
-      locationPage.social_media.each(function (social_media) {
-        console.log(social_media);
-        social_media.click();
-        browser.sleep(500);
-        browser.executeScript('return window.ga_msg;').then(function (ga) {
-          console.log(ga);
+      browser.get('/115th-street');
+      browser.waitForAngular();
+      browser.executeScript(mockGA());
+
+      locationPage.social_media.each(function (sm) {
+        sm.click().then(function (e) {
+          browser.navigate().back();
+          // browser.getAllWindowHandles().then(function (handles) {
+          //   var newWindowHandle = handles[1];
+
+          //   browser.switchTo().window(newWindowHandle).then(function () {
+          //     browser.driver.close().then(function () {
+          //       browser.switchTo().window(appWindow);
+          //     });
+          //   });
+
+          //   // browser.executeScript('return window.ga_msg;').then(function (ga) {
+          //   //   console.log(ga);
+          //   // });
+          // });
         });
+      });
+    });
+
+    it('should track the NYPL ASK click event', function () {
+      browser.get('/115th-street');
+      browser.waitForAngular();
+      browser.executeScript(mockGA());
+
+      locationPage.askNYPL.click();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][2]).toEqual('Locations');
+        expect(ga[0][3]).toEqual('Click');
+        expect(ga[0][4]).toEqual('Chat');
+      });
+    });
+
+    it('should track the NYPL ASK click event', function () {
+      browser.get('/schomburg');
+      browser.waitForAngular();
+      browser.executeScript(mockGA());
+
+      locationPage.askNYPL.click();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][2]).toEqual('Locations');
+        expect(ga[0][3]).toEqual('Click');
+        expect(ga[0][4]).toEqual('Chat');
+      });
+    });
+
+    it('should track the NYPL ASK click event', function () {
+      browser.get('/divisions/map-division');
+      browser.waitForAngular();
+      browser.executeScript(mockGA());
+
+      locationPage.askNYPL.click();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][2]).toEqual('Locations');
+        expect(ga[0][3]).toEqual('Click');
+        expect(ga[0][4]).toEqual('Chat');
+      });
+    });
+
+    describe('division click/page', function () {
+      it('should track division title click', function () {
+        browser.get('/schwarzman');
+        browser.waitForAngular();
+        browser.executeScript(mockGA());
+
+        element(by.linkText('Dorot Jewish Division')).click();
+        browser.waitForAngular();
+
+        browser.executeScript('return window.ga_msg;').then(function (ga) {
+          expect(ga[0][2]).toEqual('Locations');
+          expect(ga[0][3]).toEqual('Division Title');
+          expect(ga[0][4]).toEqual('Dorot Jewish Division');
+        });
+      });
+
+      it('should track subdivision title click', function () {
+        browser.get('/schwarzman');
+        browser.waitForAngular();
+        browser.executeScript(mockGA());
+
+        element(by.linkText('The Miriam and Ira D. Wallach Division')).click();
+        browser.waitForAngular();
+
+        browser.executeScript('return window.ga_msg;').then(function (ga) {
+          expect(ga[0][2]).toEqual('Locations');
+          expect(ga[0][3]).toEqual('Division Title');
+          expect(ga[0][4]).toEqual('The Miriam and Ira D. Wallach Division');
+        });
+
+        element(by.linkText('Spencer Collection')).click();
+        browser.waitForAngular();
+        browser.executeScript('return window.ga_msg;').then(function (ga) {
+          expect(ga[2][2]).toEqual('Locations');
+          expect(ga[2][3]).toEqual('Division Title');
+          expect(ga[2][4]).toEqual('Spencer Collection');
+        });
+
       });
     });
 
