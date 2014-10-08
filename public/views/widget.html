@@ -1,0 +1,90 @@
+<!-- Individual Location -->
+<div id="container__location_info">
+  <h1 class="p-org">{{location.name}}</h1>
+  <div class="grid">
+    <div id="container__image" class="grid__item desk-one-third">
+      <img class="img--outline" data-ng-src="{{location.images.exterior}}"
+        alt="Image of {{location.name}}" title="Image of {{location.name}}">
+    </div><!--
+
+    --><div id="container__address" class="grid__item one-whole lap-one-half desk-one-third">
+      <!-- This is h-card microformat -->
+      <!-- http://microformats.org/wiki/h-card -->
+      <div class="p-adr">
+        <div class="p-street-address">{{location.street_address}}</div>
+        <span class="p-locality">{{location.locality}}</span>, 
+        <span class="p-region">{{location.region}}</span>, 
+        <span class="p-postal-code">{{location.postal_code}}</span>
+        <div class="p-tel">{{location.contacts.phone}}</div>
+        <div class="p-manager" data-ng-if="location.contacts.manager">
+          Library Manager: {{location.contacts.manager}}
+        </div>
+      </div>
+
+      <!-- Accessibility -->
+      <div id="accessibility__container">
+        <div data-ng-if="location.access == 'Fully Accessible'" class="accessible">
+          <span class="fully icon-accessibility"></span>
+          {{location.access}}
+        </div>
+        <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
+          <span class="partially icon-accessibility"></span>
+          {{location.access}}
+        </div>
+        <div data-ng-if="!location.access" class="not-accessible">
+          <span class="none icon-accessibility"></span>
+          Not Accessible
+        </div>
+      </div>
+
+      <div class="map-directions">
+        <a class="icon-compass"
+          analytics-on="click" analytics-category="Locations"
+          analytics-event="Directions" analytics-label="{{location.name}} (location)"
+          data-ng-href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">
+          Get Directions
+        </a>
+      </div>
+
+      <div class="on-shelves" data-ng-if="location.type != 'research'">
+        <a id="catalog-link" class="icon-books" 
+          data-ng-if="location._links.on_shelves && location.open"
+          data-ng-href="{{ location._links.on_shelves.href }}"
+          analytics-on="click" analytics-category="Locations"
+          analytics-event="Click" analytics-label="On Our Shelves">
+          On Our Shelves Now
+        </a>
+      </div>
+
+      <div class="social beta" data-ng-if="location.social_media">
+        <a class="{{social.classes}}" data-ng-href="{{social.href}}" id="social_media"
+          data-ng-repeat="social in location.social_media" class="inline"
+          title="{{social.site}}"
+          analytics-on="click" analytics-category="Locations"
+          analytics-event="Social Media" analytics-label="{{social.site}}"></a>
+      </div>
+    </div><!--
+
+    --><div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
+      <!-- Display for open location -->
+      <div class="callout branch-open" data-ng-if="location.open">
+        <div class="h-event" id="hours-today">
+          <time class="hours-today icon-clock icon-color-blue">
+            <span>{{hoursToday | hoursTodayFormat:'short'}}</span>
+          </time>
+        </div>
+      </div>
+      <div class="callout branch-closed" data-ng-if="!location.open">
+        <h2>Branch is temporarily closed.</h2>
+      </div>
+    </div><!--
+      
+    --><div class="grid__item lap-one-half one-whole grid--center">
+      <p>
+        <a href="http://locations-beta.nypl.org/{{location.slug}}">
+          Full hours and information
+        </a>
+      </p>
+    </div>
+  </div>
+</div>

@@ -313,3 +313,47 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.responseInterceptors.push(interceptor);
 }]);
 
+angular.module('nypl_widget', [
+    'ngSanitize',
+    'ui.router',
+    'locationService',
+    'coordinateService',
+    'angulartics',
+    'angulartics.google.analytics'
+])
+.config(['$locationProvider', '$stateProvider', '$urlRouterProvider',
+    function ($locationProvider, $stateProvider, $urlRouterProvider) {
+        'use strict';
+
+        function LoadLocation($stateParams, config, nyplLocationsService) {
+            return nyplLocationsService
+                .singleLocation($stateParams.location)
+                .then(function (data) {
+                    return data.location;
+                })
+                .catch(function (err) {
+                    throw err;
+                });
+        }
+
+        function getConfig(nyplLocationsService) {
+            return nyplLocationsService.getConfig();
+        }
+
+        // uses the HTML5 History API, remove hash (need to test)
+        $locationProvider.html5Mode(true);
+
+        $urlRouterProvider.otherwise('/widget/sasb');
+
+        $stateProvider
+            .state('widget', {
+                url: '/widget/:location',
+                templateUrl: 'views/widget.html',
+                controller: 'WidgetCtrl',
+                resolve: {
+                    config: getConfig,
+                    location: LoadLocation
+                },
+            });
+    }
+]);
