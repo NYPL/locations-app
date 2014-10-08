@@ -539,6 +539,12 @@ function nyplAutofill($state, $analytics) {
 
 }
 
+
+function nyplDirections() {
+
+}
+
+
 angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
@@ -554,3 +560,9 @@ angular
     .directive('nyplSidebar', nyplSidebar)
     .directive('nyplAutofill', nyplAutofill)
     .directive('collapse', collapse);
+
+angular
+    .module('nypl_widget')
+    .directive('todayshours', todayshours)
+    .directive('nyplDirections', nyplDirections);
+

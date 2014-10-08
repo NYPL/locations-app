@@ -62,11 +62,7 @@
     --><div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
       <!-- Display for open location -->
       <div class="callout branch-open" data-ng-if="location.open">
-        <div class="h-event" id="hours-today">
-          <time class="hours-today icon-clock icon-color-blue">
-            <span>{{hoursToday | hoursTodayFormat:'short'}}</span>
-          </time>
-        </div>
+        <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat:'short'}}" />
       </div>
       <div class="callout branch-closed" data-ng-if="!location.open">
         <h2>Branch is temporarily closed.</h2>
