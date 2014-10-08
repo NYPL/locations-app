@@ -19,6 +19,7 @@ class Locinator < Sinatra::Base
   end
 
   helpers Sinatra::Jsonp
+  set :protection, :except => :frame_options
   set :haml, :format => :html5
   # Method cribbed from http://blog.alexmaccaw.com/seo-in-js-web-apps
   helpers do
