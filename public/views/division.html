@@ -27,6 +27,9 @@
                 <td class="time">{{ hours | timeFormat }}</td>
               </tr>
             </table>
+            <p class="smallprint" data-ng-if="division.open && division._embedded.divisions">
+              {{ 'IDV_SUB_DIVISION_HOURS' | translate }}
+            </p>
           </div>
         </div>
         <div class="callout branch-closed" data-ng-if="!division.open">
