@@ -6,9 +6,28 @@
 
     /** @namespace nyplLocationsService */
     function nyplLocationsService($http, $q) {
-        var api = 'http://locations-api-beta.nypl.org',
+        var api,
             apiError = "Could not reach API",
             locationsApi = {};
+
+        locationsApi.getConfig = function () {
+            var defer = $q.defer();
+
+            if (api) {
+                defer.resolve(api);
+            } else {
+                $http.get('/config', {cache: true})
+                    .success(function (data) {
+                        api = data.config.api_root;
+                        defer.resolve(data.config);
+                    })
+                    .error(function (data, status) {
+                        defer.reject(apiError + ': config');
+                    });
+            }
+
+            return defer.promise;
+        }
 
         /** @function nyplLocationsService.allLocations 
          * @returns {object} Deferred promise. If it resolves, JSON response
@@ -34,7 +53,7 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    defer.reject(apiError);
+                    defer.reject(apiError + ': locations');
                 });
             return defer.promise;
         };
@@ -64,7 +83,7 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    defer.reject(apiError);
+                    defer.reject(apiError + ': location');
                 });
             return defer.promise;
         };
@@ -94,7 +113,7 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    defer.reject(apiError);
+                    defer.reject(apiError + ': division');
                 });
             return defer.promise;
         };
@@ -133,7 +152,7 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    defer.reject(apiError);
+                    defer.reject(apiError + ': amenities');
                 });
             return defer.promise;
         };
@@ -165,7 +184,7 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    defer.reject(apiError);
+                    defer.reject(apiError + ': library-amenity');
                 });
             return defer.promise;
         };
@@ -193,7 +212,7 @@
                     defer.resolve(data);
                 })
                 .error(function (data, status) {
-                    defer.reject(apiError);
+                    defer.reject(apiError + ': site-wide alerts');
                 });
             return defer.promise;
         };
@@ -201,10 +220,8 @@
         return locationsApi;
     }
 
-
     angular
         .module('locationService', [])
         .factory('nyplLocationsService', nyplLocationsService);
 
 })();
-

@@ -143,7 +143,7 @@ function eventRegistration($filter) {
     };
 }
 
-function nyplSiteAlerts(nyplLocationsService, nyplUtility) {
+function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
     'use strict';
 
     return {
@@ -154,16 +154,28 @@ function nyplSiteAlerts(nyplLocationsService, nyplUtility) {
         // scope: {},
         link: function (scope, element, attrs) {
             var alerts;
-            nyplLocationsService.alerts().then(function (data) {
-                alerts = data.alerts;
-                scope.sitewidealert = nyplUtility.alerts(alerts);
-            });
+            $timeout(function () {
+                nyplLocationsService.alerts().then(function (data) {
+                    alerts = data.alerts;
+                    scope.sitewidealert = nyplUtility.alerts(alerts);
+                });
+            }, 200);
         }
     };
 }
 
 function nyplLibraryAlert(nyplUtility) {
     'use strict';
+
+    function alertExpired(startDate, endDate) {
+        var sDate = new Date(startDate),
+          eDate   = new Date(endDate),
+          today   = new Date();
+        if (sDate.getTime() <= today.getTime() && eDate.getTime() >= today.getTime()) {
+            return false;
+        }
+        return true;
+    };
 
     return {
         restrict: 'E',
@@ -174,7 +186,8 @@ function nyplLibraryAlert(nyplUtility) {
         },
         link: function (scope, element, attrs) {
             if (scope.exception) {
-                if (scope.exception.description !== '') {
+                scope.alertExpired = alertExpired(scope.exception.start, scope.exception.end);
+                if (scope.exception.description !== '' && scope.alertExpired === false) {
                     scope.libraryAlert = scope.exception.description;
                 }
             }
@@ -266,6 +279,266 @@ function nyplSidebar() {
     };
 }
 
+function nyplAutofill($state, $analytics) {
+    'use strict';
+
+    return {
+        restrict: 'AEC',
+        templateUrl: 'scripts/directives/templates/autofill.html',
+        scope: {
+            data: '=',
+            model: '=ngModel',
+            mapView: '&',
+            geoSearch: '&'
+        },
+        link: function ($scope, elem, attrs, controller) {
+            $scope.focused = false;
+            $scope.activated = false;
+            $scope.geocodingactive = false;
+            $scope.filtered = [];
+            $scope.items;
+            $scope.active;
+            $scope.currentIndex;
+
+            var input  = angular.element(document.getElementById('searchTerm')),
+                html   = angular.element(document.getElementsByTagName('html'));
+
+            input.bind('focus', function() {
+                $scope.$apply( function() { 
+                    controller.openAutofill();
+                });
+            });
+
+            input.bind('click', function(e) {
+                e.stopPropagation();
+            });
+
+            input.bind('keyup', function(e) {
+                // Tab & Enter keys
+                if (e.keyCode === 13) {
+                    $scope.$apply( function() {
+                        // User has pressed up/down arrows
+                        if ($scope.activated) {
+                            // Transition to location page
+                            if ($scope.active.slug){
+                                $scope.activated = false;
+                                controller.closeAutofill();
+                                $scope.model = $scope.active.name;
+                                $state.go(
+                                    'location', 
+                                    { location: $scope.active.slug }
+                                );
+                            }
+                            else {
+                                //Geocoding Search
+                                $scope.geoSearch({term: $scope.model});
+                                $scope.geocodingactive = false;
+                                $scope.activated = false;
+                                if(input.blur()) { 
+                                    controller.closeAutofill();
+                                }
+                            }
+                        }
+                        // User has pressed enter with autofill
+                        else if (controller.setSearchText($scope.model)) {
+                            $scope.model = $scope.items[0].name;
+                            controller.closeAutofill();
+                            $analytics.eventTrack('Accept',
+                                { category: 'Locations', label: $scope.model });
+                            $state.go(
+                                'location', 
+                                { location: $scope.items[0].slug }
+                            );
+                        }
+                        // No autofill, down/up arrows not pressed
+                        else {
+                            // Geocoding Search only
+                            $scope.geoSearch({term: $scope.model});
+                            if(input.blur()) {
+                                controller.closeAutofill();
+                            }
+                        }
+                    });
+                }
+
+                // Right Arrow
+                if (e.keyCode === 39) {
+                    $scope.$apply( function() { 
+                        controller.setSearchText($scope.model);
+                    });
+                }
+
+                // Backspace
+                if (e.keyCode === 8) {
+                    $scope.$apply( function() { $scope.lookahead = ''; });
+                }
+
+                // Escape key
+                if (e.keyCode === 27) {
+                    $scope.$apply( function() { 
+                        controller.closeAutofill();
+                        $scope.activated = false;
+                    });
+                }
+            });
+
+            // Tab, Enter and Escape keys
+            input.bind('keydown', function(e) {
+                if (e.keyCode === 9 || e.keyCode === 13 || e.keyCode === 27) {
+                    e.preventDefault();
+                };
+
+                // Up Arrow
+                if (e.keyCode === 38) {
+                    e.preventDefault();
+                    $scope.$apply(function() {
+                        if (!$scope.activated) {
+                            controller.activateFirstItem();
+                        }
+                        else {
+                            controller.activatePreviousItem();
+                        }
+                    });
+                }
+
+                // Down Arrow
+                if (e.keyCode === 40) {
+                    e.preventDefault();
+                    $scope.$apply(function() {
+                        if (!$scope.activated) {
+                            controller.activateFirstItem();
+                        }
+                        else {
+                            controller.activateNextItem();
+                        }
+                        controller.activateGeocodingItem();
+                    });
+                }
+            });
+
+            html.bind('click', function(e) {
+                $scope.$apply( function() {
+                    controller.closeAutofill();
+                });
+            });
+
+            function initAutofill() {
+                $scope.$watch('model', function(newValue, oldValue) {
+                    controller.updateSearchText($scope.data, newValue);
+                });
+
+                $scope.$on('$stateChangeSuccess', function() {
+                    controller.resetSearchTerms();
+                    controller.closeAutofill();
+                });
+            }
+
+            initAutofill();
+        },
+        controller: function($scope) {
+            $scope.lookahead = '',
+            $scope.currentWord = '',
+            $scope.completeWord = '';
+
+            this.closeAutofill = function() {
+                return $scope.focused = false;
+            }
+
+            this.openAutofill = function() {
+                return $scope.focused = true;
+            }
+
+
+            this.activate = function(item) {
+                return item;
+            };
+
+            this.activateFirstItem = function() {
+                $scope.active = $scope.filtered[0];
+                $scope.currentIndex = $scope.filtered.indexOf($scope.active);
+                $scope.activated = true;
+            }
+
+            this.activateNextItem = function() {
+                $scope.geocodingactive = false;
+                if ($scope.currentIndex < $scope.filtered.length && $scope.currentIndex >= 0) {
+                    $scope.currentIndex = $scope.filtered.indexOf($scope.active) + 1;
+                    $scope.active = this.activate($scope.filtered[$scope.currentIndex]);
+                }
+                else {
+                    $scope.active = undefined;
+                    $scope.currentIndex = -1;
+                }
+            };
+
+            this.activatePreviousItem = function() {
+                $scope.geocodingactive = false;
+                if ($scope.currentIndex === -1) {
+                    $scope.currentIndex = $scope.filtered.length - 1;
+                    $scope.active = this.activate($scope.filtered[$scope.currentIndex]);         
+                }
+                else if ($scope.currentIndex <= $scope.filtered.length && $scope.currentIndex > 0) {
+                    $scope.currentIndex = $scope.currentIndex - 1;
+                    $scope.active = this.activate($scope.filtered[$scope.currentIndex]);
+                }
+            };
+
+            this.activateGeocodingItem = function () {
+                if(!$scope.active && $scope.activated) {
+                    $scope.active = this.activate($scope.model);
+                    $scope.geocodingactive = true;
+                }
+            }
+
+            this.setSearchText = function(model) {
+                if ( $scope.completeWord === $scope.model || 
+                    $scope.completeWord === '' || 
+                    $scope.model === '') return;
+                return $scope.model = $scope.completeWord;
+            };
+
+            this.resetSearchTerms = function() {
+                $scope.lookahead   = '';
+                $scope.currentWord = '';
+            }
+
+            this.filterStartsWith = function(data, searchTerm) {
+                return _.filter(data, function(elem) {
+                    return elem.name.substring(0, searchTerm.length).toLowerCase() 
+                        === searchTerm.toLowerCase();
+                });
+            }
+
+            this.filterTermWithin = function(data, searchTerm) {
+                return _.filter(data, function(elem) {
+                    return elem.name.toLowerCase().
+                        indexOf(searchTerm.toLowerCase()) >= 0;
+                });
+            }
+
+            this.updateSearchText = function(data, searchTerm) {
+                if (searchTerm === '' || !searchTerm || !data) return;
+
+                if (searchTerm.length > 1) {
+                    $scope.items = this.filterStartsWith(data, searchTerm);
+                    $scope.filtered = this.filterTermWithin(data, searchTerm);
+
+                    if ($scope.items[0]) {
+                        $scope.lookahead   = $scope.items[0].name.substring(searchTerm.length);
+                        $scope.currentWord = searchTerm;
+                    }
+                    else {
+                        this.resetSearchTerms();
+                    }
+                    return $scope.completeWord = $scope.currentWord + $scope.lookahead;
+                }
+            }
+
+        }
+    };
+
+}
+
 angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
@@ -279,4 +552,5 @@ angular
     .directive('nyplLibraryAlert', nyplLibraryAlert)
     .directive('nyplFundraising', nyplFundraising)
     .directive('nyplSidebar', nyplSidebar)
+    .directive('nyplAutofill', nyplAutofill)
     .directive('collapse', collapse);

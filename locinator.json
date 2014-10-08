@@ -25,6 +25,10 @@
       "angular_src": "bower"
     }
   },
-  "divisions_with_appointments": ["ARN", "RBK", "MSS", "BRG", "PRN", "PHG", "SPN", "CPS"]
-
+  "divisions_with_appointments": ["ARN", "RBK", "MSS", "BRG", "PRN", "PHG", "SPN", "CPS"],
+  "featured_amenities": {
+    "global": 3,
+    "local": 2
+  },
+  "research_order": ["SASB", "LPA", "SC", "SIBL"]
 }

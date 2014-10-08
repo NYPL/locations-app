@@ -24,11 +24,6 @@
 	left: 0;
 	bottom: 0;
 	right: 0;
-	-webkit-transition: all .5s ease;
-	-moz-transition: all .5s ease;
-	-ms-transition: all .5s ease;
-	-o-transition: all .5s ease;
-	transition: all .5s ease;
 	color: #fff;
 	text-align: center;
 
@@ -45,13 +40,15 @@
 		height: 40px;
 		margin-top: -27.5px;
 		margin-left: -20px;
-		font-size: 2em;
+		font-size: 2.5em;
 		left: 50%;
 		top: 40%;
-		-webkit-animation: spin 2s infinite linear;
-		-moz-animation: spin 2s infinite linear;
-		-o-animation: spin 2s infinite linear;
-		animation: spin 2s infinite linear;
+    -webkit-animation: spin 2.5s linear reverse infinite;
+    animation: spin 2.5s linear reverse infinite;
+	}
+
+	[data-icon]:before, [class^="icon-"]:before, [class*=" icon-"]:before {
+		margin: 0;
 	}
 }
 
@@ -218,6 +215,89 @@ time {
 	}
 }
 
+.autofill-container {
+	position: absolute;
+	width: 100%;
+	z-index: 1;
+	background-color: #fcfaf7;
+	border: 1px solid #CCC;
+	padding: 10px;
+
+	.location-item {
+		border-bottom: 1px solid #eee;
+		margin: 0;
+		padding: 10px;
+		position: relative;
+
+		&.active {
+			background-color: #FFFFCD;
+		}
+
+		.location-name {
+			margin: 5px 0px;
+			padding: 5px;
+			display: block;
+			@include breakpoint($min, $mobile-phone) {
+				margin: 0;
+				display: inline-block;
+			}
+		}
+		.view-on-map {
+			display: block;
+			@include breakpoint($min, $mobile-phone) {
+				display: inline-block;
+				position: absolute;
+				right: 15px;
+				top: 18px;
+			}
+			&:hover {
+				cursor: pointer;
+			}
+		}
+	}
+
+	.geolocation-search {
+		padding: 10px;
+		
+		&.active {
+			background-color: #FFFFCD;
+		}
+
+		&:hover {
+			cursor: pointer;
+		}
+
+		p {
+			margin: 0;
+			max-width: none;
+		}
+	}
+}
+
+.lookahead {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 45px;
+
+	p {
+		color: #ccc;
+		position: relative;
+		margin: 0;
+		padding: 0;
+		top: 10px;
+		left: 32px;
+
+		&.hidden {
+			display: none;
+		}
+
+		span {
+			color: transparent !important;
+		}
+	}
+}
+
 // Firefox specific override rules
 @-moz-document url-prefix() {
 
@@ -231,37 +311,132 @@ time {
 }
 
 // Spin Animation
-@-moz-keyframes spin {
-  0% {
-    -moz-transform: rotate(0deg);
-  }
-  100% {
-    -moz-transform: rotate(360deg);
-  }
-}
+
 @-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
+  from { }
+  to { -webkit-transform: rotate(360deg); }
 }
-@-o-keyframes spin {
-  0% {
-    -o-transform: rotate(0deg);
-  }
-  100% {
-    -o-transform: rotate(360deg);
-  }
-}
+
 @keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
+  from { }
+  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
 }
+
+
+#nyplFeedback {
+	position: fixed;
+	z-index: 1000;
+	bottom: 0;
+	width: 100%;
+
+	@include breakpoint ($min, $post-palm) {
+		width: 390px;
+	}
+
+	&.left {
+		left: -300px;
+		-webkit-transition: left 0.3s ease;
+		-moz-transition: left 0.3s ease;
+		-ms-transition: left 0.3s ease;
+		-o-transition: left 0.3s ease;
+		transition: left 0.3s ease;
+
+		&.open {
+			@include breakpoint($min, $post-palm) {
+				left: 0px;
+			}
+		}
+
+		a {
+			right: 0;
+		}
+	}
+
+	&.right {
+		right: -390px;
+		-webkit-transition: right 0.3s ease;
+		-moz-transition: right 0.3s ease;
+		-ms-transition: right 0.3s ease;
+		-o-transition: right 0.3s ease;
+		transition: right 0.3s ease;
+
+		&.open {
+			@include breakpoint($min, $post-palm) {
+				right: -90px;
+			}
+		}
+
+		a {
+			right: 390px;
+		}
+	}
+
+	a {
+		z-index: 1000;
+		display: block;
+		position: absolute;
+		height: 60px;
+		text-align: center;
+		bottom: 0;
+		color: #fff;
+		background-color: #5e564b;
+		padding: 10px;
+		width: 100%;
+		text-decoration: none;
+		-webkit-transition: background-color 0.5s ease;
+		-moz-transition: background-color 0.5s ease;
+		-ms-transition: background-color 0.5s ease;
+		-o-transition: background-color 0.5s ease;
+		transition: background-color 0.5s ease;
+
+		@include breakpoint($min, $post-palm) {
+			bottom: 50px;
+			width: 90px;
+			height: 50px;
+		}
+
+		&:hover {
+			background-color: #9b958f;
+		}
+	}
+
+	&.open {
+		.embedded {
+			iframe {
+				bottom: 60px;
+
+				@include breakpoint($min, $post-palm) {
+					bottom: 0px;
+					right: 90px;
+				}
+			}
+		}
+	}
+
+	.embedded {
+		iframe {
+			z-index: 999;
+			bottom: -290px;
+			position: absolute;
+			max-height: 350px;
+			width: 100%;
+			right: 390px;
+
+			-webkit-transition: bottom 0.5s ease;
+			-moz-transition: bottom 0.5s ease;
+			-ms-transition: bottom 0.5s ease;
+			-o-transition: bottom 0.5s ease;
+			transition: bottom 0.5s ease;
+
+			@include breakpoint($min, $post-palm) {
+				right: auto;
+				bottom: 0;
+				width: 300px;
+				min-height: 500px;
+				max-height: 800px;
+			}
+		}
+	}
+
+}
+

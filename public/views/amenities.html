@@ -9,6 +9,20 @@
       <h2 data-ng-if="amenitiesCategories">Amenities at NYPL</h2>
       <h2 data-ng-if="amenity">{{amenity_name}}</h2>
     </div>
+    <div class="amenity-links grid__item"
+      data-ng-if="amenity && amenity._links.info || amenity._links.action">
+      <span data-ng-if="amenity._links.action && amenity._links.action.name && amenity._links.action.href">
+        <a data-ng-href="{{amenity._links.action.href}}" 
+          class="amenities__reserve btn btn--natural">
+          {{amenity._links.action.name}}
+        </a>
+      </span>         
+      <span data-ng-if="amenity._links.info">
+        <a data-ng-href="{{amenity._links.info.href}}" class="read-more">
+          Learn more
+        </a>
+      </span>
+    </div>
 
     <div class="grid">
       <div class="amenities">
@@ -18,10 +32,10 @@
               <span class="{{category.icon}} category_title">{{category.name}}</span>
             </h3>
             <ul class="amenities-list">
-              <li data-ng-repeat="amenity in category.amenities | orderBy:'location_rank'">
+              <li data-ng-repeat="amenity in category.amenities | orderBy:'rank'">
                 <a data-ui-sref="amenity({amenity: amenity.id})">{{amenity.name}}</a>
                 <div class="amenity-links">
-                  <span data-ng-if="amenity._links.action && amenity._links.action.href">
+                  <span data-ng-if="amenity._links.action && amenity._links.action.name && amenity._links.action.href">
                     <a data-ng-href="{{amenity._links.action.href}}" 
                       class="amenities__reserve btn btn--natural">
                       {{amenity._links.action.name}}
@@ -44,7 +58,7 @@
               <span class="icon-library">Locations</span>
             </h3>
             <ul class="amenities-list">
-              <li data-ng-repeat="location in locations">
+              <li data-ng-repeat="location in locations | orderBy:'name'">
                 <a data-ui-sref="location({location: location.slug})">{{location.name}}</a>
               </li>
             </ul>

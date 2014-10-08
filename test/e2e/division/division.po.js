@@ -56,6 +56,8 @@ var DivisionPage = function () {
   // Footer section
   this.ask_donate = element(by.css('.ask-donate'));
   this.ask_librarian = element(by.css('#ask-librarian'));
+
+  this.askNYPL = element(by.css('.askchat'));
   this.email_us = element(by.css('.askemail'));
 };
 

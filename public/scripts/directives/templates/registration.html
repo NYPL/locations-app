@@ -3,7 +3,9 @@
     {{ 'REGISTRATION' | translate }}:
     <span class="registration_type" data-ng-if="!online">{{type}}</span>
     <a class="registration_type btn btn--natural" data-ng-if="online"
-      data-ng-href="{{link}}#register">
+      data-ng-href="{{link}}#register"
+      analytics-on="click" analytics-category="Locations"
+      analytics-event="Register" analytics-label="{{link}}">
       {{type}}
     </a>
 

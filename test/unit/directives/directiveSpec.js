@@ -23,6 +23,18 @@ describe('NYPL Directive Unit Tests', function () {
       httpBackend
         .expectGET('/languages/en.json')
         .respond('public/languages/en.json');
+
+      httpBackend
+        .expectGET('/config')
+        .respond('/config');
+
+      httpBackend
+        .expectGET('views/locations.html')
+        .respond('public/views/locations.html');
+
+      httpBackend
+        .expectGET('views/location-list-view.html')
+        .respond('public/views/location-list-view.html');
     });
   });
 
@@ -414,55 +426,57 @@ describe('NYPL Directive Unit Tests', function () {
    *   The nyplSiteAlerts directive displays a site-wide alert by checking all
    *   the alerts in the API and checking the current date.
    */
-  describe('Directive: nyplSiteAlerts', function () {
-    var $httpBackend, date, template, nyplSiteAlerts;
+  // describe('Directive: nyplSiteAlerts', function () {
+  //   var $httpBackend, date, template, nyplSiteAlerts, $timeout;
 
-    beforeEach(inject(function (_$httpBackend_) {
-      $httpBackend = _$httpBackend_;
+  //   beforeEach(inject(function (_$httpBackend_, _$timeout_) {
+  //     $timeout = _$timeout_;
+  //     $httpBackend = _$httpBackend_;
 
-      $httpBackend
-        .whenJSONP(api + '/alerts' + jsonpCallback)
-        .respond({
-          alerts: [{
-            _id: "71579",
-            scope: "all",
-            title: "Independence Day",
-            body: "All units of the NYPL are closed July 4 - July 5.",
-            start: "2014-06-27T00:00:00-04:00",
-            end: "2014-07-06T01:00:00-04:00"
-          }]
-        });
+  //     $httpBackend
+  //       .whenJSONP(api + '/alerts' + jsonpCallback)
+  //       .respond({
+  //         alerts: [{
+  //           _id: "71579",
+  //           scope: "all",
+  //           title: "Independence Day",
+  //           body: "All units of the NYPL are closed July 4 - July 5.",
+  //           start: "2014-06-27T00:00:00-04:00",
+  //           end: "2014-07-06T01:00:00-04:00"
+  //         }]
+  //       });
 
-      template = "<nypl-site-alerts></nypl-site-alerts>";
-      nyplSiteAlerts = createDirective(template);
-    }));
+  //     template = "<nypl-site-alerts></nypl-site-alerts>";
+  //     nyplSiteAlerts = createDirective(template);
+  //   }));
 
-    it('should display a site wide alert', function () {
-      var MockDate, alert;
+  //   it('should display a site wide alert', function () {
+  //     var MockDate, alert;
 
-      // Override the date function so we can test a real alert
-      // Store a copy so we can return the original one later
-      date = new Date(2014, 5, 29);
-      MockDate = Date;
-      Date = function () { return date; };
+  //     // Override the date function so we can test a real alert
+  //     // Store a copy so we can return the original one later
+  //     date = new Date(2014, 5, 29);
+  //     MockDate = Date;
+  //     Date = function () { return date; };
 
-      $httpBackend.flush();
-      // scope.$digest();
+  //     $httpBackend.flush();
 
-      // For whatever reason, the sitewidealert doesn't get generated
-      // in time for the $compile function to write it and for the data-ng-if
-      // to verify that the value is there.
-      // console.log(element);
+  //     // For whatever reason, the sitewidealert doesn't get generated
+  //     // in time for the $compile function to write it and for the data-ng-if
+  //     // to verify that the value is there.
+  //     // console.log(element);
 
-      // Currently just using the value in the scope.
-      alert = scope.sitewidealert;
-      expect(alert)
-        .toEqual('All units of the NYPL are closed July 4 - July 5.\n');
+  //     // Currently just using the value in the scope.
+  //     $timeout(function () {
+  //       alert = scope.sitewidealert;
+  //       expect(alert)
+  //         .toEqual('All units of the NYPL are closed July 4 - July 5.\n');
+  //     }, 200);
 
-      // Use the native Date function again
-      Date = MockDate;
-    });
-  });
+  //     // Use the native Date function again
+  //     Date = MockDate;
+  //   });
+  // });
 
   /*
    * <nypl-library-alert></nypl-library-alert>
@@ -629,6 +643,49 @@ describe('NYPL Directive Unit Tests', function () {
         expect(donateUrl.attr('href')).toContain('convio');
         expect(donateUrl.length).toBe(1);
       });
+    });
+  });
+
+  /*
+   * <nypl-autofill></nypl-autofill>
+   */
+  describe('Directive: nyplAutofill', function () {
+    var autofill, template, ctrl;
+
+    /*beforeEach(inject(function () {
+      template = "<nypl-autofill data='locations'" + 
+        " data-ng-model='searchTerm'" + 
+        " map-view='viewMapLibrary(slug)'" + 
+        " geo-search='geocodeAddress(term)'>" + 
+        "</nypl-autofill>";
+
+      autofill = createDirective(template);
+
+      //ctrl = autofill.controller("nyplAutofill");
+      //console.log(ctrl);
+    }));*/
+
+    beforeEach(inject(function($rootScope, $compile) {
+      scope = $rootScope.$new();
+      template = "<nypl-autofill data='locations'" + 
+        " data-ng-model='searchTerm'" + 
+        " map-view='viewMapLibrary(slug)'" + 
+        " geo-search='geocodeAddress(term)'>" + 
+        "</nypl-autofill>";
+      autofill = $compile(template)(scope);
+      scope.$digest();
+    }));
+
+    it('should compile lookahead and autofill containers', function () {
+      expect(autofill.find('.lookahead')).toBeTruthy();
+      expect(autofill.find('.autofill-container')).toBeTruthy();
+    });
+
+    it('should display autofill container', function () {
+      scope.searchTerm = "grand";
+      scope.$digest();
+      var isolated = autofill.isolateScope();
+      console.log(isolated);
     });
   });
 
