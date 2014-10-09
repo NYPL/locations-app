@@ -374,23 +374,110 @@ describe('Google analytics configuration', function () {
         browser.waitForAngular();
         browser.executeScript(mockGA());
 
-        element(by.linkText('The Miriam and Ira D. Wallach Division')).click();
+        element(by.linkText('Rare Book Division')).click();
         browser.waitForAngular();
 
         browser.executeScript('return window.ga_msg;').then(function (ga) {
           expect(ga[0][2]).toEqual('Locations');
           expect(ga[0][3]).toEqual('Division Title');
-          expect(ga[0][4]).toEqual('The Miriam and Ira D. Wallach Division');
+          expect(ga[0][4]).toEqual('Rare Book Division');
         });
 
-        element(by.linkText('Spencer Collection')).click();
+        element(by.linkText('George Arents Collection')).click();
         browser.waitForAngular();
         browser.executeScript('return window.ga_msg;').then(function (ga) {
           expect(ga[2][2]).toEqual('Locations');
           expect(ga[2][3]).toEqual('Division Title');
-          expect(ga[2][4]).toEqual('Spencer Collection');
+          expect(ga[2][4]).toEqual('George Arents Collection');
         });
 
+      });
+    });
+
+  });
+
+  describe('Autofill events', function () {
+    beforeEach(function () {
+        browser.get('/');
+        browser.waitForAngular();
+        browser.executeScript(mockGA());
+    });
+
+    it('should track when ENTER was pressed for an accepted search suggestion',
+      function () {
+        landingPage.searchInput.sendKeys('grand');
+        landingPage.searchInput.sendKeys(protractor.Key.ENTER);
+        browser.waitForAngular();
+
+        browser.executeScript('return window.ga_msg;').then(function (ga) {
+          expect(ga[0][2]).toEqual('Locations');
+          expect(ga[0][3]).toEqual('Accept');
+          expect(ga[0][4]).toEqual('Grand Central Library');
+
+          expect(ga[1][1]).toEqual('pageview')
+          expect(ga[1][2]).toEqual('/grand-central');
+        });
+      });
+
+    it('should track when searching for a string', function () {
+      landingPage.search('grand');
+      browser.waitForAngular();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][2]).toEqual('Locations');
+        expect(ga[0][3]).toEqual('Search');
+        expect(ga[0][4]).toEqual('grand');
+
+        expect(ga[1][1]).toEqual('pageview')
+        expect(ga[1][2]).toEqual('/map');
+      });
+    });
+
+    it('should track selecting on suggested library', function () {
+      landingPage.searchInput.sendKeys('bay');
+      element(by.css('.location-item a')).click();
+
+      browser.waitForAngular();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][2]).toEqual('Locations');
+        expect(ga[0][3]).toEqual('Select');
+        expect(ga[0][4]).toEqual('Baychester Library');
+
+        expect(ga[1][1]).toEqual('pageview')
+        expect(ga[1][2]).toEqual('/baychester');
+      });
+    });
+
+    it('should track selecting on suggested library', function () {
+      landingPage.searchInput.sendKeys('tottenville');
+      element(by.css('.geocoding-search')).click();
+
+      browser.waitForAngular();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][2]).toEqual('Locations');
+        expect(ga[0][3]).toEqual('Select search');
+        expect(ga[0][4]).toEqual('tottenville');
+
+        expect(ga[1][1]).toEqual('pageview')
+        expect(ga[1][2]).toEqual('/map');
+      });
+    });
+
+    it('should track selecting on suggested library', function () {
+      landingPage.searchInput.sendKeys('harlem');
+      element(by.css('.location-item .icon-map')).click();
+
+      browser.waitForAngular();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][2]).toEqual('Locations');
+        expect(ga[0][3]).toEqual('Select view map');
+        expect(ga[0][4]).toEqual('Harlem Library');
+
+        expect(ga[1][1]).toEqual('pageview')
+        expect(ga[1][2]).toEqual('/map');
       });
     });
 
