@@ -349,8 +349,7 @@
             showLibrariesTypeOf();
             nyplGeocoderService
                 .showAllLibraries()
-                .removeMarker('user')
-                .clearFilteredLocation();
+                .removeMarker('user');
 
             if (isMapPage()) {
                 nyplGeocoderService.removeMarker('search')
