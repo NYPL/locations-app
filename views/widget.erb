@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.1/css/nyplbase.min.css">
     <link rel="stylesheet" href="/css/locations.min.css">
 
-    <base target="_parent" />
+    <!-- Angular Hash fallback (need to test on heroku) -->
+    <base href="/widget" target="_parent">
   </head>
   <body>
     <!--[if lt IE 7]>

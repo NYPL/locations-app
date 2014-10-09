@@ -1,6 +1,5 @@
 <!-- Individual Location -->
 <div id="container__location_info">
-  <h1 class="p-org">{{location.name}}</h1>
   <div class="grid">
     <div id="container__image" class="grid__item desk-one-third">
       <img class="img--outline" data-ng-src="{{location.images.exterior}}"
@@ -75,6 +74,21 @@
           Learn about hours, amenities, events, and more.
         </a>
       </p>
+    </div>
+  </div>
+
+  <!-- Ask/Donate -->
+  <div class="ask-donate">
+    <nypl-fundraising fundraising="location.fundraising"></nypl-fundraising><!--
+
+    --><div class="askNYPL grid__item one-whole lap-and-up-one-half " id="ask-nypl">
+      <ul>
+        <li class="asknum icon-phone">
+          <a href="tel:917-275-6975">917-ASK-NYPL</a>
+        </li>
+        <li><librarianchatbutton /></li>
+        <li><emailusbutton link="{{location._links.contact.href}}" /></li>
+      </ul>
     </div>
   </div>
 </div>

@@ -564,5 +564,8 @@ angular
 angular
     .module('nypl_widget')
     .directive('todayshours', todayshours)
+    .directive('nyplFundraising', nyplFundraising)
+    .directive('librarianchatbutton', librarianchatbutton)
+    .directive('emailusbutton', emailusbutton)
     .directive('nyplDirections', nyplDirections);
 
