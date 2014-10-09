@@ -16,6 +16,7 @@ class Locinator < Sinatra::Base
     set :divisions_with_appointments, configs["divisions_with_appointments"]
     set :featured_amenities, configs["featured_amenities"]
     set :research_order, configs["research_order"]
+    set :fundraising, configs["fundraising"]
   end
 
   helpers Sinatra::Jsonp
@@ -76,6 +77,7 @@ class Locinator < Sinatra::Base
         "divisions_with_appointments" => settings.divisions_with_appointments,
         "featured_amenities" => settings.featured_amenities,
         "research_order" => settings.research_order,
+        "fundraising" => settings.fundraising,
         "closed_img" => settings.env_config["closed_img"]
       }
     }
