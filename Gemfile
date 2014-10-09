@@ -6,4 +6,5 @@ gem 'haml'
 gem 'json'
 gem 'kgio'
 gem 'lionactor', :git => 'https://bitbucket.org/rdmond/lionactor', :tag => '0.0.5'
+#unicorn web
 gem 'unicorn'
