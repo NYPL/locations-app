@@ -68,20 +68,20 @@
       var icon = default_icon || '';
 
       switch (id) {
-      case 7952: // Wireless
+      case 7967: // Wireless
         icon = 'icon-connection';
         break;
       case 7965: // Laptop
         icon = 'icon-laptop';
         break;
-      case 7954: // Printing
+      case 7966: // Printing
         icon = 'icon-print';
         break;
-      case 7955: // Electrical oulets
+      case 7968: // Electrical oulets
         icon = 'icon-power-cord';
         break;
-      case 7958: // Book drop
-      case 7951:
+      case 7971: // Book drop
+      case 7972:
         icon = 'icon-box-add';
         break;
       default:
