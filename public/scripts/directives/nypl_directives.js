@@ -253,21 +253,20 @@ function nyplFundraising($timeout, nyplLocationsService) {
             fundraising: '=fundraising'
         },
         link: function (scope, elem, attrs) {
-            $timeout(function () {
-                var fundraising;
-                nyplLocationsService.getConfig().then(function (data) {
-                    fundraising = data.fundraising;
-
-                    scope.fundraising = {
-                        appeal: scope.fundraising.appeal ||fundraising.appeal,
-                        statement: scope.fundraising.statement ||
-                            fundraising.statement,
-                        button_label: scope.fundraising.button_label ||
-                            fundraising.button_label,
-                        link: scope.fundraising.link || fundraising.link
-                    }
-                });
-            }, 200);
+            console.log(scope.fundraising);
+            if (!scope.fundraising) {
+                $timeout(function () {
+                    nyplLocationsService.getConfig().then(function (data) {
+                        var fundraising = data.fundraising;
+                        scope.fundraising = {
+                            appeal: fundraising.appeal,
+                            statement: fundraising.statement,
+                            button_label: fundraising.button_label,
+                            link:  fundraising.link
+                        }
+                    });
+                }, 200);
+            }
         }
     };
 }
