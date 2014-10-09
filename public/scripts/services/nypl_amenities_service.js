@@ -127,7 +127,9 @@
     }
 
     amenities.createAmenitiesCategories = function (amenities) {
-      var categoryNames,
+      var default_order = ['Computer Services', 'Circulation',
+          'Printing and Copy Services', 'Facilities', 'Assistive Technologies'],
+        categoryNames,
         categories = [],
         categoryObj,
         self = this;
@@ -145,7 +147,7 @@
         categoryObj.icon = self.getCategoryIcon(category);
 
         if (categoryObj.amenities.length) {
-          categories.push(categoryObj);
+          categories[_.indexOf(default_order, category)] = categoryObj;
         }
       });
 
