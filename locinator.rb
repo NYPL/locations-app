@@ -75,7 +75,8 @@ class Locinator < Sinatra::Base
         "api_root" => settings.env_config["api"],
         "divisions_with_appointments" => settings.divisions_with_appointments,
         "featured_amenities" => settings.featured_amenities,
-        "research_order" => settings.research_order
+        "research_order" => settings.research_order,
+        "closed_img" => settings.env_config["closed_img"]
       }
     }
     jsonp response
