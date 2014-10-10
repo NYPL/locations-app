@@ -27,9 +27,9 @@ describe('Locations: Amenities', function () {
   describe('Good API Call', function () {
     beforeEach(function () {
       // Pass the good JSON from the API call.
-      browser.addMockModule('httpBackendMock', httpBackendMock,
-          APIresponse.good);
-      browser.get('/#/amenities');
+      // browser.addMockModule('httpBackendMock', httpBackendMock,
+      //     APIresponse.good);
+      browser.get('/amenities');
       browser.waitForAngular();
     });
 
@@ -79,11 +79,11 @@ describe('Locations: Amenities', function () {
         });
       });
 
-      describe('Office Services category', function () {
+      describe('Print and Copy Services category', function () {
         it('should display the category name', function () {
           expect(amenitiesPage.getNthCategory(2)
             .element(by.css('.category_title')).getText())
-            .toEqual('Office Services');
+            .toEqual('Print and Copy Services');
         });
 
         it('should contain five amenities', function () {
@@ -149,15 +149,13 @@ describe('Locations: Amenities', function () {
     });
   });
 
-  describe('Bad API Call', function () {
-    beforeEach(function () {
-      browser.addMockModule('httpBackendMock', httpBackendMock,
-          APIresponse.bad);
-      browser.get('/#/amenities');
-      browser.waitForAngular();
-    });
-
-    // TODO: Write tests
-  });
+  // describe('Bad API Call', function () {
+  //   beforeEach(function () {
+  //     // browser.addMockModule('httpBackendMock', httpBackendMock,
+  //     //     APIresponse.bad);
+  //     browser.get('/amenities');
+  //     browser.waitForAngular();
+  //   });
+  // });
 
 });

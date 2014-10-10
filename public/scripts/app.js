@@ -336,6 +336,31 @@ angular.module('nypl_widget', [
                 });
         }
 
+        function LoadSubDivision($q, $stateParams, config, nyplLocationsService) {
+            var division    = nyplLocationsService
+                                .singleDivision($stateParams.division),
+                subdivision = nyplLocationsService
+                                .singleDivision($stateParams.subdivision);
+
+            return $q.all([division, subdivision]).then(function (data) {
+                var div = data[0],division,
+                    subdiv = data[1].division;
+
+                return subdiv;
+            });
+        }
+
+        function LoadDivision($stateParams, config, nyplLocationsService) {
+            return nyplLocationsService
+                .singleDivision($stateParams.division)
+                .then(function (data) {
+                    return data.division;
+                })
+                .catch(function (err) {
+                    throw err;
+                });
+        }
+
         function getConfig(nyplLocationsService) {
             return nyplLocationsService.getConfig();
         }
@@ -346,13 +371,32 @@ angular.module('nypl_widget', [
         $urlRouterProvider.otherwise('/widget/sasb');
 
         $stateProvider
+            .state('subdivision', {
+                url: '/widget/divisions/:division/:subdivision',
+                templateUrl: 'views/widget.html',
+                controller: 'WidgetCtrl',
+                resolve: {
+                    config: getConfig,
+                    data: LoadSubDivision
+                }
+            })
+            .state('division', {
+                url: '/widget/divisions/:division',
+                templateUrl: 'views/widget.html',
+                controller: 'WidgetCtrl',
+                label: 'Division',
+                resolve: {
+                    config: getConfig,
+                    data: LoadDivision
+                }
+            })
             .state('widget', {
                 url: '/widget/:location',
                 templateUrl: 'views/widget.html',
                 controller: 'WidgetCtrl',
                 resolve: {
                     config: getConfig,
-                    location: LoadLocation
+                    data: LoadLocation
                 },
             });
     }

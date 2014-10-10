@@ -5,11 +5,13 @@
     $rootScope,
     $scope,
     $timeout,
-    location,
+    data,
     nyplUtility,
+    $location,
     nyplCoordinatesService
   ) {
-    var loadUserCoordinates = function () {
+    var url = 'http://locations-beta.nypl.org',
+      loadUserCoordinates = function () {
       return nyplCoordinatesService
         .getBrowserCoordinates()
         .then(function (position) {
@@ -24,21 +26,27 @@
         });
     };
 
-    $rootScope.title = location.name;
-    $scope.location = location;
+    $rootScope.title = data.name;
+    $scope.data = data;
+    $scope.locinator_url = url + $location.path().substr(7);
+
+    if (data._embedded.location) {
+      $scope.division = true;
+      $scope.data.images.exterior = data.images.interior;
+    }
 
     // Do we want this in the widget??
     // loadUserCoordinates();
 
-    if (location.hours) {
-        $scope.hoursToday = nyplUtility.hoursToday(location.hours);
+    if (data.hours) {
+        $scope.hoursToday = nyplUtility.hoursToday(data.hours);
     }
 
-    $scope.location.social_media =
-      nyplUtility.socialMediaColor($scope.location.social_media);
+    $scope.data.social_media =
+      nyplUtility.socialMediaColor($scope.data.social_media);
 
     // Used for the Get Directions link to Google Maps
-    $scope.locationDest = nyplUtility.getAddressString(location);
+    $scope.locationDest = nyplUtility.getAddressString(data);
   }
 
   angular
