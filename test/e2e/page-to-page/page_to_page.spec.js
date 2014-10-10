@@ -89,7 +89,7 @@ describe('Locations: Page to Page tests', function () {
           .toEqual('Showing search results near Jefferson Market Garden, ' +
             'New York, NY 10011, USA');
       });
-  
+
     it('should save state when visiting a division and then home', function () {
       landingPage.search('bryant park');
       browser.waitForAngular();
@@ -114,7 +114,7 @@ describe('Locations: Page to Page tests', function () {
 
       browser.waitForAngular();
       expect(browser.getLocationAbsUrl()).toEqual('http://localhost:9292/' +
-        'divisions/manuscripts-division');
+        'divisions/berg-collection-english-and-american-literature');
 
       element(by.css('.nypl-logo a')).click();
       browser.waitForAngular();

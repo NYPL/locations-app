@@ -26,9 +26,9 @@ describe('Locations: Amenity', function () {
 
   describe('Good API Call', function () {
     beforeEach(function () {
-      browser.addMockModule('httpBackendMock', httpBackendMock,
-          APIresponse.good);
-      browser.get('/#/amenities/id/7950');
+      // browser.addMockModule('httpBackendMock', httpBackendMock,
+      //     APIresponse.good);
+      browser.get('/amenities/id/7964');
     });
 
     it('should display the name of the service', function () {
@@ -37,7 +37,7 @@ describe('Locations: Amenity', function () {
     });
 
     it('should display a list of locations', function () {
-      expect(amenitiesPage.locations.count()).toBe(13);
+      expect(amenitiesPage.locations.count()).toBe(89);
     });
   });
 
@@ -53,14 +53,14 @@ describe('Locations: Amenity', function () {
     });
   });
 
-  describe('Bad API Call', function () {
-    beforeEach(function () {
-      browser.addMockModule('httpBackendMock', httpBackendMock,
-          APIresponse.bad);
-      browser.get('/#/amenities/id/7950');
-      browser.waitForAngular();
-    });
+  // describe('Bad API Call', function () {
+  //   beforeEach(function () {
+  //     browser.addMockModule('httpBackendMock', httpBackendMock,
+  //         APIresponse.bad);
+  //     browser.get('/#/amenities/id/7950');
+  //     browser.waitForAngular();
+  //   });
 
-    // TODO: Write tests
-  });
+  //   // TODO: Write tests
+  // });
 });

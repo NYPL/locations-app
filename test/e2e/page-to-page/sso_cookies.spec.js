@@ -1,5 +1,6 @@
 /*jslint indent: 2, maxlen: 80 */
-/*global describe, require, beforeEach, browser, it, expect, element, by */
+/*global describe, require, beforeEach, browser, it,
+expect, element, by, afterEach */
 
 describe('Locations: Header SSO Login', function () {
   "use strict";
@@ -166,7 +167,7 @@ describe('Locations: Header SSO Login', function () {
         header.loginBtn.click();
 
         header.username.sendKeys('edwinguzman');
-        header.pin.sendKeys('1234')
+        header.pin.sendKeys('1234');
 
         // Not actually hitting submit, creating logged in cookie:
         browser.manage().addCookie('bc_username', 'edwinguzman');
@@ -202,7 +203,7 @@ describe('Locations: Header SSO Login', function () {
         });
         expect(header.loginForm.getCssValue('display')).toEqual('block');
 
-        landingPage.onlyResearch.click()
+        landingPage.onlyResearch.click();
         browser.sleep(1000);
         landingPage.nthLocLink(0).click();
         browser.waitForAngular();
@@ -244,7 +245,7 @@ describe('Locations: Header SSO Login', function () {
         });
         expect(header.loggedInMenu.getCssValue('display')).toEqual('block');
 
-        landingPage.onlyResearch.click()
+        landingPage.onlyResearch.click();
         browser.sleep(1000);
         landingPage.nthLocLink(0).click();
         browser.waitForAngular();
@@ -255,7 +256,7 @@ describe('Locations: Header SSO Login', function () {
         cookieObj = browser.manage().getCookie('bc_username');
         cookieObj.then(function (data) {
           expect(data.name).toEqual('bc_username');
-            expect(data.value).toEqual('edwinguzman');
+          expect(data.value).toEqual('edwinguzman');
         });
         expect(header.loggedInMenu.getCssValue('display')).toEqual('block');
 
@@ -268,7 +269,7 @@ describe('Locations: Header SSO Login', function () {
         cookieObj = browser.manage().getCookie('bc_username');
         cookieObj.then(function (data) {
           expect(data.name).toEqual('bc_username');
-            expect(data.value).toEqual('edwinguzman');
+          expect(data.value).toEqual('edwinguzman');
         });
         expect(header.loggedInMenu.getCssValue('display')).toEqual('block');
 
@@ -284,7 +285,7 @@ describe('Locations: Header SSO Login', function () {
           expect(data.value).toEqual('edwinguzman');
         });
         expect(header.loggedInMenu.getCssValue('display')).toEqual('block');
-      })
+      });
     });
   }); /* End Navigating the site */
 
