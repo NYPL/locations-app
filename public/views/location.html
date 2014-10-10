@@ -194,7 +194,6 @@
     <h2 class="hdg">{{ 'EVENTS' | translate }}</h2>
     <ul class="grid">
       <li class="chunk one-whole desk-one-third" data-ng-repeat="event in location._embedded.events">
-        
         <h3 class="event__title">
           <a data-ng-href="{{event._links.self.href}}"
             analytics-on="click" analytics-category="Locations"
@@ -202,11 +201,6 @@
             {{event.title}}
           </a>
         </h3>
-        <a data-ng-href="{{event._links.self.href}}"
-          analytics-on="click" analytics-category="Locations"
-          analytics-event="Event image" analytics-label="{{event._links.self.href}}">
-          <img data-ng-if="event.image" class="img--outline" data-ng-src="{{event.image}}" />
-        </a>
         <time class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
         <p class="desc">{{event.body}}</p>
         <div>
