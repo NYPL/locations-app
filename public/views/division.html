@@ -184,44 +184,34 @@
             {{event.title}}
           </a>
         </h3>
-        <a data-ng-href="{{event._links.self.href}}"
-          analytics-on="click" analytics-category="Locations"
-          analytics-event="Event image" analytics-label="{{event._links.self.href}}">
-          <img data-ng-if="event.image" class="img--outline img--left" 
-            data-ng-src="{{event.image}}" alt="" style="height: 100px;" />
-        </a>
         <time class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
         <p class="desc">{{event.body}}</p>
-
-        <div data-ng-if="event.registration">
-          {{ 'REGISTRATION' | translate }}:
-          <event-registration registration="{{event.registration}}"
-            type="{{event.registration.type}}"
-            open="{{event.registration.open}}"
-            start="{{event.registration.start}}"
-            link="{{event._links.self.href}}">
+        <div>
+          <event-registration
+            registration="event.registration"
+            status="event.status">
           </event-registration>
-        </div><!--
 
-        --><div class="">
-          <a data-ng-href="{{calendarLink('google', event, location)}}"
-            target="_blank" rel="nofollow" class="icon-calendar google_link"
-            analytics-on="click" analytics-category="Locations"
-            analytics-event="Add to Google" analytics-label="{{event._links.self.href}}">
-            Google
-          </a>
-          <a data-ng-href="{{calendarLink('yahoo', event, location)}}"
-            target="_blank" rel="nofollow" class="icon-calendar yahoo_link"
-            analytics-on="click" analytics-category="Locations"
-            analytics-event="Add to Yahoo" analytics-label="{{event._links.self.href}}">
-            Yahoo
-          </a>
-          <a href="#" data-ng-click="icalLink(event, location.street_address)"
-            target="_blank" download="nypl_event.ics" class="icon-calendar" rel="nofollow"
-            analytics-on="click" analytics-category="Locations"
-            analytics-event="Add to iCal" analytics-label="{{event._links.self.href}}">
-            iCal
-          </a>
+          <aside class="event-buttons">
+            <a data-ng-href="{{calendarLink('google', event, location)}}"
+              target="_blank" rel="nofollow" class="icon-calendar google_link"
+              analytics-on="click" analytics-category="Locations"
+              analytics-event="Add to Google" analytics-label="{{event._links.self.href}}">
+              Google
+            </a>
+            <a data-ng-href="{{calendarLink('yahoo', event, location)}}"
+              target="_blank" rel="nofollow" class="icon-calendar yahoo_link"
+              analytics-on="click" analytics-category="Locations"
+              analytics-event="Add to Yahoo" analytics-label="{{event._links.self.href}}">
+              Yahoo
+            </a>
+            <a href="#" data-ng-click="icalLink(event, location.street_address)"
+              target="_blank" download="nypl_event.ics" class="icon-calendar" rel="nofollow"
+              analytics-on="click" analytics-category="Locations"
+              analytics-event="Add to iCal" analytics-label="{{event._links.self.href}}">
+              iCal
+            </a>
+          </aside>
         </div>
       </li>
     </ul>

@@ -204,14 +204,12 @@
         <time class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
         <p class="desc">{{event.body}}</p>
         <div>
-          <aside class="event-buttons">
-            <event-registration registration="{{event.registration}}"
-              type="{{event.registration.type}}"
-              open="{{event.registration.open}}"
-              start="{{event.registration.start}}"
-              link="{{event._links.self.href}}">
-            </event-registration>
+          <event-registration
+            registration="event.registration"
+            status="event.status">
+          </event-registration>
 
+          <aside class="event-buttons">
             <a data-ng-href="{{calendarLink('google', event, location)}}"
               target="_blank" rel="nofollow" class="icon-calendar google_link"
               analytics-on="click" analytics-category="Locations"
