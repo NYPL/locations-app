@@ -1,9 +1,11 @@
-<!-- Individual Location -->
-<div id="container__location_info">
+<!-- Widget Location/Division -->
+<div id="container__widget_info">
   <div class="grid">
     <div id="container__image" class="grid__item desk-one-third">
-      <img class="img--outline" data-ng-src="{{data.images.exterior}}"
-        alt="Image of {{data.name}}" title="Image of {{data.name}}">
+      <img class="img--outline" data-ng-if="data.open" data-ng-src="{{data.images.exterior}}"
+        alt="Image of {{data.name}}" title="Image of {{data.name}}" />
+      <img class="img--outline" data-ng-if="!data.open" data-ng-src="{{data.images.closed}}"
+        alt="Branch Closed" title="Branch closed" />
     </div><!--
 
     --><div id="container__address" class="grid__item one-whole lap-one-half desk-one-third">
@@ -76,7 +78,7 @@
     </div><!--
 
     --><div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
-      <!-- Display for open location -->
+      <!-- Display for open Location/Division -->
       <div class="callout branch-open" data-ng-if="data.open">
         <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat:'short'}}" />
       </div>
@@ -87,9 +89,7 @@
       
     --><div class="grid__item lap-one-half one-whole grid--center">
       <p>
-        <a href="{{locinator_url}}">
-          Learn about hours, amenities, events, and more.
-        </a>
+        <a href="{{locinator_url}}">Learn about hours, amenities, events, and more.</a>
       </p>
     </div>
   </div>
@@ -104,7 +104,7 @@
           <a href="tel:917-275-6975">917-ASK-NYPL</a>
         </li>
         <li><librarianchatbutton /></li>
-        <li><emailusbutton link="{{location._links.contact.href}}" /></li>
+        <li><emailusbutton link="{{data._links.contact.href}}" /></li>
       </ul>
     </div>
   </div>

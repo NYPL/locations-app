@@ -2,13 +2,14 @@
   'use strict';
 
   function WidgetCtrl(
+    $location,
     $rootScope,
     $scope,
     $timeout,
+    config,
     data,
-    nyplUtility,
-    $location,
-    nyplCoordinatesService
+    nyplCoordinatesService,
+    nyplUtility
   ) {
     var url = 'http://locations-beta.nypl.org',
       loadUserCoordinates = function () {
@@ -33,6 +34,10 @@
     if (data._embedded.location) {
       $scope.division = true;
       $scope.data.images.exterior = data.images.interior;
+    }
+
+    if (config.closed_img) { 
+      $scope.data.images.closed = config.closed_img;
     }
 
     // Do we want this in the widget??
