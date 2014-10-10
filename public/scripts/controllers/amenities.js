@@ -24,23 +24,12 @@
   }
 
   // Load one location and list all the amenities found in that location.
-  function AmenitiesAtLibraryCtrl($http, $rootScope, $scope, config, location, nyplAmenities) {
-    var updatedAmenities;
+  function AmenitiesAtLibraryCtrl($rootScope, $scope, config, location, nyplAmenities) {
+    var updatedAmenities =
+      nyplAmenities.allAmenitiesArray(location._embedded.amenities);
 
-    // Temporary until all the locations have proper data
-    if (!location._embedded.amenities.length) {
-      $http
-        .get('json/amenitiesAtLibrary.json')
-        .success(function (data) {
-          $scope.amenitiesCategories =
-            nyplAmenities.createAmenitiesCategories(data.amenities);
-        });
-    } else {
-      updatedAmenities = nyplAmenities.allAmenitiesArray(location._embedded.amenities);
-
-      $scope.amenitiesCategories =
-        nyplAmenities.createAmenitiesCategories(updatedAmenities);
-    }
+    $scope.amenitiesCategories =
+      nyplAmenities.createAmenitiesCategories(updatedAmenities);
 
     $rootScope.title = location.name;
     $scope.location = location;
