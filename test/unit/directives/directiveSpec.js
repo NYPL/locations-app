@@ -228,7 +228,7 @@ describe('NYPL Directive Unit Tests', function () {
 
     it('should create a link', function () {
       expect(emailusbutton.attr('href')).toEqual(link);
-      expect(emailusbutton.text()).toEqual('Email us your question');
+      expect(emailusbutton.text().trim()).toEqual('Email us your question');
     });
   });
 
@@ -253,7 +253,7 @@ describe('NYPL Directive Unit Tests', function () {
     });
 
     it('should create a link', function () {
-      expect(librarianchatbutton.text()).toEqual('Chat with a librarian');
+      expect(librarianchatbutton.text().trim()).toEqual('Chat with a librarian');
     });
 
     it('should call the nyplUtility service to open a new window', function () {

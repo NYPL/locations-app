@@ -27,6 +27,9 @@
                 <td class="time">{{ hours | timeFormat }}</td>
               </tr>
             </table>
+            <p class="smallprint" data-ng-if="division.open && division._embedded.divisions">
+              {{ 'IDV_SUB_DIVISION_HOURS' | translate }}
+            </p>
           </div>
         </div>
         <div class="callout branch-closed" data-ng-if="!division.open">
@@ -68,9 +71,16 @@
             <span class="fully icon-accessibility"></span>
             {{division.access}}
           </div>
-          <div data-ng-if="division.access == 'Partially Accessible'" class="accessible">
-            <span class="partially icon-accessibility"></span>
-            {{division.access}}
+          <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
+    
+                <div data-ng-if="location.accessibility_note">
+	                <span class="partially icon-accessibility"></span>
+	                {{location.accessibility_note}}
+                </div>
+                <div data-ng-if="!location.accessibility_note">
+	               <span class="partially icon-accessibility"></span>
+	               {{location.access}}
+                </div>
           </div>
           <div data-ng-if="!division.access" class="not-accessible">
             <span class="none icon-accessibility"></span>
@@ -162,6 +172,7 @@
     </div>
   </div>
 
+  <!-- Division Events -->
   <div class="container__events" data-ng-if="division._embedded.events">
     <h2 class="hdg">{{ 'EVENTS' | translate }}</h2>
     <ul class="grid">
@@ -270,7 +281,7 @@
           <span class="blog_location" data-ng-if="blog.author.location">, {{blog.author.location}}</span>
         </div>
         <time class="date" ><span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span></time>
-        <div class="desc">{{blog.body | truncate}}</div>
+        <div class="desc">{{blog.body}}</div>
       </div>
     </div>
     <!-- More Blogs Link -->

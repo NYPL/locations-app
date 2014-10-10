@@ -59,8 +59,15 @@
               {{location.access}}
             </div>
             <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
-              <span class="partially icon-accessibility"></span>
-              {{location.access}}
+    
+                <div data-ng-if="location.accessibility_note">
+	                <span class="partially icon-accessibility"></span>
+	                {{location.accessibility_note}}
+                </div>
+                <div data-ng-if="!location.accessibility_note">
+	               <span class="partially icon-accessibility"></span>
+	               {{location.access}}
+                </div>
             </div>
             <div data-ng-if="!location.access" class="not-accessible">
               <span class="none icon-accessibility"></span>
@@ -97,8 +104,10 @@
         </div><!--
 
         --><div id="container__image" class="grid__item desk-one-third">
-          <img class="img--outline" data-ng-src="{{location.images.exterior}}"
+          <img class="img--outline" data-ng-if="location.open" data-ng-src="{{location.images.exterior}}"
             alt="Image of {{location.name}}" title="Image of {{location.name}}">
+          <img class="img--outline" data-ng-if="!location.open" data-ng-src="{{location.images.closed}}"
+            alt="Branch Closed" title="Branch closed">
         </div>
     </div>
   </div>
@@ -192,16 +201,9 @@
             {{event.title}}
           </a>
         </h3>
-        <a data-ng-href="{{event._links.self.href}}"
-          analytics-on="click" analytics-category="Locations"
-          analytics-event="Event image" analytics-label="{{event._links.self.href}}">
-          <img data-ng-if="event.image" class="img--outline img--left" 
-            data-ng-src="{{event.image}}" alt="" style="height: 100px;" />
-        </a>
         <time class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
         <p class="desc">{{event.body}}</p>
-
-        <div class="">
+        <div>
           <aside class="event-buttons">
             <event-registration registration="{{event.registration}}"
               type="{{event.registration.type}}"
@@ -314,7 +316,7 @@
         <a data-ng-if="blog.image" data-ng-href="{{blog._links.self.href}}"
           analytics-on="click" analytics-category="Locations"
           analytics-event="Blog image" analytics-label="{{blog._links.self.href}}">
-          <img class="img--left" data-ng-src="{{blog.image}}" style="height: 100px;"
+          <img class="img--left" data-ng-src="{{blog.image}}" style="max-height: 120px; max-width: 120px;"
             alt="Image for blog post {{blog.title}}" title="Image for blog post {{blog.title}}" />
         </a>
         <div class="blog_author">
@@ -323,7 +325,7 @@
           <span class="blog_location" data-ng-if="blog.author.location">, {{blog.author.location}}</span>
         </div>
         <time class="date" ><span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span></time>
-        <div class="teaser desc">{{blog.body | truncate}}</div>
+        <div class="teaser desc">{{blog.body}}</div>
       </div>
     </div>
     <!-- More Link -->

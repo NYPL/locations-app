@@ -54,7 +54,7 @@ describe('NYPL coordinateService Module', function () {
       it('should return false due to old browser', function () {
         // Old browsers don't have the navigator api
         $window.navigator = false;
-        $window.navigator.geolocation = false;
+        // $window.navigator.geolocation = false;
         expect(nyplCoordinatesService.geolocationAvailable()).toBe(false);
       });
 
@@ -150,7 +150,7 @@ describe('NYPL coordinateService Module', function () {
 
             // Old browsers don't have the navigator api
             $window.navigator = false;
-            $window.navigator.geolocation = false;
+            // $window.navigator.geolocation = false;
 
             nyplCoordinatesService
               .getBrowserCoordinates()

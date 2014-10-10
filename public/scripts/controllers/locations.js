@@ -349,8 +349,7 @@
             showLibrariesTypeOf();
             nyplGeocoderService
                 .showAllLibraries()
-                .removeMarker('user')
-                .clearFilteredLocation();
+                .removeMarker('user');
 
             if (isMapPage()) {
                 nyplGeocoderService.removeMarker('search')
@@ -623,6 +622,11 @@
 
         // Used for the Get Directions link to Google Maps
         $scope.locationDest = nyplUtility.getAddressString(location);
+
+        // Assign closed image
+        if (config.closed_img) { 
+            $scope.location.images.closed = config.closed_img;
+        }
     }
 
     angular

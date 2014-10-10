@@ -242,7 +242,7 @@ function collapse() {
     });
 }
 
-function nyplFundraising() {
+function nyplFundraising($timeout, nyplLocationsService) {
     'use strict';
 
     return {
@@ -251,6 +251,22 @@ function nyplFundraising() {
         replace: true,
         scope: {
             fundraising: '=fundraising'
+        },
+        link: function (scope, elem, attrs) {
+            console.log(scope.fundraising);
+            if (!scope.fundraising) {
+                $timeout(function () {
+                    nyplLocationsService.getConfig().then(function (data) {
+                        var fundraising = data.fundraising;
+                        scope.fundraising = {
+                            appeal: fundraising.appeal,
+                            statement: fundraising.statement,
+                            button_label: fundraising.button_label,
+                            link:  fundraising.link
+                        }
+                    });
+                }, 200);
+            }
         }
     };
 }
@@ -334,7 +350,7 @@ function nyplAutofill($state, $analytics) {
                                 $scope.geoSearch({term: $scope.model});
                                 $scope.geocodingactive = false;
                                 $scope.activated = false;
-                                if(input.blur()) { 
+                                if (input.blur()) {
                                     controller.closeAutofill();
                                 }
                             }
@@ -354,7 +370,7 @@ function nyplAutofill($state, $analytics) {
                         else {
                             // Geocoding Search only
                             $scope.geoSearch({term: $scope.model});
-                            if(input.blur()) {
+                            if (input.blur()) {
                                 controller.closeAutofill();
                             }
                         }
@@ -375,10 +391,12 @@ function nyplAutofill($state, $analytics) {
 
                 // Escape key
                 if (e.keyCode === 27) {
-                    $scope.$apply( function() { 
-                        controller.closeAutofill();
-                        $scope.activated = false;
-                    });
+                    /*$scope.$apply( function() { 
+                         if (input.blur()) {
+                            controller.closeAutofill();
+                            $scope.activated = false;
+                        }
+                    });*/
                 }
             });
 
@@ -520,7 +538,7 @@ function nyplAutofill($state, $analytics) {
                 if (searchTerm === '' || !searchTerm || !data) return;
 
                 if (searchTerm.length > 1) {
-                    $scope.items = this.filterStartsWith(data, searchTerm);
+                    $scope.items    = this.filterStartsWith(data, searchTerm);
                     $scope.filtered = this.filterTermWithin(data, searchTerm);
 
                     if ($scope.items[0]) {
