@@ -13,13 +13,16 @@
 		margin-bottom: 24px;
 	}
 
+	#container__about {
+		clear: both;
+	}
+
 	.location-alerts {
 		background-color: #ffcdcd;
 		border: 1px solid #eee;
 		border-radius: 2px;
-		padding: .5rem;
+		padding: 1rem 2rem;
 		margin: .5rem 0;
-		text-align: center;
 
 		p {
 			max-width: 100%;
@@ -35,8 +38,12 @@
 
 		@include breakpoint($min, $desktop) {
 			display: inline-block;
-			height: 245px; // constrain proportions until proper images exist
-			overflow: hidden;
+		}
+
+		img {
+			@include breakpoint($min, $desktop) {
+				max-height: 275px;
+			}
 		}
 	}
 
@@ -164,6 +171,7 @@
 
 	// Divisions section 
 	#container__divisions {
+		clear: both;
 		.division-wrapper {
 			margin-bottom: 3em;
 			
@@ -184,7 +192,7 @@
 
 	// Events section
 	#container__events {
-
+		clear: both;
 		.event__title {
 			margin-bottom: .05em;
 		}
@@ -219,9 +227,14 @@
 	}
 
 	#container__exhibitions {
+		clear: both;
 		.exhibition__title {
 			margin-bottom: .05em;
 		}
+	}
+
+	#container__features {
+		clear: both;
 	}
 
 	// Highlighted Amenities section

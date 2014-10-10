@@ -2,12 +2,14 @@
   "environments": {
     "default": "production",
     "production": {
-      "url": "locations-beta.nypl.org",
-      "api": "http://locations-api-beta.nypl.org",
+      "url": "locations-dev.aws.nypl.org",
+      "api": "http://loc-dev01-elasticl-1snwu80g12hqm-1136768113.us-east-1.elb.amazonaws.com",
       "nyplbase": "http://ux-static.nypl.org/nyplbase/0.1.1/css/nyplbase.min.css",
       "optimizely": "//cdn.optimizely.com/js/1422121698.js",
       "google_analytics": "UA-1420324-123",
-      "angular_src": "ux-static"
+      "google_maps": "AIzaSyBrIeVzBbK8NWCbWKsi_sj3N2T_EMWEAVY",
+      "angular_src": "ux-static",
+      "closed_img": "http://ux-static.nypl.org/images/branch_closed.jpg"
     },
     "qa": {
       "url": "locations-beta-dev.herokuapp.com",
@@ -15,14 +17,18 @@
       "nyplbase": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.1/css/nyplbase.min.css",
       "optimizely": null,
       "google_analytics": null,
-      "angular_src": "ux-static-staging"
+      "google_maps": "AIzaSyCeqpIM6ylCguHdJq0Mp9WpaSrLJ3xrBWM",
+      "angular_src": "ux-static-staging",
+      "closed_img": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/images/branch_closed.jpg"
     },
     "local": {
       "api": "http://locations-api-alpha.herokuapp.com",
       "nyplbase": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.1/css/nyplbase.min.css",
       "optimizely": null,
       "google_analytics": null,
-      "angular_src": "bower"
+      "google_maps": "AIzaSyCeqpIM6ylCguHdJq0Mp9WpaSrLJ3xrBWM",
+      "angular_src": "bower",
+      "closed_img": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/images/branch_closed.jpg"
     }
   },
   "divisions_with_appointments": ["ARN", "RBK", "MSS", "BRG", "PRN", "PHG", "SPN", "CPS"],
@@ -30,5 +36,11 @@
     "global": 3,
     "local": 2
   },
-  "research_order": ["SASB", "LPA", "SC", "SIBL"]
+  "research_order": ["SASB", "LPA", "SC", "SIBL"],
+  "fundraising": {
+      "statement": "Become a Member",
+      "appeal": "Friends of the Library can support their favorite library and receive great benefits!",
+      "button_label": "Join or Renew",
+      "link": "https://secure3.convio.net/nypl/site/SPageServer?pagename=branch_friend_form&s_src=FRQ15ZZ_CADN"
+  }
 }

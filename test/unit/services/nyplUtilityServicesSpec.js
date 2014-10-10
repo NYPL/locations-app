@@ -527,7 +527,7 @@ describe('NYPL Utility Service Tests', function () {
           expect(updatedLocations).toEqual([
             {id: 'AG', name: 'Aguilar Library',
               geolocation: { coordinates: [-74.0084794, 40.7483308] },
-              distance: 0.01}, //4.56
+              distance: 0}, //4.56
             {id: 'AL', name: 'Allerton Library',
               lat: 40.866, long: -73.8632, distance: 11.13},
             {id: 'BAR', name: 'Baychester Library',

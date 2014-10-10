@@ -21,6 +21,9 @@ var LandingPage = function () {
   // Results list
   this.locations = element.all(by.repeater('location in locations'));
 
+  // Autofill results
+  this.autofill = element.all(by.repeater('item in filtered'));
+
   // Show only research button
   this.onlyResearch = element(by.id('onlyresearch'));
 

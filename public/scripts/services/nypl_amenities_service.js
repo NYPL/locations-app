@@ -35,13 +35,13 @@
       }
 
       amenity.icon = this.getCategoryIcon(amenity.category);
-      // amenity.icon = this.getAmenityIcon(amenity.id);
+      amenity.icon = this.getAmenityIcon(amenity.id, amenity.icon);
 
       return amenity;
     };
 
-    amenities.getCategoryIcon = function (category) {
-      var icon = '';
+    amenities.getCategoryIcon = function (category, default_icon) {
+      var icon = default_icon || '';
 
       switch (category) {
       case 'Computer Services':
@@ -50,7 +50,7 @@
       case 'Circulation':
         icon = 'icon-book';
         break;
-      case 'Office Services':
+      case 'Printing and Copy Services':
         icon = 'icon-copy';
         break;
       case 'Facilities':
@@ -64,24 +64,24 @@
       return icon;
     };
 
-    amenities.getAmenityIcon = function (id) {
-      var icon = '';
+    amenities.getAmenityIcon = function (id, default_icon) {
+      var icon = default_icon || '';
 
       switch (id) {
-      case 7952: // Wireless
+      case 7967: // Wireless
         icon = 'icon-connection';
         break;
       case 7965: // Laptop
         icon = 'icon-laptop';
         break;
-      case 7954: // Printing
+      case 7966: // Printing
         icon = 'icon-print';
         break;
-      case 7955: // Electrical oulets
+      case 7968: // Electrical oulets
         icon = 'icon-power-cord';
         break;
-      case 7958: // Book drop
-      case 7951:
+      case 7971: // Book drop
+      case 7972:
         icon = 'icon-box-add';
         break;
       default:
@@ -114,21 +114,40 @@
               .value();
     };
 
+    amenities.getAmenityCategories = function (amenities) {
+      if (!amenities) {
+        return;
+      }
+
+      return _.chain(amenities)
+              .pluck('category')
+              .flatten(true)
+              .unique()
+              .value();
+    }
+
     amenities.createAmenitiesCategories = function (amenities) {
-      var categoryName = ['Computer Services', 'Circulation', 'Office Services',
-        'Facilities', 'Assistive Technologies'],
+      var default_order = ['Computer Services', 'Circulation',
+          'Printing and Copy Services', 'Facilities', 'Assistive Technologies'],
+        categoryNames,
         categories = [],
         categoryObj,
         self = this;
 
-      _.each(categoryName, function (category) {
+      if (!amenities) {
+        return;
+      }
+
+      categoryNames = this.getAmenityCategories(amenities);
+
+      _.each(categoryNames, function (category) {
         categoryObj = {};
         categoryObj.amenities = _.where(amenities, {'category': category});
         categoryObj.name = category;
         categoryObj.icon = self.getCategoryIcon(category);
 
         if (categoryObj.amenities.length) {
-          categories.push(categoryObj);
+          categories[_.indexOf(default_order, category)] = categoryObj;
         }
       });
 
@@ -155,7 +174,7 @@
       var initial_list = amenities,
         amenities_list = [];
 
-      if (!(amenities.length && rank && loc_rank)) {
+      if (!(amenities && amenities.length && rank && loc_rank)) {
         return; // default_amenities;
       }
 
@@ -172,6 +191,21 @@
       amenities_list = _.union(amenities_list, initial_list);
 
       return amenities_list;
+    };
+
+    amenities.getAmenityConfig = function (config, globalDefault, localDefault) {
+      var obj = {},
+        global = globalDefault || 3,
+        local  = localDefault || 2;
+      if (config.featured_amenities) {
+        obj.global = config.featured_amenities.global || global;
+        obj.local  = config.featured_amenities.local || local;
+      }
+      else {
+        obj.global = global;
+        obj.local  = local;
+      }
+      return obj;
     };
 
     return amenities;

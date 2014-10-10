@@ -5,199 +5,118 @@ describe, expect, beforeEach, inject, it, angular, spyOn */
 var  mockAllAmenities = {
     amenities: [
       {
-        name: "Computer Services",
-        amenities: [
-          {
-            _id: 7950,
-            _links: {
-              self: {href: "amenities/7950"},
-              info: {href: "help/computers-internet-and-wireless-access/reserving-computer"},
-              action: {name: "Reserve a PC", href: "http://pcreserve.nypl.org/"}
-            },
-            accessibility_note: null,
-            accessible: null,
-            category: "Computer Services",
-            id: 7950,
-            name: "Computers for Public Use",
-            rank: 1,
-            staff_assistance: null
-          },
-          {
-            _id: 7952,
-            _links: {
-              self: { href: "amenities/7952" },
-              info: { href: "help/computers-internet-and-wireless-access/wireless-internet-access"},
-              action: { name: null, href: null }
-            },
-            accessibility_note: null,
-            accessible: null,
-            category: "Computer Services",
-            id: 7952,
-            name: "Wireless Internet Access",
-            rank: 2,
-            staff_assistance: null
-          }
-        ]
+      "_links": {
+      "self": {
+      "href": "amenities/7995"
+      }
+      },
+      "category": "Circulation",
+      "id": 7995,
+      "name": "Self-service check-out",
+      "rank": null
       },
       {
-        name: "Circulation",
-        amenities: [
-          {
-            _id: 7957,
-            _links: {
-              self: { href: "amenities/7957" },
-              info: { href: "help/borrowing-materials" },
-              action: { name: null, href: null }
-            },
-            accessibility_note: null,
-            accessible: null,
-            category: "Circulation",
-            id: 7957,
-            name: "Self-service check-out",
-            rank: 4,
-            staff_assistance: null
-          },
-          {
-            _id: 7951,
-            _links: {
-              self: { href: "amenities/7951" },
-              info: { href: "help/borrowing-materials/book-drops" },
-              action: { name: null, href: null }
-            },
-            accessibility_note: null,
-            accessible: null,
-            category: "Circulation",
-            id: 7951,
-            name: "Book drop box (24 hour)",
-            rank: 3,
-            staff_assistance: null
-          }
-        ]
+      "_links": {
+      "self": {
+      "href": "amenities/7992"
+      }
+      },
+      "category": "Office Services",
+      "id": 7992,
+      "name": "Scanners",
+      "rank": null
       },
       {
-        name: "Office Services",
-        amenities: [
-          {
-            _id: 7961,
-            _links: {
-              self: { href: "amenities/7961" }
-            },
-            accessibility_note: null,
-            accessible: null,
-            category: "Office Services",
-            id: 7961,
-            name: "Photocopiers (black/white)",
-            rank: 5,
-            staff_assistance: null
-          },
-          {
-            _id: 7962,
-            _links: {
-              self: { href: "amenities/7962" }
-            },
-            accessibility_note: null,
-            accessible: null,
-            category: "Office Services",
-            id: 7962,
-            name: "Photocopiers (color)",
-            rank: 6,
-            staff_assistance: null
-          }
-        ]
+      "_links": {
+      "self": {
+      "href": "amenities/7999"
+      }
+      },
+      "category": "Facilities",
+      "id": 7999,
+      "name": "Water fountain",
+      "rank": null
       },
       {
-        name: "Facilities",
-        amenities: [
-          {
-            _id: 7967,
-            _links: {
-              self: { href: "amenities/7967" }
-            },
-            accessibility_note: null,
-            accessible: null,
-            category: "Facilities",
-            id: 7967,
-            name: "Children's Only Restrooms",
-            rank: 8,
-            staff_assistance: null
-          },
-          {
-            _id: 7971,
-            _links: {
-              self: { href: "amenities/7971" }
-            },
-            accessibility_note: null,
-            accessible: null,
-            category: "Facilities",
-            id: 7971,
-            name: "Bicycle Rack",
-            rank: 10,
-            staff_assistance: null
-          }
-        ]
+      "_links": {
+      "self": {
+      "href": "http://locations-api-alpha.herokuapp.com/amenities/7954"
+      }
+      },
+      "category": "Computer Services",
+      "id": 7954,
+      "name": "Printing (from PC)",
+      "rank": null
       },
       {
-        name: "Assistive Technologies",
-        amenities: [
-          {
-            _id: 7976,
-            _links: {
-              self: { href: "amenities/7976" }
-            },
-            accessibility_note: null,
-            accessible: null,
-            category: "Assistive Technologies",
-            id: 7976,
-            name: "Screen magnification software (MAGic)",
-            rank: null,
-            staff_assistance: null
-          },
-          {
-            _id: 7977,
-            _links: {
-              self: { href: "amenities/7977" }
-            },
-            accessibility_note: null,
-            accessible: null,
-            category: "Assistive Technologies",
-            id: 7977,
-            name: "Screen reading software (JAWS)",
-            rank: null,
-            staff_assistance: null
-          }
-        ]
+      "_links": {
+      "self": {
+      "href": "http://locations-api-alpha.herokuapp.com/amenities/7955"
+      }
+      },
+      "category": "Computer Services",
+      "id": 7955,
+      "name": "Electric outlets available",
+      "rank": null
       }
     ]
   },
   mockOneAmenity = {
     amenity: {
-      _id: 7987,
-      accessibility_note: null,
-      accessible: true,
-      category: "Facilities",
-      id: 7987,
-      location_rank: 5,
-      name: "Payphones",
-      rank: 5,
-      staff_assistance: null
-    },
-    locations: [
-      {
-        _id: "GD",
-        name: "Grand Concourse Library",
-        slug: "grand-concourse"
+      _links: {
+        self: {
+          href: "http://locations-api-alpha.herokuapp.com/amenities/7950"
+        },
+        info: {
+          href: null
+        },
+        action: {
+          name: "Reserve a PC",
+          href: null
+        }
       },
-      {
-        _id: "SASB",
-        name: "Stephen A. Schwarzman Building",
-        slug: "schwarzman"
-      },
-      {
-        _id: "MML",
-        name: "Mid-Manhattan Library",
-        slug: "mid-manhattan-library"
+      category: "Computer Services",
+      id: 7950,
+      name: "Computers for Public Use",
+      rank: 1,
+      _embedded: {
+        locations: [
+          {
+            name: "Mariners Harbor Library",
+            street_address: "206 South Ave",
+            cross_street: "between Arlington Pl. and Brabant St.",
+            locality: "Staten Island",
+            region: "NY",
+            access: "Fully Accessible",
+            postal_code: 10303,
+            type: "circulating",
+            slug: "mariners-harbor"
+          },
+          {
+            name: "Castle Hill Library",
+            street_address: "947 Castle Hill Avenue",
+            cross_street: "at Bruckner Blvd.",
+            locality: "Bronx",
+            region: "NY",
+            access: "Fully Accessible",
+            postal_code: 10473,
+            type: "circulating",
+            slug: "castle-hill"
+          },
+          {
+            name: "Van Cortlandt Library",
+            street_address: "3874 Sedgwick Avenue",
+            cross_street: "south of Mosholu Parkway",
+            locality: "Bronx",
+            region: "NY",
+            access: "Fully Accessible",
+            postal_code: 10463,
+            type: "circulating",
+            slug: "van-cortlandt"
+          }
+        ]
       }
-    ]
+    }
   },
   mockAmenitiesAtLibrary = {
     access: "Fully Accessible",
@@ -206,71 +125,70 @@ var  mockAllAmenities = {
     _embedded: {
       amenities: [
         {
-          name: "Computer Services",
-          amenities: [
-            {
-              _id: 7950,
-              _links: {
-                self: {href: "amenities/7950"},
-                info: {href: "help/computers-internet-and-wireless-access/reserving-computer"},
-                action: {name: "Reserve a PC", href: "http://pcreserve.nypl.org/"}
-              },
-              accessibility_note: null,
-              accessible: null,
-              category: "Computer Services",
-              id: 7950,
-              name: "Computers for Public Use",
-              rank: 1,
-              staff_assistance: null
-            },
-            {
-              _id: 7952,
-              _links: {
-                self: { href: "amenities/7952" },
-                info: { href: "help/computers-internet-and-wireless-access/wireless-internet-access"},
-                action: { name: null, href: null }
-              },
-              accessibility_note: null,
-              accessible: null,
-              category: "Computer Services",
-              id: 7952,
-              name: "Wireless Internet Access",
-              rank: 2,
-              staff_assistance: null
-            }
-          ]
-        },
-        {
-          name: "Office Services",
-          amenities: [
-            {
-              _id: 7961,
-              _links: {
-                self: { href: "amenities/7961" }
-              },
-              accessibility_note: null,
-              accessible: null,
-              category: "Office Services",
-              id: 7961,
-              name: "Photocopiers (black/white)",
-              rank: 5,
-              staff_assistance: null
-            },
-            {
-              _id: 7962,
-              _links: {
-                self: { href: "amenities/7962" }
-              },
-              accessibility_note: null,
-              accessible: null,
-              category: "Office Services",
-              id: 7962,
-              name: "Photocopiers (color)",
-              rank: 6,
-              staff_assistance: null
-            }
-          ]
-        },
+          location_rank: 1,
+          accessibility_note: null,
+          accessible: true,
+          staff_assistance: null,
+          amenity: {
+          _links: {
+          self: {
+          href: "http://locations-api-alpha.herokuapp.com/amenities/7950"
+          },
+          info: {
+          href: null
+          },
+          action: {
+          name: "Reserve a PC",
+          href: null
+          }
+          },
+          category: "Computer Services",
+          id: 7950,
+          name: "Computers for Public Use",
+          rank: 1
+          }
+          },
+          {
+          location_rank: 3,
+          accessibility_note: null,
+          accessible: true,
+          staff_assistance: null,
+          amenity: {
+          _links: {
+          self: {
+          href: "http://locations-api-alpha.herokuapp.com/amenities/7954"
+          }
+          },
+          category: "Computer Services",
+          id: 7954,
+          name: "Printing (from PC)",
+          rank: 3
+          }
+          },
+          {
+          location_rank: 4,
+          accessibility_note: null,
+          accessible: true,
+          staff_assistance: null,
+          amenity: {
+          _links: {
+          self: {
+          href: "http://locations-api-alpha.herokuapp.com/amenities/7952"
+          },
+          info: {
+          href: null
+          },
+          action: {
+          name: null,
+          href: null
+          }
+          },
+          category: "Computer Services",
+          id: 7952,
+          name: "Wireless Internet Access",
+          rank: 2
+          }
+        }
       ]
     }
   },
@@ -304,12 +222,12 @@ describe('Amenities Controllers', function () {
     });
 
     it('should get the mocked data with icons', function () {
-      var allAmenitiesWithIcons = mockAllAmenities;
-      allAmenitiesWithIcons =
-        nyplAmenities.addCategoryIcon(allAmenitiesWithIcons);
+      var allAmenitiesWithIcons;
+
+      allAmenitiesWithIcons = nyplAmenities.createAmenitiesCategories(mockAllAmenities.amenities);
 
       expect(scope.amenitiesCategories)
-        .toEqual(allAmenitiesWithIcons.amenities);
+        .toEqual(allAmenitiesWithIcons);
     });
   });
 
@@ -324,11 +242,11 @@ describe('Amenities Controllers', function () {
     }));
 
     it('should have the amenity name as the title', function () {
-      expect(scope.title).toEqual('Payphones');
+      expect(scope.title).toEqual('Computers for Public Use');
     });
 
     it('should display the amenity name on the page', function () {
-      expect(scope.amenity_name).toEqual('Payphones')
+      expect(scope.amenity_name).toEqual('Computers for Public Use')
     });
 
     it('should get the amenity object', function () {
@@ -337,7 +255,7 @@ describe('Amenities Controllers', function () {
 
     it('should get all the locations where the amenity is available',
       function () {
-        expect(scope.locations).toEqual(mockOneAmenity.locations);
+        expect(scope.locations).toEqual(mockOneAmenity.amenity._embedded.locations);
       });
   });
 
@@ -361,11 +279,12 @@ describe('Amenities Controllers', function () {
     });
 
     it('should add icons to the amenities', function () {
-      var amenitiesWithIcons = mockAmenitiesAtLibrary;
-      amenitiesWithIcons = 
-        nyplAmenities.addCategoryIcon(amenitiesWithIcons._embedded.amenities);
+      var updatedAmenities = 
+          nyplAmenities.allAmenitiesArray(mockAmenitiesAtLibrary._embedded.amenities),
+        amenitiesCategories =
+          nyplAmenities.createAmenitiesCategories(updatedAmenities);
 
-      expect(scope.amenitiesCategories).toEqual(amenitiesWithIcons);
+      expect(scope.amenitiesCategories).toEqual(amenitiesCategories);
     });
   });
 
