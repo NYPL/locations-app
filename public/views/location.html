@@ -331,7 +331,7 @@
           <span class="blog_location" data-ng-if="blog.author.location">, {{blog.author.location}}</span>
         </div>
         <time class="date" ><span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span></time>
-        <div class="teaser desc">{{blog.body | truncate}}</div>
+        <div class="teaser desc">{{blog.body}}</div>
       </div>
     </div>
     <!-- More Link -->

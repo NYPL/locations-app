@@ -172,6 +172,7 @@
     </div>
   </div>
 
+  <!-- Division Events -->
   <div class="container__events" data-ng-if="division._embedded.events">
     <h2 class="hdg">{{ 'EVENTS' | translate }}</h2>
     <ul class="grid">
@@ -280,7 +281,7 @@
           <span class="blog_location" data-ng-if="blog.author.location">, {{blog.author.location}}</span>
         </div>
         <time class="date" ><span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span></time>
-        <div class="desc">{{blog.body | truncate}}</div>
+        <div class="desc">{{blog.body}}</div>
       </div>
     </div>
     <!-- More Blogs Link -->
