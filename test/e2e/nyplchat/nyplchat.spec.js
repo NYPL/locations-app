@@ -10,7 +10,7 @@ describe('NYPL Chat Window', function () {
 
   describe('Circulating page nypl chat link: Battery Park City', function () {
     beforeEach(function () {
-      browser.get('/#/battery-park-city');
+      browser.get('/battery-park-city');
       browser.waitForAngular();
     });
 
@@ -56,7 +56,7 @@ describe('NYPL Chat Window', function () {
   describe('Research page nypl chat link: Schomburg', function () {
 
     beforeEach(function () {
-      browser.get('/#/schomburg');
+      browser.get('/schomburg');
       browser.waitForAngular();
     });
 
@@ -100,7 +100,7 @@ describe('NYPL Chat Window', function () {
   describe('Division page nypl chat link: Lionel Pincus and Princess Firyal Map Division', function () {
 
     beforeEach(function () {
-      browser.get('/#/divisions/map-division');
+      browser.get('/divisions/map-division');
       browser.waitForAngular();
     });
 
@@ -144,7 +144,7 @@ describe('NYPL Chat Window', function () {
   describe('Global Amenities page nypl chat link', function () {
 
     beforeEach(function () {
-      browser.get('/#/amenities');
+      browser.get('/amenities');
       browser.waitForAngular();
     });
 
@@ -188,7 +188,7 @@ describe('NYPL Chat Window', function () {
   describe('Amenities ID:4 "Computers for Public Use" page nypl chat link', function () {
 
     beforeEach(function () {
-      browser.get('/#/amenities/id/7950');
+      browser.get('/amenities/id/7964');
       browser.waitForAngular();
     });
 
@@ -232,7 +232,7 @@ describe('NYPL Chat Window', function () {
   describe('Amenities page for Schomburg nypl chat link', function () {
 
     beforeEach(function () {
-      browser.get('/#/amenities/loc/schomburg');
+      browser.get('/amenities/loc/schomburg');
       browser.waitForAngular();
     });
 
