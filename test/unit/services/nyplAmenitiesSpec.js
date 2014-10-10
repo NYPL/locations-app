@@ -104,11 +104,11 @@ describe('NYPL Amenities Service Tests', function () {
 
       it('should add special icon class names to the amenity', function () {
           var amenities = [
-              { 'id': 7952, 'name': 'Wireless Internet Access', 'category': 'Computer Services' },
+              { 'id': 7967, 'name': 'Wireless Internet Access', 'category': 'Computer Services' },
               { 'id': 7965, 'name': 'Laptops for Public Use', 'category': 'Computer Services' },
-              { 'id': 7955, 'name': 'Electrical outlets available', 'category': '' },
-              { 'id': 7954, 'name': 'Printing (From PC)', 'category': '' },
-              { 'id': 7958, 'name': 'Book Drop Box (24 Hour)', 'category': '' }
+              { 'id': 7968, 'name': 'Electrical outlets available', 'category': '' },
+              { 'id': 7966, 'name': 'Printing (From PC)', 'category': '' },
+              { 'id': 7971, 'name': 'Book Drop Box (24 Hour)', 'category': '' }
             ];
 
           expect(nyplAmenities.getAmenityIcon(amenities[0].id))
