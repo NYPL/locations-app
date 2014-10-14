@@ -71,15 +71,15 @@
             <span class="fully icon-accessibility"></span>
             {{division.access}}
           </div>
-          <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
+          <div data-ng-if="division.access == 'Partially Accessible'" class="accessible">
     
-                <div data-ng-if="location.accessibility_note">
+                <div data-ng-if="division.accessibility_note">
 	                <span class="partially icon-accessibility"></span>
-	                {{location.accessibility_note}}
+	                {{division.accessibility_note}}
                 </div>
-                <div data-ng-if="!location.accessibility_note">
+                <div data-ng-if="!division.accessibility_note">
 	               <span class="partially icon-accessibility"></span>
-	               {{location.access}}
+	               {{division.access}}
                 </div>
           </div>
           <div data-ng-if="!division.access" class="not-accessible">
