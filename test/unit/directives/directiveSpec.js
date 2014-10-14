@@ -301,9 +301,7 @@ describe('NYPL Directive Unit Tests', function () {
   describe('Directive: eventRegistration', function () {
     var eventRegistration, template;
     beforeEach(function () {
-      template = '<event-registration registration="{{registration}}" ' +
-        'type="{{registration.type}}" open="{{registration.open}}" ' +
-        'start="{{registation.start}}" link="{{registration.link}}">' +
+      template = '<event-registration registration="registration">' +
         '</event-registration>';
     });
 

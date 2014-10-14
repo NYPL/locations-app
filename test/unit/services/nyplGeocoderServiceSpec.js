@@ -384,9 +384,8 @@ describe('NYPL Geocoder Service Tests', function () {
       it('should call the controls function in the Maps API',
         function () {
           nyplGeocoderService
-            .drawMap({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-
-          nyplGeocoderService.drawLegend('all-locations-map');
+            .drawMap({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map')
+            .drawLegend('all-locations-map');
           expect(map_controls_push_mock).toHaveBeenCalled();
         });
     });

@@ -194,7 +194,7 @@
           global = globalDefault || 3,
           local  = localDefault || 2;
 
-        if (config.featured_amenities) {
+        if (config && config.featured_amenities) {
           obj.global = config.featured_amenities.global || global;
           obj.local  = config.featured_amenities.local || local;
         } else {
