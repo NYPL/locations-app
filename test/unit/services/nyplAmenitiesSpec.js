@@ -104,11 +104,11 @@ describe('NYPL Amenities Service Tests', function () {
 
       it('should add special icon class names to the amenity', function () {
           var amenities = [
-              { 'id': 7952, 'name': 'Wireless Internet Access', 'category': 'Computer Services' },
+              { 'id': 7967, 'name': 'Wireless Internet Access', 'category': 'Computer Services' },
               { 'id': 7965, 'name': 'Laptops for Public Use', 'category': 'Computer Services' },
-              { 'id': 7955, 'name': 'Electrical outlets available', 'category': '' },
-              { 'id': 7954, 'name': 'Printing (From PC)', 'category': '' },
-              { 'id': 7958, 'name': 'Book Drop Box (24 Hour)', 'category': '' }
+              { 'id': 7968, 'name': 'Electrical outlets available', 'category': '' },
+              { 'id': 7966, 'name': 'Printing (From PC)', 'category': '' },
+              { 'id': 7971, 'name': 'Book Drop Box (24 Hour)', 'category': '' }
             ];
 
           expect(nyplAmenities.getAmenityIcon(amenities[0].id))
@@ -333,8 +333,92 @@ describe('NYPL Amenities Service Tests', function () {
         });
     }); /* End nyplAmenities.allAmenitiesArray() */
 
-    describe('nyplAmenities.createAmenitiesCategories()', function () {
 
+    describe('nyplAmenities.getAmenityCategories()', function () {
+      var amenities = [
+        { 'id': 7950, 'name': 'Computers for Public Use', 'category': 'Computer Services' },
+        { 'id': 7967, 'name': 'Wireless Internet Access', 'category': 'Computer Services' },
+        { 'id': 234, 'name': 'Inter-Library Loan', 'category': 'Circulation' },
+        { 'id': 1234, 'name': 'Self-service check-out', 'category': 'Circulation' },
+        { 'id': 234, 'name': 'Photocopiers (black/white)', 'category': 'Printing and Copy Services' },
+        { 'id': 1234, 'name': 'Photocopiers (color)', 'category': 'Printing and Copy Services' },
+        { 'id': 7980, 'name': 'Public Restrooms', 'category': 'Facilities' },
+        {'id': 7990, 'name': 'Screen Magnification software (MAGic)', 'category': 'Assistive Technologies'},
+        {'id': 1234, 'name': 'Screen Reading software (JAWS)', 'category': 'Assistive Technologies'}
+      ];
+
+      it('should return undefined if no input was given', function () {
+        expect(nyplAmenities.getAmenityCategories()).not.toBeDefined();
+      });
+
+      it('should return an array of categories from each amenity "category" ' +
+        'property',
+        function () {
+          expect(nyplAmenities.getAmenityCategories(amenities))
+            .toEqual(['Computer Services', 'Circulation',
+              'Printing and Copy Services', 'Facilities', 'Assistive Technologies']);
+        });
+    }); /* End nyplAmenities.getAmenityCategories() */
+
+    describe('nyplAmenities.createAmenitiesCategories()', function () {
+      var amenities = [
+        { 'id': 7950, 'name': 'Computers for Public Use', 'category': 'Computer Services' },
+        { 'id': 7967, 'name': 'Wireless Internet Access', 'category': 'Computer Services' },
+        { 'id': 234, 'name': 'Inter-Library Loan', 'category': 'Circulation' },
+        { 'id': 1234, 'name': 'Self-service check-out', 'category': 'Circulation' },
+        { 'id': 234, 'name': 'Photocopiers (black/white)', 'category': 'Printing and Copy Services' },
+        { 'id': 1234, 'name': 'Photocopiers (color)', 'category': 'Printing and Copy Services' },
+        { 'id': 7980, 'name': 'Public Restrooms', 'category': 'Facilities' },
+        {'id': 7990, 'name': 'Screen Magnification software (MAGic)', 'category': 'Assistive Technologies'},
+        {'id': 1234, 'name': 'Screen Reading software (JAWS)', 'category': 'Assistive Technologies'}
+      ];
+
+      it('should return undefined if no input was given', function () {
+        expect(nyplAmenities.createAmenitiesCategories()).not.toBeDefined();
+      });
+
+      it('should generate an array of amenity categories', function () {
+        expect(nyplAmenities.createAmenitiesCategories(amenities))
+          .toEqual([
+            {
+              amenities: [
+                {id : 7950, name : 'Computers for Public Use', category : 'Computer Services' },
+                { id : 7967, name : 'Wireless Internet Access', category : 'Computer Services' }
+              ],
+              name: 'Computer Services',
+              icon: 'icon-screen2'
+            },
+            {
+              amenities: [
+                { id : 234, name : 'Inter-Library Loan', category : 'Circulation' },
+                { id : 1234, name : 'Self-service check-out', category : 'Circulation' }
+              ],
+              name: 'Circulation',
+              icon : 'icon-book'
+            },
+            {
+              amenities : [
+                { id : 234, name : 'Photocopiers (black/white)', category : 'Printing and Copy Services' },
+                { id : 1234, name : 'Photocopiers (color)', category : 'Printing and Copy Services' }
+              ],
+              name : 'Printing and Copy Services',
+              icon : 'icon-copy'
+            },
+            {
+              amenities : [ { id : 7980, name : 'Public Restrooms', category : 'Facilities' } ],
+              name : 'Facilities',
+              icon : 'icon-library'
+            },
+            {
+              amenities : [
+                { id : 7990, name : 'Screen Magnification software (MAGic)', category : 'Assistive Technologies' },
+                { id : 1234, name : 'Screen Reading software (JAWS)', category : 'Assistive Technologies' }
+              ],
+              name : 'Assistive Technologies',
+              icon : 'icon-accessibility2'
+            }
+          ]);
+      });
     }); /* End nyplAmenities.createAmenitiesCategories() */
 
     /*
@@ -490,6 +574,42 @@ describe('NYPL Amenities Service Tests', function () {
     }); /* End nyplAmenities.getHighlightedAmenities() */
 
     describe('nyplAmenities.getAmenityConfig()', function () {
+      var config = { featured_amenities: {} };
+
+      it('should return the default values of 3 and 2 for global and local ' +
+        'amenities respectively, when no input was given',
+        function () {
+          expect(nyplAmenities.getAmenityConfig())
+            .toEqual({ global: 3, local: 2 });
+        });
+
+      it('should set the values from the config object', function () {
+        config.featured_amenities.global = 4;
+        config.featured_amenities.local = 3;
+
+        expect(nyplAmenities.getAmenityConfig(config))
+          .toEqual({ global: 4, local: 3 });
+      });
+
+      it('should override the defaults when values are given and no values ' +
+        'are set in the config',
+        function () {
+          config.featured_amenities.global = undefined;
+          config.featured_amenities.local = undefined;
+
+          expect(nyplAmenities.getAmenityConfig(config, 5, 5))
+            .toEqual({ global: 5, local: 5 });
+        });
+
+     it('should use the config defaults even if values are given', function () {
+          config.featured_amenities.global = 3;
+          config.featured_amenities.local = 2;
+
+          expect(nyplAmenities.getAmenityConfig(config, 5, 5))
+            .toEqual({ global: 3, local: 2 });
+        });
+
+      
 
     }); /* End nyplAmenities.getAmenityConfig() */
 

@@ -6,11 +6,37 @@ describe('NYPL Chat Window', function () {
   'use strict';
 
   var chatElem = require('./nyplchat.po.js'),
-    appWindow = browser.getWindowHandle();
+    appWindow = browser.getWindowHandle(),
+    chatRegex = /http:\/\/www.nypl.org\/ask-librarian/;
+
+  // function verifyChatURL() {
+  //   browser.getAllWindowHandles().then(function (handles) {
+  //     var newWindowHandle = handles[1];
+  //     browser.switchTo().window(newWindowHandle).then(function () {
+  //       browser.driver.close().then(function () {
+  //         browser.switchTo().window(appWindow);
+  //       });
+  //     });
+  //   });
+  // }
+
+  function verifyChatURL() {
+    browser.getAllWindowHandles().then(function (handles) {
+      var newWindowHandle = handles[1];
+
+      browser.switchTo().window(newWindowHandle).then(function () {
+        browser.sleep(1000);
+        expect(browser.driver.getCurrentUrl()).toMatch(chatRegex);
+        browser.driver.close().then(function () {
+          browser.switchTo().window(appWindow);
+        });
+      });
+    });
+  }
 
   describe('Circulating page nypl chat link: Battery Park City', function () {
     beforeEach(function () {
-      browser.get('/#/battery-park-city');
+      browser.get('/battery-park-city');
       browser.waitForAngular();
     });
 
@@ -21,42 +47,20 @@ describe('NYPL Chat Window', function () {
     it('should add an active class to the link element, if none exist', function () {
       // May seem a bit unnecessary and too much for a simple test,
       // but it might be a good idea to close the window that pops up.
-      chatElem.chat_link.click().then(function () {
-        browser.getAllWindowHandles().then(function (handles) {
-          var newWindowHandle = handles[1];
-          browser.switchTo().window(newWindowHandle).then(function () {
-            browser.driver.close().then(function () {
-              browser.switchTo().window(appWindow);
-            });
-          });
-        });
-      });
+      chatElem.chat_link.click().then(verifyChatURL);
       browser.sleep(2000);
       expect(chatElem.chat_link.getAttribute('class')).toContain('active');
     });
 
     it('should open a new window with proper url params', function () {
-      chatElem.chat_link.click().then(function () {
-        browser.getAllWindowHandles().then(function (handles) {
-          var newWindowHandle = handles[1];
-
-          browser.switchTo().window(newWindowHandle).then(function () {
-            browser.sleep(1000);
-            expect(browser.driver.getCurrentUrl())
-              .toMatch(/http:\/\/www.nypl.org\/ask-librarian/);
-            browser.driver.close().then(function () {
-              browser.switchTo().window(appWindow);
-            });
-          });
-        });
-      });
+      chatElem.chat_link.click().then(verifyChatURL);
     });
   });
 
   describe('Research page nypl chat link: Schomburg', function () {
 
     beforeEach(function () {
-      browser.get('/#/schomburg');
+      browser.get('/schomburg');
       browser.waitForAngular();
     });
 
@@ -65,42 +69,20 @@ describe('NYPL Chat Window', function () {
     });
 
     it('should add an active class to the link element, if none exist', function () {
-      chatElem.chat_link.click().then(function () {
-        browser.getAllWindowHandles().then(function (handles) {
-          var newWindowHandle = handles[1];
-          browser.switchTo().window(newWindowHandle).then(function () {
-            browser.driver.close().then(function () {
-              browser.switchTo().window(appWindow);
-            });
-          });
-        });
-      });
+      chatElem.chat_link.click().then(verifyChatURL);
       browser.sleep(2000);
       expect(chatElem.chat_link.getAttribute('class')).toContain('active');
     });
 
     it('should open a new window with proper url params', function () {
-      chatElem.chat_link.click().then(function () {
-        browser.getAllWindowHandles().then(function (handles) {
-          var newWindowHandle = handles[1];
-
-          browser.switchTo().window(newWindowHandle).then(function () {
-            browser.sleep(1000);
-            expect(browser.driver.getCurrentUrl())
-              .toMatch(/http:\/\/www.nypl.org\/ask-librarian/);
-            browser.driver.close().then(function () {
-              browser.switchTo().window(appWindow);
-            });
-          });
-        });
-      });
+      chatElem.chat_link.click().then(verifyChatURL);
     });
   });
 
   describe('Division page nypl chat link: Lionel Pincus and Princess Firyal Map Division', function () {
 
     beforeEach(function () {
-      browser.get('/#/divisions/map-division');
+      browser.get('/divisions/map-division');
       browser.waitForAngular();
     });
 
@@ -109,42 +91,20 @@ describe('NYPL Chat Window', function () {
     });
 
     it('should add an active class to the link element, if none exist', function () {
-      chatElem.chat_link.click().then(function () {
-        browser.getAllWindowHandles().then(function (handles) {
-          var newWindowHandle = handles[1];
-          browser.switchTo().window(newWindowHandle).then(function () {
-            browser.driver.close().then(function () {
-              browser.switchTo().window(appWindow);
-            });
-          });
-        });
-      });
+      chatElem.chat_link.click().then(verifyChatURL);
       browser.sleep(2000);
       expect(chatElem.chat_link.getAttribute('class')).toContain('active');
     });
 
     it('should open a new window with proper url params', function () {
-      chatElem.chat_link.click().then(function () {
-        browser.getAllWindowHandles().then(function (handles) {
-          var newWindowHandle = handles[1];
-
-          browser.switchTo().window(newWindowHandle).then(function () {
-            browser.sleep(1000);
-            expect(browser.driver.getCurrentUrl())
-              .toMatch(/http:\/\/www.nypl.org\/ask-librarian/);
-            browser.driver.close().then(function () {
-              browser.switchTo().window(appWindow);
-            });
-          });
-        });
-      });
+      chatElem.chat_link.click().then(verifyChatURL);
     });
   });
 
   describe('Global Amenities page nypl chat link', function () {
 
     beforeEach(function () {
-      browser.get('/#/amenities');
+      browser.get('/amenities');
       browser.waitForAngular();
     });
 
@@ -153,42 +113,20 @@ describe('NYPL Chat Window', function () {
     });
 
     it('should add an active class to the link element, if none exist', function () {
-      chatElem.chat_link.click().then(function () {
-        browser.getAllWindowHandles().then(function (handles) {
-          var newWindowHandle = handles[1];
-          browser.switchTo().window(newWindowHandle).then(function () {
-            browser.driver.close().then(function () {
-              browser.switchTo().window(appWindow);
-            });
-          });
-        });
-      });
+      chatElem.chat_link.click().then(verifyChatURL);
       browser.sleep(2000);
       expect(chatElem.chat_link.getAttribute('class')).toContain('active');
     });
 
     it('should open a new window with proper url params', function () {
-      chatElem.chat_link.click().then(function () {
-        browser.getAllWindowHandles().then(function (handles) {
-          var newWindowHandle = handles[1];
-
-          browser.switchTo().window(newWindowHandle).then(function () {
-            browser.sleep(1000);
-            expect(browser.driver.getCurrentUrl())
-              .toMatch(/http:\/\/www.nypl.org\/ask-librarian/);
-            browser.driver.close().then(function () {
-              browser.switchTo().window(appWindow);
-            });
-          });
-        });
-      });
+      chatElem.chat_link.click().then(verifyChatURL);
     });
   });
 
   describe('Amenities ID:4 "Computers for Public Use" page nypl chat link', function () {
 
     beforeEach(function () {
-      browser.get('/#/amenities/id/7950');
+      browser.get('/amenities/id/7964');
       browser.waitForAngular();
     });
 
@@ -197,42 +135,20 @@ describe('NYPL Chat Window', function () {
     });
 
     it('should add an active class to the link element, if none exist', function () {
-      chatElem.chat_link.click().then(function () {
-        browser.getAllWindowHandles().then(function (handles) {
-          var newWindowHandle = handles[1];
-          browser.switchTo().window(newWindowHandle).then(function () {
-            browser.driver.close().then(function () {
-              browser.switchTo().window(appWindow);
-            });
-          });
-        });
-      });
+      chatElem.chat_link.click().then(verifyChatURL);
       browser.sleep(2000);
       expect(chatElem.chat_link.getAttribute('class')).toContain('active');
     });
 
     it('should open a new window with proper url params', function () {
-      chatElem.chat_link.click().then(function () {
-        browser.getAllWindowHandles().then(function (handles) {
-          var newWindowHandle = handles[1];
-
-          browser.switchTo().window(newWindowHandle).then(function () {
-            browser.sleep(1000);
-            expect(browser.driver.getCurrentUrl())
-              .toMatch(/http:\/\/www.nypl.org\/ask-librarian/);
-            browser.driver.close().then(function () {
-              browser.switchTo().window(appWindow);
-            });
-          });
-        });
-      });
+      chatElem.chat_link.click().then(verifyChatURL);
     });
   });
 
   describe('Amenities page for Schomburg nypl chat link', function () {
 
     beforeEach(function () {
-      browser.get('/#/amenities/loc/schomburg');
+      browser.get('/amenities/loc/schomburg');
       browser.waitForAngular();
     });
 
@@ -241,35 +157,13 @@ describe('NYPL Chat Window', function () {
     });
 
     it('should add an active class to the link element, if none exist', function () {
-      chatElem.chat_link.click().then(function () {
-        browser.getAllWindowHandles().then(function (handles) {
-          var newWindowHandle = handles[1];
-          browser.switchTo().window(newWindowHandle).then(function () {
-            browser.driver.close().then(function () {
-              browser.switchTo().window(appWindow);
-            });
-          });
-        });
-      });
+      chatElem.chat_link.click().then(verifyChatURL);
       browser.sleep(2000);
       expect(chatElem.chat_link.getAttribute('class')).toContain('active');
     });
 
     it('should open a new window with proper url params', function () {
-      chatElem.chat_link.click().then(function () {
-        browser.getAllWindowHandles().then(function (handles) {
-          var newWindowHandle = handles[1];
-
-          browser.switchTo().window(newWindowHandle).then(function () {
-            browser.sleep(1000);
-            expect(browser.driver.getCurrentUrl())
-              .toMatch(/http:\/\/www.nypl.org\/ask-librarian/);
-            browser.driver.close().then(function () {
-              browser.switchTo().window(appWindow);
-            });
-          });
-        });
-      });
+      chatElem.chat_link.click().then(verifyChatURL);
     });
   });
 

@@ -8,11 +8,6 @@
   function nyplAmenities() {
 
     var amenities = {},
-      default_amenities = [
-        { amenity: { name: 'Computers for Public Use', id: 7950 } },
-        { amenity: { name: 'Wireless Internet Access', id: 7950 } },
-        { amenity: { name: 'Printing (from PC)', id: 7950 } }
-      ],
       sortAmenitiesList = function (list, sortBy) {
         if (!(list instanceof Array)) {
           return;
@@ -124,7 +119,7 @@
               .flatten(true)
               .unique()
               .value();
-    }
+    };
 
     amenities.createAmenitiesCategories = function (amenities) {
       var default_order = ['Computer Services', 'Circulation',
@@ -175,7 +170,7 @@
         amenities_list = [];
 
       if (!(amenities && amenities.length && rank && loc_rank)) {
-        return; // default_amenities;
+        return;
       }
 
       // Sort the list of all amenities by institution rank.
@@ -193,20 +188,21 @@
       return amenities_list;
     };
 
-    amenities.getAmenityConfig = function (config, globalDefault, localDefault) {
-      var obj = {},
-        global = globalDefault || 3,
-        local  = localDefault || 2;
-      if (config.featured_amenities) {
-        obj.global = config.featured_amenities.global || global;
-        obj.local  = config.featured_amenities.local || local;
-      }
-      else {
-        obj.global = global;
-        obj.local  = local;
-      }
-      return obj;
-    };
+    amenities.getAmenityConfig =
+      function (config, globalDefault, localDefault) {
+        var obj = {},
+          global = globalDefault || 3,
+          local  = localDefault || 2;
+
+        if (config && config.featured_amenities) {
+          obj.global = config.featured_amenities.global || global;
+          obj.local  = config.featured_amenities.local || local;
+        } else {
+          obj.global = global;
+          obj.local  = local;
+        }
+        return obj;
+      };
 
     return amenities;
   }

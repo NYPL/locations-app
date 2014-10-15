@@ -27,20 +27,20 @@ describe('Locations: Amenities at a branch', function () {
   describe('Good API Call', function () {
     beforeEach(function () {
       // Pass the good JSON from the API call.
-      browser.addMockModule('httpBackendMock', httpBackendMock,
-          APIresponse.good);
-      browser.get('/#/amenities/loc/115th-street');
+      // browser.addMockModule('httpBackendMock', httpBackendMock,
+      //     APIresponse.good);
+      browser.get('/amenities/loc/grand-central');
       browser.waitForAngular();
     });
 
     it('should have a title', function () {
       expect(amenitiesPage.location_name.getText())
-        .toEqual('Amenities at 115th Street Library');
+        .toEqual('Amenities at grand Central Library');
     });
 
     describe('Amenities list', function () {
-      it('should contain five categories', function () {
-        expect(amenitiesPage.amenities_categories.count()).toBe(2);
+      it('should contain four categories', function () {
+        expect(amenitiesPage.amenities_categories.count()).toBe(4);
       });
 
       describe('Computer Services category', function () {
@@ -53,9 +53,9 @@ describe('Locations: Amenities at a branch', function () {
         it('should contain three amenities', function () {
           expect(amenitiesPage.getNthCategory(0)
             .element(by.css('.amenities-list')).getText())
-            .toEqual('Computers for Public Use Reserve a PC Learn more\n' +
-              'Printing (from PC)\n' +
-              'Wireless Internet Access Learn more');
+            .toEqual('Computers for Public Use\nReserve a PC Learn more\n' +
+              'Wireless Internet Access\nLearn more' +
+              'Printing (from PC)\n');
         });
       });
 
@@ -87,15 +87,15 @@ describe('Locations: Amenities at a branch', function () {
     });
   });
 
-  describe('Bad API Call', function () {
-    beforeEach(function () {
-      browser.addMockModule('httpBackendMock', httpBackendMock,
-          APIresponse.bad);
-      browser.get('/#/amenities/loc/115th-street');
-      browser.waitForAngular();
-    });
+  // describe('Bad API Call', function () {
+  //   beforeEach(function () {
+  //     browser.addMockModule('httpBackendMock', httpBackendMock,
+  //         APIresponse.bad);
+  //     browser.get('/#/amenities/loc/115th-street');
+  //     browser.waitForAngular();
+  //   });
 
-    // TODO: Write tests
-  });
+  //   // TODO: Write tests
+  // });
 
 });

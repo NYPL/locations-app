@@ -52,10 +52,10 @@ describe('Locations: Amenities', function () {
         it('should contain five amenities', function () {
           expect(amenitiesPage.getNthCategory(0)
             .element(by.css('.amenities-list')).getText())
-            .toEqual('Computers for Public Use Reserve a PC Learn more\n' +
-              'Wireless Internet Access Learn more\n' +
-              'Laptops for Public Use Reserve a Laptop Learn more\n' +
+            .toEqual('Computers for Public Use\nReserve a PC Learn more\n' +
+              'Wireless Internet Access\nLearn more\n' +
               'Printing (from PC)\n' +
+              'Laptops for Public Use\n' +
               'Electric outlets available');
         });
       });
@@ -70,12 +70,12 @@ describe('Locations: Amenities', function () {
         it('should contain six amenities', function () {
           expect(amenitiesPage.getNthCategory(1)
             .element(by.css('.amenities-list')).getText())
-            .toEqual('Inter-Library Loan\n' +
-              'Self-service check-out Learn more\n' +
-              'Book drop box (24 hour) Learn more\n' +
-              'Book drop box (limited hours) Learn more\n' +
-              'Books in Braille\n' +
-              'Talking Books');
+            .toEqual('Book drop box (24 hour)\nLearn more\n' +
+              'Self-service check-out\n' +
+              'Inter-Library Loan\nLearn more\n' +
+              'Book drop box (limited hours)\n' +
+              'Talking Books\nLearn more\n' +
+              'Books in braille\n');
         });
       });
 
@@ -92,8 +92,8 @@ describe('Locations: Amenities', function () {
             .toEqual('Photocopiers (black/white)\n' +
               'Photocopiers (color)\n' +
               'Scanners\n' +
-              'Map photocopiers (up to 36" wide)\n' +
-              'Change machine');
+              'Change machine\n' +
+              'Map photocopiers (up to 36" wide)');
         });
       });
 
@@ -107,12 +107,16 @@ describe('Locations: Amenities', function () {
         it('should contain six amenities', function () {
           expect(amenitiesPage.getNthCategory(3)
             .element(by.css('.amenities-list')).getText())
-            .toEqual('Public Restrooms\n' +
-              'Children\'s Only Restrooms\n' +
+            .toEqual('Children\'s Only Restrooms\n' +
+              'Changing station\n' +
+              'Bicycle Rack\n' +
               'Research Study Rooms\n' +
+              'Public Restrooms\n' +
               'Parking\n' +
               'Lost and found\n' +
-              'Bicycle Rack');
+              'Checkroom Service\n' +
+              'Payphones\n' +
+              'Water fountain');
         });
       });
 
@@ -126,12 +130,19 @@ describe('Locations: Amenities', function () {
         it('should contain six amenities', function () {
           expect(amenitiesPage.getNthCategory(4)
             .element(by.css('.amenities-list')).getText())
-            .toEqual('Screen magnification software (MAGic)\n' +
-              'Screen reading software (JAWS)\n' +
-              'Closed-Circuit Television Enlargers (CCTVs)\n' +
-              'Scanner/reading Rooms\n' +
-              'Brailler Translation Software\n' +
-              'Braille Embossing');
+            .toEqual('Screen magnification software (MAGic)\nLearn more\n' +
+              'Screen reading software (JAWS)\nLearn more\n' +
+              'Adjustable height tables\n' +
+              'Braille embossing\n' +
+              'Brailler translation software\n' +
+              'Closed-Circuit Television Enlargers (CCTVs)\nLearn more\n' +
+              'Refreshable braille display\n' +
+              'Scanner/Reading Rooms\n' +
+              'Braille writers\nLearn more' +
+              'Assistive Amplification Systems\nLearn more\n' +
+              'Telecommunications Devices for the Deaf (TTYs)\n' +
+              'Personal Reading Machines\nLearn more\n' +
+              'VRS (Video Relay Service)');
         });
       });
     });

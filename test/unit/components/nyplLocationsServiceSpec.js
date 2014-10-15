@@ -79,7 +79,7 @@ describe('NYPL locationService Module', function () {
 
 
           httpBackend.flush();
-          expect(configData).toEqual(api);
+          expect(configData).toEqual({api_root: api});
         });
 
         it('should return an error', function () {

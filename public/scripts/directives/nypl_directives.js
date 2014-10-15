@@ -119,26 +119,23 @@ function eventRegistration($filter) {
         templateUrl: 'scripts/directives/templates/registration.html',
         replace: true,
         scope: {
-            registration: '@',
-            type: '@',
-            open: '@',
-            start: '@',
-            link: '@'
+            registration: '=',
+            status: '='
         },
         link: function (scope, element, attrs) {
-            scope.online = false;
+            // scope.online = false;
 
-            if (scope.type === 'Online') {
-                scope.online = true;
+            // if (scope.type === 'Online') {
+            //     scope.online = true;
 
-                if (scope.open === 'true') {
-                    scope.registration_available = "Registration opens on " +
-                        $filter('date')(scope.start, 'MMMM d, y - h:mma');
-                } else {
-                    scope.registration_available =
-                        "Registration for this event is closed.";
-                }
-            }
+            //     if (scope.open === 'true') {
+            //         scope.registration_available = "Registration opens on " +
+            //             $filter('date')(scope.start, 'MMMM d, y - h:mma');
+            //     } else {
+            //         scope.registration_available =
+            //             "Registration for this event is closed.";
+            //     }
+            // }
         }
     };
 }

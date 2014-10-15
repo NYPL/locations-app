@@ -12,7 +12,7 @@
 
     <div class="grid">
       <div class="amenities">
-        <div class="grid__item one-whole lap-and-up-one-third amenity-category-list" data-ng-repeat="category in amenitiesCategories" data-ng-if="amenitiesCategories">
+        <div class="grid__item one-whole lap-and-up-one-third amenity-category-list" data-ng-repeat="category in amenitiesCategories track by $index" data-ng-if="amenitiesCategories && category">
           <div class="amenity-box">
             <h3>
               <span class="{{category.icon}} category_title">{{category.name}}</span>
