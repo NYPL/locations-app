@@ -110,11 +110,11 @@ describe('Locations: Page to Page tests', function () {
         .toEqual('http://localhost:9292/schwarzman');
 
       expect(locationPage.divisions.count()).toBe(9);
-      locationPage.divisions.get(0).element(by.css('h4 a')).click();
+      element(by.linkText('General Research Division')).click();
 
       browser.waitForAngular();
       expect(browser.getLocationAbsUrl()).toEqual('http://localhost:9292/' +
-        'divisions/berg-collection-english-and-american-literature');
+        'divisions/general-research-division');
 
       element(by.css('.nypl-logo a')).click();
       browser.waitForAngular();

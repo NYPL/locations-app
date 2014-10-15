@@ -126,6 +126,7 @@ describe('Locations: Header SSO Login', function () {
           browser.get('/');
           // Mock the logged in cookie from Bibliocommons.
           browser.manage().addCookie('bc_username', 'edwinguzman');
+          browser.sleep(1000);
           browser.waitForAngular();
         });
 
@@ -217,10 +218,10 @@ describe('Locations: Header SSO Login', function () {
         });
         expect(header.loginForm.getCssValue('display')).toEqual('block');
 
-        locationPage.divisions.get(0).element(by.css('h4 a')).click();
+        element(by.linkText('General Research Division')).click();
         browser.waitForAngular();
         expect(browser.getLocationAbsUrl()).toEqual('http://localhost:9292/' +
-          'divisions/manuscripts-division');
+          'divisions/general-research-division');
 
         expect(header.loginBtn.getText()).toEqual('LOG IN');
         cookieObj = browser.manage().getCookie('bc_username');
@@ -260,10 +261,10 @@ describe('Locations: Header SSO Login', function () {
         });
         expect(header.loggedInMenu.getCssValue('display')).toEqual('block');
 
-        locationPage.divisions.get(0).element(by.css('h4 a')).click();
+        element(by.linkText('General Research Division')).click();
         browser.waitForAngular();
         expect(browser.getLocationAbsUrl()).toEqual('http://localhost:9292/' +
-          'divisions/manuscripts-division');
+          'divisions/general-research-division');
 
         expect(header.loginBtn.getText()).toEqual('edwinguzman');
         cookieObj = browser.manage().getCookie('bc_username');
