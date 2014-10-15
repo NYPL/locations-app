@@ -35,7 +35,7 @@ describe('Locations: Amenities at a branch', function () {
 
     it('should have a title', function () {
       expect(amenitiesPage.location_name.getText())
-        .toEqual('Amenities at grand Central Library');
+        .toEqual('Amenities at Grand Central Library');
     });
 
     describe('Amenities list', function () {
@@ -50,26 +50,61 @@ describe('Locations: Amenities at a branch', function () {
             .toEqual('Computer Services');
         });
 
-        it('should contain three amenities', function () {
+        it('should contain five amenities', function () {
           expect(amenitiesPage.getNthCategory(0)
             .element(by.css('.amenities-list')).getText())
             .toEqual('Computers for Public Use\nReserve a PC Learn more\n' +
-              'Wireless Internet Access\nLearn more' +
-              'Printing (from PC)\n');
+              'Laptops for Public Use\n' +
+              'Printing (from PC)\n' +
+              'Wireless Internet Access\nLearn more\n' +
+              'Electric outlets available');
+        });
+      });
+
+      describe('Circulation category', function () {
+        it('should display the category name', function () {
+          expect(amenitiesPage.getNthCategory(1)
+            .element(by.css('.category_title')).getText())
+            .toEqual('Circulation');
+        });
+
+        it('should contain three amenities', function () {
+          expect(amenitiesPage.getNthCategory(1)
+            .element(by.css('.amenities-list')).getText())
+            .toEqual('Inter-Library Loan\nLearn more\n' +
+              'Self-service check-out\n' +
+              'Book drop box (limited hours)');
+        });
+      });
+
+      describe('Printing and Copy Services category', function () {
+        it('should display the category name', function () {
+          expect(amenitiesPage.getNthCategory(2)
+            .element(by.css('.category_title')).getText())
+            .toEqual('Printing and Copy Services');
+        });
+
+        it('should contain two amenities', function () {
+          expect(amenitiesPage.getNthCategory(2)
+            .element(by.css('.amenities-list')).getText())
+            .toEqual('Photocopiers (black/white)\n' +
+              'Photocopiers (color)');
         });
       });
 
       describe('Facilities category', function () {
         it('should display the category name', function () {
-          expect(amenitiesPage.getNthCategory(1)
+          expect(amenitiesPage.getNthCategory(3)
             .element(by.css('.category_title')).getText())
             .toEqual('Facilities');
         });
 
         it('should contain three amenities', function () {
-          expect(amenitiesPage.getNthCategory(1)
+          expect(amenitiesPage.getNthCategory(3)
             .element(by.css('.amenities-list')).getText())
-            .toEqual('Children\'s Only Restrooms');
+            .toEqual('Public Restrooms\n' +
+              'Lost and found\n' +
+              'Water fountain');
         });
       });
     });
@@ -94,8 +129,6 @@ describe('Locations: Amenities at a branch', function () {
   //     browser.get('/#/amenities/loc/115th-street');
   //     browser.waitForAngular();
   //   });
-
-  //   // TODO: Write tests
   // });
 
 });

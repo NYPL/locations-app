@@ -31,13 +31,21 @@ describe('Locations: Amenity', function () {
       browser.get('/amenities/id/7964');
     });
 
+    it('should have a "Reserve a PC" link', function () {
+      expect(amenitiesPage.action_link.getText()).toEqual('Reserve a PC');
+    });
+
+    it('should have a "Learn more" link', function () {
+      expect(amenitiesPage.learn_more.getText()).toEqual('Learn more');
+    });
+
     it('should display the name of the service', function () {
       expect(amenitiesPage.amenity_name.getText())
         .toEqual('Computers for Public Use');
     });
 
     it('should display a list of locations', function () {
-      expect(amenitiesPage.locations.count()).toBe(89);
+      expect(amenitiesPage.locations.count()).toBe(86);
     });
   });
 
@@ -60,7 +68,5 @@ describe('Locations: Amenity', function () {
   //     browser.get('/#/amenities/id/7950');
   //     browser.waitForAngular();
   //   });
-
-  //   // TODO: Write tests
   // });
 });
