@@ -10,12 +10,21 @@ describe('Locations: Amenity', function () {
     // Function that creates a module that is injected at run time,
     // overrides and mocks httpbackend to mock API call. 
     httpBackendMock = function (response) {
+      var API_URL = 'http://locations-api-alpha.herokuapp.com';
+
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
+          $httpBackend.whenGET('/languages/en.json').passThrough();
+          $httpBackend.whenGET('/views/amenities.html').passThrough();
+          $httpBackend.whenGET('/config').passThrough();
+
           $httpBackend
-            .whenJSONP('http://locations-api-beta.nypl.org' +
-              '/amenities/7950?callback=JSON_CALLBACK')
+            .whenJSONP(API_URL + '/amenities/7964?callback=JSON_CALLBACK')
             .respond(response);
+
+          $httpBackend
+            .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
+            .respond({});
 
           // For everything else, don't mock
           $httpBackend.whenGET(/^\w+.*/).passThrough();
@@ -26,8 +35,8 @@ describe('Locations: Amenity', function () {
 
   describe('Good API Call', function () {
     beforeEach(function () {
-      // browser.addMockModule('httpBackendMock', httpBackendMock,
-      //     APIresponse.good);
+      browser.addMockModule('httpBackendMock', httpBackendMock,
+          APIresponse.good);
       browser.get('/amenities/id/7964');
     });
 
@@ -45,7 +54,8 @@ describe('Locations: Amenity', function () {
     });
 
     it('should display a list of locations', function () {
-      expect(amenitiesPage.locations.count()).toBe(86);
+      // More in the real response but only 5 in the mock response.
+      expect(amenitiesPage.locations.count()).toBe(5);
     });
   });
 
