@@ -1,16 +1,20 @@
 <div class="registration-for-event">
-  <div data-ng-if="registration">
+  <div data-ng-if="registration && status.status">
     {{ 'REGISTRATION' | translate }}:
-    <span class="registration_type" data-ng-if="!online">{{type}}</span>
+    <span class="registration_type" data-ng-if="!online">{{registration.type}}</span>
     <a class="registration_type btn btn--natural" data-ng-if="online"
-      data-ng-href="{{link}}#register"
+      data-ng-href="{{registration.link}}#register"
       analytics-on="click" analytics-category="Locations"
-      analytics-event="Register" analytics-label="{{link}}">
-      {{type}}
+      analytics-event="Register" analytics-label="{{registration.link}}">
+      {{registration.type}}
     </a>
 
     <div data-ng-if="online" class="registration-available">
       <p>{{registration_available}}</p>
     </div>
+  </div>
+
+  <div data-ng-if="!status.status">
+    <p class="event-cancel">{{status.label | uppercase}}</p>
   </div>
 </div>

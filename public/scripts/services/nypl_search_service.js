@@ -72,12 +72,6 @@
       lazyFilter = $filter('filter')(locations, searchTerm);
       strictFilter = $filter('filter')(locations, searchTerm, true);
 
-      if (strictFilter !== undefined && strictFilter.length !== 0) {
-        // Rarely occurs but just in case there are results for
-        // both filters, the strict match should appear first
-        return _.union(strictFilter, lazyFilter);
-      }
-
       return lazyFilter;
     };
 

@@ -1,5 +1,6 @@
 /*jslint indent: 2, maxlen: 80 */
-/*global describe, require, beforeEach, browser, it, expect, element, by */
+/*global describe, require, beforeEach, browser, it,
+console, protractor, expect, element, by */
 
 
 describe('Google analytics configuration', function () {
@@ -35,7 +36,7 @@ describe('Google analytics configuration', function () {
       browser.waitForAngular();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[1][1]).toEqual('pageview')
+        expect(ga[1][1]).toEqual('pageview');
         expect(ga[1][2]).toEqual('/115th-street');
       });
     });
@@ -163,92 +164,102 @@ describe('Google analytics configuration', function () {
     });
 
     describe('Library click events', function () {
-      it('should track a click on a library\'s name on the list view', function () {
-        landingPage.nthLocLink(0).click();
-        browser.waitForAngular();
+      it('should track a click on a library\'s name on the list view',
+        function () {
+          landingPage.nthLocLink(0).click();
+          browser.waitForAngular();
 
-        browser.executeScript('return window.ga_msg;').then(function (ga) {
-          // ga[0] is the click event on the library name from the list
-          // ga[1] is the pageview event
-          expect(ga[0][2]).toEqual('Locations');
-          expect(ga[0][3]).toEqual('Click');
-          expect(ga[0][4]).toEqual('115th Street Library (list)');
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            // ga[0] is the click event on the library name from the list
+            // ga[1] is the pageview event
+            expect(ga[0][2]).toEqual('Locations');
+            expect(ga[0][3]).toEqual('Click');
+            expect(ga[0][4]).toEqual('115th Street Library (list)');
 
-          expect(ga[1][1]).toEqual('pageview');
-          expect(ga[1][2]).toEqual('/115th-street');
+            expect(ga[1][1]).toEqual('pageview');
+            expect(ga[1][2]).toEqual('/115th-street');
+          });
         });
-      });
 
-      it('should track a click on a library\'s name on the map view', function () {
-        landingPage.search('mid manhattan');
-        browser.sleep(1000);
+      it('should track a click on a library\'s name on the map view',
+        function () {
+          landingPage.search('mid manhattan');
+          browser.sleep(1000);
 
-        landingPage.nthLocLink(0).click();
-        browser.waitForAngular();
+          landingPage.nthLocLink(0).click();
+          browser.waitForAngular();
 
-        browser.executeScript('return window.ga_msg;').then(function (ga) {
-          // ga[0] is the pageview to the map page (from the search)
-          // ga[1] is the click event on the library name from the list
-          // ga[2] is the pageview event
-          expect(ga[2][2]).toEqual('Locations');
-          expect(ga[2][3]).toEqual('Click');
-          expect(ga[2][4]).toEqual('Mid-Manhattan Library (map)');
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            // ga[0] is the pageview to the map page (from the search)
+            // ga[1] is the click event on the library name from the list
+            // ga[2] is the pageview event
+            expect(ga[2][2]).toEqual('Locations');
+            expect(ga[2][3]).toEqual('Click');
+            expect(ga[2][4]).toEqual('Mid-Manhattan Library (map)');
 
-          expect(ga[3][1]).toEqual('pageview');
-          expect(ga[3][2]).toEqual('/mid-manhattan-library');
+            expect(ga[3][1]).toEqual('pageview');
+            expect(ga[3][2]).toEqual('/mid-manhattan-library');
+          });
         });
-      });
 
-      it('should track a click on a library\'s View on Map button on the list view', function () {
-        landingPage.nthLocViewMapBtn(0).click();
-        browser.waitForAngular();
+      it('should track a click on a library\'s View on Map button on the ' +
+        'list view',
+        function () {
+          landingPage.nthLocViewMapBtn(0).click();
+          browser.waitForAngular();
 
-        browser.executeScript('return window.ga_msg;').then(function (ga) {
-          expect(ga[0][2]).toEqual('Locations');
-          expect(ga[0][3]).toEqual('View map');
-          expect(ga[0][4]).toEqual('115th Street Library (list)');
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Locations');
+            expect(ga[0][3]).toEqual('View map');
+            expect(ga[0][4]).toEqual('115th Street Library (list)');
 
-          expect(ga[1][1]).toEqual('pageview');
-          expect(ga[1][2]).toEqual('/map');
+            expect(ga[1][1]).toEqual('pageview');
+            expect(ga[1][2]).toEqual('/map');
+          });
         });
-      });
 
-      it('should track a click on a library\'s View on Map button on the map view', function () {
-        landingPage.mapViewBtn.click();
-        browser.waitForAngular();
+      it('should track a click on a library\'s View on Map button on the ' +
+        'map view',
+        function () {
+          landingPage.mapViewBtn.click();
+          browser.waitForAngular();
 
-        landingPage.nthLocViewMapBtn(0).click();
+          landingPage.nthLocViewMapBtn(0).click();
 
-        browser.executeScript('return window.ga_msg;').then(function (ga) {
-          expect(ga[2][2]).toEqual('Locations');
-          expect(ga[2][3]).toEqual('View map');
-          expect(ga[2][4]).toEqual('115th Street Library (map)');
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[2][2]).toEqual('Locations');
+            expect(ga[2][3]).toEqual('View map');
+            expect(ga[2][4]).toEqual('115th Street Library (map)');
+          });
         });
-      });
 
-      it('should track a click on a library\'s direction button on the list view', function () {
-        landingPage.nthLoc(0).element(by.css('.icon-compass')).click();
-        browser.sleep(500);
+      it('should track a click on a library\'s direction button on the ' +
+        'list view',
+        function () {
+          landingPage.nthLoc(0).element(by.css('.icon-compass')).click();
+          browser.sleep(500);
 
-        browser.executeScript('return window.ga_msg;').then(function (ga) {
-          expect(ga[0][2]).toEqual('Locations');
-          expect(ga[0][3]).toEqual('Directions');
-          expect(ga[0][4]).toEqual('115th Street Library (list)');
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Locations');
+            expect(ga[0][3]).toEqual('Directions');
+            expect(ga[0][4]).toEqual('115th Street Library (list)');
+          });
         });
-      });
 
-      it('should track a click on a library\'s direction button on the map view', function () {
-        landingPage.search('mid manhattan');
-        browser.sleep(500);
-        landingPage.nthLoc(0).element(by.css('.icon-compass')).click();
-        browser.sleep(500);
+      it('should track a click on a library\'s direction button on the ' +
+        'map view',
+        function () {
+          landingPage.search('mid manhattan');
+          browser.sleep(500);
+          landingPage.nthLoc(0).element(by.css('.icon-compass')).click();
+          browser.sleep(500);
 
-        browser.executeScript('return window.ga_msg;').then(function (ga) {
-          expect(ga[2][2]).toEqual('Locations');
-          expect(ga[2][3]).toEqual('Directions');
-          expect(ga[2][4]).toEqual('Mid-Manhattan Library (map)');
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[2][2]).toEqual('Locations');
+            expect(ga[2][3]).toEqual('Directions');
+            expect(ga[2][4]).toEqual('Mid-Manhattan Library (map)');
+          });
         });
-      });
     });
   });
 
@@ -292,7 +303,7 @@ describe('Google analytics configuration', function () {
       browser.executeScript(mockGA());
 
       locationPage.social_media.each(function (sm) {
-        sm.click().then(function (e) {
+        sm.click().then(function () {
           browser.navigate().back();
           // browser.getAllWindowHandles().then(function (handles) {
           //   var newWindowHandle = handles[1];
@@ -303,9 +314,9 @@ describe('Google analytics configuration', function () {
           //     });
           //   });
 
-          //   // browser.executeScript('return window.ga_msg;').then(function (ga) {
-          //   //   console.log(ga);
-          //   // });
+          // browser.executeScript('return window.ga_msg;').then(function (ga) {
+          //   console.log(ga);
+          // });
           // });
         });
       });
@@ -398,9 +409,9 @@ describe('Google analytics configuration', function () {
 
   describe('Autofill events', function () {
     beforeEach(function () {
-        browser.get('/');
-        browser.waitForAngular();
-        browser.executeScript(mockGA());
+      browser.get('/');
+      browser.waitForAngular();
+      browser.executeScript(mockGA());
     });
 
     it('should track when ENTER was pressed for an accepted search suggestion',
@@ -414,7 +425,7 @@ describe('Google analytics configuration', function () {
           expect(ga[0][3]).toEqual('Accept');
           expect(ga[0][4]).toEqual('Grand Central Library');
 
-          expect(ga[1][1]).toEqual('pageview')
+          expect(ga[1][1]).toEqual('pageview');
           expect(ga[1][2]).toEqual('/grand-central');
         });
       });
@@ -428,7 +439,7 @@ describe('Google analytics configuration', function () {
         expect(ga[0][3]).toEqual('Search');
         expect(ga[0][4]).toEqual('grand');
 
-        expect(ga[1][1]).toEqual('pageview')
+        expect(ga[1][1]).toEqual('pageview');
         expect(ga[1][2]).toEqual('/map');
       });
     });
@@ -444,7 +455,7 @@ describe('Google analytics configuration', function () {
         expect(ga[0][3]).toEqual('Select');
         expect(ga[0][4]).toEqual('Baychester Library');
 
-        expect(ga[1][1]).toEqual('pageview')
+        expect(ga[1][1]).toEqual('pageview');
         expect(ga[1][2]).toEqual('/baychester');
       });
     });
@@ -460,7 +471,7 @@ describe('Google analytics configuration', function () {
         expect(ga[0][3]).toEqual('Select search');
         expect(ga[0][4]).toEqual('tottenville');
 
-        expect(ga[1][1]).toEqual('pageview')
+        expect(ga[1][1]).toEqual('pageview');
         expect(ga[1][2]).toEqual('/map');
       });
     });
@@ -476,7 +487,7 @@ describe('Google analytics configuration', function () {
         expect(ga[0][3]).toEqual('Select view map');
         expect(ga[0][4]).toEqual('Harlem Library');
 
-        expect(ga[1][1]).toEqual('pageview')
+        expect(ga[1][1]).toEqual('pageview');
         expect(ga[1][2]).toEqual('/map');
       });
     });
