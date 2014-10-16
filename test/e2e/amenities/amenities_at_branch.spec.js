@@ -16,7 +16,9 @@ describe('Locations: Amenities at a branch', function () {
         .run(function ($httpBackend) {
           $httpBackend.whenGET('/languages/en.json').passThrough();
           $httpBackend.whenGET('/views/amenities.html').passThrough();
-          $httpBackend.whenGET('/config').passThrough();
+          $httpBackend
+            .whenGET('/config')
+            .respond({ config: { api_root: API_URL } });
 
           $httpBackend
             .whenJSONP(API_URL +
