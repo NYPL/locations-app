@@ -14,7 +14,9 @@ describe('Circulating branch page', function () {
         .run(function ($httpBackend) {
           $httpBackend.whenGET('/languages/en.json').passThrough();
           $httpBackend.whenGET('/views/amenities.html').passThrough();
-          $httpBackend.whenGET('/config').passThrough();
+          $httpBackend
+            .whenGET('/config')
+            .respond({ config: { api_root: API_URL } });
 
           $httpBackend
             .whenJSONP(API_URL +
@@ -88,9 +90,9 @@ describe('Circulating branch page', function () {
           'available%3A%22Grand+Central%22&circ=CIRC|NON%20CIRC');
     });
 
-    it('should display five social media icons', function () {
+    it('should display four social media icons', function () {
       expect(locationPage.social_media_container.isPresent()).toBe(true);
-      expect(locationPage.social_media.count()).toBe(5);
+      expect(locationPage.social_media.count()).toBe(4);
     });
 
     it('should display hours for today', function () {
@@ -132,7 +134,7 @@ describe('Circulating branch page', function () {
 
     it('should have a \'See more events\' link', function () {
       expect(locationPage.events_more_link.getAttribute('href'))
-        .toEqual('http://dev.www.aws.nypl.org/events/calendar?location=871');
+        .toEqual('http://wwww.nypl.org/events/calendar?location=871');
     });
 
     describe('individual event', function () {
