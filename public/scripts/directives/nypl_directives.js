@@ -250,7 +250,6 @@ function nyplFundraising($timeout, nyplLocationsService) {
             fundraising: '=fundraising'
         },
         link: function (scope, elem, attrs) {
-            console.log(scope.fundraising);
             if (!scope.fundraising) {
                 $timeout(function () {
                     nyplLocationsService.getConfig().then(function (data) {
