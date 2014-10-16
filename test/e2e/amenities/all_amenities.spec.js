@@ -92,7 +92,7 @@ describe('Locations: Amenities', function () {
         it('should display the category name', function () {
           expect(amenitiesPage.getNthCategory(2)
             .element(by.css('.category_title')).getText())
-            .toEqual('Printing and Copy Services');
+            .toEqual('Print and Copy Services');
         });
 
         it('should contain five amenities', function () {
@@ -171,9 +171,9 @@ describe('Locations: Amenities', function () {
 
   // describe('Bad API Call', function () {
   //   beforeEach(function () {
-  //     browser.addMockModule('httpBackendMock', httpBackendMock,
-  //         APIresponse.bad);
-  //     browser.get('/#/amenities');
+  //     // browser.addMockModule('httpBackendMock', httpBackendMock,
+  //     //     APIresponse.bad);
+  //     browser.get('/amenities');
   //     browser.waitForAngular();
   //   });
   // });

@@ -441,5 +441,9 @@
     .factory('nyplUtility', nyplUtility)
     .factory('requestNotificationChannel', requestNotificationChannel);
 
+  angular
+    .module('nypl_widget')
+    .factory('nyplUtility', nyplUtility)
+    .factory('requestNotificationChannel', requestNotificationChannel);
 })();
 
