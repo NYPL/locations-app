@@ -18,7 +18,9 @@ describe('Locations: Division - Testing General Research Division',
           .run(function ($httpBackend) {
             $httpBackend.whenGET('/languages/en.json').passThrough();
             $httpBackend.whenGET('/views/amenities.html').passThrough();
-            $httpBackend.whenGET('/config').passThrough();
+            $httpBackend
+              .whenGET('/config')
+              .respond({ config: { api_root: API_URL } });
 
             $httpBackend
               .whenJSONP(API_URL +
@@ -133,7 +135,7 @@ describe('Locations: Division - Testing General Research Division',
 
         it('should have a \'Learn More\' link going to nypl.org', function () {
           expect(divisionPage.learn_more_link.getAttribute('href'))
-            .toEqual('http://nypl.org/locations/schwarzman/' +
+            .toEqual('http://nypl.org/about/divisions/' +
               'general-research-division');
         });
 
@@ -163,7 +165,7 @@ describe('Locations: Division - Testing General Research Division',
 
       describe('Featured content section', function () {
         it('should display the section', function () {
-          expect(divisionPage.features_container.isPresent()).toBe(true);
+          expect(divisionPage.features_container.isPresent()).toBe(false);
         });
       });
 
@@ -183,7 +185,7 @@ describe('Locations: Division - Testing General Research Division',
         it('should have a \'See more blogs\' link going to nypl.org',
           function () {
             expect(divisionPage.blogs_more_link.getAttribute('href'))
-              .toEqual('http://www.nypl.org/blog/library/394');
+              .toEqual('http://nypl.org/blog/library/394');
           });
       });
 

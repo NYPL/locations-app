@@ -16,7 +16,9 @@ describe('Locations: Amenities', function () {
         .run(function ($httpBackend) {
           $httpBackend.whenGET('/languages/en.json').passThrough();
           $httpBackend.whenGET('/views/amenities.html').passThrough();
-          $httpBackend.whenGET('/config').passThrough();
+          $httpBackend
+            .whenGET('/config')
+            .respond({ config: { api_root: API_URL } });
 
           $httpBackend
             .whenJSONP(API_URL + '/amenities?callback=JSON_CALLBACK')
@@ -92,7 +94,7 @@ describe('Locations: Amenities', function () {
         it('should display the category name', function () {
           expect(amenitiesPage.getNthCategory(2)
             .element(by.css('.category_title')).getText())
-            .toEqual('Print and Copy Services');
+            .toEqual('Printing and Copy Services');
         });
 
         it('should contain five amenities', function () {
