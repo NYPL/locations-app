@@ -24,10 +24,10 @@ exports.config = {
     location: ['test/e2e/location/circulating.spec.js',
       'test/e2e/location/research.spec.js'],
     division: ['test/e2e/division/division.spec.js'],
-    nyplchat: ['test/e2e/nyplchat/nyplchat.spec.js'],
     amenities: ['test/e2e/amenities/all_amenities.spec.js',
       'test/e2e/amenities/amenity.spec.js',
       'test/e2e/amenities/amenities_at_branch.spec.js'],
+    nyplchat: ['test/e2e/nyplchat/nyplchat.spec.js'],
     pagetopage: ['test/e2e/page-to-page/page_to_page.spec.js'],
     sso: ['test/e2e/page-to-page/sso_cookies.spec.js'],
     analytics: ['test/e2e/analytics/analytics.spec.js']

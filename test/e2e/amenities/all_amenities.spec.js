@@ -10,12 +10,21 @@ describe('Locations: Amenities', function () {
     // Function that creates a module that is injected at run time,
     // overrides and mocks httpbackend to mock API call. 
     httpBackendMock = function (response) {
+      var API_URL = 'http://locations-api-alpha.herokuapp.com';
+
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
+          $httpBackend.whenGET('/languages/en.json').passThrough();
+          $httpBackend.whenGET('/views/amenities.html').passThrough();
+          $httpBackend.whenGET('/config').passThrough();
+
           $httpBackend
-            .whenJSONP('http://locations-api-beta.nypl.org' +
-                '/amenities?callback=JSON_CALLBACK')
+            .whenJSONP(API_URL + '/amenities?callback=JSON_CALLBACK')
             .respond(response);
+
+          $httpBackend
+            .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
+            .respond({});
 
           // For everything else, don't mock
           $httpBackend.whenGET(/^\w+.*/).passThrough();
@@ -27,8 +36,8 @@ describe('Locations: Amenities', function () {
   describe('Good API Call', function () {
     beforeEach(function () {
       // Pass the good JSON from the API call.
-      // browser.addMockModule('httpBackendMock', httpBackendMock,
-      //     APIresponse.good);
+      browser.addMockModule('httpBackendMock', httpBackendMock,
+          APIresponse.good);
       browser.get('/amenities');
       browser.waitForAngular();
     });
@@ -53,9 +62,9 @@ describe('Locations: Amenities', function () {
           expect(amenitiesPage.getNthCategory(0)
             .element(by.css('.amenities-list')).getText())
             .toEqual('Computers for Public Use\nReserve a PC Learn more\n' +
-              'Wireless Internet Access\nLearn more\n' +
-              'Printing (from PC)\n' +
               'Laptops for Public Use\n' +
+              'Printing (from PC)\n' +
+              'Wireless Internet Access\nLearn more\n' +
               'Electric outlets available');
         });
       });
@@ -70,16 +79,16 @@ describe('Locations: Amenities', function () {
         it('should contain six amenities', function () {
           expect(amenitiesPage.getNthCategory(1)
             .element(by.css('.amenities-list')).getText())
-            .toEqual('Book drop box (24 hour)\nLearn more\n' +
+            .toEqual('Inter-Library Loan\nLearn more\n' +
               'Self-service check-out\n' +
-              'Inter-Library Loan\nLearn more\n' +
+              'Book drop box (24 hour)\n' +
               'Book drop box (limited hours)\n' +
-              'Talking Books\nLearn more\n' +
-              'Books in braille\n');
+              'Books in braille\n' +
+              'Talking books\nLearn more');
         });
       });
 
-      describe('Print and Copy Services category', function () {
+      describe('Printing and Copy Services category', function () {
         it('should display the category name', function () {
           expect(amenitiesPage.getNthCategory(2)
             .element(by.css('.category_title')).getText())
@@ -92,8 +101,8 @@ describe('Locations: Amenities', function () {
             .toEqual('Photocopiers (black/white)\n' +
               'Photocopiers (color)\n' +
               'Scanners\n' +
-              'Change machine\n' +
-              'Map photocopiers (up to 36" wide)');
+              'Map photocopiers (up to 36" wide)\n' +
+              'Change machine');
         });
       });
 
@@ -107,15 +116,15 @@ describe('Locations: Amenities', function () {
         it('should contain six amenities', function () {
           expect(amenitiesPage.getNthCategory(3)
             .element(by.css('.amenities-list')).getText())
-            .toEqual('Children\'s Only Restrooms\n' +
-              'Changing station\n' +
-              'Bicycle Rack\n' +
+            .toEqual('Public Restrooms\n' +
+              'Children\'s Only Restrooms\n' +
               'Research Study Rooms\n' +
-              'Public Restrooms\n' +
               'Parking\n' +
               'Lost and found\n' +
+              'Bicycle Rack\n' +
               'Checkroom Service\n' +
               'Payphones\n' +
+              'Changing station\n' +
               'Water fountain');
         });
       });
@@ -132,17 +141,17 @@ describe('Locations: Amenities', function () {
             .element(by.css('.amenities-list')).getText())
             .toEqual('Screen magnification software (MAGic)\nLearn more\n' +
               'Screen reading software (JAWS)\nLearn more\n' +
-              'Adjustable height tables\n' +
-              'Braille embossing\n' +
-              'Brailler translation software\n' +
               'Closed-Circuit Television Enlargers (CCTVs)\nLearn more\n' +
+              'Scanner/Reading Machines\n' +
+              'Braille translation software\n' +
+              'Braille embossing\n' +
               'Refreshable braille display\n' +
-              'Scanner/Reading Rooms\n' +
-              'Braille writers\nLearn more' +
+              'Adjustable height tables\n' +
+              'Braille writers\nLearn more\n' +
               'Assistive Amplification Systems\nLearn more\n' +
               'Telecommunications Devices for the Deaf (TTYs)\n' +
-              'Personal Reading Machines\nLearn more\n' +
-              'VRS (Video Relay Service)');
+              'VRS (Video Relay Service)\n' +
+              'Personal Reading Machines\nLearn more');
         });
       });
     });
