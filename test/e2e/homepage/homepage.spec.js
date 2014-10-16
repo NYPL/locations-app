@@ -8,12 +8,22 @@ describe('Locations: homepage', function () {
   var landingPage = require('./homepage.po.js'),
     APIresponse = require('../APImocks/homepage.js'),
     httpBackendMock = function (response) {
+      var API_URL = 'http://locations-api-alpha.herokuapp.com';
+
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
+          $httpBackend.whenGET('/languages/en.json').passThrough();
+          $httpBackend.whenGET('/views/amenities.html').passThrough();
+          $httpBackend.whenGET('/config').passThrough();
+
           $httpBackend
-            .whenJSONP('http://locations-api-beta.nypl.org' +
-              '/locations?callback=JSON_CALLBACK')
+            .whenJSONP(API_URL + '/locations?callback=JSON_CALLBACK')
             .respond(response);
+
+          $httpBackend
+            .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
+            .respond({});
+
           // For everything else, don't mock
           $httpBackend.whenGET(/^\w+.*/).passThrough();
           $httpBackend.whenGET(/.*/).passThrough();
@@ -23,8 +33,8 @@ describe('Locations: homepage', function () {
 
   beforeEach(function () {
     // Pass the good JSON from the API call.
-    // browser.addMockModule('httpBackendMock', httpBackendMock, APIresponse.good);
-    browser.get('/#/');
+    browser.addMockModule('httpBackendMock', httpBackendMock, APIresponse.good);
+    browser.get('/');
     browser.waitForAngular();
   });
 

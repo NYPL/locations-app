@@ -81,10 +81,10 @@ describe('Locations: Amenities', function () {
             .element(by.css('.amenities-list')).getText())
             .toEqual('Inter-Library Loan\nLearn more\n' +
               'Self-service check-out\n' +
-              'Book drop box (24 hour)\nLearn more\n' +
+              'Book drop box (24 hour)\n' +
               'Book drop box (limited hours)\n' +
               'Books in braille\n' +
-              'Talking Books\nLearn more');
+              'Talking books\nLearn more');
         });
       });
 
@@ -142,12 +142,12 @@ describe('Locations: Amenities', function () {
             .toEqual('Screen magnification software (MAGic)\nLearn more\n' +
               'Screen reading software (JAWS)\nLearn more\n' +
               'Closed-Circuit Television Enlargers (CCTVs)\nLearn more\n' +
-              'Scanner/Reading Rooms\n' +
+              'Scanner/Reading Machines\n' +
               'Braille translation software\n' +
               'Braille embossing\n' +
               'Refreshable braille display\n' +
               'Adjustable height tables\n' +
-              'Braille writers\nLearn more' +
+              'Braille writers\nLearn more\n' +
               'Assistive Amplification Systems\nLearn more\n' +
               'Telecommunications Devices for the Deaf (TTYs)\n' +
               'VRS (Video Relay Service)\n' +

@@ -6,20 +6,19 @@ describe('Locations: Division - Testing General Research Division',
   function () {
     'use strict';
 
-    var API_URL = 'http://locations-api-alpha.herokuapp.com',
-      divisionPage = require('./division.po.js'),
+    var divisionPage = require('./division.po.js'),
       // Get json for a division API call.
       APIresponse = require('../APImocks/division.js'),
       // Function that creates a module that is injected at run time,
       // overrides and mocks httpbackend to mock API call. 
       httpBackendMock = function (response) {
+        var API_URL = 'http://locations-api-alpha.herokuapp.com';
+
         angular.module('httpBackendMock', ['ngMockE2E'])
           .run(function ($httpBackend) {
-            // $httpBackend
-            //   .whenGET('http://localhost:9292/config')
-            //   .respond({
-            //     api: 'http://locations-api-beta.nypl.org'
-            //   });
+            $httpBackend.whenGET('/languages/en.json').passThrough();
+            $httpBackend.whenGET('/views/amenities.html').passThrough();
+            $httpBackend.whenGET('/config').passThrough();
 
             $httpBackend
               .whenJSONP(API_URL +
@@ -27,8 +26,7 @@ describe('Locations: Division - Testing General Research Division',
               .respond(response);
 
             $httpBackend
-              .whenJSONP(API_URL +
-                '/alerts?callback=JSON_CALLBACK')
+              .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
               .respond({});
 
             // For everything else, don't mock
@@ -45,7 +43,6 @@ describe('Locations: Division - Testing General Research Division',
             APIresponse.good);
         browser.get('/divisions/general-research-division');
         browser.waitForAngular();
-        // browser.sleep(10000);
       });
 
       describe('Division top information section', function () {
