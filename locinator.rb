@@ -83,6 +83,10 @@ class Locinator < Sinatra::Base
     }
     jsonp response
   end
+
+  get %r{/widget/.*} do
+    erb :widget
+  end
     
 
   get %r{/.*$} do

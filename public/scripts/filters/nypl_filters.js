@@ -199,4 +199,7 @@
         .filter('hoursTodayFormat', hoursTodayFormat)
         .filter('truncate', truncate);
 
+    angular
+        .module('nypl_widget')
+        .filter('hoursTodayFormat', hoursTodayFormat);
 })();
