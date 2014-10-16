@@ -134,7 +134,7 @@ describe('Circulating branch page', function () {
 
     it('should have a \'See more events\' link', function () {
       expect(locationPage.events_more_link.getAttribute('href'))
-        .toEqual('http://wwww.nypl.org/events/calendar?location=871');
+        .toEqual('http://www.nypl.org/events/calendar?location=871');
     });
 
     describe('individual event', function () {
@@ -146,7 +146,7 @@ describe('Circulating branch page', function () {
 
         it('should pass the correct date', function () {
           expect(locationPage.google.get(0).getAttribute('href'))
-            .toMatch(/dates\=20140814T200000Z\/20140814T200000Z/);
+            .toMatch(/dates\=20141017T193000Z\/20141017T213000Z/);
         });
       });
 
@@ -158,7 +158,7 @@ describe('Circulating branch page', function () {
 
         it('should pass the correct start time', function () {
           expect(locationPage.yahoo.get(0).getAttribute('href'))
-            .toMatch(/ST\=20140814T200000Z/);
+            .toMatch(/ST\=20141017T193000Z/);
         });
       });
     });
