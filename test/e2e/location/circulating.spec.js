@@ -8,12 +8,22 @@ describe('Circulating branch page', function () {
   var locationPage = require('./location.po.js'),
     APIresponse = require('../APImocks/circulating.js'),
     httpBackendMock = function (response) {
+      var API_URL = 'http://locations-api-alpha.herokuapp.com';
+
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
+          $httpBackend.whenGET('/languages/en.json').passThrough();
+          $httpBackend.whenGET('/views/amenities.html').passThrough();
+          $httpBackend.whenGET('/config').passThrough();
+
           $httpBackend
-            .whenJSONP('http://locations-api-beta.nypl.org' +
+            .whenJSONP(API_URL +
               '/locations/grand-central?callback=JSON_CALLBACK')
             .respond(response);
+
+          $httpBackend
+            .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
+            .respond({});
 
           // For everything else, don't mock
           $httpBackend.whenGET(/^\w+.*/).passThrough();
@@ -26,7 +36,7 @@ describe('Circulating branch page', function () {
     // Pass the good JSON from the API call.
     browser.addMockModule('httpBackendMock', httpBackendMock,
       APIresponse.good);
-    browser.get('/#/grand-central');
+    browser.get('/grand-central');
     browser.waitForAngular();
   });
 
@@ -191,7 +201,7 @@ describe('Circulating branch page', function () {
   describe('specific scenarios', function () {
     beforeEach(function () {
       browser.addMockModule('httpBackendMock', httpBackendMock);
-      browser.get('/#/grand-central');
+      browser.get('/grand-central');
       browser.waitForAngular();
     });
 

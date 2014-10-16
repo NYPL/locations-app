@@ -1,0 +1,111 @@
+<!-- Widget Location/Division -->
+<div id="container__widget_info">
+  <div class="grid">
+    <div id="container__image" class="grid__item desk-one-third">
+      <img class="img--outline" data-ng-if="data.open" data-ng-src="{{data.images.exterior}}"
+        alt="Image of {{data.name}}" title="Image of {{data.name}}" />
+      <img class="img--outline" data-ng-if="!data.open" data-ng-src="{{data.images.closed}}"
+        alt="Branch Closed" title="Branch closed" />
+    </div><!--
+
+    --><div id="container__address" class="grid__item one-whole lap-one-half desk-one-third">
+      <!-- This is h-card microformat -->
+      <!-- http://microformats.org/wiki/h-card -->
+      <div class="p-adr" data-ng-if="!division">
+        <div class="p-street-address">{{data.street_address}}</div>
+        <span class="p-locality">{{data.locality}}</span>, 
+        <span class="p-region">{{data.region}}</span>, 
+        <span class="p-postal-code">{{data.postal_code}}</span>
+        <div class="p-tel">{{data.contacts.phone}}</div>
+        <div class="p-manager" data-ng-if="data.contacts.manager">
+          Library Manager: {{data.contacts.manager}}
+        </div>
+      </div>
+
+      <div class="p-adr" data-ng-if="division">
+        <div class="div_name">{{data._embedded.location.name}}</div>
+        <div class="p-street-address">{{data._embedded.location.street_address}}</div>
+        <div data-ng-if="data.cross_street">{{data._embedded.location.cross_street}}</div>
+        <div data-ng-if="data.floor">
+          <span>{{data.floor}}, </span>
+          <span data-ng-if="data.room" class="room">Room {{data.room}}</span>
+        </div>
+        <span class="p-locality">{{data._embedded.location.locality}}</span>, 
+        <span class="p-region">{{data._embedded.location.region}}</span>, 
+        <span class="p-postal-code">{{data._embedded.location.postal_code}}</span>
+        <div class="p-tel">{{data.contacts.phone}}</div>
+        <div class="p-manager" data-ng-if="data.contacts.manager">
+          Library Manager: {{data.contacts.manager}}
+        </div>
+      </div>
+
+      <!-- Accessibility -->
+      <div id="accessibility__container">
+        <div data-ng-if="data.access == 'Fully Accessible'" class="accessible">
+          <span class="fully icon-accessibility"></span>
+          {{data.access}}
+        </div>
+        <div data-ng-if="data.access == 'Partially Accessible'" class="accessible">
+          <span class="partially icon-accessibility"></span>
+          {{data.access}}
+        </div>
+        <div data-ng-if="!data.access" class="not-accessible">
+          <span class="none icon-accessibility"></span>
+          Not Accessible
+        </div>
+      </div>
+
+      <div class="map-directions" data-ng-if="!division">
+        <a class="icon-compass"
+          data-ng-href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">
+          Get Directions
+        </a>
+      </div>
+
+      <div class="on-shelves" data-ng-if="data.type != 'research'">
+        <a id="catalog-link" class="icon-books" 
+          data-ng-if="data._links.on_shelves && data.open"
+          data-ng-href="{{ data._links.on_shelves.href }}">
+          On Our Shelves Now
+        </a>
+      </div>
+
+      <div class="social flush beta" data-ng-if="data.social_media">
+        <a class="{{social.classes}}" data-ng-href="{{social.href}}" id="social_media"
+          data-ng-repeat="social in data.social_media" class="inline"
+          title="{{social.site}}"></a>
+      </div>
+    </div><!--
+
+    --><div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
+      <!-- Display for open Location/Division -->
+      <div class="callout branch-open" data-ng-if="data.open">
+        <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat:'short'}}" />
+      </div>
+      <div class="callout branch-closed" data-ng-if="!data.open">
+        <h2>Branch is temporarily closed.</h2>
+      </div>
+    </div><!--
+      
+    --><div class="grid__item lap-one-half one-whole grid--center learn-more">
+      <p>
+        <a href="{{locinator_url}}">Learn about hours, amenities, events, and more.</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Ask/Donate -->
+  <div class="ask-donate">
+    <nypl-fundraising fundraising="data.fundraising"></nypl-fundraising><!--
+
+    --><div class="askNYPL grid__item one-whole lap-and-up-one-half " id="ask-nypl">
+      <ul>
+        <li class="asknum icon-phone">
+          <a href="tel:917-275-6975">917-ASK-NYPL</a>
+        </li>
+        <li><librarianchatbutton /></li>
+        <li><emailusbutton link="{{data._links.contact.href}}" /></li>
+      </ul>
+    </div>
+  </div>
+</div>

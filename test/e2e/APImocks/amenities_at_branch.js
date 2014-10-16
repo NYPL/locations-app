@@ -47,7 +47,7 @@ var response = {
               category: "Computer Services",
               id: 7965,
               name: "Laptops for Public Use",
-              rank: 20
+              rank: 2
             }
           },
           {
@@ -64,7 +64,7 @@ var response = {
               category: "Computer Services",
               id: 7966,
               name: "Printing (from PC)",
-              rank: 11
+              rank: 3
             }
           },
           {
@@ -88,7 +88,7 @@ var response = {
               category: "Computer Services",
               id: 7967,
               name: "Wireless Internet Access",
-              rank: 2
+              rank: 4
             }
           },
           {
@@ -105,7 +105,7 @@ var response = {
               category: "Computer Services",
               id: 7968,
               name: "Electric outlets available",
-              rank: 33
+              rank: 5
             }
           },
           {
@@ -129,7 +129,7 @@ var response = {
               category: "Circulation",
               id: 7969,
               name: "Inter-Library Loan",
-              rank: 16
+              rank: 6
             }
           },
           {
@@ -146,7 +146,7 @@ var response = {
               category: "Circulation",
               id: 7970,
               name: "Self-service check-out",
-              rank: 4
+              rank: 7
             }
           },
           {
@@ -163,7 +163,7 @@ var response = {
               category: "Circulation",
               id: 7972,
               name: "Book drop box (limited hours)",
-              rank: 21
+              rank: 8
             }
           },
           {
@@ -180,7 +180,7 @@ var response = {
               category: "Printing and Copy Services",
               id: 7975,
               name: "Photocopiers (black/white)",
-              rank: 5
+              rank: 9
             }
           },
           {
@@ -197,7 +197,7 @@ var response = {
               category: "Printing and Copy Services",
               id: 7976,
               name: "Photocopiers (color)",
-              rank: 6
+              rank: 10
             }
           },
           {
@@ -214,7 +214,7 @@ var response = {
               category: "Facilities",
               id: 7980,
               name: "Public Restrooms",
-              rank: 14
+              rank: 11
             }
           },
           {
@@ -231,7 +231,7 @@ var response = {
               category: "Facilities",
               id: 7984,
               name: "Lost and found",
-              rank: 28
+              rank: 12
             }
           },
           {

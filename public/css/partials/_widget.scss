@@ -1,0 +1,33 @@
+
+.nypl-widget-wrapper {
+  margin: 20px auto 0;
+  padding: 0 24px;
+  max-width: 1200px;
+  @include breakpoint($min, $pre-tablet) {
+    margin: 0 auto;
+  }
+
+  .learn-more {
+    margin-top: 20px;
+  }
+
+  .ask-donate {
+    margin-top: 0px;
+  }
+
+  #catalog-link {
+    background-color: lighten(#0090c4, 50%);
+    border: 1px solid transparent;
+    border-radius: 2px;
+    color: darken(#0090c4, 10%);
+    padding: 4px;
+    text-decoration: none;
+    margin-left: .35em;
+    
+    &:hover {
+      //border: 1px solid #0090c4;
+      background-color: #0090c4;
+      color:#fff;
+    }
+  }
+}
