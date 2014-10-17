@@ -11,7 +11,7 @@
     nyplCoordinatesService,
     nyplUtility
   ) {
-    var url = 'http://locations-beta.nypl.org',
+    var url = config.self,
       loadUserCoordinates = function () {
       return nyplCoordinatesService
         .getBrowserCoordinates()
