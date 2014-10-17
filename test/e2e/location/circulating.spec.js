@@ -13,7 +13,6 @@ describe('Circulating branch page', function () {
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
           $httpBackend.whenGET('/languages/en.json').passThrough();
-          $httpBackend.whenGET('/views/amenities.html').passThrough();
           $httpBackend
             .whenGET('/config')
             .respond({ config: { api_root: API_URL } });

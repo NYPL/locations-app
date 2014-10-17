@@ -24,7 +24,7 @@
       </div>
 
       <div class="p-adr" data-ng-if="division">
-        <div class="div_name">{{data._embedded.location.name}}</div>
+        <div class="location-name">{{data._embedded.location.name}}</div>
         <div class="p-street-address">{{data._embedded.location.street_address}}</div>
         <div data-ng-if="data.cross_street">{{data._embedded.location.cross_street}}</div>
         <div data-ng-if="data.floor">

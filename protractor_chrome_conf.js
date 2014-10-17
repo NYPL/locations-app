@@ -30,7 +30,8 @@ exports.config = {
     nyplchat: ['test/e2e/nyplchat/nyplchat.spec.js'],
     pagetopage: ['test/e2e/page-to-page/page_to_page.spec.js'],
     sso: ['test/e2e/page-to-page/sso_cookies.spec.js'],
-    analytics: ['test/e2e/analytics/analytics.spec.js']
+    analytics: ['test/e2e/analytics/analytics.spec.js'],
+    widget: ['test/e2e/widget/widget.spec.js']
   },
 
   // onPrepare: function () {
