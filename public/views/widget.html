@@ -2,8 +2,9 @@
 <div id="container__widget_info">
   <div class="widget-content">
     <div id="container__image" class="grid__item desk-one-third">
-      <img class="img--outline" data-ng-if="data.open" data-ng-src="{{data.images.exterior}}"
-        alt="Image of {{data.name}}" title="Image of {{data.name}}" />
+      <img class="img--outline" data-ng-if="data.open && data.images.exterior"
+        data-ng-src="{{data.images.exterior}}" alt="Image of {{data.name}}"
+        title="Image of {{data.name}}" />
       <img class="img--outline" data-ng-if="!data.open" data-ng-src="{{data.images.closed}}"
         alt="Branch Closed" title="Branch closed" />
     </div><!--
