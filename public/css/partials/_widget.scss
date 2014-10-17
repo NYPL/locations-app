@@ -11,10 +11,6 @@
     margin-top: 20px;
   }
 
-  .ask-donate {
-    margin-top: 0px;
-  }
-
   #catalog-link {
     background-color: lighten(#0090c4, 50%);
     border: 1px solid transparent;
@@ -29,5 +25,21 @@
       background-color: #0090c4;
       color:#fff;
     }
+  }
+
+  .learn-more {
+    a {
+      font-weight: bold;
+    }
+  }
+
+  .widget-content {
+    border: 1px solid #e2dedb;
+    padding-right: 20px;
+    padding-top: 20px;
+  }
+
+  .ask-donate {
+    margin-top: 25px;
   }
 }
