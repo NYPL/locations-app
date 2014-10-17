@@ -384,6 +384,7 @@
             $scope.geolocationAddressOrSearchQuery = '';
             $scope.searchError = '';
             showLibrariesTypeOf();
+            $scope.researchBranches = false;
             nyplGeocoderService.showAllLibraries();
             $scope.searchTerm =  searchTerm;
 

@@ -66,8 +66,8 @@ var response = {
         ],
         exceptions: {
           start: "2014-10-16T14:45:31-04:00",
-          end: "2014-10-17T00:00:00-04:00",
-          description: "Our Research Divisions have various hours. To see their operating hours, please click here: <a href="/locations/tid/64/schomburg-collections">Research Collections</a>. The exhibition galleries and The Gift Shop are OPEN Monday—Saturday. "
+          end: "2015-10-17T00:00:00-04:00",
+          description: "Our Research Divisions have various hours. To see their operating hours, please click here: <a href=\"/locations/tid/64/schomburg-collections\">Research Collections</a>. The exhibition galleries and The Gift Shop are OPEN Monday—Saturday. "
         }
       },
       id: "SC",
@@ -622,7 +622,7 @@ var response = {
           href: "http://www.nypl.org/locations/tid/64/node/65912"
           }
           },
-          body: "<p><span id="docs-internal-guid-01b1f701-f132-c16d-4a9c-bb78126545b5"><span>The Schomburg Center </span><span>advances knowledge of the global black experience through dynamic</span><span> </span><span>programs and exhibitions.</span></span></p> ",
+          body: "<p><span id=\"docs-internal-guid-01b1f701-f132-c16d-4a9c-bb78126545b5\"><span>The Schomburg Center </span><span>advances knowledge of the global black experience through dynamic</span><span> </span><span>programs and exhibitions.</span></span></p> ",
           id: 275373,
           image: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/features/Screen%20Shot%202014-10-08%20at%203.35.16%20PM.png",
           title: "Programs and Exhibitions",
@@ -634,7 +634,7 @@ var response = {
           href: "http://www.nypl.org/about/locations/schomburg/fellowships"
           }
           },
-          body: "<p><span id="docs-internal-guid-01b1f701-f12a-5250-cdd1-1bb06c871360"><span>The Schomburg Center serves learners from Pre-K to PhD, with its dynamic educational programs, institutes and fellowships.</span></span></p> ",
+          body: "<p><span id=\"docs-internal-guid-01b1f701-f12a-5250-cdd1-1bb06c871360\"><span>The Schomburg Center serves learners from Pre-K to PhD, with its dynamic educational programs, institutes and fellowships.</span></span></p> ",
           id: 275365,
           image: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/features/Screen%20Shot%202014-10-08%20at%204.34.01%20PM.png",
           title: "Education, Institutes, and Fellowships",
@@ -646,7 +646,7 @@ var response = {
           href: "http://www.nypl.org/about/locations/schomburg/digital-schomburg"
           }
           },
-          body: "<p><span id="docs-internal-guid-01b1f701-f134-392b-b66a-a066654382aa"><span>Digital Schomburg provides access to trusted information, interpretation, and scholarship on the global black experience.</span></span></p> ",
+          body: "<p><span id=\"docs-internal-guid-01b1f701-f134-392b-b66a-a066654382aa\"><span>Digital Schomburg provides access to trusted information, interpretation, and scholarship on the global black experience.</span></span></p> ",
           id: 55392,
           image: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/features/Screen%20Shot%202014-10-08%20at%203.43.39%20PM.png",
           title: "Digital Schomburg",
@@ -658,7 +658,7 @@ var response = {
           href: "http://www.nypl.org/support/membership/schomburg-society"
           }
           },
-          body: "<p><span id="docs-internal-guid-01b1f701-f13c-e1bf-837d-b228d2bdd136"><span>Help sustain the Schomburg’s collections, programs, and services by becoming a member.</span></span></p> ",
+          body: "<p><span id=\"docs-internal-guid-01b1f701-f13c-e1bf-837d-b228d2bdd136\"><span>Help sustain the Schomburg’s collections, programs, and services by becoming a member.</span></span></p> ",
           id: 65883,
           image: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/features/Cover%20of%20Gen%20Brochure.png",
           title: "Support the Schomburg",
@@ -670,7 +670,7 @@ var response = {
           href: "http://www.nypl.org//spacerental/event-spaces/schomburg"
           }
           },
-          body: "<p><span id="docs-internal-guid-01b1f701-f136-82b2-38b4-6237004045c3"><span>Located in the heart of Harlem,</span><span> </span><span>the Schomburg Center is available for private events.</span></span></p> <p> </p> ",
+          body: "<p><span id=\"docs-internal-guid-01b1f701-f136-82b2-38b4-6237004045c3\"><span>Located in the heart of Harlem,</span><span> </span><span>the Schomburg Center is available for private events.</span></span></p> <p> </p> ",
           id: 65881,
           image: "http://cdn-prod.www.aws.nypl.org/sites/default/files/lobby_0.jpg",
           title: "Special Events and Space Rentals",
@@ -718,7 +718,448 @@ var response = {
           title: "Christmas"
           }
         ],
-        
+        divisions: [
+          {
+            _links: {
+              self: {
+              href: "http://locations-api-beta.nypl.org/divisions/art-and-artifacts-division",
+              about: "http://www.nypl.org/about/divisions/art-and-artifacts-division"
+              },
+              blogs: {
+              href: "http://locations-api-beta.nypl.org/divisions/art-and-artifacts-division/blogs",
+              all: "http://www.nypl.org/blog/library/204"
+              },
+              events: {
+              href: "http://locations-api-beta.nypl.org/divisions/art-and-artifacts-division/events",
+              all: "http://www.nypl.org/events/calendar?location=204"
+              },
+              exhibitions: {
+              href: "http://locations-api-beta.nypl.org/divisions/art-and-artifacts-division/exhibitions"
+              },
+              alerts: {
+              href: "http://locations-api-beta.nypl.org/divisions/art-and-artifacts-division/alerts"
+              },
+              on_shelves: {
+              href: "http://nypl.bibliocommons.com/search?custom_query=available%3A%22Art+and+Artifacts+Division%22&circ=CIRC|NON%20CIRC"
+              },
+              contact: {
+              href: "http://www.nypl.org/locations/tid/64/node/126584"
+              },
+              concierge: {
+              href: "http://www.nypl.org/ask-nypl/make-appointment-librarian"
+              }
+            },
+            about: "The Art and Artifacts Division collects, documents, preserves, and interprets art and artifacts by and about peoples of African heritage throughout the world. Fine and applied art and material culture objects from the seventeenth century to the present are collected, with emphasis on the visual arts of the twentieth century in the United States and Africa. ",
+            access: "Fully Accessible",
+            contacts: null,
+            floor: "Second Floor (landmark building)",
+            hours: {
+              regular: [
+                { day: "Sun", open: null, close: null },
+                { day: "Mon", open: "09:30", close: "16:45" },
+                { day: "Tue", open: "09:30", close: "16:45" },
+                { day: "Wed", open: "09:30", close: "16:45" },
+                { day: "Thu", open: "09:30", close: "16:45" },
+                { day: "Fri", open: "09:30", close: "16:45" },
+                { day: "Sat", open: null, close: null }
+              ],
+              exceptions: {
+                start: "2014-10-17T14:46:09-04:00",
+                end: "2014-10-18T00:00:00-04:00",
+                description: "<strong>Accessible By Appointment Only.</strong> <br />Please see below for details."
+              }
+            },
+            id: "SCF",
+            images: {
+            interior: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/locations/204/research_interior_2014_09_18_schom_art_I45A8408.jpg"
+            },
+            name: "Art and Artifacts Division",
+            open: true,
+            plan_your_visit: [
+            {
+            label: "Plan Your Research Visit",
+            url: "http://www.nypl.org/about/locations/using-the-library/plan-your-research-visit"
+            }
+            ],
+            rank: 1,
+            room: null,
+            slug: "art-and-artifacts-division",
+            social_media: null,
+            synonyms: [ ],
+            type: "research"
+          },
+          {
+            _links: {
+            self: {
+            href: "http://locations-api-beta.nypl.org/divisions/jbh-research-and-reference-division",
+            about: "http://www.nypl.org/about/divisions/jbh-research-and-reference-division"
+            },
+            blogs: {
+            href: "http://locations-api-beta.nypl.org/divisions/jbh-research-and-reference-division/blogs",
+            all: "http://www.nypl.org/blog/library/205"
+            },
+            events: {
+            href: "http://locations-api-beta.nypl.org/divisions/jbh-research-and-reference-division/events",
+            all: "http://www.nypl.org/events/calendar?location=205"
+            },
+            exhibitions: {
+            href: "http://locations-api-beta.nypl.org/divisions/jbh-research-and-reference-division/exhibitions"
+            },
+            alerts: {
+            href: "http://locations-api-beta.nypl.org/divisions/jbh-research-and-reference-division/alerts"
+            },
+            on_shelves: {
+            href: "http://nypl.bibliocommons.com/search?custom_query=available%3A%22JBH+Research+and+Reference+Division%22&circ=CIRC|NON%20CIRC"
+            },
+            contact: {
+            href: "http://www.nypl.org/locations/tid/64/node/126585"
+            },
+            concierge: {
+            href: "http://www.nypl.org/ask-nypl/make-appointment-librarian"
+            }
+            },
+            about: "The JBH Research and Reference Division holds and provides access to books, serials, and microforms containing information by and about people of African descent throughout the world, concentrating on the humanities, social sciences, and the arts. Geographically, the collection emphasizes the Americas, the Caribbean, and Sub-Saharan Africa.",
+            access: "Fully Accessible",
+            contacts: {
+            phone: "(212) 491-2218"
+            },
+            floor: "Lower Level",
+            hours: {
+              regular: [
+                { day: "Sun", open: null, close: null },
+                { day: "Mon", open: "12:00", close: "18:00" },
+                { day: "Tue", open: "12:00", close: "20:00" },
+                { day: "Wed", open: "12:00", close: "20:00" },
+                { day: "Thu", open: "12:00", close: "20:00" },
+                { day: "Fri", open: "10:00", close: "18:00" },
+                { day: "Sat", open: "10:00", close: "18:00" }
+              ],
+              exceptions: {
+              start: "2014-10-17T14:46:09-04:00",
+              end: "2014-10-18T00:00:00-04:00",
+              description: "Effective January 6, 2014, the Jean Blackwell Hutson Research & Reference Division will open on Mondays from 12:00 pm - 6:00 pm."
+              }
+            },
+            id: "SCR",
+            images: {
+            interior: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/locations/205/research_interior_2014_09_18_schom_blackwell_I45A8429.jpg",
+            collection_item: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/locations/205/dc_schomburg_JBH.jpg"
+            },
+            name: "Jean Blackwell Hutson Research and Reference Division",
+            open: true,
+            plan_your_visit: [
+            {
+            label: "Plan Your Research Visit",
+            url: "http://www.nypl.org/about/locations/using-the-library/plan-your-research-visit"
+            }
+            ],
+            rank: 4,
+            room: null,
+            slug: "jbh-research-and-reference-division",
+            social_media: null,
+            synonyms: [ ],
+            type: "research"
+          },
+          {
+            _links: {
+            self: {
+            href: "http://locations-api-beta.nypl.org/divisions/manuscripts-archives-and-rare-books-division",
+            about: "http://www.nypl.org/about/divisions/manuscripts-archives-and-rare-books-division"
+            },
+            blogs: {
+            href: "http://locations-api-beta.nypl.org/divisions/manuscripts-archives-and-rare-books-division/blogs",
+            all: "http://www.nypl.org/blog/library/206"
+            },
+            events: {
+            href: "http://locations-api-beta.nypl.org/divisions/manuscripts-archives-and-rare-books-division/events",
+            all: "http://www.nypl.org/events/calendar?location=206"
+            },
+            exhibitions: {
+            href: "http://locations-api-beta.nypl.org/divisions/manuscripts-archives-and-rare-books-division/exhibitions"
+            },
+            alerts: {
+            href: "http://locations-api-beta.nypl.org/divisions/manuscripts-archives-and-rare-books-division/alerts"
+            },
+            on_shelves: {
+            href: "http://nypl.bibliocommons.com/search?custom_query=available%3A%22Manuscripts%2C+Archives+and+Rare+Books+Division%22&circ=CIRC|NON%20CIRC"
+            },
+            contact: {
+            href: "http://www.nypl.org/locations/tid/64/node/126587"
+            },
+            concierge: {
+            href: "http://www.nypl.org/ask-nypl/make-appointment-librarian"
+            }
+            },
+            about: "The Manuscripts, Archives and Rare Books Division collects, preserves, and makes available for research purposes rare, unique, and primary materials that document the history and culture of people of African descent throughout the world, with a concentration on the Americas and the Caribbean.",
+            access: "Fully Accessible",
+            contacts: null,
+            floor: "Second Floor",
+            hours: {
+            regular: [
+            {
+            day: "Sun",
+            open: null,
+            close: null
+            },
+            {
+            day: "Mon",
+            open: null,
+            close: null
+            },
+            {
+            day: "Tue",
+            open: "12:00",
+            close: "17:00"
+            },
+            {
+            day: "Wed",
+            open: "12:00",
+            close: "17:00"
+            },
+            {
+            day: "Thu",
+            open: "12:00",
+            close: "17:00"
+            },
+            {
+            day: "Fri",
+            open: "10:00",
+            close: "17:00"
+            },
+            {
+            day: "Sat",
+            open: "10:00",
+            close: "17:00"
+            }
+            ],
+            exceptions: {
+            start: "2014-10-17T14:46:09-04:00",
+            end: "2014-10-18T00:00:00-04:00",
+            description: "<strong>By Appointment Only.</strong> The last appointment is 4:00pm. "
+            }
+            },
+            id: "SCM",
+            images: {
+            interior: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/locations/206/research_interior_2014_09_18_schom_manuscripts_I45A8366.jpg"
+            },
+            name: "Manuscripts, Archives and Rare Books Division",
+            open: true,
+            plan_your_visit: [
+            {
+            label: "Plan Your Research Visit",
+            url: "http://www.nypl.org/about/locations/using-the-library/plan-your-research-visit"
+            }
+            ],
+            rank: 8,
+            room: null,
+            slug: "manuscripts-archives-and-rare-books-division",
+            social_media: null,
+            synonyms: [ ],
+            type: "research"
+            },
+            {
+            _links: {
+            self: {
+            href: "http://locations-api-beta.nypl.org/divisions/moving-image-and-recorded-sound-division",
+            about: "http://www.nypl.org/about/divisions/moving-image-and-recorded-sound-division"
+            },
+            blogs: {
+            href: "http://locations-api-beta.nypl.org/divisions/moving-image-and-recorded-sound-division/blogs",
+            all: "http://www.nypl.org/blog/library/207"
+            },
+            events: {
+            href: "http://locations-api-beta.nypl.org/divisions/moving-image-and-recorded-sound-division/events",
+            all: "http://www.nypl.org/events/calendar?location=207"
+            },
+            exhibitions: {
+            href: "http://locations-api-beta.nypl.org/divisions/moving-image-and-recorded-sound-division/exhibitions"
+            },
+            alerts: {
+            href: "http://locations-api-beta.nypl.org/divisions/moving-image-and-recorded-sound-division/alerts"
+            },
+            on_shelves: {
+            href: "http://nypl.bibliocommons.com/search?custom_query=available%3A%22Moving+Image+and+Recorded+Sound+Division%22&circ=CIRC|NON%20CIRC"
+            },
+            contact: {
+            href: "http://www.nypl.org/locations/tid/64/node/126590"
+            },
+            concierge: {
+            href: "http://www.nypl.org/ask-nypl/make-appointment-librarian"
+            }
+            },
+            about: "The Moving Image and Recorded Sound (MIRS) Division documents the experiences of peoples of African descent, as they have been captured via audiovisual technology. The MIRS Division collections encompass a variety of formats including motion picture film (released prints and outtakes), video recordings, and music, and spoken arts recordings in several formats.",
+            access: "Fully Accessible",
+            contacts: {
+            phone: "(212) 491-2270"
+            },
+            floor: "Third Floor (landmark building)",
+            hours: {
+            regular: [
+            {
+            day: "Sun",
+            open: null,
+            close: null
+            },
+            {
+            day: "Mon",
+            open: null,
+            close: null
+            },
+            {
+            day: "Tue",
+            open: "12:00",
+            close: "17:00"
+            },
+            {
+            day: "Wed",
+            open: "12:00",
+            close: "18:00"
+            },
+            {
+            day: "Thu",
+            open: "12:00",
+            close: "18:00"
+            },
+            {
+            day: "Fri",
+            open: "00:00",
+            close: "17:00"
+            },
+            {
+            day: "Sat",
+            open: "10:00",
+            close: "17:00"
+            }
+            ],
+            exceptions: {
+            start: "2014-10-17T14:46:09-04:00",
+            end: "2014-10-18T00:00:00-04:00",
+            description: "<strong>By Appointment Only.<br></br>For group appointments, two weeks advanced notice is required.</strong><br></br><strong>To request an appointment or a group screening please contact us at 212-491-2270 or email scmirsref@nypl.org. "
+            }
+            },
+            id: "SCG",
+            images: {
+            interior: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/locations/207/research_interior_2014_09_18_schom_Image_I45A8379.jpg"
+            },
+            name: "Moving Image and Recorded Sound Division",
+            open: true,
+            plan_your_visit: [
+            {
+            label: "Plan Your Research Visit",
+            url: "http://www.nypl.org/about/locations/using-the-library/plan-your-research-visit"
+            },
+            {
+            label: "Access Procedures",
+            url: "http://www.nypl.org/about/divisions/moving-image-and-recorded-sound-division/access"
+            }
+            ],
+            rank: 9,
+            room: null,
+            slug: "moving-image-and-recorded-sound-division",
+            social_media: null,
+            synonyms: [ ],
+            type: "research"
+          },
+          {
+            _links: {
+            self: {
+            href: "http://locations-api-beta.nypl.org/divisions/photographs-and-prints-division",
+            about: "http://www.nypl.org/about/divisions/photographs-and-prints-division"
+            },
+            blogs: {
+            href: "http://locations-api-beta.nypl.org/divisions/photographs-and-prints-division/blogs",
+            all: "http://www.nypl.org/blog/library/208"
+            },
+            events: {
+            href: "http://locations-api-beta.nypl.org/divisions/photographs-and-prints-division/events",
+            all: "http://www.nypl.org/events/calendar?location=208"
+            },
+            exhibitions: {
+            href: "http://locations-api-beta.nypl.org/divisions/photographs-and-prints-division/exhibitions"
+            },
+            alerts: {
+            href: "http://locations-api-beta.nypl.org/divisions/photographs-and-prints-division/alerts"
+            },
+            on_shelves: {
+            href: "http://nypl.bibliocommons.com/search?custom_query=available%3A%22Photographs+and+Prints+Division%22&circ=CIRC|NON%20CIRC"
+            },
+            contact: {
+            href: "http://www.nypl.org/locations/tid/64/node/126592"
+            },
+            concierge: {
+            href: "http://www.nypl.org/ask-nypl/make-appointment-librarian"
+            }
+            },
+            about: "The Photographs and Prints Division contains both documentary and fine art photographs, which document the history and culture of people of African descent worldwide as well as the work of photographers of African descent. The collection of over 300,000 images ranges from mid-eighteenth century graphics to contemporary documentary and art photography; all of the major photographic processes are represented. ",
+            access: "Fully Accessible",
+            contacts: null,
+            floor: "Third Floor",
+            hours: {
+            regular: [
+            {
+            day: "Sun",
+            open: null,
+            close: null
+            },
+            {
+            day: "Mon",
+            open: null,
+            close: null
+            },
+            {
+            day: "Tue",
+            open: "12:00",
+            close: "17:00"
+            },
+            {
+            day: "Wed",
+            open: "12:00",
+            close: "17:00"
+            },
+            {
+            day: "Thu",
+            open: "12:00",
+            close: "17:00"
+            },
+            {
+            day: "Fri",
+            open: "10:00",
+            close: "17:00"
+            },
+            {
+            day: "Sat",
+            open: "10:00",
+            close: "17:00"
+            }
+            ],
+            exceptions: {
+            start: "2014-10-17T14:46:10-04:00",
+            end: "2014-10-18T00:00:00-04:00",
+            description: "The Photographs and Prints Division will be open on Fridays at 10:00 am beginning Friday, June 6, 2014. (Appointments Suggested)"
+            }
+            },
+            id: "SCP",
+            images: {
+            exterior: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/locations/208/research_interior_2014_09_18_schom_photo_I45A8377.jpg",
+            interior: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/locations/208/research_interior_2014_09_18_schom_photo_I45A8377_0.jpg",
+            collection_item: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/locations/208/dc_schomburg_photo_prints_1.jpg"
+            },
+            name: "Photographs and Prints Division",
+            open: true,
+            plan_your_visit: [
+            {
+            label: "Plan Your Research Visit",
+            url: "http://www.nypl.org/about/locations/using-the-library/plan-your-research-visit"
+            }
+            ],
+            rank: 10,
+            room: null,
+            slug: "photographs-and-prints-division",
+            social_media: null,
+            synonyms: [ ],
+            type: "research"
+          }
+        ]
       }
     }
   }

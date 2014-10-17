@@ -14,7 +14,9 @@ describe('Locations: homepage', function () {
         .run(function ($httpBackend) {
           $httpBackend.whenGET('/languages/en.json').passThrough();
           $httpBackend.whenGET('/views/amenities.html').passThrough();
-          $httpBackend.whenGET('/config').passThrough();
+          $httpBackend
+            .whenGET('/config')
+            .respond({ config: { api_root: API_URL } });
 
           $httpBackend
             .whenJSONP(API_URL + '/locations?callback=JSON_CALLBACK')
@@ -227,38 +229,29 @@ describe('Locations: homepage', function () {
           browser.sleep(1500); // must be a better way
         });
 
-        it('should search by location name and return that result first',
+        it('should go to the /map page', function () {
+
+        });
+
+        it('should perform a geolocation search and sort by distance',
           function () {
-            expect(landingPage.firstLocName()).toEqual('Aguilar Library');
+            expect(landingPage.firstLocName()).toEqual('Throg\'s Neck Library');
+            expect(landingPage.nthLocDist(0)).toEqual('Distance: 6.5 miles');
+            expect(landingPage.nthLocName(1)).toEqual('Soundview Library');
+            expect(landingPage.nthLocDist(1)).toEqual('Distance: 6.76 miles');
+            expect(landingPage.nthLocName(2)).toEqual('Castle Hill Library');
+            expect(landingPage.nthLocDist(2)).toEqual('Distance: 7.08 miles');
           });
 
-        it('should have one highlighted location', function () {
-          expect(element.all(by.css('tr.active')).count()).toBe(1);
-          expect(landingPage.locations.first().getAttribute('class'))
-            .toContain('active');
-        });
+        it('should perform a geolocation search and give you back an address',
+          function () {
+            expect(landingPage.resultsNear.getText())
+              .toEqual('Showing search results near Aguilar Avenue, Queens, ' +
+                'NY, USA');
+             expect(landingPage.gmapInfoWindow.getText())
+                .toEqual('Aguilar Avenue\nQueens\nNY, USA');
 
-        // Since Aguilar matches a library name and not an area,
-        // the rest of the list should be sorted by name.
-        it('should sort the rest of the libraries by name', function () {
-          expect(landingPage.nthLocName(1)).toEqual('115th Street Library');
-          expect(landingPage.nthLocName(2)).toEqual('125th Street Library');
-        });
-
-        describe('Map View', function () {
-          it('should have the same location list from the List View',
-            function () {
-              landingPage.mapViewBtn.click();
-              browser.waitForAngular();
-              browser.sleep(1500);
-
-              expect(landingPage.firstLocName()).toEqual('Aguilar Library');
-              expect(landingPage.nthLocName(1)).toEqual('115th Street Library');
-              expect(landingPage.gmapInfoWindow.getText())
-                .toEqual('Aguilar Library\n174 East 110th Street\n' +
-                  'New York, NY, 10029');
-            });
-        });
+          });
 
         describe('Clicking searchbox \'x\'', function () {
           it('should clear the input', function () {
@@ -268,13 +261,11 @@ describe('Locations: homepage', function () {
             expect(landingPage.searchInput.getAttribute('value')).toEqual('');
           });
 
-          it('should reset the list of locations by name',
-            function () {
-              expect(landingPage.firstLocName()).toEqual('Aguilar Library');
-              landingPage.clearSearch.click();
-              expect(landingPage.firstLocName())
-                .toEqual('115th Street Library');
-            });
+          it('should reset the list of locations by name', function () {
+            expect(landingPage.firstLocName()).toEqual('Throg\'s Neck Library');
+            landingPage.clearSearch.click();
+            expect(landingPage.firstLocName()).toEqual('115th Street Library');
+          });
         });
       });
 
@@ -296,11 +287,7 @@ describe('Locations: homepage', function () {
           function () {
             expect(landingPage.firstLocName())
               .toEqual('Battery Park City Library');
-
-            // It should be the only match for that search
-            expect(element.all(by.css('tr.active')).count()).toBe(1);
-            expect(landingPage.locations.first().getAttribute('class'))
-              .toContain('active');
+            expect(landingPage.firstLocDist()).toEqual('Distance: 0.85 miles');
           });
 
         it('should show other results with distances in order', function () {
@@ -311,29 +298,9 @@ describe('Locations: homepage', function () {
           expect(landingPage.nthLocDist(2)).toEqual('Distance: 1.29 miles');
         });
 
-        describe('Map View', function () {
-          it('should have the same location list from the List View',
-            function () {
-              expect(landingPage.firstLocName())
-                .toEqual('Battery Park City Library');
-              expect(landingPage.nthLocName(1))
-                .toEqual('New Amsterdam Library');
-              expect(landingPage.nthLocDist(1)).toEqual('Distance: 0.86 miles');
-
-              landingPage.mapViewBtn.click();
-              browser.waitForAngular();
-              browser.sleep(2000);
-
-              expect(landingPage.firstLocName())
-                .toEqual('Battery Park City Library');
-              expect(landingPage.nthLocName(1))
-                .toEqual('New Amsterdam Library');
-              expect(landingPage.nthLocDist(1)).toEqual('Distance: 0.86 miles');
-
-              expect(landingPage.gmapInfoWindow.getText())
-                .toEqual('Battery Park City Library\n175 ' +
-                  'North End Avenue\nNew York, NY, 10282');
-            });
+        it('should have the returned address in the infowindow', function () {
+          expect(landingPage.gmapInfoWindow.getText())
+            .toEqual('Battery Park\nNew York\nNY, USA');
         });
 
         describe('Clicking searchbox \'x\'', function () {
@@ -368,28 +335,19 @@ describe('Locations: homepage', function () {
               '2300 Southern Boulevard, Bronx, NY 10460, USA');
         });
 
-        it('should not have any highlighted locations', function () {
-          browser.sleep(2000);
-          expect(element.all(by.css('tr.active')).count()).toBe(0);
-        });
-
         it('should organize the locations by distance - West Farms ' +
           'Library should be first in the list',
           function () {
             // There is a probably a better way to test this
             // The first location that should appear
             expect(landingPage.firstLocName()).toEqual('West Farms Library');
-
             expect(landingPage.firstLocDist()).toEqual('Distance: 0.51 miles');
 
             // The next location that should appear on the page
             expect(landingPage.nthLocName(1))
               .toEqual('Belmont Library and Enrico Fermi Cultural Center');
-
             expect(landingPage.nthLocDist(1)).toEqual('Distance: 0.62 miles');
 
-            // The last of 10 locations that
-            // should appear on the page
             expect(
               landingPage.locations.last().element(by.css('.p-org')).getText()
             ).toEqual('Tottenville Library');
@@ -400,23 +358,13 @@ describe('Locations: homepage', function () {
             ).toEqual('Distance: 30.4 miles');
           });
 
-        describe('Map View', function () {
-          it('should display the search query on the map with ' +
-            'a marker and organize list by distance',
-            function () {
-              landingPage.mapViewBtn.click();
-              browser.waitForAngular();
-              browser.sleep(4000);
-
-              expect(landingPage.firstLocName()).toEqual('West Farms Library');
-              expect(landingPage.firstLocDist())
-                .toEqual('Distance: 0.51 miles');
-
-              expect(landingPage.gmapInfoWindow.getText())
-                .toEqual('Bronx Zoo\n2300 Southern ' +
-                  'Boulevard\nBronx, NY 10460, USA');
-            });
-        });
+        it('should display the search query on the map with ' +
+          'a marker',
+          function () {
+            expect(landingPage.gmapInfoWindow.getText())
+              .toEqual('Bronx Zoo\n2300 Southern Boulevard\n' +
+                'Bronx, NY 10460, USA');
+          });
 
         describe('Clicking searchbox \'x\'', function () {
           it('should clear the input', function () {
@@ -449,21 +397,28 @@ describe('Locations: homepage', function () {
         });
 
         it('should show libraries in the searched zip code first', function () {
-          expect(element.all(by.css('tr.active')).count()).toBe(3);
-
+          expect(landingPage.firstLocName()).toEqual('Science, Industry and ' +
+            'Business Library (SIBL)');
           expect(
             landingPage.nthLoc(0).element(by.css('.p-postal-code')).getText()
           ).toEqual('10016');
 
+          expect(landingPage.nthLocName(1)).toEqual('Kips Bay Library');
           expect(
             landingPage.nthLoc(1).element(by.css('.p-postal-code')).getText()
           ).toEqual('10016');
 
+          expect(landingPage.nthLocName(2)).toEqual('Mid-Manhattan Library');
           expect(
             landingPage.nthLoc(2).element(by.css('.p-postal-code')).getText()
           ).toEqual('10016');
+        });
 
-          expect(landingPage.firstLocName()).toEqual('Kips Bay Library');
+        it('should sort by distance', function () {
+          expect(landingPage.nthLocDist(0)).toEqual('Distance: 0.17 miles');
+          expect(landingPage.nthLocDist(1)).toEqual('Distance: 0.25 miles');
+          expect(landingPage.nthLocDist(2)).toEqual('Distance: 0.33 miles');
+          expect(landingPage.nthLocDist(3)).toEqual('Distance: 0.43 miles');
         });
 
         it('should then search for libraries near the searched ' +
@@ -472,27 +427,20 @@ describe('Locations: homepage', function () {
             expect(
               landingPage.nthLoc(3).element(by.css('.p-postal-code')).getText()
             ).toEqual('10018');
-
             expect(landingPage.nthLocName(3))
               .toEqual('Stephen A. Schwarzman Building');
             expect(landingPage.nthLocDist(3)).toEqual('Distance: 0.43 miles');
 
+            expect(
+              landingPage.nthLoc(4).element(by.css('.p-postal-code')).getText()
+            ).toEqual('10017');
             expect(landingPage.nthLocName(4)).toEqual('Grand Central Library');
             expect(landingPage.nthLocDist(4)).toEqual('Distance: 0.56 miles');
           });
 
-        describe('Map View', function () {
-          it('should display one of the matches for the searched zip code',
-            function () {
-              landingPage.mapViewBtn.click();
-              browser.waitForAngular();
-              browser.sleep(2000);
-
-              expect(landingPage.firstLocName()).toEqual('Kips Bay Library');
-              expect(landingPage.gmapInfoWindow.getText())
-                .toEqual('Kips Bay Library\n446 Third ' +
-                  'Avenue\nNew York, NY, 10016');
-            });
+        it('should have a marker for the searched zip code', function () {
+          expect(landingPage.gmapInfoWindow.getText())
+            .toEqual('New York\nNY 10016\nUSA');
         });
 
         describe('Clicking searchbox \'x\'', function () {
@@ -627,20 +575,20 @@ describe('Locations: homepage', function () {
         expect(research_libraries).toEqual([
           {
             index: 0,
+            text: 'Stephen A. Schwarzman Building'
+          },
+          {
+            index: 1,
             text: 'New York Public Library for the Performing ' +
               'Arts, Dorothy and Lewis B. Cullman Center'
           },
           {
-            index: 1,
+            index: 2,
             text: 'Schomburg Center for Research in Black Culture'
           },
           {
-            index: 2,
-            text: 'Science, Industry and Business Library (SIBL)'
-          },
-          {
             index: 3,
-            text: 'Stephen A. Schwarzman Building'
+            text: 'Science, Industry and Business Library (SIBL)'
           }
         ]);
       });
@@ -657,7 +605,7 @@ describe('Locations: homepage', function () {
           expect(only_research.getText()).toEqual('all branches');
 
           landingPage.search('parkchester');
-          browser.sleep(4000);
+          browser.waitForAngular();
 
           expect(landingPage.locations.count()).toBe(92);
           expect(only_research.getText()).toEqual('research libraries');
@@ -686,8 +634,8 @@ describe('Locations: homepage', function () {
           expect(landingPage.locations.count()).toBe(4);
           expect(research_libraries).toEqual([
             {
-              text: 'Schomburg Center for Research in Black Culture',
-              distance: 'Distance: 4.71 miles'
+              text: 'Stephen A. Schwarzman Building',
+              distance: 'Distance: 8.82 miles'
             },
             {
               text: 'New York Public Library for the ' +
@@ -695,8 +643,8 @@ describe('Locations: homepage', function () {
               distance: 'Distance: 8.06 miles'
             },
             {
-              text: 'Stephen A. Schwarzman Building',
-              distance: 'Distance: 8.82 miles'
+              text: 'Schomburg Center for Research in Black Culture',
+              distance: 'Distance: 4.71 miles'
             },
             {
               text: 'Science, Industry and Business Library (SIBL)',
@@ -767,20 +715,20 @@ describe('Locations: homepage', function () {
         expect(research_libraries).toEqual([
           {
             index: 0,
+            text: 'Stephen A. Schwarzman Building'
+          },
+          {
+            index: 1,
             text: 'New York Public Library for the Performing ' +
                     'Arts, Dorothy and Lewis B. Cullman Center'
           },
           {
-            index: 1,
+            index: 2,
             text: 'Schomburg Center for Research in Black Culture'
           },
           {
-            index: 2,
-            text: 'Science, Industry and Business Library (SIBL)'
-          },
-          {
             index: 3,
-            text: 'Stephen A. Schwarzman Building'
+            text: 'Science, Industry and Business Library (SIBL)'
           }
         ]);
       });
@@ -827,10 +775,6 @@ describe('Locations: homepage', function () {
         expect(landingPage.locations.count()).toBe(4);
         expect(research_libraries).toEqual([
           {
-            text: 'Science, Industry and Business Library (SIBL)',
-            distance: 'Distance: 2.28 miles'
-          },
-          {
             text: 'Stephen A. Schwarzman Building',
             distance: 'Distance: 2.64 miles'
           },
@@ -842,6 +786,10 @@ describe('Locations: homepage', function () {
           {
             text: 'Schomburg Center for Research in Black Culture',
             distance: 'Distance: 7.23 miles'
+          },
+          {
+            text: 'Science, Industry and Business Library (SIBL)',
+            distance: 'Distance: 2.28 miles'
           }
         ]);
       });
