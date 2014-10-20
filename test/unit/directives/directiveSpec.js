@@ -26,7 +26,17 @@ describe('NYPL Directive Unit Tests', function () {
 
       httpBackend
         .expectGET('/config')
-        .respond('/config');
+        .respond({
+          config: {
+            api_root: api,
+            fundraising: {
+              statement: "Become a Member",
+              appeal: "Friends of the Library can support their favorite library and receive great benefits!",
+              button_label: "Join or Renew",
+              link: "https://secure3.convio.net/nypl/site/SPageServer?pagename=branch_friend_form&s_src=FRQ15ZZ_CADN"
+            }
+          }
+        });
 
       httpBackend
         .expectGET('views/locations.html')
@@ -35,6 +45,8 @@ describe('NYPL Directive Unit Tests', function () {
       httpBackend
         .expectGET('views/location-list-view.html')
         .respond('public/views/location-list-view.html');
+
+      httpBackend.flush();
     });
   });
 
@@ -305,6 +317,23 @@ describe('NYPL Directive Unit Tests', function () {
         'status="status" link="link"></event-registration>';
     });
 
+    describe('No registration object - should not display', function () {
+      beforeEach(function () {
+        scope.registration = undefined;
+        scope.status = undefined;
+        scope.link = undefined;
+        eventRegistration = createDirective(template);
+      });
+
+      it('should not display anything', function () {
+        expect(eventRegistration.find('.registration-type').text())
+          .toEqual('');
+        expect(eventRegistration.find('a').length).toBe(0);
+        expect(eventRegistration.find('.event-cancel').text().trim())
+            .toEqual('');
+      });
+    });
+
     describe('Registration type - First Come, First Served', function () {
       beforeEach(function () {
         scope.registration = {
@@ -415,76 +444,122 @@ describe('NYPL Directive Unit Tests', function () {
    *   The nyplSiteAlerts directive displays a site-wide alert by checking all
    *   the alerts in the API and checking the current date.
    */
-  // describe('Directive: nyplSiteAlerts', function () {
-  //   var $httpBackend, date, template, nyplSiteAlerts, $timeout;
+  describe('Directive: nyplSiteAlerts', function () {
+    var $httpBackend, date, template, nyplSiteAlerts, $timeout, MockDate, alert;
 
-  //   beforeEach(inject(function (_$httpBackend_, _$timeout_) {
-  //     $timeout = _$timeout_;
-  //     $httpBackend = _$httpBackend_;
+    beforeEach(inject(function (_$httpBackend_, _$timeout_) {
+      $timeout = _$timeout_;
+      $httpBackend = _$httpBackend_;
+    }));
 
-  //     $httpBackend
-  //       .whenJSONP(api + '/alerts' + jsonpCallback)
-  //       .respond({
-  //         alerts: [{
-  //           _id: "71579",
-  //           scope: "all",
-  //           title: "Independence Day",
-  //           body: "All units of the NYPL are closed July 4 - July 5.",
-  //           start: "2014-06-27T00:00:00-04:00",
-  //           end: "2014-07-06T01:00:00-04:00"
-  //         }]
-  //       });
+    it('should display a current site wide alert', function () {
+      // Override the date function so we can test a real alert
+      // Store a copy so we can return the original one later
+      date = new Date(2014, 5, 29);
+      MockDate = Date;
+      Date = function () { return date; };
 
-  //     template = "<nypl-site-alerts></nypl-site-alerts>";
-  //     nyplSiteAlerts = createDirective(template);
-  //   }));
+      $httpBackend
+        .whenJSONP(api + '/alerts' + jsonpCallback)
+        .respond({
+          alerts: [{
+            _id: "71579",
+            scope: "all",
+            title: "Independence Day",
+            body: "All units of the NYPL are closed July 4 - July 5.",
+            start: "2014-06-27T00:00:00-04:00",
+            end: "2014-07-06T01:00:00-04:00"
+          }]
+        });
 
-  //   it('should display a site wide alert', function () {
-  //     var MockDate, alert;
+      template = "<nypl-site-alerts></nypl-site-alerts>";
+      nyplSiteAlerts = createDirective(template);
 
-  //     // Override the date function so we can test a real alert
-  //     // Store a copy so we can return the original one later
-  //     date = new Date(2014, 5, 29);
-  //     MockDate = Date;
-  //     Date = function () { return date; };
+      $timeout.flush();
+      $httpBackend.flush();
 
-  //     $httpBackend.flush();
+      // Currently just using the value in the scope.
+      alert = scope.sitewidealert;
+      expect(alert)
+        .toEqual('All units of the NYPL are closed July 4 - July 5.\n');
 
-  //     // For whatever reason, the sitewidealert doesn't get generated
-  //     // in time for the $compile function to write it and for the data-ng-if
-  //     // to verify that the value is there.
-  //     // console.log(element);
+      // Use the native Date function again
+      Date = MockDate;
+    });
 
-  //     // Currently just using the value in the scope.
-  //     $timeout(function () {
-  //       alert = scope.sitewidealert;
-  //       expect(alert)
-  //         .toEqual('All units of the NYPL are closed July 4 - July 5.\n');
-  //     }, 200);
+    it('should not display a site wide alert - future alert', function () {
+      $httpBackend
+        .whenJSONP(api + '/alerts' + jsonpCallback)
+        .respond({
+          alerts: [{
+            _id: "71579",
+            scope: "all",
+            title: "Independence Day",
+            body: "All units of the NYPL are closed July 4 - July 5.",
+            start: "2016-06-27T00:00:00-04:00",
+            end: "2016-07-06T01:00:00-04:00"
+          }]
+        });
 
-  //     // Use the native Date function again
-  //     Date = MockDate;
-  //   });
-  // });
+      template = "<nypl-site-alerts></nypl-site-alerts>";
+      nyplSiteAlerts = createDirective(template);
+
+      $timeout.flush();
+      $httpBackend.flush();
+
+      // Currently just using the value in the scope.
+      alert = scope.sitewidealert;
+      expect(alert).toEqual('');
+    });
+  });
 
   /*
    * <nypl-library-alert></nypl-library-alert>
    *   The nyplLibraryAlert directive displays an alert for a specific location.
    */
   describe('Directive: nyplLibraryAlert', function () {
-    var nyplLibraryAlert, template;
+    var nyplLibraryAlert,
+      template = "<nypl-library-alert exception='exception'>" +
+          "</nypl-library-alert>";
 
-    beforeEach(inject(function () {
-      scope.alert = {
-        description: "Test library specific alert"
-      };
-      template = "<nypl-library-alert exception='alert'></nypl-library-alert>";
-      nyplLibraryAlert = createDirective(template);
-    }));
+    describe('No alert to display', function () {
+      it('should not display when there is no alert', function () {
+        scope.exception = undefined;
+        nyplLibraryAlert = createDirective(template);
 
-    it('should display an alert', function () {
-      // Doesn't work because I'm not testing correctly but not sure how.
-      // expect(scope.libraryAlert).toEqual("Test library specific alert");
+        expect(scope.libraryAlert).not.toBeDefined();
+        expect(nyplLibraryAlert.find('grid').length).toBe(0);
+        expect(nyplLibraryAlert.find('location-alerts').length).toBe(0);
+      });
+
+      it('should not display an old alert', function () {
+        scope.exception = {
+          start: '2014-10-01T00:00:00-04:00',
+          end: '2014-10-20T16:15:41-04:00',
+          description: "Test library specific alert"
+        };
+        nyplLibraryAlert = createDirective(template);
+
+        expect(nyplLibraryAlert.find('grid').length).toBe(0);
+        expect(nyplLibraryAlert.find('location-alerts').length).toBe(0);
+      });
+    });
+
+    describe('Alert available', function () {
+      beforeEach(function () {
+        scope.exception = {
+          start: '2014-10-01T00:00:00-04:00',
+          end: '2016-10-20T16:15:41-04:00',
+          description: "Test library specific alert"
+        };
+        template = "<nypl-library-alert exception='exception'></nypl-library-alert>";
+        nyplLibraryAlert = createDirective(template);
+      });
+
+      it('should display an alert', function () {
+        // Doesn't work because I'm not testing correctly but not sure how.
+        // expect(scope.libraryAlert).toEqual("Test library specific alert");
+      });
     });
   });
 
@@ -521,25 +596,55 @@ describe('NYPL Directive Unit Tests', function () {
    * <nypl-fundraising fundraising="location.fundraising"></nypl-fundraising>
    */
   describe('Directive: nyplFundraising', function () {
-    var nyplFundraising, template;
+    var nyplFundraising, template, $timeout, nyplLocationsService, $httpBackend;
 
-    beforeEach(inject(function () {
-      scope.fundraising = {
-        "_id": 100,
-        "statement": "Help us keep this library open 6 days a week!",
-        "appeal": "",
-        "button_label": "Donate Now",
-        "link": "https://secure3.convio.net/nypl/site/SPageServer"
-      };
+    beforeEach(
+      inject(function (_$timeout_, _nyplLocationsService_, _$httpBackend_) {
+        nyplLocationsService = _nyplLocationsService_;
+        $httpBackend = _$httpBackend_;
+        $timeout = _$timeout_;
+      })
+    );
 
-      template = '<nypl-fundraising fundraising="fundraising">' +
-        '</nypl-fundraising>';
-      nyplFundraising = createDirective(template);
-    }));
+    describe('Use default appeal', function () {
+      beforeEach(function () {
+        scope.fundraising = undefined;
 
-    it('should compile', function () {
-      // expect(nyplFundraising.scope().fundraising).toEqual('donate');
+        template = '<nypl-fundraising fundraising="fundraising">' +
+          '</nypl-fundraising>';
+        nyplFundraising = createDirective(template);
+        $timeout.flush();
+      });
+
+      it('should get fundraising object from the config', function () {
+        expect(scope.fundraising.appeal).toEqual('Friends of the Library ' +
+          'can support their favorite library and receive great benefits!');
+        expect(scope.fundraising.statement).toEqual('Become a Member');
+        expect(scope.fundraising.button_label).toEqual('Join or Renew');
+      });
     });
+
+    describe('Add appeal object', function () {
+      beforeEach(function () {
+        scope.fundraising = {
+          appeal: 'Added appeal',
+          statement: 'Added statement',
+          button_label: 'Added button label',
+        };
+
+        template = '<nypl-fundraising fundraising="fundraising">' +
+          '</nypl-fundraising>';
+        nyplFundraising = createDirective(template);
+        $timeout.flush();
+      });
+
+      it('should get fundraising object from the config', function () {
+        expect(scope.fundraising.appeal).toEqual('Added appeal');
+        expect(scope.fundraising.statement).toEqual('Added statement');
+        expect(scope.fundraising.button_label).toEqual('Added button label');
+      });
+    });
+
   });
 
   /*
