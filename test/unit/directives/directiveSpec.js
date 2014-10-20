@@ -301,8 +301,8 @@ describe('NYPL Directive Unit Tests', function () {
   describe('Directive: eventRegistration', function () {
     var eventRegistration, template;
     beforeEach(function () {
-      template = '<event-registration registration="registration">' +
-        '</event-registration>';
+      template = '<event-registration registration="registration" ' +
+        'status="status" link="link"></event-registration>';
     });
 
     describe('Registration type - First Come, First Served', function () {
@@ -310,9 +310,13 @@ describe('NYPL Directive Unit Tests', function () {
         scope.registration = {
           "type": "First Come, First Serve",
           "open": "null",
-          "start": "null",
-          "link": "http://www.nypl.org/events/nypl-event"
-        }
+          "start": "null"
+        };
+        scope.status = {
+          "status": true,
+          "label": null
+        };
+        scope.link = "http://www.nypl.org/events/nypl-event";
         eventRegistration = createDirective(template);
       });
 
@@ -322,7 +326,7 @@ describe('NYPL Directive Unit Tests', function () {
       });
 
       it('should display the type of registration', function () {
-        expect(eventRegistration.find('.registration_type').text())
+        expect(eventRegistration.find('.registration-type').text())
           .toEqual('First Come, First Serve');
       });
 
@@ -342,9 +346,13 @@ describe('NYPL Directive Unit Tests', function () {
           scope.registration = {
             "type": "Online",
             "open": "true",
-            "start": "2014-07-29T17:00:00Z",
-            "link": "http://www.nypl.org/events/nypl-event"
-          }
+            "start": "2017-07-29T17:00:00Z"
+          };
+          scope.status = {
+            "status": true,
+            "label": null
+          };
+          scope.link = "http://www.nypl.org/events/nypl-event";
           eventRegistration = createDirective(template);
         });
 
@@ -353,31 +361,19 @@ describe('NYPL Directive Unit Tests', function () {
             .toContain('registration-for-event');
         });
 
-        it('should display the type of registration', function () {
-          expect(eventRegistration.find('.registration_type').text().trim())
-            .toEqual('Online');
-        });
+        it('should display online registration and open in the future',
+          function () {
+            expect(eventRegistration.find('.registration-type').text().trim())
+              .toEqual('Online, opens 07/29');
+          });
 
         it('should have a link to the event', function () {
           expect(eventRegistration.find('a').attr('href'))
             .toEqual('http://www.nypl.org/events/nypl-event#register');
         });
-
-        it('should tell you when registration opens', function () {
-          // Override the date function so we can test the wording
-          var date = new Date(2014, 8, 7),
-            MockDate = Date;
-          Date = function () { return date; };
-
-          expect(
-            eventRegistration.find('.registration-available').text().trim()
-          ).toEqual('Registration opens on August 29, 2014 - 7:00AM');
-
-          Date = MockDate;
-        });
       });
 
-    describe('Registration type - Online - registration is closed',
+    describe('Registration type - Online - Canceled',
       function () {
         beforeEach(function () {
           scope.registration = {
@@ -385,7 +381,12 @@ describe('NYPL Directive Unit Tests', function () {
             "open": "false",
             "start": "2014-07-29T17:00:00Z",
             "link": "http://www.nypl.org/events/nypl-event"
-          }  
+          };
+          scope.status = {
+            "status": false,
+            "label": "Canceled"
+          };
+          scope.link = "http://www.nypl.org/events/nypl-event";
           eventRegistration = createDirective(template);
         });
 
@@ -394,27 +395,17 @@ describe('NYPL Directive Unit Tests', function () {
             .toContain('registration-for-event');
         });
 
-        it('should display the type of registration', function () {
-          expect(eventRegistration.find('.registration_type').text().trim())
-            .toEqual('Online');
+        it('should not display the type of registration', function () {
+          expect(eventRegistration.find('.registration-type').length).toBe(0);
         });
 
-        it('should have a link to the event', function () {
-          expect(eventRegistration.find('a').attr('href'))
-            .toEqual('http://www.nypl.org/events/nypl-event#register');
+        it('should not have a link to the event', function () {
+          expect(eventRegistration.find('a').length).toBe(0)
         });
 
-        it('should tell you when registration opens', function () {
-          // Override the date function so we can test the wording
-          var date = new Date(2014, 8, 7),
-            MockDate = Date;
-          Date = function () { return date; };
-
-          expect(
-            eventRegistration.find('.registration-available').text().trim()
-          ).toEqual('Registration for this event is closed.');
-
-          Date = MockDate;
+        it('should display "Canceled"', function () {
+          expect(eventRegistration.find('.event-cancel').text().trim())
+            .toEqual('CANCELED');
         });
       });
   }); /* End eventRegistration */
@@ -683,7 +674,6 @@ describe('NYPL Directive Unit Tests', function () {
       scope.searchTerm = "grand";
       scope.$digest();
       var isolated = autofill.isolateScope();
-      console.log(isolated);
     });
   });
 

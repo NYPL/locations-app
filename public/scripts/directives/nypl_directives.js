@@ -565,12 +565,6 @@ function nyplAutofill($state, $analytics) {
 
 }
 
-
-function nyplDirections() {
-
-}
-
-
 angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
@@ -592,6 +586,5 @@ angular
     .directive('todayshours', todayshours)
     .directive('nyplFundraising', nyplFundraising)
     .directive('librarianchatbutton', librarianchatbutton)
-    .directive('emailusbutton', emailusbutton)
-    .directive('nyplDirections', nyplDirections);
+    .directive('emailusbutton', emailusbutton);
 
