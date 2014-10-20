@@ -8,7 +8,8 @@ describe('Google analytics configuration', function () {
 
   // var landingPage = require('./analytics.po.js');
   var landingPage = require('../homepage/homepage.po.js'),
-    locationPage = require('../location/location.po.js');
+    locationPage = require('../location/location.po.js'),
+    widgetPage = require('../widget/widget.po.js');
 
   function mockGA() {
     return "window.ga_msg = [];" +
@@ -491,6 +492,183 @@ describe('Google analytics configuration', function () {
 
         expect(ga[1][1]).toEqual('pageview');
         expect(ga[1][2]).toEqual('/map');
+      });
+    });
+
+  });
+
+  describe('Locinator Widget', function () {
+    describe('Branch page: New Dorp Library', function () {
+      beforeEach(function () {
+        browser.get('/widget/new-dorp');
+        browser.waitForAngular();
+        browser.executeScript(mockGA());
+      });
+
+      it('should track a click event on the Get Directions link', function () {
+        widgetPage.directions_link.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Location Widget');
+            expect(ga[0][3]).toEqual('Directions');
+            expect(ga[0][4]).toEqual('New Dorp Library');
+          });
+        });
+      });
+
+      it('should track a click even on the social media icons', function () {
+        widgetPage.social_media.get(0).click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Location Widget');
+            expect(ga[0][3]).toEqual('Social Media');
+            expect(ga[0][4]).toEqual('Facebook');
+          });
+        });
+      });
+
+      it('should track a click event on the \'Learn More\' link', function () {
+        widgetPage.locinator_url.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Location Widget');
+            expect(ga[0][3]).toEqual('Click');
+            expect(ga[0][4]).toEqual('Learn More');
+          });
+        });
+      });
+
+      it('should track a click event on the Donate button', function () {
+        widgetPage.donate_btn.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Location Widget');
+            expect(ga[0][3]).toEqual('Click');
+            expect(ga[0][4]).toEqual('Fundraising');
+          });
+        });
+      });
+
+      it('should track a click event on the NYPL Chat link', function () {
+        widgetPage.askNYPL.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Location Widget');
+            expect(ga[0][3]).toEqual('Click');
+            expect(ga[0][4]).toEqual('Chat');
+          });
+        });
+      });
+
+      it('should track a click event on the Email a Question link', function () {
+        widgetPage.email_us.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Location Widget');
+            expect(ga[0][3]).toEqual('Click');
+            expect(ga[0][4]).toEqual('Email Question');
+          });
+        });
+      });
+    });
+
+    describe('Division page', function () {
+      beforeEach(function () {
+        browser.get('/widget/divisions/map-division');
+        browser.waitForAngular();
+        browser.executeScript(mockGA());
+      });
+
+      it('should track a click even on the social media icons', function () {
+        widgetPage.social_media.get(0).click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Location Widget');
+            expect(ga[0][3]).toEqual('Social Media');
+            expect(ga[0][4]).toEqual('Facebook');
+          });
+        });
+      });
+
+      it('should track a click event on the \'Learn More\' link', function () {
+        widgetPage.locinator_url.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Location Widget');
+            expect(ga[0][3]).toEqual('Click');
+            expect(ga[0][4]).toEqual('Learn More');
+          });
+        });
+      });
+
+      it('should track a click event on the Donate button', function () {
+        widgetPage.donate_btn.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Location Widget');
+            expect(ga[0][3]).toEqual('Click');
+            expect(ga[0][4]).toEqual('Fundraising');
+          });
+        });
+      });
+
+      it('should track a click event on the NYPL Chat link', function () {
+        widgetPage.askNYPL.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Location Widget');
+            expect(ga[0][3]).toEqual('Click');
+            expect(ga[0][4]).toEqual('Chat');
+          });
+        });
+      });
+
+      it('should track a click event on the Email a Question link', function () {
+        widgetPage.email_us.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Location Widget');
+            expect(ga[0][3]).toEqual('Click');
+            expect(ga[0][4]).toEqual('Email Question');
+          });
+        });
+      });
+    });
+
+    describe('Subdivision page', function () {
+      beforeEach(function () {
+        browser.get('/widget/divisions/wallach-division/print-collection');
+        browser.waitForAngular();
+        browser.executeScript(mockGA());
+      });
+
+      it('should track a click event on the \'Learn More\' link', function () {
+        widgetPage.locinator_url.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Location Widget');
+            expect(ga[0][3]).toEqual('Click');
+            expect(ga[0][4]).toEqual('Learn More');
+          });
+        });
+      });
+
+      it('should track a click event on the Donate button', function () {
+        widgetPage.donate_btn.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Location Widget');
+            expect(ga[0][3]).toEqual('Click');
+            expect(ga[0][4]).toEqual('Fundraising');
+          });
+        });
+      });
+
+      it('should track a click event on the NYPL Chat link', function () {
+        widgetPage.askNYPL.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Location Widget');
+            expect(ga[0][3]).toEqual('Click');
+            expect(ga[0][4]).toEqual('Chat');
+          });
+        });
+      });
+
+      it('should track a click event on the Email a Question link', function () {
+        widgetPage.email_us.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Location Widget');
+            expect(ga[0][3]).toEqual('Click');
+            expect(ga[0][4]).toEqual('Email Question');
+          });
+        });
       });
     });
 
