@@ -257,7 +257,9 @@ function nyplFundraising($timeout, nyplLocationsService) {
         templateUrl: 'scripts/directives/templates/fundraising.html',
         replace: true,
         scope: {
-            fundraising: '=fundraising'
+            fundraising: '=fundraising',
+            // Category is for GA events
+            category: '@'
         },
         link: function (scope, elem, attrs) {
             if (!scope.fundraising) {
