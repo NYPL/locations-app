@@ -765,11 +765,22 @@ describe('NYPL Utility Service Tests', function () {
       // check to see if it has the expected function
       it('should calculate an event already started with an' + 
         ' end date less than 365 days from today', function () {
-        mockedStartDate = '2014-09-05T00:00:00Z'; // September 5th, 2014
-        mockedEndDate = '2014-10-18T00:00:00Z'; // October 18, 2014
-        formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
+          var date = new Date(2014, 8, 29),
+            MockDate = Date;
 
-        expect(formattedDate).toEqual("Now through October 18, 2014");
+          Date = function (alertDate) {
+            if (alertDate) {
+              return new MockDate(alertDate);
+            }
+            return date;
+          };
+
+          mockedStartDate = '2014-09-05T00:00:00Z'; // September 5th, 2014
+          mockedEndDate = '2014-10-18T00:00:00Z'; // October 18, 2014
+          formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
+
+          expect(formattedDate).toEqual("Now through October 18, 2014");
+          Date = MockDate;
       });
 
       // check to see if it has the expected function
@@ -795,7 +806,7 @@ describe('NYPL Utility Service Tests', function () {
 
       it('should calculate an ongoing event that has an end date of' + 
         ' more than 365 days from today\'s date', function () {
-        mockedStartDate = '1998-01-01T00:00:00Z '; // January 01, 1998
+        mockedStartDate = '1998-01-01T00:00:00Z'; // January 01, 1998
         mockedEndDate = '2048-12-31T00:00:00Z'; // December 31, 2048
         formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
 
