@@ -245,10 +245,15 @@
                     _.each($scope.locations, function (location) {
                         var locationAddress =
                                 nyplUtility.getAddressString(location, true),
+                            markerCoordinates = {};
+
+                        if (location.geolocation &&
+                                location.geolocation.coordinates) {
                             markerCoordinates = {
                                 'latitude': location.geolocation.coordinates[1],
                                 'longitude': location.geolocation.coordinates[0]
                             };
+                        };
 
                         location.hoursToday = nyplUtility.hoursToday;
                         location.locationDest =
@@ -275,7 +280,8 @@
                         // markers are available, they will be drawn too. 
                         // No need to draw them again if they exist.
                         if (!nyplGeocoderService
-                                .doesMarkerExist(location.slug)) {
+                                .doesMarkerExist(location.slug) &&
+                                location.geolocation) {
                             nyplGeocoderService
                                 .createMarker(location.slug,
                                     markerCoordinates,
@@ -378,6 +384,7 @@
             $scope.geolocationAddressOrSearchQuery = '';
             $scope.searchError = '';
             showLibrariesTypeOf();
+            $scope.researchBranches = false;
             nyplGeocoderService.showAllLibraries();
             $scope.searchTerm =  searchTerm;
 

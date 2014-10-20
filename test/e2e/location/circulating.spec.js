@@ -8,12 +8,23 @@ describe('Circulating branch page', function () {
   var locationPage = require('./location.po.js'),
     APIresponse = require('../APImocks/circulating.js'),
     httpBackendMock = function (response) {
+      var API_URL = 'http://locations-api-alpha.herokuapp.com';
+
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
+          $httpBackend.whenGET('/languages/en.json').passThrough();
           $httpBackend
-            .whenJSONP('http://locations-api-beta.nypl.org' +
+            .whenGET('/config')
+            .respond({ config: { api_root: API_URL } });
+
+          $httpBackend
+            .whenJSONP(API_URL +
               '/locations/grand-central?callback=JSON_CALLBACK')
             .respond(response);
+
+          $httpBackend
+            .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
+            .respond({});
 
           // For everything else, don't mock
           $httpBackend.whenGET(/^\w+.*/).passThrough();
@@ -26,7 +37,7 @@ describe('Circulating branch page', function () {
     // Pass the good JSON from the API call.
     browser.addMockModule('httpBackendMock', httpBackendMock,
       APIresponse.good);
-    browser.get('/#/grand-central');
+    browser.get('/grand-central');
     browser.waitForAngular();
   });
 
@@ -78,9 +89,9 @@ describe('Circulating branch page', function () {
           'available%3A%22Grand+Central%22&circ=CIRC|NON%20CIRC');
     });
 
-    it('should display five social media icons', function () {
+    it('should display four social media icons', function () {
       expect(locationPage.social_media_container.isPresent()).toBe(true);
-      expect(locationPage.social_media.count()).toBe(5);
+      expect(locationPage.social_media.count()).toBe(4);
     });
 
     it('should display hours for today', function () {
@@ -122,7 +133,7 @@ describe('Circulating branch page', function () {
 
     it('should have a \'See more events\' link', function () {
       expect(locationPage.events_more_link.getAttribute('href'))
-        .toEqual('http://dev.www.aws.nypl.org/events/calendar?location=871');
+        .toEqual('http://www.nypl.org/events/calendar?location=871');
     });
 
     describe('individual event', function () {
@@ -134,7 +145,7 @@ describe('Circulating branch page', function () {
 
         it('should pass the correct date', function () {
           expect(locationPage.google.get(0).getAttribute('href'))
-            .toMatch(/dates\=20140814T200000Z\/20140814T200000Z/);
+            .toMatch(/dates\=20141017T193000Z\/20141017T213000Z/);
         });
       });
 
@@ -146,7 +157,7 @@ describe('Circulating branch page', function () {
 
         it('should pass the correct start time', function () {
           expect(locationPage.yahoo.get(0).getAttribute('href'))
-            .toMatch(/ST\=20140814T200000Z/);
+            .toMatch(/ST\=20141017T193000Z/);
         });
       });
     });
@@ -191,7 +202,7 @@ describe('Circulating branch page', function () {
   describe('specific scenarios', function () {
     beforeEach(function () {
       browser.addMockModule('httpBackendMock', httpBackendMock);
-      browser.get('/#/grand-central');
+      browser.get('/grand-central');
       browser.waitForAngular();
     });
 

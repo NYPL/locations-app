@@ -114,28 +114,38 @@ function scrolltop($window) {
 function eventRegistration($filter) {
     'use strict';
 
+    function eventStarted(startDate) {
+        var sDate = new Date(startDate),
+          today   = new Date();
+        return (sDate.getTime() > today.getTime()) ? true : false;
+    }
+
     return {
         restrict: 'E',
         templateUrl: 'scripts/directives/templates/registration.html',
         replace: true,
         scope: {
             registration: '=',
-            status: '='
+            status: '=',
+            link: '='
         },
         link: function (scope, element, attrs) {
-            // scope.online = false;
+            scope.online = false;
 
-            // if (scope.type === 'Online') {
-            //     scope.online = true;
+            if (scope.registration) {
+                // Check if the event has already started
+                scope.eventRegStarted = eventStarted(scope.registration.start);
 
-            //     if (scope.open === 'true') {
-            //         scope.registration_available = "Registration opens on " +
-            //             $filter('date')(scope.start, 'MMMM d, y - h:mma');
-            //     } else {
-            //         scope.registration_available =
-            //             "Registration for this event is closed.";
-            //     }
-            // }
+                if (scope.registration.type == 'Online') {
+                    scope.online = true;
+                    scope.reg_msg = (scope.eventRegStarted) ? 
+                                    'Online, opens ' + $filter('date')(scope.registration.start, 'MM/dd') :
+                                    'Online';
+                }
+                else {
+                    scope.reg_msg = scope.registration.type;
+                }
+            }
         }
     };
 }
@@ -250,7 +260,6 @@ function nyplFundraising($timeout, nyplLocationsService) {
             fundraising: '=fundraising'
         },
         link: function (scope, elem, attrs) {
-            console.log(scope.fundraising);
             if (!scope.fundraising) {
                 $timeout(function () {
                     nyplLocationsService.getConfig().then(function (data) {
@@ -554,6 +563,12 @@ function nyplAutofill($state, $analytics) {
 
 }
 
+
+function nyplDirections() {
+
+}
+
+
 angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
@@ -569,3 +584,12 @@ angular
     .directive('nyplSidebar', nyplSidebar)
     .directive('nyplAutofill', nyplAutofill)
     .directive('collapse', collapse);
+
+angular
+    .module('nypl_widget')
+    .directive('todayshours', todayshours)
+    .directive('nyplFundraising', nyplFundraising)
+    .directive('librarianchatbutton', librarianchatbutton)
+    .directive('emailusbutton', emailusbutton)
+    .directive('nyplDirections', nyplDirections);
+

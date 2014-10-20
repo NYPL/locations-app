@@ -1,6 +1,6 @@
 {
   "environments": {
-    "default": "production",
+    "default": "qa",
     "production": {
       "url": "locations-dev.aws.nypl.org",
       "api": "http://loc-dev01-elasticl-1snwu80g12hqm-1136768113.us-east-1.elb.amazonaws.com",
@@ -12,8 +12,18 @@
       "closed_img": "http://ux-static.nypl.org/images/branch_closed.jpg"
     },
     "qa": {
-      "url": "locations-beta-dev.herokuapp.com",
-      "api": "http://locations-api-alpha.herokuapp.com",
+      "url": "http://qa.locations.nypl.org",
+      "api": "http://qa.locations.api.nypl.org",
+      "nyplbase": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.1/css/nyplbase.min.css",
+      "optimizely": null,
+      "google_analytics": null,
+      "google_maps": "AIzaSyCeqpIM6ylCguHdJq0Mp9WpaSrLJ3xrBWM",
+      "angular_src": "ux-static-staging",
+      "closed_img": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/images/branch_closed.jpg"
+    },
+    "development": {
+      "url": "http://dev.locations.nypl.org",
+      "api": "http://dev.locations.api.nypl.org",
       "nyplbase": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.1/css/nyplbase.min.css",
       "optimizely": null,
       "google_analytics": null,
@@ -22,6 +32,7 @@
       "closed_img": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/images/branch_closed.jpg"
     },
     "local": {
+      "url": "localhost:9292",
       "api": "http://locations-api-alpha.herokuapp.com",
       "nyplbase": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.1/css/nyplbase.min.css",
       "optimizely": null,

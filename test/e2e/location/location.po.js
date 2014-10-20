@@ -55,6 +55,7 @@ var LocationPage = function () {
   this.blogs = element.all(by.repeater('blog in location._embedded.blogs'));
   this.blogs_more_link = element(by.css('.blogs-more'));
 
+  this.exhibitions_container = element(by.id('container__exhibitions'));
   this.exhibitions =
     element.all(by.repeater('exhibition in location._embedded.exhibitions'));
 

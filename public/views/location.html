@@ -206,7 +206,8 @@
         <div>
           <event-registration
             registration="event.registration"
-            status="event.status">
+            status="event.status"
+            link="event._links.self.href">
           </event-registration>
 
           <aside class="event-buttons">
@@ -355,7 +356,7 @@
           </a>
         </h3>
         <time class="date">{{exhibition.prettyDate}}</time>
-        <p class="teaser desc">{{exhibition.body | truncate}}</p>
+        <p class="teaser desc">{{exhibition.body}}</p>
       </div>
     </div>
   </div>

@@ -72,6 +72,7 @@ class Locinator < Sinatra::Base
     tz = DateTime.now().strftime("%z")
     response = {
       "config" => {
+        "self" => settings.env_config["url"],
         "tz_offset" => tz,
         "api_root" => settings.env_config["api"],
         "divisions_with_appointments" => settings.divisions_with_appointments,
@@ -82,6 +83,10 @@ class Locinator < Sinatra::Base
       }
     }
     jsonp response
+  end
+
+  get %r{/widget/.*} do
+    erb :widget
   end
     
 
