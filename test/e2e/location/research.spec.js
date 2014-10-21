@@ -148,7 +148,7 @@ describe('Research branch page', function () {
 
     it('should have a \'See more events\' link', function () {
       expect(locationPage.events_more_link.getAttribute('href'))
-        .toEqual('http://nypl.org/events/calendar?location=64');
+        .toEqual('http://www.nypl.org/events/calendar?location=64');
     });
 
     // describe('individual event', function () {
