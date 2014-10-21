@@ -8,11 +8,6 @@
   function nyplAmenities() {
 
     var amenities = {},
-      default_amenities = [
-        { amenity: { name: 'Computers for Public Use', id: 7950 } },
-        { amenity: { name: 'Wireless Internet Access', id: 7950 } },
-        { amenity: { name: 'Printing (from PC)', id: 7950 } }
-      ],
       sortAmenitiesList = function (list, sortBy) {
         if (!(list instanceof Array)) {
           return;
@@ -68,20 +63,20 @@
       var icon = default_icon || '';
 
       switch (id) {
-      case 7952: // Wireless
+      case 7967: // Wireless
         icon = 'icon-connection';
         break;
       case 7965: // Laptop
         icon = 'icon-laptop';
         break;
-      case 7954: // Printing
+      case 7966: // Printing
         icon = 'icon-print';
         break;
-      case 7955: // Electrical oulets
+      case 7968: // Electrical oulets
         icon = 'icon-power-cord';
         break;
-      case 7958: // Book drop
-      case 7951:
+      case 7971: // Book drop
+      case 7972:
         icon = 'icon-box-add';
         break;
       default:
@@ -124,10 +119,12 @@
               .flatten(true)
               .unique()
               .value();
-    }
+    };
 
     amenities.createAmenitiesCategories = function (amenities) {
-      var categoryNames,
+      var default_order = ['Computer Services', 'Circulation',
+          'Printing and Copy Services', 'Facilities', 'Assistive Technologies'],
+        categoryNames,
         categories = [],
         categoryObj,
         self = this;
@@ -145,7 +142,7 @@
         categoryObj.icon = self.getCategoryIcon(category);
 
         if (categoryObj.amenities.length) {
-          categories.push(categoryObj);
+          categories[_.indexOf(default_order, category)] = categoryObj;
         }
       });
 
@@ -173,7 +170,7 @@
         amenities_list = [];
 
       if (!(amenities && amenities.length && rank && loc_rank)) {
-        return; // default_amenities;
+        return;
       }
 
       // Sort the list of all amenities by institution rank.
@@ -191,20 +188,21 @@
       return amenities_list;
     };
 
-    amenities.getAmenityConfig = function (config, globalDefault, localDefault) {
-      var obj = {},
-        global = globalDefault || 3,
-        local  = localDefault || 2;
-      if (config.featured_amenities) {
-        obj.global = config.featured_amenities.global || global;
-        obj.local  = config.featured_amenities.local || local;
-      }
-      else {
-        obj.global = global;
-        obj.local  = local;
-      }
-      return obj;
-    };
+    amenities.getAmenityConfig =
+      function (config, globalDefault, localDefault) {
+        var obj = {},
+          global = globalDefault || 3,
+          local  = localDefault || 2;
+
+        if (config && config.featured_amenities) {
+          obj.global = config.featured_amenities.global || global;
+          obj.local  = config.featured_amenities.local || local;
+        } else {
+          obj.global = global;
+          obj.local  = local;
+        }
+        return obj;
+      };
 
     return amenities;
   }

@@ -1,9 +1,6 @@
 <!doctype html>
-<html xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="nypl_locations">
+<html xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="nypl_widget">
   <head>
-    <% if ! settings.env_config["optimizely"].nil? %>
-    <script src="<%= settings.env_config["optimizely"] %>"></script>
-    <% end %>
     <meta charset="utf-8">
     <title data-ng-bind="'NYPL | ' + $root.title">NYPL |</title>
     <meta name="fragment" content="!" />
@@ -21,39 +18,21 @@
     <link rel="stylesheet" href="/css/locations.min.css">
 
     <!-- Angular Hash fallback (need to test on heroku) -->
-    <base href="/">
+    <base href="/widget" target="_parent">
   </head>
-  <body>
+  <body class="nypl-widget">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     
-    <!-- Translate Buttons (Removed for internal beta) -->
-    <!--<nypl-translate></nypl-translate>-->
-
-    <!-- Site Wide Alerts -->
-    <nypl-site-alerts></nypl-site-alerts>
-
-    <nypl-feedback data-url="https://www.surveymonkey.com/s/8T3CYMV" data-side="right"
-        data-height="660" data-width="300"></nypl-feedback>
-
-    <!-- Header -->
-    <div ng-include="'views/header.html'"></div>
-
-    <!-- Main Navigation -->
-    <nypl-navigation></nypl-navigation>
-
-    <div class="wrapper">
+    <div class="nypl-widget-wrapper">
       <!-- Lokinator App -->
-	    <div class="nypl-locations" data-ui-view data-autoscroll="false" scrolltop></div>
+      <div data-ui-view data></div>
     </div>
-    
-    <!-- Footer -->
-    <div ng-include="'views/footer.html'"></div>
 
     <!-- Loading Directive -->
     <div id="loadingWidget" loading-widget>
-        <div class="loader-icon icon-spinner2"></div>
+      <div class="loader-icon icon-spinner2"></div>
     </div>
 
     <script>
@@ -72,10 +51,6 @@
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-    
-<% if !settings.env_config["google_maps"].nil? %>
-    <script src="https://maps.googleapis.com/maps/api/js?key=<%= settings.env_config["google_maps"] %>&amp;sensor=false"></script>
-<% end %>
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
     <!-- endbower -->
@@ -95,27 +70,17 @@
     <!-- NYPL Components -->
     <script src="scripts/components/nypl_coordinates.js"></script>
     <script src="scripts/components/nypl_locations_api.js"></script>
-    <script src="scripts/components/nypl_search/nypl_search.js"></script>
-    <script src="scripts/components/nypl_sso/nypl_sso.js"></script>
-    <script src="scripts/components/nypl_navigation/nypl_navigation.js"></script>
-    <script src="scripts/components/nypl_breadcrumbs/nypl_breadcrumbs.js"></script>
-    <script src="scripts/components/nypl_feedback/nypl_feedback.js"></script>
 
     <!-- App Config -->
     <script src="scripts/app.js"></script>
     <!-- Filters -->
     <script src="scripts/filters/nypl_filters.js"></script>
     <!-- Controllers -->
-    <script src="scripts/controllers/locations.js"></script>
-    <script src="scripts/controllers/division.js"></script>
-    <script src="scripts/controllers/amenities.js"></script>
-    <!-- Services -->
-    <script src="scripts/services/nypl_geocoder_service.js"></script>
-    <script src="scripts/services/nypl_utility_service.js"></script>
-    <script src="scripts/services/nypl_amenities_service.js"></script>
-    <script src="scripts/services/nypl_search_service.js"></script>
+    <script src="scripts/controllers/widget.js"></script>
     <!-- Directives -->
     <script src="scripts/directives/nypl_directives.js"></script>
+    <!-- Services -->
+    <script src="scripts/services/nypl_utility_service.js"></script>
 
 </body>
 </html>

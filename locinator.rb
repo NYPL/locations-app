@@ -16,9 +16,11 @@ class Locinator < Sinatra::Base
     set :divisions_with_appointments, configs["divisions_with_appointments"]
     set :featured_amenities, configs["featured_amenities"]
     set :research_order, configs["research_order"]
+    set :fundraising, configs["fundraising"]
   end
 
   helpers Sinatra::Jsonp
+  set :protection, :except => :frame_options
   set :haml, :format => :html5
   # Method cribbed from http://blog.alexmaccaw.com/seo-in-js-web-apps
   helpers do
@@ -70,14 +72,21 @@ class Locinator < Sinatra::Base
     tz = DateTime.now().strftime("%z")
     response = {
       "config" => {
+        "self" => settings.env_config["url"],
         "tz_offset" => tz,
         "api_root" => settings.env_config["api"],
         "divisions_with_appointments" => settings.divisions_with_appointments,
         "featured_amenities" => settings.featured_amenities,
-        "research_order" => settings.research_order
+        "research_order" => settings.research_order,
+        "fundraising" => settings.fundraising,
+        "closed_img" => settings.env_config["closed_img"]
       }
     }
     jsonp response
+  end
+
+  get %r{/widget/.*} do
+    erb :widget
   end
     
 

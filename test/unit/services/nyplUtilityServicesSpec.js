@@ -90,6 +90,17 @@ describe('NYPL Utility Service Tests', function () {
             {close: "18:00", day: "Mon", open: "10:00" }
           ]
         },
+        emptyException = {
+          regular: [
+            {close: null, day: "Sun", open: null },
+            {close: "18:00", day: "Mon", open: "10:00" }
+          ],
+          exceptions: {
+            start: "2014-09-10T10:45:10-04:00",
+            end: "2014-09-11T00:00:00-04:00",
+            description: ""
+          }
+        },
         hours = {
           regular: [
             {close: null, day: "Sun", open: null },
@@ -117,6 +128,10 @@ describe('NYPL Utility Service Tests', function () {
         expect(nyplUtility.branchException()).toBe(null);
       });
 
+      it('should return null if the description is empty', function () {
+        expect(nyplUtility.branchException(emptyException)).toBe(null);
+      });
+
       it('should return null if no exceptions are availble', function () {
         expect(nyplUtility.branchException(noExceptionshours)).toBe(null);
       });
@@ -131,6 +146,26 @@ describe('NYPL Utility Service Tests', function () {
         });
       });
 
+      it('should not return a start date if it was not included', function () {
+        hours.exceptions.start = null;
+        expect(nyplUtility.branchException(hours)).toEqual({
+          desc: 'The Rose Main Reading Room and the Bill Blass ' +
+            'Public Catalog Room in the Stephen A. Schwarzman Building ' +
+            'will be temporarily closed.',
+          end : '2014-09-11T00:00:00-04:00'
+        });
+      });
+
+      it('should not return an end date if it was not included', function () {
+        hours.exceptions.start = "2014-09-10T10:45:10-04:00";
+        hours.exceptions.end = null;
+        expect(nyplUtility.branchException(hours)).toEqual({
+          desc: 'The Rose Main Reading Room and the Bill Blass ' +
+            'Public Catalog Room in the Stephen A. Schwarzman Building ' +
+            'will be temporarily closed.',
+          start: '2014-09-10T10:45:10-04:00',
+        });
+      });
     });
 
     /*
@@ -254,13 +289,14 @@ describe('NYPL Utility Service Tests', function () {
         {start: "2014-08-23T00:00:00-04:00", end: "2014-09-02T01:00:00-04:00",
           body: "The New York Public Library will be closed August 30th " +
             "through September 1st in observance of Labor Day"}
-      ],
+        ],
         one_alert = {
           start: "2014-08-23T00:00:00-04:00",
           end: "2014-09-02T01:00:00-04:00",
           description: "The New York Public Library will be closed August " +
             "30th through September 1st in observance of Labor Day"
-        };
+        },
+        bad_alert = {};
 
       it('should have the alerts function available', function () {
         expect(nyplUtility.alerts).toBeDefined();
@@ -289,6 +325,10 @@ describe('NYPL Utility Service Tests', function () {
 
           Date = MockDate;
         });
+
+      it('should return null if the dates are wrong', function () {
+        expect(nyplUtility.alerts(bad_alert)).toBe(null);
+      });
 
       it('should return null if no input is given', function () {
         expect(nyplUtility.alerts()).toBe(null);
@@ -527,7 +567,7 @@ describe('NYPL Utility Service Tests', function () {
           expect(updatedLocations).toEqual([
             {id: 'AG', name: 'Aguilar Library',
               geolocation: { coordinates: [-74.0084794, 40.7483308] },
-              distance: 0.01}, //4.56
+              distance: 0}, //4.56
             {id: 'AL', name: 'Allerton Library',
               lat: 40.866, long: -73.8632, distance: 11.13},
             {id: 'BAR', name: 'Baychester Library',
@@ -711,21 +751,43 @@ describe('NYPL Utility Service Tests', function () {
         expect(nyplUtility.formatDate).toBeDefined();
       });
 
+      it('should return undefined if no input was given', function () {
+        expect(nyplUtility.formatDate()).not.toBeDefined();
+      });
+
+      it('should return undefined if bad input', function () {
+        mockedStartDate = '2014-09-05T00:00:00Z'; // September 5th, 2014
+        mockedEndDate = 'bad value';
+        expect(nyplUtility.formatDate(mockedStartDate, mockedEndDate))
+          .not.toBeDefined();
+      });
+
       // check to see if it has the expected function
       it('should calculate an event already started with an' + 
         ' end date less than 365 days from today', function () {
-        mockedStartDate = '2014-09-05T00:00:00Z', // September 5th, 2014
-        mockedEndDate = '2014-10-18T00:00:00Z', // October 18, 2014
-        formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
+          var date = new Date(2014, 8, 29),
+            MockDate = Date;
 
-        expect(formattedDate).toEqual("Now through October 18, 2014");
+          Date = function (alertDate) {
+            if (alertDate) {
+              return new MockDate(alertDate);
+            }
+            return date;
+          };
+
+          mockedStartDate = '2014-09-05T00:00:00Z'; // September 5th, 2014
+          mockedEndDate = '2014-10-18T00:00:00Z'; // October 18, 2014
+          formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
+
+          expect(formattedDate).toEqual("Now through October 18, 2014");
+          Date = MockDate;
       });
 
       // check to see if it has the expected function
       it('should calculate an upcoming event with an end ' + 
         'date less than 365 days from today', function () {
-        mockedStartDate = '2015-02-27T00:00:00Z', // February 27th, 2015
-        mockedEndDate = '2015-04-18T00:00:00Z', // April 18, 2015
+        mockedStartDate = '2015-02-27T00:00:00Z'; // February 27th, 2015
+        mockedEndDate = '2015-04-18T00:00:00Z'; // April 18, 2015
         formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
 
         expect(formattedDate).toEqual("Opening February 27, 2015");
@@ -734,8 +796,8 @@ describe('NYPL Utility Service Tests', function () {
       // check to see if it has the expected function
       it('should calculate an event already past today\'s date and' + 
         ' less than 365 days from today', function () {
-        mockedStartDate = '2014-08-27T00:00:00Z', // August 27, 2014
-        mockedEndDate = '2014-09-20T00:00:00Z', // September 20, 2014
+        mockedStartDate = '2014-08-27T00:00:00Z'; // August 27, 2014
+        mockedEndDate = '2014-09-20T00:00:00Z'; // September 20, 2014
         formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
 
         expect(formattedDate).toEqual("August 27, 2014 through September 20, 2014");
@@ -744,8 +806,8 @@ describe('NYPL Utility Service Tests', function () {
 
       it('should calculate an ongoing event that has an end date of' + 
         ' more than 365 days from today\'s date', function () {
-        mockedStartDate = '1998-01-01T00:00:00Z ', // January 01, 1998
-        mockedEndDate = '2048-12-31T00:00:00Z', // December 31, 2048
+        mockedStartDate = '1998-01-01T00:00:00Z'; // January 01, 1998
+        mockedEndDate = '2048-12-31T00:00:00Z'; // December 31, 2048
         formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
 
         expect(formattedDate).toEqual("Ongoing");

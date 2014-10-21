@@ -237,14 +237,14 @@ time {
 			margin: 5px 0px;
 			padding: 5px;
 			display: block;
-			@include breakpoint($min, $mobile-phone) {
+			@include breakpoint($min, 720px) {
 				margin: 0;
 				display: inline-block;
 			}
 		}
 		.view-on-map {
 			display: block;
-			@include breakpoint($min, $mobile-phone) {
+			@include breakpoint($min, 720px) {
 				display: inline-block;
 				position: absolute;
 				right: 15px;
@@ -256,7 +256,7 @@ time {
 		}
 	}
 
-	.geolocation-search {
+	.geocoding-search {
 		padding: 10px;
 		
 		&.active {
@@ -285,8 +285,22 @@ time {
 		position: relative;
 		margin: 0;
 		padding: 0;
-		top: 10px;
+		top: 10.5px;
 		left: 32px;
+		height: 25px;
+		overflow: hidden;
+
+		@include breakpoint($max, 320px) {
+			max-width: 180px;
+		}
+
+		@include breakpoint(null, 321px, 480px) {
+			max-width: 225px;
+		}
+
+		@include breakpoint($min, 481px) {
+			max-width: 100%;
+		}
 
 		&.hidden {
 			display: none;
@@ -302,11 +316,7 @@ time {
 @-moz-document url-prefix() {
 
 	.search-button {
-		vertical-align: .4px !important;
-	}
-
-	.sso-login .login-form {
-		right: 81px !important;
+		vertical-align: -1.15px !important;
 	}
 }
 

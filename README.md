@@ -1,4 +1,4 @@
-# The Locinator
+## The Locinator
 
 ## Installing dependencies
 To get all the Ruby dependencies, run:

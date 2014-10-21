@@ -105,10 +105,6 @@ describe('NYPL Geocoder Service Tests', function () {
       expect(nyplGeocoderService.hideSearchInfowindow).toBeDefined();
       expect(nyplGeocoderService.removeMarker).toBeDefined();
       expect(nyplGeocoderService.panExistingMarker).toBeDefined();
-      expect(nyplGeocoderService.setFilterMarker).toBeDefined();
-      expect(nyplGeocoderService.drawFilterMarker).toBeDefined();
-      expect(nyplGeocoderService.clearFilteredLocation).toBeDefined();
-      expect(nyplGeocoderService.getFilteredLocation).toBeDefined();
     });
 
     /* nyplGeocoderService.geocodeAddress */
@@ -234,18 +230,6 @@ describe('NYPL Geocoder Service Tests', function () {
           expect(returnError).toEqual(googleError);
         });
 
-        it('should fail if the query is too short', function () {
-          var returnError, errorMessage = 'Query too short';
-
-          nyplGeocoderService.geocodeAddress('ba')
-            .then(function (data) {})
-            .catch(function (error) {
-              returnError = error.msg;
-            });
-          rootScope.$apply();
-
-          expect(returnError).toEqual(errorMessage);
-        });
       });
     });
     /* end nyplGeocoderService.geocodeAddress */
@@ -400,9 +384,8 @@ describe('NYPL Geocoder Service Tests', function () {
       it('should call the controls function in the Maps API',
         function () {
           nyplGeocoderService
-            .drawMap({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map');
-
-          nyplGeocoderService.drawLegend('all-locations-map');
+            .drawMap({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map')
+            .drawLegend('all-locations-map');
           expect(map_controls_push_mock).toHaveBeenCalled();
         });
     });
@@ -645,55 +628,6 @@ describe('NYPL Geocoder Service Tests', function () {
         });
     });
 
-    // The next set of four tests are related to a search hitting a match on
-    // the locations object array. The first match is saved so that the marker
-    // can display when switching between the list and map view.
-    describe('nyplGeocoderService.setFilterMarker', function () {
-      it('should save a filtered marker\'s value', function () {
-        nyplGeocoderService.setFilterMarker('schwarzman');
-
-        var returnValue = nyplGeocoderService.getFilteredLocation();
-        expect(returnValue).toEqual('schwarzman');
-      });
-    });
-
-    describe('nyplGeocoderService.drawFilterMarker', function () {
-      it('should pan to the filtered marker on the map', function () {
-        nyplGeocoderService.createMarker('schwarzman',
-          { 'lat': 40.7532, 'long': -73.9822}, '5th Avenue at 42nd St');
-
-        nyplGeocoderService.setFilterMarker('schwarzman');
-        nyplGeocoderService.drawFilterMarker('schwarzman');
-
-        expect(infowindow_close_mock).toHaveBeenCalled();
-        expect(infowindow_setContent_mock)
-          .toHaveBeenCalledWith("5th Avenue at 42nd St");
-        expect(infowindow_open_mock).toHaveBeenCalled();
-      });
-    });
-
-    describe('nyplGeocoderService.clearFilteredLocation', function () {
-      it('should remove any saved filtered marker', function () {
-        var returnValue;
-
-        nyplGeocoderService.setFilterMarker('lpa');
-        returnValue = nyplGeocoderService.getFilteredLocation();
-        expect(returnValue).toEqual('lpa');
-
-        nyplGeocoderService.clearFilteredLocation();
-        returnValue = nyplGeocoderService.getFilteredLocation();
-        expect(returnValue).not.toBeDefined();
-      });
-    });
-
-    describe('nyplGeocoderService.getFilteredLocation', function () {
-      it('should retrieve a filtered marker\'s value', function () {
-        nyplGeocoderService.setFilterMarker('grand-central');
-
-        var returnValue = nyplGeocoderService.getFilteredLocation();
-        expect(returnValue).toEqual('grand-central');
-      });
-    });
   });
   /* end nyplGeocoderService called directly */
 });

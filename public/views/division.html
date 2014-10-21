@@ -27,6 +27,9 @@
                 <td class="time">{{ hours | timeFormat }}</td>
               </tr>
             </table>
+            <p class="smallprint" data-ng-if="division.open && division._embedded.divisions">
+              {{ 'IDV_SUB_DIVISION_HOURS' | translate }}
+            </p>
           </div>
         </div>
         <div class="callout branch-closed" data-ng-if="!division.open">
@@ -69,8 +72,15 @@
             {{division.access}}
           </div>
           <div data-ng-if="division.access == 'Partially Accessible'" class="accessible">
-            <span class="partially icon-accessibility"></span>
-            {{division.access}}
+    
+                <div data-ng-if="division.accessibility_note">
+	                <span class="partially icon-accessibility"></span>
+	                {{division.accessibility_note}}
+                </div>
+                <div data-ng-if="!division.accessibility_note">
+	               <span class="partially icon-accessibility"></span>
+	               {{division.access}}
+                </div>
           </div>
           <div data-ng-if="!division.access" class="not-accessible">
             <span class="none icon-accessibility"></span>
@@ -162,6 +172,7 @@
     </div>
   </div>
 
+  <!-- Division Events -->
   <div class="container__events" data-ng-if="division._embedded.events">
     <h2 class="hdg">{{ 'EVENTS' | translate }}</h2>
     <ul class="grid">
@@ -173,44 +184,35 @@
             {{event.title}}
           </a>
         </h3>
-        <a data-ng-href="{{event._links.self.href}}"
-          analytics-on="click" analytics-category="Locations"
-          analytics-event="Event image" analytics-label="{{event._links.self.href}}">
-          <img data-ng-if="event.image" class="img--outline img--left" 
-            data-ng-src="{{event.image}}" alt="" style="height: 100px;" />
-        </a>
         <time class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
         <p class="desc">{{event.body}}</p>
-
-        <div data-ng-if="event.registration">
-          {{ 'REGISTRATION' | translate }}:
-          <event-registration registration="{{event.registration}}"
-            type="{{event.registration.type}}"
-            open="{{event.registration.open}}"
-            start="{{event.registration.start}}"
-            link="{{event._links.self.href}}">
+        <div>
+          <event-registration
+            registration="event.registration"
+            status="event.status"
+            link="event._links.self.href">
           </event-registration>
-        </div><!--
 
-        --><div class="">
-          <a data-ng-href="{{calendarLink('google', event, location)}}"
-            target="_blank" rel="nofollow" class="icon-calendar google_link"
-            analytics-on="click" analytics-category="Locations"
-            analytics-event="Add to Google" analytics-label="{{event._links.self.href}}">
-            Google
-          </a>
-          <a data-ng-href="{{calendarLink('yahoo', event, location)}}"
-            target="_blank" rel="nofollow" class="icon-calendar yahoo_link"
-            analytics-on="click" analytics-category="Locations"
-            analytics-event="Add to Yahoo" analytics-label="{{event._links.self.href}}">
-            Yahoo
-          </a>
-          <a href="#" data-ng-click="icalLink(event, location.street_address)"
-            target="_blank" download="nypl_event.ics" class="icon-calendar" rel="nofollow"
-            analytics-on="click" analytics-category="Locations"
-            analytics-event="Add to iCal" analytics-label="{{event._links.self.href}}">
-            iCal
-          </a>
+          <aside class="event-buttons">
+            <a data-ng-href="{{calendarLink('google', event, location)}}"
+              target="_blank" rel="nofollow" class="icon-calendar google_link"
+              analytics-on="click" analytics-category="Locations"
+              analytics-event="Add to Google" analytics-label="{{event._links.self.href}}">
+              Google
+            </a>
+            <a data-ng-href="{{calendarLink('yahoo', event, location)}}"
+              target="_blank" rel="nofollow" class="icon-calendar yahoo_link"
+              analytics-on="click" analytics-category="Locations"
+              analytics-event="Add to Yahoo" analytics-label="{{event._links.self.href}}">
+              Yahoo
+            </a>
+            <a href="#" data-ng-click="icalLink(event, location.street_address)"
+              target="_blank" download="nypl_event.ics" class="icon-calendar" rel="nofollow"
+              analytics-on="click" analytics-category="Locations"
+              analytics-event="Add to iCal" analytics-label="{{event._links.self.href}}">
+              iCal
+            </a>
+          </aside>
         </div>
       </li>
     </ul>
@@ -270,7 +272,7 @@
           <span class="blog_location" data-ng-if="blog.author.location">, {{blog.author.location}}</span>
         </div>
         <time class="date" ><span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span></time>
-        <div class="desc">{{blog.body | truncate}}</div>
+        <div class="desc">{{blog.body}}</div>
       </div>
     </div>
     <!-- More Blogs Link -->
@@ -283,7 +285,7 @@
 
   <!-- Ask/Donate -->
   <div class="ask-donate">
-    <nypl-fundraising fundraising="location.fundraising"></nypl-fundraising><!--
+    <nypl-fundraising fundraising="location.fundraising" category="Locations"></nypl-fundraising><!--
 
     --><div class="askNYPL grid__item one-whole lap-and-up-one-half " id="ask-nypl">
       <ul>

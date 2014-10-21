@@ -1,0 +1,65 @@
+
+.nypl-widget {
+  background: none;
+
+  .nypl-widget-wrapper {
+    margin: 20px auto 0;
+    padding: 0 10px;
+    max-width: 1200px;
+
+    @include breakpoint($min, $pre-tablet) {
+      margin: 0 auto;
+    }
+
+    .widget-content {
+      border: 1px solid #e2dedb;
+      padding-right: 20px;
+      padding-top: 20px;
+    }
+
+    .icon-compass {
+      line-height: 2;
+    }
+
+    #catalog-link {
+      background-color: lighten(#0090c4, 50%);
+      border: 1px solid transparent;
+      border-radius: 2px;
+      color: darken(#0090c4, 10%);
+      padding: 4px;
+      text-decoration: none;
+      // margin-left: .35em;
+      
+      &:hover {
+        //border: 1px solid #0090c4;
+        background-color: #0090c4;
+        color:#fff;
+      }
+    }
+
+    .social {
+      line-height: 2;
+
+      a:first-child {
+        margin-left: -8px;
+      }
+    }
+
+    .learn-more {
+      margin-top: 20px;
+      margin-bottom: 15px;
+
+      a {
+        font-weight: bold;
+      }
+
+      &.grid--center {
+        margin-left: 0px;
+      }
+    }
+
+    .ask-donate {
+      margin-top: 25px;
+    }
+  }
+}
