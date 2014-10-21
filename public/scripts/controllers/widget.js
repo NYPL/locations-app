@@ -34,7 +34,7 @@
     $scope.widget_name = data.name;
 
     $scope.goToLocinator = function () {
-      $window.location.href = $scope.locinator_url;
+      $window.parent.location.href = $scope.locinator_url;
     };
 
     if (data._embedded.location) {
