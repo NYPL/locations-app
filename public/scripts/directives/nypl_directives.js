@@ -507,15 +507,21 @@
 
         this.filterStartsWith = function(data, searchTerm) {
           return _.filter(data, function(elem) {
-            return elem.name.substring(0, searchTerm.length).toLowerCase() 
-              === searchTerm.toLowerCase();
+            if (elem.name) {
+              return elem.name.substring(0, searchTerm.length).toLowerCase() 
+                === searchTerm.toLowerCase();
+            }
+            return false;
           });
         }
 
         this.filterTermWithin = function(data, searchTerm) {
           return _.filter(data, function(elem) {
-            return elem.name.toLowerCase().
-              indexOf(searchTerm.toLowerCase()) >= 0;
+            if (elem.name) {
+              return elem.name.toLowerCase().
+                indexOf(searchTerm.toLowerCase()) >= 0;
+            }
+            return false;
           });
         }
 
