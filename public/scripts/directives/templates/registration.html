@@ -2,16 +2,16 @@
   <!-- Event is open -->
   <div data-ng-if="status.status && registration">
     <p>
-    	<span class='reg-label'>
+    	<span class='registration-label'>
       	{{ 'REGISTRATION' | translate }}:
       </span>
-    	<a class="btn btn--natural" data-ng-if="online"
+    	<a class="btn btn--natural registration-type" data-ng-if="online"
         data-ng-href="{{link}}#register"
         analytics-on="click" analytics-category="Locations"
         analytics-event="Register" analytics-label="{{link}}">
         {{reg_msg}}
       </a>
-      <span class="reg-type" data-ng-if="!online">{{reg_msg}}</span>
+      <span class="registration-type" data-ng-if="!online">{{reg_msg}}</span>
     </p>
   </div>
   <!-- Event is closed, display reason -->

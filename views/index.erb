@@ -12,7 +12,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
     <link rel="shortcut icon" type="image/png" href="/images/favicon.ico">
+<% if settings.env_config["angular_src"] == "ux-static-staging" %>
+    <link rel="stylesheet" href="http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.1/css/nyplbase.min.css">
+<% else %>
     <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.1/css/nyplbase.min.css">
+<% end %>
+
     <link rel="stylesheet" href="/css/locations.min.css">
 
     <!-- Angular Hash fallback (need to test on heroku) -->

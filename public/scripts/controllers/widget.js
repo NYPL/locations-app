@@ -6,6 +6,7 @@
     $rootScope,
     $scope,
     $timeout,
+    $window,
     config,
     data,
     nyplCoordinatesService,
@@ -29,7 +30,8 @@
 
     $rootScope.title = data.name;
     $scope.data = data;
-    $scope.locinator_url = url + $location.path().substr(7);
+    $scope.locinator_url = "http://dev.locations.nypl.org" + $location.path().substr(7);
+    $scope.widget_name = data.name;
 
     if (data._embedded.location) {
       $scope.division = true;
