@@ -1,3 +1,5 @@
 <div class="nypl-alerts" data-ng-if="sitewidealert">
-	<p>{{sitewidealert}}</p>
+	<div data-ng-repeat="alert in sitewidealert">
+		<p>{{alert}}</p>
+	</div>
 </div>
