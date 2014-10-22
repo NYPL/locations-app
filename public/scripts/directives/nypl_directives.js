@@ -547,27 +547,27 @@
 
   }
 
-angular
-  .module('nypl_locations')
-  .directive('loadingWidget', loadingWidget)
-  .directive('nyplTranslate', nyplTranslate)
-  .directive('todayshours', todayshours)
-  .directive('emailusbutton', emailusbutton)
-  .directive('librarianchatbutton', librarianchatbutton)
-  .directive('scrolltop', scrolltop)
-  .directive('eventRegistration', eventRegistration)
-  .directive('nyplSiteAlerts', nyplSiteAlerts)
-  .directive('nyplLibraryAlert', nyplLibraryAlert)
-  .directive('nyplFundraising', nyplFundraising)
-  .directive('nyplSidebar', nyplSidebar)
-  .directive('nyplAutofill', nyplAutofill)
-  .directive('collapse', collapse);
+  angular
+    .module('nypl_locations')
+    .directive('loadingWidget', loadingWidget)
+    .directive('nyplTranslate', nyplTranslate)
+    .directive('todayshours', todayshours)
+    .directive('emailusbutton', emailusbutton)
+    .directive('librarianchatbutton', librarianchatbutton)
+    .directive('scrolltop', scrolltop)
+    .directive('eventRegistration', eventRegistration)
+    .directive('nyplSiteAlerts', nyplSiteAlerts)
+    .directive('nyplLibraryAlert', nyplLibraryAlert)
+    .directive('nyplFundraising', nyplFundraising)
+    .directive('nyplSidebar', nyplSidebar)
+    .directive('nyplAutofill', nyplAutofill)
+    .directive('collapse', collapse);
 
-angular
-  .module('nypl_widget')
-  .directive('todayshours', todayshours)
-  .directive('nyplFundraising', nyplFundraising)
-  .directive('librarianchatbutton', librarianchatbutton)
-  .directive('emailusbutton', emailusbutton);
+  angular
+    .module('nypl_widget')
+    .directive('todayshours', todayshours)
+    .directive('nyplFundraising', nyplFundraising)
+    .directive('librarianchatbutton', librarianchatbutton)
+    .directive('emailusbutton', emailusbutton);
 
 })();
