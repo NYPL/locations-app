@@ -107,6 +107,12 @@
       return (sDate.getTime() > today.getTime()) ? true : false;
     }
 
+    function eventStarted(startDate) {
+        var sDate = new Date(startDate),
+          today   = new Date();
+        return (sDate.getTime() > today.getTime()) ? true : false;
+    }
+
     return {
       restrict: 'E',
       templateUrl: 'scripts/directives/templates/registration.html',
@@ -507,15 +513,21 @@
 
         this.filterStartsWith = function(data, searchTerm) {
           return _.filter(data, function(elem) {
-            return elem.name.substring(0, searchTerm.length).toLowerCase() 
-              === searchTerm.toLowerCase();
+            if (elem.name) {
+              return elem.name.substring(0, searchTerm.length).toLowerCase() 
+                === searchTerm.toLowerCase();
+            }
+            return false;
           });
         }
 
         this.filterTermWithin = function(data, searchTerm) {
           return _.filter(data, function(elem) {
-            return elem.name.toLowerCase().
-              indexOf(searchTerm.toLowerCase()) >= 0;
+            if (elem.name) {
+              return elem.name.toLowerCase().
+                indexOf(searchTerm.toLowerCase()) >= 0;
+            }
+            return false;
           });
         }
 
@@ -541,27 +553,27 @@
 
   }
 
-angular
-  .module('nypl_locations')
-  .directive('loadingWidget', loadingWidget)
-  .directive('nyplTranslate', nyplTranslate)
-  .directive('todayshours', todayshours)
-  .directive('emailusbutton', emailusbutton)
-  .directive('librarianchatbutton', librarianchatbutton)
-  .directive('scrolltop', scrolltop)
-  .directive('eventRegistration', eventRegistration)
-  .directive('nyplSiteAlerts', nyplSiteAlerts)
-  .directive('nyplLibraryAlert', nyplLibraryAlert)
-  .directive('nyplFundraising', nyplFundraising)
-  .directive('nyplSidebar', nyplSidebar)
-  .directive('nyplAutofill', nyplAutofill)
-  .directive('collapse', collapse);
+  angular
+    .module('nypl_locations')
+    .directive('loadingWidget', loadingWidget)
+    .directive('nyplTranslate', nyplTranslate)
+    .directive('todayshours', todayshours)
+    .directive('emailusbutton', emailusbutton)
+    .directive('librarianchatbutton', librarianchatbutton)
+    .directive('scrolltop', scrolltop)
+    .directive('eventRegistration', eventRegistration)
+    .directive('nyplSiteAlerts', nyplSiteAlerts)
+    .directive('nyplLibraryAlert', nyplLibraryAlert)
+    .directive('nyplFundraising', nyplFundraising)
+    .directive('nyplSidebar', nyplSidebar)
+    .directive('nyplAutofill', nyplAutofill)
+    .directive('collapse', collapse);
 
-angular
-  .module('nypl_widget')
-  .directive('todayshours', todayshours)
-  .directive('nyplFundraising', nyplFundraising)
-  .directive('librarianchatbutton', librarianchatbutton)
-  .directive('emailusbutton', emailusbutton);
+  angular
+    .module('nypl_widget')
+    .directive('todayshours', todayshours)
+    .directive('nyplFundraising', nyplFundraising)
+    .directive('librarianchatbutton', librarianchatbutton)
+    .directive('emailusbutton', emailusbutton);
 
 })();
