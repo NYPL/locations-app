@@ -102,12 +102,6 @@
 
   function eventRegistration($filter) {
     function eventStarted(startDate) {
-      var sDate = new Date(startDate),
-        today   = new Date();
-      return (sDate.getTime() > today.getTime()) ? true : false;
-    }
-
-    function eventStarted(startDate) {
         var sDate = new Date(startDate),
           today   = new Date();
         return (sDate.getTime() > today.getTime()) ? true : false;
