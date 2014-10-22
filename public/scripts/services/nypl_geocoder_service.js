@@ -96,25 +96,30 @@
         geocoder = new google.maps.Geocoder(),
         sw_bound = new google.maps.LatLng(40.49, -74.26),
         ne_bound = new google.maps.LatLng(40.91, -73.77),
-        bounds = new google.maps.LatLngBounds(sw_bound, ne_bound);
+        bounds = new google.maps.LatLngBounds(sw_bound, ne_bound),
+        geocodeOptions = {
+          address: address,
+          bounds: bounds,
+          region: "US",
+          componentRestrictions: {
+            'country': 'US',
+            'locality': 'New York'
+          }
+        };
 
-      if (address.length < 3) {
-        defer.reject({msg: "Query too short"});
-      } else {
-        geocoder.geocode({address: address, bounds: bounds, region: "US"},
-          function (result, status) {
-            if (status === google.maps.GeocoderStatus.OK) {
-              coords.lat  = result[0].geometry.location.k;
-              coords.long = result[0].geometry.location.B ||
-                 result[0].geometry.location.A;
-              coords.name = result[0].formatted_address;
+      geocoder.geocode(geocodeOptions, function (result, status) {
+          if (status === google.maps.GeocoderStatus.OK) {
+            // console.log(result);
+            coords.lat  = result[0].geometry.location.k;
+            coords.long = result[0].geometry.location.B ||
+               result[0].geometry.location.A;
+            coords.name = result[0].formatted_address;
 
-              defer.resolve(coords);
-            } else {
-              defer.reject(new Error(status));
-            }
-          });
-      }
+            defer.resolve(coords);
+          } else {
+            defer.reject(new Error(status));
+          }
+        });
 
       return defer.promise;
     };
@@ -403,43 +408,6 @@
       showInfowindow(markerObj.marker, markerObj.text);
 
       return this;
-    };
-
-    /** @function nyplGeocoderService.setFilterMarker
-     * @param {string} id A location's slug.
-     * @Description Set the filtered marker's id. It is used when switching from
-     *  the list view to the map view so that the matched filtered marker
-     *  can display on the map.
-     */
-    geocoderService.setFilterMarker = function (location_slug) {
-      filteredLocation = location_slug;
-      return this;
-    };
-
-    /** @function nyplGeocoderService.drawFilterMarker
-     * @param {string} id A location's slug.
-     * @description Draws the filter matched marker if it exists.
-     */
-    geocoderService.drawFilterMarker = function (location_slug) {
-      if (this.doesMarkerExist(location_slug)) {
-        this.panExistingMarker(location_slug);
-      }
-      return this;
-    };
-
-    /** @function nyplGeocoderService.clearFilteredLocation
-     * @description Removes the filtered match marker id.
-     */
-    geocoderService.clearFilteredLocation = function () {
-      filteredLocation = undefined;
-      return this;
-    };
-
-    /** @function nyplGeocoderService.getFilteredLocation
-     * @returns {string} The filtered match marker's stored id.
-     */
-    geocoderService.getFilteredLocation = function () {
-      return filteredLocation;
     };
 
     return geocoderService;

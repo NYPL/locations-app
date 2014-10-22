@@ -2,10 +2,25 @@ require 'date'
 require 'sinatra/base'
 require 'sinatra/jsonp'
 require 'lionactor'
+require 'erb'
 
 class Locinator < Sinatra::Base
-  
+  configure do
+    configs = JSON.parse(File.read('locinator.json'))
+    if configs["environments"].has_key?(ENV['LOCINATOR_ENV'])
+      set :env_config, configs["environments"][ENV['LOCINATOR_ENV']]
+    else
+      set :env_config, 
+        configs["environments"][configs["environments"]["default"]]
+    end
+    set :divisions_with_appointments, configs["divisions_with_appointments"]
+    set :featured_amenities, configs["featured_amenities"]
+    set :research_order, configs["research_order"]
+    set :fundraising, configs["fundraising"]
+  end
+
   helpers Sinatra::Jsonp
+  set :protection, :except => :frame_options
   set :haml, :format => :html5
   # Method cribbed from http://blog.alexmaccaw.com/seo-in-js-web-apps
   helpers do
@@ -57,16 +72,26 @@ class Locinator < Sinatra::Base
     tz = DateTime.now().strftime("%z")
     response = {
       "config" => {
+        "self" => settings.env_config["url"],
         "tz_offset" => tz,
-        "api_root" => ENV['API_ROOT']
+        "api_root" => settings.env_config["api"],
+        "divisions_with_appointments" => settings.divisions_with_appointments,
+        "featured_amenities" => settings.featured_amenities,
+        "research_order" => settings.research_order,
+        "fundraising" => settings.fundraising,
+        "closed_img" => settings.env_config["closed_img"]
       }
     }
     jsonp response
   end
+
+  get %r{/widget/.*} do
+    erb :widget
+  end
     
 
-  get '/' do
-    File.read(File.join('public', 'index.html'))
+  get %r{/.*$} do
+    erb :index
   end
   
 

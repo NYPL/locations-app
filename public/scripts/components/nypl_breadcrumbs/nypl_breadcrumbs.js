@@ -184,7 +184,7 @@
 
           if (typeof context === 'object' && parentStateSetting) {
             if (!context.$stateParams) {
-              return null;
+              return undefined;
             }
             // Extract Parent-state properties
             parentStateName  = getParentName(currentState);
@@ -200,19 +200,19 @@
                 displayName: parentStateName,
                 route: parentStateRoute
               }
+            }
 
-              if (parentDivisionName && parentDivisionRoute) {
-                parentStateObj.division = {
-                  name: parentDivisionName,
-                  route: parentDivisionRoute
-                }
-              } 
+            if (parentDivisionName && parentDivisionRoute) {
+              parentStateObj.division = {
+                name: parentDivisionName,
+                route: parentDivisionRoute
+              }
+            }
+
+            if (parentStateObj) {
               return parentStateObj;
             }
-            else {
-              //console.log('Parent state name or route is not defined');
-              return null;
-            }
+            return undefined;
           }
           return undefined;
         }
@@ -232,9 +232,16 @@
             });
 
             // Get the slug for the parent route
-            if (parentData._embedded.parent) {
-              parentRoute = parentData._embedded.parent.slug;
-              return divisionState + '({ ' + "\"" + divisionState + "\"" + ':' + "\"" + parentRoute + "\"" + '})';
+            if (parentData._embedded !== undefined) {
+              if (parentData._embedded.parent) {
+                if (parentData._embedded.parent.slug) {
+                  parentRoute = parentData._embedded.parent.slug;
+                  return divisionState + 
+                          '({ ' + "\"" + divisionState +
+                           "\"" + ':' + "\"" + parentRoute +
+                            "\"" + '})';
+                }
+              }
             }
             return undefined;
           }
@@ -255,9 +262,13 @@
             });
 
             // Get the slug for the parent route
-            if (parentData._embedded.parent) {
-              parentName = parentData._embedded.parent.name;
-              return parentName;
+            if (parentData._embedded !== undefined) {
+              if (parentData._embedded.parent) {
+                if (parentData._embedded.parent.name) {
+                  parentName = parentData._embedded.parent.name;
+                  return parentName;
+                }
+              }
             }
             return undefined;
           }
@@ -284,12 +295,27 @@
                 parentData = currentContext[key];
               }
             });
+
             // Get the slug for the parent route
-            if (parentData._embedded.location.slug) {
-              parentRoute = parentData._embedded.location.slug;
-              return stateSetting + '({ ' + "\"" + stateSetting + "\"" + ':' + "\"" + parentRoute + "\"" + '})';
+            if (parentData.amenity) {
+              if (parentData.amenity.id) {
+                parentRoute = parentData.amenity.id;
+              }
             }
-            return undefined;
+            else if (parentData._embedded) {
+              if (parentData._embedded.location) {
+                if (parentData._embedded.location.slug) {
+                  parentRoute = parentData._embedded.location.slug;
+                }
+              }
+            }
+
+            if (parentRoute) {
+              return stateSetting + '({ ' + "\"" +
+                     stateSetting + "\"" + ':' + "\"" +
+                      parentRoute + "\"" + '})';
+            }
+            return stateSetting;
           }
           return undefined;
         }
@@ -320,11 +346,24 @@
                 }
               });
               
-              if (parentData._embedded.location.name) {
-                parentStateName = parentData._embedded.location.name;
+
+              if (parentData.amenity) {
+                if (parentData.amenity.name) {
+                  parentStateName = parentData.amenity.name;
+                }
+              }
+              else if (parentData._embedded) {
+                if (parentData._embedded.location) {
+                  if (parentData._embedded.location.name) {
+                    parentStateName = parentData._embedded.location.name;
+                  }
+                }
               }
 
-              return parentStateName;
+              if (parentStateName) {
+                return parentStateName;
+              }
+              return parentStateSetting;
             }
           }
           return undefined;
@@ -375,11 +414,14 @@
           // Extract parent state if available
           parentState = getParentState(currentState);
           if (parentState) {
-            breadcrumbs.push({
-              displayName: parentState.displayName,
-              route: parentState.route
-            });
-
+            // Parent data
+            if (parentState.displayName && parentState.route) {
+              breadcrumbs.push({
+                displayName: parentState.displayName,
+                route: parentState.route
+              });
+            }
+            // Division data
             if (parentState.division) {
               breadcrumbs.push({
                 displayName: parentState.division.name,

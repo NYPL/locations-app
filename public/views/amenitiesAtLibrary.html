@@ -11,17 +11,18 @@
     </div>
 
     <div class="grid">
-      <div class="amenity-category-list">
-        <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="category in amenitiesCategories" data-ng-if="amenitiesCategories">
-          <div class="amenity-box feature-brick">
+      <div class="amenities">
+        <div class="grid__item one-whole lap-and-up-one-third amenity-category-list" data-ng-repeat="category in amenitiesCategories track by $index" data-ng-if="amenitiesCategories && category">
+          <div class="amenity-box">
             <h3>
               <span class="{{category.icon}} category_title">{{category.name}}</span>
             </h3>
             <ul class="amenities-list">
-              <li data-ng-repeat="amenity in category.amenities | orderBy:'location_rank'">
+              <li data-ng-repeat="amenity in category.amenities | orderBy:'rank'">
                 <a data-ui-sref="amenity({amenity: amenity.id})">{{amenity.name}}</a>
+                <div class="smallprint" data-ng-if="amenity.accessibility_note">{{amenity.accessibility_note}}</div>
                 <div class="amenity-links">
-                  <span data-ng-if="amenity._links.action && amenity._links.action.href">
+                  <span data-ng-if="amenity._links.action && amenity._links.action.name">
                     <a data-ng-href="{{amenity._links.action.href}}" 
                       class="amenities__reserve btn btn--natural">
                       {{amenity._links.action.name}}
@@ -39,14 +40,14 @@
         </div><!--
 
         --><div class="grid__item one-whole lap-and-up-one-third">
-          <div class="services-callout callout">
+          <div class="services-callout">
             <p>
               The Library also offers
               <br>
               <span class="services-callout-2">services</span>
               <br>of all kinds!
             </p>
-            <a class="services-link blueText" href="">
+            <a class="services-link blueText" href="http://www.nypl.org/help/services">
               Find out more <span class="icon-arrow-right"></span>
             </a>
           </div>

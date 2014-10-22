@@ -10,8 +10,11 @@
 
 	@include breakpoint($min, $desktop) {
 		display: inline-block;
-		height: 245px; // constrain proportions until proper images exist
-		overflow: hidden;
+	}
+	img {
+		@include breakpoint($min, $desktop) {
+			max-height: 275px;
+		}
 	}
 }
 

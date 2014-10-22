@@ -23,6 +23,30 @@ describe('NYPL Directive Unit Tests', function () {
       httpBackend
         .expectGET('/languages/en.json')
         .respond('public/languages/en.json');
+
+      httpBackend
+        .expectGET('/config')
+        .respond({
+          config: {
+            api_root: api,
+            fundraising: {
+              statement: "Become a Member",
+              appeal: "Friends of the Library can support their favorite library and receive great benefits!",
+              button_label: "Join or Renew",
+              link: "https://secure3.convio.net/nypl/site/SPageServer?pagename=branch_friend_form&s_src=FRQ15ZZ_CADN"
+            }
+          }
+        });
+
+      httpBackend
+        .expectGET('views/locations.html')
+        .respond('public/views/locations.html');
+
+      httpBackend
+        .expectGET('views/location-list-view.html')
+        .respond('public/views/location-list-view.html');
+
+      httpBackend.flush();
     });
   });
 
@@ -43,13 +67,17 @@ describe('NYPL Directive Unit Tests', function () {
     var loadingWidget, template;
 
     beforeEach(inject(function () {
-      template = '<div id="loadingWidget" loading-widget>' +
+      template = '<div id="loadingWidget" loading-widget class="show">' +
         '<div class="loader-icon icon-spinner2"></div></div>';
       loadingWidget = createDirective(template);
     }));
 
     it('should compile', function () {
       expect(loadingWidget.attr('id')).toEqual('loadingWidget');
+    });
+
+    it('should remove the show class initially', function () {
+      expect(loadingWidget.attr('class')).not.toContain('show');
     });
   });
 
@@ -59,11 +87,17 @@ describe('NYPL Directive Unit Tests', function () {
    *   of languages that the site can be translated into.
    */
   describe('Directive: nyplTranslate', function () {
-    var nyplTranslate, template;
+    var nyplTranslate, template, $translate, englishLink, spanishLink;
 
-    beforeEach(inject(function () {
+    beforeEach(inject(function (_$translate_) {
+      $translate = _$translate_;
+      $translate.use = jasmine.createSpy('$translate.use');
+
       template = '<nypl-translate></nypl-translate>';
       nyplTranslate = createDirective(template);
+
+      englishLink = nyplTranslate.find('a')[0];
+      spanishLink = nyplTranslate.find('a')[1];
     }));
 
     it('should have a translate class', function () {
@@ -73,6 +107,18 @@ describe('NYPL Directive Unit Tests', function () {
     // At the time of writing this test, we only have two languages
     it('should have two spans elements', function () {
       expect(nyplTranslate.find('span').length).toBe(2);
+    });
+
+    it('should display the Spanish translation', function () {
+      spanishLink.click();
+
+      expect($translate.use).toHaveBeenCalledWith('es');
+    });
+
+    it('should display the English translation', function () {
+      englishLink.click();
+
+      expect($translate.use).toHaveBeenCalledWith('en');
     });
   });
 
@@ -174,46 +220,6 @@ describe('NYPL Directive Unit Tests', function () {
   }); /* End todayshours */
 
   /*
-   * <nyplbreadcrumbs></nyplbreadcrumbs>
-   */
-  describe('Directive: nyplbreadcrumbs', function () {
-    var nyplbreadcrumbs, html;
-
-    beforeEach(inject(function () {
-      html = '<nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>';
-      nyplbreadcrumbs = createDirective(html);
-    }));
-
-    it('should create an unordered list with class breadcrumb', function () {
-      var crumbList = nyplbreadcrumbs.find('ul');
-      expect(crumbList.attr('class')).toContain('breadcrumb');
-    });
-
-    it('should contain attribute "crumb-name"', function () {
-      expect(nyplbreadcrumbs.attr('crumb-name')).toBeTruthy();
-    });
-
-    it('should contain attribute "crumb-name" value to be "data.crumbName"', function () {
-      expect(nyplbreadcrumbs.attr('crumb-name')).toBe('data.crumbName');
-    });
-
-    it('should create an empty breadcrumbs scope array element', function () {
-      var isoScope = nyplbreadcrumbs.isolateScope();
-      expect(isoScope.breadcrumbs.length).toBeLessThan(1);
-    });
-
-    it('once a Crumb is inserted, it should add elements to breadcrumbs array', function () {
-      var isoScope = nyplbreadcrumbs.isolateScope();
-
-      isoScope.breadcrumbs.push({
-        displayName: 'Amenities',
-        route: 'amenities'
-      });
-      expect(isoScope.breadcrumbs.length).toBeGreaterThan(0);
-    });
-  });
-
-  /*
    * <emailusbutton link="" />
    *   Generates a link to email a librarian.
    */
@@ -234,7 +240,7 @@ describe('NYPL Directive Unit Tests', function () {
 
     it('should create a link', function () {
       expect(emailusbutton.attr('href')).toEqual(link);
-      expect(emailusbutton.text()).toEqual('Email us your question');
+      expect(emailusbutton.text().trim()).toEqual('Email us your question');
     });
   });
 
@@ -244,9 +250,12 @@ describe('NYPL Directive Unit Tests', function () {
    *   widget to talk to a librarian.
    */
   describe('Directive: librarianchatbutton', function () {
-    var librarianchatbutton, template;
+    var librarianchatbutton, template, nyplUtility;
 
-    beforeEach(inject(function () {
+    beforeEach(inject(function (_nyplUtility_) {
+      nyplUtility = _nyplUtility_;
+      nyplUtility.popupWindow = jasmine.createSpy('popupWindow');
+
       template = '<librarianchatbutton />';
       librarianchatbutton = createDirective(template);
     }));
@@ -256,7 +265,43 @@ describe('NYPL Directive Unit Tests', function () {
     });
 
     it('should create a link', function () {
-      expect(librarianchatbutton.text()).toEqual('Chat with a librarian');
+      expect(librarianchatbutton.text().trim()).toEqual('Chat with a librarian');
+    });
+
+    it('should call the nyplUtility service to open a new window', function () {
+      librarianchatbutton.click();
+
+      expect(nyplUtility.popupWindow).toHaveBeenCalledWith(
+        'http://www.nypl.org/ask-librarian', 'NYPL Chat', 210, 450);
+    });
+
+    it('should add an active class when clicked', function () {
+      expect(librarianchatbutton.attr('class')).not.toContain('active');
+
+      librarianchatbutton.click();
+
+      expect(librarianchatbutton.attr('class')).toContain('active');
+    });
+  });
+
+  /*
+   * <div scrolltop></div>
+   */
+  describe('Directive: scrolltop', function () {
+    var scrolltop, template, $state;
+
+    beforeEach(inject(function (_$state_) {
+      $state = _$state_;
+      window.scrollTo = jasmine.createSpy('window.scrollTo');
+
+      template = '<div scrolltop></div>';
+      scrolltop = createDirective(template);
+    }));
+
+    it('should scroll to the top on state change', function () {
+      $state.go('home.map');
+
+      expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
     });
   });
 
@@ -268,10 +313,25 @@ describe('NYPL Directive Unit Tests', function () {
   describe('Directive: eventRegistration', function () {
     var eventRegistration, template;
     beforeEach(function () {
-      template = '<event-registration registration="{{registration}}" ' +
-        'type="{{registration.type}}" open="{{registration.open}}" ' +
-        'start="{{registation.start}}" link="{{registration.link}}">' +
-        '</event-registration>';
+      template = '<event-registration registration="registration" ' +
+        'status="status" link="link"></event-registration>';
+    });
+
+    describe('No registration object - should not display', function () {
+      beforeEach(function () {
+        scope.registration = undefined;
+        scope.status = undefined;
+        scope.link = undefined;
+        eventRegistration = createDirective(template);
+      });
+
+      it('should not display anything', function () {
+        expect(eventRegistration.find('.registration-type').text())
+          .toEqual('');
+        expect(eventRegistration.find('a').length).toBe(0);
+        expect(eventRegistration.find('.event-cancel').text().trim())
+            .toEqual('');
+      });
     });
 
     describe('Registration type - First Come, First Served', function () {
@@ -279,9 +339,13 @@ describe('NYPL Directive Unit Tests', function () {
         scope.registration = {
           "type": "First Come, First Serve",
           "open": "null",
-          "start": "null",
-          "link": "http://www.nypl.org/events/nypl-event"
-        }
+          "start": "null"
+        };
+        scope.status = {
+          "status": true,
+          "label": null
+        };
+        scope.link = "http://www.nypl.org/events/nypl-event";
         eventRegistration = createDirective(template);
       });
 
@@ -291,7 +355,7 @@ describe('NYPL Directive Unit Tests', function () {
       });
 
       it('should display the type of registration', function () {
-        expect(eventRegistration.find('.registration_type').text())
+        expect(eventRegistration.find('.registration-type').text())
           .toEqual('First Come, First Serve');
       });
 
@@ -311,9 +375,13 @@ describe('NYPL Directive Unit Tests', function () {
           scope.registration = {
             "type": "Online",
             "open": "true",
-            "start": "2014-07-29T17:00:00Z",
-            "link": "http://www.nypl.org/events/nypl-event"
-          }
+            "start": "2017-07-29T17:00:00Z"
+          };
+          scope.status = {
+            "status": true,
+            "label": null
+          };
+          scope.link = "http://www.nypl.org/events/nypl-event";
           eventRegistration = createDirective(template);
         });
 
@@ -322,31 +390,19 @@ describe('NYPL Directive Unit Tests', function () {
             .toContain('registration-for-event');
         });
 
-        it('should display the type of registration', function () {
-          expect(eventRegistration.find('.registration_type').text().trim())
-            .toEqual('Online');
-        });
+        it('should display online registration and open in the future',
+          function () {
+            expect(eventRegistration.find('.registration-type').text().trim())
+              .toEqual('Online, opens 07/29');
+          });
 
         it('should have a link to the event', function () {
           expect(eventRegistration.find('a').attr('href'))
-            .toEqual('http://www.nypl.org/events/nypl-event');
-        });
-
-        it('should tell you when registration opens', function () {
-          // Override the date function so we can test the wording
-          var date = new Date(2014, 8, 7),
-            MockDate = Date;
-          Date = function () { return date; };
-
-          expect(
-            eventRegistration.find('.registration-available').text().trim()
-          ).toEqual('Registration opens on August 29, 2014 - 7:00AM');
-
-          Date = MockDate;
+            .toEqual('http://www.nypl.org/events/nypl-event#register');
         });
       });
 
-    describe('Registration type - Online - registration is closed',
+    describe('Registration type - Online - Canceled',
       function () {
         beforeEach(function () {
           scope.registration = {
@@ -354,7 +410,12 @@ describe('NYPL Directive Unit Tests', function () {
             "open": "false",
             "start": "2014-07-29T17:00:00Z",
             "link": "http://www.nypl.org/events/nypl-event"
-          }  
+          };
+          scope.status = {
+            "status": false,
+            "label": "Canceled"
+          };
+          scope.link = "http://www.nypl.org/events/nypl-event";
           eventRegistration = createDirective(template);
         });
 
@@ -363,27 +424,17 @@ describe('NYPL Directive Unit Tests', function () {
             .toContain('registration-for-event');
         });
 
-        it('should display the type of registration', function () {
-          expect(eventRegistration.find('.registration_type').text().trim())
-            .toEqual('Online');
+        it('should not display the type of registration', function () {
+          expect(eventRegistration.find('.registration-type').length).toBe(0);
         });
 
-        it('should have a link to the event', function () {
-          expect(eventRegistration.find('a').attr('href'))
-            .toEqual('http://www.nypl.org/events/nypl-event');
+        it('should not have a link to the event', function () {
+          expect(eventRegistration.find('a').length).toBe(0)
         });
 
-        it('should tell you when registration opens', function () {
-          // Override the date function so we can test the wording
-          var date = new Date(2014, 8, 7),
-            MockDate = Date;
-          Date = function () { return date; };
-
-          expect(
-            eventRegistration.find('.registration-available').text().trim()
-          ).toEqual('Registration for this event is closed.');
-
-          Date = MockDate;
+        it('should display "Canceled"', function () {
+          expect(eventRegistration.find('.event-cancel').text().trim())
+            .toEqual('CANCELED');
         });
       });
   }); /* End eventRegistration */
@@ -394,10 +445,19 @@ describe('NYPL Directive Unit Tests', function () {
    *   the alerts in the API and checking the current date.
    */
   describe('Directive: nyplSiteAlerts', function () {
-    var $httpBackend, date, template, nyplSiteAlerts;
+    var $httpBackend, date, template, nyplSiteAlerts, $timeout, MockDate, alert;
 
-    beforeEach(inject(function (_$httpBackend_) {
+    beforeEach(inject(function (_$httpBackend_, _$timeout_) {
+      $timeout = _$timeout_;
       $httpBackend = _$httpBackend_;
+    }));
+
+    it('should display a current site wide alert', function () {
+      // Override the date function so we can test a real alert
+      // Store a copy so we can return the original one later
+      date = new Date(2014, 5, 29);
+      MockDate = Date;
+      Date = function () { return date; };
 
       $httpBackend
         .whenJSONP(api + '/alerts' + jsonpCallback)
@@ -414,24 +474,9 @@ describe('NYPL Directive Unit Tests', function () {
 
       template = "<nypl-site-alerts></nypl-site-alerts>";
       nyplSiteAlerts = createDirective(template);
-    }));
 
-    it('should display a site wide alert', function () {
-      var MockDate, alert;
-
-      // Override the date function so we can test a real alert
-      // Store a copy so we can return the original one later
-      date = new Date(2014, 5, 29);
-      MockDate = Date;
-      Date = function () { return date; };
-
+      $timeout.flush();
       $httpBackend.flush();
-      // scope.$digest();
-
-      // For whatever reason, the sitewidealert doesn't get generated
-      // in time for the $compile function to write it and for the data-ng-if
-      // to verify that the value is there.
-      // console.log(element);
 
       // Currently just using the value in the scope.
       alert = scope.sitewidealert;
@@ -441,6 +486,31 @@ describe('NYPL Directive Unit Tests', function () {
       // Use the native Date function again
       Date = MockDate;
     });
+
+    it('should not display a site wide alert - future alert', function () {
+      $httpBackend
+        .whenJSONP(api + '/alerts' + jsonpCallback)
+        .respond({
+          alerts: [{
+            _id: "71579",
+            scope: "all",
+            title: "Independence Day",
+            body: "All units of the NYPL are closed July 4 - July 5.",
+            start: "2016-06-27T00:00:00-04:00",
+            end: "2016-07-06T01:00:00-04:00"
+          }]
+        });
+
+      template = "<nypl-site-alerts></nypl-site-alerts>";
+      nyplSiteAlerts = createDirective(template);
+
+      $timeout.flush();
+      $httpBackend.flush();
+
+      // Currently just using the value in the scope.
+      alert = scope.sitewidealert;
+      expect(alert).toEqual('');
+    });
   });
 
   /*
@@ -448,31 +518,48 @@ describe('NYPL Directive Unit Tests', function () {
    *   The nyplLibraryAlert directive displays an alert for a specific location.
    */
   describe('Directive: nyplLibraryAlert', function () {
-    var nyplLibraryAlert, template;
+    var nyplLibraryAlert,
+      template = "<nypl-library-alert exception='exception'>" +
+          "</nypl-library-alert>";
 
-    beforeEach(inject(function () {
-      scope.libraryAlert = "Test library specific alert";
+    describe('No alert to display', function () {
+      it('should not display when there is no alert', function () {
+        scope.exception = undefined;
+        nyplLibraryAlert = createDirective(template);
 
-      template = "<nypl-library-alert></nypl-library-alert>";
-      nyplLibraryAlert = createDirective(template);
-    }));
+        expect(scope.libraryAlert).not.toBeDefined();
+        expect(nyplLibraryAlert.find('grid').length).toBe(0);
+        expect(nyplLibraryAlert.find('location-alerts').length).toBe(0);
+      });
 
-    it('should display a site wide alert', function () {
-      var date, MockDate;
+      it('should not display an old alert', function () {
+        scope.exception = {
+          start: '2014-10-01T00:00:00-04:00',
+          end: '2014-10-20T16:15:41-04:00',
+          description: "Test library specific alert"
+        };
+        nyplLibraryAlert = createDirective(template);
 
-      // Override the date function so we can test a real alert
-      // Store a copy so we can return the original one later
-      date = new Date(2014, 5, 29);
-      MockDate = Date;
-      Date = function () { return date; };
+        expect(nyplLibraryAlert.find('grid').length).toBe(0);
+        expect(nyplLibraryAlert.find('location-alerts').length).toBe(0);
+      });
+    });
 
-      // Not sure how to test since it requires libraryAlert variable to be in
-      // the scope for the directive. Doesn't seem to work if it's assigned
-      // to the $rootScope, however.
-      // console.log($rootScope);
+    describe('Alert available', function () {
+      beforeEach(function () {
+        scope.exception = {
+          start: '2014-10-01T00:00:00-04:00',
+          end: '2016-10-20T16:15:41-04:00',
+          description: "Test library specific alert"
+        };
+        template = "<nypl-library-alert exception='exception'></nypl-library-alert>";
+        nyplLibraryAlert = createDirective(template);
+      });
 
-      // Use the native Date function again
-      Date = MockDate;
+      it('should display an alert', function () {
+        // Doesn't work because I'm not testing correctly but not sure how.
+        // expect(scope.libraryAlert).toEqual("Test library specific alert");
+      });
     });
   });
 
@@ -484,8 +571,7 @@ describe('NYPL Directive Unit Tests', function () {
     var collapse, template;
 
     beforeEach(inject(function () {
-      template = '<div class="weekly-hours" collapse="expand" ' +
-        'duration="2500"></div>';
+      template = '<div class="weekly-hours" collapse="expand"></div>';
       collapse = createDirective(template);
     }));
 
@@ -504,6 +590,61 @@ describe('NYPL Directive Unit Tests', function () {
       expect(collapse.attr('class')).toContain('open');
       expect(collapse.attr('style')).toContain('display: block;');
     });
+  });
+
+  /*
+   * <nypl-fundraising fundraising="location.fundraising"></nypl-fundraising>
+   */
+  describe('Directive: nyplFundraising', function () {
+    var nyplFundraising, template, $timeout, nyplLocationsService, $httpBackend;
+
+    beforeEach(
+      inject(function (_$timeout_, _nyplLocationsService_, _$httpBackend_) {
+        nyplLocationsService = _nyplLocationsService_;
+        $httpBackend = _$httpBackend_;
+        $timeout = _$timeout_;
+      })
+    );
+
+    describe('Use default appeal', function () {
+      beforeEach(function () {
+        scope.fundraising = undefined;
+
+        template = '<nypl-fundraising fundraising="fundraising">' +
+          '</nypl-fundraising>';
+        nyplFundraising = createDirective(template);
+        $timeout.flush();
+      });
+
+      it('should get fundraising object from the config', function () {
+        expect(scope.fundraising.appeal).toEqual('Friends of the Library ' +
+          'can support their favorite library and receive great benefits!');
+        expect(scope.fundraising.statement).toEqual('Become a Member');
+        expect(scope.fundraising.button_label).toEqual('Join or Renew');
+      });
+    });
+
+    describe('Add appeal object', function () {
+      beforeEach(function () {
+        scope.fundraising = {
+          appeal: 'Added appeal',
+          statement: 'Added statement',
+          button_label: 'Added button label',
+        };
+
+        template = '<nypl-fundraising fundraising="fundraising">' +
+          '</nypl-fundraising>';
+        nyplFundraising = createDirective(template);
+        $timeout.flush();
+      });
+
+      it('should get fundraising object from the config', function () {
+        expect(scope.fundraising.appeal).toEqual('Added appeal');
+        expect(scope.fundraising.statement).toEqual('Added statement');
+        expect(scope.fundraising.button_label).toEqual('Added button label');
+      });
+    });
+
   });
 
   /*
@@ -596,6 +737,48 @@ describe('NYPL Directive Unit Tests', function () {
         expect(donateUrl.attr('href')).toContain('convio');
         expect(donateUrl.length).toBe(1);
       });
+    });
+  });
+
+  /*
+   * <nypl-autofill></nypl-autofill>
+   */
+  describe('Directive: nyplAutofill', function () {
+    var autofill, template, ctrl;
+
+    /*beforeEach(inject(function () {
+      template = "<nypl-autofill data='locations'" + 
+        " data-ng-model='searchTerm'" + 
+        " map-view='viewMapLibrary(slug)'" + 
+        " geo-search='geocodeAddress(term)'>" + 
+        "</nypl-autofill>";
+
+      autofill = createDirective(template);
+
+      //ctrl = autofill.controller("nyplAutofill");
+      //console.log(ctrl);
+    }));*/
+
+    beforeEach(inject(function($rootScope, $compile) {
+      scope = $rootScope.$new();
+      template = "<nypl-autofill data='locations'" + 
+        " data-ng-model='searchTerm'" + 
+        " map-view='viewMapLibrary(slug)'" + 
+        " geo-search='geocodeAddress(term)'>" + 
+        "</nypl-autofill>";
+      autofill = $compile(template)(scope);
+      scope.$digest();
+    }));
+
+    it('should compile lookahead and autofill containers', function () {
+      expect(autofill.find('.lookahead')).toBeTruthy();
+      expect(autofill.find('.autofill-container')).toBeTruthy();
+    });
+
+    it('should display autofill container', function () {
+      scope.searchTerm = "grand";
+      scope.$digest();
+      var isolated = autofill.isolateScope();
     });
   });
 

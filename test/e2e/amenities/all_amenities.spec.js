@@ -10,12 +10,22 @@ describe('Locations: Amenities', function () {
     // Function that creates a module that is injected at run time,
     // overrides and mocks httpbackend to mock API call. 
     httpBackendMock = function (response) {
+      var API_URL = 'http://locations-api-alpha.herokuapp.com';
+
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
+          $httpBackend.whenGET('/languages/en.json').passThrough();
           $httpBackend
-            .whenJSONP('http://locations-api-beta.nypl.org' +
-                '/amenities?callback=JSON_CALLBACK')
+            .whenGET('/config')
+            .respond({ config: { api_root: API_URL } });
+
+          $httpBackend
+            .whenJSONP(API_URL + '/amenities?callback=JSON_CALLBACK')
             .respond(response);
+
+          $httpBackend
+            .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
+            .respond({});
 
           // For everything else, don't mock
           $httpBackend.whenGET(/^\w+.*/).passThrough();
@@ -29,7 +39,7 @@ describe('Locations: Amenities', function () {
       // Pass the good JSON from the API call.
       browser.addMockModule('httpBackendMock', httpBackendMock,
           APIresponse.good);
-      browser.get('/#/amenities');
+      browser.get('/amenities');
       browser.waitForAngular();
     });
 
@@ -52,10 +62,10 @@ describe('Locations: Amenities', function () {
         it('should contain five amenities', function () {
           expect(amenitiesPage.getNthCategory(0)
             .element(by.css('.amenities-list')).getText())
-            .toEqual('Computers for Public Use Reserve a PC Learn more\n' +
-              'Wireless Internet Access Learn more\n' +
-              'Laptops for Public Use Reserve a Laptop Learn more\n' +
+            .toEqual('Computers for Public Use\nReserve a PC Learn more\n' +
+              'Laptops for Public Use\n' +
               'Printing (from PC)\n' +
+              'Wireless Internet Access\nLearn more\n' +
               'Electric outlets available');
         });
       });
@@ -70,20 +80,20 @@ describe('Locations: Amenities', function () {
         it('should contain six amenities', function () {
           expect(amenitiesPage.getNthCategory(1)
             .element(by.css('.amenities-list')).getText())
-            .toEqual('Inter-Library Loan\n' +
-              'Self-service check-out Learn more\n' +
-              'Book drop box (24 hour) Learn more\n' +
-              'Book drop box (limited hours) Learn more\n' +
-              'Books in Braille\n' +
-              'Talking Books');
+            .toEqual('Inter-Library Loan\nLearn more\n' +
+              'Self-service check-out\n' +
+              'Book drop box (24 hour)\n' +
+              'Book drop box (limited hours)\n' +
+              'Books in braille\n' +
+              'Talking books\nLearn more');
         });
       });
 
-      describe('Office Services category', function () {
+      describe('Printing and Copy Services category', function () {
         it('should display the category name', function () {
           expect(amenitiesPage.getNthCategory(2)
             .element(by.css('.category_title')).getText())
-            .toEqual('Office Services');
+            .toEqual('Printing and Copy Services');
         });
 
         it('should contain five amenities', function () {
@@ -112,7 +122,11 @@ describe('Locations: Amenities', function () {
               'Research Study Rooms\n' +
               'Parking\n' +
               'Lost and found\n' +
-              'Bicycle Rack');
+              'Bicycle Rack\n' +
+              'Checkroom Service\n' +
+              'Payphones\n' +
+              'Changing station\n' +
+              'Water fountain');
         });
       });
 
@@ -126,12 +140,19 @@ describe('Locations: Amenities', function () {
         it('should contain six amenities', function () {
           expect(amenitiesPage.getNthCategory(4)
             .element(by.css('.amenities-list')).getText())
-            .toEqual('Screen magnification software (MAGic)\n' +
-              'Screen reading software (JAWS)\n' +
-              'Closed-Circuit Television Enlargers (CCTVs)\n' +
-              'Scanner/reading Rooms\n' +
-              'Brailler Translation Software\n' +
-              'Braille Embossing');
+            .toEqual('Screen magnification software (MAGic)\nLearn more\n' +
+              'Screen reading software (JAWS)\nLearn more\n' +
+              'Closed-Circuit Television Enlargers (CCTVs)\nLearn more\n' +
+              'Scanner/Reading Machines\n' +
+              'Braille translation software\n' +
+              'Braille embossing\n' +
+              'Refreshable braille display\n' +
+              'Adjustable height tables\n' +
+              'Braille writers\nLearn more\n' +
+              'Assistive Amplification Systems\nLearn more\n' +
+              'Telecommunications Devices for the Deaf (TTYs)\n' +
+              'VRS (Video Relay Service)\n' +
+              'Personal Reading Machines\nLearn more');
         });
       });
     });
@@ -149,15 +170,13 @@ describe('Locations: Amenities', function () {
     });
   });
 
-  describe('Bad API Call', function () {
-    beforeEach(function () {
-      browser.addMockModule('httpBackendMock', httpBackendMock,
-          APIresponse.bad);
-      browser.get('/#/amenities');
-      browser.waitForAngular();
-    });
-
-    // TODO: Write tests
-  });
+  // describe('Bad API Call', function () {
+  //   beforeEach(function () {
+  //     // browser.addMockModule('httpBackendMock', httpBackendMock,
+  //     //     APIresponse.bad);
+  //     browser.get('/amenities');
+  //     browser.waitForAngular();
+  //   });
+  // });
 
 });

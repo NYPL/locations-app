@@ -24,7 +24,11 @@
             <td class="location-info h-card">
               <!-- Library Info -->
               <div class="p-org">
-                <a data-ui-sref='location({ location: location.slug })'>{{location.name}}</a>
+                <a data-ui-sref='location({ location: location.slug })'
+                  analytics-on="click" analytics-category="Locations"
+                  analytics-event="Click" analytics-label="{{location.name}} (list)">
+                  {{location.name}}
+                </a>
               </div>
               <div class="p-adr">
                 <div class="p-street-address">{{location.street_address}}</div>
@@ -42,8 +46,15 @@
                 {{location.access}}
               </div>
               <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
-                <span class="partially icon-accessibility"></span>
-                {{location.access}}
+    
+                <div data-ng-if="location.accessibility_note">
+	                <span class="partially icon-accessibility"></span>
+	                {{location.accessibility_note}}
+                </div>
+                <div data-ng-if="!location.accessibility_note">
+	               <span class="partially icon-accessibility"></span>
+	               {{location.access}}
+                </div>
               </div>
               <div data-ng-if="!location.access" class="not-accessible">
                 <span class="none icon-accessibility"></span>
@@ -52,12 +63,16 @@
 
               <!-- Map/Directions Links -->
               <div class="map-link">
-                <a class="icon-map view-on-map" href="" data-ng-click="viewMapLibrary(location.slug)">
+                <a class="icon-map view-on-map" href="" data-ng-click="viewMapLibrary(location.slug)"
+                  analytics-on="click" analytics-category="Locations"
+                  analytics-event="View map" analytics-label="{{location.name}} (list)">
                   {{ 'VIEW_MAP' | translate}}</a>
               </div>
               <div class="directions-link">
-                <a class="icon-compass" target="_blank"
-                  data-ng-href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}">
+                <a class="icon-compass"
+                  data-ng-href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}"
+                  analytics-on="click" analytics-category="Locations"
+                  analytics-event="Directions" analytics-label="{{location.name}} (list)">
                   {{ 'DIRECTIONS' | translate }}
                 </a>
               </div>
@@ -70,9 +85,9 @@
 
             <!-- Highlighted Amenities -->
             <td class="amenities-info">
-              <ul class="highlighted-amenities-list">
-                <li data-ng-repeat="amenity in location.amenities_list | limitTo:3 | orderBy:'rank'">
-                  {{amenity.name}}
+              <ul class="highlighted-amenities-list" data-ng-if="location.amenities_list && location.open">
+                <li data-ng-repeat="amenity in location.amenities_list | limitTo:5">
+                  {{amenity.amenity.name}}
                 </li>
               </ul>
             </td>
@@ -88,7 +103,7 @@
                 </p>
               </div>
               <div data-ng-if="location.branchException && !location.open" class="loc-exceptions">
-                <p> {{ location.branchException.desc }} </p>
+                <p data-ng-bind-html="location.branchException.desc"></p>
               </div>
             </td>
           </tr> <!-- End data-ng-repeat -->

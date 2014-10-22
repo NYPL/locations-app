@@ -1,0 +1,27 @@
+<div class="lookahead" data-ng-if="model">
+	<p><span>{{currentWord}}</span>{{lookahead}}</p>
+	<p class="hidden">{{completeWord}}</p>
+</div>
+<div class="autofill-container" data-ng-if="model.length > 1 && focused">
+	<div class="location-item" ng-repeat="item in filtered" 
+	ng-class="(item.id==active.id && activated) ? 'active' : ''">
+	  <div class="location-name">
+	  	<a data-ui-sref='location({ location: item.slug })'
+	  		analytics-on="click" analytics-category="Locations"
+    		analytics-event="Select" analytics-label="{{item.name}}">
+	  		{{item.name}}
+	  	</a>
+	  </div>
+    <a class="icon-map view-on-map" data-ng-click="mapView({slug: item.slug})"
+    	analytics-on="click" analytics-category="Locations"
+    	analytics-event="Select view map" analytics-label="{{item.name}}">
+      {{ 'VIEW_MAP' | translate}}
+    </a>
+	</div>
+	<div class="geocoding-search" data-ng-click="geoSearch({term: model})" 
+		ng-class="(geocodingactive) ? 'active' : ''"
+		analytics-on="click" analytics-category="Locations"
+    analytics-event="Select search" analytics-label="{{model}}">
+		<p>Search for locations near <b>{{model}}</b></p>
+	</div>
+</div>

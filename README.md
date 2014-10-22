@@ -1,5 +1,6 @@
-# The Locinator
+## The Locinator
 
+## Installing dependencies
 To get all the Ruby dependencies, run:
 
     bundle install
@@ -10,18 +11,29 @@ Then, to get all the front end dependencies:
 
 To be able to run unit tests, Protractor end-to-end tests, and Grunt commands, run:
 
-    npm install
+    sudo npm install
 
+## Environments and Running the app
 To start a server, `cd` into the top of the cloned repository, run
 
     bundle exec rackup -p 8000
 
 then go to `http://localhost:8000/`. Alternatively, you can also run
 
-    rackup
+    bundle exec rackup
 
-and then go to `http://localhost:9292/'.
+and then go to `http://localhost:9292/'. These will run with the default production environment.
 
+There are three different enviroments that the Locinator can be run in:
+* local
+* qa
+* production (default if no enviroment is explicitly given)
+
+Every enviroment has a set of specific environments variables that the app uses, such as:
+* API version
+* Google Analytics tracking code
+* Optimizely link
+* CDN for static files
 
 ## Testing
 

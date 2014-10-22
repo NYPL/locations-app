@@ -48,15 +48,18 @@ var LocationPage = function () {
   this.plan_your_visit = element(by.id('plan-your-visit'));
   this.secondary_image = element(by.id('location-secondary-img'));
   this.about = element(by.binding('location.about'));
+  this.about_learn_more = element(by.id('about')).element('.read-more');
   this.email_librarian = element(by.id('ask-librarian'));
 
   this.blogs_container = element(by.id('container__blogs'));
   this.blogs = element.all(by.repeater('blog in location._embedded.blogs'));
   this.blogs_more_link = element(by.css('.blogs-more'));
 
+  this.exhibitions_container = element(by.id('container__exhibitions'));
   this.exhibitions =
     element.all(by.repeater('exhibition in location._embedded.exhibitions'));
 
+  this.askNYPL = element(by.css('.askchat'));
   this.email_us = element(by.css('.askemail'));
 };
 

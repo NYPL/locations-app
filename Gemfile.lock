@@ -9,15 +9,20 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
+    daemons (1.1.9)
+    eventmachine (1.0.3)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
     haml (4.0.5)
       tilt
+    json (1.5.5)
+    kgio (2.9.2)
     multi_json (1.10.1)
     multipart-post (2.0.0)
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
+    raindrops (0.13.0)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -25,7 +30,15 @@ GEM
     sinatra-jsonp (0.4.3)
       multi_json (~> 1.8)
       sinatra (~> 1.0)
+    thin (1.5.1)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
     tilt (1.4.1)
+    unicorn (4.8.3)
+      kgio (~> 2.6)
+      rack
+      raindrops (~> 0.7)
 
 PLATFORMS
   ruby
@@ -33,6 +46,10 @@ PLATFORMS
 
 DEPENDENCIES
   haml
+  json
+  kgio
   lionactor!
   sinatra
   sinatra-jsonp
+  thin
+  unicorn

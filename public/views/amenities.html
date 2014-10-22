@@ -9,19 +9,34 @@
       <h2 data-ng-if="amenitiesCategories">Amenities at NYPL</h2>
       <h2 data-ng-if="amenity">{{amenity_name}}</h2>
     </div>
+    <div class="amenity-links grid__item"
+      data-ng-if="amenity && amenity._links.info || amenity._links.action">
+      <span data-ng-if="amenity._links.action && amenity._links.action.name && amenity._links.action.href">
+        <a data-ng-href="{{amenity._links.action.href}}" 
+          class="amenities__reserve btn btn--natural">
+          {{amenity._links.action.name}}
+        </a>
+      </span>         
+      <span data-ng-if="amenity._links.info">
+        <a data-ng-href="{{amenity._links.info.href}}" class="read-more">
+          Learn more
+        </a>
+      </span>
+    </div>
 
     <div class="grid">
-      <div class="amenity-category-list">
-        <div class="grid__item one-whole lap-and-up-one-third" data-ng-repeat="category in amenitiesCategories" data-ng-if="amenitiesCategories">
-          <div class="amenity-box feature-brick">
+      <div class="amenities">
+        <div class="grid__item one-whole lap-and-up-one-third amenity-category-list" data-ng-repeat="category in amenitiesCategories" data-ng-if="amenitiesCategories">
+          <div class="amenity-box">
             <h3>
               <span class="{{category.icon}} category_title">{{category.name}}</span>
             </h3>
             <ul class="amenities-list">
-              <li data-ng-repeat="amenity in category.amenities | orderBy:'location_rank'">
+              <li data-ng-repeat="amenity in category.amenities | orderBy:'rank'">
                 <a data-ui-sref="amenity({amenity: amenity.id})">{{amenity.name}}</a>
+                <div class="smallprint" data-ng-if="amenity.accessibility_note">{{amenity.accessibility_note}}</div>
                 <div class="amenity-links">
-                  <span data-ng-if="amenity._links.action && amenity._links.action.href">
+                  <span data-ng-if="amenity._links.action && amenity._links.action.name && amenity._links.action.href">
                     <a data-ng-href="{{amenity._links.action.href}}" 
                       class="amenities__reserve btn btn--natural">
                       {{amenity._links.action.name}}
@@ -38,23 +53,28 @@
           </div>
         </div><!--
 
-        --><div class="grid__item one-whole lap-and-up-one-third">
-          <div data-ng-if="locations" class="amenity-location-list feature-brick">
-            <div data-ng-repeat="location in locations">
-              <a data-ui-sref="location({location: location.slug})">{{location.name}}</a>
-            </div>
+        --><div class="grid__item one-whole lap-and-up-one-third amenity-location-list" data-ng-if="locations">
+          <div class="amenity-box">
+            <h3>
+              <span class="icon-library">Locations</span>
+            </h3>
+            <ul class="amenities-list">
+              <li data-ng-repeat="location in locations | orderBy:'name'">
+                <a data-ui-sref="location({location: location.slug})">{{location.name}}</a>
+              </li>
+            </ul>
           </div>
         </div><!--
 
         --><div class="grid__item one-whole lap-and-up-one-third">
-          <div class="services-callout callout">
+          <div class="services-callout">
             <p>
               The Library also offers
               <br>
               <span class="services-callout-2">services</span>
               <br>of all kinds!
             </p>
-            <a class="services-link blueText" href="">
+            <a class="services-link blueText" href="http://www.nypl.org/help/services">
               Find out more <span class="icon-arrow-right"></span>
             </a>
           </div>
