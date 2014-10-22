@@ -42,7 +42,7 @@
       "closed_img": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/images/branch_closed.jpg"
     }
   },
-  "divisions_with_appointments": ["ARN", "RBK", "MSS", "BRG", "PRN", "PHG", "SPN", "CPS"],
+  "divisions_with_appointments": ["ARN", "RBK", "MSS", "BRG", "PRN", "PHG", "SPN", "CPS", "SCF", "SCM", "SCG", "SCP"],
   "featured_amenities": {
     "global": 3,
     "local": 2
