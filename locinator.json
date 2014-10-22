@@ -1,6 +1,6 @@
 {
   "environments": {
-    "default": "production",
+    "default": "development",
     "production": {
       "url": "http://locations.nypl.org",
       "api": "http://locations.api.nypl.org",
