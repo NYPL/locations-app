@@ -205,7 +205,7 @@
 
     utility.alerts = function (alerts) {
       var today = new Date(),
-        todaysAlert = '',
+        todaysAlert = [],
         alert_start,
         alert_end;
 
@@ -219,7 +219,7 @@
           alert_end = new Date(alert.end);
 
           if (alert_start <= today && today <= alert_end) {
-            todaysAlert += alert.body + "\n";
+            todaysAlert.push(alert.body);
           }
         });
 
