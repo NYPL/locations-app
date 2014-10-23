@@ -25,11 +25,18 @@ module.exports = function (grunt) {
     uglify: {
       options: {
         mangle: false,
-        banner: '/*! Locinator <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+        banner: "/* __                                            __    \n" +
+"  /\\ \\                      __                  /\\ \\__                \n" +
+"  \\ \\ \\        ___     ___ /\\_\\    ___      __  \\ \\ ,_\\   ___   _ __  \n" +
+"   \\ \\ \\  __  / __`\\  /'___\\/\\ \\ /' _ `\\  /'__`\\ \\ \\ \\/  / __`\\/\\`'__\\\n" +
+"    \\ \\ \\_\\ \\/\\ \\_\\ \\/\\ \\__/\\ \\ \\/\\ \\/\\ \\/\\ \\_\\.\\_\\ \\ \\_/\\ \\_\\ \\ \\ \\/ \n" +
+"     \\ \\____/\\ \\____/\\ \\____\\\\ \\_\\ \\_\\ \\_\\ \\__/.\\_\\\\ \\__\\ \\____/\\ \\_\\ \n" +
+"      \\/___/  \\/___/  \\/____/ \\/_/\\/_/\\/_/\\/__/\\/_/ \\/__/\\/___/  \\/_/ */\n" +
+"/*! Locinator <%= grunt.template.today('mm-dd-yyyy') %> */\n"
       },
       dist: {
         files: {
-          'public/dist/app.min.js': ['public/dist/app.annotate.js']
+          'public/dist/locinator.min.js': ['public/dist/app.annotate.js']
         }
       }
     }
