@@ -67,20 +67,11 @@
 <%= erb :angular_ux_static %>
 <% end %>
 
-    <!-- NYPL Components -->
-    <script src="scripts/components/nypl_coordinates.js"></script>
-    <script src="scripts/components/nypl_locations_api.js"></script>
-
-    <!-- App Config -->
-    <script src="scripts/app.js"></script>
-    <!-- Filters -->
-    <script src="scripts/filters/nypl_filters.js"></script>
-    <!-- Controllers -->
-    <script src="scripts/controllers/widget.js"></script>
-    <!-- Directives -->
-    <script src="scripts/directives/nypl_directives.js"></script>
-    <!-- Services -->
-    <script src="scripts/services/nypl_utility_service.js"></script>
+<% if settings.env_config["app_src"] == "minified" %>
+<%= erb :minified_widget %>
+<% else %>
+<%= erb :full_widget %>
+<% end %>
 
 </body>
 </html>
