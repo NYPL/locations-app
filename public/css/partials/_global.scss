@@ -332,6 +332,14 @@ time {
   to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
 }
 
+.browser-upgrade {
+	width: 100%;
+	text-align: center;
+	padding: 10px 0px;
+	border-bottom: 1px solid #CCC;
+	margin-bottom: 10px;
+	font-size: 1.5em;
+}
 
 #nyplFeedback {
 	position: fixed;
