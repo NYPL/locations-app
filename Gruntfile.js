@@ -24,6 +24,7 @@ module.exports = function (grunt) {
     },
     uglify: {
       options: {
+        mangle: false,
         banner: '/*! Locinator <%= grunt.template.today("dd-mm-yyyy") %> */\n'
       },
       dist: {

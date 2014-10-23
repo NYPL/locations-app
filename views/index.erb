@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="nypl_locations">
+<html xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="nypl_locations" data-ng-strict-di>
   <head>
     <% if ! settings.env_config["optimizely"].nil? %>
     <script src="<%= settings.env_config["optimizely"] %>"></script>
