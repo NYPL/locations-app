@@ -1,6 +1,9 @@
 <!doctype html>
 <html xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="nypl_locations">
   <head>
+    <%if settings.locinator_env == "development" %>
+    <%= erb :newrelic_dev %>
+    <% end %>
     <% if ! settings.env_config["optimizely"].nil? %>
     <script src="<%= settings.env_config["optimizely"] %>"></script>
     <% end %>
