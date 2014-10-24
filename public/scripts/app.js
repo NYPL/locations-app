@@ -14,7 +14,8 @@ var nypl_locations = angular.module('nypl_locations', [
     'nyplBreadcrumbs',
     'angulartics',
     'angulartics.google.analytics',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'newrelic-timing'
 ]);
 
 nypl_locations.constant('_', window._);
