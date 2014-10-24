@@ -6,6 +6,7 @@ require 'erb'
 
 class Locinator < Sinatra::Base
   configure do
+    set :locinator_env, ENV['LOCINATOR_ENV']
     configs = JSON.parse(File.read('locinator.json'))
     if configs["environments"].has_key?(ENV['LOCINATOR_ENV'])
       set :env_config, configs["environments"][ENV['LOCINATOR_ENV']]
