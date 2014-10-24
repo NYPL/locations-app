@@ -1490,7 +1490,7 @@ angular.module('nypl_widget', [
 
         initAutofill();
       },
-      controller: function($scope) {
+      controller: ['$scope', function($scope) {
         $scope.lookahead = '',
         $scope.currentWord = '',
         $scope.completeWord = '';
@@ -1594,7 +1594,7 @@ angular.module('nypl_widget', [
             return $scope.completeWord = $scope.currentWord + $scope.lookahead;
           }
         }
-      }
+      }]
     };
 
   }
@@ -1833,7 +1833,7 @@ angular.module('nypl_widget', [
 
     utility.alerts = function (alerts) {
       var today = new Date(),
-        todaysAlert = '',
+        todaysAlert = [],
         alert_start,
         alert_end;
 
@@ -1847,7 +1847,7 @@ angular.module('nypl_widget', [
           alert_end = new Date(alert.end);
 
           if (alert_start <= today && today <= alert_end) {
-            todaysAlert += alert.body + "\n";
+            todaysAlert.push(alert.body);
           }
         });
 

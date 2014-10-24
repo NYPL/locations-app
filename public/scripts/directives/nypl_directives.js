@@ -438,7 +438,7 @@
 
         initAutofill();
       },
-      controller: function($scope) {
+      controller: ['$scope', function($scope) {
         $scope.lookahead = '',
         $scope.currentWord = '',
         $scope.completeWord = '';
@@ -542,7 +542,7 @@
             return $scope.completeWord = $scope.currentWord + $scope.lookahead;
           }
         }
-      }
+      }]
     };
 
   }
