@@ -1,0 +1,17 @@
+<h2>Features</h2>
+<ul>
+<% locals[:features].each do |f| %>
+  <li>
+    <% if f.links.nil? %>
+    <h3><%= f.title %>
+    <% else %>
+    <h3><a href="<%= f.links['self']['href'] %>"><%= f.title %></a></h3>
+    <% end %>
+    <% if ! f.image.nil? %>
+    <img src="<%= f.image %>" />
+    <% end %>
+
+    <div><%= f.body %></div>
+  </li>
+<% end %>
+</ul>
