@@ -1,9 +1,9 @@
 GIT
   remote: https://bitbucket.org/rdmond/lionactor
-  revision: 1cf2900b4436cc55ffe23a3e8fdd2159f67b720e
-  tag: 0.0.5
+  revision: f33536ce18754bb7e5cd0f32b28960b63f3bdadc
+  tag: 0.0.6
   specs:
-    lionactor (0.0.5)
+    lionactor (0.0.6)
       faraday
 
 GEM
@@ -11,6 +11,7 @@ GEM
   specs:
     daemons (1.1.9)
     eventmachine (1.0.3)
+    eventmachine (1.0.3-x86-mingw32)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
     haml (4.0.5)
