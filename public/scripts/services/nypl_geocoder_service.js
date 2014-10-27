@@ -23,7 +23,7 @@
       infowindow = new google.maps.InfoWindow(),
       geocoderService = {},
 
-      /**
+      /*
        * @ngdoc function
        * @name getMarkerFromList
        * @methodOf nypl_locations.service:nyplGeocoderService
@@ -36,7 +36,7 @@
         return _.findWhere(markers, {id: id});
       },
 
-      /**
+      /*
        * @ngdoc function
        * @name showInfowindow
        * @methodOf nypl_locations.service:nyplGeocoderService
@@ -59,7 +59,7 @@
         infowindow.open(map, marker);
       },
 
-      /**
+      /*
        * @ngdoc function
        * @name removeMarkerFromMap
        * @methodOf nypl_locations.service:nyplGeocoderService
@@ -78,7 +78,7 @@
         }
       },
 
-      /**
+      /*
        * @ngdoc function
        * @name addMarkerToMap
        * @methodOf nypl_locations.service:nyplGeocoderService

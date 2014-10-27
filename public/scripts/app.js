@@ -6,6 +6,19 @@
  * @ngdoc overview
  * @module nypl_locations
  * @name nypl_locations
+ * @requires ngSanitize
+ * @requires ui.router
+ * @requires ngAnimate
+ * @requires locationService
+ * @requires coordinateService
+ * @requires nyplFeedback
+ * @requires nyplSearch
+ * @requires nyplSSO
+ * @requires nyplNavigation
+ * @requires nyplBreadcrumbs
+ * @requires angulartics
+ * @requires angulartics.google.analytics
+ * @requires newrelic-timing
  * @description
  * AngularJS app for NYPL's new Locations section.
  */
@@ -326,6 +339,12 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
  * @ngdoc overview
  * @module nypl_widget
  * @name nypl_widget
+ * @requires ngSanitize
+ * @requires ui.router
+ * @requires locationService
+ * @requires coordinateService
+ * @requires angulartics
+ * @requires angulartics.google.analytics
  * @description
  * AngularJS widget app for About pages on nypl.org.
  */
