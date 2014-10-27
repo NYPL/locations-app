@@ -56,6 +56,7 @@ module.exports = function (grunt) {
         bestMatch: true,
       },
       all: [
+      'public/scripts/app.js',
       'public/scripts/services/nypl_geocoder_service.js']
     }
   });

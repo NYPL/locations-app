@@ -1,6 +1,14 @@
 /*jslint nomen: true, indent: 4, maxlen: 80 */
 /*globals angular, window, headerScripts */
 
+
+/**
+ * @ngdoc overview
+ * @module nypl_locations
+ * @name nypl_locations
+ * @description
+ * AngularJS app for NYPL's new Locations section.
+ */
 var nypl_locations = angular.module('nypl_locations', [
     'ngSanitize',
     'ui.router',
@@ -314,6 +322,13 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.responseInterceptors.push(interceptor);
 }]);
 
+/**
+ * @ngdoc overview
+ * @module nypl_widget
+ * @name nypl_widget
+ * @description
+ * AngularJS widget app for About pages on nypl.org.
+ */
 angular.module('nypl_widget', [
     'ngSanitize',
     'ui.router',
