@@ -89,6 +89,7 @@
      * @returns {object} Deferred promise. If it resolves, an object is returned
      *  with coordinates and formatted address, or an error if rejected.
      * @example
+     * ```js
      *  nyplGeocoderService.geocodeAddress('Bryant Park')
      *    .then(function (coords) {
      *      // coords.lat, coords.long, coords.name
@@ -96,6 +97,7 @@
      *    .catch(function (error) {
      *      // "Query too short" or Google error status
      *    });
+     * ```
      */
     geocoderService.geocodeAddress = function (address) {
       var defer = $q.defer(),
