@@ -65,8 +65,8 @@ class Locinator < Sinatra::Base
 
   get '/', :spider => true do
     api = Lionactor::Client.new
-    @data = api.locations
-    haml :index
+    @locations = api.locations
+    erb :seo_index
   end
 
   get '/config' do
