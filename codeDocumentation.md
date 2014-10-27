@@ -16,22 +16,22 @@ This is a short writeup on how to add comments in the AngularJS code to generate
 
 * Always start comment block with /**
 * The comment block must have
-** @ngdoc
-** @name
-** @description
+  * @ngdoc
+  * @name
+  * @description
 * @ngdoc is used to describe the module, service, filter, etc. Use one of the following keywords:
-** overview
-** directive
-** filter
-** interface
-** service
-** object
-** function
+  * overview
+  * directive
+  * filter
+  * interface
+  * service
+  * object
+  * function
 * @name must be written in the following syntax:
-** @name <module_name>.<unit>:<unit_name>
+  * @name <module_name>.<unit>:<unit_name>
 * @description is the description of the code that follows
 * @methodOf is very useful for a function that returns an API. Services, for example, return objects with functions available in that service. Those functions are methods of the larger service,
-** The syntax must follow: @methodOf <module_name>.<unit>:<unit_name>
+  * The syntax must follow: @methodOf <module_name>.<unit>:<unit_name>
 * @private Use if the function or variable is private.
 * @param {type} nameOfParam Description of the parameter.
   * @param {type} [nameOfOptionalParam] Use brackets for optional parameters.

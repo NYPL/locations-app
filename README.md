@@ -95,14 +95,14 @@ These are internal modules found in [public/scripts/components](public/scripts/c
 * coordinateService
   * nypl_coordinates.js - Module to check if geolocation is available on the browser, get user current coordinates, and calculate two-point distances.
 
-## Testing
+## Testing :triangular_ruler: :pencil2:
 Testing is awesome but is rather complicated to set up. We run two sets of tests for the Locinator.
 * Unit tests: Jasmine and Karma are used to test the AngularJs code for the Locinator.
 * End-to-end tests: AngularJS's Protractor E2E test framework is used to test the full stack app on different browsers and simulate user interactions.
 
 To find out more about our tests and how to run them, please read the [README file in /test](test).
 
-## Documentation
+## Documentation :notebook:
 ngdocs, a flavor of jsdoc, is currently being used to document our AngularJS app. Grunt and [grunt-ngdocs](https://www.npmjs.org/package/grunt-ngdocs) are used to run a Grunt ngdocs task and generate documentation as a website.
 
 To generate the documentation website, run:
