@@ -64,6 +64,6 @@ module.exports = function (grunt) {
   grunt.registerTask('default', []);
 
   grunt.registerTask('docs', ['jsdoc']);
-  grunt.registerTask('ng', ['ngdocs']);
+  grunt.registerTask('ngdocumentation', ['ngdocs']);
 
 };

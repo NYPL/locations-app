@@ -103,14 +103,15 @@ Testing is awesome but is rather complicated to set up. We run two sets of tests
 To find out more about our tests and how to run them, please read the [README file in /test](test).
 
 ## Documentation
-[JSdoc](http://usejsdoc.org/) is currently being used to document our AngularJS app. Grunt and [grunt-jsdoc](https://github.com/krampstudio/grunt-jsdoc) are used to run JSdoc and generate documentation as a website.
-
-Since the Locinator is an AngularJS app, other documentation tools may prove to be more useful, such as [ngdocs](https://www.npmjs.org/package/grunt-ngdocs).
+ngdocs, a flavor of jsdoc, is currently being used to document our AngularJS app. Grunt and [grunt-ngdocs](https://www.npmjs.org/package/grunt-ngdocs) are used to run a Grunt ngdocs task and generate documentation as a website.
 
 To generate the documentation website, run:
 
-    grunt jsdoc
+    grunt ngdocumentation
 
-This will generate a 'doc' folder in the root directory. Open doc/index.html to view the documentation.
+This will generate an 'ngdoc' folder in the root directory which must be viewed in a server. Perform the following commands to start a very simple server to see the documentation at localhost:8080:
+
+    cd ngdocs
+    python -m SimpleHTTPServer 8080
 
 To learn more about how to document, please see [codeDocumentation](codeDocumentation.md).

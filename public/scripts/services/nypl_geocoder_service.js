@@ -7,6 +7,7 @@
   /**
    * @ngdoc service
    * @name nypl_locations.service:nyplGeocoderService
+   * @requires $q
    * @description
    * AngularJS service that deals with all Google Maps related functions.
    * Can add a map to a page and add markers to the map.
