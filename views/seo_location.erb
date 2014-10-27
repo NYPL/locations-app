@@ -121,23 +121,8 @@
       <% end %>
 
       <% if @location.embedded['blogs'] %>
-      <h2>Blogs</h2>
-        <ul>
-        <% @location.embedded['blogs'].each do |blog| %>
-          <li>
-            <h3><a href="<%= blog['_links']['self']['href'] %>"><%= blog['title'] %></a></h3>
-            <div>
-              <%= blog['author']['name'] %>
-              <%= blog['author']['position'] %>
-              <%= blog['author']['location'] %> 
-              <%= blog['pubdate'] %> 
-            </div>
-            <div><%= blog['body'] %></div>
-          </li>
-        <% end %>
-      </ul>
+        <%= erb :seo_blogs, :locals => {:blogs => @location.embedded['blogs'] } %>
       <% end %>
-
     </div>
   </body>
 </html>
