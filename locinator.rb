@@ -59,8 +59,8 @@ class Locinator < Sinatra::Base
 
   get %r{/(.+)$}, :spider => true do
     api = Lionactor::Client.new
-    @data = api.location(params['captures'].first)
-    haml :location
+    @location = api.location(params['captures'].first)
+    erb :seo_location
   end
 
   get '/', :spider => true do
