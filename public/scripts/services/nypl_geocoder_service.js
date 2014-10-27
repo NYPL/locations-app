@@ -4,7 +4,11 @@
 (function () {
   'use strict';
 
-  /** @namespace nyplGeocoderService */
+  /**
+   * @ngdoc service
+   * @name nypl_locations.service:nyplGeocoderService
+   * @description geocoder servivce
+   */
   function nyplGeocoderService($q) {
 
     var map,
@@ -77,7 +81,10 @@
         }
       };
 
-    /** @function nyplGeocoderService.geocodeAddress
+    /**
+     * @ngdoc function
+     * @name geocodeAddress
+     * @methodOf nypl_locations.service:nyplGeocoderService
      * @param {string} address Address or location to search for.
      * @returns {object} Deferred promise. If it resolves, an object is returned
      *  with coordinates and formatted address, or an error if rejected.
@@ -158,7 +165,9 @@
       return defer.promise;
     };
 
-    /** @function nyplGeocoderService.drawMap
+    /*
+     * @ngdoc service 
+     * @function nyplGeocoderService.drawMap
      * @param {object} coords Object with lat and long properties.
      * @param {number} zoom The Google Map zoom distance.
      * @param {string} id The id of the element to draw the map on.
