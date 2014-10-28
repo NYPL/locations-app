@@ -39,7 +39,7 @@
         });
 
         $scope.divisions = divisions;
-
+        console.log($scope.divisions);
 
         $rootScope.title = "Research Collections";
         $scope.hoursToday = nyplUtility.hoursToday;

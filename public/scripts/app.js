@@ -107,7 +107,6 @@ nypl_locations.config([
             return nyplLocationsService
                 .allDivisions()
                 .then(function (data) {
-                    console.log(data.divisions);
                     return data.divisions;
                 })
                 .catch(function (err) {
