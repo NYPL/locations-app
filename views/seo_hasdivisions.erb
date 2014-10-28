@@ -1,0 +1,8 @@
+<% if locals[:loc].has_divisions? %>
+<h2>Divisions</h2>
+<ul>
+<% locals[:loc].divisions.each do |d| %>
+  <li itemprop="department"><a href="./divisions/<%= d.slug %>"><%= d.name %></a></li>
+<% end %>
+</ul>
+<% end %>
