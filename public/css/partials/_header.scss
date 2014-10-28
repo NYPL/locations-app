@@ -118,6 +118,10 @@ header {
 					&.login-button {
 						background-color: #5e564b;
 
+						.label {
+							display: inline-block;
+						}
+
 						&:hover {
 							background-color: #9b958f;
 						}
@@ -151,18 +155,11 @@ header {
 			// SSO
 			.sso-login {
 				position: relative;
-				z-index: 3;
+				z-index: 4;
+				display: none;
 
-				&.visible {
-					// Login form when visible
-					.login-form {
-						display: block;
-					}
-				}
-
-				// Login Form
 				.login-form {
-					display: none;
+					display: block;
 					background-color: #e5e1da;
 					width: 100%;
 					padding: 0;
@@ -256,6 +253,47 @@ header {
 					}
 				}
 
+				.logged-in-menu {
+	        display: none;
+	        width: 200px;
+	        border: 2px solid #5e564b;
+	        background-color: #e5e1da;
+	        position: absolute;
+	        list-style-type: none;
+	        right: 82px;
+	        z-index: 4;
+	        padding: 12px 10px;
+
+	        li {
+	        	margin: 5px 0px;
+
+	        	a {
+		          margin: 0px;
+		          padding: 0px;
+		          color: #000000;
+		          font-size: 9px;
+		          font-size: 0.9rem;
+		          float: none;
+		          text-decoration: none;
+		          &:hover {
+		          	text-decoration: underline;
+		          }
+	        	}
+	        }
+	      }
+
+	      &.logged-in {
+	        .login-form {
+	          display: none;
+	        }
+	        .logged-in-menu {
+	          display: block;
+	        }
+	      }
+
+	      &.visible {
+	        display: block;
+	      }
 			}
 		}
 	}
@@ -280,7 +318,6 @@ header {
 		background-color: transparent;
 		right: 0px;
 		top: 84px !important;
-		z-index: 2;
 		box-shadow: none;
 	}
 
@@ -435,9 +472,12 @@ header {
 				height: 30px;
 				width: auto;
 				margin: 0;
-				padding: 0px 0px 1.1px 2px;
-				vertical-align: 2.6px;
+				padding: 0px 0px 0px 2px;
+				vertical-align: 1.5px;
 				@include transition(background-color .2s ease);
+			}
+			&:before {
+				vertical-align: bottom;
 			}
 			&:hover {
 				cursor: pointer;

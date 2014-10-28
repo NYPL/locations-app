@@ -1,19 +1,42 @@
 /*jslint nomen: true, indent: 4, maxlen: 80 */
 /*globals angular, window, headerScripts */
 
+
+/**
+ * @ngdoc overview
+ * @module nypl_locations
+ * @name nypl_locations
+ * @requires ngSanitize
+ * @requires ui.router
+ * @requires ngAnimate
+ * @requires locationService
+ * @requires coordinateService
+ * @requires nyplFeedback
+ * @requires nyplSearch
+ * @requires nyplSSO
+ * @requires nyplNavigation
+ * @requires nyplBreadcrumbs
+ * @requires angulartics
+ * @requires angulartics.google.analytics
+ * @requires newrelic-timing
+ * @description
+ * AngularJS app for NYPL's new Locations section.
+ */
 var nypl_locations = angular.module('nypl_locations', [
     'ngSanitize',
     'ui.router',
     'ngAnimate',
     'locationService',
     'coordinateService',
+    'nyplFeedback',
     'nyplSearch',
     'nyplSSO',
     'nyplNavigation',
     'nyplBreadcrumbs',
     'angulartics',
     'angulartics.google.analytics',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'newrelic-timing'
 ]);
 
 nypl_locations.constant('_', window._);
@@ -34,7 +57,7 @@ nypl_locations.config([
         'use strict';
 
         // uses the HTML5 History API, remove hash (need to test)
-        // $locationProvider.html5Mode(true);
+        $locationProvider.html5Mode(true);
 
         // Lazy loads static files with English being
         // the first language that gets loaded.
@@ -44,52 +67,55 @@ nypl_locations.config([
         });
         $translateProvider.preferredLanguage('en');
 
-        function LoadLocation(nyplLocationsService, $stateParams, $location) {
+        function LoadLocation($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
                 .singleLocation($stateParams.location)
                 .then(function (data) {
                     return data.location;
                 })
                 .catch(function (err) {
-                    $location.path('/404');
                     throw err;
                 });
         }
 
-        function LoadDivision(nyplLocationsService, $stateParams, $location) {
+        function LoadSubDivision($q, $stateParams, config, nyplLocationsService) {
+            var division    = nyplLocationsService
+                                .singleDivision($stateParams.division),
+                subdivision = nyplLocationsService
+                                .singleDivision($stateParams.subdivision);
+
+            return $q.all([division, subdivision]).then(function (data) {
+                var div = data[0],division,
+                    subdiv = data[1].division;
+
+                return subdiv;
+            });
+        }
+
+        function LoadDivision($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
                 .singleDivision($stateParams.division)
                 .then(function (data) {
                     return data.division;
                 })
                 .catch(function (err) {
-                    $location.path('/404');
                     throw err;
                 });
         }
 
-        function AmenitiesAtLibrary(nyplLocationsService, $stateParams, $location) {
-            return nyplLocationsService
-                .amenitiesAtLibrary($stateParams.location)
-                .then(function (data) {
-                    return data.location;
-                })
-                .catch(function (error) {
-                    $location.path('/404');
-                    throw error;
-                });
-        }
-
-        function Amenities(nyplLocationsService, $stateParams, $location) {
+        function Amenities($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
                 .amenities($stateParams.amenity)
                 .then(function (data) {
                     return data;
                 })
                 .catch(function (error) {
-                    $location.path('/404');
                     throw error;
                 });
+        }
+
+        function getConfig(nyplLocationsService) {
+            return nyplLocationsService.getConfig();
         }
 
         $crumbProvider.setOptions({
@@ -97,26 +123,41 @@ nypl_locations.config([
             secondaryState: {name:'Locations', customUrl: 'home.index' }
         });
 
-        // $urlRouterProvider.when('/list', '/');
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.rule(function ($injector, $location) {
+            var path = $location.url();
+
+            // Remove trailing slash if found
+            if (path[path.length - 1] === '/') {
+                return path.slice(0, -1);
+            }
+        })
+
+        // This next line breaks unit tests which doesn't make sense since
+        // unit tests should not test the whole app. BUT since we are testing
+        // directives and using $rootScope.$digest or $rootScope.$apply,
+        // it will run the app. It may not be necessary for the app though
+        // since, in the run phase, if there is an error when changing state,
+        // the app will go to the 404 state.
+        // $urlRouterProvider.otherwise('/404');
         $stateProvider
             .state('home', {
                 url: '/',
                 abstract: true,
                 templateUrl: 'views/locations.html',
                 controller: 'LocationsCtrl',
-                label: 'Locations'
+                label: 'Locations',
+                resolve: {
+                    config: getConfig
+                }
             })
             .state('home.index', {
                 templateUrl: 'views/location-list-view.html',
                 url: '',
-                // controller: 'LocationsCtrl',
                 label: 'Locations'
             })
             .state('home.list', {
                 templateUrl: 'views/location-list-view.html',
                 url: 'list',
-                // controller: 'LocationsCtrl',
                 label: 'Locations'
             })
             .state('home.map', {
@@ -125,12 +166,27 @@ nypl_locations.config([
                 controller: 'MapCtrl',
                 label: 'Locations'
             })
-            .state('division', {
-                url: '/division/:division',
+            .state('subdivision', {
+                url: '/divisions/:division/:subdivision',
                 templateUrl: 'views/division.html',
                 controller: 'DivisionCtrl',
                 label: 'Division',
                 resolve: {
+                    config: getConfig,
+                    division: LoadSubDivision
+                },
+                data: {
+                    parentState: 'location',
+                    crumbName: '{{division.name}}'
+                }
+            })
+            .state('division', {
+                url: '/divisions/:division',
+                templateUrl: 'views/division.html',
+                controller: 'DivisionCtrl',
+                label: 'Division',
+                resolve: {
+                    config: getConfig,
                     division: LoadDivision
                 },
                 data: {
@@ -150,6 +206,7 @@ nypl_locations.config([
                 controller: 'AmenitiesCtrl',
                 label: 'Amenities',
                 resolve: {
+                    config: getConfig,
                     amenities: Amenities
                 },
                 data: {
@@ -162,6 +219,7 @@ nypl_locations.config([
                 controller: 'AmenityCtrl',
                 label: 'Amenities',
                 resolve: {
+                    config: getConfig,
                     amenity: Amenities
                 },
                 data: {
@@ -175,18 +233,24 @@ nypl_locations.config([
                 templateUrl: 'views/amenitiesAtLibrary.html',
                 controller: 'AmenitiesAtLibraryCtrl',
                 resolve: {
-                    location: AmenitiesAtLibrary
+                    config: getConfig,
+                    location: LoadLocation
                 },
                 data: {
                     parentState: 'amenities',
                     crumbName: '{{location.name}}'
                 }
             })
+            .state('404', {
+                url: '/404',
+                templateUrl: 'views/404.html'
+            })
             .state('location', {
                 url: '/:location',
                 templateUrl: 'views/location.html',
                 controller: 'LocationCtrl',
                 resolve: {
+                    config: getConfig,
                     location: LoadLocation
                 },
                 data: {
@@ -195,6 +259,18 @@ nypl_locations.config([
             });
     }
 ]);
+
+nypl_locations.run(function ($state, $rootScope, $location) {
+    $rootScope.$on('$stateChangeStart', function () {
+        $rootScope.close_feedback = true;
+    });
+    $rootScope.$on('$stateChangeSuccess', function () {
+        $rootScope.current_url = $location.absUrl();
+    });
+    $rootScope.$on('$stateChangeError', function () {
+        $state.go('404');
+    });
+});
 
 // Declare an http interceptor that will signal
 // the start and end of each request
@@ -265,3 +341,104 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.responseInterceptors.push(interceptor);
 }]);
 
+/**
+ * @ngdoc overview
+ * @module nypl_widget
+ * @name nypl_widget
+ * @requires ngSanitize
+ * @requires ui.router
+ * @requires locationService
+ * @requires coordinateService
+ * @requires angulartics
+ * @requires angulartics.google.analytics
+ * @description
+ * AngularJS widget app for About pages on nypl.org.
+ */
+angular.module('nypl_widget', [
+    'ngSanitize',
+    'ui.router',
+    'locationService',
+    'coordinateService',
+    'angulartics',
+    'angulartics.google.analytics'
+])
+.config(['$locationProvider', '$stateProvider', '$urlRouterProvider',
+    function ($locationProvider, $stateProvider, $urlRouterProvider) {
+        'use strict';
+
+        function LoadLocation($stateParams, config, nyplLocationsService) {
+            return nyplLocationsService
+                .singleLocation($stateParams.location)
+                .then(function (data) {
+                    return data.location;
+                })
+                .catch(function (err) {
+                    throw err;
+                });
+        }
+
+        function LoadSubDivision($q, $stateParams, config, nyplLocationsService) {
+            var division    = nyplLocationsService
+                                .singleDivision($stateParams.division),
+                subdivision = nyplLocationsService
+                                .singleDivision($stateParams.subdivision);
+
+            return $q.all([division, subdivision]).then(function (data) {
+                var div = data[0],division,
+                    subdiv = data[1].division;
+
+                return subdiv;
+            });
+        }
+
+        function LoadDivision($stateParams, config, nyplLocationsService) {
+            return nyplLocationsService
+                .singleDivision($stateParams.division)
+                .then(function (data) {
+                    return data.division;
+                })
+                .catch(function (err) {
+                    throw err;
+                });
+        }
+
+        function getConfig(nyplLocationsService) {
+            return nyplLocationsService.getConfig();
+        }
+
+        // uses the HTML5 History API, remove hash (need to test)
+        $locationProvider.html5Mode(true);
+
+        // $urlRouterProvider.otherwise('/widget/sasb');
+
+        $stateProvider
+            .state('subdivision', {
+                url: '/widget/divisions/:division/:subdivision',
+                templateUrl: 'views/widget.html',
+                controller: 'WidgetCtrl',
+                resolve: {
+                    config: getConfig,
+                    data: LoadSubDivision
+                }
+            })
+            .state('division', {
+                url: '/widget/divisions/:division',
+                templateUrl: 'views/widget.html',
+                controller: 'WidgetCtrl',
+                label: 'Division',
+                resolve: {
+                    config: getConfig,
+                    data: LoadDivision
+                }
+            })
+            .state('widget', {
+                url: '/widget/:location',
+                templateUrl: 'views/widget.html',
+                controller: 'WidgetCtrl',
+                resolve: {
+                    config: getConfig,
+                    data: LoadLocation
+                },
+            });
+    }
+]);

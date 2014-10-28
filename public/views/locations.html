@@ -4,17 +4,25 @@
     <div class="grid">
       <!-- Search Section: Search Box/Filters -->
       <form class="locations-search-form grid__item one-whole">
-        <label for="searchTerm" class="search-box-label">{{ 'EXAMPLE' | translate }}: Jefferson Market, 10018, 455 Fifth Avenue</label>
+        <label for="searchTerm" class="search-box-label">
+          Type a Library name, or enter an address or landmark to search nearby.
+        </label>
         <div class="search-box-area">
           <input class="search-box" id="searchTerm" type="text" data-ng-model="searchTerm"/>
           <span class="icon-search"></span>
           <span id="clear-search" class="icon-cancel-circle" data-ng-click="clearSearch()"></span>
+
+        <nypl-autofill data="locations" data-ng-model="searchTerm" map-view="viewMapLibrary(slug)" geo-search="geocodeAddress(term)">
+        </nypl-autofill>
         </div>
 
         <div class="search-button-area">
-          <button id="find-location" class="btn--small" data-ng-click="submitAddress(searchTerm)">
+          <button id="find-location" class="btn--small"
+            analytics-on="click" analytics-category="Locations"
+            analytics-event="Search" analytics-label="{{searchTerm}}"
+            data-ng-click="geocodeAddress(searchTerm)">
             {{ 'MAIN_SEARCH_BTN' | translate }}
-          </button>
+          </button>            
         </div>
 
         <div class="search-filters" data-ng-if="locations">
@@ -22,9 +30,11 @@
     	    <div class="filters__current" data-ng-if="geolocationOn">
             <p>
               <span class="current-location-container">
-                <a id="currentloc" class="btn btn--natural whiteText" 
-                  href="" data-ng-if="geolocationOn" data-ng-click="useGeolocation()">
-                {{ 'USER_LOCATION' | translate }}
+                <a id="currentloc" class="btn btn--natural"
+                  href="" data-ng-if="geolocationOn" data-ng-click="useGeolocation()"
+                  analytics-on analytics-category="Locations" analytics-event="Filter by"
+                  analytics-label="Near me">
+                  {{ 'USER_LOCATION' | translate }}
                 </a>
               </span>
               <span>{{ 'RESEARCH_TEXT' | translate}}</span>
@@ -33,8 +43,10 @@
     	    <div class="filters__research">
             <p>
               <span class="only-research-container">
-                <a id="onlyresearch" class="btn btn--natural whiteText" 
-                  data-ng-class="{false: '', true: ''}[researchBranches]" href="" data-ng-click="showResearch()">
+                <a id="onlyresearch" class="btn btn--natural" 
+                  data-ng-class="{false: '', true: ''}[researchBranches]" href="" data-ng-click="showResearch()"
+                  analytics-on analytics-category="Locations" analytics-event="Filter by"
+                  analytics-label="Research">
                   {{researchBranches && 'ALL_LOCATIONS' || 'RESEARCH_LOCATIONS' | translate}}
                 </a>
               </span>
@@ -56,20 +68,24 @@
           <a href="">{{geolocationAddressOrSearchQuery}}</a>
         </div>
       </div>
-
     </div>
   </section>
 
   <!-- Views Control Section -->
   <section class="views-tab-controls">
     <div class="list-view-btn" data-ui-sref=".list"
-      data-ng-class="{active: $state.includes('home.index') || $state.includes('home.list')}">
-      List View</div>
-    <div class="map-view-btn" data-ui-sref=".map"
-      data-ng-class="{active: $state.includes('home.map')}">Map View</div>
+      data-ng-class="{active: $state.includes('home.index') || $state.includes('home.list')}"
+      analytics-on="click" analytics-category="Locations" analytics-event="View"
+      analytics-label="List view">
+      List View
+    </div>
+    <div class="map-view-btn" data-ui-sref=".map" data-ng-class="{active: $state.includes('home.map')}"
+      analytics-on="click" analytics-category="Locations" analytics-event="View"
+      analytics-label="Map view">
+      Map View
+    </div>
   </section>
 
   <!-- Conditional | List/Map Views -->
   <section ui-view><section>
-
 </div>

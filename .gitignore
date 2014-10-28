@@ -10,3 +10,5 @@ test/results
 .#*
 \#*\#
 docs
+ngdocs
+test/coverage/*

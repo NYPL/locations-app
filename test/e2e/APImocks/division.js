@@ -2,171 +2,67 @@
 /*globals element, by, module */
 
 var response = {
-  bad: {
-    division: {
-      "_id": "GRD",
-      "_links": {},
-      "about": "",
-      "access": "Fully Accessible",
-      "contacts": {
-        "phone": "(212) 275-6975",
-        "email": "grdref@nypl.org"
-      },
-      "cross_street": null,
-      "floor": null,
-      "geolocation": {
-        "type": "Point",
-        "coordinates": [
-          -73.9822,
-          40.7532
-        ]
-      },
-      "hours": {
-        "regular": [
-          { "day": "Sun", "open": null, "close": null },
-          { "day": "Mon", "open": null, "close": null },
-          { "day": "Tue", "open": null, "close": null },
-          { "day": "Wed", "open": null, "close": null },
-          { "day": "Thu", "open": null, "close": null },
-          { "day": "Fri", "open": null, "close": null },
-          { "day": "Sat", "open": null, "close": null }
-        ]
-      },
-      "id": "GRD",
-      "image": "/sites/default/files/images/stacks.jpg",
-      "locality": "New York",
-      "location_id": "SASB",
-      "location_name": "Stephen A. Schwarzman Building",
-      "location_slug": "schwarzman",
-      "name": "General Research Division",
-      "postal_code": 10018,
-      "region": "NY",
-      "room": 315,
-      "slug": "general-research-division",
-      "social_media": [],
-      "street_address": "135 East 46th Street",
-      "type": "circulating",
-      "_embedded": {
-        "services": [],
-        "events": [],
-        "exhibitions": null,
-        "blogs": [],
-        "alerts": [],
-        "divisions": []
-      }
-    }
-  },
   good: {
     division: {
-      _id: "GRD",
       _links: {
-        self: {
-          href: "divisions/general-research-division"
+        "self": {
+          "href": "divisions/general-research-division",
+          "about": "http://nypl.org/about/divisions/general-research-division"
         },
-        amenities: {
-          href: "divisions/general-research-division/amenities"
+        "blogs": {
+          "href": "divisions/general-research-division/blogs",
+          "all": "http://nypl.org/blog/library/394"
         },
-        blogs: {
-          href: "divisions/general-research-division/blogs",
-          all: "http://www.nypl.org/blog/library/394"
+        "events": {
+          "href": "divisions/general-research-division/events",
+          "all": "http://nypl.org/events/calendar?location=394"
         },
-        events: {
-          href: "divisions/general-research-division/events"
+        "exhibitions": {
+          "href": "divisions/general-research-division/exhibitions"
         },
-        exhibitions: {
-          href: "divisions/general-research-division/exhibitions"
+        "on_shelves": {
+          "href": "http://nypl.bibliocommons.com/search?custom_query=available%3A%22General+Research+Division%22&circ=CIRC|NON%20CIRC"
         },
-        alerts: {
-          href: "divisions/general-research-division/alerts"
+        "contact": {
+          "href": "http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?institution=13306&type=1&language=1"
         },
-        on_shelves: {
-          href: "http://nypl.bibliocommons.com/search?custom_query=available" +
-            "%3A%22General+Research+Division%22&circ=CIRC|NON%20CIRC"
-        },
-        contact: {
-          href: "http://www.questionpoint.org/crs/servlet/org.oclc.admin.Bui" +
-            "ldForm?institution=13306&type=1&language=1"
-        },
-        concierge: {
-          href: "http://www.nypl.org/ask-nypl/make-appointment-librarian"
+        "concierge": {
+          "href": "http://www.nypl.org/ask-nypl/make-appointment-librarian"
         }
       },
-      about: "The General Research Division serves as the central research " +
-        "hub in the Stephen A. Schwarzman Building. The division welcomes " +
-        "hundreds of visitors each day, including scholars, writers, graduate" +
-        " and undergraduate students, general readers, tourists, and those " +
-        "who might simply be looking for the answer to a nagging question. " +
-        "Our staff of librarians is on hand to help with research questions " +
-        "and to instruct patrons in navigating the Catalog and our numerous " +
-        "electronic databases.",
+      about: "The General Research Division serves as the central research hub in the Stephen A. Schwarzman Building. The division welcomes hundreds of visitors each day, including scholars, writers, graduate and undergraduate students, general readers, tourists, and those who might simply be looking for the answer to a nagging question. Our staff of librarians is on hand to help with research questions and to instruct patrons in navigating the Catalog and our numerous electronic databases.",
       access: "Fully Accessible",
       contacts: {
         phone: "(917) 275-6975",
         manager: "Marie Coughlin"
       },
-      cross_street: null,
       floor: "Third Floor",
-      geolocation: {
-        type: "Point",
-        coordinates: [
-          -73.9822,
-          40.7532
-        ]
-      },
       hours: {
         regular: [
-        {
-          day: "Sun",
-          open: null,
-          close: null
-        },
-        {
-          day: "Mon",
-          open: "10:00",
-          close: "17:45"
-        },
-        {
-          day: "Tue",
-          open: "10:00",
-          close: "19:45"
-        },
-        {
-          day: "Wed",
-          open: "10:00",
-          close: "19:45"
-        },
-        {
-          day: "Thu",
-          open: "10:00",
-          close: "17:45"
-        },
-        {
-          day: "Fri",
-          open: "10:00",
-          close: "17:45"
-        },
-        {
-          day: "Sat",
-          open: "10:00",
-          close: "17:45"
-        }
+          { day: "Sun", open: null, close: null },
+          { day: "Mon", open: "10:00", close: "17:45" },
+          { day: "Tue", open: "10:00", close: "19:45" },
+          { day: "Wed", open: "10:00", close: "19:45" },
+          { day: "Thu", open: "10:00", close: "17:45" },
+          { day: "Fri", open: "10:00", close: "17:45" },
+          { day: "Sat", open: "10:00", close: "17:45" }
         ],
         exceptions: {
           start: "2014-08-19T10:07:24-04:00",
-          end: "2014-08-20T00:00:00-04:00",
+          end: "2015-12-20T00:00:00-04:00",
           description: "The Rose Main Reading Room and the Bill Blass Public Catalog Room in the Stephen A. Schwarzman Building will be temporarily closed. More information is available on the updates page. General Research Division (GRD) onsite materials are still available for use in the Stephen A. Schwarzman Building. We encourage you to submit requests in advance of your visit via our online form. Otherwise, you may request GRD materials in Room 217 or in any of the Schwarzman Building’s other reading rooms. For offsite requests, please consult our Classic Catalog and submit your request for any item by clicking the gray Request From Off-Site Storage button in the catalog record. Materials will be available for pickup in Room 217."
         }
       },
       id: "GRD",
-      image: "http://www.nypl.org/sites/default/files/images/stacks.jpeg",
-      locality: "New York",
+      images: {
+        interior: "http://www.nypl.org/sites/default/files/images/stacks.jpeg",
+        collection_item: "http://www.nypl.org/sites/default/files/images/stacks.jpeg"
+      },
       location_id: "SASB",
-      location_name: "Stephen A. Schwarzman Building",
-      location_slug: "schwarzman",
       name: "General Research Division",
       open: true,
-      postal_code: 10018,
-      region: "NY",
+      plan_your_visit: null,
+      rank: 1,
       room: "315",
       slug: "general-research-division",
       social_media: [
@@ -187,8 +83,7 @@ var response = {
           href: "http://www.youtube.com/NewYorkPublicLibrary"
         }
       ],
-      street_address: "Fifth Avenue at 42nd Street",
-      synonyms: null,
+      synonyms: [],
       type: "research",
       _embedded: {
         events: null,
@@ -364,7 +259,224 @@ var response = {
             start: "2014-12-17T00:00:00-05:00",
             end: "2014-12-26T23:59:00-05:00"
           }
+        ],
+        divisions: [
+          {
+            name: "DeWitt Wallace Periodical Room",
+            access: "Fully Accessible",
+            rank: 2,
+            floor: "First Floor",
+            room: "108",
+            slug: "periodicals-room",
+            synonyms: [ ],
+            contacts: {
+              phone: "(212) 930-0971"
+            },
+            _links: {
+              self: {
+              href: "http://locations-api-alpha.herokuapp.com/divisions/periodicals-room",
+              about: "http://nypl.org/about/divisions/general-research-division/periodicals-room"
+              },
+              blogs: {
+              href: "http://locations-api-alpha.herokuapp.com/divisions/periodicals-room/blogs",
+              all: "http://nypl.org/blog/library/173"
+              },
+              events: {
+              href: "http://locations-api-alpha.herokuapp.com/divisions/periodicals-room/events",
+              all: "http://nypl.org/events/calendar?location=173"
+              },
+              exhibitions: {
+              href: "http://locations-api-alpha.herokuapp.com/divisions/periodicals-room/exhibitions"
+              },
+              alerts: {
+              href: "http://locations-api-alpha.herokuapp.com/divisions/periodicals-room/alerts"
+              },
+              on_shelves: {
+              href: "http://nypl.bibliocommons.com/search?custom_query=available%3A%22Periodicals+Room%22&circ=CIRC|NON%20CIRC"
+              },
+              contact: {
+              href: "http://www.nypl.org/locations/tid/36/node/173382"
+              },
+              concierge: {
+              href: "http://www.nypl.org/ask-nypl/make-appointment-librarian"
+              }
+            },
+            about: "The DeWitt Wallace Periodical Room 108 services current unbound issues of 68 popular periodical titles and 22 domestic and foreign newspapers. For a full list of the popular titles in Room 108, see here. You can also view new titles on our Pinterest page! The majority of the current periodicals collection is available in Room 100, the Microforms Reading Room. The Periodicals Room is Wi-Fi enabled.",
+            hours: {
+            regular: [
+              { day: "Sun", open: null, close: null },
+              { day: "Mon", open: "10:00", close: "17:45" },
+              { day: "Tue", open: "10:00", close: "19:45" },
+              { day: "Wed", open: "10:00", close: "19:45" },
+              { day: "Thu", open: "10:00", close: "17:45" },
+              { day: "Fri", open: "10:00", close: "17:45" },
+              { day: "Sat", open: "10:00", close: "17:45" }
+            ]
+            },
+            open: true,
+            images: {
+              interior: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/Zine_World.jpg"
+            },
+            plan_your_visit: null,
+            id: "PER"
+          }
+        ],
+        location: {
+          name: "Stephen A. Schwarzman Building",
+          street_address: "Fifth Avenue at 42nd Street",
+          cross_street: "",
+          locality: "New York",
+          region: "NY",
+          access: "Fully Accessible",
+          postal_code: 10018,
+          type: "research",
+          slug: "schwarzman",
+          geolocation: {
+            type: "Point",
+            coordinates: [
+            -73.9822,
+            40.7532
+            ]
+          },
+          synonyms: [ ],
+          contacts: {
+            phone: "(917) 275-6975"
+          },
+          _links: {
+            self: {
+            href: "http://locations-api-alpha.herokuapp.com/locations/schwarzman",
+            about: "http://nypl.org/about/locations/schwarzman"
+            },
+            blogs: {
+            href: "http://locations-api-alpha.herokuapp.com/locations/schwarzman/blogs",
+            all: "http://nypl.org/blog/library/36"
+            },
+            events: {
+            href: "http://locations-api-alpha.herokuapp.com/locations/schwarzman/events",
+            all: "http://nypl.org/events/calendar?location=36"
+            },
+            exhibitions: {
+            href: "http://locations-api-alpha.herokuapp.com/locations/schwarzman/exhibitions"
+            },
+            alerts: {
+            href: "http://locations-api-alpha.herokuapp.com/locations/schwarzman/alerts"
+            },
+            on_shelves: {
+            href: "http://nypl.bibliocommons.com/search?custom_query=available%3A%22Stephen+A.+Schwarzman+Building%22&circ=CIRC|NON%20CIRC"
+            },
+            amenities: {
+            href: "http://locations-api-alpha.herokuapp.com/locations/schwarzman/amenities"
+            },
+            contact: {
+            href: "http://www.nypl.org/locations/tid/36/node/126488"
+            },
+            concierge: {
+            href: "http://www.nypl.org/ask-nypl/make-appointment-sasb"
+            }
+          },
+          about: "Stephen A. Schwarzman Building Fun Facts Built on the site of the old Croton Reservoir Cornerstone laid: November 10, 1902 (weight 7.5 tons) Cornerstone holds a relic box containing contracts between New York City and the Library, photographs, newspapers, and letters from the Trustees and Mayor of New York. Some stones from the reservoir were used to construct the original foundation and can now be seen from the lower levels of the South Court building. The building at Fifth Avenue and 42nd Street (now named the Humanities & Social Sciences Library) was dedicated by President William Howard Taft on May 23, 1911, and opened to the public at 9:00 a.m. on May 24, 1911. More than 50,000 people visited. The library was open for 13 hours until 10:00 p.m. The floor plan was sketched on a postcard in 1897 by John Shaw Billings, The New York Public Library's first director. As the postcard shows, both the northern and southern courtyards were in place from the start. John...",
+          social_media: [
+            {
+            site: "foursquare",
+            href: "http://foursquare.com/venue/31643"
+            },
+            {
+            site: "youtube",
+            href: "http://www.youtube.com/NewYorkPublicLibrary"
+            }
+          ],
+          hours: {
+            regular: [
+              { day: "Sun", open: "13:00", close: "17:00" },
+              { day: "Mon", open: "10:00", close: "18:00" },
+              { day: "Tue", open: "10:00", close: "20:00" },
+              { day: "Wed", open: "10:00", close: "20:00" },
+              { day: "Thu", open: "10:00", close: "18:00" },
+              { day: "Fri", open: "10:00", close: "18:00" },
+              { day: "Sat", open: "10:00", close: "18:00" }
+            ],
+            exceptions: {
+              start: "2014-10-16T12:16:03-04:00",
+              end: "2014-10-17T00:00:00-04:00",
+              description: "<p>The Rose Main Reading Room and the Bill Blass Public Catalog Room in the Stephen A. Schwarzman Building will be temporarily closed. <a href=\"http://www.nypl.org/readingroomupdate\">More information is available on the updates page.<a/></p> <p>General Research Division (GRD) onsite materials are still available for use in the Stephen A. Schwarzman Building. We encourage you to submit requests in advance of your visit via our <a href=\"http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm;jsessionid=7B8D22D69482BCDDAE43913EA5B374C3?&institution=13777&type=1&language=1&qphost=qpap01pxdu.prod.oclc.org&\">online form</a>.</p> <p>Otherwise, you may request GRD materials in Room 217 or in any of the Schwarzman Building’s other reading rooms.</p> <p>For offsite requests, please consult our <a href=\"http://catalog.nypl.org/\">Classic Catalog</a> and submit your request for any item by clicking the gray Request From Off-Site Storage button in the catalog record. Materials will be available for pickup in Room 217.</p> <p>Laptop computers are available for use in place of our desktop computers. If you prefer to use desktops, you can visit the Mid-Manhattan Library across Fifth Avenue at the corner of 40th Street.</p>"
+              }
+          },
+          open: true,
+          images: {
+            exterior: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/locations/36/exterior_sasb2_0.jpg",
+            interior: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/locations/36/interior_sasb_reading_room.jpg"
+          },
+          plan_your_visit: [
+            {
+            label: "Plan Your Research Visit",
+            url: "http://www.nypl.org/about/locations/plan-your-research-visit"
+            },
+            {
+            label: "Using the Library",
+            url: "http://www.nypl.org/about/locations/using-the-library"
+            },
+            {
+            label: "Space Rental",
+            url: "http://www.nypl.org/spacerental/event-spaces/schwarzman"
+            },
+            {
+            label: "Building Tours",
+            url: "http://www.nypl.org/events/tours/schwarzman"
+            },
+            {
+            label: "Test PYV2",
+            url: "http://nypl.org/about/locations/115th-street"
+            }
+          ],
+          fundraising: null,
+          id: "SASB"
+        }
+      }
+    }
+  },
+  bad: {
+    division: {
+      _links: {},
+      about: "",
+      access: "Fully Accessible",
+      contacts: {
+        phone: "(917) 275-6975"
+      },
+      floor: "Third Floor",
+      hours: {
+        regular: [
+          { day: "Sun", open: null, close: null },
+          { day: "Mon", open: "10:00", close: "17:45" },
+          { day: "Tue", open: "10:00", close: "19:45" },
+          { day: "Wed", open: "10:00", close: "19:45" },
+          { day: "Thu", open: "10:00", close: "17:45" },
+          { day: "Fri", open: "10:00", close: "17:45" },
+          { day: "Sat", open: "10:00", close: "17:45" }
         ]
+      },
+      id: "GRD",
+      images: {
+        interior: "http://www.nypl.org/sites/default/files/images/stacks.jpeg",
+        collection_item: "http://www.nypl.org/sites/default/files/images/stacks.jpeg"
+      },
+      location_id: "SASB",
+      name: "General Research Division",
+      open: true,
+      plan_your_visit: null,
+      rank: 1,
+      room: "315",
+      slug: "general-research-division",
+      social_media: [],
+      synonyms: [],
+      type: "research",
+      _embedded: {
+        events: null,
+        exhibitions: null,
+        blogs: null,
+        features: null,
+        alerts: null,
+        divisions: null,
+        location: null
       }
     }
   }

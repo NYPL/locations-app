@@ -10,14 +10,14 @@ var DivisionPage = function () {
   this.name = element(by.binding('division.name'));
   this.main_image = element(by.css('.main_division_image'));
 
-  this.location = element(by.binding('division.location_name'));
-  this.street_address = element(by.binding('division.street_address'));
-  this.cross_street = element(by.binding('division.cross_street'));
+  this.location = element(by.binding('location.name'));
+  this.street_address = element(by.binding('location.street_address'));
+  this.cross_street = element(by.binding('location.cross_street'));
   this.floor = element(by.binding('division.floor'));
   this.room = element(by.binding('division.room'));
-  this.locality = element(by.binding('division.locality'));
-  this.region = element(by.binding('division.region'));
-  this.postal_code = element(by.binding('division.postal_code'));
+  this.locality = element(by.binding('location.locality'));
+  this.region = element(by.binding('location.region'));
+  this.postal_code = element(by.binding('location.postal_code'));
 
   this.division_manager = element(by.binding('division.contacts.manager'));
   this.telephone = element(by.binding('division.contacts.phone'));
@@ -56,6 +56,8 @@ var DivisionPage = function () {
   // Footer section
   this.ask_donate = element(by.css('.ask-donate'));
   this.ask_librarian = element(by.css('#ask-librarian'));
+
+  this.askNYPL = element(by.css('.askchat'));
   this.email_us = element(by.css('.askemail'));
 };
 

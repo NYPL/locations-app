@@ -10,11 +10,22 @@ describe('Locations: Amenity', function () {
     // Function that creates a module that is injected at run time,
     // overrides and mocks httpbackend to mock API call. 
     httpBackendMock = function (response) {
+      var API_URL = 'http://locations-api-alpha.herokuapp.com';
+
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
-          $httpBackend.when('GET', 'http://evening-mesa-7447-160.herokuapp' +
-              '.com/amenities/7950')
+          $httpBackend.whenGET('/languages/en.json').passThrough();
+          $httpBackend
+            .whenGET('/config')
+            .respond({ config: { api_root: API_URL } });
+
+          $httpBackend
+            .whenJSONP(API_URL + '/amenities/7964?callback=JSON_CALLBACK')
             .respond(response);
+
+          $httpBackend
+            .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
+            .respond({});
 
           // For everything else, don't mock
           $httpBackend.whenGET(/^\w+.*/).passThrough();
@@ -27,7 +38,15 @@ describe('Locations: Amenity', function () {
     beforeEach(function () {
       browser.addMockModule('httpBackendMock', httpBackendMock,
           APIresponse.good);
-      browser.get('/#/amenities/id/7950');
+      browser.get('/amenities/id/7964');
+    });
+
+    it('should have a "Reserve a PC" link', function () {
+      expect(amenitiesPage.action_link.getText()).toEqual('Reserve a PC');
+    });
+
+    it('should have a "Learn more" link', function () {
+      expect(amenitiesPage.learn_more.getText()).toEqual('Learn more');
     });
 
     it('should display the name of the service', function () {
@@ -36,7 +55,8 @@ describe('Locations: Amenity', function () {
     });
 
     it('should display a list of locations', function () {
-      expect(amenitiesPage.locations.count()).toBe(13);
+      // More in the real response but only 5 in the mock response.
+      expect(amenitiesPage.locations.count()).toBe(5);
     });
   });
 
@@ -52,14 +72,12 @@ describe('Locations: Amenity', function () {
     });
   });
 
-  describe('Bad API Call', function () {
-    beforeEach(function () {
-      browser.addMockModule('httpBackendMock', httpBackendMock,
-          APIresponse.bad);
-      browser.get('/#/amenities/id/7950');
-      browser.waitForAngular();
-    });
-
-    // TODO: Write tests
-  });
+  // describe('Bad API Call', function () {
+  //   beforeEach(function () {
+  //     browser.addMockModule('httpBackendMock', httpBackendMock,
+  //         APIresponse.bad);
+  //     browser.get('/#/amenities/id/7950');
+  //     browser.waitForAngular();
+  //   });
+  // });
 });

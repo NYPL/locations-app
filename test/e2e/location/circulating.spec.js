@@ -8,11 +8,23 @@ describe('Circulating branch page', function () {
   var locationPage = require('./location.po.js'),
     APIresponse = require('../APImocks/circulating.js'),
     httpBackendMock = function (response) {
+      var API_URL = 'http://locations-api-alpha.herokuapp.com';
+
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
-          $httpBackend.when('GET', 'http://evening-mesa-7447-160' +
-              '.herokuapp.com/locations/grand-central')
+          $httpBackend.whenGET('/languages/en.json').passThrough();
+          $httpBackend
+            .whenGET('/config')
+            .respond({ config: { api_root: API_URL } });
+
+          $httpBackend
+            .whenJSONP(API_URL +
+              '/locations/grand-central?callback=JSON_CALLBACK')
             .respond(response);
+
+          $httpBackend
+            .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
+            .respond({});
 
           // For everything else, don't mock
           $httpBackend.whenGET(/^\w+.*/).passThrough();
@@ -25,7 +37,7 @@ describe('Circulating branch page', function () {
     // Pass the good JSON from the API call.
     browser.addMockModule('httpBackendMock', httpBackendMock,
       APIresponse.good);
-    browser.get('/#/grand-central');
+    browser.get('/grand-central');
     browser.waitForAngular();
   });
 
@@ -60,9 +72,26 @@ describe('Circulating branch page', function () {
         .toEqual('Library Manager: Genoveve Stowell');
     });
 
-    it('should display five social media icons', function () {
+    it('should be Fully Accessible', function () {
+      expect(locationPage.accessibility.getText()).toEqual('Fully Accessible');
+      expect(locationPage.accessibility.getAttribute('class'))
+        .toContain('accessible');
+    });
+
+    it('should have a Google Maps Directions link', function () {
+      expect(locationPage.directions_link.getAttribute('href'))
+        .toMatch(/google.com\/maps/);
+    });
+
+    it('should have an \'On Our Shelves Now\' link', function () {
+      expect(locationPage.catalog_link.getAttribute('href'))
+        .toEqual('http://nypl.bibliocommons.com/search?custom_query=' +
+          'available%3A%22Grand+Central%22&circ=CIRC|NON%20CIRC');
+    });
+
+    it('should display four social media icons', function () {
       expect(locationPage.social_media_container.isPresent()).toBe(true);
-      expect(locationPage.social_media.count()).toBe(5);
+      expect(locationPage.social_media.count()).toBe(4);
     });
 
     it('should display hours for today', function () {
@@ -102,6 +131,11 @@ describe('Circulating branch page', function () {
       expect(locationPage.events.count()).toBe(6);
     });
 
+    it('should have a \'See more events\' link', function () {
+      expect(locationPage.events_more_link.getAttribute('href'))
+        .toEqual('http://www.nypl.org/events/calendar?location=871');
+    });
+
     describe('individual event', function () {
       describe('Google calendar link', function () {
         it('should link to Google', function () {
@@ -111,7 +145,7 @@ describe('Circulating branch page', function () {
 
         it('should pass the correct date', function () {
           expect(locationPage.google.get(0).getAttribute('href'))
-            .toMatch(/dates\=20140814T200000Z\/20140814T200000Z/);
+            .toMatch(/dates\=20141017T193000Z\/20141017T213000Z/);
         });
       });
 
@@ -123,7 +157,7 @@ describe('Circulating branch page', function () {
 
         it('should pass the correct start time', function () {
           expect(locationPage.yahoo.get(0).getAttribute('href'))
-            .toMatch(/ST\=20140814T200000Z/);
+            .toMatch(/ST\=20141017T193000Z/);
         });
       });
     });
@@ -151,6 +185,10 @@ describe('Circulating branch page', function () {
     it('should display six blogs', function () {
       expect(locationPage.blogs.count()).toBe(6);
     });
+    it('should display the \'See more blogs\' link', function () {
+      expect(locationPage.blogs_more_link.getAttribute('href'))
+        .toEqual('http://www.nypl.org/blog/library/871');
+    });
   });
 
   describe('bottom links section', function () {
@@ -164,7 +202,7 @@ describe('Circulating branch page', function () {
   describe('specific scenarios', function () {
     beforeEach(function () {
       browser.addMockModule('httpBackendMock', httpBackendMock);
-      browser.get('/#/grand-central');
+      browser.get('/grand-central');
       browser.waitForAngular();
     });
 

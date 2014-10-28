@@ -13,13 +13,16 @@
 		margin-bottom: 24px;
 	}
 
+	#container__about {
+		clear: both;
+	}
+
 	.location-alerts {
 		background-color: #ffcdcd;
 		border: 1px solid #eee;
 		border-radius: 2px;
-		padding: .5rem;
+		padding: 1rem 2rem;
 		margin: .5rem 0;
-		text-align: center;
 
 		p {
 			max-width: 100%;
@@ -35,8 +38,12 @@
 
 		@include breakpoint($min, $desktop) {
 			display: inline-block;
-			height: 245px; // constrain proportions until proper images exist
-			overflow: hidden;
+		}
+
+		img {
+			@include breakpoint($min, $desktop) {
+				max-height: 275px;
+			}
 		}
 	}
 
@@ -57,8 +64,8 @@
 			}
 
 			.hours-today {
-				font-size: 14px;
-				font-size: 1.4rem;
+				font-size: 13px;
+				font-size: 1.3rem;
 
 				@include breakpoint($min, $post-palm) {
 					font-size: 16px;
@@ -66,7 +73,7 @@
 				}		
 
 				span {
-					vertical-align: -2px;
+					vertical-align: 1px;
 				}
 			}
 		}
@@ -75,6 +82,7 @@
 			font-style: italic;
 			padding: 0 10px 3px 0;
 		}
+		
 		.time {
 			padding: 0px;
 		}
@@ -159,24 +167,32 @@
 				text-decoration: none;
 			}
 		}
-
 	}
 
 	// Divisions section 
 	#container__divisions {
-		img {
-			width: 100px;
-			height: 100px;		
-		}
-		
-		h4 {
-			margin-bottom: .5rem;
+		clear: both;
+		.division-wrapper {
+			margin-bottom: 3em;
+			
+			img {
+				height: 250px;		
+			}
+			
+			h4 {
+				margin-bottom: .5rem;
+			}
+
+			p {
+				max-width: 100%;
+				margin: .5em 0;
+			}
 		}
 	}
 
 	// Events section
 	#container__events {
-
+		clear: both;
 		.event__title {
 			margin-bottom: .05em;
 		}
@@ -199,18 +215,32 @@
 		h3 {
 			margin-bottom: .5em;
 		}
+
+		// Hack to remove white-space on inline elements
+		.blog_author {
+			font-size: 0;
+
+			span {
+				font-size: initial;
+			}
+		}
 	}
 
 	#container__exhibitions {
+		clear: both;
 		.exhibition__title {
 			margin-bottom: .05em;
 		}
 	}
 
+	#container__features {
+		clear: both;
+	}
+
 	// Highlighted Amenities section
 	#container__top_amenities {
 
-		@include breakpoint($min, $post-palm) {
+		@include breakpoint($min, $pre-tablet) {
 			margin-top: 20px;
 		}
 
@@ -218,47 +248,49 @@
 			background-color: transparent;
 			position: relative;
 
+			.amenities-title {
+				font-weight: bold;
+				margin-bottom: 5px;
+				@include breakpoint($min, $pre-tablet) {
+					margin-bottom: 0;
+					display: table-cell;
+					width: 167px;
+					vertical-align: top;
+				}
+			}
+
 			ul {
+				margin: 0 2px;
+				padding: 0;
+
+				@include breakpoint($min, $pre-tablet) {
+					display: table-cell;
+					vertical-align: top;
+				}
 
 				li {
 					display: block;
-					margin-bottom: .35em;
+					margin-bottom: .5em;
 
-					&.title {
-						font-weight: bold;
-					}
-
-					@include breakpoint($min, $post-palm) {
+					@include breakpoint($min, $pre-tablet) {
 						margin-bottom: 0;
 						margin-right: .35em;
-						display: inline;
-					}
-
-					span {
-						vertical-align: -2px;
+						display: inline-table;
 					}
 				}
 			}
 
-			.read-more {
-				display: inline-block !important;
-				margin: .35em 0;
-
-				@include breakpoint($min, $post-palm) {
-					margin: 0;
-					position: absolute;
-					right: 7px;
-					top: 7px;
-					padding: 1px 6px;
+			.amenities-all-link {
+				margin-top: 10px;
+				@include breakpoint($min, $pre-tablet) {
+					margin-top: 0;
+					width: 145px;
+					display: table-cell;
+					vertical-align: top;
+					text-align: right;
 				}
 			}
 		}
-	}
-
-	// About section
-	#location-secondary-img{
-		height: 300px; // constrain proportions until proper images exist
-		overflow: hidden; // constrain proportions until proper images exist
 	}
 
 	#plan-your-visit {
@@ -266,6 +298,10 @@
 		margin-top: 1.25em;
 		@include breakpoint($min, $post-palm) {
 			margin-top: inherit;
+		}
+
+		ul {
+			margin-left: 25px;
 		}
 	}
 

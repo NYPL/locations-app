@@ -10,7 +10,50 @@
 
 	@include breakpoint($min, $desktop) {
 		display: inline-block;
-		height: 245px; // constrain proportions until proper images exist
-		overflow: hidden;
+	}
+	img {
+		@include breakpoint($min, $desktop) {
+			max-height: 275px;
+		}
+	}
+}
+
+#container__div_address {
+	.div_name {
+		margin-left: .55em;
+	}
+
+	.div_loc_info {
+		margin-left: .55em;
+
+		.room {
+			margin-left: -5px;
+		}
+	}
+
+	#accessibility__container {
+		margin: .5em 0 .5em .55em;
+	}
+}
+
+
+.container__sub_divisions {
+	clear: both;
+	margin-top: 24px;
+	.subdivision-wrapper {
+		margin-bottom: 3em;
+		
+		img {
+			height: 250px;
+		}
+		
+		h4 {
+			margin-bottom: .5rem;
+		}
+
+		p {
+			max-width: 100%;
+			margin: .5em 0;
+		}
 	}
 }

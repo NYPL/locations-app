@@ -3,7 +3,8 @@
 
 (function (window, angular, undefined) {
   'use strict';
-
+ 
+  /** @namespace $Crumb */
   function $Crumb() {
     var options = {
       primaryState: {
@@ -16,14 +17,24 @@
       }
     };
 
-    // Extend options from provider
+    /** @function $Crumb.setOptions
+     * @param {obj} options object containing state data.
+     * @returns angular.extend() with set opts
+     * @description Extends the destination object dst 
+     *  by copying all of the properties from the src object(s) to dst
+     */
     this.setOptions = function (opts) {
       angular.extend(options, opts);
     };
 
+    /** @function $Crumb.$get
+     * @description Provider Recipe - Exposes an API for application-wide
+     *  configuration that must be made before the application starts. 
+     *  Used for re-usable services.
+     */
     this.$get = ['$state', '$stateParams',
       function ($state, $stateParams) {
-        // Add the state in the chain if not already in and if not abstract
+        // Add the state in the chain, if found simply return
         var addStateToChain = function (chain, state) {
           var i, len;
           for (i = 0, len = chain.length; i < len; i += 1) {
@@ -31,7 +42,7 @@
               return;
             }
           }
-          // Check for abstract state
+          // Does not support abstract states
           if (!state.abstract) {
             if (state.customUrl) {
               state.url = $state.href(state.name, $stateParams || {});
@@ -41,7 +52,7 @@
         };
 
         return {
-          // Adds provider custom states to chain
+          // Adds provider custom states to chain (global scope)
           getConfigChain: function () {
             var chain = [];
 
@@ -57,6 +68,7 @@
       }];
   }
 
+  /** @namespace nyplBreadcrumbs */
   function nyplBreadcrumbs($interpolate, $state, $crumb) {
     return {
       restrict: 'E',
@@ -67,13 +79,13 @@
       link: function (scope) {
         scope.breadcrumbs = [];
 
-        /**
-         * Given a string of the type 'object.property.property', 
+        /** @function nyplBreadcrumbs.getObjectValue
+         * @param {string} set string variable in directive attribute
+         * @param {obj} current state context object
+         * @returns {string}
+         * @description Given a string of the type 'object.property.property', 
          * traverse the given context (eg the current $state object) 
          * and return the value found at that path.
-         *
-         * @param objectPath
-         * @param context
          * 
          */
         function getObjectValue(objectPath, context) {
@@ -84,21 +96,19 @@
           for (i = 0; i < propertyArray.length; i += 1) {
             if (angular.isDefined(propertyReference[propertyArray[i]])) {
               propertyReference = propertyReference[propertyArray[i]];
-            } else {
-              // default to the state's name
-              return undefined;
             }
           }
           return propertyReference;
         }
 
-        /**
-        * Get the state to put in the breadcrumbs array, 
+        /** @function nyplBreadcrumbs.getWorkingState
+        * @param {obj}
+        * @returns {obj, boolean}
+        * @description Get the state to put in the breadcrumbs array, 
         * taking into account that if the current state is abstract,
         * we need to either substitute it with the state named in the
         * `scope.abstractProxyProperty` property, or set it to `false`
         * which means this breadcrumb level will be skipped entirely.
-        * @param currentState
         */
         function getWorkingState(currentState) {
           var proxyStateName,
@@ -119,13 +129,13 @@
           return workingState;
         }
 
-        /**
-        * Resolve the name of the BreadCrumb of the specified state. 
-        * Take the property specified by the `displayname-property`
-        * attribute and look up the corresponding property 
-        * on the state's config object. 
-        * The specified string can be interpolated
-        * @param currentState
+        /** @function nyplBreadcrumbs.getCrumbName
+        * @param {obj}
+        * @returns {string, boolean}
+        * @description Resolve the name of the Breadcrumb of the specified state. 
+        *  Take the property specified by the `displayname-property`
+        *  attribute and look up the corresponding property 
+        *  on the state's config object. The specified string can be interpolated
         */
         function getCrumbName(currentState) {
           var interpolationContext,
@@ -139,131 +149,233 @@
           }
 
           propertyReference = getObjectValue(scope.crumbName, currentState);
-
+          // use the $interpolate service to handle any bindings
+          interpolationContext =  (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState;
+            
           if (propertyReference === false) {
             return false;
           }
           else if (typeof propertyReference === 'undefined') {
             return currentState.name;
-          } else {
-            // use the $interpolate service to handle any bindings
-            interpolationContext =  (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState;
+          }
+
+          if (interpolationContext) {
             displayName = $interpolate(propertyReference)(interpolationContext);
             return displayName;
           }
         }
 
-        /**
-         * Resolve the Parent State given from the parentState property.
-         * Extract parentState names and state ui-href properties and assign to object
-         * @param currentState
+        /** @function nyplBreadcrumbs.getParentState
+         * @param {obj}
+         * @returns {obj, null}
+         * @description Resolve the Parent State given from the parentState property.
+         *  Extract parentState names and state ui-href properties and assign to object
+         *  Utilize the currentState.parentSetting to check for validity in config
          */
         function getParentState(currentState) {
           var currState = currentState,
             parentStateSetting = currState.data.parentState,
             parentStateRoute,
             parentStateName,
+            parentDivisionName,
+            parentDivisionRoute,
             parentStateObj = {},
             context = (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState;
 
           if (typeof context === 'object' && parentStateSetting) {
             if (!context.$stateParams) {
-              return null;
+              return undefined;
             }
-            else {
-              parentStateName  = getParentName(currentState);
-              parentStateRoute = getParentRoute(context, parentStateSetting);
-              
-              if (parentStateName && parentStateRoute ) {
-                parentStateObj = {
-                  displayName: parentStateName,
-                  route: parentStateRoute
-                }
-                return parentStateObj;
-              }
-              else {
-                console.log('Parent state name or route is not defined');
-                return null;
+            // Extract Parent-state properties
+            parentStateName  = getParentName(currentState);
+            parentStateRoute = getParentRoute(context, parentStateSetting);   
+
+            // Extract parent division if available
+            parentDivisionName  = getParentDivisionName(context); 
+            parentDivisionRoute = getParentDivisionRoute(context);
+
+            if (parentStateName && parentStateRoute) {
+              // Create parent object
+              parentStateObj = {
+                displayName: parentStateName,
+                route: parentStateRoute
               }
             }
-          }
-          else {
+
+            if (parentDivisionName && parentDivisionRoute) {
+              parentStateObj.division = {
+                name: parentDivisionName,
+                route: parentDivisionRoute
+              }
+            }
+
+            if (parentStateObj) {
+              return parentStateObj;
+            }
             return undefined;
           }
+          return undefined;
         }
 
+        function getParentDivisionRoute(context) {
+          var currentContext = context,
+            divisionState = 'division',
+            parentRoute,
+            parentData;
+
+          if (typeof currentContext === 'object') {
+            // Loop through context and find parent data
+            Object.keys(currentContext).forEach(function(key) {
+              if (key !== '$stateParams') {
+                parentData = currentContext[key];
+              }
+            });
+
+            // Get the slug for the parent route
+            if (parentData._embedded !== undefined) {
+              if (parentData._embedded.parent) {
+                if (parentData._embedded.parent.slug) {
+                  parentRoute = parentData._embedded.parent.slug;
+                  return divisionState + 
+                          '({ ' + "\"" + divisionState +
+                           "\"" + ':' + "\"" + parentRoute +
+                            "\"" + '})';
+                }
+              }
+            }
+            return undefined;
+          }
+          return undefined;
+        }
+
+        function getParentDivisionName(context) {
+          var currentContext = context,
+            parentName,
+            parentData;
+
+          if (typeof currentContext === 'object') {
+            // Loop through context and find parent data
+            Object.keys(currentContext).forEach(function(key) {
+              if (key !== '$stateParams') {
+                parentData = currentContext[key];
+              }
+            });
+
+            // Get the slug for the parent route
+            if (parentData._embedded !== undefined) {
+              if (parentData._embedded.parent) {
+                if (parentData._embedded.parent.name) {
+                  parentName = parentData._embedded.parent.name;
+                  return parentName;
+                }
+              }
+            }
+            return undefined;
+          }
+          return undefined;
+        }
+
+        /** @function nyplBreadcrumbs.getParentRoute
+         * @param {obj}
+         * @param {string}
+         * @returns {obj, undefined}
+         * @description Resolve the Parent route given from the parentState property.
+         *  Traverse the current state context and find matches to the parent property
+         */
         function getParentRoute(context, parentStateSetting) {
           var currentContext = context,
             stateSetting = parentStateSetting,
             parentRoute,
-            parentNameMatched = false;
+            parentData;
 
           if (typeof currentContext === 'object' && stateSetting) {
+            // Loop through context and find parent data
             Object.keys(currentContext).forEach(function(key) {
               if (key !== '$stateParams') {
-                Object.keys(currentContext[key]).forEach(function(key){
-                  if (key.indexOf(stateSetting) !== -1) {
-                    parentNameMatched = true;
-                  }
-                });
-                if (currentContext[key].location_slug && parentNameMatched) {
-                  parentRoute = currentContext[key].location_slug;
-                }
-                else if (currentContext[key].slug && parentNameMatched) {
-                  parentRoute = currentContext[key].slug;
-                }
+                parentData = currentContext[key];
               }
             });
+
+            // Get the slug for the parent route
+            if (parentData.amenity) {
+              if (parentData.amenity.id) {
+                parentRoute = parentData.amenity.id;
+              }
+            }
+            else if (parentData._embedded) {
+              if (parentData._embedded.location) {
+                if (parentData._embedded.location.slug) {
+                  parentRoute = parentData._embedded.location.slug;
+                }
+              }
+            }
+
             if (parentRoute) {
-              return stateSetting + '({ ' + "\"" + stateSetting + "\"" + ':' + "\"" + parentRoute + "\"" + '})';
+              return stateSetting + '({ ' + "\"" +
+                     stateSetting + "\"" + ':' + "\"" +
+                      parentRoute + "\"" + '})';
             }
-            else {
-              return stateSetting;
-            }
+            return stateSetting;
           }
-          else {
-            return undefined;
-          }
+          return undefined;
         }
 
+        /** @function nyplBreadcrumbs.getParentName
+         * @param {obj}
+         * @returns {string}
+         * @description Resolve the Parent name from the current state
+         */
         function getParentName(currentState) {
           var parentStateSetting = currentState.data.parentState,
             parentStateData = $state.get(parentStateSetting),
             context = (typeof currentState.locals !== 'undefined') ? currentState.locals.globals : currentState,
-            parentStateName;
+            parentStateName,
+            parentData;
 
           if (parentStateData) {
             parentStateName = $interpolate(parentStateData.data.crumbName)(context);
             if (parentStateName) {
               return parentStateName;
             }
-            // Not within the context interpolation, loop though obj
-            else if( typeof context === 'object') {
+            // Not within the context interpolation, loop though object
+            else if ( typeof context === 'object') {
+              // Loop through context and find parent data
               Object.keys(context).forEach(function(key) {
-                if(key !== '$stateParams') {
-                  if (context[key].location_name) {
-                    parentStateName = context[key].location_name;
-                  }
-                  else if (context[key].name) {
-                    parentStateName = context[key].name;
-                  }
+                if (key !== '$stateParams') {
+                  parentData = context[key];
                 }
               });
+              
 
-              return parentStateName; 
+              if (parentData.amenity) {
+                if (parentData.amenity.name) {
+                  parentStateName = parentData.amenity.name;
+                }
+              }
+              else if (parentData._embedded) {
+                if (parentData._embedded.location) {
+                  if (parentData._embedded.location.name) {
+                    parentStateName = parentData._embedded.location.name;
+                  }
+                }
+              }
+
+              if (parentStateName) {
+                return parentStateName;
+              }
+              return parentStateSetting;
             }
           }
-          else {
-            return undefined;
-          }
+          return undefined;
         }
 
-        /**
-         * Check whether the current `state` has already appeared in the current breadcrumbs array. This check is necessary
-         * when using abstract states that might specify a proxy that is already there in the breadcrumbs.
-         * @param state
-         * @param breadcrumbs
-         * @returns true or false
+        /** @function nyplBreadcrumbs.stateAlreadyInBreadcrumbs
+         * @param {obj}
+         * @param {obj}
+         * @returns {boolean}
+         * @description Check whether the current `state` has already appeared in the current
+         *  breadcrumbs object. This check is necessary when using abstract states that might 
+         *  specify a proxy that is already there in the breadcrumbs.
          */
         function stateAlreadyInBreadcrumbs(state, breadcrumbs) {
           var i,
@@ -276,8 +388,9 @@
           return alreadyUsed;
         }
 
-        /**
-        * Start with the current state and traverse up the path to build the
+        /** @function nyplBreadcrumbs.initCrumbs
+        * @returns {array}
+        * @description Start with the current state and traverse up the path to build the
         * array of breadcrumbs that can be used in an ng-repeat in the template.
         */
         function initCrumbs() {
@@ -301,10 +414,20 @@
           // Extract parent state if available
           parentState = getParentState(currentState);
           if (parentState) {
-            breadcrumbs.push({
-              displayName: parentState.displayName,
-              route: parentState.route
-            });
+            // Parent data
+            if (parentState.displayName && parentState.route) {
+              breadcrumbs.push({
+                displayName: parentState.displayName,
+                route: parentState.route
+              });
+            }
+            // Division data
+            if (parentState.division) {
+              breadcrumbs.push({
+                displayName: parentState.division.name,
+                route: parentState.division.route
+              });
+            }
           }
 
           // If the current-state is active and not empty

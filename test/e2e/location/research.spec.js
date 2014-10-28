@@ -8,11 +8,22 @@ describe('Research branch page', function () {
   var locationPage = require('./location.po.js'),
     APIresponse = require('../APImocks/research.js'),
     httpBackendMock = function (response) {
+      var API_URL = 'http://locations-api-alpha.herokuapp.com';
+
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
-          $httpBackend.when('GET', 'http://evening-mesa-7447-160' +
-              '.herokuapp.com/locations/schomburg')
+          $httpBackend.whenGET('/languages/en.json').passThrough();
+          $httpBackend
+            .whenGET('/config')
+            .respond({ config: { api_root: API_URL } });
+
+          $httpBackend
+            .whenJSONP(API_URL + '/locations/schomburg?callback=JSON_CALLBACK')
             .respond(response);
+
+          $httpBackend
+            .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
+            .respond({});
 
           // For everything else, don't mock
           $httpBackend.whenGET(/^\w+.*/).passThrough();
@@ -25,11 +36,15 @@ describe('Research branch page', function () {
     // Pass the good JSON from the API call.
     browser.addMockModule('httpBackendMock', httpBackendMock,
       APIresponse.good);
-    browser.get('/#/schomburg');
+    browser.get('/schomburg');
     browser.waitForAngular();
   });
 
   describe('basic info section', function () {
+    it('should display an alert message', function () {
+      expect(locationPage.alert.isPresent()).toBe(true);
+    });
+
     it('should display the name', function () {
       expect(locationPage.name.getText())
         .toEqual('Schomburg Center for Research in Black Culture');
@@ -60,9 +75,25 @@ describe('Research branch page', function () {
       expect(locationPage.manager.isPresent()).toBe(false);
     });
 
-    it('should display six social media icons', function () {
+    it('should be Partially Accessible', function () {
+      expect(locationPage.accessibility.getText())
+        .toEqual('Partially Accessible');
+      expect(locationPage.accessibility.getAttribute('class'))
+        .toContain('accessible');
+    });
+
+    it('should have a Google Maps Directions link', function () {
+      expect(locationPage.directions_link.getAttribute('href'))
+        .toMatch(/google.com\/maps/);
+    });
+
+    it('should not have an \'On Our Shelves Now\' link', function () {
+      expect(locationPage.catalog_link.isPresent()).toBe(false);
+    });
+
+    it('should display five social media icons', function () {
       expect(locationPage.social_media_container.isPresent()).toBe(true);
-      expect(locationPage.social_media.count()).toBe(6);
+      expect(locationPage.social_media.count()).toBe(5);
     });
 
     it('should display hours for today', function () {
@@ -96,13 +127,28 @@ describe('Research branch page', function () {
     });
   });
 
-  describe('events section', function () {
-    it('should be not present', function () {
-      expect(locationPage.events_container.isPresent()).toBe(false);
+  describe('featured section', function () {
+    it('should be present', function () {
+      expect(locationPage.featured_container.isPresent()).toBe(true);
     });
 
-    it('should not display any event', function () {
-      expect(locationPage.events.count()).toBe(0);
+    it('should contain five featured content', function () {
+      expect(locationPage.features.count()).toBe(5);
+    });
+  });
+
+  describe('events section', function () {
+    it('should be present', function () {
+      expect(locationPage.events_container.isPresent()).toBe(true);
+    });
+
+    it('should display six events', function () {
+      expect(locationPage.events.count()).toBe(6);
+    });
+
+    it('should have a \'See more events\' link', function () {
+      expect(locationPage.events_more_link.getAttribute('href'))
+        .toEqual('http://www.nypl.org/events/calendar?location=64');
     });
 
     // describe('individual event', function () {
@@ -144,6 +190,11 @@ describe('Research branch page', function () {
     it('should have a "Plan Your Visit" section', function () {
       expect(locationPage.plan_your_visit.isPresent()).toBe(true);
     });
+
+    it('should have an "Email a Librarian" link', function () {
+      expect(locationPage.email_librarian.getAttribute('href'))
+        .toEqual('http://www.nypl.org/locations/tid/64/node/126585');
+    });
   });
 
   describe('blog section', function () {
@@ -154,11 +205,20 @@ describe('Research branch page', function () {
     it('should display six blogs', function () {
       expect(locationPage.blogs.count()).toBe(6);
     });
+
+    it('should display a \'See more blogs\' link', function () {
+      expect(locationPage.blogs_more_link.getAttribute('href'))
+        .toEqual('http://www.nypl.org/blog/library/64');
+    });
   });
 
   describe('exhibitions section', function () {
-    it('should not display any exhibitions', function () {
-      expect(locationPage.exhibitions.count()).toBe(0);
+    it('should be present', function () {
+      expect(locationPage.exhibitions_container.isPresent()).toBe(true);
+    });
+
+    it('should display five exhibitions', function () {
+      expect(locationPage.exhibitions.count()).toBe(5);
     });
   });
 

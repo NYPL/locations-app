@@ -21,6 +21,9 @@ var LandingPage = function () {
   // Results list
   this.locations = element.all(by.repeater('location in locations'));
 
+  // Autofill results
+  this.autofill = element.all(by.repeater('item in filtered'));
+
   // Show only research button
   this.onlyResearch = element(by.id('onlyresearch'));
 
@@ -57,6 +60,10 @@ var LandingPage = function () {
 
   this.nthLocName = function (n) {
     return this.nthLoc(n).element(by.css('.p-org')).getText();
+  };
+
+  this.nthLocLink = function (n) {
+    return this.nthLoc(n).element(by.css('.p-org a'));
   };
 
   this.nthLocDist = function (n) {

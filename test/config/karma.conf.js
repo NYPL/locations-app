@@ -12,7 +12,6 @@ module.exports = function (config) {
       'public/bower_components/angular/angular.js',
       'public/bower_components/angular-mocks/*.js',
       'public/bower_components/angular-sanitize/*.js',
-      // 'public/bower_components/angular-route/*.js',
       'public/bower_components/angular-ui-router/release/*.js',
       'public/scripts/**/*.js',
       'public/scripts/directives/templates/*.html',
@@ -26,8 +25,6 @@ module.exports = function (config) {
       'public/bower_components/angular-translate-loader-static-files/' +
         'angular-translate-loader-static-files.min.js',
       'public/bower_components/angular-animate/angular-animate.js'
-      // {pattern: 'public/languages/*.json', 
-      //     watched: true, served: true, included: false}
     ],
 
     exclude : [
@@ -49,8 +46,11 @@ module.exports = function (config) {
       'karma-firefox-launcher',
       'karma-script-launcher',
       'karma-jasmine',
-      'karma-ng-html2js-preprocessor'
+      'karma-ng-html2js-preprocessor',
+      'karma-coverage'
     ],
+
+    reporters: ['progress', 'coverage'],
 
     junitReporter : {
       outputFile: 'test_out/unit.xml',
@@ -59,15 +59,17 @@ module.exports = function (config) {
 
     preprocessors : {
       'public/scripts/directives/templates/*.html': ['ng-html2js'],
-      'public/scripts/components/**/*.html': ['ng-html2js']
+      'public/scripts/components/**/*.html': ['ng-html2js'],
+      'public/scripts/**/*.js': ['coverage']
+    },
+    
+    coverageReporter: {
+      type: 'html',
+      dir: 'test/coverage/'
     },
 
     ngHtml2JsPreprocessor: {
       stripPrefix: 'public/',
-      // cacheIdFromPath: function (filepath) {
-      //   return filepath.substr(filepath.indexOf('locations-prototype')+8);
-      // },
-
       moduleName: 'directiveTemplates'
     }
   });
