@@ -51,10 +51,10 @@ class Locinator < Sinatra::Base
     haml :amenities
   end
   
-  get %r{/division/(.+)$}, :spider => true do
+  get %r{/divisions/(.+/)?(.+)$}, :spider => true do
     api = Lionactor::Client.new
-    @data = api.division(params['captures'].first)
-    haml :division
+    @div = api.division(params['captures'][1])
+    erb :seo_division
   end
 
   get %r{/(.+)$}, :spider => true do
