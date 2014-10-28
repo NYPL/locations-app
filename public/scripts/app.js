@@ -103,6 +103,18 @@ nypl_locations.config([
                 });
         }
 
+        function LoadDivisions(config, nyplLocationsService) {
+            return nyplLocationsService
+                .allDivisions()
+                .then(function (data) {
+                    console.log(data.divisions);
+                    return data.divisions;
+                })
+                .catch(function (err) {
+                    throw err;
+                });
+        }
+
         function Amenities($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
                 .amenities($stateParams.amenity)
@@ -198,7 +210,11 @@ nypl_locations.config([
                 url: '/research-collections',
                 templateUrl: 'views/research_collections.html',
                 controller: 'CollectionsCtrl',
-                label: 'Collections'
+                label: 'Collections',
+                resolve: {
+                    config: getConfig,
+                    divisions: LoadDivisions
+                }
             })
             .state('amenities', {
                 url: '/amenities',

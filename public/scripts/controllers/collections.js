@@ -7,49 +7,39 @@
     function CollectionsCtrl(
         $scope,
         $rootScope,
+        config,
+        divisions,
         nyplLocationsService,
         nyplUtility
     ) {
         'use strict';
 
-        var divisions,
-            loadDivisions = function () {
-                return nyplLocationsService
-                    .allDivisions()
-                    .then(function (data) {
-                        divisions = data.divisions;
-
-                        _.each(divisions, function (division) {
-                            division.medium = [];
-                            var medium = {
-                                rarebooks: {id: 0, divs: ['RBK', 'SCM', 'BRG', 'CPS']},
-                                manuscripts: {id: 2, divs: ['MSS', 'SCM', 'SPN', 'BRG', 'CPS', 'THE', 'TOFT', 'DAN', 'MUS']},
-                                archives: {id: 3, divs: ['MSS', 'SCM', 'SPN', 'BRG', 'THE', 'TOFT', 'DAN', 'MUS']},
-                                map: {id: 4, divs: ['MAP']},
-                                scores: {id: 5, divs: ['MUS']},
-                                filmvideo: {id: 6, divs: ['TOFT', 'MSS', 'SCL', 'DAN']},
-                                soundrecordings: {id: 7, divs: ['RHA', 'SCL']},
-                                photographs: {id: 8, divs: ['PHG', 'SCL', 'PRN', 'THE', 'TOFT', 'MSS']},
-                                prints: {id: 9, divs: ['PRN', 'SCL']},
-                                newspapers: {id: 10, divs: ['GRD']},
-                                artistsbook: {id: 11, divs: ['SPN']},
-                                artartifacts: {id: 12, divs: ['SCF']}
-                            };
-
-                            _.each(medium, function (m) {
-                                if (_.contains(m.divs, division.id)) {
-                                    division.medium.push(m.id);
-                                }
-                            });
-                        });
-
-                        $scope.divisions = divisions;
-                        console.log(divisions);
-                    })
-                    .catch(function (error) {
-                        $location.path('/404');
-                    });
+        _.each(divisions, function (division) {
+            division.medium = [];
+            var medium = {
+                rarebooks: {id: 0, divs: ['RBK', 'SCM', 'BRG', 'CPS']},
+                manuscripts: {id: 2, divs: ['MSS', 'SCM', 'SPN', 'BRG', 'CPS', 'THE', 'TOFT', 'DAN', 'MUS']},
+                archives: {id: 3, divs: ['MSS', 'SCM', 'SPN', 'BRG', 'THE', 'TOFT', 'DAN', 'MUS']},
+                map: {id: 4, divs: ['MAP']},
+                scores: {id: 5, divs: ['MUS']},
+                filmvideo: {id: 6, divs: ['TOFT', 'MSS', 'SCL', 'DAN']},
+                soundrecordings: {id: 7, divs: ['RHA', 'SCL']},
+                photographs: {id: 8, divs: ['PHG', 'SCL', 'PRN', 'THE', 'TOFT', 'MSS']},
+                prints: {id: 9, divs: ['PRN', 'SCL']},
+                newspapers: {id: 10, divs: ['GRD']},
+                artistsbook: {id: 11, divs: ['SPN']},
+                artartifacts: {id: 12, divs: ['SCF']}
             };
+
+            _.each(medium, function (m) {
+                if (_.contains(m.divs, division.id)) {
+                    division.medium.push(m.id);
+                }
+            });
+        });
+
+        $scope.divisions = divisions;
+
 
         $rootScope.title = "Research Collections";
         $scope.hoursToday = nyplUtility.hoursToday;
@@ -137,7 +127,6 @@
 
         ];
 
-        loadDivisions();
     }
 
     angular

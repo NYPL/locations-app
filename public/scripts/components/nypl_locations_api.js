@@ -117,6 +117,21 @@
             return defer.promise;
         };
 
+        locationsApi.allDivisions = function () {
+            var defer = $q.defer();
+
+            $http.jsonp(
+                api + '/divisions/?callback=JSON_CALLBACK', {cache: true}
+            )
+            .success(function (data) {
+                defer.resolve(data);
+            })
+            .error(function (data, status) {
+                defer.reject(apiError + ': division');
+            });
+            return defer.promise;
+        };
+
         /**
          * @ngdoc function
          * @name singleDivision
