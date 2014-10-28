@@ -17,10 +17,12 @@
         <meta itemprop="longitude" content="<%= @location.geolocation['coordinates'][0] %>" />
         <meta itemprop="latitude" content="<%= @location.geolocation['coordinates'][1] %>" />
       </div>
+      <% if @location.type != "research" %>
       <div itemprop="contactPoint" itemscope itemtype="http://schema.org/ContactPoint">
         <span itemprop="contactType">Library Manager</span>
         <span itemprop="name"><%= @location.contacts['manager'] %></span>
       </div>
+      <% end %>
 
       <h2>Hours</h2>
       <table>
