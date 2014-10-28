@@ -1,15 +1,15 @@
 <h2>Blogs</h2>
 <ul>
 <% locals[:blogs].each do |blog| %>
-  <li>
-    <h3><a href="<%= blog['_links']['self']['href'] %>"><%= blog['title'] %></a></h3>
+  <li itemscope itemtype="http://schema.org/BlogPosting">
+    <h3 itemprop="name"><a href="<%= blog['_links']['self']['href'] %>"><%= blog['title'] %></a></h3>
     <div>
-      <%= blog['author']['name'] %>
+      <span itemprop="author"><%= blog['author']['name'] %></span>
       <%= blog['author']['position'] %>
       <%= blog['author']['location'] %> 
-      <%= blog['pubdate'] %> 
+      <span itemprop="dateCreated"><%= blog['pubdate'] %></span>
     </div>
-    <div><%= blog['body'] %></div>
+    <div itemprop="articleBody"><%= blog['body'] %></div>
   </li>
 <% end %>
 </ul>
