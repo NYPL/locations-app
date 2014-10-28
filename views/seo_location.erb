@@ -11,17 +11,7 @@
              alt="Image of <%= @location.name %>"
              itemprop="contentUrl" />
       </div>
-      <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-        <div itemprop="streetAddress"><%= @location.street_address %></div>
-        <div>
-          <span itemprop="addressLocality"><%= @location.locality %></span>
-          <span itemprop="addressRegion"><%= @location.region %></span>
-          <span itemprop="postalCode"><%= @location.postal_code %></span>
-        </div>
-        <% if ! @location.contacts.nil? %>
-        <div itemprop="telephone"><%= @location.phone %></div>
-        <% end %>
-      </div>
+      <%= erb :seo_address, :locals => {:loc => @location} %>
 
       <div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
         <meta itemprop="longitude" content="<%= @location.geolocation['coordinates'][0] %>" />
