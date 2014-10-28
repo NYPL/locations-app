@@ -91,6 +91,15 @@
         <%= @location.about %>
       </div>
 
+      <% if @location.type == "research" && @location.embedded['divisions'] != nil %>
+      <h2>Divisions</h2>
+      <ul>
+      <% @location.embedded['divisions'].each do |d| %>
+        <li itemprop="department"><a href="./divisions/<%= d['slug'] %>"><%= d['name'] %></a></li>
+      <% end %>
+      </ul>
+      <% end %>
+
       <% if @location.features.count > 0 %>
         <%= erb :seo_features, :locals => {:features => @location.features} %> 
       <% end %>
