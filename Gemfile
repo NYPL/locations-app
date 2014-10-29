@@ -7,3 +7,6 @@ gem 'kgio'
 gem 'lionactor', :git => 'https://bitbucket.org/rdmond/lionactor', :tag => '0.0.9'
 #unicorn web
 gem 'unicorn'
+
+gem 'rack-test', :group => :development
+gem 'rspec', :group => :development
