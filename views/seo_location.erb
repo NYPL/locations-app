@@ -24,30 +24,7 @@
       </div>
       <% end %>
 
-      <h2>Hours</h2>
-      <table>
-        <thead>
-          <tr>
-            <td>Day</td>
-            <td>Hours</td>
-          </tr>
-        </thead>
-        <tbody>
-        <% @location.hours.each do |day| %>
-        <% if day.closedOn? %>
-          <tr>
-            <td><%= day.day %></td>
-            <td>Closed</td>
-          </tr>
-        <% else %>
-          <tr itemprop="openingHours" content="">
-            <td><%= day.day %></td>
-            <td><%= day.open %>-<%= day.close %></td>
-          </tr>
-        <% end %>
-        <% end %>
-        </tbody>
-      </table>
+      <%= erb :seo_location_hours, :locals => {:hours => @location.hours} %>
 
       <h2>Amenities</h2>
       <ul>
