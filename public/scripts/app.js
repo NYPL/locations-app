@@ -1,6 +1,27 @@
 /*jslint nomen: true, indent: 4, maxlen: 80 */
 /*globals angular, window, headerScripts */
 
+
+/**
+ * @ngdoc overview
+ * @module nypl_locations
+ * @name nypl_locations
+ * @requires ngSanitize
+ * @requires ui.router
+ * @requires ngAnimate
+ * @requires locationService
+ * @requires coordinateService
+ * @requires nyplFeedback
+ * @requires nyplSearch
+ * @requires nyplSSO
+ * @requires nyplNavigation
+ * @requires nyplBreadcrumbs
+ * @requires angulartics
+ * @requires angulartics.google.analytics
+ * @requires newrelic-timing
+ * @description
+ * AngularJS app for NYPL's new Locations section.
+ */
 var nypl_locations = angular.module('nypl_locations', [
     'ngSanitize',
     'ui.router',
@@ -14,7 +35,8 @@ var nypl_locations = angular.module('nypl_locations', [
     'nyplBreadcrumbs',
     'angulartics',
     'angulartics.google.analytics',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'newrelic-timing'
 ]);
 
 nypl_locations.constant('_', window._);
@@ -313,6 +335,19 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.responseInterceptors.push(interceptor);
 }]);
 
+/**
+ * @ngdoc overview
+ * @module nypl_widget
+ * @name nypl_widget
+ * @requires ngSanitize
+ * @requires ui.router
+ * @requires locationService
+ * @requires coordinateService
+ * @requires angulartics
+ * @requires angulartics.google.analytics
+ * @description
+ * AngularJS widget app for About pages on nypl.org.
+ */
 angular.module('nypl_widget', [
     'ngSanitize',
     'ui.router',

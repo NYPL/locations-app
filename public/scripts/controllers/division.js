@@ -7,8 +7,8 @@
     function DivisionCtrl($rootScope, $scope, config, division, nyplUtility) {
         var divisionsWithApt = config.divisions_with_appointments;
 
-        $scope.division  = division;
-        $scope.location =  division._embedded.location;
+        $scope.division = division;
+        $scope.location = division._embedded.location;
 
         $rootScope.title = division.name;
         $scope.calendarLink = nyplUtility.calendarLink;
@@ -28,6 +28,15 @@
             _.each(division._embedded.divisions, function (division) {
                 division.hoursToday = nyplUtility.hoursToday(division.hours);
             });
+        }
+
+        if (!division.fundraising) {
+            if (division._embedded.parent) {
+                division.fundraising = division._embedded.parent.fundraising ||
+                    division._embedded.location.fundraising;
+            } else {
+                division.fundraising = division._embedded.location.fundraising;
+            }
         }
 
         $scope.division.social_media =

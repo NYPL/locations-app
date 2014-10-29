@@ -1,0 +1,38 @@
+{
+  "name": "newrelic-timing",
+  "version": "0.4.0",
+  "authors": [
+    "Diogo Terror <diogo@uken.com>",
+    "pitr <pitr.vern@gmail.com>"
+  ],
+  "description": "Integrates Single Page Apps with NewRelic's Real User Monitoring",
+  "main": [
+    "newrelic-timing.js",
+    "newrelic-timing-angular.js"
+  ],
+  "keywords": [
+    "spa",
+    "newrelic",
+    "angular",
+    "performance"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/uken/newrelic-timing",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "0.4.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.4.0",
+    "commit": "8aee23c41f59e5e4cb1f9f3e3a3e25836fbc03a5"
+  },
+  "_source": "git://github.com/uken/newrelic-timing.git",
+  "_target": "~0.4.0",
+  "_originalSource": "newrelic-timing",
+  "_direct": true
+}
