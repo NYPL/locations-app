@@ -14,8 +14,6 @@ GEM
     eventmachine (1.0.3-x86-mingw32)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
-    haml (4.0.5)
-      tilt
     json (1.5.5)
     kgio (2.9.2)
     multi_json (1.10.1)
@@ -46,7 +44,6 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  haml
   json
   kgio
   lionactor!
