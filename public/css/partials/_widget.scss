@@ -16,6 +16,10 @@
       padding-right: 20px;
       padding-top: 20px;
     }
+    
+    .map-directions{
+	    margin: 10px 0;
+    }
 
     .icon-compass {
       line-height: 2;
@@ -60,6 +64,12 @@
 
     .ask-donate {
       margin-top: 25px;
+      
+      .appeal{
+	      .primary-text{
+		      font-size: 90%;
+	      }
+      }
     }
   }
 }
