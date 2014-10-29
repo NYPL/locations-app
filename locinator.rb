@@ -47,8 +47,8 @@ class Locinator < Sinatra::Base
 
   get %r{/amenities$}, :spider => true do
     api = Lionactor::Client.new
-    @data = api.amenities
-    haml :amenities
+    @amenities = api.amenities.group_by{|a| a.category}
+    erb :seo_amenities
   end
   
   get %r{/divisions/(.+/)?(.+)$}, :spider => true do
