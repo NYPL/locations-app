@@ -24,7 +24,9 @@ module.exports = function (config) {
       'public/bower_components/angular-translate/angular-translate.min.js',
       'public/bower_components/angular-translate-loader-static-files/' +
         'angular-translate-loader-static-files.min.js',
-      'public/bower_components/angular-animate/angular-animate.js'
+      'public/bower_components/angular-animate/angular-animate.js',
+      'public/bower_components/newrelic-timing/newrelic-timing.min.js',
+      'public/bower_components/newrelic-timing/newrelic-timing-angular.min.js'
     ],
 
     exclude : [
