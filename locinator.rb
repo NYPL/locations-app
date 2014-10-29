@@ -35,8 +35,7 @@ class Locinator < Sinatra::Base
   get %r{/amenities/loc/(.+)$}, :spider => true do
     api = Lionactor::Client.new
     @loc = api.location(params['captures'].first)
-    @data = api.amenities(params['captures'].first)
-    haml :amenities_one_location
+    erb :seo_amenities_one_location
   end
 
   get %r{/amenities/id/(\d+)$}, :spider => true do
