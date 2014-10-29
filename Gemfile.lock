@@ -1,21 +1,20 @@
 GIT
   remote: https://bitbucket.org/rdmond/lionactor
-  revision: 1cf2900b4436cc55ffe23a3e8fdd2159f67b720e
-  tag: 0.0.5
+  revision: 2cfb215800bf48841c940187cdba754aff664b59
+  tag: 0.0.9
   specs:
-    lionactor (0.0.5)
+    lionactor (0.0.9)
       faraday
 
 GEM
   remote: https://rubygems.org/
   specs:
     daemons (1.1.9)
+    diff-lcs (1.2.5)
     eventmachine (1.0.3)
     eventmachine (1.0.3-x86-mingw32)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
-    haml (4.0.5)
-      tilt
     json (1.5.5)
     kgio (2.9.2)
     multi_json (1.10.1)
@@ -23,7 +22,21 @@ GEM
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
+    rack-test (0.6.2)
+      rack (>= 1.0)
     raindrops (0.13.0)
+    rspec (3.1.0)
+      rspec-core (~> 3.1.0)
+      rspec-expectations (~> 3.1.0)
+      rspec-mocks (~> 3.1.0)
+    rspec-core (3.1.0)
+      rspec-support (~> 3.1.0)
+    rspec-expectations (3.1.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.1.0)
+    rspec-mocks (3.1.0)
+      rspec-support (~> 3.1.0)
+    rspec-support (3.1.0)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -46,10 +59,11 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  haml
   json
   kgio
   lionactor!
+  rack-test
+  rspec
   sinatra
   sinatra-jsonp
   thin
