@@ -30,15 +30,6 @@
             });
         }
 
-        if (!division.fundraising) {
-            if (division._embedded.parent) {
-                division.fundraising = division._embedded.parent.fundraising ||
-                    division._embedded.location.fundraising;
-            } else {
-                division.fundraising = division._embedded.location.fundraising;
-            }
-        }
-
         $scope.division.social_media =
             nyplUtility.socialMediaColor(division.social_media);
 
