@@ -1,6 +1,27 @@
 /*jslint nomen: true, indent: 4, maxlen: 80 */
 /*globals angular, window, headerScripts */
 
+
+/**
+ * @ngdoc overview
+ * @module nypl_locations
+ * @name nypl_locations
+ * @requires ngSanitize
+ * @requires ui.router
+ * @requires ngAnimate
+ * @requires locationService
+ * @requires coordinateService
+ * @requires nyplFeedback
+ * @requires nyplSearch
+ * @requires nyplSSO
+ * @requires nyplNavigation
+ * @requires nyplBreadcrumbs
+ * @requires angulartics
+ * @requires angulartics.google.analytics
+ * @requires newrelic-timing
+ * @description
+ * AngularJS app for NYPL's new Locations section.
+ */
 var nypl_locations = angular.module('nypl_locations', [
     'ngSanitize',
     'ui.router',
@@ -14,7 +35,8 @@ var nypl_locations = angular.module('nypl_locations', [
     'nyplBreadcrumbs',
     'angulartics',
     'angulartics.google.analytics',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'newrelic-timing'
 ]);
 
 nypl_locations.constant('_', window._);
@@ -318,6 +340,19 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.responseInterceptors.push(interceptor);
 }]);
 
+/**
+ * @ngdoc overview
+ * @module nypl_widget
+ * @name nypl_widget
+ * @requires ngSanitize
+ * @requires ui.router
+ * @requires locationService
+ * @requires coordinateService
+ * @requires angulartics
+ * @requires angulartics.google.analytics
+ * @description
+ * AngularJS widget app for About pages on nypl.org.
+ */
 angular.module('nypl_widget', [
     'ngSanitize',
     'ui.router',
@@ -1080,12 +1115,27 @@ angular.module('nypl_widget', [
 (function () {
     'use strict';
 
-    /** @namespace nyplLocationsService */
+    /**
+     * @ngdoc service
+     * @name locationService.service:nyplLocationsService
+     * @requires $http
+     * @requires $q
+     * @description
+     * AngularJS service to call different API endpoints.
+     */
     function nyplLocationsService($http, $q) {
         var api, config,
             apiError = "Could not reach API",
             locationsApi = {};
 
+        /**
+         * @ngdoc function
+         * @name getConfig
+         * @methodOf locationService.service:nyplLocationsService
+         * @returns {object} Deferred promise.
+         * @description
+         * Used to get Sinatra generated config variables.
+         */
         locationsApi.getConfig = function () {
             var defer = $q.defer();
 
@@ -1106,11 +1156,16 @@ angular.module('nypl_widget', [
             return defer.promise;
         }
 
-        /** @function nyplLocationsService.allLocations 
+        /**
+         * @ngdoc function
+         * @name allLocations
+         * @methodOf locationService.service:nyplLocationsService
          * @returns {object} Deferred promise. If it resolves, JSON response
          *  from the API of all NYPL locations. If it is rejected, an
          *  error message is returned saying that it "Could not reach API".
+         * @description Get all locations
          * @example
+         * <pre>
          *  nyplLocationsService.allLocations()
          *    .then(function (data) {
          *      var locations = data.locations;
@@ -1118,6 +1173,7 @@ angular.module('nypl_widget', [
          *    .catch(function (error) {
          *      // error = "Could not reach API"
          *    });
+         * </pre>
          */
         locationsApi.allLocations = function () {
             var defer = $q.defer();
@@ -1135,12 +1191,17 @@ angular.module('nypl_widget', [
             return defer.promise;
         };
 
-        /** @function nyplLocationsService.singleLocation
+        /**
+         * @ngdoc function
+         * @name singleLocation
+         * @methodOf locationService.service:nyplLocationsService
          * @param {string} location The slug of the location to look up.
          * @returns {object} Deferred promise. If it resolves, JSON response
          *  from the API of a specific NYPL locations. If it is rejected,
          *  an error message is returned saying that it "Could not reach API".
+         * @description Get single location.
          * @example
+         * <pre>
          *  nyplLocationsService.singleLocation('schwarzman')
          *    .then(function (data) {
          *      var location = data.location;
@@ -1148,6 +1209,7 @@ angular.module('nypl_widget', [
          *    .catch(function (error) {
          *      // error = "Could not reach API"
          *    });
+         * </pre>
          */
         locationsApi.singleLocation = function (location) {
             var defer = $q.defer();
@@ -1165,12 +1227,17 @@ angular.module('nypl_widget', [
             return defer.promise;
         };
 
-        /** @function nyplLocationsService.singleDivision
+        /**
+         * @ngdoc function
+         * @name singleDivision
+         * @methodOf locationService.service:nyplLocationsService
          * @param {string} division The slug of the division to look up.
          * @returns {object} Deferred promise. If it resolves, JSON response
          *  from the API of an NYPL Division. If it is rejected, an error
          *  message is returned saying that it "Could not reach API".
+         * @description Get single division.
          * @example
+         * <pre>
          *  nyplLocationsService.singleLocation('map-division')
          *    .then(function (data) {
          *      var division = data.division;
@@ -1178,6 +1245,7 @@ angular.module('nypl_widget', [
          *    .catch(function (error) {
          *      // error = "Could not reach API"
          *    });
+         * </pre>
          */
         locationsApi.singleDivision = function (division) {
             var defer = $q.defer();
@@ -1195,7 +1263,10 @@ angular.module('nypl_widget', [
             return defer.promise;
         };
 
-        /** @function nyplLocationsService.amenities
+        /**
+         * @ngdoc function
+         * @name amenities
+         * @methodOf locationService.service:nyplLocationsService
          * @param {string} [amenity] The id of the amenity to look up.
          * @returns {object} Deferred promise. If it resolves, JSON response
          *  from the API. If no param was passed, it will return all the
@@ -1203,7 +1274,9 @@ angular.module('nypl_widget', [
          *  of all the NYPL locations where the amenity passed is available.
          *  If it is rejected, an error message is returned saying that it
          *  "Could not reach API".
+         * @description Get all amenities.
          * @example
+         * <pre>
          *  nyplLocationsService.amenities()
          *    .then(function (data) {
          *      var amenities = data;
@@ -1219,6 +1292,7 @@ angular.module('nypl_widget', [
          *    .catch(function (error) {
          *      // error = "Could not reach API"
          *    });
+         * </pre>
          */
         locationsApi.amenities = function (amenity) {
             var defer = $q.defer(),
@@ -1234,14 +1308,19 @@ angular.module('nypl_widget', [
             return defer.promise;
         };
 
-        /** @function nyplLocationsService.amenitiesAtLibrary
+        /**
+         * @ngdoc function
+         * @name amenitiesAtLibrary
+         * @methodOf locationService.service:nyplLocationsService
          * @param {string} location The slug of the location to look up
          *  all amenities available at that location.
          * @returns {object} Deferred promise. If it resolves, JSON response
          *  from the API of all amenities available at the location. If it is
          *  rejected, an error message is returned saying that it
          *  "Could not reach API".
+         * @description Get amenities at a library.
          * @example
+         * <pre>
          *  nyplLocationsService.amenitiesAtLibrary('115th-street')
          *    .then(function (data) {
          *      var location = data.location;
@@ -1249,6 +1328,7 @@ angular.module('nypl_widget', [
          *    .catch(function (error) {
          *      // error = "Could not reach API"
          *    });
+         * </pre>
          */
         locationsApi.amenitiesAtLibrary = function (location) {
             var defer = $q.defer();
@@ -1266,10 +1346,15 @@ angular.module('nypl_widget', [
             return defer.promise;
         };
 
-        /** @function nyplLocationsService.alerts
+        /**
+         * @ngdoc function
+         * @name alerts
+         * @methodOf locationService.service:nyplLocationsService
          * @returns {object} Deferred promise. If it resolves, JSON response
          *  from the API of alerts that display site-wide.
+         * @description Get all alerts.
          * @example
+         * <pre>
          *  nyplLocationsService.alerts()
          *    .then(function (data) {
          *      var amenities = data.alerts;
@@ -1277,6 +1362,7 @@ angular.module('nypl_widget', [
          *    .catch(function (error) {
          *      // error = "Could not reach API"
          *    });
+         * </pre>
          */
         locationsApi.alerts = function () {
             var defer = $q.defer();
@@ -1298,6 +1384,13 @@ angular.module('nypl_widget', [
     }
     nyplLocationsService.$inject = ["$http", "$q"];
 
+    /**
+     * @ngdoc overview
+     * @module locationService
+     * @name locationService
+     * @description
+     * AngularJS module that provice a service to call the API endpoints.
+     */
     angular
         .module('locationService', [])
         .factory('nyplLocationsService', nyplLocationsService);
@@ -1785,8 +1878,8 @@ angular.module('nypl_widget', [
     function DivisionCtrl($rootScope, $scope, config, division, nyplUtility) {
         var divisionsWithApt = config.divisions_with_appointments;
 
-        $scope.division  = division;
-        $scope.location =  division._embedded.location;
+        $scope.division = division;
+        $scope.location = division._embedded.location;
 
         $rootScope.title = division.name;
         $scope.calendarLink = nyplUtility.calendarLink;
@@ -3498,9 +3591,15 @@ angular.module('nypl_widget', [
 (function () {
   'use strict';
 
-  /** @namespace nyplGeocoderService */
+  /**
+   * @ngdoc service
+   * @name nypl_locations.service:nyplGeocoderService
+   * @requires $q
+   * @description
+   * AngularJS service that deals with all Google Maps related functions.
+   * Can add a map to a page and add markers to the map.
+   */
   function nyplGeocoderService($q) {
-
     var map,
       markers = [],
       filteredLocation,
@@ -3511,29 +3610,35 @@ angular.module('nypl_widget', [
       infowindow = new google.maps.InfoWindow(),
       geocoderService = {},
 
-      /** @function getMarkerFromList
+      /*
+       * @ngdoc function
+       * @name getMarkerFromList
+       * @methodOf nypl_locations.service:nyplGeocoderService
        * @param {string} id The location's slug used for the marker id.
        * @returns {object} The marker object that has the id that was passed,
        *  else an empty object.
        * @private
-       * @memberof nyplGeocoderService
        */
       getMarkerFromList = function (id) {
         return _.findWhere(markers, {id: id});
       },
 
-      /** @function showInfowindow
+      /*
+       * @ngdoc function
+       * @name showInfowindow
+       * @methodOf nypl_locations.service:nyplGeocoderService
        * @param {object} marker Google Maps Marker object.
        * @param {string} text Text that will appear in the Google Maps marker's
        *  infowindow.
        * @private
-       * @memberof nyplGeocoderService
        * @description Hides any previous infowindow displaying on the map and
        *  will display the infowindow for the marker passed with the text.
        * @example
+       * <pre>
        *  var marker = new google.maps.Marker({...}),
        *    text = "Address of marker";
        *  showInfowindow(marker, text);
+       * </pre>
        */
       showInfowindow =  function (marker, text) {
         geocoderService.hideInfowindow();
@@ -3541,13 +3646,17 @@ angular.module('nypl_widget', [
         infowindow.open(map, marker);
       },
 
-      /** @function removeMarkerFromMap
+      /*
+       * @ngdoc function
+       * @name removeMarkerFromMap
+       * @methodOf nypl_locations.service:nyplGeocoderService
        * @param {string} id The id for the marker that should be removed.
        * @private
-       * @memberof nyplGeocoderService
        * @description Removes the specified marker from the map.
        * @example
+       * <pre>
        *  removeMarkerFromMap('baychester');
+       * </pre>
        */
       removeMarkerFromMap = function (id) {
         var markerObj = getMarkerFromList(id);
@@ -3556,13 +3665,17 @@ angular.module('nypl_widget', [
         }
       },
 
-      /** @function addMarkerToMap
+      /*
+       * @ngdoc function
+       * @name addMarkerToMap
+       * @methodOf nypl_locations.service:nyplGeocoderService
        * @param {string} id The id for the marker to add to the map.
        * @private
-       * @memberof nyplGeocoderService
        * @description Add the specified marker to the map.
        * @example
+       * <pre>
        *  addMarkerToMap('parkester');
+       * </pre>
        */
       addMarkerToMap = function (id) {
         var markerObj = getMarkerFromList(id);
@@ -3571,11 +3684,15 @@ angular.module('nypl_widget', [
         }
       };
 
-    /** @function nyplGeocoderService.geocodeAddress
+    /**
+     * @ngdoc function
+     * @name geocodeAddress
+     * @methodOf nypl_locations.service:nyplGeocoderService
      * @param {string} address Address or location to search for.
      * @returns {object} Deferred promise. If it resolves, an object is returned
      *  with coordinates and formatted address, or an error if rejected.
      * @example
+     * <pre>
      *  nyplGeocoderService.geocodeAddress('Bryant Park')
      *    .then(function (coords) {
      *      // coords.lat, coords.long, coords.name
@@ -3583,6 +3700,7 @@ angular.module('nypl_widget', [
      *    .catch(function (error) {
      *      // "Query too short" or Google error status
      *    });
+     * </pre>
      */
     geocoderService.geocodeAddress = function (address) {
       var defer = $q.defer(),
@@ -3618,11 +3736,15 @@ angular.module('nypl_widget', [
       return defer.promise;
     };
 
-    /** @function nyplGeocoderService.reverseGeocoding 
+    /**
+     * @ngdoc function
+     * @name reverseGeocoding
+     * @methodOf nypl_locations.service:nyplGeocoderService
      * @param {object} coords Object with lat and long properties.
      * @returns {object} Deferred promise. If it resolves, a string of Google's
      *  best attempt to reverse geocode coordinates into a formatted address. 
      * @example
+     * <pre>
      *  nyplGeocoderService.reverseGeocoding({
      *    lat: 40.7532,
      *    long: -73.9822
@@ -3633,6 +3755,7 @@ angular.module('nypl_widget', [
      *  .catch(function (error) {
      *    // Google error status
      *  });
+     * </pre>
      */
     geocoderService.reverseGeocoding = function (coords) {
       var address,
@@ -3652,16 +3775,21 @@ angular.module('nypl_widget', [
       return defer.promise;
     };
 
-    /** @function nyplGeocoderService.drawMap
+    /*
+     * @ngdoc function 
+     * @name drawMap
+     * @methodOf nypl_locations.service:nyplGeocoderService
      * @param {object} coords Object with lat and long properties.
      * @param {number} zoom The Google Map zoom distance.
      * @param {string} id The id of the element to draw the map on.
      * @description Draw a Google Maps map on a specific element on the page.
      * @example
+     * <pre>
      *  nyplGeocoderService.drawMap({
      *    lat: 40.7532,
      *    long: -73.9822
      *  }, 12, 'all-locations-map');
+     * </pre>
      */
     geocoderService.drawMap = function (coords, zoom, id) {
       var locationCoords = new google.maps.LatLng(coords.lat, coords.long),
@@ -3679,12 +3807,17 @@ angular.module('nypl_widget', [
       return this;
     };
 
-    /** @function nyplGeocoderService.drawLegend
+    /**
+     * @ngdoc function
+     * @name drawLegend
+     * @methodOf nypl_locations.service:nyplGeocoderService
      * @param {string} id The id of the element to draw the map legend on.
      * @description Draw an element on the page designated to be the legend on
      *  the Google Maps map. It will be drawn on the bottom right corner.
      * @example
+     * <pre>
      *  nyplGeocoderService.drawLegend('all-locations-map-legend');
+     * </pre>
      */
     geocoderService.drawLegend = function (id) {
       var mapLegend = document.getElementById(id);
@@ -3695,13 +3828,18 @@ angular.module('nypl_widget', [
       return this;
     };
 
-    /** @function nyplGeocoderService.panMap
+    /**
+     * @ngdoc function
+     * @name panMap
+     * @methodOf nypl_locations.service:nyplGeocoderService
      * @param {object} [marker] A Google Maps marker object.
      * @description If a marker object is passed, it will pan to that marker on
      *  the page. Otherwise it will pan to SASB.
      * @todo Find the default location and zoom level for the map.
      * @example
+     * <pre>
      *  nyplGeocoderService.drawLegend('all-locations-map-legend');
+     * </pre>
      */
     geocoderService.panMap = function (marker) {
       var sasbLocation = new google.maps.LatLng(40.7632, -73.9822),
@@ -3725,7 +3863,10 @@ angular.module('nypl_widget', [
       return this;
     };
 
-    /** @function nyplGeocoderService.showResearchLibraries
+    /**
+     * @ngdoc function
+     * @name showResearchLibraries
+     * @methodOf nypl_locations.service:nyplGeocoderService
      * @description Calling this function will remove all the markers from
      *  the map except for research branches markers and the user marker.
      */
@@ -3743,7 +3884,10 @@ angular.module('nypl_widget', [
       return this;
     };
 
-    /** @function nyplGeocoderService.showAllLibraries
+    /**
+     * @ngdoc function
+     * @name showAllLibraries
+     * @methodOf nypl_locations.service:nyplGeocoderService
      * @description This will add all the markers available on the map.
      */
     geocoderService.showAllLibraries = function () {
@@ -3756,7 +3900,10 @@ angular.module('nypl_widget', [
       return this;
     };
 
-    /** @function nyplGeocoderService.createMarker
+    /**
+     * @ngdoc function
+     * @name createMarker
+     * @methodOf nypl_locations.service:nyplGeocoderService
      * @param {string} id The location's slug.
      * @param {object} location The location's coordinates as an object with
      *  latitude and longitude properties.
@@ -3766,11 +3913,13 @@ angular.module('nypl_widget', [
      *  global markers array. If the marker is the user's marker, it will have
      *  a different icon, zIndex, and animation.
      * @example
+     * <pre>
      *  nyplGeocoderService.createMarker('sibl', {
      *    latitude: 40.24,
      *    longitude: -73.24
      *  }, 'Science, Industry and Business Library (SIBL) 188 Madison Avenue ' +
      *   '@ 34th Street New York, NY, 10016');
+     * </pre>
      */
     geocoderService.createMarker = function (id, location, text) {
       var marker,
@@ -3796,40 +3945,54 @@ angular.module('nypl_widget', [
       });
     };
 
-    /** @function nyplGeocoderService.hideInfowindow
+    /**
+     * @ngdoc function
+     * @name hideInfowindow
+     * @methodOf nypl_locations.service:nyplGeocoderService
      * @description Hides the infowindow if the current infowindow is opened.
      * @example
+     * <pre>
      *  // ... Do some map related interaction
      *  nyplGeocoderService.hideInfowindow();
+     * </pre>
      */
     geocoderService.hideInfowindow = function () {
       infowindow.close();
       return this;
     };
 
-    /** @function nyplGeocoderService.doesMarkerExist
+    /**
+     * @ngdoc function
+     * @name doesMarkerExist
+     * @methodOf nypl_locations.service:nyplGeocoderService
      * @param {string} id A marker's id.
      * @returns {boolean} True if the marker exists, false otherwise.
      * @description Checks the markers array for the marker with the id passed.
      * @example
+     * <pre>
      *  if (nyplGeocoderService.doesMarkerExist('schwarzman')) {
      *    // Do something with the marker.
      *    nyplGeocoderService.panExistingMarker('schwarzman');
      *  }
+     * </pre>
      */
     geocoderService.doesMarkerExist = function (id) {
       return !!getMarkerFromList(id);
     };
 
-    /** @function nyplGeocoderService.createSearchMarker
+    /**
+     * @ngdoc function
+     * @name createSearchMarker
+     * @methodOf nypl_locations.service:nyplGeocoderService
      * @param {object} coords Object with lat and long properties.
      * @param {string} text The text that should appear in the marker's
      *  infowindow.
      * @example
+     * <pre>
      *  nyplGeocoderService.createSearchMarker({
      *    lat: 40.49, long: -74.26
      *  }, 'Infowindow description of the marker');
-     });
+     * </pre>
      */
     geocoderService.createSearchMarker = function (coords, text) {
       var searchTerm = text.replace(',', ' <br>').replace(',', ' <br>'),
@@ -3839,7 +4002,10 @@ angular.module('nypl_widget', [
       searchInfoWindow.setContent(searchTerm);
     };
 
-    /** @function nyplGeocoderService.drawSearchMarker
+    /**
+     * @ngdoc function
+     * @name drawSearchMarker
+     * @methodOf nypl_locations.service:nyplGeocoderService
      * @description If there are no filtered location to add to the map, and if
      *  the search marker is not already on the map, then add it to the map and
      *  pan to the marker. Also display the infowindow for that marker.
@@ -3859,7 +4025,10 @@ angular.module('nypl_widget', [
       return this;
     };
 
-    /** @function nyplGeocoderService.hideSearchInfowindow
+    /**
+     * @ngdoc function
+     * @name hideSearchInfowindow
+     * @methodOf nypl_locations.service:nyplGeocoderService
      * @description Public wrapper to close the search marker's infowindow.
      */
     geocoderService.hideSearchInfowindow = function () {
@@ -3867,7 +4036,10 @@ angular.module('nypl_widget', [
       return this;
     };
 
-    /** @function nyplGeocoderService.removeMarker
+    /**
+     * @ngdoc function
+     * @name removeMarker
+     * @methodOf nypl_locations.service:nyplGeocoderService
      * @param {string} id A Google Maps marker's id.
      * @description Public function to remove a specific marker from the
      *  initialized map.
@@ -3885,7 +4057,10 @@ angular.module('nypl_widget', [
       return this;
     };
 
-    /** @function nyplGeocoderService.panExistingMarker
+    /**
+     * @ngdoc function
+     * @name panExistingMarker
+     * @methodOf nypl_locations.service:nyplGeocoderService
      * @param {string} id A location's slug.
      * @description Using the location's slug, pan to that marker on the map.
      *  Also display the infowindow.
