@@ -2,7 +2,7 @@
 /*globals element, by, module, module, window, jasmine,
 describe, expect, beforeEach, inject, it, angular, spyOn */
 
-var  mockGeneralResearchDivision = {
+var mockGeneralResearchDivision = {
     access: "Fully Accessible",
     contacts: { phone: "(917) 275-6975", manager: "Marie Coughlin" },
     hours: {
@@ -18,16 +18,11 @@ var  mockGeneralResearchDivision = {
     },
     id: "GRD",
     images: {
-      interior: "http://www.nypl.org/sites/default/files/images/stacks.jpeg"
+      interior: "http://www.nypl.org/sites/default/files/images/stacks.jpeg",
+      collection_item: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/locations/394/dc_sasb_grd.jpg"
     },
-    locality: "New York",
-    location_id: "SASB",
-    location_name: "Stephen A. Schwarzman Building",
-    location_slug: "schwarzman",
     name: "General Research Division",
     open: true,
-    postal_code: 10018,
-    region: "NY",
     room: "315",
     slug: "general-research-division",
     social_media: [
@@ -35,7 +30,6 @@ var  mockGeneralResearchDivision = {
         "Research-Division-The-New-York-Public-Library/105843439484043"},
       { site: "twitter", href: "http://twitter.com/NYPL_GRD"}
     ],
-    street_address: "Fifth Avenue at 42nd Street",
     synonyms: null,
     type: "research",
     _embedded: {

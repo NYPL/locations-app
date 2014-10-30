@@ -134,7 +134,7 @@ time {
 			font-weight: bold;
 		}
 		.secondary-text {
-			font-size: 15px;
+			font-size: 18px;
 		}
 	}
 }
@@ -177,12 +177,14 @@ time {
 				display: inline-block;
 				background-color: #ece94c;
 				border-radius: 2px;
+				border: 1px solid transparent;
 				color: #5e564b;
 				padding: 6px;		
 				text-decoration: none;
 				
 				&:hover {
-					background-color: lighten(#ece94c, 20%);
+					background-color: #fff;
+					border: 1px solid lighten(#5e564b, 50%);
 					cursor: pointer;
 				}
 			}

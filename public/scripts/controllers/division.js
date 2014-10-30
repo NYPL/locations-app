@@ -7,8 +7,8 @@
     function DivisionCtrl($rootScope, $scope, config, division, nyplUtility) {
         var divisionsWithApt = config.divisions_with_appointments;
 
-        $scope.division  = division;
-        $scope.location =  division._embedded.location;
+        $scope.division = division;
+        $scope.location = division._embedded.location;
 
         $rootScope.title = division.name;
         $scope.calendarLink = nyplUtility.calendarLink;

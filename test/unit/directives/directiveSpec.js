@@ -481,7 +481,7 @@ describe('NYPL Directive Unit Tests', function () {
       // Currently just using the value in the scope.
       alert = scope.sitewidealert;
       expect(alert)
-        .toEqual('All units of the NYPL are closed July 4 - July 5.\n');
+        .toEqual(['All units of the NYPL are closed July 4 - July 5.']);
 
       // Use the native Date function again
       Date = MockDate;
@@ -509,7 +509,7 @@ describe('NYPL Directive Unit Tests', function () {
 
       // Currently just using the value in the scope.
       alert = scope.sitewidealert;
-      expect(alert).toEqual('');
+      expect(alert).toEqual([]);
     });
   });
 

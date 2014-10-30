@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head>
+    <title>NYPL | Amenities at <%= @loc.name %></title>
+  </head>
+  <body>
+   <h1> 
+      Amenities at 
+      <a href="../../<%= @loc.slug %>"><%= @loc.name %>
+   </h1>
+
+   <%= erb :seo_amenities_list, :locals => {:amenities => @loc.amenities.map{|a| a.amenity}.group_by{|a| a.category}, :depth => 2 } %> 
+
+  </body>
+</html>
+
