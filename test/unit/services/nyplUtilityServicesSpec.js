@@ -321,7 +321,7 @@ describe('NYPL Utility Service Tests', function () {
 
           // The function only returns the body of the alert
           expect(display_alert)
-            .toEqual("All units of the NYPL are closed July 4 - July 5.\n");
+            .toEqual(["All units of the NYPL are closed July 4 - July 5."]);
 
           Date = MockDate;
         });

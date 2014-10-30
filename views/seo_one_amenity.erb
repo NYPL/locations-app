@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <title>NYPL | <%= @amenity.name %></title>
+  </head>
+  <body>
+    <div itemscope itemtype="http://schem@amenity.org/Offer">
+      <h1 itemprop="name"><%= @amenity.name %></h1>
+      <% if @amenity.info? %>
+        <div>
+          <a href="<%= @amenity.info.href %>">
+            <% if @amenity.info.name.nil? || @amenity.info.name.empty? %>
+              Learn More
+            <% else %>
+              <%= @amenity.info.name %>
+            <% end %>
+          </a>
+        </div>
+      <% end %>
+
+      <% if @amenity.action? %>
+        <div itemprop="potentialAction"><a href="<%= @amenity.action.href %>"><%= @amenity.action.name %></a></div>
+      <% end %>
+
+      <ul>
+      <% @amenity.locations.each do |loc| %>
+        <li itemprop="availableAtOrFrom">
+          <a href="../../<%= loc.slug %>"><%= loc.name %></a>
+        </li>
+      <% end %>
+      </ul>
+    </div>
+  </body>
+</html>
+
