@@ -62,7 +62,7 @@ nypl_locations.config([
         // Lazy loads static files with English being
         // the first language that gets loaded.
         $translateProvider.useStaticFilesLoader({
-            prefix: '/languages/',
+            prefix: 'locations/languages/',
             suffix: '.json'
         });
         $translateProvider.preferredLanguage('en');

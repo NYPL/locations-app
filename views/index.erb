@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.1/css/nyplbase.min.css">
 <% end %>
 
-    <link rel="stylesheet" href="/css/locations.min.css">
+    <link rel="stylesheet" href="locations/css/locations.min.css">
 
     <!-- Angular Hash fallback (need to test on heroku) -->
     <base href="/">
@@ -41,7 +41,7 @@
         data-height="660" data-width="300"></nypl-feedback>
 
     <!-- Header -->
-    <div ng-include="'views/header.html'"></div>
+    <div ng-include="'locations/views/header.html'"></div>
 
     <!-- Main Navigation -->
     <nypl-navigation></nypl-navigation>
@@ -52,7 +52,7 @@
     </div>
     
     <!-- Footer -->
-    <div ng-include="'views/footer.html'"></div>
+    <div ng-include="'locations/views/footer.html'"></div>
 
     <!-- Loading Directive -->
     <div id="loadingWidget" loading-widget>
@@ -79,11 +79,11 @@
 <% if !settings.env_config["google_maps"].nil? %>
     <script src="https://maps.googleapis.com/maps/api/js?key=<%= settings.env_config["google_maps"] %>&amp;sensor=false"></script>
 <% end %>
-    <script src="bower_components/jquery/jquery.min.js"></script>
-    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="locations/bower_components/jquery/jquery.min.js"></script>
+    <script src="locations/bower_components/underscore/underscore.js"></script>
     <!-- endbower -->
     <!-- Other components -->
-    <script src="vendor/jquery.cookies.js"></script>
+    <script src="locations/vendor/jquery.cookies.js"></script>
     <!-- end other components -->
     <!-- endbuild -->
 
