@@ -13,7 +13,7 @@ describe('Locinator State Routing', function () {
 
     inject(function (_$rootScope_, _$state_, _$injector_, _$httpBackend_, _$templateCache_) {
       $state = _$state_;
-      $rootScope = _$rootScope_;
+      $rootScope = _$rootScope_.$new();
       $injector = _$injector_;
       $httpBackend = _$httpBackend_;
       $templateCache = _$templateCache_;
@@ -24,12 +24,28 @@ describe('Locinator State Routing', function () {
         .respond('public/languages/en.json');
 
       $httpBackend
+        .expectGET('/config')
+        .respond({
+          config: {
+            api_root: 'http://locations-api-beta.nypl.org',
+            divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN","PHG","SPN","CPS"]
+          }
+        });
+
+      // $httpBackend.expectGET(/views.*/).respond(200, '');
+
+      $httpBackend
+        .expectGET('/views/amenities.html')
+        .respond('public/views/amenities.html');
+
+      $httpBackend
         .expectGET('views/locations.html')
         .respond('public/views/locations.html');
 
       $httpBackend
-        .expectGET('views/location-map-view.html')
-        .respond('public/views/location-map-view.html');
+        .expectGET('views/location-list-view.html')
+        .respond('public/views/location-list-view.html');
+
     })
   });
 
@@ -75,11 +91,21 @@ describe('Locinator State Routing', function () {
     });
   });
 
-  describe('Resolved data', function () {
+  // describe('Resolved data', function () {
 
-    it('should resolve some data', function () {
-    });
+  //   it('should resolve some data', function () {
+  //     // var myServiceMock;
+  //     // myServiceMock.findAll = jasmine.createSpy('findAll');
 
-  });
+  //     $state.transitionTo('amenities');
+  //     $rootScope.$apply();
+  //     console.log($state.current.name);
+  //     expect($state.current.name).toBe('amenities');
+
+  //     // Call invoke to inject dependencies and run function
+  //     // expect($injector.invoke($state.current.resolve.data)).toBe('findAll');
+  //   });
+
+  // });
   
 });

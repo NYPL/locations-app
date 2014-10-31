@@ -219,15 +219,13 @@ describe('DivisionCtrl', function () {
       ]);
     });
 
-    // it('should have an alert on the page', function () {
-    //   // Need mocked data for this but get error based on the content
-    //   // being run through $sce to output html.
-    //   expect(scope.division.hours.exceptions).toBeDefined();
-    // });
-
     it('should have an embedded division', function () {
       expect(scope.division._embedded.divisions).toBeDefined();
     });
+
+    // it('should have hours for the embedded division', function () {
+    //   expect(scope.division._embedded.divisions).toEqual('');
+    // });
   });
 
   describe('George Arents Collection', function () {
@@ -246,7 +244,7 @@ describe('DivisionCtrl', function () {
       expect(scope.division.name).toEqual('George Arents Collection');
     });
 
-    it('should have hours', function () {
+    it('should not have hours', function () {
       expect(scope.hoursToday).not.toBeDefined();
     });
 
@@ -261,6 +259,10 @@ describe('DivisionCtrl', function () {
     it('should not have an alert on the page', function () {
       // Alerts/exceptions are part of the hours property in the division
       expect(scope.division.hours).not.toBeDefined();
+    });
+
+    it('should not have embedded divisions', function () {
+      expect(scope.division._embedded.divisions).not.toBeDefined();
     });
 
     it('should have an embedded parent division', function () {
