@@ -33,26 +33,30 @@ describe('Locinator State Routing', function () {
         .expectGET('/languages/en.json')
         .respond('public/languages/en.json');
 
-      $httpBackend
-        .expectGET('/config')
-        .respond({
-          config: {
-            api_root: 'http://locations-api-beta.nypl.org',
-            divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN","PHG","SPN","CPS"]
-          }
-        });
+      // $httpBackend
+      //   .expectGET('/config')
+      //   .respond({
+      //     config: {
+      //       api_root: 'http://locations-api-beta.nypl.org',
+      //       divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN","PHG","SPN","CPS"]
+      //     }
+      //   });
 
       // $httpBackend.expectGET(/views.*/).respond(200, '');
 
-      $httpBackend
-        .expectGET('views/amenities.html')
-        .respond('public/views/amenities.html');
+      // $httpBackend
+      //   .expectGET('views/amenities.html')
+      //   .respond('public/views/amenities.html');
 
       $httpBackend
         .expectGET('views/division.html')
         .respond('public/views/division.html');
 
-      $httpBackend
+        $httpBackend
+        .expectGET('/views/404.html')
+        .respond('public/views/404.html');
+
+      // $httpBackend
         // .expectGET('views/location-list-view.html')
         // .respond('public/views/location-list-view.html');
 
@@ -165,7 +169,8 @@ describe('Locinator State Routing', function () {
       $state.go('division', {division: 'map-division'});
         // .toEqual('/divisions/map-division');
       $rootScope.$digest();
-      expectedConfig($state.current.name).toBe(state);
+      console.log($state.current.name);
+      expect($state.current.name).toBe('division');
     });
 
     it('should go to an amenity page', function () {
