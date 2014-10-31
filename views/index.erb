@@ -1,6 +1,7 @@
 <!doctype html>
 <html xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="nypl_locations">
   <head>
+    <base href="/locations/">
     <%if settings.locinator_env == "development" %>
     <%= erb :newrelic_dev %>
     <% end %>
@@ -24,7 +25,6 @@
     <link rel="stylesheet" href="/css/locations.min.css">
 
     <!-- Angular Hash fallback (need to test on heroku) -->
-    <base href="/">
   </head>
   <body>
     <!--[if lt IE 9]>
