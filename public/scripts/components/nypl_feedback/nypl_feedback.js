@@ -7,7 +7,7 @@
   function nyplFeedback($sce, $rootScope) {
     return {
       restrict: 'E',
-      templateUrl: 'scripts/components/nypl_feedback/nypl_feedback.html',
+      templateUrl: 'locations/scripts/components/nypl_feedback/nypl_feedback.html',
       replace: true,
       scope: {
         height: '@',
