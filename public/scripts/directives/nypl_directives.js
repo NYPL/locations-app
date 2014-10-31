@@ -35,7 +35,7 @@
   function nyplTranslate() {
     return {
       restrict: 'E',
-      templateUrl: 'locations/scripts/directives/templates/translatebuttons.html',
+      templateUrl: 'scripts/directives/templates/translatebuttons.html',
       replace: true,
       controller: function ($scope, $translate) {
         $scope.translate = function (language) {
@@ -48,7 +48,7 @@
   function todayshours() {
     return {
       restrict: 'E',
-      templateUrl: 'locations/scripts/directives/templates/todaysHours.html',
+      templateUrl: 'scripts/directives/templates/todaysHours.html',
       replace: true,
       scope: {
         hours: '@'
@@ -59,7 +59,7 @@
   function emailusbutton() {
     return {
       restrict: 'E',
-      templateUrl: 'locations/scripts/directives/templates/emailus.html',
+      templateUrl: 'scripts/directives/templates/emailus.html',
       replace: true,
       scope: {
         link: '@'
@@ -70,7 +70,7 @@
   function librarianchatbutton(nyplUtility) {
     return {
       restrict: 'E',
-      templateUrl: 'locations/scripts/directives/templates/librarianchat.html',
+      templateUrl: 'scripts/directives/templates/librarianchat.html',
       replace: true,
       link: function (scope, element, attrs, $window) {
         scope.openChat = function () {
@@ -109,7 +109,7 @@
 
     return {
       restrict: 'E',
-      templateUrl: 'locations/scripts/directives/templates/registration.html',
+      templateUrl: 'scripts/directives/templates/registration.html',
       replace: true,
       scope: {
         registration: '=',
@@ -140,7 +140,7 @@
   function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
     return {
       restrict: 'E',
-      templateUrl: 'locations/scripts/directives/templates/alerts.html',
+      templateUrl: 'scripts/directives/templates/alerts.html',
       replace: true,
       // Must be global for unit test to pass. Must find better way to test.
       // scope: {},
@@ -169,7 +169,7 @@
 
     return {
       restrict: 'E',
-      templateUrl: 'locations/scripts/directives/templates/library-alert.html',
+      templateUrl: 'scripts/directives/templates/library-alert.html',
       replace: true,
       scope: {
           exception: '='
@@ -233,7 +233,7 @@
   function nyplFundraising($timeout, nyplLocationsService) {
     return {
       restrict: 'E',
-      templateUrl: 'locations/scripts/directives/templates/fundraising.html',
+      templateUrl: 'scripts/directives/templates/fundraising.html',
       replace: true,
       scope: {
         fundraising: '=fundraising',
@@ -267,7 +267,7 @@
   function nyplSidebar() {
     return {
       restrict: 'E',
-      templateUrl: 'locations/scripts/directives/templates/sidebar-widgets.html',
+      templateUrl: 'scripts/directives/templates/sidebar-widgets.html',
       replace: true,
       scope: {
         donateButton: '@',
@@ -285,7 +285,7 @@
   function nyplAutofill($state, $analytics) {
     return {
       restrict: 'AEC',
-      templateUrl: 'locations/scripts/directives/templates/autofill.html',
+      templateUrl: 'scripts/directives/templates/autofill.html',
       scope: {
         data: '=',
         model: '=ngModel',

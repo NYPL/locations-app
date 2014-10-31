@@ -72,7 +72,7 @@
   function nyplBreadcrumbs($interpolate, $state, $crumb) {
     return {
       restrict: 'E',
-      templateUrl: 'locations/scripts/components/nypl_breadcrumbs/nypl_breadcrumbs.html',
+      templateUrl: '/scripts/components/nypl_breadcrumbs/nypl_breadcrumbs.html',
       scope: {
         crumbName: '@'
       },

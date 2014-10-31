@@ -9,7 +9,7 @@
       restrict: 'E',
       scope: {},
       replace: true,
-      templateUrl: 'locations/scripts/components/nypl_navigation/nypl_navigation.html',
+      templateUrl: '/scripts/components/nypl_navigation/nypl_navigation.html',
       link: function (scope, element, attrs) {
         // Open/Close Main Navigation
         $('.dropDown').hover(
@@ -51,7 +51,7 @@
       restrict: 'E',
       scope: {},
       replace: true,
-      templateUrl: 'locations/scripts/components/nypl_navigation/nypl_collapsed_buttons.html',
+      templateUrl: '/scripts/components/nypl_navigation/nypl_collapsed_buttons.html',
       link: function (scope, element, attrs) {
         // Toggle Mobile Navigation
         var navBtn = element.find('.nav-open-button'),

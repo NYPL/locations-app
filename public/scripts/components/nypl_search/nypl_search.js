@@ -9,7 +9,7 @@
       restrict: 'E',
       scope: {},
       replace: true,
-      templateUrl: 'locations/scripts/components/nypl_search/nypl_search.html',
+      templateUrl: '/scripts/components/nypl_search/nypl_search.html',
       link: function (scope, element, attrs) {
         var o = {};
 
