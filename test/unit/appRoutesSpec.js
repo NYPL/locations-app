@@ -35,7 +35,7 @@ describe('Locinator State Routing', function () {
       // $httpBackend.expectGET(/views.*/).respond(200, '');
 
       $httpBackend
-        .expectGET('/views/amenities.html')
+        .expectGET('views/amenities.html')
         .respond('public/views/amenities.html');
 
       $httpBackend

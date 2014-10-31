@@ -9,7 +9,7 @@
       restrict: 'E',
       scope: {},
       replace: true,
-      templateUrl: '/scripts/components/nypl_sso/nypl_sso.html',
+      templateUrl: 'scripts/components/nypl_sso/nypl_sso.html',
       link: function (scope, element, attrs) {
         var ssoLoginElement = $('.sso-login'),
           ssoUserButton = $('.login-button');

@@ -143,7 +143,7 @@ nypl_locations.config([
             .state('home', {
                 url: '/',
                 abstract: true,
-                templateUrl: '/views/locations.html',
+                templateUrl: 'views/locations.html',
                 controller: 'LocationsCtrl',
                 label: 'Locations',
                 resolve: {
@@ -151,24 +151,24 @@ nypl_locations.config([
                 }
             })
             .state('home.index', {
-                templateUrl: '/views/location-list-view.html',
+                templateUrl: 'views/location-list-view.html',
                 url: '',
                 label: 'Locations'
             })
             .state('home.list', {
-                templateUrl: '/views/location-list-view.html',
+                templateUrl: 'views/location-list-view.html',
                 url: 'list',
                 label: 'Locations'
             })
             .state('home.map', {
-                templateUrl: '/views/location-map-view.html',
+                templateUrl: 'views/location-map-view.html',
                 url: 'map',
                 controller: 'MapCtrl',
                 label: 'Locations'
             })
             .state('subdivision', {
                 url: '/divisions/:division/:subdivision',
-                templateUrl: '/views/division.html',
+                templateUrl: 'views/division.html',
                 controller: 'DivisionCtrl',
                 label: 'Division',
                 resolve: {
@@ -182,7 +182,7 @@ nypl_locations.config([
             })
             .state('division', {
                 url: '/divisions/:division',
-                templateUrl: '/views/division.html',
+                templateUrl: 'views/division.html',
                 controller: 'DivisionCtrl',
                 label: 'Division',
                 resolve: {
@@ -196,7 +196,7 @@ nypl_locations.config([
             })
             .state('amenities', {
                 url: '/amenities',
-                templateUrl: '/views/amenities.html',
+                templateUrl: 'views/amenities.html',
                 controller: 'AmenitiesCtrl',
                 label: 'Amenities',
                 resolve: {
@@ -209,7 +209,7 @@ nypl_locations.config([
             })
             .state('amenity', {
                 url: '/amenities/id/:amenity',
-                templateUrl: '/views/amenities.html',
+                templateUrl: 'views/amenities.html',
                 controller: 'AmenityCtrl',
                 label: 'Amenities',
                 resolve: {
@@ -224,7 +224,7 @@ nypl_locations.config([
             })
             .state('amenities-at-location', {
                 url: '/amenities/loc/:location',
-                templateUrl: '/views/amenitiesAtLibrary.html',
+                templateUrl: 'views/amenitiesAtLibrary.html',
                 controller: 'AmenitiesAtLibraryCtrl',
                 resolve: {
                     config: getConfig,
@@ -241,7 +241,7 @@ nypl_locations.config([
             })
             .state('location', {
                 url: '/:location',
-                templateUrl: '/views/location.html',
+                templateUrl: 'views/location.html',
                 controller: 'LocationCtrl',
                 resolve: {
                     config: getConfig,
@@ -408,7 +408,7 @@ angular.module('nypl_widget', [
         $stateProvider
             .state('subdivision', {
                 url: '/widget/divisions/:division/:subdivision',
-                templateUrl: '/views/widget.html',
+                templateUrl: 'views/widget.html',
                 controller: 'WidgetCtrl',
                 resolve: {
                     config: getConfig,
@@ -417,7 +417,7 @@ angular.module('nypl_widget', [
             })
             .state('division', {
                 url: '/widget/divisions/:division',
-                templateUrl: '/views/widget.html',
+                templateUrl: 'views/widget.html',
                 controller: 'WidgetCtrl',
                 label: 'Division',
                 resolve: {
@@ -427,7 +427,7 @@ angular.module('nypl_widget', [
             })
             .state('widget', {
                 url: '/widget/:location',
-                templateUrl: '/views/widget.html',
+                templateUrl: 'views/widget.html',
                 controller: 'WidgetCtrl',
                 resolve: {
                     config: getConfig,
