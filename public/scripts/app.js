@@ -141,7 +141,7 @@ nypl_locations.config([
         // $urlRouterProvider.otherwise('/404');
         $stateProvider
             .state('home', {
-                url: '/',
+                url: '/locations',
                 abstract: true,
                 templateUrl: 'views/locations.html',
                 controller: 'LocationsCtrl',
@@ -236,7 +236,7 @@ nypl_locations.config([
                 }
             })
             .state('404', {
-                url: '/404',
+                url: '/locations/404',
                 templateUrl: '/views/404.html'
             })
             .state('location', {
