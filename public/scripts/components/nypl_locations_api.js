@@ -31,7 +31,7 @@
             if (config) {
                 defer.resolve(config);
             } else {
-                $http.get('/config', {cache: true})
+                $http.get('/locations/config', {cache: true})
                     .success(function (data) {
                         api = data.config.api_root;
                         config = data.config;
