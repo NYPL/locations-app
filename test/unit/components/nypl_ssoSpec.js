@@ -10,13 +10,12 @@ describe, expect, beforeEach, inject, it, angular */
 describe('nyplSSO module', function () {
   'use strict';
 
-  var element, $compile, $scope, httpBackend, ssoStatus;
+  var $compile, $scope, httpBackend;
 
   beforeEach(module('nyplSSO'));
   beforeEach(module('directiveTemplates'));
-  beforeEach(inject(function (_$httpBackend_, _ssoStatus_) {
+  beforeEach(inject(function (_$httpBackend_) {
     httpBackend = _$httpBackend_;
-    ssoStatus = _ssoStatus_;
 
     httpBackend
         .expectGET('/languages/en.json')
@@ -24,6 +23,12 @@ describe('nyplSSO module', function () {
   }));
 
   describe('Service: ssoStatus', function () {
+    var ssoStatus;
+
+    beforeEach(inject(function (_$httpBackend_, _ssoStatus_) {
+      ssoStatus = _ssoStatus_;
+    }));
+
     function loggedIn() {
       return 'edwinguzman';
     }
@@ -170,33 +175,35 @@ describe('nyplSSO module', function () {
    *   DOM manipulation to show and hide the login form.
    */
   describe('Directive: nypl-sso', function () {
+    var element, nypl_sso;
+
     beforeEach(inject(function (_$compile_, _$rootScope_) {
       $compile = _$compile_;
       $scope = _$rootScope_.$new();
 
       element = angular.element('<nypl-sso></nypl-sso>');
-      $compile(element)($scope);
+      nypl_sso = $compile(element)($scope);
       $scope.$digest();
     }));
 
     it('should compile', function () {
-      expect(element.attr('class')).toContain('login-donate');
+      expect(nypl_sso.attr('class')).toContain('login-donate');
     });
 
     it('should have a donate button', function () {
-      expect(element.find('.donate-button').text()).toEqual('DONATE');
-      expect(element.find('.donate-button').attr('href'))
+      expect(nypl_sso.find('.donate-button').text()).toEqual('DONATE');
+      expect(nypl_sso.find('.donate-button').attr('href'))
         .toEqual('https://secure3.convio.net/nypl/site/SPageServer?page' +
           'name=donation_form&JServSessionIdr003=dwcz55yj27.' +
           'app304a&s_src=FRQ14ZZ_SWBN');
     });
 
     it('should have a login button', function () {
-      expect(element.find('.login-button').text().trim()).toEqual('LOG IN');
+      expect(nypl_sso.find('.login-button').text().trim()).toEqual('LOG IN');
     });
 
     it('should have the SSO login form', function () {
-      var login_form_container = element.find('.sso-login');
+      var login_form_container = nypl_sso.find('.sso-login');
       expect(login_form_container.find('form').attr('id'))
         .toEqual('bc-sso-login-form--2');
       expect(login_form_container.find('.form-item-name').text().trim())
@@ -208,7 +215,7 @@ describe('nyplSSO module', function () {
     });
 
     it('should have help links', function () {
-      var login_form = element.find('form'),
+      var login_form = nypl_sso.find('form'),
         help_links = login_form.find('#login-form-help');
 
       expect(help_links.find('a').length).toBe(2);
@@ -219,12 +226,12 @@ describe('nyplSSO module', function () {
     });
 
     it('should show the sso-login form', function () {
-      expect(element.find('.sso-login').attr('class')).not.toContain('visible');
+      expect(nypl_sso.find('.sso-login').attr('class')).not.toContain('visible');
 
-      element.find('.login-button').click();
+      nypl_sso.find('.login-button').click();
 
       // The login form container should be visible now.
-      expect(element.find('.sso-login').attr('class')).toContain('visible');
+      expect(nypl_sso.find('.sso-login').attr('class')).toContain('visible');
     });
   });
 

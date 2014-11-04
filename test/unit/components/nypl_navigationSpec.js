@@ -116,7 +116,7 @@ describe('nyplNavigation module', function () {
         $compile = _$compile_;
         $scope = _$rootScope_.$new();
 
-        html = '<nypl-navigation></nypl-navigation>';
+        html = angular.element('<nypl-navigation></nypl-navigation>');
         nyplNavigation = createDirective(html);
       }));
 
@@ -126,6 +126,12 @@ describe('nyplNavigation module', function () {
 
       it('should say say Log In for the menut button initially', function () {
         expect(nyplNavigation.find('.mobile-login').text().trim()).toEqual('Log In');
+      });
+
+      it('should test', function () {
+        $scope.current_url = 'http://locations.nypl.org/schwarzman';
+        $scope.$apply();
+        expect($scope.current_url).toEqual('http://locations.nypl.org/schwarzman');
       });
     });
 
