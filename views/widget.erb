@@ -15,10 +15,14 @@
     <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.1/css/nyplbase.min.css">
 <% end %>
 
-    <link rel="stylesheet" href="/css/locations.min.css">
-
-    <!-- Angular Hash fallback (need to test on heroku) -->
+  <% if settings.locinator_env == "local" %>
     <base href="/widget" target="_parent">
+    <link rel="stylesheet" href="css/locations.min.css">
+  <% else %>
+    <base href="/locations/widget" target="_parent">
+    <link rel="stylesheet" href="/locations/css/locations.min.css">
+  <% end %>
+
   </head>
   <body class="nypl-widget">
     <!--[if lt IE 7]>
