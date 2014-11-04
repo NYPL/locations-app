@@ -18,7 +18,7 @@
     };
 
     /** @function $Crumb.setOptions
-     * @param {obj} options object containing state data.
+     * @param {obj} opts object containing state data.
      * @returns angular.extend() with set opts
      * @description Extends the destination object dst 
      *  by copying all of the properties from the src object(s) to dst
