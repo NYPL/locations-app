@@ -6,6 +6,19 @@
  * @ngdoc overview
  * @module nypl_locations
  * @name nypl_locations
+ * @requires ngSanitize
+ * @requires ui.router
+ * @requires ngAnimate
+ * @requires locationService
+ * @requires coordinateService
+ * @requires nyplFeedback
+ * @requires nyplSearch
+ * @requires nyplSSO
+ * @requires nyplNavigation
+ * @requires nyplBreadcrumbs
+ * @requires angulartics
+ * @requires angulartics.google.analytics
+ * @requires newrelic-timing
  * @description
  * AngularJS app for NYPL's new Locations section.
  */
@@ -128,7 +141,7 @@ nypl_locations.config([
         // $urlRouterProvider.otherwise('/404');
         $stateProvider
             .state('home', {
-                url: '/',
+                url: '/locations',
                 abstract: true,
                 templateUrl: 'views/locations.html',
                 controller: 'LocationsCtrl',
@@ -183,7 +196,7 @@ nypl_locations.config([
             })
             .state('amenities', {
                 url: '/amenities',
-                templateUrl: '/views/amenities.html',
+                templateUrl: 'views/amenities.html',
                 controller: 'AmenitiesCtrl',
                 label: 'Amenities',
                 resolve: {
@@ -224,7 +237,7 @@ nypl_locations.config([
             })
             .state('404', {
                 url: '/404',
-                templateUrl: 'views/404.html'
+                templateUrl: '/locations/views/404.html'
             })
             .state('location', {
                 url: '/:location',
@@ -326,6 +339,12 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
  * @ngdoc overview
  * @module nypl_widget
  * @name nypl_widget
+ * @requires ngSanitize
+ * @requires ui.router
+ * @requires locationService
+ * @requires coordinateService
+ * @requires angulartics
+ * @requires angulartics.google.analytics
  * @description
  * AngularJS widget app for About pages on nypl.org.
  */

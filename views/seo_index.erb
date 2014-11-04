@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Locations and Hours</title>
+  </head>         
+  <body>
+    <h1>Locations and Hours</h1>
+    <ul>
+      <% @locations.each do |l| %>
+      <li itemscope itemtype="http://schema.org/Library">
+        <div itemprop="name">
+          <a href="<%= l.slug %>"><%= l.name %></a>
+        </div>
+
+        <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+          <div itemprop="streetAddress"><%= l.street_address %></div>
+          <div>
+            <span itemprop="addressLocality"><%= l.locality %></span>
+            <span itemprop="addressRegion"><%= l.region %></span>
+            <span itemprop="postalCode"><%= l.postal_code %></span>
+          </div>
+          <% if ! l.contacts.nil? %>
+          <div itemprop="telephone"><%= l.phone %></div>
+          <% end %>
+        </div>
+      </li>
+      <% end %>
+    </ul>
+  </body>
+</html>
+    

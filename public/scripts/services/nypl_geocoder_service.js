@@ -7,6 +7,7 @@
   /**
    * @ngdoc service
    * @name nypl_locations.service:nyplGeocoderService
+   * @requires $q
    * @description
    * AngularJS service that deals with all Google Maps related functions.
    * Can add a map to a page and add markers to the map.
@@ -22,7 +23,7 @@
       infowindow = new google.maps.InfoWindow(),
       geocoderService = {},
 
-      /**
+      /*
        * @ngdoc function
        * @name getMarkerFromList
        * @methodOf nypl_locations.service:nyplGeocoderService
@@ -35,7 +36,7 @@
         return _.findWhere(markers, {id: id});
       },
 
-      /**
+      /*
        * @ngdoc function
        * @name showInfowindow
        * @methodOf nypl_locations.service:nyplGeocoderService
@@ -58,7 +59,7 @@
         infowindow.open(map, marker);
       },
 
-      /**
+      /*
        * @ngdoc function
        * @name removeMarkerFromMap
        * @methodOf nypl_locations.service:nyplGeocoderService
@@ -77,7 +78,7 @@
         }
       },
 
-      /**
+      /*
        * @ngdoc function
        * @name addMarkerToMap
        * @methodOf nypl_locations.service:nyplGeocoderService

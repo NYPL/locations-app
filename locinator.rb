@@ -20,9 +20,15 @@ class Locinator < Sinatra::Base
     set :fundraising, configs["fundraising"]
   end
 
+  before do
+    headers 'Access-Control-Allow-Origin' => '*',
+    'Access-Control-Allow-Methods' => ['GET'],
+    'Access-Control-Allow-Headers' => 'Content-Type'
+  end
+
   helpers Sinatra::Jsonp
   set :protection, :except => :frame_options
-  set :haml, :format => :html5
+
   # Method cribbed from http://blog.alexmaccaw.com/seo-in-js-web-apps
   helpers do
     set :spider do |enabled|
@@ -35,41 +41,41 @@ class Locinator < Sinatra::Base
   get %r{/amenities/loc/(.+)$}, :spider => true do
     api = Lionactor::Client.new
     @loc = api.location(params['captures'].first)
-    @data = api.amenities(params['captures'].first)
-    haml :amenities_one_location
+    erb :seo_amenities_one_location
   end
 
   get %r{/amenities/id/(\d+)$}, :spider => true do
     api = Lionactor::Client.new
-    @data = api.amenity(params['captures'].first)
-    haml :amenities_one_amenity
+    @amenity = api.amenity(params['captures'].first)
+    erb :seo_one_amenity
   end
 
   get %r{/amenities$}, :spider => true do
     api = Lionactor::Client.new
-    @data = api.amenities
-    haml :amenities
+    @amenities = api.amenities.group_by{|a| a.category}
+    erb :seo_amenities
   end
   
-  get %r{/division/(.+)$}, :spider => true do
+  get %r{/divisions/(.+/)?(.+)$}, :spider => true do
     api = Lionactor::Client.new
-    @data = api.division(params['captures'].first)
-    haml :division
+    @div = api.division(params['captures'][1])
+    erb :seo_division
   end
 
   get %r{/(.+)$}, :spider => true do
     api = Lionactor::Client.new
-    @data = api.location(params['captures'].first)
-    haml :location
+    @location = api.location(params['captures'].first)
+    erb :seo_location
   end
 
   get '/', :spider => true do
     api = Lionactor::Client.new
-    @data = api.locations
-    haml :index
+    @locations = api.locations
+    erb :seo_index
   end
 
   get '/config' do
+
     tz = DateTime.now().strftime("%z")
     response = {
       "config" => {

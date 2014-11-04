@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <head>
+    <title>NYPL | <%= @div.name %></title>
+  </head>
+  <body>
+    <div itemscope itemtype="http://schema.org/Library">
+      <div itemprop="department" itemscope itemtype="http://schema.org/Organization">
+        <h1 itemprop="name"><%= @div.name %></h1>
+        <div itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+          <img src="<%= @div.images['interior'] %>" 
+               alt="Image of <%= @div.name %>"
+               itemprop="contentUrl" />
+        </div>
+        <div><%= @div.location.name %></div>
+        <%= erb :seo_address, :locals => {:loc => @div.location} %>
+        <div itemprop="contactPoint" itemscope itemtype="http://schema.org/ContactPoint">
+          <span itemprop="contactType">Library Manager</span>
+          <span itemprop="name"><%= @div.contacts['manager'] %></span>
+        </div>
+
+        <%= erb :seo_location_hours, :locals => {:hours => @div.hours} %>
+
+        <h2>About</h2>
+        <div itemprop="description"><%= @div.about %></div>
+
+
+        <%= erb :seo_hasdivisions, :locals => {:loc => @div, :parent => 'div', :parent_slug => @div.slug } %> 
+
+        <% if @div.embedded['features'] != nil && @div.embedded['features'].count > 0 %>
+          <%= erb :seo_features, :locals => {:features => @div.embedded['features']} %> 
+        <% end %>
+
+        <% if @div.embedded['blogs'] %>
+          <%= erb :seo_blogs, :locals => {:blogs => @div.embedded['blogs'] } %>
+        <% end %>
+      </div> 
+    </div>
+  </body>
+</html>
+
+              
+
+              
