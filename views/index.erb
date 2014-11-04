@@ -1,7 +1,14 @@
 <!doctype html>
 <html xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="nypl_locations">
   <head>
+
+    <% if settings.locinator_env == "local" %>
     <base href="/">
+    <% else %>
+    <base href="/<%= settings.root %>">
+    <% end %>
+
+
     <%if settings.locinator_env == "development" %>
     <%= erb :newrelic_dev %>
     <% end %>
@@ -22,7 +29,11 @@
     <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.1/css/nyplbase.min.css">
 <% end %>
 
+    <% if settings.locinator_env == "local" %>
     <link rel="stylesheet" href="css/locations.min.css">
+    <% else %>
+    <link rel="stylesheet" href="/locations/css/locations.min.css">
+    <% end %>
 
     <!-- Angular Hash fallback (need to test on heroku) -->
   </head>

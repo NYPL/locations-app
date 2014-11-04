@@ -18,6 +18,8 @@ class Locinator < Sinatra::Base
     set :featured_amenities, configs["featured_amenities"]
     set :research_order, configs["research_order"]
     set :fundraising, configs["fundraising"]
+    set :root, 'locations/'
+    set :views, 'views'
   end
 
   before do
