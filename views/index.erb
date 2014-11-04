@@ -25,8 +25,8 @@
     <base href="/">
     <link rel="stylesheet" href="css/locations.min.css">
 <% else %>
-    <base href="/locations/">
-    <link rel="stylesheet" href="/locations/css/locations.min.css">
+    <base href="<%= settings.baseurl %>">
+    <link rel="stylesheet" href="<%= settings.baseurl %>css/locations.min.css">
 <% end %>
 
     <!-- Angular Hash fallback (need to test on heroku) -->
