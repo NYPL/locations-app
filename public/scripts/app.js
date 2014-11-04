@@ -141,7 +141,7 @@ nypl_locations.config([
         // $urlRouterProvider.otherwise('/404');
         $stateProvider
             .state('home', {
-                url: '/locations',
+                url: '/',
                 abstract: true,
                 templateUrl: 'views/locations.html',
                 controller: 'LocationsCtrl',
@@ -157,17 +157,17 @@ nypl_locations.config([
             })
             .state('home.list', {
                 templateUrl: 'views/location-list-view.html',
-                url: '/list',
+                url: 'list',
                 label: 'Locations'
             })
             .state('home.map', {
                 templateUrl: 'views/location-map-view.html',
-                url: '/map',
+                url: 'map',
                 controller: 'MapCtrl',
                 label: 'Locations'
             })
             .state('subdivision', {
-                url: '/locations/divisions/:division/:subdivision',
+                url: '/divisions/:division/:subdivision',
                 templateUrl: 'views/division.html',
                 controller: 'DivisionCtrl',
                 label: 'Division',
@@ -181,7 +181,7 @@ nypl_locations.config([
                 }
             })
             .state('division', {
-                url: '/locations/divisions/:division',
+                url: '/divisions/:division',
                 templateUrl: 'views/division.html',
                 controller: 'DivisionCtrl',
                 label: 'Division',
@@ -195,7 +195,7 @@ nypl_locations.config([
                 }
             })
             .state('amenities', {
-                url: '/locations/amenities',
+                url: '/amenities',
                 templateUrl: 'views/amenities.html',
                 controller: 'AmenitiesCtrl',
                 label: 'Amenities',
@@ -208,7 +208,7 @@ nypl_locations.config([
                 }
             })
             .state('amenity', {
-                url: '/locations/amenities/id/:amenity',
+                url: '/amenities/id/:amenity',
                 templateUrl: 'views/amenities.html',
                 controller: 'AmenityCtrl',
                 label: 'Amenities',
@@ -223,7 +223,7 @@ nypl_locations.config([
 
             })
             .state('amenities-at-location', {
-                url: '/locations/amenities/loc/:location',
+                url: '/amenities/loc/:location',
                 templateUrl: 'views/amenitiesAtLibrary.html',
                 controller: 'AmenitiesAtLibraryCtrl',
                 resolve: {
@@ -236,11 +236,11 @@ nypl_locations.config([
                 }
             })
             .state('404', {
-                url: '/locations/404',
+                url: '/404',
                 templateUrl: '/locations/views/404.html'
             })
             .state('location', {
-                url: '/locations/:location',
+                url: '/:location',
                 templateUrl: 'views/location.html',
                 controller: 'LocationCtrl',
                 resolve: {
