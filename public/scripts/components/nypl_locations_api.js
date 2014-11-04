@@ -277,7 +277,7 @@
      * @module locationService
      * @name locationService
      * @description
-     * AngularJS module that provice a service to call the API endpoints.
+     * AngularJS module that provides a service to call the API endpoints.
      */
     angular
         .module('locationService', [])

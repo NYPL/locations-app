@@ -68,7 +68,22 @@
       }];
   }
 
-  /** @namespace nyplBreadcrumbs */
+  /**
+   * @ngdoc directive
+   * @name nyplBreadcrumbs.directive:nyplBreadcrumbs
+   * @restrict E
+   * @requires $interpolate
+   * @requires $state
+   * @requires $crumb
+   * @scope
+   * @description
+   * Displays a custom NYPL breadcrumbs menu.
+   * @example
+   * <pre>
+   *  <!-- data.crumbName is set in the router configurations -->
+   *  <nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>
+   * </pre>
+   */
   function nyplBreadcrumbs($interpolate, $state, $crumb) {
     return {
       restrict: 'E',
@@ -466,6 +481,14 @@
     };
   }
 
+  /**
+   * @ngdoc overview
+   * @module nyplBreadcrumbs
+   * @name nyplBreadcrumbs
+   * @description
+   * AngularJS module for adding a custom NYPL breadcrumbs to all pages except
+   * the homepage.
+   */
   angular
     .module('nyplBreadcrumbs', [])
     .provider('$crumb', $Crumb)
