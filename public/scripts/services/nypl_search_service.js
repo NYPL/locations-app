@@ -4,26 +4,61 @@
 (function () {
   'use strict';
 
-  /** @namespace nyplSearch */
+  /**
+   * @ngdoc service
+   * @name nypl_locations.service:nyplSearch
+   * @description
+   * AngularJS service that deals preserving data across the app, specifically
+   * used for saving the home state.
+   */
   function nyplSearch($filter) {
     var search = {},
       searchValues = {};
 
+    /**
+     * @ngdoc function
+     * @name setSearchValue
+     * @methodOf nypl_locations.service:nyplSearch
+     * @param {string} prop ...  
+     * @param {string} val ...
+     * @returns {object} ...
+     * @description
+     * ...
+     */
     search.setSearchValue = function (prop, val) {
       searchValues[prop] = val;
       return this;
     };
 
+    /**
+     * @ngdoc function
+     * @name getSearchValues
+     * @methodOf nypl_locations.service:nyplSearch
+     * @returns {object} ...
+     * @description
+     * ...
+     */
     search.getSearchValues = function () {
       return searchValues;
     };
 
+    /**
+     * @ngdoc function
+     * @name resetSearchValues
+     * @methodOf nypl_locations.service:nyplSearch
+     * @returns {object} ...
+     * @description
+     * ...
+     */
     search.resetSearchValues = function () {
       searchValues = {};
       return this;
     };
 
-    /** @function nyplSearch.idLocationSearch
+    /**
+     * @ngdoc function
+     * @name idLocationSearch
+     * @methodOf nypl_locations.service:nyplSearch
      * @param {array} locations Array containing a list of all the
      *  locations objects.
      * @param {string} searchTerm The id to search for in all the locations.
@@ -47,7 +82,10 @@
       return IDFilter;
     };
 
-    /** @function nyplSearch.locationSearch
+    /**
+     * @ngdoc function
+     * @name locationSearch
+     * @methodOf nypl_locations.service:nyplSearch
      * @param {array} locations An array with all the location objects.
      * @param {string} searchTerm The search word or phrased to look for in the
      *  locations objects.
@@ -75,7 +113,10 @@
       return lazyFilter;
     };
 
-    /** @function nyplSearch.searchWordFilter
+    /**
+     * @ngdoc function
+     * @name searchWordFilter
+     * @methodOf nypl_locations.service:nyplSearch
      * @param {string} query The search word or phrase.
      * @returns {string} The same search phrase but with stop words removed.
      * @description Some words should be removed from a user's search query.

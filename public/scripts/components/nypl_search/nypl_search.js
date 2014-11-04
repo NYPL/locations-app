@@ -4,6 +4,18 @@
 (function () {
   'use strict';
 
+  /**
+   * @ngdoc directive
+   * @name nyplSearch.directive:nyplSearch
+   * @restrict E
+   * @scope
+   * @description
+   * Displays the NYPL search from. Design and event handlers.
+   * @example
+   * <pre>
+   *  <nypl-search></nypl-search>
+   * </pre>
+   */
   function nyplSearch() {
     return {
       restrict: 'E',
@@ -159,6 +171,13 @@
     };
   }
 
+  /**
+   * @ngdoc overview
+   * @module nyplSearch
+   * @name nyplSearch
+   * @description
+   * AngularJS module for managing the header search form and its input.
+   */
   angular
     .module('nyplSearch', [])
     .directive('nyplSearch', nyplSearch);
