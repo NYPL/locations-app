@@ -20,6 +20,12 @@ class Locinator < Sinatra::Base
     set :fundraising, configs["fundraising"]
   end
 
+  before do
+    headers 'Access-Control-Allow-Origin' => '*',
+    'Access-Control-Allow-Methods' => ['GET'],
+    'Access-Control-Allow-Headers' => 'Content-Type'
+  end
+
   helpers Sinatra::Jsonp
   set :protection, :except => :frame_options
 
@@ -69,6 +75,7 @@ class Locinator < Sinatra::Base
   end
 
   get '/config' do
+
     tz = DateTime.now().strftime("%z")
     response = {
       "config" => {
