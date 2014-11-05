@@ -19,8 +19,8 @@
     <base href="/widget" target="_parent">
     <link rel="stylesheet" href="css/locations.min.css">
   <% else %>
-    <base href="/locations/widget" target="_parent">
-    <link rel="stylesheet" href="/locations/css/locations.min.css">
+    <base href="<%= settings.baseurl %>widget" target="_parent">
+    <link rel="stylesheet" href="<%= settings.baseurl %>css/locations.min.css">
   <% end %>
 
   </head>
@@ -30,7 +30,7 @@
     <![endif]-->
     
     <div class="nypl-widget-wrapper">
-      <!-- Lokinator App -->
+      <!-- Locinator App -->
       <div data-ui-view data></div>
     </div>
 
