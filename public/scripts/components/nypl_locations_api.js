@@ -26,25 +26,15 @@
          * Used to get Sinatra generated config variables.
          */
         locationsApi.getConfig = function () {
-            
             var defer = $q.defer();
 
-            //if (config) {
-            //    defer.resolve(config);
-            //} else {
-            //    $http.get('/locations/config', {cache: true})
-            //        .success(function (data) {
-            //            api = data.config.api_root;
-            //            config = data.config;
-            //            defer.resolve(config);
-            //        })
-            //        .error(function (data, status) {
-            //            defer.reject(apiError + ': config');
-            //        });
-            //}
-
-            api = window.locations_cfg.config.api_root
-            defer.resolve(window.locations_cfg);
+            if (config) {
+               defer.resolve(config);
+            } else {
+                api = window.locations_cfg.config.api_root
+                config = window.locations_cfg;
+                defer.resolve(config);
+            }
             return defer.promise;
         }
 

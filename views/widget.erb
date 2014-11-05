@@ -71,6 +71,10 @@
 <%= erb :angular_ux_static %>
 <% end %>
 
+    <!-- App Config -->
+    <script>
+      var locations_cfg = <%= settings.app_cfg %>
+    </script>
     <!-- NYPL Components -->
     <script src="scripts/components/nypl_coordinates.js"></script>
     <script src="scripts/components/nypl_locations_api.js"></script>
