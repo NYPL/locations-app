@@ -20,6 +20,20 @@ class Locinator < Sinatra::Base
     set :fundraising, configs["fundraising"]
     set :baseurl, '/locations/'
     # set :views, 'views'
+
+    set :app_cfg, JSON.generate({
+      "config" => {
+        "self" => settings.env_config["url"],
+        "tz_offset" => DateTime.now().strftime("%z"),
+        "api_root" => settings.env_config["api"],
+        "divisions_with_appointments" => settings.divisions_with_appointments,
+        "featured_amenities" => settings.featured_amenities,
+        "research_order" => settings.research_order,
+        "fundraising" => settings.fundraising,
+        "closed_img" => settings.env_config["closed_img"]
+      }
+    })
+
   end
 
   before do
