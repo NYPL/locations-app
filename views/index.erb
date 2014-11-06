@@ -1,9 +1,15 @@
 <!doctype html>
 <html xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="nypl_locations" data-ng-strict-di>
   <head>
+    <%#= New Relic Snippets %>
     <%if settings.locinator_env == "development" %>
     <%= erb :newrelic_dev %>
+    <%elsif settings.locinator_env == "qa" %>
+    <%= erb :newrelic_qa %>
+    <%elsif settings.locinator_env == "production" %>
+    <%= erb :newrelic_prod %>
     <% end %>
+
     <% if ! settings.env_config["optimizely"].nil? %>
     <script src="<%= settings.env_config["optimizely"] %>"></script>
     <% end %>
@@ -16,9 +22,9 @@
 
     <link rel="shortcut icon" type="image/png" href="/images/favicon.ico">
 <% if settings.env_config["angular_src"] == "ux-static-staging" %>
-    <link rel="stylesheet" href="http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.1/css/nyplbase.min.css">
+    <link rel="stylesheet" href="http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.3/css/nyplbase.min.css">
 <% else %>
-    <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.1/css/nyplbase.min.css">
+    <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.3/css/nyplbase.min.css">
 <% end %>
 
 <% if settings.locinator_env == "local" %>
