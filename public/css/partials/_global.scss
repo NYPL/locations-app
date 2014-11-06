@@ -465,6 +465,11 @@ time {
 		padding: 20px 0px;
 	}
 
+	p {
+		max-width: none;
+		margin-bottom: 1em;
+	}
+
 	.brooklyn-library, .queens-library {
 		text-decoration: none;
 		&:hover {
