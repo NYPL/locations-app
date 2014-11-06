@@ -37,7 +37,6 @@ describe('Google analytics configuration', function () {
       browser.waitForAngular();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        console.log(ga);
         expect(ga[1][1]).toEqual('pageview');
         expect(ga[1][2]).toEqual('/locations/115th-street');
       });
@@ -62,7 +61,6 @@ describe('Google analytics configuration', function () {
       browser.waitForAngular();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        console.log(ga);
         expect(ga[4][1]).toEqual('pageview');
         expect(ga[4][2]).toEqual('/locations/divisions/general-research-division');
       });
@@ -73,17 +71,16 @@ describe('Google analytics configuration', function () {
       browser.waitForAngular();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[2][1]).toEqual('pageview');
-        expect(ga[2][2]).toEqual('/locations/115th-street');
+        expect(ga[1][1]).toEqual('pageview');
+        expect(ga[1][2]).toEqual('/locations/115th-street');
       });
 
-      element(by.linkText('See all amenities')).click();
+      locationPage.allAmenities.click();
       browser.waitForAngular();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        console.log(ga);
-        expect(ga[3][1]).toEqual('pageview');
-        expect(ga[3][2]).toEqual('/locations/amenities/loc/115th-street');
+        expect(ga[2][1]).toEqual('pageview');
+        expect(ga[2][2]).toEqual('/locations/amenities/loc/115th-street');
       });
     });
   });
@@ -157,13 +154,12 @@ describe('Google analytics configuration', function () {
           landingPage.listViewBtn.click();
 
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            console.log(ga);
-            expect(ga[4][2]).toEqual('Locations');
-            expect(ga[4][3]).toEqual('View');
-            expect(ga[4][4]).toEqual('List view');
+            expect(ga[2][2]).toEqual('Locations');
+            expect(ga[2][3]).toEqual('View');
+            expect(ga[2][4]).toEqual('List view');
 
-            expect(ga[5][1]).toEqual('pageview');
-            expect(ga[5][2]).toEqual('/locations/list');
+            expect(ga[3][1]).toEqual('pageview');
+            expect(ga[3][2]).toEqual('/locations/list');
           });
         });
     });
