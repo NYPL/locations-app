@@ -114,6 +114,7 @@ class Locinator < Sinatra::Base
     
 
   get %r{/.*$} do
+    @rq = request
     erb :index
   end
   
