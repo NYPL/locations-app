@@ -42,12 +42,14 @@ var nypl_locations = angular.module('nypl_locations', [
 nypl_locations.constant('_', window._);
 
 nypl_locations.config([
+    '$analyticsProvider',
     '$locationProvider',
     '$translateProvider',
     '$stateProvider',
     '$urlRouterProvider',
     '$crumbProvider',
     function (
+        $analyticsProvider,
         $locationProvider,
         $translateProvider,
         $stateProvider,
@@ -55,6 +57,10 @@ nypl_locations.config([
         $crumbProvider
     ) {
         'use strict';
+
+        // Turn off automatic virtual pageviews for GA.
+        // In $stateRouteSuccess, /locations/ is added to each page hit.
+        $analyticsProvider.virtualPageviews(false);
 
         // uses the HTML5 History API, remove hash (need to test)
         $locationProvider.html5Mode(true);
