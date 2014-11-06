@@ -4,12 +4,23 @@
 (function () {
   'use strict';
 
-  /** @namespace nyplCoordinatesService */
+  /**
+   * @ngdoc service
+   * @name coordinateService.service:nyplCoordinatesService
+   * @requires $q
+   * @requires $window
+   * @description
+   * AngularJS service to get a user's geolocation coordinates and calculate
+   * the distance between two points.
+   */
   function nyplCoordinatesService($q, $window) {
     var geoCoords = null,
       coordinatesService = {};
 
-    /** @function nyplCoordinatesServce.geolocationAvailable
+    /**
+     * @ngdoc function
+     * @name geolocationAvailable
+     * @methodOf coordinateService.service:nyplCoordinatesService
      * @returns {boolean} True if navigator and navigator.geolocation are
      *  available in the browser, false otherwise.
      */
@@ -19,12 +30,16 @@
           true;
     };
 
-    /** @function nyplCoordinatesServce.getBrowserCoordinates
+    /**
+     * @ngdoc function
+     * @name getBrowserCoordinates
+     * @methodOf coordinateService.service:nyplCoordinatesService
      * @returns {object} Deferred promise. If it resolves, it will return an
      *  object with the user's current position as latitude and longitude
      *  properties. If it is rejected, it will return an error message based
      *  on what kind of error occurred.
      * @example
+     * <pre>
      *  nyplCoordinatesService.getBrowserCoordinates()
      *    .then(function (position) {
      *      var userCoords = _.pick(position, 'latitude', 'longitude');
@@ -32,6 +47,7 @@
      *    .catch(function (error) {
      *      throw error;
      *    });
+     * </pre>
      */
     coordinatesService.getBrowserCoordinates = function () {
       // Object containing success/failure conditions
@@ -90,15 +106,20 @@
       return defer.promise; // Enables 'then' callback
     };
 
-    /** @function nyplCoordinatesServce.getDistance
+    /**
+     * @ngdoc function
+     * @name getDistance
+     * @methodOf coordinateService.service:nyplCoordinatesService
      * @param {number} lat1 Latitude of first location.
      * @param {number} lon1 Longitude of first location.
      * @param {number} lat2 Latitude of second location.
      * @param {number} lon2 Longitude of second location.
      * @returns {number} Distance in miles between two different locations.
      * @example
+     * <pre>
      *  var distance =
      *    nyplCoordinatesService.getDistance(40.1, -73.1, 41.1, -73.2);
+     * </pre>
      */
     coordinatesService.getDistance = function (lat1, lon1, lat2, lon2) {
       if (!lat1 || !lon2 || !lat2 || !lon2) {
@@ -123,6 +144,14 @@
   }
   nyplCoordinatesService.$inject = ["$q", "$window"];
 
+  /**
+   * @ngdoc overview
+   * @module coordinateService
+   * @name coordinateService
+   * @description
+   * AngularJS module that provides a service to use a browser's geolocation
+   * coordinates and a function to calculate distance between two points.
+   */
   angular
     .module('coordinateService', [])
     .factory('nyplCoordinatesService', nyplCoordinatesService);
@@ -161,19 +190,12 @@
             var defer = $q.defer();
 
             if (config) {
-                defer.resolve(config);
+               defer.resolve(config);
             } else {
-                $http.get('/config', {cache: true})
-                    .success(function (data) {
-                        api = data.config.api_root;
-                        config = data.config;
-                        defer.resolve(config);
-                    })
-                    .error(function (data, status) {
-                        defer.reject(apiError + ': config');
-                    });
+                api = window.locations_cfg.config.api_root
+                config = window.locations_cfg;
+                defer.resolve(config);
             }
-
             return defer.promise;
         }
 
@@ -410,7 +432,7 @@
      * @module locationService
      * @name locationService
      * @description
-     * AngularJS module that provice a service to call the API endpoints.
+     * AngularJS module that provides a service to call the API endpoints.
      */
     angular
         .module('locationService', [])
@@ -621,7 +643,7 @@ nypl_locations.config([
             })
             .state('amenities', {
                 url: '/amenities',
-                templateUrl: '/views/amenities.html',
+                templateUrl: 'views/amenities.html',
                 controller: 'AmenitiesCtrl',
                 label: 'Amenities',
                 resolve: {
@@ -662,7 +684,7 @@ nypl_locations.config([
             })
             .state('404', {
                 url: '/404',
-                templateUrl: 'views/404.html'
+                templateUrl: '/locations/views/404.html'
             })
             .state('location', {
                 url: '/:location',
@@ -1086,25 +1108,25 @@ angular.module('nypl_widget', [
     nyplCoordinatesService,
     nyplUtility
   ) {
-    var url = config.self,
-      loadUserCoordinates = function () {
-      return nyplCoordinatesService
-        .getBrowserCoordinates()
-        .then(function (position) {
-          var userCoords =
-            _.pick(position, 'latitude', 'longitude');
+    // var loadUserCoordinates = function () {
+    //   return nyplCoordinatesService
+    //     .getBrowserCoordinates()
+    //     .then(function (position) {
+    //       var userCoords =
+    //         _.pick(position, 'latitude', 'longitude');
 
-          // Needed to update async var on geolocation success
-          $timeout(function () {
-            $scope.locationStart = userCoords.latitude +
-              "," + userCoords.longitude;
-          });
-        });
-    };
+    //       // Needed to update async var on geolocation success
+    //       $timeout(function () {
+    //         $scope.locationStart = userCoords.latitude +
+    //           "," + userCoords.longitude;
+    //       });
+    //     });
+    // };
 
     $rootScope.title = data.name;
     $scope.data = data;
-    $scope.locinator_url = "http://locations-beta.nypl.org" + $location.path().substr(7);
+    $scope.locinator_url = "http://locations-beta.nypl.org" +
+      $location.path().substr(7);
     $scope.widget_name = data.name;
 
     if (data._embedded.location) {
@@ -1116,7 +1138,6 @@ angular.module('nypl_widget', [
       $scope.data.images.closed = config.closed_img;
     }
 
-    // Do we want this in the widget??
     // loadUserCoordinates();
 
     if (data.hours) {
@@ -1724,7 +1745,13 @@ angular.module('nypl_widget', [
 (function () {
   'use strict';
 
-  // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
+  /**
+   * @ngdoc service
+   * @name nypl_locations.service:requestNotificationChannel
+   * @requires $rootScope
+   * @description
+   * Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
+   */
   function requestNotificationChannel($rootScope) {
     // private notification messages
     var _START_REQUEST_ = '_START_REQUEST_',
@@ -1759,15 +1786,27 @@ angular.module('nypl_widget', [
   }
   requestNotificationChannel.$inject = ["$rootScope"];
 
-  /** @namespace nyplUtility */
-  function nyplUtility($window, $sce, nyplCoordinatesService) {
+  /**
+   * @ngdoc service
+   * @name nypl_locations.service:nyplUtility
+   * @requires $sce
+   * @requires $window
+   * @requires nyplCoordinatesService
+   * @description
+   * AngularJS service with utility functions.
+   */
+  function nyplUtility($sce, $window, nyplCoordinatesService) {
     var utility = {};
 
-    /** @function nyplUtility.hoursToday
+    /**
+     * @ngdoc function
+     * @name hoursToday
+     * @methodOf nypl_locations.service:nyplUtility
      * @param {object} hours Object with a regular property that is an
      *  array with the open and close times for every day.
      * @returns {object} An object with the open and close times for
      *  the current and tomorrow days.
+     * @description ...
      */
     utility.hoursToday = function (hours) {
       var date = new Date(),
@@ -1792,6 +1831,15 @@ angular.module('nypl_widget', [
       return hoursToday;
     };
 
+    /**
+     * @ngdoc function
+     * @name formatDate
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {string} startDate ...
+     * @param {string} endDate ...
+     * @returns {string} ...
+     * @description ...
+     */
     utility.formatDate = function(startDate, endDate) {
       var formattedDate,
           months = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -1835,7 +1883,14 @@ angular.module('nypl_widget', [
       return formattedDate;
     }
 
-    // Parse exception data and return as string
+    /**
+     * @ngdoc function
+     * @name branchException
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {object} hours ...
+     * @returns {object} ...
+     * @description Parse exception data and return as string
+     */
     utility.branchException = function (hours) {
       var exception = {};
 
@@ -1860,14 +1915,18 @@ angular.module('nypl_widget', [
       return null;
     };
 
-    /** @function nyplUtility.getAddressString
+    /**
+     * @ngdoc function
+     * @name getAddressString
+     * @methodOf nypl_locations.service:nyplUtility
      * @param {object} location The full location object.
      * @param {boolean} [nicePrint] False by default. If true is passed,
      *  the returned string will have HTML so it displays nicely in a
      *  Google Maps marker infowindow.
      * @returns {string} The formatted address of the location passed.
      *  Will contain HTML if true is passed as the second parameter,
-     *  with the location name linked
+     *  with the location name linked.
+     * @description ...
      */
     utility.getAddressString = function (location, nicePrint) {
       if (!location) {
@@ -1890,6 +1949,13 @@ angular.module('nypl_widget', [
         location.postal_code;
     };
 
+    /**
+     * @ngdoc function
+     * @name socialMediaColor
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {object} social_media ...
+     * @description ...
+     */
     utility.socialMediaColor = function (social_media) {
       _.each(social_media, function (sc) {
         sc.classes = 'icon-';
@@ -1924,6 +1990,13 @@ angular.module('nypl_widget', [
       return social_media;
     };
 
+    /**
+     * @ngdoc function
+     * @name alerts
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {array} alerts ...
+     * @description ...
+     */
     utility.alerts = function (alerts) {
       var today = new Date(),
         todaysAlert = [],
@@ -1951,12 +2024,18 @@ angular.module('nypl_widget', [
       return null;
     };
 
-    /*
-    * Desc: Utility service function that opens a new window given a URL
-    * Arguments:
-    * link (URL), title (String), 
-    * width (Int or String), height (Int or String)
-    */
+    /**
+     * @ngdoc function
+     * @name popupWindow
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {string} link ...
+     * @param {string} title ...
+     * @param {string} width ...
+     * @param {string} height ...
+     * @description
+     * Utility service function that opens a new window given a URL.
+     * width (Int or String), height (Int or String)
+     */
     utility.popupWindow = function (link, title, width, height) {
       var w, h, popUp, popUp_h, popUp_w;
 
@@ -2010,6 +2089,15 @@ angular.module('nypl_widget', [
       }
     };
 
+    /**
+     * @ngdoc function
+     * @name calendarLink
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {string} type ...
+     * @param {object} event ...
+     * @param {object} location ...
+     * @description ...
+     */
     utility.calendarLink = function (type, event, location) {
       if (!type || !event || !location) {
         return '';
@@ -2051,6 +2139,14 @@ angular.module('nypl_widget', [
       return calendar_link;
     };
 
+    /**
+     * @ngdoc function
+     * @name icalLink
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {object} event ...
+     * @param {object} address ...
+     * @description ...
+     */
     utility.icalLink = function (event, address) {
       if (!event || !address) {
         return '';
@@ -2077,7 +2173,15 @@ angular.module('nypl_widget', [
       return icalLink;
     };
 
-    // Iterate through lon/lat and calculate distance
+    /**
+     * @ngdoc function
+     * @name calcDistance
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {object} locations ...
+     * @param {object} coords ...
+     * @description
+     * Iterate through lon/lat and calculate distance
+     */
     utility.calcDistance = function (locations, coords) {
       if (!locations) {
         return [];
@@ -2109,7 +2213,10 @@ angular.module('nypl_widget', [
       return locations;
     };
 
-    /** @function nyplUtility.checkDistance
+    /**
+     * @ngdoc function
+     * @name checkDistance
+     * @methodOf nypl_locations.service:nyplUtility
      * @param {array} locations An array with all the locations objects.
      * @returns {boolean} True if the minimum distance property from each
      *  location is more than 25 (miles). False otherwise.
@@ -2127,7 +2234,10 @@ angular.module('nypl_widget', [
       return false;
     };
 
-    /** @function nyplUtility.returnHTML
+    /**
+     * @ngdoc function
+     * @name returnHTML
+     * @methodOf nypl_locations.service:nyplUtility
      * @param {string} html A string containing HTML that should be rendered.
      * @returns {string} A trusted string with renderable HTML used in
      *  AngularJS' markup binding.
@@ -2139,7 +2249,10 @@ angular.module('nypl_widget', [
       return $sce.trustAsHtml(html);
     };
 
-    /** @function nyplUtility.divisionHasAppointment
+    /**
+     * @ngdoc function
+     * @name divisionHasAppointment
+     * @methodOf nypl_locations.service:nyplUtility
      * @param {string} id The id of a division.
      * @returns {boolean} True if the division is in the set that should have
      *  appointments, false otherwise.
@@ -2150,13 +2263,22 @@ angular.module('nypl_widget', [
       return _.contains(divisionsWithApts, id);
     };
 
+    /**
+     * @ngdoc function
+     * @name researchLibraryOrder
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {array} research_order ...
+     * @param {string} id The id of a branch.
+     * @returns {number} ...
+     * @description ..
+     */
     utility.researchLibraryOrder = function (research_order, id) {
       return _.indexOf(research_order, id);
     };
 
     return utility;
   }
-  nyplUtility.$inject = ["$window", "$sce", "nyplCoordinatesService"];
+  nyplUtility.$inject = ["$sce", "$window", "nyplCoordinatesService"];
 
   angular
     .module('nypl_locations')
