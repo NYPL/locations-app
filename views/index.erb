@@ -119,5 +119,12 @@
 <%= erb :full_app %>
 <% end %>
 
+    <div>
+    <ul>
+      <li>Forwarded: <%= @rq.forwarded? %></li>
+      <li>URL: <%= @rq.url %></li>
+      <li>Path: <%= @rq.path %></li>
+    </ul>
+    </div>
 </body>
 </html>
