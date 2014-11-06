@@ -456,3 +456,42 @@ time {
 
 }
 
+// Brooklyn/Queens Libraries
+.partner-libraries {
+	width: 100%;
+	padding: 10px 0px;
+	text-align: center;
+	@include breakpoint($min, $post-palm) {
+		padding: 20px 0px;
+	}
+
+	.brooklyn-library, .queens-library {
+		text-decoration: none;
+		&:hover {
+			text-decoration: none;
+		}
+
+		img {
+			display: block;
+			margin: 10px auto;
+			@include breakpoint($min, $post-palm) {
+				display: inline-block;
+			}
+		}
+	}
+
+	.brooklyn-library {
+		img {
+			@include breakpoint($min, $post-palm) {
+				margin-right: 20px;
+			}
+		}
+	}
+	.queens-library {
+		img {
+			@include breakpoint($min, $post-palm) {
+				margin-left: 20px;
+			}
+		}
+	}
+}
