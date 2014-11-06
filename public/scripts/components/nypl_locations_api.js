@@ -29,19 +29,12 @@
             var defer = $q.defer();
 
             if (config) {
-                defer.resolve(config);
+               defer.resolve(config);
             } else {
-                $http.get('/config', {cache: true})
-                    .success(function (data) {
-                        api = data.config.api_root;
-                        config = data.config;
-                        defer.resolve(config);
-                    })
-                    .error(function (data, status) {
-                        defer.reject(apiError + ': config');
-                    });
+                api = window.locations_cfg.config.api_root
+                config = window.locations_cfg;
+                defer.resolve(config);
             }
-
             return defer.promise;
         }
 
@@ -277,7 +270,7 @@
      * @module locationService
      * @name locationService
      * @description
-     * AngularJS module that provice a service to call the API endpoints.
+     * AngularJS module that provides a service to call the API endpoints.
      */
     angular
         .module('locationService', [])

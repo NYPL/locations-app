@@ -21,10 +21,15 @@
     <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.1/css/nyplbase.min.css">
 <% end %>
 
-    <link rel="stylesheet" href="/css/locations.min.css">
+<% if settings.locinator_env == "local" %>
+    <base href="/">
+    <link rel="stylesheet" href="css/locations.min.css">
+<% else %>
+    <base href="<%= settings.baseurl %>">
+    <link rel="stylesheet" href="<%= settings.baseurl %>css/locations.min.css">
+<% end %>
 
     <!-- Angular Hash fallback (need to test on heroku) -->
-    <base href="/">
   </head>
   <body>
     <!--[if lt IE 9]>
@@ -47,7 +52,7 @@
     <nypl-navigation></nypl-navigation>
 
     <div class="wrapper">
-      <!-- Lokinator App -->
+      <!-- Locinator App -->
 	    <div class="nypl-locations" data-ui-view data-autoscroll="false" scrolltop></div>
     </div>
     
@@ -98,6 +103,10 @@
     <script src="bower_components/newrelic-timing/newrelic-timing.min.js"></script>
     <script src="bower_components/newrelic-timing/newrelic-timing-angular.min.js"></script>
 
+    <!-- App Config -->
+    <script>
+      var locations_cfg = <%= settings.app_cfg %>
+    </script>
 <% if settings.env_config["app_src"] == "minified" %>
 <%= erb :minified_app %>
 <% else %>

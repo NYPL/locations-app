@@ -18,6 +18,28 @@ class Locinator < Sinatra::Base
     set :featured_amenities, configs["featured_amenities"]
     set :research_order, configs["research_order"]
     set :fundraising, configs["fundraising"]
+    set :baseurl, '/locations/'
+    # set :views, 'views'
+
+    set :app_cfg, JSON.generate({
+      "config" => {
+        "self" => settings.env_config["url"],
+        "tz_offset" => DateTime.now().strftime("%z"),
+        "api_root" => settings.env_config["api"],
+        "divisions_with_appointments" => settings.divisions_with_appointments,
+        "featured_amenities" => settings.featured_amenities,
+        "research_order" => settings.research_order,
+        "fundraising" => settings.fundraising,
+        "closed_img" => settings.env_config["closed_img"]
+      }
+    })
+
+  end
+
+  before do
+    headers 'Access-Control-Allow-Origin' => '*',
+    'Access-Control-Allow-Methods' => ['GET'],
+    'Access-Control-Allow-Headers' => 'Content-Type'
   end
 
   helpers Sinatra::Jsonp
@@ -69,6 +91,7 @@ class Locinator < Sinatra::Base
   end
 
   get '/config' do
+
     tz = DateTime.now().strftime("%z")
     response = {
       "config" => {

@@ -19,7 +19,8 @@ var mockGeneralResearchDivision = {
     id: "GRD",
     images: {
       interior: "http://www.nypl.org/sites/default/files/images/stacks.jpeg",
-      collection_item: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/locations/394/dc_sasb_grd.jpg"
+      collection_item: "http://cdn-prod.www.aws.nypl.org/sites/default/files" +
+        "/images/locations/394/dc_sasb_grd.jpg"
     },
     name: "General Research Division",
     open: true,
@@ -31,54 +32,107 @@ var mockGeneralResearchDivision = {
       { site: "twitter", href: "http://twitter.com/NYPL_GRD"}
     ],
     synonyms: null,
-    type: "research",
-    _embedded: {
-      events: null,
-      exhibitions: null,
-    }
-  },
-  mockRareBookDivision = {
-    access: "Partially Accessible",
-    contacts: { phone: "(212) 642-0110"},
-    hours: {
-      regular: [
-        { day: "Sun", open: null, close: null },
-        { day: "Mon", open: null, close: null },
-        { day: "Tue", open: "10:00", close: "19:45" },
-        { day: "Wed", open: "10:00", close: "19:45" },
-        { day: "Thu", open: "10:00", close: "17:45" },
-        { day: "Fri", open: "10:00", close: "17:45" },
-        { day: "Sat", open: "10:00", close: "17:45" }
-      ]
+    fundraising: {id: 275290,
+      statement: "Friends of the Library can support their favorite library" +
+        " and receive great benefits!",
+      appeal: "Become a Member",
+      button_label: "Join or Renew",
+      link: "https://secure3.convio.net/nypl/site/SPageServer?pagename=bran" +
+        "ch_friend_form&s_src=FRQ15ZZ_CADN"
     },
-    id: "RBK",
-    images: {
-      interior: "http://www.nypl.org/sites/default/files/emblemssquirrel.jpg"
-    },
-    locality: "New York",
-    location_id: "SASB",
-    location_name: "Stephen A. Schwarzman Building",
-    location_slug: "schwarzman",
-    name: "Rare Book Division",
-    open: true,
-    postal_code: 10018,
-    region: "NY",
-    room: "328",
-    slug: "rare-books-division",
-    social_media: null,
-    street_address: "Fifth Avenue at 42nd Street",
-    synonyms: null,
     type: "research",
     _embedded: {
       events: null,
       exhibitions: null,
       divisions: [
         {
-          _id: "ARN",
-          name: "George Arents Collection",
-          street_address: "Fifth Avenue at 42nd Street",
+          name: "DeWitt Wallace Periodical Room",
+          access: "Fully Accessible",
+          rank: 23,
+          floor: "First Floor",
+          room: "108",
+          slug: "periodicals-room",
+          hours: { regular: [
+            { day: "Sun", open: null, close: null },
+            { day: "Mon", open: "10:00", close: "17:45" },
+            { day: "Tue", open: "10:00", close: "19:45" },
+            { day: "Wed", open: "10:00", close: "19:45" },
+            { day: "Thu", open: "10:00", close: "17:45" },
+            { day: "Fri", open: "10:00", close: "17:45" },
+            { day: "Sat", open: "10:00", close: "17:45" }]
+          }
         }
-      ]
+      ],
+      location: {
+        name: "Stephen A. Schwarzman Building",
+        street_address: "Fifth Avenue at 42nd Street",
+        cross_street: "",
+        locality: "New York",
+        region: "NY",
+        access: "Fully Accessible",
+        postal_code: 10018,
+        type: "research",
+        slug: "schwarzman"
+      }
+    }
+  },
+  mockArentsDivision = {
+    name: "George Arents Collection",
+    access: "Fully Accessible",
+    rank: 0,
+    floor: "Third Floor",
+    room: "328",
+    type: "research",
+    slug: "arents-collection",
+    // hours: {
+    //   regular: [
+    //     { day: "Sun", open: null, close: null },
+    //     { day: "Mon", open: null, close: null },
+    //     { day: "Tue", open: "10:00", close: "19:45" },
+    //     { day: "Wed", open: "10:00", close: "19:45" },
+    //     { day: "Thu", open: "10:00", close: "17:45" },
+    //     { day: "Fri", open: "10:00", close: "17:45" },
+    //     { day: "Sat", open: "10:00", close: "17:45" }
+    //   ]
+    // },
+    open: true,
+    images: {
+    collection_item: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/locations/444/dc_sasb_arents.jpg",
+      interior: "http://cdn-prod.www.aws.nypl.org/sites/default/files/images/locations/444/research_interior_2014_09_18_sasb_arents_8012.jpg"
+    },
+    plan_your_visit: null,
+    fundraising: {
+      _id: 275290,
+      statement: "Friends of the Library can support their favorite library and receive great benefits!",
+      appeal: "Become a Member",
+      button_label: "Join or Renew",
+      link: "https://secure3.convio.net/nypl/site/SPageServer?pagename=branch_friend_form&s_src=FRQ15ZZ_CADN"
+    },
+    social_media: null,
+    id: "ARN",
+    _embedded: {
+      events: null,
+      exhibitions: null,
+      location: {
+        name: "Stephen A. Schwarzman Building",
+        street_address: "Fifth Avenue at 42nd Street",
+        cross_street: "",
+        locality: "New York",
+        region: "NY",
+        access: "Fully Accessible",
+        postal_code: 10018,
+        type: "research",
+        slug: "schwarzman"
+      },
+      parent: {
+        name: "Rare Book Division",
+        access: "Partially Accessible",
+        rank: 6,
+        floor: "Third Floor",
+        room: "328",
+        slug: "rare-books-division",
+        synonyms: [ ]
+      }
     }
   };
 
@@ -165,44 +219,33 @@ describe('DivisionCtrl', function () {
       ]);
     });
 
-    // it('should have an alert on the page', function () {
-    //   // Need mocked data for this but get error based on the content
-    //   // being run through $sce to output html.
-    //   expect(scope.division.hours.exceptions).toBeDefined();
-    // });
-
-    it('should have no embedded divisions', function () {
-      expect(scope.division._embedded.divisions).not.toBeDefined();
+    it('should have an embedded division', function () {
+      expect(scope.division._embedded.divisions).toBeDefined();
     });
+
+    // it('should have hours for the embedded division', function () {
+    //   expect(scope.division._embedded.divisions).toEqual('');
+    // });
   });
 
-  describe('Rare Book Division', function () {
+  describe('George Arents Collection', function () {
     beforeEach(inject(function (_$rootScope_, _$controller_) {
-      // getDay() returns 2 to mock that today is Thursday
-      Date.prototype.getDay = function () { return 4; };
-
       scope = _$rootScope_.$new();
       DivisionCtrl = _$controller_('DivisionCtrl', {
         $scope: scope,
         config: {api_root: 'http://locations-api-beta.nypl.org',
           divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN","PHG","SPN","CPS"]},
-        division: mockRareBookDivision
+        division: mockArentsDivision
       });
     }));
 
     it('should get the mocked data', function () {
-      expect(scope.division).toEqual(mockRareBookDivision);
-      expect(scope.division.name).toEqual('Rare Book Division');
+      expect(scope.division).toEqual(mockArentsDivision);
+      expect(scope.division.name).toEqual('George Arents Collection');
     });
 
-    it('should have the correct hours for Thursday', function () {
-      var hoursTodayObj = {
-        today: {day: 'Thu', open: '10:00', close: '17:45'},
-        tomorrow: {day: 'Fri', open: '10:00', close: '17:45'}
-      };
-
-      // From above, we are mocking the day to be Thursday.
-      expect(scope.hoursToday).toEqual(hoursTodayObj);
+    it('should not have hours', function () {
+      expect(scope.hoursToday).not.toBeDefined();
     });
 
     it('should have an appointment button', function () {
@@ -214,12 +257,20 @@ describe('DivisionCtrl', function () {
     });
 
     it('should not have an alert on the page', function () {
-      expect(scope.division.hours.exceptions).not.toBeDefined();
+      // Alerts/exceptions are part of the hours property in the division
+      expect(scope.division.hours).not.toBeDefined();
     });
 
-    it('should have an embedded division', function () {
-      expect(scope.division._embedded.divisions).toBeDefined();
-      expect(scope.division._embedded.divisions.length).toBe(1);
+    it('should not have embedded divisions', function () {
+      expect(scope.division._embedded.divisions).not.toBeDefined();
+    });
+
+    it('should have an embedded parent division', function () {
+      expect(scope.division._embedded.parent).toBeDefined();
+    });
+
+    it('should have an embedded location', function () {
+      expect(scope.division._embedded.location).toBeDefined();
     });
   });
 

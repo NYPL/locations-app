@@ -196,7 +196,7 @@ nypl_locations.config([
             })
             .state('amenities', {
                 url: '/amenities',
-                templateUrl: '/views/amenities.html',
+                templateUrl: 'views/amenities.html',
                 controller: 'AmenitiesCtrl',
                 label: 'Amenities',
                 resolve: {
@@ -237,7 +237,7 @@ nypl_locations.config([
             })
             .state('404', {
                 url: '/404',
-                templateUrl: 'views/404.html'
+                templateUrl: '/locations/views/404.html'
             })
             .state('location', {
                 url: '/:location',

@@ -4,6 +4,22 @@
 (function () {
   'use strict';
 
+  /**
+   * @ngdoc directive
+   * @name nyplSSO.directive:nyplSso
+   * @restrict E
+   * @requires ssoStatus
+   * @requires $window
+   * @requires $rootScope
+   * @scope
+   * @description
+   * Displays the NYPL SSO/donate button and login forms, to sign in and the
+   * Bibliocommons signed in menu.
+   * @example
+   * <pre>
+   *  <nypl-sso></nypl-sso>
+   * </pre>
+   */
   function nyplSSO(ssoStatus, $window, $rootScope) {
     return {
       restrict: 'E',
@@ -98,26 +114,41 @@
     };
   }
 
-  /** @namespace ssoStatus */
+  /**
+   * @ngdoc service
+   * @name nyplSSO.service:ssoStatus
+   * @description
+   * AngularJS service used to check browser cookies to verify if a user
+   * is logged in or not. Sets cookie when signing in and can remove cookies.
+   */
   function ssoStatus() {
     var ssoStatus = {};
 
-    /** @function ssoStatus.login
+    /**
+     * @ngdoc function
+     * @name login
+     * @methodOf nyplSSO.service:ssoStatus
      * @returns {string} User's usename from the bc_username cookie. If the
-     *  user is not logged in, undefined will be returned.
+     * user is not logged in, undefined will be returned.
      */
     ssoStatus.login = function () {
       return $.cookie('bc_username');
     };
 
-    /** @function ssoStatus.logged_in
+    /**
+     * @ngdoc function
+     * @name logged_in
+     * @methodOf nyplSSO.service:ssoStatus
      * @returns {boolean} True if the user is logged in and false otherwise.
      */
     ssoStatus.logged_in = function () {
       return !!(this.login() && this.login() !== null);
     };
 
-    /** @function ssoStatus.remember
+    /**
+     * @ngdoc function
+     * @name remember
+     * @methodOf nyplSSO.service:ssoStatus
      * @param {string} [name] A setter and getter. Sets the user's username
      *  if the parameter was passed. If no parameter was passed, it will return
      *  the username from the remember_me cookie.
@@ -131,7 +162,10 @@
       return $.cookie('remember_me');
     };
 
-    /** @function ssoStatus.remembered
+    /**
+     * @ngdoc function
+     * @name remembered
+     * @methodOf nyplSSO.service:ssoStatus
      * @returns {boolean} Returns true if the user clicked on the 'Remember me'
      *  checkbox and the cookie is set, false otherwise.
      */
@@ -140,7 +174,10 @@
       return !!(remember_me && remember_me !== null);
     };
 
-    /** @function ssoStatus.forget
+    /**
+     * @ngdoc function
+     * @name forget
+     * @methodOf nyplSSO.service:ssoStatus
      * @returns {boolean} Delete the 'remember_me' cookie if the 'Remember me'
      *  checkbox was unselected when submitting the form. Returns true if
      *  deleting was successful, false if deleting the cookie failed.
@@ -152,6 +189,14 @@
     return ssoStatus;
   }
 
+  /**
+   * @ngdoc overview
+   * @module nyplSSO
+   * @name nyplSSO
+   * @description
+   * AngularJS module for adding the SSO header button and functionality
+   * including browser cookies for verifying against Bibliocommons.
+   */
   angular
     .module('nyplSSO', [])
     .service('ssoStatus', ssoStatus)
