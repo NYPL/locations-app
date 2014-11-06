@@ -254,11 +254,12 @@ nypl_locations.config([
     }
 ]);
 
-nypl_locations.run(function ($state, $rootScope, $location) {
+nypl_locations.run(function ($analytics, $state, $rootScope, $location) {
     $rootScope.$on('$stateChangeStart', function () {
         $rootScope.close_feedback = true;
     });
     $rootScope.$on('$stateChangeSuccess', function () {
+        $analytics.pageTrack('/locations' + $location.path());
         $rootScope.current_url = $location.absUrl();
     });
     $rootScope.$on('$stateChangeError', function () {
