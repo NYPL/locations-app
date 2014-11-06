@@ -44,8 +44,6 @@
     <base href="<%= settings.baseurl %>">
     <link rel="stylesheet" href="<%= settings.baseurl %>css/locations.min.css">
 <% end %>
-
-    <!-- Angular Hash fallback (need to test on heroku) -->
   </head>
   <body>
     <!--[if lt IE 9]>
@@ -129,5 +127,16 @@
 <%= erb :full_app %>
 <% end %>
 
+    <div>
+    <ul>
+      <li>Forwarded: <%= @rq.forwarded? %></li>
+      <li>URL: <%= @rq.url %></li>
+      <li>Path: <%= @rq.path %></li>
+      <li>Env: <%= @rq.env.keys %></li>
+      <li>RQPATH: <%= @rq.env['REQUEST_PATH'] %></li>
+      <li>RQURI: <%= @rq.env['REQUEST_URI'] %></li>
+      <li>HTTP_X_FORWARDED_FOR: <%= @rq.env['HTTP_X_FORWARDED_FOR'] %></li>
+    </ul>
+    </div>
 </body>
 </html>
