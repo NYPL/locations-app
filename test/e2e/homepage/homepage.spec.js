@@ -8,14 +8,11 @@ describe('Locations: homepage', function () {
   var landingPage = require('./homepage.po.js'),
     APIresponse = require('../APImocks/homepage.js'),
     httpBackendMock = function (response) {
-      var API_URL = 'http://locations-api-alpha.herokuapp.com';
+      var API_URL = 'http://dev.locations.api.nypl.org';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
           $httpBackend.whenGET('/languages/en.json').passThrough();
-          $httpBackend
-            .whenGET('/config')
-            .respond({ config: { api_root: API_URL } });
 
           $httpBackend
             .whenJSONP(API_URL + '/locations?callback=JSON_CALLBACK')

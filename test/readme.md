@@ -21,7 +21,7 @@ Protractor is built on top of Selenium's WebDriver, and the Jasmine testing fram
 
 The selenium server will run in the background and now Protractor can connect to it.
 
-The first step is only needed if you're starting a new Protractor test. This file should already exist when cloning this repo.
+The following first step is only needed if you're starting a new Protractor test. This file should already exist when cloning this repo.
 
 1. Copy the config file for protractor:
 
@@ -35,7 +35,7 @@ or
 
     $ protractor protractor_ff_conf.js
 
-to run all the tests in Chrome and Firefox, respectively. Tests for different pages are broken up into suites in the configuration file.  To run, for example, just the tests for the division page run:
+to run all the tests in Chrome or Firefox, respectively. Tests for different pages are broken up into suites in the configuration file.  To run, for example, just the tests for the division page run:
 
     $ protractor protractor_chrome_conf.js --suite division
 
