@@ -15,13 +15,13 @@
     <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.1/css/nyplbase.min.css">
 <% end %>
 
-  <% if settings.locinator_env == "local" %>
-    <base href="/widget" target="_parent">
-    <link rel="stylesheet" href="css/locations.min.css">
-  <% else %>
-    <base href="<%= settings.baseurl %>widget" target="_parent">
+<% if @rq.forwarded? %>
+    <base href="<%= settings.baseurl %>">
     <link rel="stylesheet" href="<%= settings.baseurl %>css/locations.min.css">
-  <% end %>
+<% else %>
+    <base href="/">
+    <link rel="stylesheet" href="css/locations.min.css">
+<% end %>
 
   </head>
   <body class="nypl-widget">
