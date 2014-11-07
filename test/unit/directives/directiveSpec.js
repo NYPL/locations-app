@@ -743,30 +743,21 @@ describe('NYPL Directive Unit Tests', function () {
    * <nypl-autofill></nypl-autofill>
    */
   describe('Directive: nyplAutofill', function () {
-    var autofill, template, ctrl;
+    var autofill, element, ctrl, $scope;
 
-    /*beforeEach(inject(function () {
-      template = "<nypl-autofill data='locations'" + 
+    beforeEach(inject(function ($rootScope, $compile) {
+      $scope = $rootScope.$new();
+      element = angular.element("<nypl-autofill data='locations'" + 
         " data-ng-model='searchTerm'" + 
         " map-view='viewMapLibrary(slug)'" + 
         " geo-search='geocodeAddress(term)'>" + 
-        "</nypl-autofill>";
+        "</nypl-autofill>");
 
-      autofill = createDirective(template);
-
-      //ctrl = autofill.controller("nyplAutofill");
-      //console.log(ctrl);
-    }));*/
-
-    beforeEach(inject(function($rootScope, $compile) {
-      scope = $rootScope.$new();
-      template = "<nypl-autofill data='locations'" + 
-        " data-ng-model='searchTerm'" + 
-        " map-view='viewMapLibrary(slug)'" + 
-        " geo-search='geocodeAddress(term)'>" + 
-        "</nypl-autofill>";
-      autofill = $compile(template)(scope);
-      scope.$digest();
+      autofill = $compile(element)($scope);
+      $rootScope.$digest();
+      ctrl = autofill.controller("nyplAutofill");
+      $scope = element.isolateScope() || element.scope()
+      console.log(ctrl);
     }));
 
     it('should compile lookahead and autofill containers', function () {
@@ -774,11 +765,86 @@ describe('NYPL Directive Unit Tests', function () {
       expect(autofill.find('.autofill-container')).toBeTruthy();
     });
 
-    it('should display autofill container', function () {
-      scope.searchTerm = "grand";
-      scope.$digest();
-      var isolated = autofill.isolateScope();
+    describe('Controller Methods', function () {
+
+      it('openAutofill method should be defined', function () {
+        expect(ctrl.openAutofill).toBeDefined();
+      });
+
+      it('openAutofill method should set $scope.focused to be true', function () {
+        $scope.focused = false;
+        ctrl.openAutofill();
+        expect($scope.focused).toBeTruthy();
+      });
+
+      it('closeAutofill method should be defined', function () {
+        expect(ctrl.closeAutofill).toBeDefined();
+      });
+      
+      it('closeAutofill method should set $scope.focused to be false', function () {
+        $scope.focused = true;
+        ctrl.closeAutofill();
+        expect($scope.focused).toBeFalsy();
+      });
+
+      it('resetSearchTerms method should be defined', function () {
+        expect(ctrl.resetSearchTerms).toBeDefined();
+      });
+
+      it('resetSearchTerms method should set $scope.lookahead' + 
+        ' and $scope.currentWord to empty strings', function () {
+
+        $scope.lookahead = 'lookahead string';
+        $scope.currentWord = 'currentWord string';
+        ctrl.resetSearchTerms();
+        expect($scope.lookahead).toEqual('');
+        expect($scope.lookahead).toBeDefined();
+        expect($scope.currentWord).toEqual('');
+        expect($scope.currentWord).toBeDefined();
+      });
+
+      it('activate() method should be defined', function () {
+        expect(ctrl.activate).toBeDefined();
+      });
+
+      it('activate() method should return the active item passed', function () {
+        $scope.active = undefined;
+        var item = {
+          id: "HG",
+          name: "Hamilton Grange Library",
+          open: true,
+          postal_code: 10031,
+          region: "NY",
+          slug: "hamilton-grange"
+        }
+        $scope.active = ctrl.activate(item);
+        expect($scope.active).toEqual(item);
+      });
+
+      it('activateFirstItem() method should be defined', function () {
+        expect(ctrl.activateFirstItem).toBeDefined();
+      });
+
+      it('activateFirstItem() method should assign the first item as ' + 
+        'the active item and set $scope.activated to be true', function () {
+          $scope.activated = false;
+          $scope.active = undefined;
+          $scope.currentIndex = undefined;
+          $scope.filtered = [
+            {id: "BAR", name: "Baychester Library", _links: {}},
+            {id: "CHR", name: "Chatham Square Library", _links: {}},
+            {id: "CI", name: "City Island Library", _links: {}},
+            {id: "DH", name: "Dongan Hills Library", _links: {}}
+          ];
+
+          ctrl.activateFirstItem();
+          expect($scope.activated).toBeTruthy();
+          expect($scope.active).toEqual($scope.filtered[0]);
+          expect($scope.currentIndex).toEqual($scope.filtered.indexOf($scope.active));
+      });
+
     });
+
   });
 
 });
