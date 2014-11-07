@@ -19,7 +19,6 @@ class Locinator < Sinatra::Base
     set :research_order, configs["research_order"]
     set :fundraising, configs["fundraising"]
     set :baseurl, '/locations/'
-    # set :views, 'views'
 
     set :app_cfg, JSON.generate({
       "config" => {
@@ -109,6 +108,7 @@ class Locinator < Sinatra::Base
   end
 
   get %r{/widget/.*} do
+    @rq = request
     erb :widget
   end
     
