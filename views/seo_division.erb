@@ -2,6 +2,14 @@
 <html>
   <head>
     <title>NYPL | <%= @div.name %></title>
+    <meta name="twitter:card" content="summary" />
+    <meta property="og:title" content="<%= @div.name %>" />
+    <meta property="og:site_name" content="The New York Public Library" />
+    <meta property="og:url" content="http://nypl.org/locations/divisions/<%= @div.slug %>" />
+    <meta property="og:description" content='<%= @div.about %>' />
+    <meta property="og:type" content="website" />
+
+    <meta name="keywords" content="NYPL, The New York Public Library, Manhattan, Bronx, Staten Island, <%= @div.name %>" />
   </head>
   <body>
     <div itemscope itemtype="http://schema.org/Library">

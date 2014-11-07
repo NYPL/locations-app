@@ -2,6 +2,21 @@
 <html>
   <head>
     <title>NYPL | <%= @location.name %></title>
+    <meta name="twitter:card" content="summary" />
+    <meta property="og:title" content="<%= @location.name %>" />
+    <meta property="og:site_name" content="The New York Public Library" />
+    <meta property="og:url" content="http://nypl.org/locations" />
+    <meta property="og:description" content='<%= @location.about %>' />
+    <meta property="og:type" content="website" />
+
+    <meta name="keywords" content="NYPL, The New York Public Library, Manhattan, Bronx, Staten Island, <%= @location.name %>" />
+
+  <% if settings.locinator_env == "local" %>
+    <base href="/">
+  <% else %>
+    <base href="<%= settings.baseurl %>">
+  <% end %>
+
   </head>
   <body>
     <div itemscope itemtype="http://schema.org/Library">
@@ -30,7 +45,7 @@
       <ul>
       <% @location.amenities.each do |a| %>
         <li itemprop="makesOffer" itemscope itemtype="http://schema.org/Offer">
-          <a href="../amenities/id/<%= a.amenity.id %>">
+          <a href="amenities/id/<%= a.amenity.id %>">
             <span itemprop="name"><%= a.amenity.name %></span>
           </a>
 

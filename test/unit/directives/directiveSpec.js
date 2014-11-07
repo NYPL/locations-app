@@ -9,12 +9,25 @@ describe('NYPL Directive Unit Tests', function () {
   'use strict';
 
   var httpBackend, compile, scope,
-    api = 'http://locations-api-beta.nypl.org',
+    api = 'http://dev.locations.api.nypl.org',
     jsonpCallback = '?callback=JSON_CALLBACK';
 
   beforeEach(function () {
     module('nypl_locations');
     module('directiveTemplates');
+
+    window.locations_cfg = {
+      config: {
+        api_root: api,
+        fundraising: {
+          statement: "Become a Member",
+          appeal: "Friends of the Library can support their favorite library and receive great benefits!",
+          button_label: "Join or Renew",
+          link: "https://secure3.convio.net/nypl/site/SPageServer?pagename=branch_friend_form&s_src=FRQ15ZZ_CADN"
+        }
+      }
+    };
+
     inject(function (_$httpBackend_, _$compile_, _$rootScope_) {
       httpBackend = _$httpBackend_;
       compile = _$compile_;
@@ -23,20 +36,6 @@ describe('NYPL Directive Unit Tests', function () {
       httpBackend
         .expectGET('/languages/en.json')
         .respond('public/languages/en.json');
-
-      httpBackend
-        .expectGET('/config')
-        .respond({
-          config: {
-            api_root: api,
-            fundraising: {
-              statement: "Become a Member",
-              appeal: "Friends of the Library can support their favorite library and receive great benefits!",
-              button_label: "Join or Renew",
-              link: "https://secure3.convio.net/nypl/site/SPageServer?pagename=branch_friend_form&s_src=FRQ15ZZ_CADN"
-            }
-          }
-        });
 
       httpBackend
         .expectGET('views/locations.html')

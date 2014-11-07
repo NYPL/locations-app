@@ -38,7 +38,7 @@ describe('Google analytics configuration', function () {
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
         expect(ga[1][1]).toEqual('pageview');
-        expect(ga[1][2]).toEqual('/115th-street');
+        expect(ga[1][2]).toEqual('/locations/115th-street');
       });
     });
 
@@ -53,7 +53,7 @@ describe('Google analytics configuration', function () {
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
         expect(ga[2][1]).toEqual('pageview');
-        expect(ga[2][2]).toEqual('/schwarzman');
+        expect(ga[2][2]).toEqual('/locations/schwarzman');
       });
 
       // This triggers the second pageview event
@@ -62,7 +62,7 @@ describe('Google analytics configuration', function () {
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
         expect(ga[4][1]).toEqual('pageview');
-        expect(ga[4][2]).toEqual('/divisions/general-research-division');
+        expect(ga[4][2]).toEqual('/locations/divisions/general-research-division');
       });
     });
 
@@ -72,15 +72,15 @@ describe('Google analytics configuration', function () {
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
         expect(ga[1][1]).toEqual('pageview');
-        expect(ga[1][2]).toEqual('/115th-street');
+        expect(ga[1][2]).toEqual('/locations/115th-street');
       });
 
-      element(by.linkText('See all amenities')).click();
+      locationPage.allAmenities.click();
       browser.waitForAngular();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
         expect(ga[2][1]).toEqual('pageview');
-        expect(ga[2][2]).toEqual('/amenities/loc/115th-street');
+        expect(ga[2][2]).toEqual('/locations/amenities/loc/115th-street');
       });
     });
   });
@@ -112,7 +112,7 @@ describe('Google analytics configuration', function () {
         browser.sleep(500);
         browser.executeScript('return window.ga_msg;').then(function (ga) {
           expect(ga[1][1]).toEqual('pageview');
-          expect(ga[1][2]).toEqual('/map');
+          expect(ga[1][2]).toEqual('/locations/map');
         });
       });
     });
@@ -140,7 +140,7 @@ describe('Google analytics configuration', function () {
             expect(ga[0][4]).toEqual('Map view');
 
             expect(ga[1][1]).toEqual('pageview');
-            expect(ga[1][2]).toEqual('/map');
+            expect(ga[1][2]).toEqual('/locations/map');
           });
         });
 
@@ -159,7 +159,7 @@ describe('Google analytics configuration', function () {
             expect(ga[2][4]).toEqual('List view');
 
             expect(ga[3][1]).toEqual('pageview');
-            expect(ga[3][2]).toEqual('/list');
+            expect(ga[3][2]).toEqual('/locations/list');
           });
         });
     });
@@ -178,7 +178,7 @@ describe('Google analytics configuration', function () {
             expect(ga[0][4]).toEqual('115th Street Library (list)');
 
             expect(ga[1][1]).toEqual('pageview');
-            expect(ga[1][2]).toEqual('/115th-street');
+            expect(ga[1][2]).toEqual('/locations/115th-street');
           });
         });
 
@@ -199,7 +199,7 @@ describe('Google analytics configuration', function () {
             expect(ga[2][4]).toEqual('Mid-Manhattan Library (map)');
 
             expect(ga[3][1]).toEqual('pageview');
-            expect(ga[3][2]).toEqual('/mid-manhattan-library');
+            expect(ga[3][2]).toEqual('/locations/mid-manhattan-library');
           });
         });
 
@@ -215,7 +215,7 @@ describe('Google analytics configuration', function () {
             expect(ga[0][4]).toEqual('115th Street Library (list)');
 
             expect(ga[1][1]).toEqual('pageview');
-            expect(ga[1][2]).toEqual('/map');
+            expect(ga[1][2]).toEqual('/locations/map');
           });
         });
 
@@ -429,7 +429,7 @@ describe('Google analytics configuration', function () {
           expect(ga[0][4]).toEqual('Grand Central Library');
 
           expect(ga[1][1]).toEqual('pageview');
-          expect(ga[1][2]).toEqual('/grand-central');
+          expect(ga[1][2]).toEqual('/locations/grand-central');
         });
       });
 
@@ -443,7 +443,7 @@ describe('Google analytics configuration', function () {
         expect(ga[0][4]).toEqual('grand');
 
         expect(ga[1][1]).toEqual('pageview');
-        expect(ga[1][2]).toEqual('/map');
+        expect(ga[1][2]).toEqual('/locations/map');
       });
     });
 
@@ -459,7 +459,7 @@ describe('Google analytics configuration', function () {
         expect(ga[0][4]).toEqual('Baychester Library');
 
         expect(ga[1][1]).toEqual('pageview');
-        expect(ga[1][2]).toEqual('/baychester');
+        expect(ga[1][2]).toEqual('/locations/baychester');
       });
     });
 
@@ -475,7 +475,7 @@ describe('Google analytics configuration', function () {
         expect(ga[0][4]).toEqual('tottenville');
 
         expect(ga[1][1]).toEqual('pageview');
-        expect(ga[1][2]).toEqual('/map');
+        expect(ga[1][2]).toEqual('/locations/map');
       });
     });
 
@@ -491,7 +491,7 @@ describe('Google analytics configuration', function () {
         expect(ga[0][4]).toEqual('Harlem Library');
 
         expect(ga[1][1]).toEqual('pageview');
-        expect(ga[1][2]).toEqual('/map');
+        expect(ga[1][2]).toEqual('/locations/map');
       });
     });
 
