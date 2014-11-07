@@ -37,12 +37,12 @@
     <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.4/css/nyplbase.min.css">
 <% end %>
 
-<% if settings.locinator_env == "local" %>
-    <base href="/">
-    <link rel="stylesheet" href="css/locations.min.css">
-<% else %>
+<% if @rq.forwarded? %>
     <base href="<%= settings.baseurl %>">
     <link rel="stylesheet" href="<%= settings.baseurl %>css/locations.min.css">
+<% else %>
+    <base href="/">
+    <link rel="stylesheet" href="css/locations.min.css">
 <% end %>
   </head>
   <body>
@@ -123,17 +123,5 @@
 <% else %>
 <%= erb :full_app %>
 <% end %>
-
-    <div>
-    <ul>
-      <li>Forwarded: <%= @rq.forwarded? %></li>
-      <li>URL: <%= @rq.url %></li>
-      <li>Path: <%= @rq.path %></li>
-      <li>Env: <%= @rq.env.keys %></li>
-      <li>RQPATH: <%= @rq.env['REQUEST_PATH'] %></li>
-      <li>RQURI: <%= @rq.env['REQUEST_URI'] %></li>
-      <li>HTTP_X_FORWARDED_FOR: <%= @rq.env['HTTP_X_FORWARDED_FOR'] %></li>
-    </ul>
-    </div>
 </body>
 </html>

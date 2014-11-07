@@ -243,7 +243,7 @@ nypl_locations.config([
             })
             .state('404', {
                 url: '/404',
-                templateUrl: '/locations/views/404.html'
+                templateUrl: 'views/404.html'
             })
             .state('location', {
                 url: '/:location',
