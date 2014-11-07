@@ -152,15 +152,6 @@ describe('DivisionCtrl', function () {
         .expectGET('/languages/en.json')
         .respond('public/languages/en.json');
 
-      httpBackend
-        .expectGET('/config')
-        .respond({
-          config: {
-            api_root: 'http://locations-api-beta.nypl.org',
-            divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN","PHG","SPN","CPS"]
-          }
-        });
-
       // TODO:
       // Find out why this is needed:
       httpBackend

@@ -136,27 +136,17 @@ var mockGeneralResearchDivision = {
 describe('WidgetCtrl', function () {
   'use strict';
 
-  var scope, WidgetCtrl, httpBackend, nyplLocationsService;
+  var scope, WidgetCtrl, httpBackend, nyplLocationsService, $rootScope;
 
   beforeEach(function () {
     module('nypl_widget');
-    inject(function (_nyplLocationsService_, _$httpBackend_) {
+    inject(function (_nyplLocationsService_, _$httpBackend_, _$rootScope_) {
       httpBackend = _$httpBackend_;
       nyplLocationsService = _nyplLocationsService_;
-
-      httpBackend
-        .expectGET('/config')
-        .respond({
-          config: {
-            api_root: 'http://locations-api-beta.nypl.org',
-            closed_img: "http://ux-static.nypl.org/images/branch_closed.jpg",
-            divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN",
-              "PHG","SPN","CPS"]
-          }
-        });
+      $rootScope = _$rootScope_;
 
       nyplLocationsService.getConfig();
-      httpBackend.flush();
+      $rootScope.$apply();
     })
   });
 

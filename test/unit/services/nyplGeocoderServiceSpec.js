@@ -76,10 +76,6 @@ describe('NYPL Geocoder Service Tests', function () {
           .respond('public/languages/en.json');
 
         httpBackend
-          .expectGET('/config')
-          .respond('/config');
-
-        httpBackend
           .expectGET('views/locations.html')
           .respond('public/views/locations.html');
 

@@ -31,9 +31,14 @@
             if (config) {
                defer.resolve(config);
             } else {
-                api = window.locations_cfg.config.api_root
                 config = window.locations_cfg;
-                defer.resolve(config);
+
+                if (config) {
+                    api = window.locations_cfg.config.api_root;
+                    defer.resolve(config);
+                } else {
+                    defer.reject(apiError + ': config');
+                }
             }
             return defer.promise;
         }
