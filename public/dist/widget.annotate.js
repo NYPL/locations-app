@@ -192,9 +192,14 @@
             if (config) {
                defer.resolve(config);
             } else {
-                api = window.locations_cfg.config.api_root
                 config = window.locations_cfg;
-                defer.resolve(config);
+
+                if (config) {
+                    api = window.locations_cfg.config.api_root;
+                    defer.resolve(config);
+                } else {
+                    defer.reject(apiError + ': config');
+                }
             }
             return defer.promise;
         }
@@ -484,12 +489,14 @@ var nypl_locations = angular.module('nypl_locations', [
 nypl_locations.constant('_', window._);
 
 nypl_locations.config([
+    '$analyticsProvider',
     '$locationProvider',
     '$translateProvider',
     '$stateProvider',
     '$urlRouterProvider',
     '$crumbProvider',
     function (
+        $analyticsProvider,
         $locationProvider,
         $translateProvider,
         $stateProvider,
@@ -498,13 +505,17 @@ nypl_locations.config([
     ) {
         'use strict';
 
+        // Turn off automatic virtual pageviews for GA.
+        // In $stateRouteSuccess, /locations/ is added to each page hit.
+        $analyticsProvider.virtualPageviews(false);
+
         // uses the HTML5 History API, remove hash (need to test)
         $locationProvider.html5Mode(true);
 
         // Lazy loads static files with English being
         // the first language that gets loaded.
         $translateProvider.useStaticFilesLoader({
-            prefix: '/languages/',
+            prefix: 'languages/',
             suffix: '.json'
         });
         $translateProvider.preferredLanguage('en');
@@ -684,7 +695,7 @@ nypl_locations.config([
             })
             .state('404', {
                 url: '/404',
-                templateUrl: '/locations/views/404.html'
+                templateUrl: 'views/404.html'
             })
             .state('location', {
                 url: '/:location',
@@ -701,11 +712,12 @@ nypl_locations.config([
     }
 ]);
 
-nypl_locations.run(["$state", "$rootScope", "$location", function ($state, $rootScope, $location) {
+nypl_locations.run(["$analytics", "$state", "$rootScope", "$location", function ($analytics, $state, $rootScope, $location) {
     $rootScope.$on('$stateChangeStart', function () {
         $rootScope.close_feedback = true;
     });
     $rootScope.$on('$stateChangeSuccess', function () {
+        $analytics.pageTrack('/locations' + $location.path());
         $rootScope.current_url = $location.absUrl();
     });
     $rootScope.$on('$stateChangeError', function () {
@@ -894,7 +906,14 @@ angular.module('nypl_widget', [
 (function () {
     'use strict';
 
-    // Filter formats military time to standard time
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:timeFormat
+     * @param {object} timeObj Object with hours for today and tomorrow.
+     * @returns {string} Closed or open times for a branch.
+     * @description
+     * Filter formats military time to standard time
+     */
     function timeFormat() {
         function clockTime(time) {
             var components = time.split(':'),
@@ -926,13 +945,28 @@ angular.module('nypl_widget', [
         };
     }
 
-    // Coverts MYSQL Datetime stamp to ISO format
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:dateToISO
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Coverts MYSQL Datetime stamp to ISO format
+     */
     function dateToISO() {
         return function (input) {
             return new Date(input).toISOString();
         };
     }
 
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:capitalize
+     * @params {string} input
+     * @returns {string} ...
+     * @description
+     * Capitalize all the words in a phrase.
+     */
     function capitalize() {
         return function (input) {
             if (typeof input === 'string') {
@@ -944,6 +978,15 @@ angular.module('nypl_widget', [
         };
     }
 
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:hoursTodayFormat
+     * @param {object} elem ...
+     * @param {string} type ...
+     * @returns {string} ...
+     * @description
+     * ...
+     */
     function hoursTodayFormat() {
         function getHoursObject(time) {
             time = time.split(':');
@@ -1054,8 +1097,15 @@ angular.module('nypl_widget', [
         };
     }
 
-    /* Truncates string text with proper arguments
-        [length (number), end(string)] */
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:truncate
+     * @param {string} text ...
+     * @param {number} [length] ...
+     * @returns {string} [end] ...
+     * @description
+     * ...
+     */
     function truncate() {
         return function (text, length, end) {
             if (typeof text !== 'string') {
@@ -1163,8 +1213,15 @@ angular.module('nypl_widget', [
 (function () {
   'use strict';
 
-  // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
-  // declare the directive that will show and hide the loading widget
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:loadingWidget
+   * @restrict A
+   * @requires requestNotificationChannel
+   * @description
+   * Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
+   * declare the directive that will show and hide the loading widget
+   */
   function loadingWidget(requestNotificationChannel) {
     return {
       restrict: "A",
@@ -1192,6 +1249,13 @@ angular.module('nypl_widget', [
   }
   loadingWidget.$inject = ["requestNotificationChannel"];
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:nyplTranslate
+   * @restrict E
+   * @description
+   * Directive to display a list of languages to translate the site into.
+   */
   function nyplTranslate() {
     return {
       restrict: 'E',
@@ -1205,6 +1269,14 @@ angular.module('nypl_widget', [
     };
   }
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:todayshours
+   * @restrict E
+   * @scope
+   * @description
+   * ...
+   */
   function todayshours() {
     return {
       restrict: 'E',
@@ -1216,6 +1288,14 @@ angular.module('nypl_widget', [
     };
   }
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:emailusbutton
+   * @restrict E
+   * @scope
+   * @description
+   * ...
+   */
   function emailusbutton() {
     return {
       restrict: 'E',
@@ -1227,6 +1307,14 @@ angular.module('nypl_widget', [
     };
   }
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:librarianchatbutton
+   * @restrict E
+   * @requires nyplUtility
+   * @description
+   * ....
+   */
   function librarianchatbutton(nyplUtility) {
     return {
       restrict: 'E',
@@ -1253,6 +1341,13 @@ angular.module('nypl_widget', [
   }
   librarianchatbutton.$inject = ["nyplUtility"];
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:scrolltop
+   * @requires $window
+   * @description
+   * ...
+   */
   function scrolltop($window) {
     return function (scope) {
       scope.$on('$stateChangeStart', function () {
@@ -1262,6 +1357,15 @@ angular.module('nypl_widget', [
   }
   scrolltop.$inject = ["$window"];
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:eventRegistration
+   * @restrict E
+   * @requires $filter
+   * @scope
+   * @description
+   * ...
+   */
   function eventRegistration($filter) {
     function eventStarted(startDate) {
       var sDate = new Date(startDate),
@@ -1300,6 +1404,16 @@ angular.module('nypl_widget', [
   }
   eventRegistration.$inject = ["$filter"];
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:nyplSiteAlerts
+   * @restrict E
+   * @requires $timeout
+   * @requires nyplLocationsService
+   * @requires nyplUtility
+   * @description
+   * ...
+   */
   function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
     return {
       restrict: 'E',
@@ -1320,6 +1434,15 @@ angular.module('nypl_widget', [
   }
   nyplSiteAlerts.$inject = ["$timeout", "nyplLocationsService", "nyplUtility"];
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:nyplLibraryAlert
+   * @restrict E
+   * @requires nyplUtility
+   * @scope
+   * @description
+   * ...
+   */
   function nyplLibraryAlert(nyplUtility) {
     function alertExpired(startDate, endDate) {
       var sDate = new Date(startDate),
@@ -1350,12 +1473,19 @@ angular.module('nypl_widget', [
   }
   nyplLibraryAlert.$inject = ["nyplUtility"];
 
-  /* 
-  ** Show/Hide collapsible animated directive
-  ** Usage: <div collapse="name of var toggled" duration="time in ms"
-  **          class-name="open"></div>
-  ** Duration & class-name are optional
-  */
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:collapse
+   * @restrict A
+   * @description
+   * Show/Hide collapsible animated directive. Duration & class-name
+   * are optional.
+   * @example
+   * <pre>
+   *  <div collapse="name of var toggled" duration="time in ms"
+   *          class-name="open"></div>
+   * </pre>
+   */
   function collapse() {
     function link($scope, element, attributes) {
       var exp = attributes.collapse,
@@ -1395,6 +1525,14 @@ angular.module('nypl_widget', [
     });
   }
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:nyplFundraising
+   * @restrict E
+   * @scope
+   * @description
+   * ...
+   */
   function nyplFundraising($timeout, nyplLocationsService) {
     return {
       restrict: 'E',
@@ -1424,12 +1562,20 @@ angular.module('nypl_widget', [
   }
   nyplFundraising.$inject = ["$timeout", "nyplLocationsService"];
 
-  /* 
-  ** Directive: <nypl-sidebar donate-button="" nypl-ask="" donateurl="">
-  ** Usage: Inserts optional Donate button/nyplAsk widget when 'true' is
-  **        passed to donate-button="" or nypl-ask="". A custom donate url
-  **        can be passed for the donate-button, otherwise a default is set
-  */
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:nyplSidebar
+   * @restrict E
+   * @scope
+   * @description
+   * Inserts optional Donate button/nyplAsk widget when 'true' is
+   * passed to donate-button="" or nypl-ask="". A custom donate url
+   * can be passed for the donate-button, otherwise a default is set
+   * @example
+   * <pre>
+   *  <nypl-sidebar donate-button="" nypl-ask="" donateurl="">
+   * </pre>
+   */
   function nyplSidebar() {
     return {
       restrict: 'E',
@@ -1448,6 +1594,14 @@ angular.module('nypl_widget', [
     };
   }
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:nyplAutofill
+   * @restrict AEC
+   * @scope
+   * @description
+   * ...
+   */
   function nyplAutofill($state, $analytics) {
     return {
       restrict: 'AEC',
