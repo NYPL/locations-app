@@ -89,35 +89,15 @@ class Locinator < Sinatra::Base
     erb :seo_index
   end
 
-  get '/config' do
-
-    tz = DateTime.now().strftime("%z")
-    response = {
-      "config" => {
-        "self" => settings.env_config["url"],
-        "tz_offset" => tz,
-        "api_root" => settings.env_config["api"],
-        "divisions_with_appointments" => settings.divisions_with_appointments,
-        "featured_amenities" => settings.featured_amenities,
-        "research_order" => settings.research_order,
-        "fundraising" => settings.fundraising,
-        "closed_img" => settings.env_config["closed_img"]
-      }
-    }
-    jsonp response
-  end
-
   get %r{/widget/.*} do
     @rq = request
     erb :widget
   end
     
-
   get %r{/.*$} do
     @rq = request
     erb :index
-  end
-  
+  end  
 
   # start the server if ruby file executed directly
   run! if app_file == $0
