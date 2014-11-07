@@ -132,6 +132,8 @@
       <li>Env: <%= @rq.env.keys %></li>
       <li>RQPATH: <%= @rq.env['REQUEST_PATH'] %></li>
       <li>RQURI: <%= @rq.env['REQUEST_URI'] %></li>
+      <li>HTTP_X_FORWARDED_HOST: <%= @rq.env['HTTP_X_FORWARDED_HOST'] %></li>
+      <li>HTTP_X_FORWARDED_SERVER: <%= @rq.env['HTTP_X_FORWARDED_SERVER'] %></li>
       <li>HTTP_X_FORWARDED_FOR: <%= @rq.env['HTTP_X_FORWARDED_FOR'] %></li>
     </ul>
     </div>
