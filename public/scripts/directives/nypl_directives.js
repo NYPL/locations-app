@@ -332,7 +332,7 @@
         if (!scope.fundraising) {
           $timeout(function () {
             nyplLocationsService.getConfig().then(function (data) {
-              var fundraising = data.fundraising;
+              var fundraising = data.config.fundraising;
               scope.fundraising = {
                 appeal: fundraising.appeal,
                 statement: fundraising.statement,
