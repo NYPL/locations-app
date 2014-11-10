@@ -31,11 +31,13 @@
     <meta name="keywords" content="NYPL, The New York Public Library, Manhattan, Bronx, Staten Island" />
 
     <link rel="shortcut icon" type="image/ico" href="http://ux-static.nypl.org/images/favicon.ico">
+
 <% if settings.env_config["angular_src"] == "ux-static-staging" %>
-    <link rel="stylesheet" href="http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.4/css/nyplbase.min.css">
+    <link rel="stylesheet" href="http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.5/css/nyplbase.min.css">
 <% else %>
-    <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.4/css/nyplbase.min.css">
+    <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.5/css/nyplbase.min.css">
 <% end %>
+
 
 <% if @rq.forwarded? %>
     <base href="<%= settings.baseurl %>">
