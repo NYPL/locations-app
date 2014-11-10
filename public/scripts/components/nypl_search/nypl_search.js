@@ -8,6 +8,7 @@
    * @ngdoc directive
    * @name nyplSearch.directive:nyplSearch
    * @restrict E
+   * @requires $analytics
    * @scope
    * @description
    * Displays the NYPL search from. Design and event handlers.
@@ -16,7 +17,7 @@
    *  <nypl-search></nypl-search>
    * </pre>
    */
-  function nyplSearch() {
+  function nyplSearch($analytics) {
     return {
       restrict: 'E',
       scope: {},
@@ -85,17 +86,27 @@
 
           // Don't perform search if no term has been entered
           if (term.length === 0) {
+            console.log('test');
             setError();
+            $analytics.eventTrack('Header Search',
+                    { category: 'Empty Search', label: '' });
+
             return false;
           }
 
           if (scope === 'nypl.org') {
             target = window.location.protocol + '//' + 'nypl.org'
               + '/search/apachesolr_search/' + term;
+
+            $analytics.eventTrack('Header Search',
+                    { category: 'Submit Search', label: term });
           } else {
             // Bibliocommons by default
             target = 'http://nypl.bibliocommons.com/search?t=smart&q='
               + term + '&commit=Search&searchOpt=catalogue';
+
+            $analytics.eventTrack('Header Search',
+                    { category: 'Submit Catalog Search', label: term });
           }
           window.location = target;
           return false;
@@ -135,6 +146,8 @@
           // search input
           o.term.focus(function (e) {
             o.choices.addClass('open');
+            $analytics.eventTrack('Header Search',
+                    { category: 'Focused', label: 'Search Box' });
           });
 
           // If the error class has been set on the input box, remove it
@@ -151,6 +164,8 @@
           // Setup click action on radio butons
           o.choices.find('li input').click(function () {
             setPrompt(angular.element(this));
+            $analytics.eventTrack('Header Search',
+                    { category: 'Select', label: getChoice() });
           });
 
           // Setup click action on list items (will be active when items are
