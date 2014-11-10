@@ -144,7 +144,7 @@ nypl_locations.config([
         // it will run the app. It may not be necessary for the app though
         // since, in the run phase, if there is an error when changing state,
         // the app will go to the 404 state.
-        // $urlRouterProvider.otherwise('/404');
+        $urlRouterProvider.otherwise('/404');
         $stateProvider
             .state('home', {
                 url: '/',
