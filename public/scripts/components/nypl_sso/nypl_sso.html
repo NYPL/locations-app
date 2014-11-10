@@ -1,5 +1,7 @@
 <div class='login-donate'>
-  <a class='login-button'>
+  <a class='login-button'
+    analytics-on="click" analytics-category="SSO"
+    analytics-event="Open Login Form" analytics-label="click">
     <span class="label">{{header_button_label}}</span>
     <img class="logged-in-arrow" src="http://www.nypl.org/sites/all/themes/nypl_new/images/site-icons/down-triangle_15.png" />
   </a>
@@ -26,7 +28,9 @@
             <input type="checkbox" id="remember_me" name="remember_me" value="1" class="form-checkbox"> <label class="option" for="remember_me">Remember me </label>
           </div>
           <input type="hidden" name="destination" value="http://www.nypl.org/">
-          <input type="submit" id="login-form-submit" name="op" value="Log In" class="form-submit">
+          <input type="submit" id="login-form-submit" name="op" value="Log In" class="form-submit"
+            analytics-on="click" analytics-category="SSO"
+            analytics-event="Log in" analytics-label="click">
           <div id="login-form-help">
             <a href="https://nypl.bibliocommons.com/user/forgot" class="forgotpin-button">Forgot your PIN?</a>
             <a href="http://www.nypl.org/help/library-card" class="createacct-button">Need an account?</a>
@@ -42,7 +46,9 @@
       <li><a href="http://nypl.bibliocommons.com/user/reminders">Reminders</a></li>
       <li><a href="http://nypl.bibliocommons.com/communitycredits">Community Credits</a></li>
       <li><a href="http://nypl.bibliocommons.com/carts/order_history">Order History</a></li>
-      <li><a data-ng-href="{{logout_url}}" id="sso-logout">Log out</a></li>
+      <li><a data-ng-href="{{logout_url}}" id="sso-logout"
+        analytics-on="click" analytics-category="SSO"
+        analytics-event="Log out" analytics-label="click">Log out</a></li>
     </ul>
   </div>
 </div>
