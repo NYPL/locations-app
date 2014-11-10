@@ -86,10 +86,9 @@
 
           // Don't perform search if no term has been entered
           if (term.length === 0) {
-            console.log('test');
             setError();
-            $analytics.eventTrack('Header Search',
-                    { category: 'Empty Search', label: '' });
+            $analytics.eventTrack('Empty Search',
+                    { category: 'Header Search', label: '' });
 
             return false;
           }
@@ -98,15 +97,15 @@
             target = window.location.protocol + '//' + 'nypl.org'
               + '/search/apachesolr_search/' + term;
 
-            $analytics.eventTrack('Header Search',
-                    { category: 'Submit Search', label: term });
+            $analytics.eventTrack('Submit Search',
+                    { category: 'Header Search', label: term });
           } else {
             // Bibliocommons by default
             target = 'http://nypl.bibliocommons.com/search?t=smart&q='
               + term + '&commit=Search&searchOpt=catalogue';
 
-            $analytics.eventTrack('Header Search',
-                    { category: 'Submit Catalog Search', label: term });
+            $analytics.eventTrack('Submit Catalog Search',
+                    { category: 'Header Search', label: term });
           }
           window.location = target;
           return false;
@@ -146,8 +145,8 @@
           // search input
           o.term.focus(function (e) {
             o.choices.addClass('open');
-            $analytics.eventTrack('Header Search',
-                    { category: 'Focused', label: 'Search Box' });
+            $analytics.eventTrack('Focused',
+                    { category: 'Header Search', label: 'Search Box' });
           });
 
           // If the error class has been set on the input box, remove it
@@ -164,8 +163,8 @@
           // Setup click action on radio butons
           o.choices.find('li input').click(function () {
             setPrompt(angular.element(this));
-            $analytics.eventTrack('Header Search',
-                    { category: 'Select', label: getChoice() });
+            $analytics.eventTrack('Select',
+                    { category: 'Header Search', label: getChoice() });
           });
 
           // Setup click action on list items (will be active when items are
