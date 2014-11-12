@@ -81,6 +81,8 @@
         </div>
 
         <%= @location.about %>
+
+        <div><a href="<%= @location.links['self']['about'] %>">Learn More</a></div>
       </div>
 
       <%= erb :seo_hasdivisions, :locals => {:loc => @location} %> 
