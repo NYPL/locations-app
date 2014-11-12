@@ -51,9 +51,6 @@
     <!--[if lt IE 9]>
       <div class="browser-upgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/?locale=en">upgrade your browser</a> to improve your experience.</div>
     <![endif]-->
-    
-    <!-- Translate Buttons (Removed for internal beta) -->
-    <!--<nypl-translate></nypl-translate>-->
 
     <!-- Site Wide Alerts -->
     <nypl-site-alerts></nypl-site-alerts>
@@ -65,8 +62,8 @@
     <nypl-navigation></nypl-navigation>
 
     <div class="wrapper">
-      <!-- Locinator App -->
-	    <div class="nypl-locations" data-ui-view data-autoscroll="false" scrolltop></div>
+        <!-- Locinator App -->
+        <div class="nypl-locations" data-ui-view data-autoscroll="false" scrolltop></div>
     </div>
     
     <!-- Footer -->
@@ -90,20 +87,17 @@
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
-
-    <!-- build:js scripts/vendor.js -->
-    <!-- bower:js -->
     
 <% if !settings.env_config["google_maps"].nil? %>
     <script src="https://maps.googleapis.com/maps/api/js?key=<%= settings.env_config["google_maps"] %>&amp;sensor=false"></script>
 <% end %>
+    <!-- Bower components -->
     <script src="bower_components/jquery/jquery.min.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
     <!-- endbower -->
     <!-- Other components -->
     <script src="vendor/jquery.cookies.js"></script>
     <!-- end other components -->
-    <!-- endbuild -->
 
 <% if settings.env_config["angular_src"] == "bower" %>
 <%= erb :angular_bower %>
@@ -112,9 +106,11 @@
 <% else %>
 <%= erb :angular_ux_static %>
 <% end %>
-
+    
+    <!-- Angular dependent Bower components -->
     <script src="bower_components/newrelic-timing/newrelic-timing.min.js"></script>
     <script src="bower_components/newrelic-timing/newrelic-timing-angular.min.js"></script>
+    <!-- end Bower components -->
 
     <!-- App Config -->
     <script>
@@ -125,5 +121,6 @@
 <% else %>
 <%= erb :full_app %>
 <% end %>
+
 </body>
 </html>

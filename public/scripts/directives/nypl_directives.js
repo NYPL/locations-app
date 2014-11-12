@@ -45,6 +45,10 @@
    * @restrict E
    * @description
    * Directive to display a list of languages to translate the site into.
+   * @example
+   * <pre>
+   *  <nypl-translate></nypl-translate>
+   * </pre>
    */
   function nyplTranslate() {
     return {
