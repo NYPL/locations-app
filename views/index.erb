@@ -83,7 +83,7 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-1420324-123', 'shrouded-caverns-5062.herokuapp.com');
+      ga('create', '<%= settings.env_config["google_analytics"] %>', 'shrouded-caverns-5062.herokuapp.com');
     </script>
 
     <!--[if lt IE 9]>
