@@ -403,10 +403,10 @@
       scope: {},
       link: function (scope, elem, attrs) {
         var footerLinks = elem.find('.footerlinks a'),
-          linkHref = '/goal/footer-bottom/';
+          linkHref;
 
         footerLinks.click(function () {
-          linkHref += angular.element(this).attr('href');
+          linkHref = angular.element(this).attr('href');
 
           $analytics.eventTrack('Click',
                     { category: 'footer', label: linkHref });
