@@ -596,7 +596,7 @@ nypl_locations.config([
         // it will run the app. It may not be necessary for the app though
         // since, in the run phase, if there is an error when changing state,
         // the app will go to the 404 state.
-        // $urlRouterProvider.otherwise('/404');
+        $urlRouterProvider.otherwise('/404');
         $stateProvider
             .state('home', {
                 url: '/',
@@ -1255,6 +1255,10 @@ angular.module('nypl_widget', [
    * @restrict E
    * @description
    * Directive to display a list of languages to translate the site into.
+   * @example
+   * <pre>
+   *  <nypl-translate></nypl-translate>
+   * </pre>
    */
   function nyplTranslate() {
     return {
@@ -1547,7 +1551,7 @@ angular.module('nypl_widget', [
         if (!scope.fundraising) {
           $timeout(function () {
             nyplLocationsService.getConfig().then(function (data) {
-              var fundraising = data.fundraising;
+              var fundraising = data.config.fundraising;
               scope.fundraising = {
                 appeal: fundraising.appeal,
                 statement: fundraising.statement,
@@ -1593,6 +1597,40 @@ angular.module('nypl_widget', [
       }
     };
   }
+
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:nyplFooter
+   * @restrict E
+   * @requires $analytics
+   * @scope
+   * @description
+   * NYPL Footer. Changed to directive to add analytics events handler.
+   * @example
+   * <pre>
+   *  <nypl-footer></nypl-footer>
+   * </pre>
+   */
+  function nyplFooter($analytics) {
+    return {
+      restrict: 'E',
+      templateUrl: 'scripts/directives/templates/footer.html',
+      replace: true,
+      scope: {},
+      link: function (scope, elem, attrs) {
+        var footerLinks = elem.find('.footerlinks a'),
+          linkHref;
+
+        footerLinks.click(function () {
+          linkHref = angular.element(this).attr('href');
+
+          $analytics.eventTrack('Click',
+                    { category: 'footer', label: linkHref });
+        });
+      }
+    };
+  }
+  nyplFooter.$inject = ["$analytics"];
 
   /**
    * @ngdoc directive
@@ -1882,7 +1920,8 @@ angular.module('nypl_widget', [
     .directive('nyplFundraising', nyplFundraising)
     .directive('nyplSidebar', nyplSidebar)
     .directive('nyplAutofill', nyplAutofill)
-    .directive('collapse', collapse);
+    .directive('collapse', collapse)
+    .directive('nyplFooter', nyplFooter);
 
   angular
     .module('nypl_widget')
