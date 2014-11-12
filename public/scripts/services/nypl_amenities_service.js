@@ -4,7 +4,14 @@
 (function () {
   'use strict';
 
-  /** @namespace nyplAmenities */
+  /**
+   * @ngdoc service
+   * @name nypl_locations.service:nyplAmenities
+   * @description
+   * AngularJS service that deals with all amenity related configuration.
+   * Sets amenities categories, icons for each amenity, and highlighted
+   * amenities for each branch.
+   */
   function nyplAmenities() {
 
     var amenities = {},
@@ -24,6 +31,17 @@
         });
       };
 
+    /**
+     * @ngdoc function
+     * @name addAmenitiesIcon
+     * @methodOf nypl_locations.service:nyplAmenities
+     * @param {object} amenity An amenity object.
+     * @returns {object} The amenity with an added icon property.
+     * @description
+     * Adds the appropriate icon to an amenity. First it checks the amenity's
+     * category and adds the icon to match the category. Then it check's its
+     * id to see if it's an amenity with a special icon. If so, it adds it.
+     */
     amenities.addAmenitiesIcon = function (amenity) {
       if (!amenity || !amenity.category) {
         return;
@@ -35,6 +53,16 @@
       return amenity;
     };
 
+    /**
+     * @ngdoc function
+     * @name getCategoryIcon
+     * @methodOf nypl_locations.service:nyplAmenities
+     * @param {string} category The category for the amenity.
+     * @param {string} [default_icon] The default icon class.
+     * @returns {string} The icon class for the amenity category. 
+     * @description
+     * Returns a class for the correct icon class for an amenity category.
+     */
     amenities.getCategoryIcon = function (category, default_icon) {
       var icon = default_icon || '';
 
@@ -59,6 +87,16 @@
       return icon;
     };
 
+    /**
+     * @ngdoc function
+     * @name getAmenityIcon
+     * @methodOf nypl_locations.service:nyplAmenities
+     * @param {number} id The amenity's id.
+     * @param {string} [default_icon] The default icon class.
+     * @returns {string} The icon class for the amenity. 
+     * @description
+     * Returns the icon for a few special amenities.
+     */
     amenities.getAmenityIcon = function (id, default_icon) {
       var icon = default_icon || '';
 
@@ -86,13 +124,18 @@
       return icon;
     };
 
-    /** @function nyplAmenities.allAmenitiesArray
-     * @deprecated 
-     * @param {array} amenitiesCategories Array with amenities categories, each
+    /**
+     * @ngdoc function
+     * @name allAmenitiesArray
+     * @methodOf nypl_locations.service:nyplAmenities
+     * @param {array} amenities Array with amenities categories, each
      *  category with it's own amenities property which is an array of
      *  amenities under that category.
      * @returns {array} An array with all the amenities plucked from every
      *  category at a single top level, without any categories involved.
+     * @description
+     * Deprecated. Creates an flat array of all the amenities from a nested
+     * array of amenity categories.
      */
     amenities.allAmenitiesArray = function (amenities) {
       if (!amenities) {
@@ -109,6 +152,16 @@
               .value();
     };
 
+    /**
+     * @ngdoc function
+     * @name getAmenityCategories
+     * @methodOf nypl_locations.service:nyplAmenities
+     * @param {array} amenities An array with amenity objects.
+     * @returns {array} Returns an array created with objects extracted from
+     *  every amenity's category property.
+     * @description
+     * Used to get the categories from the flat array of amenity objects.
+     */
     amenities.getAmenityCategories = function (amenities) {
       if (!amenities) {
         return;
@@ -121,6 +174,15 @@
               .value();
     };
 
+    /**
+     * @ngdoc function
+     * @name createAmenitiesCategories
+     * @methodOf nypl_locations.service:nyplAmenities
+     * @param {array} amenities ...
+     * @returns {array} Returns ...
+     * @description
+     * ...
+     */
     amenities.createAmenitiesCategories = function (amenities) {
       var default_order = ['Computer Services', 'Circulation',
           'Printing and Copy Services', 'Facilities', 'Assistive Technologies'],
@@ -149,7 +211,10 @@
       return categories;
     };
 
-    /** @function nyplAmenities.getHighlightedAmenities
+    /**
+     * @ngdoc function
+     * @name getHighlightedAmenities
+     * @methodOf nypl_locations.service:nyplAmenities
      * @param {array} amenities Array with amenities categories, each category
      *  with it's own amenities property which is an array of amenities
      *  under that category.
@@ -159,11 +224,15 @@
      *  returned at the end of the array.
      * @returns {array} An array containing a specific number of institution
      *  and location ranked amenities, with institution amenities listed first.
+     * @description
+     * ...
      * @example
+     * <pre>
      *  // Get three institution and two location ranked amenities.
      *  var highlightedAmenities =
      *    nyplAmenities
      *      .getHighlightedAmenities(location._embedded.amenities, 3, 2);
+     * </pre>
      */
     amenities.getHighlightedAmenities = function (amenities, rank, loc_rank) {
       var initial_list = amenities,
@@ -188,6 +257,18 @@
       return amenities_list;
     };
 
+    /**
+     * @ngdoc function
+     * @name getAmenityConfig
+     * @methodOf nypl_locations.service:nyplAmenities
+     * @param {object} config Config object from Sinatra.
+     * @param {number} globalDefault How many institution wide amenities.
+     * @param {number} localDefault How many local amenities to show.
+     * @returns {object} Object with how many global and local amenities to
+     * display.
+     * @description
+     * ...
+     */
     amenities.getAmenityConfig =
       function (config, globalDefault, localDefault) {
         var obj = {},

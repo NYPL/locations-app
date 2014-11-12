@@ -4,8 +4,15 @@
 (function () {
   'use strict';
 
-  // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
-  // declare the directive that will show and hide the loading widget
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:loadingWidget
+   * @restrict A
+   * @requires requestNotificationChannel
+   * @description
+   * Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
+   * declare the directive that will show and hide the loading widget
+   */
   function loadingWidget(requestNotificationChannel) {
     return {
       restrict: "A",
@@ -32,6 +39,17 @@
     };
   }
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:nyplTranslate
+   * @restrict E
+   * @description
+   * Directive to display a list of languages to translate the site into.
+   * @example
+   * <pre>
+   *  <nypl-translate></nypl-translate>
+   * </pre>
+   */
   function nyplTranslate() {
     return {
       restrict: 'E',
@@ -45,6 +63,14 @@
     };
   }
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:todayshours
+   * @restrict E
+   * @scope
+   * @description
+   * ...
+   */
   function todayshours() {
     return {
       restrict: 'E',
@@ -56,6 +82,14 @@
     };
   }
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:emailusbutton
+   * @restrict E
+   * @scope
+   * @description
+   * ...
+   */
   function emailusbutton() {
     return {
       restrict: 'E',
@@ -67,6 +101,14 @@
     };
   }
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:librarianchatbutton
+   * @restrict E
+   * @requires nyplUtility
+   * @description
+   * ....
+   */
   function librarianchatbutton(nyplUtility) {
     return {
       restrict: 'E',
@@ -92,6 +134,13 @@
     };
   }
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:scrolltop
+   * @requires $window
+   * @description
+   * ...
+   */
   function scrolltop($window) {
     return function (scope) {
       scope.$on('$stateChangeStart', function () {
@@ -100,6 +149,15 @@
     };
   }
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:eventRegistration
+   * @restrict E
+   * @requires $filter
+   * @scope
+   * @description
+   * ...
+   */
   function eventRegistration($filter) {
     function eventStarted(startDate) {
         var sDate = new Date(startDate),
@@ -137,6 +195,16 @@
     };
   }
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:nyplSiteAlerts
+   * @restrict E
+   * @requires $timeout
+   * @requires nyplLocationsService
+   * @requires nyplUtility
+   * @description
+   * ...
+   */
   function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
     return {
       restrict: 'E',
@@ -156,6 +224,15 @@
     };
   }
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:nyplLibraryAlert
+   * @restrict E
+   * @requires nyplUtility
+   * @scope
+   * @description
+   * ...
+   */
   function nyplLibraryAlert(nyplUtility) {
     function alertExpired(startDate, endDate) {
       var sDate = new Date(startDate),
@@ -185,12 +262,19 @@
     };
   }
 
-  /* 
-  ** Show/Hide collapsible animated directive
-  ** Usage: <div collapse="name of var toggled" duration="time in ms"
-  **          class-name="open"></div>
-  ** Duration & class-name are optional
-  */
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:collapse
+   * @restrict A
+   * @description
+   * Show/Hide collapsible animated directive. Duration & class-name
+   * are optional.
+   * @example
+   * <pre>
+   *  <div collapse="name of var toggled" duration="time in ms"
+   *          class-name="open"></div>
+   * </pre>
+   */
   function collapse() {
     function link($scope, element, attributes) {
       var exp = attributes.collapse,
@@ -230,6 +314,14 @@
     });
   }
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:nyplFundraising
+   * @restrict E
+   * @scope
+   * @description
+   * ...
+   */
   function nyplFundraising($timeout, nyplLocationsService) {
     return {
       restrict: 'E',
@@ -244,7 +336,7 @@
         if (!scope.fundraising) {
           $timeout(function () {
             nyplLocationsService.getConfig().then(function (data) {
-              var fundraising = data.fundraising;
+              var fundraising = data.config.fundraising;
               scope.fundraising = {
                 appeal: fundraising.appeal,
                 statement: fundraising.statement,
@@ -258,12 +350,20 @@
     };
   }
 
-  /* 
-  ** Directive: <nypl-sidebar donate-button="" nypl-ask="" donateurl="">
-  ** Usage: Inserts optional Donate button/nyplAsk widget when 'true' is
-  **        passed to donate-button="" or nypl-ask="". A custom donate url
-  **        can be passed for the donate-button, otherwise a default is set
-  */
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:nyplSidebar
+   * @restrict E
+   * @scope
+   * @description
+   * Inserts optional Donate button/nyplAsk widget when 'true' is
+   * passed to donate-button="" or nypl-ask="". A custom donate url
+   * can be passed for the donate-button, otherwise a default is set
+   * @example
+   * <pre>
+   *  <nypl-sidebar donate-button="" nypl-ask="" donateurl="">
+   * </pre>
+   */
   function nyplSidebar() {
     return {
       restrict: 'E',
@@ -282,6 +382,47 @@
     };
   }
 
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:nyplFooter
+   * @restrict E
+   * @requires $analytics
+   * @scope
+   * @description
+   * NYPL Footer. Changed to directive to add analytics events handler.
+   * @example
+   * <pre>
+   *  <nypl-footer></nypl-footer>
+   * </pre>
+   */
+  function nyplFooter($analytics) {
+    return {
+      restrict: 'E',
+      templateUrl: 'scripts/directives/templates/footer.html',
+      replace: true,
+      scope: {},
+      link: function (scope, elem, attrs) {
+        var footerLinks = elem.find('.footerlinks a'),
+          linkHref;
+
+        footerLinks.click(function () {
+          linkHref = angular.element(this).attr('href');
+
+          $analytics.eventTrack('Click',
+                    { category: 'footer', label: linkHref });
+        });
+      }
+    };
+  }
+
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:nyplAutofill
+   * @restrict AEC
+   * @scope
+   * @description
+   * ...
+   */
   function nyplAutofill($state, $analytics) {
     return {
       restrict: 'AEC',
@@ -438,7 +579,7 @@
 
         initAutofill();
       },
-      controller: function($scope) {
+      controller: ['$scope', function($scope) {
         $scope.lookahead = '',
         $scope.currentWord = '',
         $scope.completeWord = '';
@@ -542,7 +683,7 @@
             return $scope.completeWord = $scope.currentWord + $scope.lookahead;
           }
         }
-      }
+      }]
     };
 
   }
@@ -561,7 +702,8 @@
     .directive('nyplFundraising', nyplFundraising)
     .directive('nyplSidebar', nyplSidebar)
     .directive('nyplAutofill', nyplAutofill)
-    .directive('collapse', collapse);
+    .directive('collapse', collapse)
+    .directive('nyplFooter', nyplFooter);
 
   angular
     .module('nypl_widget')

@@ -15,11 +15,14 @@ describe('NYPL locationService Module', function () {
    * data from different API endpoints.
    */
   describe('nyplLocationsService', function () {
-    var api = 'http://locations-api-beta.nypl.org',
+    var api = 'http://dev.locations.api.nypl.org',
       jsonpCallback = '?callback=JSON_CALLBACK',
       error_message = 'Could not reach API: ',
       nyplLocationsService,
-      httpBackend;
+      httpBackend,
+      $rootScope;
+    
+    window.locations_cfg = { config: { api_root: api } };
 
     beforeEach(function () {
       // load the module.
@@ -29,9 +32,10 @@ describe('NYPL locationService Module', function () {
       // The _underscores_ are a convenience thing
       // so you can have your variable name be the
       // same as your injected service.
-      inject(function (_nyplLocationsService_, _$httpBackend_) {
+      inject(function (_$rootScope_, _nyplLocationsService_, _$httpBackend_) {
         nyplLocationsService = _nyplLocationsService_;
         httpBackend = _$httpBackend_;
+        $rootScope = _$rootScope_.$new();
       });
     });
 
@@ -48,52 +52,40 @@ describe('NYPL locationService Module', function () {
         var configData, returned_error_message;
 
         it('should get the server config variables', function () {
-          httpBackend
-            .expectGET('/config')
-            .respond({ config: { api_root: api } });
-
           nyplLocationsService.getConfig()
             .then(function (data) {
-              configData = data;
+              configData = data.config;
             });
 
-          httpBackend.flush();
+          $rootScope.$apply();
           expect(configData).toEqual({api_root: api});
         });
 
         it('should return cached api data', function () {
-          httpBackend
-            .expectGET('/config')
-            .respond({ config: { api_root: api } });
-
           nyplLocationsService.getConfig()
             .then(function (data) {
-              configData = data;
+              configData = data.config;
 
               // Calling it again once it's done.
               nyplLocationsService.getConfig()
                 .then(function (data) {
-                  configData = data;
+                  configData = data.config;
                 });
             });
 
-
-          httpBackend.flush();
+          $rootScope.$apply();
           expect(configData).toEqual({api_root: api});
         });
 
         it('should return an error', function () {
-          httpBackend
-            .expectGET('/config')
-            .respond(500);
-
+          window.locations_cfg = undefined;
           nyplLocationsService.getConfig()
             .then()
             .catch(function (error) {
               returned_error_message = error;
             });
-          httpBackend.flush();
 
+          $rootScope.$apply();
           expect(returned_error_message).toEqual(error_message + 'config');
         });
       });
@@ -104,12 +96,8 @@ describe('NYPL locationService Module', function () {
       // config variables and then call the rest of the functions that
       // depend on the api config variable;
       beforeEach(function () {
-        httpBackend
-          .expectGET('/config')
-          .respond({ config: { api_root: api } });
-
+        window.locations_cfg = { config: { api_root: api } };
         nyplLocationsService.getConfig();
-        httpBackend.flush();
       });
 
       /*

@@ -17,7 +17,6 @@
 #loadingWidget {
 	display: none;
 	z-index: 5;
-	opacity: 0;
 	background: rgba(0,0,0,.6);
 	position: fixed;
 	top: 0;
@@ -30,7 +29,6 @@
 	&.show {
 		display: block;
 		z-index: 9999;
-		opacity: 1;
 	}
 
 	.loader-icon {
@@ -43,8 +41,8 @@
 		font-size: 2.5em;
 		left: 50%;
 		top: 40%;
-    -webkit-animation: spin 2.5s linear reverse infinite;
-    animation: spin 2.5s linear reverse infinite;
+    -webkit-animation: spin 2.5s linear infinite;
+    animation: spin 2.5s linear infinite;
 	}
 
 	[data-icon]:before, [class^="icon-"]:before, [class*=" icon-"]:before {
@@ -323,15 +321,13 @@ time {
 }
 
 // Spin Animation
-
 @-webkit-keyframes spin {
-  from { }
-  to { -webkit-transform: rotate(360deg); }
+  0% {-webkit-transform: rotate(0deg);}
+  100% {-webkit-transform: rotate(360deg);}
 }
-
 @keyframes spin {
-  from { }
-  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+  0% {transform: rotate(0deg);}
+  100% {transform: rotate(360deg);}
 }
 
 .browser-upgrade {
@@ -460,3 +456,47 @@ time {
 
 }
 
+// Brooklyn/Queens Libraries
+.partner-libraries {
+	width: 100%;
+	padding: 10px 0px;
+	text-align: center;
+	@include breakpoint($min, $post-palm) {
+		padding: 20px 0px;
+	}
+
+	p {
+		max-width: none;
+		margin-bottom: 1em;
+	}
+
+	.brooklyn-library, .queens-library {
+		text-decoration: none;
+		&:hover {
+			text-decoration: none;
+		}
+
+		img {
+			display: block;
+			margin: 10px auto;
+			@include breakpoint($min, $post-palm) {
+				display: inline-block;
+			}
+		}
+	}
+
+	.brooklyn-library {
+		img {
+			@include breakpoint($min, $post-palm) {
+				margin-right: 20px;
+			}
+		}
+	}
+	.queens-library {
+		img {
+			@include breakpoint($min, $post-palm) {
+				margin-left: 20px;
+			}
+		}
+	}
+}

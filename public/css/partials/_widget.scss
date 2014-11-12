@@ -67,8 +67,14 @@
       
       .appeal{
 	      .primary-text{
-		      font-size: 90%;
+		      font-size: 1.2rem;
 	      }
+
+        .btn--donate {
+	        line-height: 1.5;
+			padding: .3rem;
+	        white-space: normal;
+        }
       }
     }
   }
