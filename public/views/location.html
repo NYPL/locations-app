@@ -339,7 +339,7 @@
 
   <!-- Exhibitions (conditional) -->
   <div id="container__exhibitions" data-ng-if="location._embedded.exhibitions">
-    <h2 class="hdg">{{ 'EXHIBITION' | translate }}</h2>
+    <h2 class="hdg">{{ 'EXHIBITIONS' | translate }}</h2>
     <div class="grid">
       <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat="exhibition in location._embedded.exhibitions | orderBy:'-start'">
         <a data-ng-href="{{exhibition._links.self.href}}" data-ng-if="exhibition.image"

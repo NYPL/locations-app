@@ -149,7 +149,7 @@ nypl_locations.config([
         // it will run the app. It may not be necessary for the app though
         // since, in the run phase, if there is an error when changing state,
         // the app will go to the 404 state.
-        // $urlRouterProvider.otherwise('/404');
+        $urlRouterProvider.otherwise('/404');
         $stateProvider
             .state('home', {
                 url: '/',
@@ -1625,6 +1625,7 @@ angular.module('nypl_widget', [
    * @ngdoc directive
    * @name nyplSearch.directive:nyplSearch
    * @restrict E
+   * @requires $analytics
    * @scope
    * @description
    * Displays the NYPL search from. Design and event handlers.
@@ -1633,7 +1634,7 @@ angular.module('nypl_widget', [
    *  <nypl-search></nypl-search>
    * </pre>
    */
-  function nyplSearch() {
+  function nyplSearch($analytics) {
     return {
       restrict: 'E',
       scope: {},
@@ -1703,16 +1704,25 @@ angular.module('nypl_widget', [
           // Don't perform search if no term has been entered
           if (term.length === 0) {
             setError();
+            $analytics.eventTrack('Empty Search',
+                    { category: 'Header Search', label: '' });
+
             return false;
           }
 
           if (scope === 'nypl.org') {
             target = window.location.protocol + '//' + 'nypl.org'
               + '/search/apachesolr_search/' + term;
+
+            $analytics.eventTrack('Submit Search',
+                    { category: 'Header Search', label: term });
           } else {
             // Bibliocommons by default
             target = 'http://nypl.bibliocommons.com/search?t=smart&q='
               + term + '&commit=Search&searchOpt=catalogue';
+
+            $analytics.eventTrack('Submit Catalog Search',
+                    { category: 'Header Search', label: term });
           }
           window.location = target;
           return false;
@@ -1752,6 +1762,8 @@ angular.module('nypl_widget', [
           // search input
           o.term.focus(function (e) {
             o.choices.addClass('open');
+            $analytics.eventTrack('Focused',
+                    { category: 'Header Search', label: 'Search Box' });
           });
 
           // If the error class has been set on the input box, remove it
@@ -1768,6 +1780,8 @@ angular.module('nypl_widget', [
           // Setup click action on radio butons
           o.choices.find('li input').click(function () {
             setPrompt(angular.element(this));
+            $analytics.eventTrack('Select',
+                    { category: 'Header Search', label: getChoice() });
           });
 
           // Setup click action on list items (will be active when items are
@@ -1787,6 +1801,7 @@ angular.module('nypl_widget', [
       }
     };
   }
+  nyplSearch.$inject = ["$analytics"];
 
   /**
    * @ngdoc overview
@@ -2817,6 +2832,10 @@ angular.module('nypl_widget', [
    * @restrict E
    * @description
    * Directive to display a list of languages to translate the site into.
+   * @example
+   * <pre>
+   *  <nypl-translate></nypl-translate>
+   * </pre>
    */
   function nyplTranslate() {
     return {
@@ -3109,7 +3128,7 @@ angular.module('nypl_widget', [
         if (!scope.fundraising) {
           $timeout(function () {
             nyplLocationsService.getConfig().then(function (data) {
-              var fundraising = data.fundraising;
+              var fundraising = data.config.fundraising;
               scope.fundraising = {
                 appeal: fundraising.appeal,
                 statement: fundraising.statement,
@@ -3155,6 +3174,40 @@ angular.module('nypl_widget', [
       }
     };
   }
+
+  /**
+   * @ngdoc directive
+   * @name nypl_locations.directive:nyplFooter
+   * @restrict E
+   * @requires $analytics
+   * @scope
+   * @description
+   * NYPL Footer. Changed to directive to add analytics events handler.
+   * @example
+   * <pre>
+   *  <nypl-footer></nypl-footer>
+   * </pre>
+   */
+  function nyplFooter($analytics) {
+    return {
+      restrict: 'E',
+      templateUrl: 'scripts/directives/templates/footer.html',
+      replace: true,
+      scope: {},
+      link: function (scope, elem, attrs) {
+        var footerLinks = elem.find('.footerlinks a'),
+          linkHref;
+
+        footerLinks.click(function () {
+          linkHref = angular.element(this).attr('href');
+
+          $analytics.eventTrack('Click',
+                    { category: 'footer', label: linkHref });
+        });
+      }
+    };
+  }
+  nyplFooter.$inject = ["$analytics"];
 
   /**
    * @ngdoc directive
@@ -3444,7 +3497,8 @@ angular.module('nypl_widget', [
     .directive('nyplFundraising', nyplFundraising)
     .directive('nyplSidebar', nyplSidebar)
     .directive('nyplAutofill', nyplAutofill)
-    .directive('collapse', collapse);
+    .directive('collapse', collapse)
+    .directive('nyplFooter', nyplFooter);
 
   angular
     .module('nypl_widget')

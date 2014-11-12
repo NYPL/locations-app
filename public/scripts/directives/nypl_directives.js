@@ -45,6 +45,10 @@
    * @restrict E
    * @description
    * Directive to display a list of languages to translate the site into.
+   * @example
+   * <pre>
+   *  <nypl-translate></nypl-translate>
+   * </pre>
    */
   function nyplTranslate() {
     return {
@@ -380,6 +384,39 @@
 
   /**
    * @ngdoc directive
+   * @name nypl_locations.directive:nyplFooter
+   * @restrict E
+   * @requires $analytics
+   * @scope
+   * @description
+   * NYPL Footer. Changed to directive to add analytics events handler.
+   * @example
+   * <pre>
+   *  <nypl-footer></nypl-footer>
+   * </pre>
+   */
+  function nyplFooter($analytics) {
+    return {
+      restrict: 'E',
+      templateUrl: 'scripts/directives/templates/footer.html',
+      replace: true,
+      scope: {},
+      link: function (scope, elem, attrs) {
+        var footerLinks = elem.find('.footerlinks a'),
+          linkHref;
+
+        footerLinks.click(function () {
+          linkHref = angular.element(this).attr('href');
+
+          $analytics.eventTrack('Click',
+                    { category: 'footer', label: linkHref });
+        });
+      }
+    };
+  }
+
+  /**
+   * @ngdoc directive
    * @name nypl_locations.directive:nyplAutofill
    * @restrict AEC
    * @scope
@@ -665,7 +702,8 @@
     .directive('nyplFundraising', nyplFundraising)
     .directive('nyplSidebar', nyplSidebar)
     .directive('nyplAutofill', nyplAutofill)
-    .directive('collapse', collapse);
+    .directive('collapse', collapse)
+    .directive('nyplFooter', nyplFooter);
 
   angular
     .module('nypl_widget')
