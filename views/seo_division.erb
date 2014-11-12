@@ -30,7 +30,13 @@
         <%= erb :seo_location_hours, :locals => {:hours => @div.hours} %>
 
         <h2>About</h2>
-        <div itemprop="description"><%= @div.about %></div>
+        <div itemprop="description">
+          <%= @div.about %>
+          <div>
+            <a href="<%= @div.links['self']['about'] %>">Learn More</a>
+          </div>
+
+        </div>
 
 
         <%= erb :seo_hasdivisions, :locals => {:loc => @div, :parent => 'div', :parent_slug => @div.slug } %> 
