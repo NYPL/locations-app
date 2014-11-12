@@ -15,10 +15,14 @@
     <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.1/css/nyplbase.min.css">
 <% end %>
 
-    <link rel="stylesheet" href="/css/locations.min.css">
+<% if @rq.forwarded? %>
+    <base href="<%= settings.baseurl %>">
+    <link rel="stylesheet" href="<%= settings.baseurl %>css/locations.min.css">
+<% else %>
+    <base href="/">
+    <link rel="stylesheet" href="css/locations.min.css">
+<% end %>
 
-    <!-- Angular Hash fallback (need to test on heroku) -->
-    <base href="/widget" target="_parent">
   </head>
   <body class="nypl-widget">
     <!--[if lt IE 7]>
@@ -26,7 +30,7 @@
     <![endif]-->
     
     <div class="nypl-widget-wrapper">
-      <!-- Lokinator App -->
+      <!-- Locinator App -->
       <div data-ui-view data></div>
     </div>
 
@@ -67,20 +71,16 @@
 <%= erb :angular_ux_static %>
 <% end %>
 
-    <!-- NYPL Components -->
-    <script src="scripts/components/nypl_coordinates.js"></script>
-    <script src="scripts/components/nypl_locations_api.js"></script>
-
     <!-- App Config -->
-    <script src="scripts/app.js"></script>
-    <!-- Filters -->
-    <script src="scripts/filters/nypl_filters.js"></script>
-    <!-- Controllers -->
-    <script src="scripts/controllers/widget.js"></script>
-    <!-- Directives -->
-    <script src="scripts/directives/nypl_directives.js"></script>
-    <!-- Services -->
-    <script src="scripts/services/nypl_utility_service.js"></script>
+    <script>
+      var locations_cfg = <%= settings.app_cfg %>
+    </script>
+
+<% if settings.env_config["app_src"] == "minified" %>
+<%= erb :minified_widget %>
+<% else %>
+<%= erb :full_widget %>
+<% end %>
 
 </body>
 </html>

@@ -4,7 +4,14 @@
 (function () {
     'use strict';
 
-    // Filter formats military time to standard time
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:timeFormat
+     * @param {object} timeObj Object with hours for today and tomorrow.
+     * @returns {string} Closed or open times for a branch.
+     * @description
+     * Filter formats military time to standard time
+     */
     function timeFormat() {
         function clockTime(time) {
             var components = time.split(':'),
@@ -36,13 +43,28 @@
         };
     }
 
-    // Coverts MYSQL Datetime stamp to ISO format
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:dateToISO
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Coverts MYSQL Datetime stamp to ISO format
+     */
     function dateToISO() {
         return function (input) {
             return new Date(input).toISOString();
         };
     }
 
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:capitalize
+     * @params {string} input
+     * @returns {string} ...
+     * @description
+     * Capitalize all the words in a phrase.
+     */
     function capitalize() {
         return function (input) {
             if (typeof input === 'string') {
@@ -54,6 +76,15 @@
         };
     }
 
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:hoursTodayFormat
+     * @param {object} elem ...
+     * @param {string} type ...
+     * @returns {string} ...
+     * @description
+     * ...
+     */
     function hoursTodayFormat() {
         function getHoursObject(time) {
             time = time.split(':');
@@ -164,8 +195,15 @@
         };
     }
 
-    /* Truncates string text with proper arguments
-        [length (number), end(string)] */
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:truncate
+     * @param {string} text ...
+     * @param {number} [length] ...
+     * @returns {string} [end] ...
+     * @description
+     * ...
+     */
     function truncate() {
         return function (text, length, end) {
             if (typeof text !== 'string') {

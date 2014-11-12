@@ -4,6 +4,30 @@
 (function () {
   'use strict';
 
+  /**
+   * @ngdoc directive
+   * @name nyplFeedback.directive:nyplFeedback
+   * @restrict E
+   * @requires $sce
+   * @requires $rootScope
+   * @scope
+   * @description
+   * Creates a small form component on the page that outputs an iframe to a
+   * the link that's passed as an attribute. The height and width must also
+   * be included when being created. The feedback button can display on the
+   * right or left side of the page.
+   * @example
+   * <pre>
+   *  <!-- Display the button on the right side and slide the feedback left -->
+   *  <nypl-feedback data-url="https://www.surveymonkey.com/s/8T3CYMV"
+   *    data-side="right" data-height="660" data-width="300"></nypl-feedback>
+   *
+   *  <!-- Display the button on the left side and slide the feedback right,
+   *    different height and width -->
+   *  <nypl-feedback data-url="https://www.surveymonkey.com/s/8T3CYMV"
+   *    data-side="right" data-height="500" data-width="290"></nypl-feedback>
+   * </pre>
+   */
   function nyplFeedback($sce, $rootScope) {
     return {
       restrict: 'E',
@@ -48,6 +72,14 @@
     };
   }
 
+  /**
+   * @ngdoc overview
+   * @module nyplFeedback
+   * @name nyplFeedback
+   * @description
+   * AngularJS module for adding a feedback button and iframe to the site.
+   * Currently used for adding Survey Monkey as the feedback form.
+   */
   angular
     .module('nyplFeedback', [])
     .directive('nyplFeedback', nyplFeedback);
