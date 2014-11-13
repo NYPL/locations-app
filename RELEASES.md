@@ -1,4 +1,7 @@
-# TAG 1.2.2
+## Tag v1.2.3
+* Removing library manager reference in Division SEO template.
+
+## Tag v1.2.2
 * Added grunt-ng-annotate and grunt-contrib-uglify to build a minified files for the app and widget AngularJS code. Update to index.erb so it outputs the correct minified or full source.
 * More unit and E2E tests.
 * Update to the readme for running the app and testing.
