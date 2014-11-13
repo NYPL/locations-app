@@ -23,8 +23,6 @@
         <div><%= @div.location.name %></div>
         <%= erb :seo_address, :locals => {:loc => @div.location} %>
         <div itemprop="contactPoint" itemscope itemtype="http://schema.org/ContactPoint">
-          <span itemprop="contactType">Library Manager</span>
-          <span itemprop="name"><%= @div.contacts['manager'] %></span>
         </div>
 
         <%= erb :seo_location_hours, :locals => {:hours => @div.hours} %>
