@@ -33,10 +33,14 @@ describe('NYPL Widget', function () {
 
   describe('Location page', function () {
     beforeEach(function () {
-      browser.addMockModule('httpBackendMock', httpBackendMock,
-        '/locations/grand-central', circulating.good);
+      // browser.addMockModule('httpBackendMock', httpBackendMock,
+      //   '/locations/grand-central', circulating.good);
       browser.get('/widget/grand-central');
       browser.waitForAngular();
+    });
+
+    afterEach(function () {
+      browser.clearMockModules();
     });
 
     it('should have an image', function () {
@@ -110,8 +114,8 @@ describe('NYPL Widget', function () {
 
   describe('Research page', function () {
     beforeEach(function () {
-      browser.addMockModule('httpBackendMock', httpBackendMock,
-        '/locations/schomburg', research.good);
+      // browser.addMockModule('httpBackendMock', httpBackendMock,
+      //   '/locations/schomburg', research.good);
       browser.get('/widget/schomburg');
       browser.waitForAngular();
     });
@@ -183,10 +187,14 @@ describe('NYPL Widget', function () {
 
   describe('Division page', function () {
     beforeEach(function () {
-      browser.addMockModule('httpBackendMock', httpBackendMock,
-        '/divisions/general-research-division', division.good);
+      // browser.addMockModule('httpBackendMock', httpBackendMock,
+      //   '/divisions/general-research-division', division.good);
       browser.get('/widget/divisions/general-research-division');
       browser.waitForAngular();
+    });
+
+    afterEach(function () {
+      browser.clearMockModules();
     });
 
     it('should have an image', function () {
