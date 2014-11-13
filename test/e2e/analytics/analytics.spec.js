@@ -13,6 +13,13 @@ describe('Google analytics configuration', function () {
     footer = require('../global-elements/footer.po.js'),
     header = require('../global-elements/header.po.js');
 
+  function stopLink() {
+    return "jQuery('.footer-links a').click(function (e) {" +
+           "  e.preventDefault();" +
+           "  return false;" +
+           "});";
+  }
+
   function mockGA() {
     return "window.ga_msg = [];" +
            "ga = function () {" +
@@ -675,21 +682,25 @@ describe('Google analytics configuration', function () {
 
   });
 
-  // describe('Footer events', function () {
-  //   beforeEach(function () {
-  //     browser.get('/chatham-square');
-  //     browser.waitForAngular();
-  //     browser.executeScript(mockGA());
-  //   });
+  describe('Footer events', function () {
+    beforeEach(function () {
+      browser.get('/chatham-square');
+      browser.waitForAngular();
+      // browser.executeScript(stopLink());
+      browser.executeScript(mockGA());
+    });
 
-  //   it('should track clicking on links', function () {
-  //     footer.footerLinks.click(function () {
-  //       browser.executeScript('return window.ga_msg;').then(function (ga) {
+    it('should track clicking on links', function () {
+      footer.footerLinks.click();
 
-  //       });
-  //     });
-  //   });
-  // });
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        console.log(ga);
+        expect(ga[0][2]).toEqual('footer');
+        expect(ga[0][3]).toEqual('Click');
+        expect(ga[0][4]).toEqual('/help/about-nypl');
+      });
+    });
+  });
 
   describe('Header events', function () {
     describe('Category: Header', function () {
@@ -747,12 +758,17 @@ describe('Google analytics configuration', function () {
       //   });
       // });
 
-      it('should track a click to the log in button', function () {
-        header.loginBtn.click();
-        header.loginSubmit.click(function (e) {
-          browser.executeScript('return window.ga_msg;').then(function (ga) {
-        });
-      });
+      // Goes to Bibliocommons
+      // it('should track a click to the log in button', function () {
+      //   header.loginBtn.click();
+      //   header.loginSubmit.click(function (e) {
+      //     browser.executeScript('return window.ga_msg;').then(function (ga) {
+      //       expect(ga[1][2]).toEqual('SSO');
+      //       expect(ga[1][3]).toEqual('');
+      //       expect(ga[1][4]).toEqual('click');
+      //     });
+      //   });
+      // });
 
       // Must mock being logged in for the log out button to show
       // it('should track a click to the log out button', function () {
