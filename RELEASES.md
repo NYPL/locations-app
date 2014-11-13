@@ -1,6 +1,9 @@
 ## Tag v1.2.4
 * LOC-474 Update GA events for footer links. Made links relative so that duplicates do not show up in GA.
 * Update to widget link that goes to the new locations pages.
+* Line-height NYPLBase fix for input fields
+* Added homepage list view top border on mobile view.
+* Added an array length check to sitewide alerts utility.
 
 ## Tag v1.2.3
 * Removing library manager reference in Division SEO template.
