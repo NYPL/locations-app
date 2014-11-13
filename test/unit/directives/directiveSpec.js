@@ -757,7 +757,7 @@ describe('NYPL Directive Unit Tests', function () {
       $rootScope.$digest();
       ctrl = autofill.controller("nyplAutofill");
       $scope = element.isolateScope() || element.scope()
-      console.log(ctrl);
+      // console.log(ctrl);
     }));
 
     it('should compile lookahead and autofill containers', function () {

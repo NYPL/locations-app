@@ -19,7 +19,7 @@ describe('nyplSSO module', function () {
     ssoStatus = _ssoStatus_;
 
     httpBackend
-        .expectGET('/languages/en.json')
+        .expectGET('languages/en.json')
         .respond('public/languages/en.json');
   }));
 
@@ -184,7 +184,7 @@ describe('nyplSSO module', function () {
     });
 
     it('should have a donate button', function () {
-      expect(element.find('.donate-button').text()).toEqual('DONATE');
+      expect(element.find('.donate-button').text().trim()).toEqual('DONATE');
       expect(element.find('.donate-button').attr('href'))
         .toEqual('https://secure3.convio.net/nypl/site/SPageServer?page' +
           'name=donation_form&JServSessionIdr003=dwcz55yj27.' +

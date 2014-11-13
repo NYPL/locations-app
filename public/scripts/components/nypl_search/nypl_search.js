@@ -193,7 +193,10 @@
    * AngularJS module for managing the header search form and its input.
    */
   angular
-    .module('nyplSearch', [])
+    .module('nyplSearch', [
+      'angulartics',
+      'angulartics.google.analytics'
+    ])
     .directive('nyplSearch', nyplSearch);
 
 })();

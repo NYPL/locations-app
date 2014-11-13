@@ -20,7 +20,7 @@ describe('Locinator State Routing', function () {
       $templateCache.put('views/locations.html');
 
       $httpBackend
-        .expectGET('/languages/en.json')
+        .expectGET('languages/en.json')
         .respond('public/languages/en.json');
 
       // $httpBackend.expectGET(/views.*/).respond(200, '');
