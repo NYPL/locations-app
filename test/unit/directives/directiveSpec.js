@@ -757,7 +757,7 @@ describe('NYPL Directive Unit Tests', function () {
       $rootScope.$digest();
       ctrl = autofill.controller("nyplAutofill");
       $scope = element.isolateScope() || element.scope()
-      console.log(ctrl);
+      // console.log(ctrl);
     }));
 
     it('should compile lookahead and autofill containers', function () {
@@ -767,31 +767,31 @@ describe('NYPL Directive Unit Tests', function () {
 
     describe('Controller Methods', function () {
 
-      it('openAutofill method should be defined', function () {
+      it('openAutofill() method should be defined', function () {
         expect(ctrl.openAutofill).toBeDefined();
       });
 
-      it('openAutofill method should set $scope.focused to be true', function () {
+      it('openAutofill() method should set $scope.focused to be true', function () {
         $scope.focused = false;
         ctrl.openAutofill();
         expect($scope.focused).toBeTruthy();
       });
 
-      it('closeAutofill method should be defined', function () {
+      it('closeAutofill() method should be defined', function () {
         expect(ctrl.closeAutofill).toBeDefined();
       });
       
-      it('closeAutofill method should set $scope.focused to be false', function () {
+      it('closeAutofill() method should set $scope.focused to be false', function () {
         $scope.focused = true;
         ctrl.closeAutofill();
         expect($scope.focused).toBeFalsy();
       });
 
-      it('resetSearchTerms method should be defined', function () {
+      it('resetSearchTerms() method should be defined', function () {
         expect(ctrl.resetSearchTerms).toBeDefined();
       });
 
-      it('resetSearchTerms method should set $scope.lookahead' + 
+      it('resetSearchTerms() method should set $scope.lookahead' + 
         ' and $scope.currentWord to empty strings', function () {
 
         $scope.lookahead = 'lookahead string';
@@ -841,6 +841,109 @@ describe('NYPL Directive Unit Tests', function () {
           expect($scope.activated).toBeTruthy();
           expect($scope.active).toEqual($scope.filtered[0]);
           expect($scope.currentIndex).toEqual($scope.filtered.indexOf($scope.active));
+      });
+
+      it('activateGeocodingItem() method should be defined', function() {
+        expect(ctrl.activateGeocodingItem).toBeDefined();
+      });
+
+      it('activateGeocodingItem() method should assign the current scope.model ' +
+        'value as the active item within the drop-down list; only if the user has ' + 
+        'activated the drop-down via up/down arrow keys', function() {
+          $scope.activated = true; // User initialized via key press
+          $scope.active = undefined; // No active item past the location list
+          $scope.geocodingactive = false;
+          $scope.model = 'Grand Central';
+
+          ctrl.activateGeocodingItem();
+          expect($scope.geocodingactive).toBeTruthy();
+          expect($scope.active).toEqual($scope.model);
+      });
+
+      it('activateNextItem() method should be defined', function() {
+        expect(ctrl.activateNextItem).toBeDefined();
+      });
+
+      it('activateNextItem() method intially sets the checks if the geocodingactive ' + 
+        'item is active and sets it to false', function() {
+          $scope.geocodingactive = true;
+          ctrl.activateNextItem();
+          expect($scope.geocodingactive).toBeFalsy();
+      });
+
+      it('activateNextItem() method increases the current index of the locations array ' + 
+        'and activates the next item in the list. Once outside of the length of the list ' +
+        'the active.item is assigned as undefined', function() {
+          $scope.currentIndex = 0;
+          $scope.filtered = [
+            {id: "BAR", name: "Baychester Library", _links: {}},
+            {id: "CHR", name: "Chatham Square Library", _links: {}},
+            {id: "CI", name: "City Island Library", _links: {}},
+            {id: "DH", name: "Dongan Hills Library", _links: {}}
+          ];
+          $scope.active = $scope.filtered[0];
+
+          ctrl.activateNextItem(); // Increase from initial element in array
+          expect($scope.currentIndex).toEqual(1);
+          expect($scope.active).toEqual($scope.filtered[1]);
+          ctrl.activateNextItem(); // Second increase by arrow-down key
+          expect($scope.currentIndex).toEqual(2);
+          expect($scope.active).toEqual($scope.filtered[2]);        
+      });
+
+      it('activateNextItem() method should set the active element to undefined ' + 
+        'if the index of the array of locations goes out of bounds', function() {
+          $scope.currentIndex = 4; //Current length of list
+          $scope.filtered = [
+            {id: "BAR", name: "Baychester Library", _links: {}},
+            {id: "CHR", name: "Chatham Square Library", _links: {}},
+            {id: "CI", name: "City Island Library", _links: {}},
+            {id: "DH", name: "Dongan Hills Library", _links: {}}
+          ];
+          $scope.active = $scope.filtered[3];
+
+          ctrl.activateNextItem();
+          expect($scope.currentIndex).toEqual(-1);
+          expect($scope.active).toBeUndefined();
+      });
+
+      it('activatePreviousItem() method should be defined', function() {
+        expect(ctrl.activatePreviousItem).toBeDefined();
+      });
+
+      it('activatePreviousItem() method should decrease the currentIndex value by 1 ' +
+        'and assign the active item to that index value in the locations array', function() {
+          $scope.currentIndex = 3;
+          $scope.filtered = [
+            {id: "BAR", name: "Baychester Library", _links: {}},
+            {id: "CHR", name: "Chatham Square Library", _links: {}},
+            {id: "CI", name: "City Island Library", _links: {}},
+            {id: "DH", name: "Dongan Hills Library", _links: {}}
+          ];
+          $scope.active = $scope.filtered[3];
+
+          ctrl.activatePreviousItem();
+          expect($scope.currentIndex).toEqual(2);
+          expect($scope.active).toEqual($scope.filtered[2]);
+      });
+
+      it('activatePreviousItem() method should decrease the currentIndex value by 1 ' +
+        'and assign the active item to that index value in the locations array', function() {
+          $scope.currentIndex = 3;
+          $scope.filtered = [
+            {id: "BAR", name: "Baychester Library", _links: {}},
+            {id: "CHR", name: "Chatham Square Library", _links: {}},
+            {id: "CI", name: "City Island Library", _links: {}},
+            {id: "DH", name: "Dongan Hills Library", _links: {}}
+          ];
+          $scope.active = $scope.filtered[3];
+
+          ctrl.activatePreviousItem();
+          expect($scope.currentIndex).toEqual(2);
+          expect($scope.active).toEqual($scope.filtered[2]);
+          ctrl.activatePreviousItem();
+          expect($scope.currentIndex).toEqual(1);
+          expect($scope.active).toEqual($scope.filtered[1]);
       });
 
     });

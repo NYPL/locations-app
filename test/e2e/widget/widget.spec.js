@@ -10,14 +10,11 @@ describe('NYPL Widget', function () {
     research = require('../APImocks/research.js'),
     division = require('../APImocks/division.js'),
     httpBackendMock = function (page, response) {
-      var API_URL = 'http://locations-api-alpha.herokuapp.com';
+      var API_URL = 'http://dev.locations.api.nypl.org';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
-          $httpBackend.whenGET('/languages/en.json').passThrough();
-          $httpBackend
-            .whenGET('/config')
-            .respond({ config: { api_root: API_URL } });
+          $httpBackend.whenGET('languages/en.json').passThrough();
 
           $httpBackend
             .whenJSONP(API_URL + page + '?callback=JSON_CALLBACK')
@@ -36,10 +33,14 @@ describe('NYPL Widget', function () {
 
   describe('Location page', function () {
     beforeEach(function () {
-      browser.addMockModule('httpBackendMock', httpBackendMock,
-        '/locations/grand-central', circulating.good);
+      // browser.addMockModule('httpBackendMock', httpBackendMock,
+      //   '/locations/grand-central', circulating.good);
       browser.get('/widget/grand-central');
       browser.waitForAngular();
+    });
+
+    afterEach(function () {
+      browser.clearMockModules();
     });
 
     it('should have an image', function () {
@@ -97,7 +98,7 @@ describe('NYPL Widget', function () {
       expect(widgetPage.locinator_url.getText())
         .toEqual('Learn about hours, amenities, events, and more.');
       expect(widgetPage.locinator_url.getAttribute('href'))
-        .toEqual('http://locations-beta.nypl.org/grand-central');
+        .toEqual('http://www.nypl.org/locations/grand-central');
     });
 
     it('should have a donate button', function () {
@@ -113,8 +114,8 @@ describe('NYPL Widget', function () {
 
   describe('Research page', function () {
     beforeEach(function () {
-      browser.addMockModule('httpBackendMock', httpBackendMock,
-        '/locations/schomburg', research.good);
+      // browser.addMockModule('httpBackendMock', httpBackendMock,
+      //   '/locations/schomburg', research.good);
       browser.get('/widget/schomburg');
       browser.waitForAngular();
     });
@@ -135,9 +136,8 @@ describe('NYPL Widget', function () {
       expect(widgetPage.telephone.getText()).toEqual('(917) 275-6975');
     });
 
-    it('should have a library manager', function () {
-      expect(widgetPage.manager.getText())
-        .toEqual('Library Manager: ');
+    it('should not have a library manager', function () {
+      expect(widgetPage.manager.isPresent()).toBe(false);
     });
 
     it('should be partially accessible', function () {
@@ -171,7 +171,7 @@ describe('NYPL Widget', function () {
       expect(widgetPage.locinator_url.getText())
         .toEqual('Learn about hours, amenities, events, and more.');
       expect(widgetPage.locinator_url.getAttribute('href'))
-        .toEqual('http://locations-beta.nypl.org/schomburg');
+        .toEqual('http://www.nypl.org/locations/schomburg');
     });
 
     it('should have a donate button', function () {
@@ -185,13 +185,16 @@ describe('NYPL Widget', function () {
     });
   });
 
-
   describe('Division page', function () {
     beforeEach(function () {
-      browser.addMockModule('httpBackendMock', httpBackendMock,
-        '/divisions/general-research-division', division.good);
+      // browser.addMockModule('httpBackendMock', httpBackendMock,
+      //   '/divisions/general-research-division', division.good);
       browser.get('/widget/divisions/general-research-division');
       browser.waitForAngular();
+    });
+
+    afterEach(function () {
+      browser.clearMockModules();
     });
 
     it('should have an image', function () {
@@ -252,7 +255,7 @@ describe('NYPL Widget', function () {
       expect(widgetPage.locinator_url.getText())
         .toEqual('Learn about hours, amenities, events, and more.');
       expect(widgetPage.locinator_url.getAttribute('href'))
-        .toEqual('http://locations-beta.nypl.org/divisions/' +
+        .toEqual('http://www.nypl.org/locations/divisions/' +
           'general-research-division');
     });
 
@@ -267,6 +270,82 @@ describe('NYPL Widget', function () {
     });
   });
 
+  describe('Subdivision page', function () {
+    beforeEach(function () {
+      browser.get('/widget/divisions/wallach-division/photography-collection');
+      browser.waitForAngular();
+    });
+
+    it('should have an image', function () {
+      expect(widgetPage.image.isPresent()).toBe(true);
+    });
+
+    it('should have the research branch\'s name', function () {
+      expect(widgetPage.location_name.getText())
+        .toEqual('Stephen A. Schwarzman Building');
+    });
+
+    it('should display the location\'s address', function () {
+      expect(widgetPage.street_address.getText())
+        .toEqual('Fifth Avenue at 42nd Street');
+      expect(widgetPage.locality.getText()).toEqual('New York');
+      expect(widgetPage.region.getText()).toEqual('NY');
+      expect(widgetPage.postal_code .getText()).toEqual('10018');
+    });
+
+    it('should have a floor and room number', function () {
+      expect(widgetPage.floor.getText()).toEqual('Third Floor,')
+      expect(widgetPage.room.getText()).toEqual('Room 308')
+    });
+
+    it('should have a telephone number', function () {
+      expect(widgetPage.telephone.getText()).toEqual('(212) 930-0837');
+    });
+
+    it('should not have a library manager', function () {
+      expect(widgetPage.manager.isPresent()).toBe(false);
+    });
+
+    it('should be fully accessible', function () {
+      expect(widgetPage.accessibility.getText())
+        .toEqual('Fully Accessible');
+    });
+
+    it('should not have a Google Maps directions link', function () {
+      expect(widgetPage.directions_link.isPresent()).toBe(false);
+    });
+
+    it('should not have a catalog link', function () {
+      expect(widgetPage.catalog_link.isPresent()).toBe(false);
+    });
+
+    it('should not have any social media buttons', function () {
+      expect(widgetPage.social_media_container.isPresent()).toBe(false);
+    });
+
+    it('should display the hours today', function () {
+      expect(widgetPage.hours_container.isPresent()).toBe(true);
+      expect(widgetPage.hoursToday.getText()).not.toEqual('');
+    });
+
+    it('should have a link back to the Locinator', function () {
+      expect(widgetPage.locinator_url.getText())
+        .toEqual('Learn about hours, amenities, events, and more.');
+      expect(widgetPage.locinator_url.getAttribute('href'))
+        .toEqual('http://www.nypl.org/locations/divisions/' +
+          'wallach-division/photography-collection');
+    });
+
+    it('should have a donate button', function () {
+      expect(widgetPage.appeal.isPresent()).toBe(true);
+      expect(widgetPage.donate_btn.isPresent()).toBe(true);
+    });
+
+    it('should have chat/email links', function () {
+      expect(widgetPage.askNYPL.isPresent()).toBe(true);
+      expect(widgetPage.email_us.isPresent()).toBe(true);
+    });
+  });
 
 });
 

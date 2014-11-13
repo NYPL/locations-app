@@ -265,7 +265,7 @@
         return null;
       }
 
-      if (Array.isArray(alerts)) {
+      if (Array.isArray(alerts) && alerts.length > 0) {
         _.each(alerts, function (alert) {
           alert_start = new Date(alert.start);
           alert_end = new Date(alert.end);

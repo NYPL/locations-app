@@ -4,7 +4,7 @@
 var Footer = function () {
   'use strict';
 
-  this.footerLinks = element(by.css('.footerlinks a'));
+  this.footerLinks = element.all(by.css('.footerlinks a'));
 
 };
 
