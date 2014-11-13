@@ -4,6 +4,7 @@
 * Line-height NYPLBase fix for input fields
 * Added homepage list view top border on mobile view.
 * Added an array length check to sitewide alerts utility.
+* More unit and E2E tests. Upgrading to protractor v 1.4.0.
 
 ## Tag v1.2.3
 * Removing library manager reference in Division SEO template.
