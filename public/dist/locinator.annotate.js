@@ -1811,7 +1811,10 @@ angular.module('nypl_widget', [
    * AngularJS module for managing the header search form and its input.
    */
   angular
-    .module('nyplSearch', [])
+    .module('nyplSearch', [
+      'angulartics',
+      'angulartics.google.analytics'
+    ])
     .directive('nyplSearch', nyplSearch);
 
 })();
@@ -2752,7 +2755,7 @@ angular.module('nypl_widget', [
 
     $rootScope.title = data.name;
     $scope.data = data;
-    $scope.locinator_url = "http://locations-beta.nypl.org" +
+    $scope.locinator_url = "http://www.nypl.org/locations" +
       $location.path().substr(7);
     $scope.widget_name = data.name;
 
@@ -4971,7 +4974,7 @@ angular.module('nypl_widget', [
         return null;
       }
 
-      if (Array.isArray(alerts)) {
+      if (Array.isArray(alerts) && alerts.length > 0) {
         _.each(alerts, function (alert) {
           alert_start = new Date(alert.start);
           alert_end = new Date(alert.end);
