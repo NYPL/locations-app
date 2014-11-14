@@ -131,6 +131,17 @@ nypl_locations.config([
                 });
         }
 
+        function LoadTerms(config, nyplLocationsService) {
+            return nyplLocationsService
+                .terms()
+                .then(function (data) {
+                    return data.terms;
+                })
+                .catch(function (error) {
+                    throw error;
+                });
+        }
+
         function getConfig(nyplLocationsService) {
             return nyplLocationsService.getConfig();
         }
@@ -218,7 +229,8 @@ nypl_locations.config([
                 label: 'Collections',
                 resolve: {
                     config: getConfig,
-                    divisions: LoadDivisions
+                    divisions: LoadDivisions,
+                    terms: LoadTerms
                 }
             })
             .state('amenities', {

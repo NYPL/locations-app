@@ -283,6 +283,22 @@
             return defer.promise;
         };
 
+        locationsApi.terms = function () {
+            var defer = $q.defer();
+
+            $http.jsonp(
+                    api + '/terms' + '?callback=JSON_CALLBACK',
+                    {cache: true}
+                )
+                .success(function (data) {
+                    defer.resolve(data);
+                })
+                .error(function (data, status) {
+                    defer.reject(apiError + ': terms');
+                });
+            return defer.promise;
+        };
+
         return locationsApi;
     }
 
