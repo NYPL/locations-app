@@ -13,13 +13,6 @@ describe('Google analytics configuration', function () {
     footer = require('../global-elements/footer.po.js'),
     header = require('../global-elements/header.po.js');
 
-  function stopLink() {
-    return "jQuery('.footer-links a').click(function (e) {" +
-           "  e.preventDefault();" +
-           "  return false;" +
-           "});";
-  }
-
   function mockGA() {
     return "window.ga_msg = [];" +
            "ga = function () {" +
@@ -686,7 +679,6 @@ describe('Google analytics configuration', function () {
     beforeEach(function () {
       browser.get('/chatham-square');
       browser.waitForAngular();
-      // browser.executeScript(stopLink());
       browser.executeScript(mockGA());
     });
 
@@ -758,7 +750,6 @@ describe('Google analytics configuration', function () {
       beforeEach(function () {
         browser.get('/baychester');
         browser.waitForAngular();
-        browser.executeScript(stopLink());
         browser.executeScript(mockGA());
       });
 
@@ -784,53 +775,63 @@ describe('Google analytics configuration', function () {
     });
     
     describe('Category: SSO', function () {
-      beforeEach(function () {
-        browser.get('/parkchester');
-        browser.waitForAngular();
-        browser.executeScript(mockGA());
+      describe('Logged out', function () {
+        beforeEach(function () {
+          browser.get('/parkchester');
+          browser.waitForAngular();
+          browser.executeScript(mockGA());
+        });
+
+        it('should track a click on the desktop open login form', function () {
+          header.loginBtn.click();
+
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('SSO');
+            expect(ga[0][3]).toEqual('Open Login Form');
+            expect(ga[0][4]).toEqual('click');
+          });
+        });
+
+        // Not sure how to mock being on mobile
+        // it('should track a click on the mobile open login form', function () {
+        //   header.mobileLoginBtn.click(function () {
+        //     browser.executeScript('return window.ga_msg;').then(function (ga) {
+        //       console.log(ga);
+        //       expect(ga[0][2]).toEqual('Header');
+        //     });
+        //   });
+        // });
+
+        // Goes to Bibliocommons
+        // it('should track a click to the log in button', function () {
+        //   header.loginBtn.click();
+        //   // header.loginSubmit.click();
+        //     browser.executeScript('return window.ga_msg;').then(function (ga) {
+        //       console.log(ga);
+        //       expect(ga[1][2]).toEqual('SSO');
+        //       expect(ga[1][3]).toEqual('');
+        //       expect(ga[1][4]).toEqual('click');
+        //     });
+        // });
       });
+  
+      describe('Logged in', function () {
+        // Must mock being logged in for the log out button to show
+        it('should track a click to the log out button', function () {
+          browser.get('/parkchester');
+          browser.manage().addCookie('bc_username', 'edwinguzman');
+          browser.waitForAngular();
+          browser.executeScript(mockGA());
 
-      it('should track a click on the desktop open login form', function () {
-        header.loginBtn.click();
-
-        browser.executeScript('return window.ga_msg;').then(function (ga) {
-          expect(ga[0][2]).toEqual('SSO');
-          expect(ga[0][3]).toEqual('Open Login Form');
-          expect(ga[0][4]).toEqual('click');
+          header.loginBtn.click();
+          header.logOutBtn.click(function () {
+            browser.executeScript('return window.ga_msg;').then(function (ga) {
+              console.log(ga);
+              expect(ga[0][2]).toEqual('Header');
+            });
+          });
         });
       });
-
-      // Not sure how to mock being on mobile
-      // it('should track a click on the mobile open login form', function () {
-      //   header.mobileLoginBtn.click(function () {
-      //     browser.executeScript('return window.ga_msg;').then(function (ga) {
-      //       console.log(ga);
-      //       expect(ga[0][2]).toEqual('Header');
-      //     });
-      //   });
-      // });
-
-      // Goes to Bibliocommons
-      // it('should track a click to the log in button', function () {
-      //   header.loginBtn.click();
-      //   header.loginSubmit.click(function () {
-      //     browser.executeScript('return window.ga_msg;').then(function (ga) {
-      //       expect(ga[1][2]).toEqual('SSO');
-      //       expect(ga[1][3]).toEqual('');
-      //       expect(ga[1][4]).toEqual('click');
-      //     });
-      //   });
-      // });
-
-      // Must mock being logged in for the log out button to show
-      // it('should track a click to the log out button', function () {
-      //   header.logOutBtn.click(function () {
-      //     browser.executeScript('return window.ga_msg;').then(function (ga) {
-      //       console.log(ga);
-      //       expect(ga[0][2]).toEqual('Header');
-      //     });
-      //   });
-      // });
     });
     
     describe('Category: Header Search', function () {
