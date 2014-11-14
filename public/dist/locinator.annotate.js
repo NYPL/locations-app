@@ -4905,7 +4905,7 @@ angular.module('nypl_widget', [
 
       if (nicePrint) {
         addressBreak = "<br />";
-        linkedName = "<a href='/#/" + location.slug +
+        linkedName = "<a href='/location/" + location.slug +
           "'>" + location.name + "</a>";
       }
 
