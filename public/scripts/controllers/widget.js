@@ -12,25 +12,25 @@
     nyplCoordinatesService,
     nyplUtility
   ) {
-    var url = config.self,
-      loadUserCoordinates = function () {
-      return nyplCoordinatesService
-        .getBrowserCoordinates()
-        .then(function (position) {
-          var userCoords =
-            _.pick(position, 'latitude', 'longitude');
+    // var loadUserCoordinates = function () {
+    //   return nyplCoordinatesService
+    //     .getBrowserCoordinates()
+    //     .then(function (position) {
+    //       var userCoords =
+    //         _.pick(position, 'latitude', 'longitude');
 
-          // Needed to update async var on geolocation success
-          $timeout(function () {
-            $scope.locationStart = userCoords.latitude +
-              "," + userCoords.longitude;
-          });
-        });
-    };
+    //       // Needed to update async var on geolocation success
+    //       $timeout(function () {
+    //         $scope.locationStart = userCoords.latitude +
+    //           "," + userCoords.longitude;
+    //       });
+    //     });
+    // };
 
     $rootScope.title = data.name;
     $scope.data = data;
-    $scope.locinator_url = "http://locations-beta.nypl.org" + $location.path().substr(7);
+    $scope.locinator_url = "http://www.nypl.org/locations" +
+      $location.path().substr(7);
     $scope.widget_name = data.name;
 
     if (data._embedded.location) {
@@ -42,7 +42,6 @@
       $scope.data.images.closed = config.closed_img;
     }
 
-    // Do we want this in the widget??
     // loadUserCoordinates();
 
     if (data.hours) {

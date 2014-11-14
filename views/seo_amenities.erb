@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <title>NYPL | Amenities</title>
+    <meta name="twitter:card" content="summary" />
+    <meta property="og:title" content="Amenities" />
+    <meta property="og:site_name" content="The New York Public Library" />
+    <meta property="og:url" content="http://nypl.org/locations/amenities" />
+    <meta property="og:description" content="The mission of The New York Public Library is to inspire lifelong learning, advance knowledge, and strengthen our communities." />
+    <meta property="og:type" content="website" />
+
+    <meta name="keywords" content="NYPL, The New York Public Library, Manhattan, Bronx, Staten Island" />
+  </head>
+  <body>
+    <h1>Amenities</h1>
+
+   <%= erb :seo_amenities_list, :locals => {:amenities => @amenities, :depth => 1 } %> 
+
+  </body>
+</html>

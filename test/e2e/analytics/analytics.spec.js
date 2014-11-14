@@ -9,7 +9,9 @@ describe('Google analytics configuration', function () {
   // var landingPage = require('./analytics.po.js');
   var landingPage = require('../homepage/homepage.po.js'),
     locationPage = require('../location/location.po.js'),
-    widgetPage = require('../widget/widget.po.js');
+    widgetPage = require('../widget/widget.po.js'),
+    footer = require('../global-elements/footer.po.js'),
+    header = require('../global-elements/header.po.js');
 
   function mockGA() {
     return "window.ga_msg = [];" +
@@ -38,7 +40,7 @@ describe('Google analytics configuration', function () {
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
         expect(ga[1][1]).toEqual('pageview');
-        expect(ga[1][2]).toEqual('/115th-street');
+        expect(ga[1][2]).toEqual('/locations/115th-street');
       });
     });
 
@@ -53,7 +55,7 @@ describe('Google analytics configuration', function () {
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
         expect(ga[2][1]).toEqual('pageview');
-        expect(ga[2][2]).toEqual('/schwarzman');
+        expect(ga[2][2]).toEqual('/locations/schwarzman');
       });
 
       // This triggers the second pageview event
@@ -62,7 +64,7 @@ describe('Google analytics configuration', function () {
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
         expect(ga[4][1]).toEqual('pageview');
-        expect(ga[4][2]).toEqual('/divisions/general-research-division');
+        expect(ga[4][2]).toEqual('/locations/divisions/general-research-division');
       });
     });
 
@@ -72,15 +74,15 @@ describe('Google analytics configuration', function () {
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
         expect(ga[1][1]).toEqual('pageview');
-        expect(ga[1][2]).toEqual('/115th-street');
+        expect(ga[1][2]).toEqual('/locations/115th-street');
       });
 
-      element(by.linkText('See all amenities')).click();
+      locationPage.allAmenities.click();
       browser.waitForAngular();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
         expect(ga[2][1]).toEqual('pageview');
-        expect(ga[2][2]).toEqual('/amenities/loc/115th-street');
+        expect(ga[2][2]).toEqual('/locations/amenities/loc/115th-street');
       });
     });
   });
@@ -97,6 +99,7 @@ describe('Google analytics configuration', function () {
     describe('Geolocation search button', function () {
       beforeEach(function () {
         landingPage.currLoc.click();
+        browser.sleep(1500);
         browser.waitForAngular();
       });
 
@@ -109,10 +112,9 @@ describe('Google analytics configuration', function () {
       });
 
       it('should also track a pageview after the click event', function () {
-        browser.sleep(500);
         browser.executeScript('return window.ga_msg;').then(function (ga) {
           expect(ga[1][1]).toEqual('pageview');
-          expect(ga[1][2]).toEqual('/map');
+          expect(ga[1][2]).toEqual('/locations/map');
         });
       });
     });
@@ -140,7 +142,7 @@ describe('Google analytics configuration', function () {
             expect(ga[0][4]).toEqual('Map view');
 
             expect(ga[1][1]).toEqual('pageview');
-            expect(ga[1][2]).toEqual('/map');
+            expect(ga[1][2]).toEqual('/locations/map');
           });
         });
 
@@ -159,7 +161,7 @@ describe('Google analytics configuration', function () {
             expect(ga[2][4]).toEqual('List view');
 
             expect(ga[3][1]).toEqual('pageview');
-            expect(ga[3][2]).toEqual('/list');
+            expect(ga[3][2]).toEqual('/locations/list');
           });
         });
     });
@@ -178,7 +180,7 @@ describe('Google analytics configuration', function () {
             expect(ga[0][4]).toEqual('115th Street Library (list)');
 
             expect(ga[1][1]).toEqual('pageview');
-            expect(ga[1][2]).toEqual('/115th-street');
+            expect(ga[1][2]).toEqual('/locations/115th-street');
           });
         });
 
@@ -199,7 +201,7 @@ describe('Google analytics configuration', function () {
             expect(ga[2][4]).toEqual('Mid-Manhattan Library (map)');
 
             expect(ga[3][1]).toEqual('pageview');
-            expect(ga[3][2]).toEqual('/mid-manhattan-library');
+            expect(ga[3][2]).toEqual('/locations/mid-manhattan-library');
           });
         });
 
@@ -215,7 +217,7 @@ describe('Google analytics configuration', function () {
             expect(ga[0][4]).toEqual('115th Street Library (list)');
 
             expect(ga[1][1]).toEqual('pageview');
-            expect(ga[1][2]).toEqual('/map');
+            expect(ga[1][2]).toEqual('/locations/map');
           });
         });
 
@@ -240,7 +242,6 @@ describe('Google analytics configuration', function () {
       //   'list view',
       //   function () {
       //     landingPage.nthLoc(0).element(by.css('.icon-compass')).click();
-      //     browser.sleep(500);
 
       //     browser.executeScript('return window.ga_msg;').then(function (ga) {
       //       expect(ga[0][2]).toEqual('Locations');
@@ -255,7 +256,6 @@ describe('Google analytics configuration', function () {
       //     landingPage.search('mid manhattan');
       //     browser.sleep(500);
       //     landingPage.nthLoc(0).element(by.css('.icon-compass')).click();
-      //     browser.sleep(500);
 
       //     browser.executeScript('return window.ga_msg;').then(function (ga) {
       //       expect(ga[2][2]).toEqual('Locations');
@@ -274,7 +274,6 @@ describe('Google analytics configuration', function () {
 
       locationPage.catalog_link.click(function () {
         browser.executeScript('return window.ga_msg;').then(function (ga) {
-          console.log(ga);
           expect(ga[0][2]).toEqual('Locations');
           expect(ga[0][3]).toEqual('Click');
           expect(ga[0][4]).toEqual('On Our Shelves');
@@ -300,30 +299,30 @@ describe('Google analytics configuration', function () {
       });
     });
 
-    it('should track social media click events', function () {
-      browser.get('/115th-street');
-      browser.waitForAngular();
-      browser.executeScript(mockGA());
+    // it('should track social media click events', function () {
+    //   browser.get('/115th-street');
+    //   browser.waitForAngular();
+    //   browser.executeScript(mockGA());
 
-      locationPage.social_media.each(function (sm) {
-        sm.click().then(function () {
-          browser.navigate().back();
-          // browser.getAllWindowHandles().then(function (handles) {
-          //   var newWindowHandle = handles[1];
+    //   locationPage.social_media.each(function (sm) {
+    //     sm.click().then(function () {
+    //       browser.navigate().back();
+    //       browser.getAllWindowHandles().then(function (handles) {
+    //         var newWindowHandle = handles[1];
 
-          //   browser.switchTo().window(newWindowHandle).then(function () {
-          //     browser.driver.close().then(function () {
-          //       browser.switchTo().window(appWindow);
-          //     });
-          //   });
+    //         browser.switchTo().window(newWindowHandle).then(function () {
+    //           browser.driver.close().then(function () {
+    //             browser.switchTo().window(appWindow);
+    //           });
+    //         });
 
-          // browser.executeScript('return window.ga_msg;').then(function (ga) {
-          //   console.log(ga);
-          // });
-          // });
-        });
-      });
-    });
+    //         browser.executeScript('return window.ga_msg;').then(function (ga) {
+    //           console.log(ga);
+    //         });
+    //       });
+    //     });
+    //   });
+    // });
 
     it('should track the NYPL ASK click event', function () {
       browser.get('/115th-street');
@@ -429,7 +428,7 @@ describe('Google analytics configuration', function () {
           expect(ga[0][4]).toEqual('Grand Central Library');
 
           expect(ga[1][1]).toEqual('pageview');
-          expect(ga[1][2]).toEqual('/grand-central');
+          expect(ga[1][2]).toEqual('/locations/grand-central');
         });
       });
 
@@ -443,7 +442,7 @@ describe('Google analytics configuration', function () {
         expect(ga[0][4]).toEqual('grand');
 
         expect(ga[1][1]).toEqual('pageview');
-        expect(ga[1][2]).toEqual('/map');
+        expect(ga[1][2]).toEqual('/locations/map');
       });
     });
 
@@ -459,7 +458,7 @@ describe('Google analytics configuration', function () {
         expect(ga[0][4]).toEqual('Baychester Library');
 
         expect(ga[1][1]).toEqual('pageview');
-        expect(ga[1][2]).toEqual('/baychester');
+        expect(ga[1][2]).toEqual('/locations/baychester');
       });
     });
 
@@ -475,7 +474,7 @@ describe('Google analytics configuration', function () {
         expect(ga[0][4]).toEqual('tottenville');
 
         expect(ga[1][1]).toEqual('pageview');
-        expect(ga[1][2]).toEqual('/map');
+        expect(ga[1][2]).toEqual('/locations/map');
       });
     });
 
@@ -491,7 +490,7 @@ describe('Google analytics configuration', function () {
         expect(ga[0][4]).toEqual('Harlem Library');
 
         expect(ga[1][1]).toEqual('pageview');
-        expect(ga[1][2]).toEqual('/map');
+        expect(ga[1][2]).toEqual('/locations/map');
       });
     });
 
@@ -672,6 +671,227 @@ describe('Google analytics configuration', function () {
       });
     });
 
+  });
+
+  describe('Footer events', function () {
+    var footerLinks = footer.footerLinks;
+
+    beforeEach(function () {
+      browser.get('/chatham-square');
+      browser.waitForAngular();
+      browser.executeScript(mockGA());
+    });
+
+    it('should track clicking on About NYPL link', function () {
+      footerLinks.first().click();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][2]).toEqual('footer');
+        expect(ga[0][3]).toEqual('Click');
+        expect(ga[0][4]).toEqual('/help/about-nypl');
+      });
+    });
+
+    it('should track clicking on Careers at NYPL link', function () {
+      footerLinks.get(3).click();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][2]).toEqual('footer');
+        expect(ga[0][3]).toEqual('Click');
+        expect(ga[0][4]).toEqual('/help/about-nypl/careers-nypl');
+      });
+    });
+
+    it('should track clicking on Connect with NYPL link', function () {
+      footerLinks.get(7).click();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][2]).toEqual('footer');
+        expect(ga[0][3]).toEqual('Click');
+        expect(ga[0][4]).toEqual('/voices/connect-nypl');
+      });
+    });
+
+    it('should track clicking on the Privacy Policy link', function () {
+      footerLinks.get(11).click();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][2]).toEqual('footer');
+        expect(ga[0][3]).toEqual('Click');
+        expect(ga[0][4]).toEqual('/help/about-nypl/legal-notices/' +
+          'privacy-policy');
+      });
+    });
+
+    it('should track clicking on Gifts of Materials to NYPL link', function () {
+      footerLinks.get(15).click();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][2]).toEqual('footer');
+        expect(ga[0][3]).toEqual('Click');
+        expect(ga[0][4]).toEqual('/help/about-nypl/legal-notices/' +
+          'policy-gifts-materials');
+      });
+    });
+
+    it('should track clicking on the Chinese translation link', function () {
+      footerLinks.get(17).click();
+
+      browser.executeScript('return window.ga_msg;').then(function (ga) {
+        expect(ga[0][2]).toEqual('footer');
+        expect(ga[0][3]).toEqual('Click');
+        expect(ga[0][4]).toEqual('/node/107747');
+      });
+    });
+  });
+
+  describe('Header events', function () {
+    describe('Category: Header', function () {
+      beforeEach(function () {
+        browser.get('/baychester');
+        browser.waitForAngular();
+        browser.executeScript(mockGA());
+      });
+
+      it('should track a click on the Classic Catalog link', function () {
+        header.classic_catalog.click();
+      });
+
+      it('should track a click on the NYPL logo', function () {
+        header.nypl_logo.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Header');
+          });
+        });
+      });
+
+      it('should track a click on the donate button', function () {
+        header.donate_button.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('Header');
+          });
+        });
+      });
+    });
+    
+    describe('Category: SSO', function () {
+      describe('Logged out', function () {
+        beforeEach(function () {
+          browser.get('/parkchester');
+          browser.waitForAngular();
+          browser.executeScript(mockGA());
+        });
+
+        it('should track a click on the desktop open login form', function () {
+          header.loginBtn.click();
+
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[0][2]).toEqual('SSO');
+            expect(ga[0][3]).toEqual('Open Login Form');
+            expect(ga[0][4]).toEqual('click');
+          });
+        });
+
+        // Not sure how to mock being on mobile
+        // it('should track a click on the mobile open login form', function () {
+        //   header.mobileLoginBtn.click(function () {
+        //     browser.executeScript('return window.ga_msg;').then(function (ga) {
+        //       console.log(ga);
+        //       expect(ga[0][2]).toEqual('Header');
+        //     });
+        //   });
+        // });
+
+        // Goes to Bibliocommons
+        // it('should track a click to the log in button', function () {
+        //   header.loginBtn.click();
+        //   // header.loginSubmit.click();
+        //     browser.executeScript('return window.ga_msg;').then(function (ga) {
+        //       console.log(ga);
+        //       expect(ga[1][2]).toEqual('SSO');
+        //       expect(ga[1][3]).toEqual('');
+        //       expect(ga[1][4]).toEqual('click');
+        //     });
+        // });
+      });
+  
+      describe('Logged in', function () {
+        // Must mock being logged in for the log out button to show
+        it('should track a click to the log out button', function () {
+          browser.get('/parkchester');
+          browser.manage().addCookie('bc_username', 'edwinguzman');
+          browser.waitForAngular();
+          browser.executeScript(mockGA());
+
+          header.loginBtn.click();
+          header.logOutBtn.click(function () {
+            browser.executeScript('return window.ga_msg;').then(function (ga) {
+              console.log(ga);
+              expect(ga[0][2]).toEqual('Header');
+            });
+          });
+        });
+      });
+    });
+    
+    describe('Category: Header Search', function () {
+      beforeEach(function () {
+        browser.get('/eastchester');
+        browser.waitForAngular();
+        browser.executeScript(mockGA());
+      });
+
+      it('should track when the input field is focused', function () {
+        header.searchInputField.click();
+
+        browser.executeScript('return window.ga_msg;').then(function (ga) {
+          expect(ga[0][2]).toEqual('Header Search');
+          expect(ga[0][3]).toEqual('Focused');
+          expect(ga[0][4]).toEqual('Search Box');
+        });
+      });
+
+      it('should track when an empty search was attempted', function () {
+        header.searchBtn.click();
+        browser.executeScript('return window.ga_msg;').then(function (ga) {
+          expect(ga[0][2]).toEqual('Header Search');
+          expect(ga[0][3]).toEqual('Empty Search');
+          expect(ga[0][4]).toEqual('');
+        });
+      });
+
+      it('should track when a radio button option was selected', function () {
+        header.searchInputField.click();
+        header.radioBtn_catalog.click();
+        browser.executeScript('return window.ga_msg;').then(function (ga) {
+          expect(ga[1][2]).toEqual('Header Search');
+          expect(ga[1][3]).toEqual('Select');
+          expect(ga[1][4]).toEqual('catalog');
+        });
+      });
+
+      it('should track when a search was submitted for nypl.org', function () {
+        header.searchInputField.click();
+        header.radioBtn_website.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[1][2]).toEqual('Header Search');
+            expect(ga[1][3]).toEqual('Select');
+            expect(ga[1][4]).toEqual('nypl.org');
+          });
+        });
+      });
+
+      it('should track when a search to the catalog was made', function () {
+        header.searchInputField.click();
+        header.radioBtn_catalog.click();
+        header.searchInputField.sendKeys('Dune');
+        header.searchBtn.click(function () {
+          browser.executeScript('return window.ga_msg;').then(function (ga) {
+          });
+        });
+      });
+    });
+    
   });
 
 });

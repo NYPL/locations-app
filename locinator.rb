@@ -18,11 +18,32 @@ class Locinator < Sinatra::Base
     set :featured_amenities, configs["featured_amenities"]
     set :research_order, configs["research_order"]
     set :fundraising, configs["fundraising"]
+    set :baseurl, '/locations/'
+
+    set :app_cfg, JSON.generate({
+      "config" => {
+        "self" => settings.env_config["url"],
+        "tz_offset" => DateTime.now().strftime("%z"),
+        "api_root" => settings.env_config["api"],
+        "divisions_with_appointments" => settings.divisions_with_appointments,
+        "featured_amenities" => settings.featured_amenities,
+        "research_order" => settings.research_order,
+        "fundraising" => settings.fundraising,
+        "closed_img" => settings.env_config["closed_img"]
+      }
+    })
+
+  end
+
+  before do
+    headers 'Access-Control-Allow-Origin' => '*',
+    'Access-Control-Allow-Methods' => ['GET'],
+    'Access-Control-Allow-Headers' => 'Content-Type'
   end
 
   helpers Sinatra::Jsonp
   set :protection, :except => :frame_options
-  set :haml, :format => :html5
+
   # Method cribbed from http://blog.alexmaccaw.com/seo-in-js-web-apps
   helpers do
     set :spider do |enabled|
@@ -35,66 +56,48 @@ class Locinator < Sinatra::Base
   get %r{/amenities/loc/(.+)$}, :spider => true do
     api = Lionactor::Client.new
     @loc = api.location(params['captures'].first)
-    @data = api.amenities(params['captures'].first)
-    haml :amenities_one_location
+    erb :seo_amenities_one_location
   end
 
   get %r{/amenities/id/(\d+)$}, :spider => true do
     api = Lionactor::Client.new
-    @data = api.amenity(params['captures'].first)
-    haml :amenities_one_amenity
+    @amenity = api.amenity(params['captures'].first)
+    erb :seo_one_amenity
   end
 
   get %r{/amenities$}, :spider => true do
     api = Lionactor::Client.new
-    @data = api.amenities
-    haml :amenities
+    @amenities = api.amenities.group_by{|a| a.category}
+    erb :seo_amenities
   end
   
-  get %r{/division/(.+)$}, :spider => true do
+  get %r{/divisions/(.+/)?(.+)$}, :spider => true do
     api = Lionactor::Client.new
-    @data = api.division(params['captures'].first)
-    haml :division
+    @div = api.division(params['captures'][1])
+    erb :seo_division
   end
 
   get %r{/(.+)$}, :spider => true do
     api = Lionactor::Client.new
-    @data = api.location(params['captures'].first)
-    haml :location
+    @location = api.location(params['captures'].first)
+    erb :seo_location
   end
 
   get '/', :spider => true do
     api = Lionactor::Client.new
-    @data = api.locations
-    haml :index
-  end
-
-  get '/config' do
-    tz = DateTime.now().strftime("%z")
-    response = {
-      "config" => {
-        "self" => settings.env_config["url"],
-        "tz_offset" => tz,
-        "api_root" => settings.env_config["api"],
-        "divisions_with_appointments" => settings.divisions_with_appointments,
-        "featured_amenities" => settings.featured_amenities,
-        "research_order" => settings.research_order,
-        "fundraising" => settings.fundraising,
-        "closed_img" => settings.env_config["closed_img"]
-      }
-    }
-    jsonp response
+    @locations = api.locations
+    erb :seo_index
   end
 
   get %r{/widget/.*} do
+    @rq = request
     erb :widget
   end
     
-
   get %r{/.*$} do
+    @rq = request
     erb :index
-  end
-  
+  end  
 
   # start the server if ruby file executed directly
   run! if app_file == $0

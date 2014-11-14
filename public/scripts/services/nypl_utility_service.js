@@ -4,7 +4,13 @@
 (function () {
   'use strict';
 
-  // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
+  /**
+   * @ngdoc service
+   * @name nypl_locations.service:requestNotificationChannel
+   * @requires $rootScope
+   * @description
+   * Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
+   */
   function requestNotificationChannel($rootScope) {
     // private notification messages
     var _START_REQUEST_ = '_START_REQUEST_',
@@ -38,15 +44,27 @@
     return notificationChannel;
   }
 
-  /** @namespace nyplUtility */
-  function nyplUtility($window, $sce, nyplCoordinatesService) {
+  /**
+   * @ngdoc service
+   * @name nypl_locations.service:nyplUtility
+   * @requires $sce
+   * @requires $window
+   * @requires nyplCoordinatesService
+   * @description
+   * AngularJS service with utility functions.
+   */
+  function nyplUtility($sce, $window, nyplCoordinatesService) {
     var utility = {};
 
-    /** @function nyplUtility.hoursToday
+    /**
+     * @ngdoc function
+     * @name hoursToday
+     * @methodOf nypl_locations.service:nyplUtility
      * @param {object} hours Object with a regular property that is an
      *  array with the open and close times for every day.
      * @returns {object} An object with the open and close times for
      *  the current and tomorrow days.
+     * @description ...
      */
     utility.hoursToday = function (hours) {
       var date = new Date(),
@@ -71,6 +89,15 @@
       return hoursToday;
     };
 
+    /**
+     * @ngdoc function
+     * @name formatDate
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {string} startDate ...
+     * @param {string} endDate ...
+     * @returns {string} ...
+     * @description ...
+     */
     utility.formatDate = function(startDate, endDate) {
       var formattedDate,
           months = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -114,7 +141,14 @@
       return formattedDate;
     }
 
-    // Parse exception data and return as string
+    /**
+     * @ngdoc function
+     * @name branchException
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {object} hours ...
+     * @returns {object} ...
+     * @description Parse exception data and return as string
+     */
     utility.branchException = function (hours) {
       var exception = {};
 
@@ -139,14 +173,18 @@
       return null;
     };
 
-    /** @function nyplUtility.getAddressString
+    /**
+     * @ngdoc function
+     * @name getAddressString
+     * @methodOf nypl_locations.service:nyplUtility
      * @param {object} location The full location object.
      * @param {boolean} [nicePrint] False by default. If true is passed,
      *  the returned string will have HTML so it displays nicely in a
      *  Google Maps marker infowindow.
      * @returns {string} The formatted address of the location passed.
      *  Will contain HTML if true is passed as the second parameter,
-     *  with the location name linked
+     *  with the location name linked.
+     * @description ...
      */
     utility.getAddressString = function (location, nicePrint) {
       if (!location) {
@@ -158,7 +196,7 @@
 
       if (nicePrint) {
         addressBreak = "<br />";
-        linkedName = "<a href='/#/" + location.slug +
+        linkedName = "<a href='/locations/" + location.slug +
           "'>" + location.name + "</a>";
       }
 
@@ -169,6 +207,13 @@
         location.postal_code;
     };
 
+    /**
+     * @ngdoc function
+     * @name socialMediaColor
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {object} social_media ...
+     * @description ...
+     */
     utility.socialMediaColor = function (social_media) {
       _.each(social_media, function (sc) {
         sc.classes = 'icon-';
@@ -203,6 +248,13 @@
       return social_media;
     };
 
+    /**
+     * @ngdoc function
+     * @name alerts
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {array} alerts ...
+     * @description ...
+     */
     utility.alerts = function (alerts) {
       var today = new Date(),
         todaysAlert = [],
@@ -213,7 +265,7 @@
         return null;
       }
 
-      if (Array.isArray(alerts)) {
+      if (Array.isArray(alerts) && alerts.length > 0) {
         _.each(alerts, function (alert) {
           alert_start = new Date(alert.start);
           alert_end = new Date(alert.end);
@@ -230,12 +282,18 @@
       return null;
     };
 
-    /*
-    * Desc: Utility service function that opens a new window given a URL
-    * Arguments:
-    * link (URL), title (String), 
-    * width (Int or String), height (Int or String)
-    */
+    /**
+     * @ngdoc function
+     * @name popupWindow
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {string} link ...
+     * @param {string} title ...
+     * @param {string} width ...
+     * @param {string} height ...
+     * @description
+     * Utility service function that opens a new window given a URL.
+     * width (Int or String), height (Int or String)
+     */
     utility.popupWindow = function (link, title, width, height) {
       var w, h, popUp, popUp_h, popUp_w;
 
@@ -289,6 +347,15 @@
       }
     };
 
+    /**
+     * @ngdoc function
+     * @name calendarLink
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {string} type ...
+     * @param {object} event ...
+     * @param {object} location ...
+     * @description ...
+     */
     utility.calendarLink = function (type, event, location) {
       if (!type || !event || !location) {
         return '';
@@ -330,6 +397,14 @@
       return calendar_link;
     };
 
+    /**
+     * @ngdoc function
+     * @name icalLink
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {object} event ...
+     * @param {object} address ...
+     * @description ...
+     */
     utility.icalLink = function (event, address) {
       if (!event || !address) {
         return '';
@@ -356,7 +431,15 @@
       return icalLink;
     };
 
-    // Iterate through lon/lat and calculate distance
+    /**
+     * @ngdoc function
+     * @name calcDistance
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {object} locations ...
+     * @param {object} coords ...
+     * @description
+     * Iterate through lon/lat and calculate distance
+     */
     utility.calcDistance = function (locations, coords) {
       if (!locations) {
         return [];
@@ -388,7 +471,10 @@
       return locations;
     };
 
-    /** @function nyplUtility.checkDistance
+    /**
+     * @ngdoc function
+     * @name checkDistance
+     * @methodOf nypl_locations.service:nyplUtility
      * @param {array} locations An array with all the locations objects.
      * @returns {boolean} True if the minimum distance property from each
      *  location is more than 25 (miles). False otherwise.
@@ -406,7 +492,10 @@
       return false;
     };
 
-    /** @function nyplUtility.returnHTML
+    /**
+     * @ngdoc function
+     * @name returnHTML
+     * @methodOf nypl_locations.service:nyplUtility
      * @param {string} html A string containing HTML that should be rendered.
      * @returns {string} A trusted string with renderable HTML used in
      *  AngularJS' markup binding.
@@ -418,7 +507,10 @@
       return $sce.trustAsHtml(html);
     };
 
-    /** @function nyplUtility.divisionHasAppointment
+    /**
+     * @ngdoc function
+     * @name divisionHasAppointment
+     * @methodOf nypl_locations.service:nyplUtility
      * @param {string} id The id of a division.
      * @returns {boolean} True if the division is in the set that should have
      *  appointments, false otherwise.
@@ -429,6 +521,15 @@
       return _.contains(divisionsWithApts, id);
     };
 
+    /**
+     * @ngdoc function
+     * @name researchLibraryOrder
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {array} research_order ...
+     * @param {string} id The id of a branch.
+     * @returns {number} ...
+     * @description ..
+     */
     utility.researchLibraryOrder = function (research_order, id) {
       return _.indexOf(research_order, id);
     };

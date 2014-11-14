@@ -18,7 +18,7 @@ describe('Directive: nyplbreadcrumbs', function () {
       scope = _$rootScope_.$new();
 
       httpBackend
-        .expectGET('/languages/en.json')
+        .expectGET('languages/en.json')
         .respond('public/languages/en.json');
     });
 

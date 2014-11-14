@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+  <head>
+    <title>NYPL | <%= @location.name %></title>
+    <meta name="twitter:card" content="summary" />
+    <meta property="og:title" content="<%= @location.name %>" />
+    <meta property="og:site_name" content="The New York Public Library" />
+    <meta property="og:url" content="http://nypl.org/locations" />
+    <meta property="og:description" content='<%= @location.about %>' />
+    <meta property="og:type" content="website" />
+
+    <meta name="keywords" content="NYPL, The New York Public Library, Manhattan, Bronx, Staten Island, <%= @location.name %>" />
+
+  <% if settings.locinator_env == "local" %>
+    <base href="/">
+  <% else %>
+    <base href="<%= settings.baseurl %>">
+  <% end %>
+
+  </head>
+  <body>
+    <div itemscope itemtype="http://schema.org/Library">
+      <h1 itemprop="name"><%= @location.name %></h1>
+      <div itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+        <img src="<%= @location.images['exterior'] %>" 
+             alt="Image of <%= @location.name %>"
+             itemprop="contentUrl" />
+      </div>
+      <%= erb :seo_address, :locals => {:loc => @location} %>
+
+      <div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+        <meta itemprop="longitude" content="<%= @location.geolocation['coordinates'][0] %>" />
+        <meta itemprop="latitude" content="<%= @location.geolocation['coordinates'][1] %>" />
+      </div>
+      <% if @location.type != "research" %>
+      <div itemprop="contactPoint" itemscope itemtype="http://schema.org/ContactPoint">
+        <span itemprop="contactType">Library Manager</span>
+        <span itemprop="name"><%= @location.contacts['manager'] %></span>
+      </div>
+      <% end %>
+
+      <%= erb :seo_location_hours, :locals => {:hours => @location.hours} %>
+
+      <h2>Amenities</h2>
+      <ul>
+      <% @location.amenities.each do |a| %>
+        <li itemprop="makesOffer" itemscope itemtype="http://schema.org/Offer">
+          <a href="amenities/id/<%= a.amenity.id %>">
+            <span itemprop="name"><%= a.amenity.name %></span>
+          </a>
+
+          <% if a.amenity.info? %>
+            <div>
+              <a href="<%= a.amenity.info.href %>">
+                <% if a.amenity.info.name.nil? %>
+                  Learn More
+                <% else %>
+                  <%= a.amenity.info.name %>
+                <% end %>
+              </a>
+            </div>
+          <% end %>
+
+          <% if a.amenity.action? %>
+            <div><a href="<%= a.amenity.action.href %>"><%= a.amenity.action.name %></a></div>
+          <% end %>
+        </li>
+      <% end %>
+      </ul>
+
+      <div>
+        <a href="amenities/loc/<%= @location.slug %>">See all amenities</a>
+      </div>
+
+      <h2>About</h2>
+      <div itemprop="description">
+        <div itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+          <img src="<%= @location.images['interior'] %>" 
+               alt="Image of <%= @location.name %> interior"
+               itemprop="contentUrl" />
+        </div>
+
+        <%= @location.about %>
+
+        <div><a href="<%= @location.links['self']['about'] %>">Learn More</a></div>
+      </div>
+
+      <%= erb :seo_hasdivisions, :locals => {:loc => @location} %> 
+
+      <% if @location.features.count > 0 %>
+        <%= erb :seo_features, :locals => {:features => @location.features} %> 
+      <% end %>
+
+      <% if @location.embedded['blogs'] %>
+        <%= erb :seo_blogs, :locals => {:blogs => @location.embedded['blogs'] } %>
+      <% end %>
+    </div>
+  </body>
+</html>

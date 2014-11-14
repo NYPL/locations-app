@@ -7,7 +7,8 @@ describe('Locations: Page to Page tests', function () {
   var landingPage = require('../homepage/homepage.po.js'),
     locationPage = require('../location/location.po.js'),
     divisionPage = require('../division/division.po.js'),
-    amenitiesPage = require('../amenities/amenities.po.js');
+    amenitiesPage = require('../amenities/amenities.po.js'),
+    header = require('../global-elements/header.po.js');
 
   beforeEach(function () {
     browser.get('/');
@@ -33,7 +34,7 @@ describe('Locations: Page to Page tests', function () {
         expect(browser.getCurrentUrl())
           .toEqual('http://localhost:9292/jefferson-market');
 
-        element(by.css('.nypl-logo a')).click();
+        header.nypl_logo.click();
         browser.waitForAngular();
         expect(browser.getLocationAbsUrl())
           .toEqual('http://localhost:9292/');
@@ -116,7 +117,7 @@ describe('Locations: Page to Page tests', function () {
       expect(browser.getLocationAbsUrl()).toEqual('http://localhost:9292/' +
         'divisions/general-research-division');
 
-      element(by.css('.nypl-logo a')).click();
+      header.nypl_logo.click();
       browser.waitForAngular();
       expect(browser.getLocationAbsUrl())
         .toEqual('http://localhost:9292/');

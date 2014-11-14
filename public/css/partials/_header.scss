@@ -193,6 +193,7 @@ header {
 								}
 
 								input {
+									line-height: initial !important; //NYPLBase override
 									display: block;
 									width: 100%;
 									height: 35px;
@@ -443,6 +444,7 @@ header {
 			position: absolute;
 			top: 8px;
 			font-size: 16px;
+			line-height: initial !important; //NYPLBase override
 
 			@include breakpoint($min, $pre-tablet) {
 				display: inline-block;
@@ -473,7 +475,7 @@ header {
 				width: auto;
 				margin: 0;
 				padding: 0px 0px 0px 2px;
-				vertical-align: 1.5px;
+				vertical-align: -.5px;
 				@include transition(background-color .2s ease);
 			}
 			&:before {
