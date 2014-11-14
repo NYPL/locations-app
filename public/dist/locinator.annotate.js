@@ -1233,7 +1233,7 @@ angular.module('nypl_widget', [
             if (config) {
                defer.resolve(config);
             } else {
-                config = window.locations_cfg;
+                config = window.locations_cfg.config;
 
                 if (config) {
                     api = window.locations_cfg.config.api_root;
