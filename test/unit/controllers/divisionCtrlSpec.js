@@ -149,7 +149,7 @@ describe('DivisionCtrl', function () {
       nyplLocationsService = _nyplLocationsService_;
 
       httpBackend
-        .expectGET('/languages/en.json')
+        .expectGET('languages/en.json')
         .respond('public/languages/en.json');
 
       // TODO:

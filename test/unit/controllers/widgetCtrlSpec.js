@@ -170,7 +170,7 @@ describe('WidgetCtrl', function () {
     });
 
     it('should generate a url to the Locinator', function () {
-      expect(scope.locinator_url).toEqual('http://locations-beta.nypl.org');
+      expect(scope.locinator_url).toEqual('http://www.nypl.org/locations');
     });
 
     it('should get the widget\'s name', function () {
@@ -238,7 +238,7 @@ describe('WidgetCtrl', function () {
     });
 
     it('should generate a url to the Locinator', function () {
-      expect(scope.locinator_url).toEqual('http://locations-beta.nypl.org');
+      expect(scope.locinator_url).toEqual('http://www.nypl.org/locations');
     });
 
     it('should get the widget\'s name', function () {
@@ -282,7 +282,7 @@ describe('WidgetCtrl', function () {
     });
 
     it('should generate a url to the Locinator', function () {
-      expect(scope.locinator_url).toEqual('http://locations-beta.nypl.org');
+      expect(scope.locinator_url).toEqual('http://www.nypl.org/locations');
     });
 
     it('should get the widget\'s name', function () {
