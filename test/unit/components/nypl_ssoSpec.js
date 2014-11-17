@@ -10,7 +10,7 @@ describe, expect, beforeEach, inject, it, angular */
 describe('nyplSSO module', function () {
   'use strict';
 
-  var element, $compile, $scope, httpBackend, ssoStatus;
+  var element, $compile, $scope, $rootScope, httpBackend, ssoStatus;
 
   beforeEach(module('nyplSSO'));
   beforeEach(module('directiveTemplates'));
@@ -170,61 +170,185 @@ describe('nyplSSO module', function () {
    *   DOM manipulation to show and hide the login form.
    */
   describe('Directive: nypl-sso', function () {
-    beforeEach(inject(function (_$compile_, _$rootScope_) {
-      $compile = _$compile_;
-      $scope = _$rootScope_.$new();
+    describe('Not remembered', function () {
+      beforeEach(inject(function (_$compile_, _$rootScope_, _ssoStatus_) {
+        spyOn(_ssoStatus_, 'logged_in').and.callFake(function () {
+          return false;
+        });
 
-      element = angular.element('<nypl-sso></nypl-sso>');
-      $compile(element)($scope);
-      $scope.$digest();
-    }));
+        spyOn(_ssoStatus_, 'remembered').and.callFake(function () {
+          return false;
+        });
 
-    it('should compile', function () {
-      expect(element.attr('class')).toContain('login-donate');
+        spyOn(_ssoStatus_, 'remember').and.callFake(function () {
+          return null;
+        });
+        $compile = _$compile_;
+        $rootScope = _$rootScope_;
+        $scope = _$rootScope_.$new();
+
+        element = angular.element('<nypl-sso></nypl-sso>');
+        $compile(element)($scope);
+        $scope.$digest();
+      }));
+
+      it('should not remember you', function () {
+        expect($('#username').val()).not.toBeDefined();
+      });
+
+      it('should not check the checkbox', function () {
+        expect($('#remember_me').attr('checked')).not.toBeDefined();
+      });
     });
 
-    it('should have a donate button', function () {
-      expect(element.find('.donate-button').text().trim()).toEqual('DONATE');
-      expect(element.find('.donate-button').attr('href'))
-        .toEqual('https://secure3.convio.net/nypl/site/SPageServer?page' +
-          'name=donation_form&JServSessionIdr003=dwcz55yj27.' +
-          'app304a&s_src=FRQ14ZZ_SWBN');
+    describe('Remembered', function () {
+      beforeEach(inject(function (_$compile_, _$rootScope_, _ssoStatus_) {
+        spyOn(_ssoStatus_, 'logged_in').and.callFake(function () {
+          return false;
+        });
+
+        spyOn(_ssoStatus_, 'remembered').and.callFake(function () {
+          return true;
+        });
+
+        spyOn(_ssoStatus_, 'remember').and.callFake(function () {
+          return 'edwinguzman';
+        });
+        $compile = _$compile_;
+        $rootScope = _$rootScope_;
+        $scope = _$rootScope_.$new();
+
+        element = angular.element('<nypl-sso></nypl-sso>');
+        $compile(element)($scope);
+        $scope.$digest();
+      }));
+
+      // it('should remember you', function () {
+      //   console.log($('#username').val());
+      //   expect($('#username').val()).toEqual('edwinguzman');
+      // });
+
+      // it('should not check the checkbox', function () {
+      //   expect($('#remember_me').attr('checked')).toBe(true);
+      // });
     });
 
-    it('should have a login button', function () {
-      expect(element.find('.login-button').text().trim()).toEqual('LOG IN');
+    describe('Not Logged in', function () {
+      beforeEach(inject(function (_$compile_, _$rootScope_, _ssoStatus_) {
+        spyOn(_ssoStatus_, 'logged_in').and.callFake(function () {
+          return false;
+        });
+
+        $compile = _$compile_;
+        $rootScope = _$rootScope_;
+        $scope = _$rootScope_.$new();
+
+        element = angular.element('<nypl-sso></nypl-sso>');
+        $compile(element)($scope);
+        $scope.$digest();
+      }));
+
+      it('should compile', function () {
+        expect(element.attr('class')).toContain('login-donate');
+      });
+
+      it('should have a donate button', function () {
+        expect(element.find('.donate-button').text().trim()).toEqual('DONATE');
+        expect(element.find('.donate-button').attr('href'))
+          .toEqual('https://secure3.convio.net/nypl/site/SPageServer?page' +
+            'name=donation_form&JServSessionIdr003=dwcz55yj27.' +
+            'app304a&s_src=FRQ14ZZ_SWBN');
+      });
+
+      it('should have a login button', function () {
+        expect(element.isolateScope().header_button_label).toEqual('LOG IN');
+        expect(element.find('.login-button').text().trim()).toEqual('LOG IN');
+      });
+
+      it('should have the SSO login form', function () {
+        var login_form_container = element.find('.sso-login');
+        expect(login_form_container.find('form').attr('id'))
+          .toEqual('bc-sso-login-form--2');
+        expect(login_form_container.find('.form-item-name').text().trim())
+          .toEqual('Username or bar code:');
+        expect(login_form_container.find('.form-item-user-pin').text().trim())
+          .toEqual('PIN:');
+        expect(login_form_container.find('.form-item-remember-me').text().trim())
+          .toEqual('Remember me');
+      });
+
+      it('should have help links', function () {
+        var login_form = element.find('form'),
+          help_links = login_form.find('#login-form-help');
+
+        expect(help_links.find('a').length).toBe(2);
+        expect(help_links.find('.forgotpin-button').text())
+          .toEqual('Forgot your PIN?');
+        expect(help_links.find('.createacct-button').text())
+          .toEqual('Need an account?');
+      });
+
+      // it('should show the sso-login form', function () {
+      //   expect(element.find('.sso-login').attr('class')).not.toContain('visible');
+
+      //   element.find('.login-button').click();
+
+      //   // The login form container should be visible now.
+      //   expect(element.find('.sso-login').attr('class')).toContain('visible');
+      // });
+
+      it('should update the logout url when routing', function () {
+        $rootScope.current_url = '/';
+        $rootScope.$apply();
+
+        expect(element.isolateScope().logout_url)
+          .toEqual("https://nypl.bibliocommons.com/user/logout?destination=/");
+
+        // Go to a different page
+        $rootScope.current_url = '/grand-central';
+        $rootScope.$apply();
+
+        expect(element.isolateScope().logout_url)
+          .toEqual("https://nypl.bibliocommons.com/user/logout?" +
+            "destination=/grand-central");
+
+        // Go to a different page
+        $rootScope.current_url = '/amenities';
+        $rootScope.$apply();
+
+        expect(element.isolateScope().logout_url)
+          .toEqual("https://nypl.bibliocommons.com/user/logout?" +
+            "destination=/amenities");
+      });
     });
 
-    it('should have the SSO login form', function () {
-      var login_form_container = element.find('.sso-login');
-      expect(login_form_container.find('form').attr('id'))
-        .toEqual('bc-sso-login-form--2');
-      expect(login_form_container.find('.form-item-name').text().trim())
-        .toEqual('Username or bar code:');
-      expect(login_form_container.find('.form-item-user-pin').text().trim())
-        .toEqual('PIN:');
-      expect(login_form_container.find('.form-item-remember-me').text().trim())
-        .toEqual('Remember me');
-    });
+    describe('Logged in', function () {
+      beforeEach(inject(function (_$compile_, _$rootScope_, _ssoStatus_) {
+        spyOn(_ssoStatus_, 'logged_in').and.callFake(function () {
+          return true;
+        });
+        spyOn(_ssoStatus_, 'login').and.callFake(function () {
+          return 'edwinguzman';
+        });
 
-    it('should have help links', function () {
-      var login_form = element.find('form'),
-        help_links = login_form.find('#login-form-help');
+        $compile = _$compile_;
+        $rootScope = _$rootScope_;
+        $scope = _$rootScope_.$new();
 
-      expect(help_links.find('a').length).toBe(2);
-      expect(help_links.find('.forgotpin-button').text())
-        .toEqual('Forgot your PIN?');
-      expect(help_links.find('.createacct-button').text())
-        .toEqual('Need an account?');
-    });
+        element = angular.element('<nypl-sso></nypl-sso>');
+        $compile(element)($scope);
+        $scope.$digest();
+      }));
 
-    it('should show the sso-login form', function () {
-      expect(element.find('.sso-login').attr('class')).not.toContain('visible');
+      it('should be in the logged in state', function () {
+        expect(element.isolateScope().header_button_label).toEqual('edwinguzman');
+      });
 
-      element.find('.login-button').click();
+      // it('should have a logged-in class for the button', function () {
+      //   expect(angular.element(element.find('.login-button')).attr('class'))
+      //     .toContain('logged-in');
+      // });
 
-      // The login form container should be visible now.
-      expect(element.find('.sso-login').attr('class')).toContain('visible');
     });
   });
 
