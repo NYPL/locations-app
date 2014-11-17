@@ -5,7 +5,7 @@ describe, expect, beforeEach, inject, it, angular */
 describe('nyplNavigation module', function () {
   'use strict';
 
-  var element, $compile, $scope, httpBackend;
+  var element, $compile, $scope, $rootScope, httpBackend;
 
   beforeEach(module('nyplNavigation'));
   beforeEach(module('nyplSSO'));
@@ -110,10 +110,11 @@ describe('nyplNavigation module', function () {
     describe('Logged in', function () {
       beforeEach(inject(function (_$compile_, _$rootScope_, _ssoStatus_) {
         spyOn(_ssoStatus_, 'logged_in').and.callFake(function () {
-          return false;
+          return true;
         });
 
         $compile = _$compile_;
+        $rootScope = _$rootScope_;
         $scope = _$rootScope_.$new();
 
         html = '<nypl-navigation></nypl-navigation>';
@@ -124,15 +125,49 @@ describe('nyplNavigation module', function () {
         expect(nyplNavigation.attr('id')).toContain('main-nav');
       });
 
-      it('should say say Log In for the menut button initially', function () {
-        expect(nyplNavigation.find('.mobile-login').text().trim()).toEqual('Log In');
+      it('should say Log In for the menu button initially', function () {
+        expect(nyplNavigation.isolateScope().menuLabel).toEqual('Log Out');
+        expect(nyplNavigation.find('.mobile-login').text().trim())
+          .toEqual('Log Out');
       });
+
+      it('should update the logout url based on route', function () {
+        // A state was changed and the $rootScope variable was updated
+        // which closes the feedback survey.
+        $rootScope.current_url = '/';
+        $rootScope.$apply();
+
+        expect(nyplNavigation.isolateScope().logout_url)
+          .toEqual("https://nypl.bibliocommons.com/user/logout?destination=/");
+
+        // Go to a different page
+        $rootScope.current_url = '/grand-central';
+        $rootScope.$apply();
+
+        expect(nyplNavigation.isolateScope().logout_url)
+          .toEqual("https://nypl.bibliocommons.com/user/logout?" +
+            "destination=/grand-central");
+
+        // Go to a different page
+        $rootScope.current_url = '/amenities';
+        $rootScope.$apply();
+
+        expect(nyplNavigation.isolateScope().logout_url)
+          .toEqual("https://nypl.bibliocommons.com/user/logout?" +
+            "destination=/amenities");
+      });
+
+      // it('should trigger dropDown mouseover', function () {
+      //   var elm = nyplNavigation.find('.dropDown');
+      //   elm.trigger('mouseover');
+      //   expect(elm.attr('class')).toContain('openDropDown');
+      // });
     });
 
     describe('Not logged in', function () {
       beforeEach(inject(function (_$compile_, _$rootScope_, _ssoStatus_) {
         spyOn(_ssoStatus_, 'logged_in').and.callFake(function () {
-          return true;
+          return false;
         });
 
         $compile = _$compile_;
@@ -142,8 +177,10 @@ describe('nyplNavigation module', function () {
         nyplNavigation = createDirective(html);
       }));
 
-      it('should say say Log Out for the menut button when logged in', function () {
-        expect(nyplNavigation.find('.mobile-login').text().trim()).toEqual('Log Out');
+      it('should say Log Out for the menu button when logged in', function () {
+        expect(nyplNavigation.isolateScope().menuLabel).toEqual('Log In');
+        expect(nyplNavigation.find('.mobile-login').text().trim())
+          .toEqual('Log In');
       });
     });
 
