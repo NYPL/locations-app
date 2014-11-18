@@ -14,9 +14,16 @@
         nyplUtility
     ) {
         'use strict';
+        $rootScope.title = "Research Collections";
         $scope.terms = terms;
-
         $scope.divisions = divisions;
+        var getHoursToday = function(obj) {
+            _.each(obj, function (elem) {
+                if (elem.hours) {
+                    elem.hoursToday = nyplUtility.hoursToday(elem.hours);
+                }
+            });
+        };
 
         $scope.setSubterms = function (index, name) {
             var subterms;
@@ -64,9 +71,8 @@
             $scope.divisions = updatedDivisions;
         };
 
-        $rootScope.title = "Research Collections";
-        $scope.hoursToday = nyplUtility.hoursToday;
-
+        // Assign Today's hours
+        getHoursToday($scope.divisions);
     }
 
     angular

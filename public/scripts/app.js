@@ -224,7 +224,7 @@ nypl_locations.config([
             })
             .state('research-collections', {
                 url: '/research-collections',
-                templateUrl: 'views/research_collections.html',
+                templateUrl: 'views/research-collections.html',
                 controller: 'CollectionsCtrl',
                 label: 'Collections',
                 resolve: {
