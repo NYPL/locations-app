@@ -4,7 +4,20 @@
 (function () {
   'use strict';
 
-  function nyplSearch() {
+  /**
+   * @ngdoc directive
+   * @name nyplSearch.directive:nyplSearch
+   * @restrict E
+   * @requires $analytics
+   * @scope
+   * @description
+   * Displays the NYPL search from. Design and event handlers.
+   * @example
+   * <pre>
+   *  <nypl-search></nypl-search>
+   * </pre>
+   */
+  function nyplSearch($analytics) {
     return {
       restrict: 'E',
       scope: {},
@@ -74,16 +87,25 @@
           // Don't perform search if no term has been entered
           if (term.length === 0) {
             setError();
+            $analytics.eventTrack('Empty Search',
+                    { category: 'Header Search', label: '' });
+
             return false;
           }
 
           if (scope === 'nypl.org') {
             target = window.location.protocol + '//' + 'nypl.org'
               + '/search/apachesolr_search/' + term;
+
+            $analytics.eventTrack('Submit Search',
+                    { category: 'Header Search', label: term });
           } else {
             // Bibliocommons by default
             target = 'http://nypl.bibliocommons.com/search?t=smart&q='
               + term + '&commit=Search&searchOpt=catalogue';
+
+            $analytics.eventTrack('Submit Catalog Search',
+                    { category: 'Header Search', label: term });
           }
           window.location = target;
           return false;
@@ -123,6 +145,8 @@
           // search input
           o.term.focus(function (e) {
             o.choices.addClass('open');
+            $analytics.eventTrack('Focused',
+                    { category: 'Header Search', label: 'Search Box' });
           });
 
           // If the error class has been set on the input box, remove it
@@ -139,6 +163,8 @@
           // Setup click action on radio butons
           o.choices.find('li input').click(function () {
             setPrompt(angular.element(this));
+            $analytics.eventTrack('Select',
+                    { category: 'Header Search', label: getChoice() });
           });
 
           // Setup click action on list items (will be active when items are
@@ -159,8 +185,18 @@
     };
   }
 
+  /**
+   * @ngdoc overview
+   * @module nyplSearch
+   * @name nyplSearch
+   * @description
+   * AngularJS module for managing the header search form and its input.
+   */
   angular
-    .module('nyplSearch', [])
+    .module('nyplSearch', [
+      'angulartics',
+      'angulartics.google.analytics'
+    ])
     .directive('nyplSearch', nyplSearch);
 
 })();

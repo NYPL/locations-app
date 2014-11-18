@@ -2,6 +2,14 @@
 <html>
   <head>
     <title>NYPL | <%= @div.name %></title>
+    <meta name="twitter:card" content="summary" />
+    <meta property="og:title" content="<%= @div.name %>" />
+    <meta property="og:site_name" content="The New York Public Library" />
+    <meta property="og:url" content="http://nypl.org/locations/divisions/<%= @div.slug %>" />
+    <meta property="og:description" content='<%= @div.about %>' />
+    <meta property="og:type" content="website" />
+
+    <meta name="keywords" content="NYPL, The New York Public Library, Manhattan, Bronx, Staten Island, <%= @div.name %>" />
   </head>
   <body>
     <div itemscope itemtype="http://schema.org/Library">
@@ -15,14 +23,18 @@
         <div><%= @div.location.name %></div>
         <%= erb :seo_address, :locals => {:loc => @div.location} %>
         <div itemprop="contactPoint" itemscope itemtype="http://schema.org/ContactPoint">
-          <span itemprop="contactType">Library Manager</span>
-          <span itemprop="name"><%= @div.contacts['manager'] %></span>
         </div>
 
         <%= erb :seo_location_hours, :locals => {:hours => @div.hours} %>
 
         <h2>About</h2>
-        <div itemprop="description"><%= @div.about %></div>
+        <div itemprop="description">
+          <%= @div.about %>
+          <div>
+            <a href="<%= @div.links['self']['about'] %>">Learn More</a>
+          </div>
+
+        </div>
 
 
         <%= erb :seo_hasdivisions, :locals => {:loc => @div, :parent => 'div', :parent_slug => @div.slug } %> 

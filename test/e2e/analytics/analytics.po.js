@@ -16,6 +16,8 @@ var LandingPage = function () {
     this.findIt.click();
   };
 
+  this.see_all_amenities = element(by.id('all_amenities'));
+
   this.geolocation = element(by.id('currentloc'));
   this.research = element(by.css('.filters__research a'));
 

@@ -9,7 +9,7 @@ describe('Locations: Header SSO Login', function () {
     locationPage = require('../location/location.po.js'),
     divisionPage = require('../division/division.po.js'),
     amenitiesPage = require('../amenities/amenities.po.js'),
-    header = require('./header.po.js'),
+    header = require('../global-elements/header.po.js'),
     cookieObj;
 
   afterEach(function () {

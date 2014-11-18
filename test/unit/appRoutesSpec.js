@@ -35,6 +35,13 @@ describe('Locinator State Routing', function () {
         $rootScope = _$rootScope_.$new();
         $injector = _$injector_;
         $httpBackend = _$httpBackend_;
+
+        // $httpBackend.expectGET('views/404.html').respond(200, '/views');
+        // $httpBackend
+        //   .expectGET('languages/en.json')
+        //   .respond('public/languages/en.json');
+
+        
       })
     });
 
@@ -172,7 +179,7 @@ describe('Locinator State Routing', function () {
         expectedConfig = {
           url: '/404',
           abstract: undefined,
-          templateUrl: '/views/404.html',
+          templateUrl: 'views/404.html',
           controller: undefined,
           label: undefined
         };

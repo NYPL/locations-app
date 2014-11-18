@@ -255,15 +255,17 @@
 				display: block;
 				overflow: auto;
 				height: 500px;
+				border-bottom: 1px solid #EEE;
+				border-top: 1px solid #EEE;
 				-webkit-overflow-scrolling: touch;
 
 				tr {
 					display: block;
-					border: 1px solid #eee;
+					border: 1px solid #EEE;
 
 					@include breakpoint($min, $post-palm) {
 						display: table-row;
-						border-bottom: 1px solid #eee;
+						border-bottom: 1px solid #EEE;
 					}
 
 					&.active {
@@ -403,7 +405,7 @@
 			-webkit-overflow-scrolling: touch;
 
 			.location-data {
-				border-bottom: 1px solid #eee;
+				border-bottom: 1px solid #EEE;
 				padding: 5px 0px;
 
 				&.active {

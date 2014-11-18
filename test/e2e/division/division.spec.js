@@ -12,14 +12,11 @@ describe('Locations: Division - Testing General Research Division',
       // Function that creates a module that is injected at run time,
       // overrides and mocks httpbackend to mock API call. 
       httpBackendMock = function (response) {
-        var API_URL = 'http://locations-api-alpha.herokuapp.com';
+        var API_URL = 'http://dev.locations.api.nypl.org';
 
         angular.module('httpBackendMock', ['ngMockE2E'])
           .run(function ($httpBackend) {
-            $httpBackend.whenGET('/languages/en.json').passThrough();
-            $httpBackend
-              .whenGET('/config')
-              .respond({ config: { api_root: API_URL } });
+            $httpBackend.whenGET('languages/en.json').passThrough();
 
             $httpBackend
               .whenJSONP(API_URL +

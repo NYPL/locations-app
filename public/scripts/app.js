@@ -42,12 +42,14 @@ var nypl_locations = angular.module('nypl_locations', [
 nypl_locations.constant('_', window._);
 
 nypl_locations.config([
+    '$analyticsProvider',
     '$locationProvider',
     '$translateProvider',
     '$stateProvider',
     '$urlRouterProvider',
     '$crumbProvider',
     function (
+        $analyticsProvider,
         $locationProvider,
         $translateProvider,
         $stateProvider,
@@ -56,13 +58,17 @@ nypl_locations.config([
     ) {
         'use strict';
 
+        // Turn off automatic virtual pageviews for GA.
+        // In $stateRouteSuccess, /locations/ is added to each page hit.
+        $analyticsProvider.virtualPageviews(false);
+
         // uses the HTML5 History API, remove hash (need to test)
         $locationProvider.html5Mode(true);
 
         // Lazy loads static files with English being
         // the first language that gets loaded.
         $translateProvider.useStaticFilesLoader({
-            prefix: '/languages/',
+            prefix: 'languages/',
             suffix: '.json'
         });
         $translateProvider.preferredLanguage('en');
@@ -138,7 +144,7 @@ nypl_locations.config([
         // it will run the app. It may not be necessary for the app though
         // since, in the run phase, if there is an error when changing state,
         // the app will go to the 404 state.
-        // $urlRouterProvider.otherwise('/404');
+        $urlRouterProvider.otherwise('/404');
         $stateProvider
             .state('home', {
                 url: '/',
@@ -237,7 +243,7 @@ nypl_locations.config([
             })
             .state('404', {
                 url: '/404',
-                templateUrl: '/views/404.html'
+                templateUrl: 'views/404.html'
             })
             .state('location', {
                 url: '/:location',
@@ -254,11 +260,12 @@ nypl_locations.config([
     }
 ]);
 
-nypl_locations.run(function ($state, $rootScope, $location) {
+nypl_locations.run(function ($analytics, $state, $rootScope, $location) {
     $rootScope.$on('$stateChangeStart', function () {
         $rootScope.close_feedback = true;
     });
     $rootScope.$on('$stateChangeSuccess', function () {
+        $analytics.pageTrack('/locations' + $location.path());
         $rootScope.current_url = $location.absUrl();
     });
     $rootScope.$on('$stateChangeError', function () {

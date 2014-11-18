@@ -4,6 +4,21 @@
 (function () {
   'use strict';
 
+  /**
+   * @ngdoc directive
+   * @name nyplNavigation.directive:nyplNavigation
+   * @restrict E
+   * @requires ssoStatus
+   * @requires $window
+   * @requires $rootScope
+   * @scope
+   * @description
+   * Displays the NYPL navigation menu.
+   * @example
+   * <pre>
+   *  <nypl-navigation></nypl-navigation>
+   * </pre>
+   */
   function nyplNavigation(ssoStatus, $window, $rootScope) {
     return {
       restrict: 'E',
@@ -21,9 +36,8 @@
           }
         );
 
-        var logout_url;
         $rootScope.$watch('current_url', function () {
-          logout_url = "https://nypl.bibliocommons.com/user/logout" +
+          scope.logout_url = "https://nypl.bibliocommons.com/user/logout" +
             "?destination=" + $rootScope.current_url;
         })
 
@@ -31,7 +45,7 @@
         $('.mobile-login').click(function (e) {
           e.preventDefault();
           if (ssoStatus.logged_in()) {
-            $window.location.href = logout_url;
+            $window.location.href = scope.logout_url;
           } else {
             $('.sso-login').toggleClass('visible');
           }
@@ -46,6 +60,18 @@
     };
   }
 
+  /**
+   * @ngdoc directive
+   * @name nyplNavigation.directive:nyplCollapsedButtons
+   * @restrict E
+   * @scope
+   * @description
+   * Displays the mobile collapsed buttons and add click event handlers.
+   * @example
+   * <pre>
+   *  <nypl-collapsed-buttons></nypl-collapsed-buttons>
+   * </pre>
+   */
   function nyplCollapsedButtons() {
     return {
       restrict: 'E',
@@ -83,6 +109,14 @@
     };
   }
 
+  /**
+   * @ngdoc overview
+   * @module nyplNavigation
+   * @name nyplNavigation
+   * @description
+   * AngularJS module for adding the NYPL navigation menu as a directive.
+   * This module also has a directive for adding mobile collapsed buttons.
+   */
   angular
     .module('nyplNavigation', [])
     .directive('nyplNavigation', nyplNavigation)

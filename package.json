@@ -2,7 +2,7 @@
   "name": "Locations",
   "version": "0.0.1",
   "dependencies": {
-    "protractor": "^1.1.1",
+    "protractor": "^1.4.0",
     "karma-jasmine": "^0.2.2",
     "protractor-html-screenshot-reporter": "0.0.10",
     "jasmine-spec-reporter": "^0.4.0",
@@ -20,9 +20,10 @@
     "jasmine-spec-reporter": "^0.4.0",
     "protractor-html-screenshot-reporter": "0.0.10",
     "jasmine-reporters": "^0.2.1",
-    "grunt-scss-lint": "^0.3.1",
     "grunt": "^0.4.5",
     "grunt-jsdoc": "^0.5.7",
+    "grunt-ng-annotate": "^0.3.2",
+    "grunt-contrib-uglify": "^0.5.1",
     "karma-coverage": "^0.2.6",
     "grunt-ngdocs": "^0.2.5"
   }
