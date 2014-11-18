@@ -117,7 +117,7 @@ describe('nyplNavigation module', function () {
         $rootScope = _$rootScope_;
         $scope = _$rootScope_.$new();
 
-        html = '<nypl-navigation></nypl-navigation>';
+        html = angular.element('<nypl-navigation></nypl-navigation>');
         nyplNavigation = createDirective(html);
       }));
 

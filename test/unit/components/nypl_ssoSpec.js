@@ -14,9 +14,8 @@ describe('nyplSSO module', function () {
 
   beforeEach(module('nyplSSO'));
   beforeEach(module('directiveTemplates'));
-  beforeEach(inject(function (_$httpBackend_, _ssoStatus_) {
+  beforeEach(inject(function (_$httpBackend_) {
     httpBackend = _$httpBackend_;
-    ssoStatus = _ssoStatus_;
 
     httpBackend
         .expectGET('languages/en.json')
@@ -24,6 +23,12 @@ describe('nyplSSO module', function () {
   }));
 
   describe('Service: ssoStatus', function () {
+    var ssoStatus;
+
+    beforeEach(inject(function (_$httpBackend_, _ssoStatus_) {
+      ssoStatus = _ssoStatus_;
+    }));
+
     function loggedIn() {
       return 'edwinguzman';
     }

@@ -91,7 +91,7 @@ nypl_locations.config([
                                 .singleDivision($stateParams.subdivision);
 
             return $q.all([division, subdivision]).then(function (data) {
-                var div = data[0],division,
+                var div = data[0].division,
                     subdiv = data[1].division;
 
                 return subdiv;
