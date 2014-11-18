@@ -757,7 +757,6 @@ describe('NYPL Directive Unit Tests', function () {
       $rootScope.$digest();
       ctrl = autofill.controller("nyplAutofill");
       $scope = element.isolateScope() || element.scope()
-      //console.log(ctrl);
     }));
 
     it('should compile lookahead and autofill containers', function () {
@@ -765,7 +764,7 @@ describe('NYPL Directive Unit Tests', function () {
       expect(autofill.find('.autofill-container')).toBeTruthy();
     });
 
-    describe('Controller Methods', function () {
+    describe('Controller Methods: ', function () {
 
       it('openAutofill() method should be defined', function () {
         expect(ctrl.openAutofill).toBeDefined();
@@ -979,6 +978,179 @@ describe('NYPL Directive Unit Tests', function () {
         expect($scope.model).not.toEqual($scope.completeWord);
         expect($scope.model).toBe('');
       });
+
+      it('updateSearchText() method should be defined', function() {
+        expect(ctrl.updateSearchText).toBeDefined();
+      });
+
+      it('updateSearchText() method should not assign items to both scope.filtered and ' +
+        'scope.items if invalid/empty data is passed', function() {
+        var data, searchTerm = null;
+        $scope.items = undefined;
+        $scope.filtered = undefined;
+
+        ctrl.updateSearchText(data, searchTerm);
+        expect($scope.items).toBeUndefined();
+        expect($scope.filtered).toBeUndefined();
+      });
+
+      it('updateSearchText() method should assign items to both scope.filtered and ' +
+        'scope.items if valid data is passed', function() {
+        $scope.items = undefined;
+        $scope.filtered = undefined;
+
+        var searchTerm = 'Baychester',
+            data = [
+              {id: "BAR", name: "Baychester Library", _links: {}},
+              {id: "CHR", name: "Chatham Square Library", _links: {}},
+              {id: "CI", name: "City Island Library", _links: {}},
+              {id: "DH", name: "Dongan Hills Library", _links: {}}
+            ];
+
+        ctrl.updateSearchText(data, searchTerm);
+        expect($scope.items).toBeDefined();
+        expect($scope.filtered).toBeDefined();
+      });
+
+      it('updateSearchText() method should assign items to both scope.filtered and ' +
+        'scope.items if valid data is passed and the searchTerm length is greater than 1', function() {
+        $scope.items = undefined;
+        $scope.filtered = undefined;
+
+        var searchTerm = 'Ba',
+            data = [
+              {id: "BAR", name: "Baychester Library", _links: {}},
+              {id: "CHR", name: "Chatham Square Library", _links: {}},
+              {id: "CI", name: "City Island Library", _links: {}},
+              {id: "DH", name: "Dongan Hills Library", _links: {}}
+            ];
+
+        ctrl.updateSearchText(data, searchTerm);
+        expect($scope.items).toBeDefined();
+        expect($scope.filtered).toBeDefined();
+      });
+
+      it('updateSearchText() method should match Baychester Library and ' +
+        'assign it as the scope.completeWord', function() {
+        var searchTerm = 'Ba',
+            data = [
+              {id: "BAR", name: "Baychester Library", _links: {}},
+              {id: "CHR", name: "Chatham Square Library", _links: {}},
+              {id: "CI", name: "City Island Library", _links: {}},
+              {id: "DH", name: "Dongan Hills Library", _links: {}}
+            ];
+        $scope.completeWord = undefined;
+
+        ctrl.updateSearchText(data, searchTerm);
+        expect($scope.completeWord).toBe('Baychester Library');
+      });
+
+      it('updateSearchText() method should find no match for searchTerm Grand ' +
+        'and therefore scope.lookahead, scope.currentWord and scope.completeWord ' +
+        'will return empty', function() {
+
+        var searchTerm = 'Grand',
+            data = [
+              {id: "BAR", name: "Baychester Library", _links: {}},
+              {id: "CHR", name: "Chatham Square Library", _links: {}},
+              {id: "CI", name: "City Island Library", _links: {}},
+              {id: "DH", name: "Dongan Hills Library", _links: {}}
+            ];
+        $scope.completeWord = undefined;
+        $scope.currentWord = undefined;
+        $scope.lookahead = undefined;
+
+        ctrl.updateSearchText(data, searchTerm);
+        expect($scope.completeWord).toBe('');
+        expect($scope.currentWord).toBe('');
+        expect($scope.lookahead).toBe('');
+      });
+
+      it('filterStartsWith() method should be defined', function() {
+        expect(ctrl.filterStartsWith).toBeDefined();
+      }); 
+ 
+      it('filterStartsWith() method return a list of matches' +
+        'based on the beginning of the string', function() {
+        var searchTerm = 'Bay',
+            data = [
+              {id: "BAR", name: "Baychester Library", _links: {}},
+              {id: "CHR", name: "Chatham Square Library", _links: {}},
+              {id: "CI", name: "City Island Library", _links: {}},
+              {id: "DH", name: "Dongan Hills Library", _links: {}}
+            ];
+
+        $scope.items = ctrl.filterStartsWith(data, searchTerm);
+
+        expect($scope.items).toBeDefined();
+        expect($scope.items[0].name).toBe('Baychester Library');
+      });
+
+      it('filterStartsWith() method return empty if no match is found. ' +
+        'Matching is based on the beginning of the string', function() {
+        var searchTerm = 'Grand',
+            data = [
+              {id: "BAR", name: "Baychester Library", _links: {}},
+              {id: "CHR", name: "Chatham Square Library", _links: {}},
+              {id: "CI", name: "City Island Library", _links: {}},
+              {id: "DH", name: "Dongan Hills Library", _links: {}}
+            ];
+
+        $scope.items = ctrl.filterStartsWith(data, searchTerm);
+
+        expect($scope.items).toBeDefined();
+        expect($scope.items.length).toBe(0);
+        expect($scope.items[0]).toBeUndefined();;
+      });
+
+      it('filterStartsWith() method should return if the NAME property ' +
+        'is not defined within the data object', function() {
+        var searchTerm = 'Lib',
+            data = [
+              {id: "BAR", _links: {}},
+              {id: "CHR", _links: {}},
+              {id: "CI", _links: {}},
+              {id: "DH", _links: {}}
+            ];
+
+          $scope.items = ctrl.filterStartsWith(data, searchTerm);
+          expect($scope.items).toBeDefined();
+          expect($scope.items).toEqual([]);
+      }); 
+
+      it('filterTermWitin() method should be defined', function() {
+        expect(ctrl.filterTermWithin).toBeDefined();
+      });
+
+      it('filterTermWitin() method should return a list of matches based ' +
+        'on matching the searchTerm anywhere within the string', function() {
+        var searchTerm = 'Lib',
+            data = [
+              {id: "BAR", name: "Baychester Library", _links: {}},
+              {id: "CHR", name: "Chatham Square Library", _links: {}},
+              {id: "CI", name: "City Island Library", _links: {}},
+              {id: "DH", name: "Dongan Hills Library", _links: {}}
+            ];
+
+          $scope.filtered = ctrl.filterTermWithin(data, searchTerm);
+          expect($scope.filtered).toBeDefined();
+          expect($scope.filtered).toEqual(data);
+      });
+
+      it('filterTermWitin() method should return if the NAME property ' +
+        'is not defined within the data object', function() {
+        var searchTerm = 'Lib',
+            data = [
+              {id: "BAR", _links: {}},
+              {id: "CHR", _links: {}},
+              {id: "CI", _links: {}},
+              {id: "DH", _links: {}}
+            ];
+
+          $scope.filtered = ctrl.filterTermWithin(data, searchTerm);
+          expect($scope.filtered).toBeDefined();
+          expect($scope.filtered).toEqual([]);
+      }); 
 
     });
 
