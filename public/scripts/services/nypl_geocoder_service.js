@@ -135,9 +135,8 @@
       geocoder.geocode(geocodeOptions, function (result, status) {
           if (status === google.maps.GeocoderStatus.OK) {
             // console.log(result);
-            coords.lat  = result[0].geometry.location.k;
-            coords.long = result[0].geometry.location.B ||
-               result[0].geometry.location.A;
+            coords.lat  = result[0].geometry.location.lat();
+            coords.long = result[0].geometry.location.lng();
             coords.name = result[0].formatted_address;
 
             defer.resolve(coords);
