@@ -598,30 +598,23 @@ describe('NYPL Directive Unit Tests', function () {
     var nyplFundraising, template, $timeout, nyplLocationsService, $httpBackend;
 
     beforeEach(
-      inject(function (_$timeout_, _nyplLocationsService_, _$httpBackend_) {
+      inject(function (_$timeout_, _nyplLocationsService_, _$httpBackend_, $q) {
         nyplLocationsService = _nyplLocationsService_;
         $httpBackend = _$httpBackend_;
         $timeout = _$timeout_;
+
+        spyOn(_nyplLocationsService_, 'getConfig').and.callFake(function () {
+          var deferred = $q.defer();
+          deferred.resolve({config: {fundraising: {
+            appeal: 'Friends of the Library can support their favorite ' +
+              'library and receive great benefits!',
+            statement: 'Become a Member',
+            button_label: 'Join or Renew',
+          }}});
+          return deferred.promise;
+        });
       })
     );
-
-    describe('Use default appeal', function () {
-      beforeEach(function () {
-        scope.fundraising = undefined;
-
-        template = '<nypl-fundraising fundraising="fundraising">' +
-          '</nypl-fundraising>';
-        nyplFundraising = createDirective(template);
-        $timeout.flush();
-      });
-
-      it('should get fundraising object from the config', function () {
-        expect(scope.fundraising.appeal).toEqual('Friends of the Library ' +
-          'can support their favorite library and receive great benefits!');
-        expect(scope.fundraising.statement).toEqual('Become a Member');
-        expect(scope.fundraising.button_label).toEqual('Join or Renew');
-      });
-    });
 
     describe('Add appeal object', function () {
       beforeEach(function () {
@@ -634,13 +627,31 @@ describe('NYPL Directive Unit Tests', function () {
         template = '<nypl-fundraising fundraising="fundraising">' +
           '</nypl-fundraising>';
         nyplFundraising = createDirective(template);
-        $timeout.flush();
+        // $timeout.flush();
       });
 
       it('should get fundraising object from the config', function () {
         expect(scope.fundraising.appeal).toEqual('Added appeal');
         expect(scope.fundraising.statement).toEqual('Added statement');
         expect(scope.fundraising.button_label).toEqual('Added button label');
+      });
+    });
+
+    describe('Use default appeal', function () {
+      beforeEach(function () {
+        scope.fundraising = undefined;
+
+        template = '<nypl-fundraising fundraising="fundraising">' +
+          '</nypl-fundraising>';
+        nyplFundraising = createDirective(template);
+      });
+
+      it('should get fundraising object from the config', function () {
+        $timeout.flush();
+        expect(scope.fundraising.appeal).toEqual('Friends of the Library ' +
+          'can support their favorite library and receive great benefits!');
+        expect(scope.fundraising.statement).toEqual('Become a Member');
+        expect(scope.fundraising.button_label).toEqual('Join or Renew');
       });
     });
 
@@ -738,6 +749,30 @@ describe('NYPL Directive Unit Tests', function () {
       });
     });
   });
+
+  /*
+   * <nypl-foot></nypl-footer>
+   */
+  describe('Directive: nyplFooter', function () {
+    var nyplFooter, template, $httpBackend;
+
+    beforeEach(inject(function (_$httpBackend_) {
+      $httpBackend = _$httpBackend_;
+
+      template = '<nypl-footer></nypl-footer>';
+      nyplFooter = createDirective(template);
+    }));
+
+    it('should compile', function () {
+      expect(nyplFooter.find('.copyright').length).toBe(1);
+      expect(nyplFooter.find('.footerlinks ul').length).toBe(4);
+    });
+
+    it('should trigger click', function () {
+      nyplFooter.find('.footerlinks a').click();
+    });
+  });
+
 
   /*
    * <nypl-autofill></nypl-autofill>
