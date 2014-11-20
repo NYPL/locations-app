@@ -40,9 +40,7 @@ describe('Locinator State Routing', function () {
         // $httpBackend
         //   .expectGET('languages/en.json')
         //   .respond('public/languages/en.json');
-
-        
-      })
+      });
     });
 
     describe('Router configuration', function () {
