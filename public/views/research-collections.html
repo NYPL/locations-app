@@ -12,7 +12,7 @@
     <div class='sub-filters'>
         <ul data-ng-repeat="term in subterms">
           <li class="term {{term.name}}">
-            <a href="" data-ng-click="filterDivisions(term.name)" data-ng-model="test.name">{{term.name}}</a>
+            <a href="" data-ng-click="filterDivisionsBy(term)" data-ng-model="term.name">{{term.name}}</a>
           </li>
         </ul>
     </div>
@@ -24,7 +24,7 @@
         <h2 class="hdg">{{ 'DIVISION_HEADER' | translate }}</h2>
         <div class="grid">
           <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
-            data-ng-repeat='division in divisions'>
+            data-ng-repeat='division in filteredDivisions track by $index'>
             <div class="division-wrapper">
               <a data-ui-sref="division({division: division.slug})"
                 analytics-on="click" analytics-category="Locations"

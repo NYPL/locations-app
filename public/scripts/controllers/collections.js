@@ -17,6 +17,8 @@
     $rootScope.title = "Research Collections";
     $scope.terms = terms;
     $scope.divisions = divisions;
+    $scope.filteredDivisions = divisions;
+
     var getHoursToday = function(obj) {
       _.each(obj, function (elem) {
         if (elem.hours) {
@@ -27,6 +29,9 @@
 
     $scope.setSubterms = function (index, term) {
       var subterms;
+
+      // The Subjects term has nested terms so we must pluck the 
+      // terms property from every term. Check the API.
       if (term.id == 42) {
         subterms = _.chain(terms[index].terms)
           .pluck('terms')
@@ -34,41 +39,37 @@
           .unique()
           .value();
       } else {
+      // The Media term has all the terms listed as a flat array.
         subterms = terms[index].terms;
       }
 
-      $scope.termIndex = index;
       $scope.subterms = subterms;
     };
 
-    $scope.filterDivisions = function (name) {
-      var updatedDivisions = [],
-          i;
+    $scope.filterDivisionsBy = function (selectedTerm) {
+      var termID = selectedTerm.id;
 
-      for (i = 0; i < divisions.length; i++) {
-        if (divisions[i].terms) {
-            console.log(divisions[i].name);
-            _.each(divisions[i].terms, function (term) {
-              console.log(term.terms);
+      $scope.filteredDivisions = $scope.divisions.filter(function (division) {
+        var found;
 
-              // if (_.contains(term.terms, {name: name})) {
-              //     console.log('test');
-              // }
-              var test = _.find(term.terms, function (term) {
-                // console.log(term);
-                return term.name = name;
+        // Only search through divisions with terms property
+        if (division.terms) {
+          // Search through each parent term
+          _.each(division.terms, function (parentTerm) {
+            // If already found, no need to keep searching;
+            if (!found) {
+              // Find the term where the ID matches what was selected
+              found = _.find(parentTerm.terms, function (term) {
+                return term.id === termID;
               });
-
-              console.log(test);
-            });
-            // console.log(divisions[i].terms[$scope.termIndex].terms)
-            // if (_.has(divisions[i].terms[$scope.termIndex].terms, name)) {
-            //     console.log('test');
-            // }
+            }
+          });
         }
-      }
 
-      $scope.divisions = updatedDivisions;
+        // Return the boolean value of found. True if there's an object,
+        // false if no object was found.
+        return !!found;
+      });
     };
 
     // Assign Today's hours
