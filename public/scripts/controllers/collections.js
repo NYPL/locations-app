@@ -15,19 +15,19 @@
     nyplUtility
   ) {
     'use strict';
+    var rcValues = researchCollectionService.getResearchValues(),
+      getHoursToday = function(obj) {
+        _.each(obj, function (elem) {
+          if (elem.hours) {
+            elem.hoursToday = nyplUtility.hoursToday(elem.hours);
+          }
+        });
+      };
+
     $rootScope.title = "Research Collections";
     $scope.terms = terms;
     $scope.divisions = divisions;
-
-    var rcValues = researchCollectionService.getResearchValues();
-    var getHoursToday = function(obj) {
-      _.each(obj, function (elem) {
-        if (elem.hours) {
-          elem.hoursToday = nyplUtility.hoursToday(elem.hours);
-        }
-      });
-    };
-
+    // Get saved values first, if not then the default will display.
     $scope.subterms = rcValues.subterms;
     $scope.filteredDivisions = rcValues.filteredDivisions || divisions;
 
@@ -47,6 +47,7 @@
         subterms = terms[index].terms;
       }
 
+      // Save the filter. Need to add one for the the parent term.
       researchCollectionService.setResearchValue('subterms', subterms);
       $scope.subterms = subterms;
     };
@@ -76,6 +77,7 @@
         return !!found;
       });
 
+      // Save the filtered divisions for later.
       researchCollectionService
         .setResearchValue('filteredDivisions', $scope.filteredDivisions);
     };
