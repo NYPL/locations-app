@@ -50,11 +50,17 @@
       // Save the filter. Need to add one for the the parent term.
       researchCollectionService.setResearchValue('subterms', subterms);
       $scope.subterms = subterms;
+
+      // For the data-ng-class for the active buttons. Reset the subterm button.
+      $scope.selected = index;
+      $scope.selectedSubterm = undefined;
     };
 
-    $scope.filterDivisionsBy = function (selectedTerm) {
+    $scope.filterDivisionsBy = function (index, selectedTerm) {
       var termID = selectedTerm.id;
 
+      // Set class active to the subterm.
+      $scope.selectedSubterm = index;
       $scope.filteredDivisions = $scope.divisions.filter(function (division) {
         var found;
 

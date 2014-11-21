@@ -1,18 +1,22 @@
 <section class="research-collections">
 
+  <h2 class="title">Research Collections</h2>
   <div class='collection-filters'>
     <div class='main-filters'>
       <span class='heading'>
         Filter By:
       </span>
       <span class='filterable-by'>
-        <button data-ng-repeat="term in terms" data-ng-click="setSubterms($index, term)">{{term.name}}</button>
+        <button data-ng-repeat="term in terms" data-ng-click="setSubterms($index, term)"
+          data-ng-class="{active: $index == selected}">
+          {{term.name}}
+        </button>
       </span>
     </div>
     <div class='sub-filters'>
-        <ul data-ng-repeat="term in subterms">
-          <li class="term {{term.name}}">
-            <a href="" data-ng-click="filterDivisionsBy(term)" data-ng-model="term.name">{{term.name}}</a>
+        <ul>
+          <li class="term {{term.name}}" data-ng-repeat="term in subterms">
+            <button class="btn--small" href="" data-ng-click="filterDivisionsBy($index, term)" data-ng-model="term.name" data-ng-class="{active: $index == selectedSubterm}">{{term.name}}</button>
           </li>
         </ul>
     </div>
@@ -29,10 +33,10 @@
               <a data-ui-sref="division({division: division.slug})"
                 analytics-on="click" analytics-category="Locations"
                 analytics-event="Division Image" analytics-label="{{division.name}}">
-                <img class="img--outline" data-ng-src="{{division.images.interior}}"
+                <img class="img--outline division-image" data-ng-src="{{division.images.interior}}"
                   alt="Image for {{division.name}}" title="Image for {{division.name}}" style="max-height: 235px;" />
               </a>
-              <h4>
+              <h4 class="division-name">
                 <a data-ui-sref="division({division: division.slug})"
                   analytics-on="click" analytics-category="Locations"
                   analytics-event="Division Title" analytics-label="{{division.name}}">

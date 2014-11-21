@@ -31,7 +31,8 @@ exports.config = {
     pagetopage: ['test/e2e/page-to-page/page_to_page.spec.js'],
     sso: ['test/e2e/page-to-page/sso_cookies.spec.js'],
     analytics: ['test/e2e/analytics/analytics.spec.js'],
-    widget: ['test/e2e/widget/widget.spec.js']
+    widget: ['test/e2e/widget/widget.spec.js'],
+    collections: ['test/e2e/collections/collections.spec.js']
   },
 
   // onPrepare: function () {
