@@ -11,14 +11,15 @@
     divisions,
     terms,
     nyplLocationsService,
+    researchCollectionService,
     nyplUtility
   ) {
     'use strict';
     $rootScope.title = "Research Collections";
     $scope.terms = terms;
     $scope.divisions = divisions;
-    $scope.filteredDivisions = divisions;
 
+    var rcValues = researchCollectionService.getResearchValues();
     var getHoursToday = function(obj) {
       _.each(obj, function (elem) {
         if (elem.hours) {
@@ -26,6 +27,9 @@
         }
       });
     };
+
+    $scope.subterms = rcValues.subterms;
+    $scope.filteredDivisions = rcValues.filteredDivisions || divisions;
 
     $scope.setSubterms = function (index, term) {
       var subterms;
@@ -43,6 +47,7 @@
         subterms = terms[index].terms;
       }
 
+      researchCollectionService.setResearchValue('subterms', subterms);
       $scope.subterms = subterms;
     };
 
@@ -70,6 +75,9 @@
         // false if no object was found.
         return !!found;
       });
+
+      researchCollectionService
+        .setResearchValue('filteredDivisions', $scope.filteredDivisions);
     };
 
     // Assign Today's hours
