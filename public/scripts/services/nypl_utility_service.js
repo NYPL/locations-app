@@ -302,7 +302,7 @@
             {
               day: time = new Date(2014, 11, 24),
               time: time.getTime(),
-              title: "All units of the Library will close at 5p.m. today"
+              title: "The Library will close at 5 p.m. today"
             },
             {
               day: time = new Date(2014, 11, 25),
@@ -312,7 +312,7 @@
             {
               day: time = new Date(2014, 11, 31),
               time: time.getTime(),
-              title: "All units of the Library will close at 5p.m. today"
+              title: "The Library will close at 5 p.m. today"
             }
           ];
 

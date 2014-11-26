@@ -274,7 +274,7 @@ nypl_locations.run(function ($analytics, $state, $rootScope, $location) {
 });
 
 nypl_locations.run(function ($rootScope, nyplUtility) {
-    $rootScope.holiday = nyplUtility.holidayClosings(new Date(2014, 10, 27));
+    $rootScope.holiday = nyplUtility.holidayClosings();
 });
 
 // Declare an http interceptor that will signal
@@ -449,5 +449,5 @@ var nypl_widget = angular.module('nypl_widget', [
 ]);
 // Add Holiday Closings
 nypl_widget.run(function ($rootScope, nyplUtility) {
-    $rootScope.holiday = nyplUtility.holidayClosings(new Date(2014, 10, 27));
+    $rootScope.holiday = nyplUtility.holidayClosings();
 });
