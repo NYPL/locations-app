@@ -13,7 +13,7 @@
       <div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
         <!-- Display for open location -->
         <div class="callout branch-open" data-ng-if="location.open">
-          <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat:'short'}}" />
+          <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat:'short'}}" holiday="holiday" />
           <div id="location-hours" class="location-hours">
             <h2 class="flush--ends hdg">{{ 'REGULAR_HOURS' | translate }}
               <span id="toggle-hours" ng-click="expand = !expand"
@@ -160,7 +160,14 @@
               {{division.name}}
             </a>
           </h4>
-          <p data-ng-if="division.hours">Hours Today: {{division.hoursToday | timeFormat}}</p>
+          <p data-ng-if="division.hours">
+            <span data-ng-if="holiday">
+              Hours Today: {{holiday.title}}
+            </span>
+            <span data-ng-if="!holiday">
+              Hours Today: {{division.hoursToday | timeFormat}}
+            </span>
+          </p>
         </div>
       </div>
     </div>

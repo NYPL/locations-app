@@ -12,7 +12,7 @@
       <!-- Division Hours -->
       <div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
         <div class="callout branch-open" data-ng-if="division.open">
-          <todayshours hours="{{hoursToday | hoursTodayFormat:'short'}}" />
+          <todayshours hours="{{hoursToday | hoursTodayFormat:'short'}}" holiday="holiday" />
           <div id="location-hours" class="location-hours" data-ng-if="division.hours">
             <h2 class="flush--ends hdg">
               {{'REGULAR_HOURS' | translate}} 
@@ -120,7 +120,14 @@
               {{subdivision.name}}
             </a>
           </h4>
-          <p data-ng-if="subdivision.hours">Hours Today: {{subdivision.hoursToday | timeFormat}}</p>
+          <p data-ng-if="subdivision.hours">
+            <span data-ng-if="holiday">
+              Hours Today: {{holiday.title}}
+            </span>
+            <span data-ng-if="!holiday">
+              Hours Today: {{subdivision.hoursToday | timeFormat}}
+            </span>
+          </p>
         </div>
       </div>
     </div>
