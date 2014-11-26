@@ -272,9 +272,9 @@ nypl_locations.run(function ($analytics, $state, $rootScope, $location) {
         $state.go('404');
     });
 });
-// Add Holiday Closings Support
+
 nypl_locations.run(function ($rootScope, nyplUtility) {
-    $rootScope.holiday = nyplUtility.holidayClosings();
+    $rootScope.holiday = nyplUtility.holidayClosings(new Date(2014, 10, 27));
 });
 
 // Declare an http interceptor that will signal
@@ -447,7 +447,7 @@ var nypl_widget = angular.module('nypl_widget', [
             });
     }
 ]);
-// Add Holiday Closings Support
+// Add Holiday Closings
 nypl_widget.run(function ($rootScope, nyplUtility) {
-    $rootScope.holiday = nyplUtility.holidayClosings();
+    $rootScope.holiday = nyplUtility.holidayClosings(new Date(2014, 10, 27));
 });
