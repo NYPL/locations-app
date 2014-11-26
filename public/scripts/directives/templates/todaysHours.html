@@ -1,4 +1,8 @@
-
 <div class="h-event" id="hours-today">
-  <time class="hours-today icon-clock icon-color-blue"><span>{{hours}}</span></time>
+	<div data-ng-if="holiday">
+		<time class="hours-today icon-clock icon-color-blue"><span>{{holiday.title}}</span></time>
+	</div>
+	<div data-ng-if="!holiday">
+  	<time class="hours-today icon-clock icon-color-blue"><span>{{hours}}</span></time>
+  </div>
 </div>

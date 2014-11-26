@@ -91,7 +91,7 @@ nypl_locations.config([
                                 .singleDivision($stateParams.subdivision);
 
             return $q.all([division, subdivision]).then(function (data) {
-                var div = data[0],division,
+                var div = data[0].division,
                     subdiv = data[1].division;
 
                 return subdiv;
@@ -273,6 +273,10 @@ nypl_locations.run(function ($analytics, $state, $rootScope, $location) {
     });
 });
 
+nypl_locations.run(function ($rootScope, nyplUtility) {
+    $rootScope.holiday = nyplUtility.holidayClosings();
+});
+
 // Declare an http interceptor that will signal
 // the start and end of each request
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
@@ -355,7 +359,7 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
  * @description
  * AngularJS widget app for About pages on nypl.org.
  */
-angular.module('nypl_widget', [
+var nypl_widget = angular.module('nypl_widget', [
     'ngSanitize',
     'ui.router',
     'locationService',
@@ -442,3 +446,7 @@ angular.module('nypl_widget', [
             });
     }
 ]);
+// Add Holiday Closings
+nypl_widget.run(function ($rootScope, nyplUtility) {
+    $rootScope.holiday = nyplUtility.holidayClosings();
+});

@@ -36,9 +36,8 @@
           }
         );
 
-        var logout_url;
         $rootScope.$watch('current_url', function () {
-          logout_url = "https://nypl.bibliocommons.com/user/logout" +
+          scope.logout_url = "https://nypl.bibliocommons.com/user/logout" +
             "?destination=" + $rootScope.current_url;
         })
 
@@ -46,7 +45,7 @@
         $('.mobile-login').click(function (e) {
           e.preventDefault();
           if (ssoStatus.logged_in()) {
-            $window.location.href = logout_url;
+            $window.location.href = scope.logout_url;
           } else {
             $('.sso-login').toggleClass('visible');
           }

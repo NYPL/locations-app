@@ -86,7 +86,12 @@
           <!-- Today's Hours -->
 					<div class="todays-hours branch-open" data-ng-if="location.open">
 						<span>{{ 'TODAYS_HOURS' | translate }}</span>:
-						<strong>{{ location.hoursToday(location.hours) | timeFormat }}</strong>
+            <span data-ng-if="holiday">
+              <strong>{{holiday.title}}</strong>
+            </span>
+            <span data-ng-if="!holiday">
+						  <strong>{{ location.hoursToday(location.hours) | timeFormat }}</strong>
+            </span>
 					</div>
 
           <!-- Closed flag -->

@@ -2,7 +2,7 @@
 /*globals element, by, module, module, window, jasmine,
 describe, expect, beforeEach, inject, it, angular, spyOn */
 
-var mockGeneralResearchDivision = {
+var mockGeneralResearch = {
     access: "Fully Accessible",
     contacts: { phone: "(917) 275-6975", manager: "Marie Coughlin" },
     hours: {
@@ -27,7 +27,7 @@ var mockGeneralResearchDivision = {
     room: "315",
     slug: "general-research-division",
     social_media: [
-      { site: "facebook",href: "http://www.facebook.com/pages/General-" +
+      { site: "facebook", href: "http://www.facebook.com/pages/General-" +
         "Research-Division-The-New-York-Public-Library/105843439484043"},
       { site: "twitter", href: "http://twitter.com/NYPL_GRD"}
     ],
@@ -134,6 +134,56 @@ var mockGeneralResearchDivision = {
         synonyms: [ ]
       }
     }
+  },
+  mockArentsDivisionHours = {
+    name: "George Arents Collection",
+    access: "Fully Accessible",
+    rank: 0,
+    floor: "Third Floor",
+    room: "328",
+    type: "research",
+    slug: "arents-collection",
+    hours: {
+      regular: [
+        { day: "Sun", open: null, close: null },
+        { day: "Mon", open: null, close: null },
+        { day: "Tue", open: "10:00", close: "19:45" },
+        { day: "Wed", open: "10:00", close: "19:45" },
+        { day: "Thu", open: "10:00", close: "17:45" },
+        { day: "Fri", open: "10:00", close: "17:45" },
+        { day: "Sat", open: "10:00", close: "17:45" }
+      ],
+      exceptions: {
+        start: "2014-11-18T14:15:39-05:00",
+        end: "2014-11-19T00:00:00-05:00",
+        description: "<p>NOTE: The Stephen A. Schwarzman Building " +
+          "will be CLOSED..."
+      }
+    },
+    _embedded: {
+      events: null,
+      exhibitions: null,
+      location: {
+        name: "Stephen A. Schwarzman Building",
+        street_address: "Fifth Avenue at 42nd Street",
+        cross_street: "",
+        locality: "New York",
+        region: "NY",
+        access: "Fully Accessible",
+        postal_code: 10018,
+        type: "research",
+        slug: "schwarzman"
+      },
+      parent: {
+        name: "Rare Book Division",
+        access: "Partially Accessible",
+        rank: 6,
+        floor: "Third Floor",
+        room: "328",
+        slug: "rare-books-division",
+        synonyms: [ ]
+      }
+    }
   };
 
 
@@ -177,12 +227,12 @@ describe('DivisionCtrl', function () {
         $scope: scope,
         config: {api_root: 'http://locations-api-beta.nypl.org',
           divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN","PHG","SPN","CPS"]},
-        division: mockGeneralResearchDivision
+        division: mockGeneralResearch
       });
     }));
 
     it('should get the mocked data', function () {
-      expect(scope.division).toEqual(mockGeneralResearchDivision);
+      expect(scope.division).toEqual(mockGeneralResearch);
       expect(scope.division.name).toEqual('General Research Division');
     });
 
@@ -214,9 +264,15 @@ describe('DivisionCtrl', function () {
       expect(scope.division._embedded.divisions).toBeDefined();
     });
 
-    // it('should have hours for the embedded division', function () {
-    //   expect(scope.division._embedded.divisions).toEqual('');
-    // });
+    it('should have hours for the embedded division', function () {
+      var subdivision_hours = {
+        today : { day : 'Tue', open : '10:00', close : '19:45' },
+        tomorrow : { day : 'Wed', open : '10:00', close : '19:45' }
+      };
+
+      expect(scope.division._embedded.divisions[0].hoursToday)
+        .toEqual(subdivision_hours);
+    });
   });
 
   describe('George Arents Collection', function () {
@@ -262,6 +318,24 @@ describe('DivisionCtrl', function () {
 
     it('should have an embedded location', function () {
       expect(scope.division._embedded.location).toBeDefined();
+    });
+  });
+
+  describe('George Arents Collection - with hours', function () {
+    beforeEach(inject(function (_$rootScope_, _$controller_) {
+      scope = _$rootScope_.$new();
+      DivisionCtrl = _$controller_('DivisionCtrl', {
+        $scope: scope,
+        config: {api_root: 'http://locations-api-beta.nypl.org',
+          divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN","PHG","SPN","CPS"]},
+        division: mockArentsDivisionHours
+      });
+    }));
+
+    it('should have an alert on the page', function () {
+      // Alerts/exceptions are part of the hours property in the division
+      expect(scope.division.hours).toBeDefined();
+      expect(scope.division.hours.exceptions).toBeDefined();
     });
   });
 

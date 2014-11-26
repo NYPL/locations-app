@@ -77,7 +77,8 @@
       templateUrl: 'scripts/directives/templates/todaysHours.html',
       replace: true,
       scope: {
-        hours: '@'
+        hours: '@',
+        holiday:  '='
       }
     };
   }
