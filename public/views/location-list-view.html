@@ -96,7 +96,12 @@
             <td class="hours-info">
               <div>
                 <p data-ng-if="location.open" class="branch-open">
-                  {{ location.hoursToday(location.hours) | timeFormat }}
+                  <span data-ng-if="holiday">
+                    {{holiday.title}}
+                  </span>
+                  <span data-ng-if="!holiday">
+                    {{ location.hoursToday(location.hours) | timeFormat }}
+                  </span>
                 </p>
                 <p data-ng-if="!location.open" class="branch-closed">
                   <b>Branch is temporarily closed.</b>

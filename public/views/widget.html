@@ -85,7 +85,7 @@
     --><div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
       <!-- Display for open Location/Division -->
       <div class="callout branch-open" data-ng-if="data.open">
-        <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat:'short'}}" />
+        <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat:'short'}}" holiday="holiday" />
       </div>
       <div class="callout branch-closed" data-ng-if="!data.open">
         <h2>Branch is temporarily closed.</h2>

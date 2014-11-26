@@ -72,7 +72,7 @@ describe('NYPL Geocoder Service Tests', function () {
         httpBackend = _$httpBackend_;
 
         httpBackend
-          .expectGET('/languages/en.json')
+          .expectGET('languages/en.json')
           .respond('public/languages/en.json');
 
         httpBackend
@@ -111,18 +111,10 @@ describe('NYPL Geocoder Service Tests', function () {
         GeoCodingOK = function (params, callback) {
           callback(
             // The result param
-            [{geometry: {location: {k: 40.75298660000001, B: -73.9821364}},
-              formatted_address: "New York, NY 10018, USA"}],
-            // The error param
-            'OK'
-          );
-        };
-
-        GeoCodingAlternate = function (params, callback) {
-          callback(
-            // The Google Maps JS API once returned the key A for the
-            // longitude 
-            [{geometry: {location: {k: 40.75298660000001, A: -73.9821364}},
+            [{geometry: {location: {
+                lat: function () { return 40.75298660000001; },
+                lng: function () { return -73.9821364; }
+              }},
               formatted_address: "New York, NY 10018, USA"}],
             // The error param
             'OK'
@@ -168,40 +160,6 @@ describe('NYPL Geocoder Service Tests', function () {
 
           expect(okMock).toHaveBeenCalled();
           expect(errorMock).not.toHaveBeenCalled();
-        });
-
-        it('should resolve the promise when receiving data', function () {
-          var lat, long, name;
-
-          nyplGeocoderService
-            .geocodeAddress('10013')
-            .then(function (data) {
-              lat = data.lat;
-              long = data.long;
-              name = data.name;
-            });
-
-          rootScope.$apply();
-
-          expect(lat).toEqual(40.75298660000001);
-          expect(long).toEqual(-73.9821364);
-          expect(name).toEqual("New York, NY 10018, USA");
-        });
-      });
-
-      describe('geocodeAddress function alternate results successful', function () {
-        beforeEach(function () {
-          GeocoderMock.prototype.geocode =
-            jasmine.createSpy('geocode').and.callFake(GeoCodingAlternate);
-        });
-
-        it('should not be called', function () {
-          expect(GeocoderMock.prototype.geocode).not.toHaveBeenCalled();
-        });
-
-        it('should call the geocode api when calling the service', function () {
-          nyplGeocoderService.geocodeAddress('10018');
-          expect(GeocoderMock.prototype.geocode).toHaveBeenCalled();
         });
 
         it('should resolve the promise when receiving data', function () {

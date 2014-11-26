@@ -29,7 +29,7 @@
 
     $rootScope.title = data.name;
     $scope.data = data;
-    $scope.locinator_url = "http://locations-beta.nypl.org" +
+    $scope.locinator_url = "http://www.nypl.org/locations" +
       $location.path().substr(7);
     $scope.widget_name = data.name;
 

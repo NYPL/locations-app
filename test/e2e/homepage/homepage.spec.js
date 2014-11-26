@@ -12,7 +12,7 @@ describe('Locations: homepage', function () {
 
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
-          $httpBackend.whenGET('/languages/en.json').passThrough();
+          $httpBackend.whenGET('languages/en.json').passThrough();
 
           $httpBackend
             .whenJSONP(API_URL + '/locations?callback=JSON_CALLBACK')

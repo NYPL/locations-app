@@ -196,7 +196,7 @@
 
       if (nicePrint) {
         addressBreak = "<br />";
-        linkedName = "<a href='/#/" + location.slug +
+        linkedName = "<a href='/locations/" + location.slug +
           "'>" + location.name + "</a>";
       }
 
@@ -265,7 +265,7 @@
         return null;
       }
 
-      if (Array.isArray(alerts)) {
+      if (Array.isArray(alerts) && alerts.length > 0) {
         _.each(alerts, function (alert) {
           alert_start = new Date(alert.start);
           alert_end = new Date(alert.end);
@@ -280,6 +280,43 @@
         }
       }
       return null;
+    };
+
+
+    /**
+     * @ngdoc function
+     * @name holidayClosings
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {obj} date ...
+     * @description ...
+     */
+    utility.holidayClosings = function (date) {
+      var time,
+          today = date || new Date(),
+          holidays = [
+            {
+              day: time = new Date(2014, 10, 27),
+              time: time.getTime(),
+              title: "Closed for Thanksgiving Day"
+            },
+            {
+              day: time = new Date(2014, 11, 24),
+              time: time.getTime(),
+              title: "The Library will close at 5 p.m. today"
+            },
+            {
+              day: time = new Date(2014, 11, 25),
+              time: time.getTime(),
+              title: "Closed for Christmas Day"
+            },
+            {
+              day: time = new Date(2014, 11, 31),
+              time: time.getTime(),
+              title: "The Library will close at 5 p.m. today"
+            }
+          ];
+
+      return _.findWhere(holidays, {time: today.getTime()});
     };
 
     /**
