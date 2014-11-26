@@ -282,6 +282,43 @@
       return null;
     };
 
+
+    /**
+     * @ngdoc function
+     * @name holidayClosings
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {obj} date ...
+     * @description ...
+     */
+    utility.holidayClosings = function (date) {
+      var time,
+          today = date || new Date(),
+          holidays = [
+            {
+              day: time = new Date(2014, 10, 27),
+              time: time.getTime(),
+              title: "Closed for Thanksgiving Day"
+            },
+            {
+              day: time = new Date(2014, 11, 24),
+              time: time.getTime(),
+              title: "The Library will close at 5 p.m. today"
+            },
+            {
+              day: time = new Date(2014, 11, 25),
+              time: time.getTime(),
+              title: "Closed for Christmas Day"
+            },
+            {
+              day: time = new Date(2014, 11, 31),
+              time: time.getTime(),
+              title: "The Library will close at 5 p.m. today"
+            }
+          ];
+
+      return _.findWhere(holidays, {time: today.getTime()});
+    };
+
     /**
      * @ngdoc function
      * @name popupWindow

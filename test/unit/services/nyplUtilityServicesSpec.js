@@ -198,7 +198,7 @@ describe('NYPL Utility Service Tests', function () {
         var marker_address = nyplUtility.getAddressString(location, true);
 
         expect(marker_address)
-          .toEqual("<a href='/#/115th-street'>115th Street Library</a>" +
+          .toEqual("<a href='/locations/115th-street'>115th Street Library</a>" +
             "<br />203 West 115th Street<br />New York, NY, 10026");
       });
 

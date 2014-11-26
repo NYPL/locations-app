@@ -54,7 +54,7 @@ describe('NYPL locationService Module', function () {
         it('should get the server config variables', function () {
           nyplLocationsService.getConfig()
             .then(function (data) {
-              configData = data.config;
+              configData = data;
             });
 
           $rootScope.$apply();
@@ -64,12 +64,12 @@ describe('NYPL locationService Module', function () {
         it('should return cached api data', function () {
           nyplLocationsService.getConfig()
             .then(function (data) {
-              configData = data.config;
+              configData = data;
 
               // Calling it again once it's done.
               nyplLocationsService.getConfig()
                 .then(function (data) {
-                  configData = data.config;
+                  configData = data;
                 });
             });
 
@@ -78,7 +78,7 @@ describe('NYPL locationService Module', function () {
         });
 
         it('should return an error', function () {
-          window.locations_cfg = undefined;
+          window.locations_cfg = { config: undefined };
           nyplLocationsService.getConfig()
             .then()
             .catch(function (error) {
