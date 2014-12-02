@@ -16,6 +16,7 @@
   ) {
     'use strict';
     var rcValues = researchCollectionService.getResearchValues(),
+      research_order = config.research_order || ['SASB', 'LPA', 'SC', 'SIBL'],
       getHoursToday = function(obj) {
         _.each(obj, function (elem) {
           if (elem.hours) {
@@ -36,7 +37,12 @@
                                 .flatten()
                                 .pluck('location')
                                 .indexBy('id')
-                                .sortBy('name')
+                                .sortBy( function (elem) {
+                                  nyplUtility.researchLibraryOrder(
+                                    research_order,
+                                    elem.id
+                                  );
+                                })
                                 .flatten()
                                 .value();
 
