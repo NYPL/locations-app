@@ -36,6 +36,9 @@ $post-mobile-phone: $mobile-phone + $viewport-increment;
 // Small Mobile Phone
 $sm-mobile-phone: 320px;
 
+// Medium Mobile Phone
+$md-mobile-phone: 360px;
+
 // Constraints:
 $min: min-width;
 $max: max-width;
