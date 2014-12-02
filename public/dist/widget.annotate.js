@@ -539,7 +539,7 @@ nypl_locations.config([
                                 .singleDivision($stateParams.subdivision);
 
             return $q.all([division, subdivision]).then(function (data) {
-                var div = data[0],division,
+                var div = data[0].division,
                     subdiv = data[1].division;
 
                 return subdiv;
@@ -725,6 +725,10 @@ nypl_locations.run(["$analytics", "$state", "$rootScope", "$location", function 
     });
 }]);
 
+nypl_locations.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility) {
+    $rootScope.holiday = nyplUtility.holidayClosings();
+}]);
+
 // Declare an http interceptor that will signal
 // the start and end of each request
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
@@ -807,7 +811,7 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
  * @description
  * AngularJS widget app for About pages on nypl.org.
  */
-angular.module('nypl_widget', [
+var nypl_widget = angular.module('nypl_widget', [
     'ngSanitize',
     'ui.router',
     'locationService',
@@ -899,7 +903,10 @@ angular.module('nypl_widget', [
             });
     }
 ]);
-
+// Add Holiday Closings
+nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility) {
+    $rootScope.holiday = nyplUtility.holidayClosings();
+}]);
 /*jslint indent: 4, maxlen: 80, nomen: true */
 /*globals nypl_locations, console, _, angular */
 
@@ -1287,7 +1294,8 @@ angular.module('nypl_widget', [
       templateUrl: 'scripts/directives/templates/todaysHours.html',
       replace: true,
       scope: {
-        hours: '@'
+        hours: '@',
+        holiday:  '='
       }
     };
   }
@@ -2215,6 +2223,58 @@ angular.module('nypl_widget', [
         }
       }
       return null;
+    };
+
+
+    /**
+     * @ngdoc function
+     * @name holidayClosings
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {obj} date ...
+     * @description ...
+     */
+    utility.holidayClosings = function (date) {
+
+      function sameDay (day1, day2) {
+        return day1.getFullYear() === day2.getFullYear()
+            && day1.getDate() === day2.getDate()
+            && day1.getMonth() === day2.getMonth();
+      }
+
+      var holiday,
+          today = date || new Date(),
+          holidays = [
+            {
+              day: new Date(2014, 10, 27),
+              title: "Closed for Thanksgiving Day"
+            },
+            {
+              day: new Date(2014, 11, 24),
+              title: "The Library will close at 5 p.m. today"
+            },
+            {
+              day: new Date(2014, 11, 25),
+              title: "Closed for Christmas Day"
+            },
+            {
+              day: new Date(2014, 11, 31),
+              title: "The Library will close at 5 p.m. today"
+            }
+          ];
+
+
+      holiday = _.filter(holidays, function(item) {
+                  if ( sameDay(item.day, today) ) {
+                    return item;
+                  }
+                });
+      if (holiday.length > 0) {
+        return {
+          day: holiday[0].day,
+          title: holiday[0].title
+        }
+      }
+      return undefined;
     };
 
     /**

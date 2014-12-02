@@ -40,9 +40,7 @@ describe('Locinator State Routing', function () {
         // $httpBackend
         //   .expectGET('languages/en.json')
         //   .respond('public/languages/en.json');
-
-        
-      })
+      });
     });
 
     describe('Router configuration', function () {
@@ -120,8 +118,7 @@ describe('Locinator State Routing', function () {
         
         testStateConfig(stateConfig, expectedConfig);
         expect($injector.invoke(stateConfig.resolve.config)).toEqual(configObj);
-        // expect($injector.invoke(stateConfig.resolve.division).then)
-        //   .toBeDefined();
+        // expect($injector.invoke(stateConfig.resolve.division).then).toBeDefined();
       });
 
       it('should return amenities state', function () {
@@ -291,6 +288,7 @@ describe('Locinator State Routing', function () {
         
         testStateConfig(stateConfig, expectedConfig);
         expect($injector.invoke(stateConfig.resolve.config)).toEqual(configObj);
+        expect($injector.invoke(stateConfig.resolve.data)).toBeDefined();
       });
 
       it('should return the division state', function () {
@@ -306,6 +304,7 @@ describe('Locinator State Routing', function () {
         
         testStateConfig(stateConfig, expectedConfig);
         expect($injector.invoke(stateConfig.resolve.config)).toEqual(configObj);
+        // expect($injector.invoke(stateConfig.resolve.data)).toBeDefined();
       });
 
       it('should return the locations state', function () {
@@ -321,6 +320,7 @@ describe('Locinator State Routing', function () {
         
         testStateConfig(stateConfig, expectedConfig);
         expect($injector.invoke(stateConfig.resolve.config)).toEqual(configObj);
+        // expect($injector.invoke(stateConfig.resolve.data)).toBeDefined();
       });
     });
 

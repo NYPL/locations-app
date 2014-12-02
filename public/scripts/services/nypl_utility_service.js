@@ -282,6 +282,58 @@
       return null;
     };
 
+
+    /**
+     * @ngdoc function
+     * @name holidayClosings
+     * @methodOf nypl_locations.service:nyplUtility
+     * @param {obj} date ...
+     * @description ...
+     */
+    utility.holidayClosings = function (date) {
+
+      function sameDay (day1, day2) {
+        return day1.getFullYear() === day2.getFullYear()
+            && day1.getDate() === day2.getDate()
+            && day1.getMonth() === day2.getMonth();
+      }
+
+      var holiday,
+          today = date || new Date(),
+          holidays = [
+            {
+              day: new Date(2014, 10, 27),
+              title: "Closed for Thanksgiving Day"
+            },
+            {
+              day: new Date(2014, 11, 24),
+              title: "The Library will close at 5 p.m. today"
+            },
+            {
+              day: new Date(2014, 11, 25),
+              title: "Closed for Christmas Day"
+            },
+            {
+              day: new Date(2014, 11, 31),
+              title: "The Library will close at 5 p.m. today"
+            }
+          ];
+
+
+      holiday = _.filter(holidays, function(item) {
+                  if ( sameDay(item.day, today) ) {
+                    return item;
+                  }
+                });
+      if (holiday.length > 0) {
+        return {
+          day: holiday[0].day,
+          title: holiday[0].title
+        }
+      }
+      return undefined;
+    };
+
     /**
      * @ngdoc function
      * @name popupWindow
