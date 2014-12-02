@@ -9,10 +9,9 @@
     $rootScope,
     config,
     divisions,
-    terms,
     nyplLocationsService,
-    researchCollectionService,
-    nyplUtility
+    nyplUtility,
+    researchCollectionService
   ) {
     'use strict';
     var rcValues = researchCollectionService.getResearchValues(),
@@ -23,10 +22,20 @@
             elem.hoursToday = nyplUtility.hoursToday(elem.hours);
           }
         });
+      },
+      loadTerms = function () {
+        return nyplLocationsService
+                .terms()
+                .then(function (data) {
+                  $scope.terms = data.terms;
+                  console.log($scope.terms)
+                });
+                // .catch(function (error) {
+                //     throw error;
+                // });
       };
 
     $rootScope.title = "Research Collections";
-    $scope.terms = terms;
     $scope.divisions = divisions;
     // Get saved values first, if not then the default will display.
     $scope.subterms = rcValues.subterms;
@@ -46,20 +55,22 @@
                                 .flatten()
                                 .value();
 
+    loadTerms();
+
     $scope.setSubterms = function (index, term) {
       var subterms;
 
       // The Subjects term has nested terms so we must pluck the 
       // terms property from every term. Check the API.
       if (term.id == 42) {
-        subterms = _.chain(terms[index].terms)
+        subterms = _.chain($scope.terms[index].terms)
           .pluck('terms')
           .flatten(true)
           .unique()
           .value();
       } else {
       // The Media term has all the terms listed as a flat array.
-        subterms = terms[index].terms;
+        subterms = $scope.terms[index].terms;
       }
 
       // Save the filter. Need to add one for the the parent term.
