@@ -294,10 +294,6 @@ nypl_locations.run(function ($analytics, $state, $rootScope, $location) {
     });
 });
 
-nypl_locations.run(function ($rootScope, nyplUtility) {
-    $rootScope.holiday = nyplUtility.holidayClosings();
-});
-
 // Declare an http interceptor that will signal
 // the start and end of each request
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
