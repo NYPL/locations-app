@@ -23,7 +23,7 @@
 		.heading {
 			display: block;
 
-			@include breakpoint($min, $md-mobile-phone) {
+			@include breakpoint($min, $mobile-phone) {
 				display: inline;
 			}
 		}

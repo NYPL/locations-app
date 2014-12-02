@@ -29,7 +29,16 @@
     $scope.divisions = divisions;
     // Get saved values first, if not then the default will display.
     $scope.subterms = rcValues.subterms;
+    $scope.activeFilter = false;
     $scope.filteredDivisions = rcValues.filteredDivisions || divisions;
+    $scope.divisionLocations = _.chain(divisions)
+                                .pluck('_embedded')
+                                .flatten()
+                                .pluck('location')
+                                .indexBy('id')
+                                .sortBy('name')
+                                .flatten()
+                                .value();
 
     $scope.setSubterms = function (index, term) {
       var subterms;
@@ -53,7 +62,7 @@
 
       // For the data-ng-class for the active buttons. Reset the subterm button.
       $scope.selected = index;
-      $scope.active = false;
+      $scope.activeFilter = false;
       $scope.selectedSubterm = undefined;
     };
 
@@ -93,21 +102,18 @@
         .setResearchValue('filteredDivisions', $scope.filteredDivisions);
     };
 
-    $scope.setLocations = function (divisions) {
-      var divisionLocations = _.chain(divisions)
-                              .pluck('_embedded')
-                              .flatten()
-                              .pluck('location')
-                              .indexBy('id')
-                              .sortBy('name')
-                              .flatten()
-                              .value();
-
-      $scope.subterms = $scope.active === true ? undefined : divisionLocations;
-      // For the data-ng-class for the active buttons. Reset the subterm button.
-      $scope.active = $scope.active === true ? false : true;
+    $scope.setLocations = function (obj) {
+      // Toggles Active filter
+      $scope.activeFilter = $scope.activeFilter === false ? true : false;
       $scope.selected = undefined;
       $scope.selectedSubterm = undefined;
+
+      // Ensure data exists
+      if (obj) {
+        $scope.subterms = $scope.activeFilter === true ? obj : undefined;
+      } else {
+        throw new Error('Could not determine filtered locations. Check API response');
+      }
     };
 
     // Assign Today's hours

@@ -11,7 +11,7 @@
           data-ng-class="{active: $index == selected}">
           {{term.name}}
         </button>
-        <button data-ng-click="setLocations(divisions)" data-ng-class="{active: active}">Locations</button>
+        <button data-ng-click="setLocations(divisionLocations)" data-ng-class="{active: activeFilter}">Locations</button>
       </span>
     </div>
     <div class='sub-filters'>
