@@ -53,6 +53,7 @@
 
       // For the data-ng-class for the active buttons. Reset the subterm button.
       $scope.selected = index;
+      $scope.active = false;
       $scope.selectedSubterm = undefined;
     };
 
@@ -76,6 +77,10 @@
               });
             }
           });
+        } else if (division._embedded.location) {
+          _.each(division._embedded, function (parent) {
+            found = parent.id === termID;
+          });
         }
 
         // Return the boolean value of found. True if there's an object,
@@ -86,6 +91,23 @@
       // Save the filtered divisions for later.
       researchCollectionService
         .setResearchValue('filteredDivisions', $scope.filteredDivisions);
+    };
+
+    $scope.setLocations = function (divisions) {
+      var divisionLocations = _.chain(divisions)
+                              .pluck('_embedded')
+                              .flatten()
+                              .pluck('location')
+                              .indexBy('id')
+                              .sortBy('name')
+                              .flatten()
+                              .value();
+
+      $scope.subterms = $scope.active === true ? undefined : divisionLocations;
+      // For the data-ng-class for the active buttons. Reset the subterm button.
+      $scope.active = $scope.active === true ? false : true;
+      $scope.selected = undefined;
+      $scope.selectedSubterm = undefined;
     };
 
     // Assign Today's hours

@@ -11,14 +11,15 @@
           data-ng-class="{active: $index == selected}">
           {{term.name}}
         </button>
+        <button data-ng-click="setLocations(divisions)" data-ng-class="{active: active}">Locations</button>
       </span>
     </div>
     <div class='sub-filters'>
-        <ul>
-          <li class="term {{term.name}}" data-ng-repeat="term in subterms">
-            <a href="" data-ng-click="filterDivisionsBy($index, term)" data-ng-model="term.name" data-ng-class="{active: $index == selectedSubterm}">{{term.name}}</a>
-          </li>
-        </ul>
+      <ul>
+        <li class="term {{term.name}}" data-ng-repeat="term in subterms">
+          <a href="" data-ng-click="filterDivisionsBy($index, term)" data-ng-model="term.name" data-ng-class="{active: $index == selectedSubterm}">{{term.name}}</a>
+        </li>
+      </ul>
     </div>
   </div>
 
