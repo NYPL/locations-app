@@ -47,7 +47,7 @@
                                 .pluck('location')
                                 .indexBy('id')
                                 .sortBy( function (elem) {
-                                  nyplUtility.researchLibraryOrder(
+                                  return nyplUtility.researchLibraryOrder(
                                     research_order,
                                     elem.id
                                   );
