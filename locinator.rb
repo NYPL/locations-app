@@ -25,6 +25,7 @@ class Locinator < Sinatra::Base
         "self" => settings.env_config["url"],
         "tz_offset" => DateTime.now().strftime("%z"),
         "api_root" => settings.env_config["api"],
+        "api_version" => settings.env_config["api_version"],
         "divisions_with_appointments" => settings.divisions_with_appointments,
         "featured_amenities" => settings.featured_amenities,
         "research_order" => settings.research_order,
