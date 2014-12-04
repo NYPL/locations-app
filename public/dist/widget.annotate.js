@@ -175,7 +175,8 @@
      */
     function nyplLocationsService($http, $q) {
         var api, config,
-            apiError = "Could not reach API",
+            jsonp_cb = '?callback=JSON_CALLBACK',
+            apiError = 'Could not reach API',
             locationsApi = {};
 
         /**
@@ -195,12 +196,13 @@
                 config = window.locations_cfg.config;
 
                 if (config) {
-                    api = window.locations_cfg.config.api_root;
+                    api = config.api_root + '/api/' + config.api_version;
                     defer.resolve(config);
                 } else {
                     defer.reject(apiError + ': config');
                 }
             }
+
             return defer.promise;
         }
 
@@ -227,7 +229,7 @@
             var defer = $q.defer();
 
             $http.jsonp(
-                    api + '/locations' + '?callback=JSON_CALLBACK',
+                    api + '/locations' + jsonp_cb,
                     {cache: true}
                 )
                 .success(function (data) {
@@ -263,7 +265,7 @@
             var defer = $q.defer();
 
             $http.jsonp(
-                    api + '/locations/' + location + '?callback=JSON_CALLBACK',
+                    api + '/locations/' + location + jsonp_cb,
                     {cache: true}
                 )
                 .success(function (data) {
@@ -299,7 +301,7 @@
             var defer = $q.defer();
 
             $http.jsonp(
-                    api + '/divisions/' + division + '?callback=JSON_CALLBACK',
+                    api + '/divisions/' + division + jsonp_cb,
                     {cache: true}
                 )
                 .success(function (data) {
@@ -346,7 +348,7 @@
             var defer = $q.defer(),
                 url = !amenity ? '/amenities' : '/amenities/' + amenity;
 
-            $http.jsonp(api + url + '?callback=JSON_CALLBACK', {cache: true})
+            $http.jsonp(api + url + jsonp_cb, {cache: true})
                 .success(function (data) {
                     defer.resolve(data);
                 })
@@ -382,7 +384,7 @@
             var defer = $q.defer();
 
             $http.jsonp(
-                    api + '/locations/' + location + '/amenities' + '?callback=JSON_CALLBACK',
+                    api + '/locations/' + location + '/amenities' + jsonp_cb,
                     {cache: true}
                 )
                 .success(function (data) {
@@ -416,7 +418,7 @@
             var defer = $q.defer();
 
             $http.jsonp(
-                    api + '/alerts' + '?callback=JSON_CALLBACK',
+                    api + '/alerts' + jsonp_cb,
                     {cache: true}
                 )
                 .success(function (data) {
