@@ -4,7 +4,13 @@
 (function () {
     'use strict';
 
-    function DivisionCtrl($rootScope, $scope, config, division, nyplUtility) {
+    function DivisionCtrl($rootScope, $scope, config, division, nyplUtility,
+        $analytics, $location) {
+
+        // Test analytics pageview
+        console.log('/locations' + $location.path());
+        $analytics.pageTrack('/locations' + $location.path());
+
         var divisionsWithApt = config.divisions_with_appointments;
 
         $scope.division = division;
