@@ -245,11 +245,12 @@
             data-ng-src="{{feature.image}}" alt="{{feature.title}}"/>
         </a>
         <h3 class="feature-title" data-ng-if="feature.title">
-          <a data-ng-href="{{feature._links.self.href}}"
+          <a data-ng-if="feature._links.self.href" data-ng-href="{{feature._links.self.href}}"
             analytics-on="click" analytics-category="Locations"
             analytics-event="Feature title" analytics-label="{{feature._links.self.href}}">
             {{feature.title}}
           </a>
+          <span data-ng-if="!feature._links.self.href">{{feature.title}}</span>
         </h3>
         <div class="desc" data-ng-bind-html="feature.body"></div>
       </div>
