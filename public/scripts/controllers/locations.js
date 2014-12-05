@@ -516,9 +516,9 @@
         nyplUtility,
         nyplAmenities
     ) {
-        // Test analytics pageview
-        console.log('/locations' + $location.path());
-        $analytics.pageTrack('/locations' + $location.path());
+        // // Test analytics pageview
+        // console.log('/locations' + $location.path());
+        // $analytics.pageTrack('/locations' + $location.path());
 
         var amenities = location._embedded.amenities,
             amenitiesCount = nyplAmenities.getAmenityConfig(config),

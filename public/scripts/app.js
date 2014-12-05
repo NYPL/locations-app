@@ -264,9 +264,10 @@ nypl_locations.run(function ($analytics, $state, $rootScope, $location) {
     $rootScope.$on('$stateChangeStart', function () {
         $rootScope.close_feedback = true;
     });
-    $rootScope.$on('$stateChangeSuccess', function () {
+    $rootScope.$on('$viewContentLoaded', function () {
         // console.log('/locations' + $location.path());
-        // $analytics.pageTrack('/locations' + $location.path());
+        $analytics.pageTrack('/locations' + $location.path());
+        console.log($rootScope.title + " " + $location.path());
         $rootScope.current_url = $location.absUrl();
     });
     $rootScope.$on('$stateChangeError', function () {

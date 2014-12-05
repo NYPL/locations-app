@@ -8,8 +8,8 @@
         $analytics, $location) {
 
         // Test analytics pageview
-        console.log('/locations' + $location.path());
-        $analytics.pageTrack('/locations' + $location.path());
+        // console.log('/locations' + $location.path());
+        // $analytics.pageTrack('/locations' + $location.path());
 
         var divisionsWithApt = config.divisions_with_appointments;
 
