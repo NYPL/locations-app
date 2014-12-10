@@ -14,7 +14,7 @@
       <td>Closed</td>
     </tr>
   <% else %>
-    <tr itemprop="openingHours" content="">
+    <tr itemprop="openingHours" content="" datetime="<%= day.day[0..1] %> <%= day.open %>-<%= day.close%>">
       <td><%= day.day %></td>
       <td><%= day.open %>-<%= day.close %></td>
     </tr>
