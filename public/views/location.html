@@ -48,7 +48,13 @@
             <span class="p-postal-code">{{location.postal_code}}</span>
             <div class="p-tel">{{location.contacts.phone}}</div>
             <div class="p-manager" data-ng-if="location.contacts.manager">
-              {{ 'LIBRARY_MANAGER' | translate }}: {{location.contacts.manager}}
+              <span data-ng-if="!location.contacts.manager.title">
+                {{ 'LIBRARY_MANAGER' | translate }}:
+              </span>
+              <span data-ng-if="location.contacts.manager.title">
+                {{ location.contacts.manager.title }}:
+              </span>
+              <span> {{ location.contacts.manager.fn }}</span>
             </div>
           </div>
 
