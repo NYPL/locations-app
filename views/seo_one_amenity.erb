@@ -12,7 +12,7 @@
     <meta name="keywords" content="NYPL, The New York Public Library, Manhattan, Bronx, Staten Island" />
   </head>
   <body>
-    <div itemscope itemtype="http://schem@amenity.org/Offer">
+    <div itemscope itemtype="http://schem@amenity.org/Service">
       <h1 itemprop="name"><%= @amenity.name %></h1>
       <% if @amenity.info? %>
         <div>
@@ -32,7 +32,7 @@
 
       <ul>
       <% @amenity.locations.each do |loc| %>
-        <li itemprop="availableAtOrFrom">
+        <li itemprop="provider">
           <a href="../../<%= loc.slug %>"><%= loc.name %></a>
         </li>
       <% end %>
