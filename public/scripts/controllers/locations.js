@@ -595,6 +595,7 @@
         if (config.closed_img) {
             $scope.location.images.closed = config.closed_img;
         }
+        console.log($scope, config);
     }
 
     angular
