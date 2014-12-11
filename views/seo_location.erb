@@ -44,7 +44,7 @@
       <h2>Amenities</h2>
       <ul>
       <% @location.amenities.each do |a| %>
-        <li itemprop="makesOffer" itemscope itemtype="http://schema.org/Offer">
+        <li itemscope itemtype="http://schema.org/Service">
           <a href="amenities/id/<%= a.amenity.id %>">
             <span itemprop="name"><%= a.amenity.name %></span>
           </a>
