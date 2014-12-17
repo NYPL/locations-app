@@ -196,8 +196,7 @@
                 config = window.locations_cfg.config;
 
                 if (config) {
-                    // api = config.api_root + '/api/' + config.api_version;
-                    api = config.api_root;
+                    api = config.api_root + '/' + config.api_version;
                     defer.resolve(config);
                 } else {
                     defer.reject(apiError + ': config');
@@ -509,7 +508,7 @@ nypl_locations.config([
         'use strict';
 
         // Turn off automatic virtual pageviews for GA.
-        // In $stateRouteSuccess, /locations/ is added to each page hit.
+        // In $stateChangeSuccess, /locations/ is added to each page hit.
         $analyticsProvider.virtualPageviews(false);
 
         // uses the HTML5 History API, remove hash (need to test)

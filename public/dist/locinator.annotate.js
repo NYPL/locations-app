@@ -59,7 +59,7 @@ nypl_locations.config([
         'use strict';
 
         // Turn off automatic virtual pageviews for GA.
-        // In $stateRouteSuccess, /locations/ is added to each page hit.
+        // In $stateChangeSuccess, /locations/ is added to each page hit.
         $analyticsProvider.virtualPageviews(false);
 
         // uses the HTML5 History API, remove hash (need to test)
@@ -1244,8 +1244,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                 config = window.locations_cfg.config;
 
                 if (config) {
-                    // api = config.api_root + '/api/' + config.api_version;
-                    api = config.api_root;
+                    api = config.api_root + '/' + config.api_version;
                     defer.resolve(config);
                 } else {
                     defer.reject(apiError + ': config');
@@ -2090,7 +2089,13 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
 (function () {
     'use strict';
 
-    function DivisionCtrl($rootScope, $scope, config, division, nyplUtility) {
+    function DivisionCtrl($rootScope, $scope, config, division, nyplUtility,
+        $analytics, $location) {
+
+        // Test analytics pageview
+        // console.log('/locations' + $location.path());
+        // $analytics.pageTrack('/locations' + $location.path());
+
         var divisionsWithApt = config.divisions_with_appointments;
 
         $scope.division = division;
@@ -2123,7 +2128,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         $scope.has_appointment =
             nyplUtility.divisionHasAppointment(divisionsWithApt, division.id);
     }
-    DivisionCtrl.$inject = ["$rootScope", "$scope", "config", "division", "nyplUtility"];
+    DivisionCtrl.$inject = ["$rootScope", "$scope", "config", "division", "nyplUtility", "$analytics", "$location"];
 
     angular
         .module('nypl_locations')
@@ -2642,12 +2647,18 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         $rootScope,
         $scope,
         $timeout,
+        $analytics,
+        $location,
         config,
         location,
         nyplCoordinatesService,
         nyplUtility,
         nyplAmenities
     ) {
+        // // Test analytics pageview
+        // console.log('/locations' + $location.path());
+        // $analytics.pageTrack('/locations' + $location.path());
+
         var amenities = location._embedded.amenities,
             amenitiesCount = nyplAmenities.getAmenityConfig(config),
             loadUserCoordinates = function () {
@@ -2723,8 +2734,9 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         if (config.closed_img) {
             $scope.location.images.closed = config.closed_img;
         }
+        console.log($scope, config);
     }
-    LocationCtrl.$inject = ["$rootScope", "$scope", "$timeout", "config", "location", "nyplCoordinatesService", "nyplUtility", "nyplAmenities"];
+    LocationCtrl.$inject = ["$rootScope", "$scope", "$timeout", "$analytics", "$location", "config", "location", "nyplCoordinatesService", "nyplUtility", "nyplAmenities"];
 
     angular
         .module('nypl_locations')
