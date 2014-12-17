@@ -4,12 +4,10 @@
 (function () {
     'use strict';
 
-    function DivisionCtrl($rootScope, $scope, config, division, nyplUtility,
-        $analytics, $location) {
-
-        // Test analytics pageview
-        // console.log('/locations' + $location.path());
-        // $analytics.pageTrack('/locations' + $location.path());
+    function DivisionCtrl($analytics, $rootScope, $scope, config, division, nyplUtility, $location) {
+        $scope.$on('$viewContentLoaded', function (event) {
+            $analytics.pageTrack('/locations' + $location.path());
+        });
 
         var divisionsWithApt = config.divisions_with_appointments;
 

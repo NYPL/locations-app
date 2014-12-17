@@ -5,6 +5,7 @@
     'use strict';
 
     function LocationsCtrl(
+        $analytics,
         $rootScope,
         $scope,
         $timeout,
@@ -17,6 +18,10 @@
         nyplSearch,
         nyplAmenities
     ) {
+        $scope.$on('$viewContentLoaded', function (event) {
+            $analytics.pageTrack('/locations' + $location.path());
+        });
+
         var locations,
             searchValues = nyplSearch.getSearchValues(),
             research_order =
@@ -447,7 +452,10 @@
     }
     // End LocationsCtrl
 
-    function MapCtrl($scope, $timeout, nyplGeocoderService) {
+    function MapCtrl($analytics, $scope, $timeout, nyplGeocoderService) {
+        $scope.$on('$viewContentLoaded', function (event) {
+            $analytics.pageTrack('/locations' + $location.path());
+        });
 
         var loadMapMarkers = function () {
                 $timeout(function () {
@@ -505,10 +513,10 @@
     }
 
     function LocationCtrl(
+        $analytics,
         $rootScope,
         $scope,
         $timeout,
-        $analytics,
         $location,
         config,
         location,
@@ -516,9 +524,10 @@
         nyplUtility,
         nyplAmenities
     ) {
-        // // Test analytics pageview
-        // console.log('/locations' + $location.path());
-        // $analytics.pageTrack('/locations' + $location.path());
+        // Test analytics in controller.
+        $scope.$on('$viewContentLoaded', function (event) {
+            $analytics.pageTrack('/locations' + $location.path());
+        });
 
         var amenities = location._embedded.amenities,
             amenitiesCount = nyplAmenities.getAmenityConfig(config),
@@ -595,7 +604,6 @@
         if (config.closed_img) {
             $scope.location.images.closed = config.closed_img;
         }
-        console.log($scope, config);
     }
 
     angular

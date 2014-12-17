@@ -4,7 +4,11 @@
 (function () {
   'use strict';
 
-  function AmenitiesCtrl($rootScope, $scope, amenities, config, nyplAmenities) {
+  function AmenitiesCtrl($analytics, $rootScope, $scope, amenities, config, nyplAmenities) {
+    $scope.$on('$viewContentLoaded', function (event) {
+      $analytics.pageTrack('/locations' + $location.path());
+    });
+
     $rootScope.title = "Amenities";
 
     $scope.amenitiesCategories =
@@ -13,7 +17,10 @@
 
   // Load an amenity and list all the locations
   // where the amenity can be found.
-  function AmenityCtrl($rootScope, $scope, amenity, config) {
+  function AmenityCtrl($analytics, $rootScope, $scope, amenity, config) {
+    $scope.$on('$viewContentLoaded', function (event) {
+      $analytics.pageTrack('/locations' + $location.path());
+    });
     var amenityProper = amenity.amenity;
     var name = amenityProper.name;
 
@@ -24,7 +31,10 @@
   }
 
   // Load one location and list all the amenities found in that location.
-  function AmenitiesAtLibraryCtrl($rootScope, $scope, config, location, nyplAmenities) {
+  function AmenitiesAtLibraryCtrl($analytics, $rootScope, $scope, config, location, nyplAmenities) {
+    $scope.$on('$viewContentLoaded', function (event) {
+      $analytics.pageTrack('/locations' + $location.path());
+    });
     var updatedAmenities =
       nyplAmenities.allAmenitiesArray(location._embedded.amenities);
 

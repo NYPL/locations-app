@@ -2,6 +2,7 @@
   'use strict';
 
   function WidgetCtrl(
+    $analytics,
     $location,
     $rootScope,
     $scope,
@@ -26,6 +27,10 @@
     //       });
     //     });
     // };
+
+    $scope.$on('$viewContentLoaded', function (event) {
+      $analytics.pageTrack('/locations' + $location.path());
+    });
 
     $rootScope.title = data.name;
     $scope.data = data;
