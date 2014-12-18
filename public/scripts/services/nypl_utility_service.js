@@ -267,6 +267,7 @@
 
       if (Array.isArray(alerts) && alerts.length > 0) {
         _.each(alerts, function (alert) {
+          console.log(alerts);
           alert_start = new Date(alert.start);
           alert_end = new Date(alert.end);
 
@@ -276,7 +277,7 @@
         });
 
         if (!angular.isUndefined(todaysAlert)) {
-          return todaysAlert;
+          return _.uniq(todaysAlert);
         }
       }
       return null;
