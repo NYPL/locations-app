@@ -6,6 +6,7 @@
 
     function LocationsCtrl(
         $analytics,
+        $location,
         $rootScope,
         $scope,
         $timeout,
@@ -452,7 +453,7 @@
     }
     // End LocationsCtrl
 
-    function MapCtrl($analytics, $scope, $timeout, nyplGeocoderService) {
+    function MapCtrl($analytics, $location, $scope, $timeout, nyplGeocoderService) {
         $scope.$on('$viewContentLoaded', function (event) {
             $analytics.pageTrack('/locations' + $location.path());
         });

@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  function AmenitiesCtrl($analytics, $rootScope, $scope, amenities, config, nyplAmenities) {
+  function AmenitiesCtrl($analytics, $location, $rootScope, $scope, amenities, config, nyplAmenities) {
     $scope.$on('$viewContentLoaded', function (event) {
       $analytics.pageTrack('/locations' + $location.path());
     });
@@ -17,7 +17,7 @@
 
   // Load an amenity and list all the locations
   // where the amenity can be found.
-  function AmenityCtrl($analytics, $rootScope, $scope, amenity, config) {
+  function AmenityCtrl($analytics, $location, $rootScope, $scope, amenity, config) {
     $scope.$on('$viewContentLoaded', function (event) {
       $analytics.pageTrack('/locations' + $location.path());
     });
@@ -31,7 +31,7 @@
   }
 
   // Load one location and list all the amenities found in that location.
-  function AmenitiesAtLibraryCtrl($analytics, $rootScope, $scope, config, location, nyplAmenities) {
+  function AmenitiesAtLibraryCtrl($analytics, $location, $rootScope, $scope, config, location, nyplAmenities) {
     $scope.$on('$viewContentLoaded', function (event) {
       $analytics.pageTrack('/locations' + $location.path());
     });
