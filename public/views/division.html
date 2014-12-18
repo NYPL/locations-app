@@ -59,14 +59,8 @@
           <div data-ng-if="location.locality">
             {{location.locality}}, {{location.region}} {{location.postal_code}}
           </div>
-          <div class="p-manager" data-ng-if="division.contacts.manager">
-            <span data-ng-if="!division.contacts.manager.title">
-              {{'DIVISION_MANAGER' | translate}}:
-            </span>
-            <span data-ng-if="division.contacts.manager.title">
-              {{ division.contacts.manager.title }}:
-            </span>
-            <span> {{ division.contacts.manager.fn }}</span>
+          <div data-ng-if="division.contacts.manager">
+            {{'DIVISION_MANAGER' | translate}}<span>{{division.contacts.manager}}</span>
           </div>
           <div data-ng-if="division.contacts.phone">{{division.contacts.phone}}</div>
         </div>
