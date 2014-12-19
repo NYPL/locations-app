@@ -2,7 +2,6 @@
   'use strict';
 
   function WidgetCtrl(
-    $analytics,
     $location,
     $rootScope,
     $scope,

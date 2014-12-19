@@ -5,7 +5,6 @@
     'use strict';
 
     function LocationsCtrl(
-        $analytics,
         $rootScope,
         $scope,
         $timeout,
@@ -448,7 +447,7 @@
     }
     // End LocationsCtrl
 
-    function MapCtrl($analytics, $scope, $timeout, nyplGeocoderService) {
+    function MapCtrl($scope, $timeout, nyplGeocoderService) {
         var loadMapMarkers = function () {
                 $timeout(function () {
                     if ($scope.locations) {
@@ -505,7 +504,6 @@
     }
 
     function LocationCtrl(
-        $analytics,
         $rootScope,
         $scope,
         $timeout,
