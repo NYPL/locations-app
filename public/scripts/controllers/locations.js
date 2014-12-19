@@ -6,7 +6,6 @@
 
     function LocationsCtrl(
         $analytics,
-        $location,
         $rootScope,
         $scope,
         $timeout,
@@ -19,10 +18,6 @@
         nyplSearch,
         nyplAmenities
     ) {
-        $scope.$on('$viewContentLoaded', function (event) {
-            $analytics.pageTrack('/locations' + $location.path());
-        });
-
         var locations,
             searchValues = nyplSearch.getSearchValues(),
             research_order =
@@ -453,11 +448,7 @@
     }
     // End LocationsCtrl
 
-    function MapCtrl($analytics, $location, $scope, $timeout, nyplGeocoderService) {
-        $scope.$on('$viewContentLoaded', function (event) {
-            $analytics.pageTrack('/locations' + $location.path());
-        });
-
+    function MapCtrl($analytics, $scope, $timeout, nyplGeocoderService) {
         var loadMapMarkers = function () {
                 $timeout(function () {
                     if ($scope.locations) {
@@ -518,18 +509,12 @@
         $rootScope,
         $scope,
         $timeout,
-        $location,
         config,
         location,
         nyplCoordinatesService,
         nyplUtility,
         nyplAmenities
     ) {
-        // Test analytics in controller.
-        $scope.$on('$viewContentLoaded', function (event) {
-            $analytics.pageTrack('/locations' + $location.path());
-        });
-
         var amenities = location._embedded.amenities,
             amenitiesCount = nyplAmenities.getAmenityConfig(config),
             loadUserCoordinates = function () {

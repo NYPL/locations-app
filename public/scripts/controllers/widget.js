@@ -28,10 +28,6 @@
     //     });
     // };
 
-    $scope.$on('$viewContentLoaded', function (event) {
-      $analytics.pageTrack('/locations' + $location.path());
-    });
-
     $rootScope.title = data.name;
     $scope.data = data;
     $scope.locinator_url = "http://www.nypl.org/locations" +

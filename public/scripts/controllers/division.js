@@ -4,11 +4,7 @@
 (function () {
     'use strict';
 
-    function DivisionCtrl($analytics, $rootScope, $scope, config, division, nyplUtility, $location) {
-        $scope.$on('$viewContentLoaded', function (event) {
-            $analytics.pageTrack('/locations' + $location.path());
-        });
-
+    function DivisionCtrl($analytics, $rootScope, $scope, config, division, nyplUtility) {
         var divisionsWithApt = config.divisions_with_appointments;
 
         $scope.division = division;
