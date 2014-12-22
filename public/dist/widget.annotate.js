@@ -1561,13 +1561,13 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         if (!scope.fundraising) {
           $timeout(function () {
             nyplLocationsService.getConfig().then(function (data) {
-              var fundraising = data.config.fundraising;
+              var fundraising = data.fundraising;
               scope.fundraising = {
                 appeal: fundraising.appeal,
                 statement: fundraising.statement,
                 button_label: fundraising.button_label,
                 link:  fundraising.link
-              }
+              };
             });
           }, 200);
         }
