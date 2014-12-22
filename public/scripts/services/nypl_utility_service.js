@@ -137,7 +137,7 @@
         else {
           formattedDate = "Ongoing";
         }
-      };
+      }
       return formattedDate;
     }
 
@@ -276,7 +276,7 @@
         });
 
         if (!angular.isUndefined(todaysAlert)) {
-          return todaysAlert;
+          return _.uniq(todaysAlert);
         }
       }
       return null;
@@ -294,8 +294,8 @@
 
       function sameDay (day1, day2) {
         return day1.getFullYear() === day2.getFullYear()
-            && day1.getDate() === day2.getDate()
-            && day1.getMonth() === day2.getMonth();
+          && day1.getDate() === day2.getDate()
+          && day1.getMonth() === day2.getMonth();
       }
 
       var holiday,
@@ -307,7 +307,7 @@
             },
             {
               day: new Date(2014, 11, 24),
-              title: "The Library will close at 5 p.m. today"
+              title: "The Library will close at 3 p.m. today"
             },
             {
               day: new Date(2014, 11, 25),
@@ -319,7 +319,6 @@
             }
           ];
 
-
       holiday = _.filter(holidays, function(item) {
                   if ( sameDay(item.day, today) ) {
                     return item;
@@ -329,7 +328,7 @@
         return {
           day: holiday[0].day,
           title: holiday[0].title
-        }
+        };
       }
       return undefined;
     };

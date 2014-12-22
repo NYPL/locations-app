@@ -196,8 +196,7 @@
                 config = window.locations_cfg.config;
 
                 if (config) {
-                    // api = config.api_root + '/api/' + config.api_version;
-                    api = config.api_root;
+                    api = config.api_root + '/' + config.api_version;
                     defer.resolve(config);
                 } else {
                     defer.reject(apiError + ': config');
@@ -509,7 +508,7 @@ nypl_locations.config([
         'use strict';
 
         // Turn off automatic virtual pageviews for GA.
-        // In $stateRouteSuccess, /locations/ is added to each page hit.
+        // In $stateChangeSuccess, /locations/ is added to each page hit.
         $analyticsProvider.virtualPageviews(false);
 
         // uses the HTML5 History API, remove hash (need to test)
@@ -872,7 +871,6 @@ var nypl_widget = angular.module('nypl_widget', [
 
         // uses the HTML5 History API, remove hash (need to test)
         $locationProvider.html5Mode(true);
-
         // $urlRouterProvider.otherwise('/widget/sasb');
 
         $stateProvider
@@ -910,6 +908,7 @@ var nypl_widget = angular.module('nypl_widget', [
 nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility) {
     $rootScope.holiday = nyplUtility.holidayClosings();
 }]);
+
 /*jslint indent: 4, maxlen: 80, nomen: true */
 /*globals nypl_locations, console, _, angular */
 
@@ -1383,9 +1382,9 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
    */
   function eventRegistration($filter) {
     function eventStarted(startDate) {
-      var sDate = new Date(startDate),
-        today   = new Date();
-      return (sDate.getTime() > today.getTime()) ? true : false;
+        var sDate = new Date(startDate),
+          today   = new Date();
+        return (sDate.getTime() > today.getTime()) ? true : false;
     }
 
     return {
@@ -1562,13 +1561,13 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         if (!scope.fundraising) {
           $timeout(function () {
             nyplLocationsService.getConfig().then(function (data) {
-              var fundraising = data.config.fundraising;
+              var fundraising = data.fundraising;
               scope.fundraising = {
                 appeal: fundraising.appeal,
                 statement: fundraising.statement,
                 button_label: fundraising.button_label,
                 link:  fundraising.link
-              }
+              };
             });
           }, 200);
         }
@@ -1716,7 +1715,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                   $analytics.eventTrack('Accept',
                     { category: 'Locations', label: $scope.model });
                   $state.go(
-                    'location', 
+                    'location',
                     { location: $scope.items[0].slug }
                   );
               }
@@ -1733,7 +1732,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
 
           // Right Arrow
           if (e.keyCode === 39) {
-            $scope.$apply( function() { 
+            $scope.$apply( function() {
               controller.setSearchText($scope.model);
             });
           }
@@ -1758,7 +1757,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         input.bind('keydown', function(e) {
           if (e.keyCode === 9 || e.keyCode === 13 || e.keyCode === 27) {
             e.preventDefault();
-          };
+          }
 
           // Up Arrow
           if (e.keyCode === 38) {
@@ -1814,11 +1813,11 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
 
         this.closeAutofill = function() {
           return $scope.focused = false;
-        }
+        };
 
         this.openAutofill = function() {
           return $scope.focused = true;
-        }
+        };
 
 
         this.activate = function(item) {
@@ -1829,7 +1828,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
           $scope.active = $scope.filtered[0];
           $scope.currentIndex = $scope.filtered.indexOf($scope.active);
           $scope.activated = true;
-        }
+        };
 
         this.activateNextItem = function() {
           $scope.geocodingactive = false;
@@ -1860,7 +1859,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
             $scope.active = this.activate($scope.model);
             $scope.geocodingactive = true;
           }
-        }
+        };
 
         this.setSearchText = function(model) {
           if ( $scope.completeWord === $scope.model || 
@@ -1872,7 +1871,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         this.resetSearchTerms = function() {
           $scope.lookahead   = '';
           $scope.currentWord = '';
-        }
+        };
 
         this.filterStartsWith = function(data, searchTerm) {
           return _.filter(data, function(elem) {
@@ -1882,7 +1881,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
             }
             return false;
           });
-        }
+        };
 
         this.filterTermWithin = function(data, searchTerm) {
           return _.filter(data, function(elem) {
@@ -1892,7 +1891,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
             }
             return false;
           });
-        }
+        };
 
         this.updateSearchText = function(data, searchTerm) {
           if (searchTerm === '' || !searchTerm || !data) return;
@@ -1910,7 +1909,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
             }
             return $scope.completeWord = $scope.currentWord + $scope.lookahead;
           }
-        }
+        };
       }]
     };
 
@@ -2083,7 +2082,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         else {
           formattedDate = "Ongoing";
         }
-      };
+      }
       return formattedDate;
     }
 
@@ -2222,7 +2221,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         });
 
         if (!angular.isUndefined(todaysAlert)) {
-          return todaysAlert;
+          return _.uniq(todaysAlert);
         }
       }
       return null;
@@ -2240,8 +2239,8 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
 
       function sameDay (day1, day2) {
         return day1.getFullYear() === day2.getFullYear()
-            && day1.getDate() === day2.getDate()
-            && day1.getMonth() === day2.getMonth();
+          && day1.getDate() === day2.getDate()
+          && day1.getMonth() === day2.getMonth();
       }
 
       var holiday,
@@ -2253,7 +2252,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
             },
             {
               day: new Date(2014, 11, 24),
-              title: "The Library will close at 5 p.m. today"
+              title: "The Library will close at 3 p.m. today"
             },
             {
               day: new Date(2014, 11, 25),
@@ -2265,7 +2264,6 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
             }
           ];
 
-
       holiday = _.filter(holidays, function(item) {
                   if ( sameDay(item.day, today) ) {
                     return item;
@@ -2275,7 +2273,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         return {
           day: holiday[0].day,
           title: holiday[0].title
-        }
+        };
       }
       return undefined;
     };

@@ -337,13 +337,13 @@
         if (!scope.fundraising) {
           $timeout(function () {
             nyplLocationsService.getConfig().then(function (data) {
-              var fundraising = data.config.fundraising;
+              var fundraising = data.fundraising;
               scope.fundraising = {
                 appeal: fundraising.appeal,
                 statement: fundraising.statement,
                 button_label: fundraising.button_label,
                 link:  fundraising.link
-              }
+              };
             });
           }, 200);
         }
@@ -489,7 +489,7 @@
                   $analytics.eventTrack('Accept',
                     { category: 'Locations', label: $scope.model });
                   $state.go(
-                    'location', 
+                    'location',
                     { location: $scope.items[0].slug }
                   );
               }
@@ -506,7 +506,7 @@
 
           // Right Arrow
           if (e.keyCode === 39) {
-            $scope.$apply( function() { 
+            $scope.$apply( function() {
               controller.setSearchText($scope.model);
             });
           }
@@ -531,7 +531,7 @@
         input.bind('keydown', function(e) {
           if (e.keyCode === 9 || e.keyCode === 13 || e.keyCode === 27) {
             e.preventDefault();
-          };
+          }
 
           // Up Arrow
           if (e.keyCode === 38) {
@@ -587,11 +587,11 @@
 
         this.closeAutofill = function() {
           return $scope.focused = false;
-        }
+        };
 
         this.openAutofill = function() {
           return $scope.focused = true;
-        }
+        };
 
 
         this.activate = function(item) {
@@ -602,7 +602,7 @@
           $scope.active = $scope.filtered[0];
           $scope.currentIndex = $scope.filtered.indexOf($scope.active);
           $scope.activated = true;
-        }
+        };
 
         this.activateNextItem = function() {
           $scope.geocodingactive = false;
@@ -633,7 +633,7 @@
             $scope.active = this.activate($scope.model);
             $scope.geocodingactive = true;
           }
-        }
+        };
 
         this.setSearchText = function(model) {
           if ( $scope.completeWord === $scope.model || 
@@ -645,7 +645,7 @@
         this.resetSearchTerms = function() {
           $scope.lookahead   = '';
           $scope.currentWord = '';
-        }
+        };
 
         this.filterStartsWith = function(data, searchTerm) {
           return _.filter(data, function(elem) {
@@ -655,7 +655,7 @@
             }
             return false;
           });
-        }
+        };
 
         this.filterTermWithin = function(data, searchTerm) {
           return _.filter(data, function(elem) {
@@ -665,7 +665,7 @@
             }
             return false;
           });
-        }
+        };
 
         this.updateSearchText = function(data, searchTerm) {
           if (searchTerm === '' || !searchTerm || !data) return;
@@ -683,7 +683,7 @@
             }
             return $scope.completeWord = $scope.currentWord + $scope.lookahead;
           }
-        }
+        };
       }]
     };
 
