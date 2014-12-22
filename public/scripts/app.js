@@ -413,7 +413,6 @@ var nypl_widget = angular.module('nypl_widget', [
 
         // uses the HTML5 History API, remove hash (need to test)
         $locationProvider.html5Mode(true);
-
         // $urlRouterProvider.otherwise('/widget/sasb');
 
         $stateProvider
