@@ -39,8 +39,8 @@
 
         <%= erb :seo_hasdivisions, :locals => {:loc => @div, :parent => 'div', :parent_slug => @div.slug } %> 
 
-        <% if @div.embedded['features'] != nil && @div.embedded['features'].count > 0 %>
-          <%= erb :seo_features, :locals => {:features => @div.embedded['features']} %> 
+        <% if @div.features.count > 0 %>
+          <%= erb :seo_features, :locals => {:features => @div.features} %> 
         <% end %>
 
         <% if @div.embedded['blogs'] %>

@@ -59,7 +59,7 @@ nypl_locations.config([
         'use strict';
 
         // Turn off automatic virtual pageviews for GA.
-        // In $stateRouteSuccess, /locations/ is added to each page hit.
+        // In $stateChangeSuccess, /locations/ is added to each page hit.
         $analyticsProvider.virtualPageviews(false);
 
         // uses the HTML5 History API, remove hash (need to test)

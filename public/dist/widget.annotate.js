@@ -196,8 +196,7 @@
                 config = window.locations_cfg.config;
 
                 if (config) {
-                    // api = config.api_root + '/api/' + config.api_version;
-                    api = config.api_root;
+                    api = config.api_root + '/' + config.api_version;
                     defer.resolve(config);
                 } else {
                     defer.reject(apiError + ': config');
@@ -509,7 +508,7 @@ nypl_locations.config([
         'use strict';
 
         // Turn off automatic virtual pageviews for GA.
-        // In $stateRouteSuccess, /locations/ is added to each page hit.
+        // In $stateChangeSuccess, /locations/ is added to each page hit.
         $analyticsProvider.virtualPageviews(false);
 
         // uses the HTML5 History API, remove hash (need to test)
@@ -720,7 +719,7 @@ nypl_locations.run(["$analytics", "$state", "$rootScope", "$location", function 
         $rootScope.close_feedback = true;
     });
     $rootScope.$on('$stateChangeSuccess', function () {
-        $analytics.pageTrack('/locations' + $location.path());
+        // $analytics.pageTrack('/locations' + $location.path());
         $rootScope.current_url = $location.absUrl();
     });
     $rootScope.$on('$stateChangeError', function () {
@@ -1158,6 +1157,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
   'use strict';
 
   function WidgetCtrl(
+    $analytics,
     $location,
     $rootScope,
     $scope,
@@ -1182,6 +1182,10 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     //       });
     //     });
     // };
+
+    $scope.$on('$viewContentLoaded', function (event) {
+      $analytics.pageTrack('/locations' + $location.path());
+    });
 
     $rootScope.title = data.name;
     $scope.data = data;
@@ -1210,7 +1214,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     // Used for the Get Directions link to Google Maps
     $scope.locationDest = nyplUtility.getAddressString(data);
   }
-  WidgetCtrl.$inject = ["$location", "$rootScope", "$scope", "$timeout", "$window", "config", "data", "nyplCoordinatesService", "nyplUtility"];
+  WidgetCtrl.$inject = ["$analytics", "$location", "$rootScope", "$scope", "$timeout", "$window", "config", "data", "nyplCoordinatesService", "nyplUtility"];
 
   angular
     .module('nypl_widget')

@@ -59,7 +59,7 @@ nypl_locations.config([
         'use strict';
 
         // Turn off automatic virtual pageviews for GA.
-        // In $stateRouteSuccess, /locations/ is added to each page hit.
+        // In $stateChangeSuccess, /locations/ is added to each page hit.
         $analyticsProvider.virtualPageviews(false);
 
         // uses the HTML5 History API, remove hash (need to test)
@@ -270,7 +270,7 @@ nypl_locations.run(["$analytics", "$state", "$rootScope", "$location", function 
         $rootScope.close_feedback = true;
     });
     $rootScope.$on('$stateChangeSuccess', function () {
-        $analytics.pageTrack('/locations' + $location.path());
+        // $analytics.pageTrack('/locations' + $location.path());
         $rootScope.current_url = $location.absUrl();
     });
     $rootScope.$on('$stateChangeError', function () {
@@ -1244,8 +1244,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                 config = window.locations_cfg.config;
 
                 if (config) {
-                    // api = config.api_root + '/api/' + config.api_version;
-                    api = config.api_root;
+                    api = config.api_root + '/' + config.api_version;
                     defer.resolve(config);
                 } else {
                     defer.reject(apiError + ': config');
@@ -2043,17 +2042,24 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
 (function () {
   'use strict';
 
-  function AmenitiesCtrl($rootScope, $scope, amenities, config, nyplAmenities) {
+  function AmenitiesCtrl($analytics, $rootScope, $scope, amenities, config, nyplAmenities) {
+    $scope.$on('$viewContentLoaded', function (event) {
+      $analytics.pageTrack('/locations' + $location.path());
+    });
+
     $rootScope.title = "Amenities";
 
     $scope.amenitiesCategories =
       nyplAmenities.createAmenitiesCategories(amenities.amenities);
   }
-  AmenitiesCtrl.$inject = ["$rootScope", "$scope", "amenities", "config", "nyplAmenities"];
+  AmenitiesCtrl.$inject = ["$analytics", "$rootScope", "$scope", "amenities", "config", "nyplAmenities"];
 
   // Load an amenity and list all the locations
   // where the amenity can be found.
-  function AmenityCtrl($rootScope, $scope, amenity, config) {
+  function AmenityCtrl($analytics, $rootScope, $scope, amenity, config) {
+    $scope.$on('$viewContentLoaded', function (event) {
+      $analytics.pageTrack('/locations' + $location.path());
+    });
     var amenityProper = amenity.amenity;
     var name = amenityProper.name;
 
@@ -2062,10 +2068,13 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     $scope.locations = amenityProper._embedded.locations;
     $scope.amenity_name = name;
   }
-  AmenityCtrl.$inject = ["$rootScope", "$scope", "amenity", "config"];
+  AmenityCtrl.$inject = ["$analytics", "$rootScope", "$scope", "amenity", "config"];
 
   // Load one location and list all the amenities found in that location.
-  function AmenitiesAtLibraryCtrl($rootScope, $scope, config, location, nyplAmenities) {
+  function AmenitiesAtLibraryCtrl($analytics, $rootScope, $scope, config, location, nyplAmenities) {
+    $scope.$on('$viewContentLoaded', function (event) {
+      $analytics.pageTrack('/locations' + $location.path());
+    });
     var updatedAmenities =
       nyplAmenities.allAmenitiesArray(location._embedded.amenities);
 
@@ -2075,7 +2084,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     $rootScope.title = location.name;
     $scope.location = location;
   }
-  AmenitiesAtLibraryCtrl.$inject = ["$rootScope", "$scope", "config", "location", "nyplAmenities"];
+  AmenitiesAtLibraryCtrl.$inject = ["$analytics", "$rootScope", "$scope", "config", "location", "nyplAmenities"];
 
   angular
     .module('nypl_locations')
@@ -2090,7 +2099,11 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
 (function () {
     'use strict';
 
-    function DivisionCtrl($rootScope, $scope, config, division, nyplUtility) {
+    function DivisionCtrl($analytics, $rootScope, $scope, config, division, nyplUtility, $location) {
+        $scope.$on('$viewContentLoaded', function (event) {
+            $analytics.pageTrack('/locations' + $location.path());
+        });
+
         var divisionsWithApt = config.divisions_with_appointments;
 
         $scope.division = division;
@@ -2123,7 +2136,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         $scope.has_appointment =
             nyplUtility.divisionHasAppointment(divisionsWithApt, division.id);
     }
-    DivisionCtrl.$inject = ["$rootScope", "$scope", "config", "division", "nyplUtility"];
+    DivisionCtrl.$inject = ["$analytics", "$rootScope", "$scope", "config", "division", "nyplUtility", "$location"];
 
     angular
         .module('nypl_locations')
@@ -2137,6 +2150,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     'use strict';
 
     function LocationsCtrl(
+        $analytics,
         $rootScope,
         $scope,
         $timeout,
@@ -2149,6 +2163,10 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         nyplSearch,
         nyplAmenities
     ) {
+        $scope.$on('$viewContentLoaded', function (event) {
+            $analytics.pageTrack('/locations' + $location.path());
+        });
+
         var locations,
             searchValues = nyplSearch.getSearchValues(),
             research_order =
@@ -2577,10 +2595,13 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         loadPreviousStateOrNewState();
         geolocationAvailable();
     }
-    LocationsCtrl.$inject = ["$rootScope", "$scope", "$timeout", "$state", "config", "nyplCoordinatesService", "nyplGeocoderService", "nyplLocationsService", "nyplUtility", "nyplSearch", "nyplAmenities"];
+    LocationsCtrl.$inject = ["$analytics", "$rootScope", "$scope", "$timeout", "$state", "config", "nyplCoordinatesService", "nyplGeocoderService", "nyplLocationsService", "nyplUtility", "nyplSearch", "nyplAmenities"];
     // End LocationsCtrl
 
-    function MapCtrl($scope, $timeout, nyplGeocoderService) {
+    function MapCtrl($analytics, $scope, $timeout, nyplGeocoderService) {
+        $scope.$on('$viewContentLoaded', function (event) {
+            $analytics.pageTrack('/locations' + $location.path());
+        });
 
         var loadMapMarkers = function () {
                 $timeout(function () {
@@ -2636,18 +2657,25 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
             $scope.scrollPage();
         };
     }
-    MapCtrl.$inject = ["$scope", "$timeout", "nyplGeocoderService"];
+    MapCtrl.$inject = ["$analytics", "$scope", "$timeout", "nyplGeocoderService"];
 
     function LocationCtrl(
+        $analytics,
         $rootScope,
         $scope,
         $timeout,
+        $location,
         config,
         location,
         nyplCoordinatesService,
         nyplUtility,
         nyplAmenities
     ) {
+        // Test analytics in controller.
+        $scope.$on('$viewContentLoaded', function (event) {
+            $analytics.pageTrack('/locations' + $location.path());
+        });
+
         var amenities = location._embedded.amenities,
             amenitiesCount = nyplAmenities.getAmenityConfig(config),
             loadUserCoordinates = function () {
@@ -2724,7 +2752,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
             $scope.location.images.closed = config.closed_img;
         }
     }
-    LocationCtrl.$inject = ["$rootScope", "$scope", "$timeout", "config", "location", "nyplCoordinatesService", "nyplUtility", "nyplAmenities"];
+    LocationCtrl.$inject = ["$analytics", "$rootScope", "$scope", "$timeout", "$location", "config", "location", "nyplCoordinatesService", "nyplUtility", "nyplAmenities"];
 
     angular
         .module('nypl_locations')
@@ -2737,6 +2765,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
   'use strict';
 
   function WidgetCtrl(
+    $analytics,
     $location,
     $rootScope,
     $scope,
@@ -2761,6 +2790,10 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     //       });
     //     });
     // };
+
+    $scope.$on('$viewContentLoaded', function (event) {
+      $analytics.pageTrack('/locations' + $location.path());
+    });
 
     $rootScope.title = data.name;
     $scope.data = data;
@@ -2789,7 +2822,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     // Used for the Get Directions link to Google Maps
     $scope.locationDest = nyplUtility.getAddressString(data);
   }
-  WidgetCtrl.$inject = ["$location", "$rootScope", "$scope", "$timeout", "$window", "config", "data", "nyplCoordinatesService", "nyplUtility"];
+  WidgetCtrl.$inject = ["$analytics", "$location", "$rootScope", "$scope", "$timeout", "$window", "config", "data", "nyplCoordinatesService", "nyplUtility"];
 
   angular
     .module('nypl_widget')

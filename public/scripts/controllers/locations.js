@@ -448,7 +448,6 @@
     // End LocationsCtrl
 
     function MapCtrl($scope, $timeout, nyplGeocoderService) {
-
         var loadMapMarkers = function () {
                 $timeout(function () {
                     if ($scope.locations) {

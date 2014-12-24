@@ -6,9 +6,15 @@
   <section class="grid">
 
     <div class="grid__item" id="amenities__title">
-      <h2 data-ng-if="amenitiesCategories">Amenities at NYPL</h2>
+      <div data-ng-if="amenitiesCategories">
+        <h2>Amenities at NYPL</h2>
+        <p class="amenities-desc">
+          The New York Public Library offers a number of amenities for your convenience and enrichment. Amenities vary by location.
+        </p>
+      </div>
       <h2 data-ng-if="amenity">{{amenity_name}}</h2>
     </div>
+
     <div class="amenity-links grid__item"
       data-ng-if="amenity && amenity._links.info || amenity._links.action">
       <span data-ng-if="amenity._links.action && amenity._links.action.name && amenity._links.action.href">

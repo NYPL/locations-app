@@ -1,5 +1,5 @@
 /**
- * @license Angulartics v0.15.17
+ * @license Angulartics v0.17.0
  * (c) 2013 Luis Farzati http://luisfarzati.github.io/angulartics
  * Universal Analytics update contributed by http://github.com/willmcclellan
  * License: MIT
@@ -37,6 +37,11 @@ angular.module('angulartics.google.analytics', ['angulartics'])
    * @link https://developers.google.com/analytics/devguides/collection/analyticsjs/events
    */
   $analyticsProvider.registerEventTrack(function (action, properties) {
+
+    // do nothing if there is no category (it's required by GA)
+    if (!properties || !properties.category) { 
+		return; 
+	}
     // GA requires that eventValue be an integer, see:
     // https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#eventValue
     // https://github.com/luisfarzati/angulartics/issues/81
@@ -49,11 +54,24 @@ angular.module('angulartics.google.analytics', ['angulartics'])
       _gaq.push(['_trackEvent', properties.category, action, properties.label, properties.value, properties.noninteraction]);
     }
     else if (window.ga) {
-      if (properties.noninteraction) {
-        ga('send', 'event', properties.category, action, properties.label, properties.value, {nonInteraction: 1});
-      } else {
-        ga('send', 'event', properties.category, action, properties.label, properties.value);
-      }
+	  var eventOptions = {
+		eventCategory: properties.category || null,
+		eventAction: action || null,
+		eventLabel: properties.label ||  null,
+		eventValue: properties.value || null,
+		nonInteraction: properties.noninteraction || null
+	  };
+
+	  // add custom dimensions and metrics
+	  for(var idx = 1; idx<=20;idx++) {
+		if(properties['dimension' +idx.toString()]) {
+		  eventOptions['dimension' +idx.toString()] = properties['dimension' +idx.toString()];
+		}
+		if(properties['metric' +idx.toString()]) {
+		  eventOptions['metric' +idx.toString()] = properties['metric' +idx.toString()];
+	    }
+	  }
+	  ga('send', 'event', eventOptions);
     }
   });
 
