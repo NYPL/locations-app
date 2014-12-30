@@ -311,11 +311,11 @@
             },
             {
               day: new Date(2015, 0, 19),
-              title: "Closed for Martin Luther King, Jr's Day"
+              title: "Closed for Martin Luther King, Jr. Day"
             },
             {
               day: new Date(2015, 1, 16),
-              title: "Closed for President's Day"
+              title: "Closed for Presidents' Day"
             },
             {
               day: new Date(2015, 3, 5),
@@ -323,15 +323,15 @@
             },
             {
               day: new Date(2015, 4, 23),
-              title: "Closed for Memorial Day"
+              title: "Closed for Memorial Day weekend"
             },
             {
               day: new Date(2015, 4, 24),
-              title: "Closed for Memorial Day"
+              title: "Closed for Memorial Day weekend"
             },
             {
               day: new Date(2015, 4, 25),
-              title: "Closed for Memorial Day"
+              title: "Closed for Memorial Day weekend"
             },
             {
               day: new Date(2015, 6, 4),
