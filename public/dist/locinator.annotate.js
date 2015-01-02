@@ -269,7 +269,7 @@ nypl_locations.run(["$analytics", "$state", "$rootScope", "$location", function 
     $rootScope.$on('$stateChangeStart', function () {
         $rootScope.close_feedback = true;
     });
-    $rootScope.$on('$stateChangeSuccess', function () {
+    $rootScope.$on('$viewContentLoaded', function () {
         $analytics.pageTrack('/locations' + $location.path());
         $rootScope.current_url = $location.absUrl();
     });
@@ -5018,20 +5018,40 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
           today = date || new Date(),
           holidays = [
             {
-              day: new Date(2014, 10, 27),
-              title: "Closed for Thanksgiving Day"
-            },
-            {
-              day: new Date(2014, 11, 24),
+              day: new Date(2014, 11, 31),
               title: "The Library will close at 3 p.m. today"
             },
             {
-              day: new Date(2014, 11, 25),
-              title: "Closed for Christmas Day"
+              day: new Date(2015, 0, 1),
+              title: "Closed for New Year's Day"
             },
             {
-              day: new Date(2014, 11, 31),
-              title: "The Library will close at 5 p.m. today"
+              day: new Date(2015, 0, 19),
+              title: "Closed for Martin Luther King, Jr. Day"
+            },
+            {
+              day: new Date(2015, 1, 16),
+              title: "Closed for Presidents' Day"
+            },
+            {
+              day: new Date(2015, 3, 5),
+              title: "Closed for Easter"
+            },
+            {
+              day: new Date(2015, 4, 23),
+              title: "Closed for Memorial Day weekend"
+            },
+            {
+              day: new Date(2015, 4, 24),
+              title: "Closed for Memorial Day weekend"
+            },
+            {
+              day: new Date(2015, 4, 25),
+              title: "Closed for Memorial Day weekend"
+            },
+            {
+              day: new Date(2015, 6, 4),
+              title: "Closed for Independence Day"
             }
           ];
 
