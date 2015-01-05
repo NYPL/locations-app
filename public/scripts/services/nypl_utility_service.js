@@ -137,7 +137,7 @@
         else {
           formattedDate = "Ongoing";
         }
-      };
+      }
       return formattedDate;
     }
 
@@ -276,7 +276,7 @@
         });
 
         if (!angular.isUndefined(todaysAlert)) {
-          return todaysAlert;
+          return _.uniq(todaysAlert);
         }
       }
       return null;
@@ -294,31 +294,50 @@
 
       function sameDay (day1, day2) {
         return day1.getFullYear() === day2.getFullYear()
-            && day1.getDate() === day2.getDate()
-            && day1.getMonth() === day2.getMonth();
+          && day1.getDate() === day2.getDate()
+          && day1.getMonth() === day2.getMonth();
       }
 
       var holiday,
           today = date || new Date(),
           holidays = [
             {
-              day: new Date(2014, 10, 27),
-              title: "Closed for Thanksgiving Day"
-            },
-            {
-              day: new Date(2014, 11, 24),
-              title: "The Library will close at 5 p.m. today"
-            },
-            {
-              day: new Date(2014, 11, 25),
-              title: "Closed for Christmas Day"
-            },
-            {
               day: new Date(2014, 11, 31),
-              title: "The Library will close at 5 p.m. today"
+              title: "The Library will close at 3 p.m. today"
+            },
+            {
+              day: new Date(2015, 0, 1),
+              title: "Closed for New Year's Day"
+            },
+            {
+              day: new Date(2015, 0, 19),
+              title: "Closed for Martin Luther King, Jr. Day"
+            },
+            {
+              day: new Date(2015, 1, 16),
+              title: "Closed for Presidents' Day"
+            },
+            {
+              day: new Date(2015, 3, 5),
+              title: "Closed for Easter"
+            },
+            {
+              day: new Date(2015, 4, 23),
+              title: "Closed for Memorial Day weekend"
+            },
+            {
+              day: new Date(2015, 4, 24),
+              title: "Closed for Memorial Day weekend"
+            },
+            {
+              day: new Date(2015, 4, 25),
+              title: "Closed for Memorial Day weekend"
+            },
+            {
+              day: new Date(2015, 6, 4),
+              title: "Closed for Independence Day"
             }
           ];
-
 
       holiday = _.filter(holidays, function(item) {
                   if ( sameDay(item.day, today) ) {
@@ -329,7 +348,7 @@
         return {
           day: holiday[0].day,
           title: holiday[0].title
-        }
+        };
       }
       return undefined;
     };

@@ -59,7 +59,7 @@ nypl_locations.config([
         'use strict';
 
         // Turn off automatic virtual pageviews for GA.
-        // In $stateRouteSuccess, /locations/ is added to each page hit.
+        // In $stateChangeSuccess, /locations/ is added to each page hit.
         $analyticsProvider.virtualPageviews(false);
 
         // uses the HTML5 History API, remove hash (need to test)
@@ -285,7 +285,7 @@ nypl_locations.run(function ($analytics, $state, $rootScope, $location) {
     $rootScope.$on('$stateChangeStart', function () {
         $rootScope.close_feedback = true;
     });
-    $rootScope.$on('$stateChangeSuccess', function () {
+    $rootScope.$on('$viewContentLoaded', function () {
         $analytics.pageTrack('/locations' + $location.path());
         $rootScope.current_url = $location.absUrl();
     });
@@ -430,7 +430,6 @@ var nypl_widget = angular.module('nypl_widget', [
 
         // uses the HTML5 History API, remove hash (need to test)
         $locationProvider.html5Mode(true);
-
         // $urlRouterProvider.otherwise('/widget/sasb');
 
         $stateProvider
