@@ -9,15 +9,15 @@
 			  <div id="all-locations-map-legend" class="hide-legend">
 			    <div data-ng-if="locations">
             <img class="map-marker" src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
-			      <span>{{ 'NYPL_MARKER' | translate }}</span>
+			      <span>NYPL Library</span>
           </div>
 			    <div data-ng-if="userMarker">
             <img class="map-marker" src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
-			      <span>{{ 'USER_MARKER' | translate }}</span>
+			      <span>Your Current Location</span>
           </div>
           <div data-ng-if="searchMarker">
             <img class="map-marker" src="http://maps.google.com/mapfiles/ms/icons/green-dot.png" />
-			      <span>{{ 'SEARCH_MARKER' | translate }}</span>
+			      <span>Your Search</span>
           </div>
 			  </div>
 	    </div>
@@ -79,13 +79,13 @@
 
           <!-- Distance -->
           <div class="distance" data-ng-if="location.distance">
-            <span>{{ 'DISTANCE' | translate }}</span>:
-            <strong>{{location.distance}} {{ 'MILES' | translate}}</strong>
+            <span>Distance</span>:
+            <strong>{{location.distance}} miles</strong>
           </div>
 
           <!-- Today's Hours -->
 					<div class="todays-hours branch-open" data-ng-if="location.open">
-						<span>{{ 'TODAYS_HOURS' | translate }}</span>:
+						<span>Today's Hours</span>:
             <span data-ng-if="holiday">
               <strong>{{holiday.title}}</strong>
             </span>
@@ -109,7 +109,7 @@
             <a class="icon-map view-on-map" href="" data-ng-click="panToLibrary(location.slug)"
               analytics-on="click" analytics-category="Locations"
               analytics-event="View map" analytics-label="{{location.name}} (map)">
-              {{ 'VIEW_MAP' | translate}}
+              View on Map
             </a>
           </div>
           <div class="directions-link">
@@ -117,7 +117,7 @@
               href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}"
               analytics-on="click" analytics-category="Locations"
               analytics-event="Directions" analytics-label="{{location.name}} (map)">
-              {{ 'DIRECTIONS' | translate }}
+              Get Directions
             </a>
           </div>
 	  		</div> <!-- End data-ng-repeat -->

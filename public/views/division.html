@@ -15,7 +15,7 @@
           <todayshours hours="{{hoursToday | hoursTodayFormat:'short'}}" holiday="holiday" />
           <div id="location-hours" class="location-hours" data-ng-if="division.hours">
             <h2 class="flush--ends hdg">
-              {{'REGULAR_HOURS' | translate}} 
+              Regular Hours
               <span id="toggle-hours" ng-click="expand = !expand"
                 ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span>
             </h2>
@@ -28,7 +28,7 @@
               </tr>
             </table>
             <p class="smallprint" data-ng-if="division.open && division._embedded.divisions">
-              {{ 'IDV_SUB_DIVISION_HOURS' | translate }}
+              Note: See sub-division pages for individual hours
             </p>
           </div>
         </div>
@@ -53,14 +53,14 @@
           <div data-ng-if="division.floor">
             <span>{{division.floor}}</span>
             <span data-ng-if="division.room" class="room">
-              {{'ROOM' | translate}} {{division.room}}
+              Room {{division.room}}
             </span>
           </div>
           <div data-ng-if="location.locality">
             {{location.locality}}, {{location.region}} {{location.postal_code}}
           </div>
           <div data-ng-if="division.contacts.manager">
-            {{'DIVISION_MANAGER' | translate}}<span>{{division.contacts.manager}}</span>
+            Division Manager<span>{{division.contacts.manager}}</span>
           </div>
           <div data-ng-if="division.contacts.phone">{{division.contacts.phone}}</div>
         </div>
@@ -101,7 +101,7 @@
 
   <!-- Sub-divisions -->
   <div class="container__sub_divisions" data-ng-if="division._embedded.divisions">
-    <h2 class="hdg">{{ 'SUBDIVISION_HEADER' | translate }}</h2>
+    <h2 class="hdg">Subdivisions</h2>
     <div class="grid">
       <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
         data-ng-repeat='subdivision in division._embedded.divisions'>
@@ -137,7 +137,7 @@
   <div class="container__about">
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-three-fifths">
-        <h2 class="hdg">{{ 'ABOUT_COLLECTION' | translate }}</h2>
+        <h2 class="hdg">ABOUT THE DIVISION</h2>
         <img data-ng-if="division.images.collection_item" class="img--left img--outline division_second_image"
           data-ng-src="{{division.images.collection_item}}" style="max-width: 165px;" />
         <p>{{division.about}}</p>
@@ -145,24 +145,24 @@
           <a class="read-more collection-more" data-ng-href="{{division._links.self.about}}"
             analytics-on="click" analytics-category="Locations"
             analytics-event="Click" analytics-label="Learn More">
-            {{ 'MORE_ABOUT_DIVISION' | translate }}</a>
+            Learn more</a>
         </div>
       </div><!--
 
       --><div class="grid__item one-whole lap-and-up-two-fifths">
         <div id="plan-your-visit">
-          <h2 class="hdg">{{ 'PLAN_YOUR_VISIT' | translate }}</h2>
+          <h2 class="hdg">Plan Your Visit</h2>
           <a data-ng-if="division._links.concierge.href && has_appointment"
             data-ng-href="{{division._links.concierge.href}}" class="btn"
             analytics-on="click" analytics-category="Locations"
             analytics-event="Click" analytics-label="Make Appointment">
-            {{ 'APPOINTMENT' | translate }}
+            Make an Appointment
           </a>
           <a data-ng-if="division._links.contact.href" id="ask-librarian"
             data-ng-href="{{division._links.contact.href}}" class="btn"
             analytics-on="click" analytics-category="Locations"
             analytics-event="Click" analytics-label="Email Librarian">
-            {{ 'ASK_LIBRARIAN' | translate }}
+            Email a Librarian
           </a>
           <!-- Plan your visit items -->
           <ul class="soft-half--ends delta" data-ng-if="division.plan_your_visit">
@@ -181,7 +181,7 @@
 
   <!-- Division Events -->
   <div class="container__events" data-ng-if="division._embedded.events">
-    <h2 class="hdg">{{ 'EVENTS' | translate }}</h2>
+    <h2 class="hdg">EVENTS</h2>
     <ul class="grid">
       <li class="grid__item one-whole desk-one-third" data-ng-repeat="event in division._embedded.events">
         <h3 class="event__title">
@@ -228,14 +228,14 @@
       <a class="read-more events-more" data-ng-href="{{location._links.events.all}}"
         analytics-on="click" analytics-category="Locations"
         analytics-event="Event" analytics-label="See all">
-        {{ 'MORE_EVENTS' | translate }}
+        See more events
       </a>
     </div>
   </div>
 
   <!-- Features -->
   <div id="container__features" data-ng-if="division._embedded.features">
-    <h2 class="hdg">{{ 'FEATURED' | translate }}</h2>
+    <h2 class="hdg">FEATURED</h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='feature in division._embedded.features'>
         <a data-ng-if="feature.image" data-ng-href="{{feature._links.self.href}}"
@@ -259,7 +259,7 @@
 
   <!-- Blogs (conditonal) -->
   <div id="container__blogs" data-ng-if="division._embedded.blogs">
-    <h2 class="hdg">{{ 'BLOGS' | translate }}</h2>
+    <h2 class="hdg">BLOGS</h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in division._embedded.blogs'>
         <h3>
@@ -286,7 +286,7 @@
     <!-- More Blogs Link -->
     <div class="text--right">
       <a class="read-more blogs-more" data-ng-href="{{division._links.blogs.all}}">
-        {{ 'MORE_BLOGS' | translate }}
+        See more blog posts
       </a>
     </div>
   </div>
