@@ -27,9 +27,12 @@
                 <td class="time">{{ hours | timeFormat }}</td>
               </tr>
             </table>
-            <p class="smallprint" data-ng-if="division.open && division._embedded.divisions">
+            <p class="smallprint note" data-ng-if="division.open && division._embedded.divisions">
               Note: See sub-division pages for individual hours
             </p>
+            <a class="btn btn--natural closings-link" data-ng-href="//nypl.org/help/closings">
+              Holiday closing information
+            </a>
           </div>
         </div>
         <div class="callout branch-closed" data-ng-if="!division.open">
