@@ -15,6 +15,7 @@
   ) {
     'use strict';
     var rcValues = researchCollectionService.getResearchValues(),
+      sibl,
       research_order = config.research_order || ['SASB', 'LPA', 'SC', 'SIBL'],
       getHoursToday = function(obj) {
         _.each(obj, function (elem) {
@@ -28,11 +29,25 @@
                 .terms()
                 .then(function (data) {
                   $scope.terms = data.terms;
-                  console.log($scope.terms)
                 });
                 // .catch(function (error) {
                 //     throw error;
                 // });
+      },
+      loadSIBL = function () {
+        return nyplLocationsService
+                .singleLocation('sibl')
+                .then(function (data) {
+                  getHoursToday([data.location]);
+                  sibl = data.location;
+                  sibl._embedded.location = {
+                    id: 'SIBL'
+                  };
+
+                  divisions.push(sibl);
+                  $scope.divisionLocations.push(sibl);
+                  console.log(divisions);
+                });
       };
 
     $rootScope.title = "Research Collections";
@@ -55,6 +70,7 @@
                                 .flatten()
                                 .value();
 
+    loadSIBL();
     loadTerms();
 
     $scope.setSubterms = function (index, term) {
@@ -107,6 +123,8 @@
           _.each(division._embedded, function (parent) {
             found = parent.id === termID;
           });
+
+          // found = division._embedded.location.id === termID;
         }
 
         // Return the boolean value of found. True if there's an object,
