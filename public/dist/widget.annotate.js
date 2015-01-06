@@ -484,7 +484,6 @@ var nypl_locations = angular.module('nypl_locations', [
     'nyplBreadcrumbs',
     'angulartics',
     'angulartics.google.analytics',
-    'pascalprecht.translate',
     'newrelic-timing'
 ]);
 
@@ -493,14 +492,12 @@ nypl_locations.constant('_', window._);
 nypl_locations.config([
     '$analyticsProvider',
     '$locationProvider',
-    '$translateProvider',
     '$stateProvider',
     '$urlRouterProvider',
     '$crumbProvider',
     function (
         $analyticsProvider,
         $locationProvider,
-        $translateProvider,
         $stateProvider,
         $urlRouterProvider,
         $crumbProvider
@@ -513,14 +510,6 @@ nypl_locations.config([
 
         // uses the HTML5 History API, remove hash (need to test)
         $locationProvider.html5Mode(true);
-
-        // Lazy loads static files with English being
-        // the first language that gets loaded.
-        $translateProvider.useStaticFilesLoader({
-            prefix: 'languages/',
-            suffix: '.json'
-        });
-        $translateProvider.preferredLanguage('en');
 
         function LoadLocation($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
@@ -1264,23 +1253,24 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
    * @restrict E
    * @description
    * Directive to display a list of languages to translate the site into.
+   * Commented out until use.
    * @example
    * <pre>
    *  <nypl-translate></nypl-translate>
    * </pre>
    */
-  function nyplTranslate() {
-    return {
-      restrict: 'E',
-      templateUrl: 'scripts/directives/templates/translatebuttons.html',
-      replace: true,
-      controller: function ($scope, $translate) {
-        $scope.translate = function (language) {
-          $translate.use(language);
-        };
-      }
-    };
-  }
+  // function nyplTranslate() {
+  //   return {
+  //     restrict: 'E',
+  //     templateUrl: 'scripts/directives/templates/translatebuttons.html',
+  //     replace: true,
+  //     controller: function ($scope, $translate) {
+  //       $scope.translate = function (language) {
+  //         $translate.use(language);
+  //       };
+  //     }
+  //   };
+  // }
 
   /**
    * @ngdoc directive
@@ -1919,7 +1909,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
   angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
-    .directive('nyplTranslate', nyplTranslate)
+    // .directive('nyplTranslate', nyplTranslate)
     .directive('todayshours', todayshours)
     .directive('emailusbutton', emailusbutton)
     .directive('librarianchatbutton', librarianchatbutton)
