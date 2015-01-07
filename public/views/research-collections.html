@@ -28,43 +28,42 @@
       <div id="container__divisions" data-ng-if="divisions">
         <h2 class="hdg">DIVISIONS</h2>
         <div class="grid">
-          <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
+          <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third repeat-animation"
             data-ng-repeat='division in filteredDivisions track by $index'>
-            <div class="division-wrapper">
-              <a data-ng-if="division.slug != 'sibl'"
-                data-ui-sref="division({division: division.slug})"
+            <div class="division-wrapper" data-ng-if="division.slug != 'sibl'">
+              <a data-ui-sref="division({division: division.slug})"
                 analytics-on="click" analytics-category="Locations"
                 analytics-event="Division Image" analytics-label="{{division.name}}">
                 <img class="img--outline division-image" data-ng-src="{{division.images.interior}}"
                   alt="Image for {{division.name}}" title="Image for {{division.name}}" style="max-height: 235px;" />
               </a>
-              <h4 class="division-name" data-ng-if="division.slug != 'sibl'">
+              <h4 class="division-name">
                 <a data-ui-sref="division({division: division.slug})"
                   analytics-on="click" analytics-category="Locations"
                   analytics-event="Division Title" analytics-label="{{division.name}}">
                   {{division.name}}
                 </a>
               </h4>
+              <p data-ng-if="division.hours">Hours Today: {{division.hoursToday | timeFormat}}</p>
+            </div>
 
-              <!-- Just for SIBL -->
-              <a data-ng-if="division.slug == 'sibl'"
-                data-ui-sref="location({location: division.slug})"
+            <div class="division-wrapper" data-ng-if="division.slug == 'sibl'">
+              <a data-ui-sref="division({division: division.slug})"
                 analytics-on="click" analytics-category="Locations"
                 analytics-event="Division Image" analytics-label="{{division.name}}">
-                <img class="img--outline division-image" data-ng-src="{{division.images.exterior}}"
+                <img class="img--outline division-image" data-ng-src="{{division.images.interior}}"
                   alt="Image for {{division.name}}" title="Image for {{division.name}}" style="max-height: 235px;" />
               </a>
-              <h4 class="division-name" data-ng-if="division.slug == 'sibl'">
-                <a data-ui-sref="location({location: division.slug})"
+              <h4 class="division-name">
+                <a data-ui-sref="division({division: division.slug})"
                   analytics-on="click" analytics-category="Locations"
                   analytics-event="Division Title" analytics-label="{{division.name}}">
                   {{division.name}}
                 </a>
               </h4>
-              <!-- End Just for SIBL -->
-
               <p data-ng-if="division.hours">Hours Today: {{division.hoursToday | timeFormat}}</p>
             </div>
+
           </div>
         </div>
       </div>
