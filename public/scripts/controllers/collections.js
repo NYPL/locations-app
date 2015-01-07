@@ -120,11 +120,8 @@
             }
           });
         } else if (division._embedded.location) {
-          _.each(division._embedded, function (parent) {
-            found = parent.id === termID;
-          });
-
-          // found = division._embedded.location.id === termID;
+          // Matches Locations w/ ID
+          found = division._embedded.location.id === termID;
         }
 
         // Return the boolean value of found. True if there's an object,
