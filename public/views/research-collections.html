@@ -15,7 +15,7 @@
       </span>
     </div>
     <div class='sub-filters'>
-      <ul>
+      <ul data-ng-class="{'locations-active': activeFilter}" data-ng-if="subterms">
         <li class="term {{term.name}}" data-ng-repeat="term in subterms">
           <a href="" data-ng-click="filterDivisionsBy($index, term)" data-ng-model="term.name" data-ng-class="{active: $index == selectedSubterm}">{{term.name}}</a>
         </li>
