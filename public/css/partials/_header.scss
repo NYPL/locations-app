@@ -38,7 +38,7 @@ header {
 				// Tablet Landscape and Up
 				@include breakpoint($min, $pre-tablet) {
 					position: relative;
-					top: 5px;
+					top: 20px;
 					left: 5%;
 					height: 125px;
 					width: 210px;
