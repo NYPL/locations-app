@@ -48,14 +48,14 @@
             </div>
 
             <div class="division-wrapper" data-ng-if="division.slug == 'sibl'">
-              <a data-ui-sref="division({division: division.slug})"
+              <a data-ui-sref="location({location: division.slug})"
                 analytics-on="click" analytics-category="Locations"
                 analytics-event="Division Image" analytics-label="{{division.name}}">
-                <img class="img--outline division-image" data-ng-src="{{division.images.interior}}"
+                <img class="img--outline division-image" data-ng-src="{{division.images.exterior}}"
                   alt="Image for {{division.name}}" title="Image for {{division.name}}" style="max-height: 235px;" />
               </a>
               <h4 class="division-name">
-                <a data-ui-sref="division({division: division.slug})"
+                <a data-ui-sref="location({location: division.slug})"
                   analytics-on="click" analytics-category="Locations"
                   analytics-event="Division Title" analytics-label="{{division.name}}">
                   {{division.name}}
