@@ -7,13 +7,13 @@
         <thead>
           <tr>
             <th class="location-title" ng-click="predicate = 'name'; reverse=!reverse">
-              {{ 'LOCATION_HEADER' | translate }}
+              Location
             </th>
             <th class="amenities-title">
-              {{ 'AMENITIES_HEADER' | translate }}
+              Highlighted Amenities
             </th>
             <th class="hours-title">
-              {{ 'HOURS_HEADER' | translate }}
+              Today's Hours
             </th>
           </tr>
         </thead>
@@ -66,20 +66,20 @@
                 <a class="icon-map view-on-map" href="" data-ng-click="viewMapLibrary(location.slug)"
                   analytics-on="click" analytics-category="Locations"
                   analytics-event="View map" analytics-label="{{location.name}} (list)">
-                  {{ 'VIEW_MAP' | translate}}</a>
+                  View on Map</a>
               </div>
               <div class="directions-link">
                 <a class="icon-compass"
                   data-ng-href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{location.locationDest}}"
                   analytics-on="click" analytics-category="Locations"
                   analytics-event="Directions" analytics-label="{{location.name}} (list)">
-                  {{ 'DIRECTIONS' | translate }}
+                  Get Directions
                 </a>
               </div>
 
               <!-- Distance -->
               <div class="distance" data-ng-if="location.distance">
-                {{ 'DISTANCE' | translate }}: <strong>{{location.distance}} {{ 'MILES' | translate}}</strong>
+                Distance: <strong>{{location.distance}} miles</strong>
               </div>  
             </td>
 

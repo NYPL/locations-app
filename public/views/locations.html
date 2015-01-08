@@ -21,12 +21,12 @@
             analytics-on="click" analytics-category="Locations"
             analytics-event="Search" analytics-label="{{searchTerm}}"
             data-ng-click="geocodeAddress(searchTerm)">
-            {{ 'MAIN_SEARCH_BTN' | translate }}
+            Find a library!
           </button>            
         </div>
 
         <div class="search-filters" data-ng-if="locations">
-          <span>{{ 'SHOW_ME' | translate }}:</span>
+          <span>Just show me:</span>
     	    <div class="filters__current" data-ng-if="geolocationOn">
             <p>
               <span class="current-location-container">
@@ -34,10 +34,10 @@
                   href="" data-ng-if="geolocationOn" data-ng-click="useGeolocation()"
                   analytics-on analytics-category="Locations" analytics-event="Filter by"
                   analytics-label="Near me">
-                  {{ 'USER_LOCATION' | translate }}
+                  libraries near me
                 </a>
               </span>
-              <span>{{ 'RESEARCH_TEXT' | translate}}</span>
+              <span>or</span>
             </p>
           </div>
     	    <div class="filters__research">
@@ -47,7 +47,7 @@
                   data-ng-class="{false: '', true: ''}[researchBranches]" href="" data-ng-click="showResearch()"
                   analytics-on analytics-category="Locations" analytics-event="Filter by"
                   analytics-label="Research">
-                  {{researchBranches && 'ALL_LOCATIONS' || 'RESEARCH_LOCATIONS' | translate}}
+                  {{researchBranches && 'all branches' || 'research libraries'}}
                 </a>
               </span>
             </p>
@@ -57,14 +57,14 @@
 
       --><div class="search__results grid__item one-whole">
         <div id="distance-error" data-ng-if="distanceError">
-          {{distanceError}} {{ 'STILL_SEARCH_DIRECTIONS' | translate }}
+          {{distanceError}} You can still search or get directions to an NYPL location.
         </div>
         <div id="search-error" data-ng-if="searchError">
-          {{ 'NO_RESULTS' | translate }} <strong>{{searchError}}</strong> {{ 'WITHIN_25_MILES' | translate }}
+          No results for <strong>{{searchError}}</strong> within 25 miles of an NYPL location.  Showing all locations.
         </div>
         <!-- Search results from geolocation -->
         <div id="results" data-ng-if="geolocationAddressOrSearchQuery">
-          {{ 'SHOWING_RESULTS_NEAR' | translate }} 
+          Showing search results near
           <a href="">{{geolocationAddressOrSearchQuery}}</a>
         </div>
       </div>

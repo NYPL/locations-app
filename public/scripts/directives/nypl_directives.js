@@ -45,23 +45,24 @@
    * @restrict E
    * @description
    * Directive to display a list of languages to translate the site into.
+   * Commented out until use.
    * @example
    * <pre>
    *  <nypl-translate></nypl-translate>
    * </pre>
    */
-  function nyplTranslate() {
-    return {
-      restrict: 'E',
-      templateUrl: 'scripts/directives/templates/translatebuttons.html',
-      replace: true,
-      controller: function ($scope, $translate) {
-        $scope.translate = function (language) {
-          $translate.use(language);
-        };
-      }
-    };
-  }
+  // function nyplTranslate() {
+  //   return {
+  //     restrict: 'E',
+  //     templateUrl: 'scripts/directives/templates/translatebuttons.html',
+  //     replace: true,
+  //     controller: function ($scope, $translate) {
+  //       $scope.translate = function (language) {
+  //         $translate.use(language);
+  //       };
+  //     }
+  //   };
+  // }
 
   /**
    * @ngdoc directive
@@ -692,7 +693,7 @@
   angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
-    .directive('nyplTranslate', nyplTranslate)
+    // .directive('nyplTranslate', nyplTranslate)
     .directive('todayshours', todayshours)
     .directive('emailusbutton', emailusbutton)
     .directive('librarianchatbutton', librarianchatbutton)
