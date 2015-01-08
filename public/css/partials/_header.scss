@@ -90,48 +90,46 @@ header {
 			}
 		}
 
-		.header-newsletter-signup {
-      display: none;
-
-      @include breakpoint($min, $pre-tablet) {
-        display: inline-block;
-        position: absolute;
-        right: 160px;
-        top: 0px;
-        padding: 5px;
-        font-size: 0.8rem;
-
-        background: darken(#0090c4, 10%);
-
-        &:hover {
-          background: #0090c4;
-        }
-
-        input[type=email] {
-          -webkit-border-radius: 2px;
-          -moz-border-radius: 2px;
-          border-radius: 2px;
-          padding-left: 5px;
-          width: 230px;
-          border: 1px solid #e2dedb;
-          height: 26px;
-          line-height: 2;
-        }
-
-        .newsletter-submit {
-          padding: 5px 8px;
-          background: transparent;
-          border: 0 none;
-          color: #fff;
-          margin: 0px;
-          line-height: 1;
-          height: 27px;
-        }
-      }
-    }
-
 		// Login/Donate Buttons: Desktop View
 		.login-donate {
+			.header-newsletter-signup {
+	      display: none;
+
+	      @include breakpoint($min, $pre-tablet) {
+	        display: inline-block;
+	        position: relative;
+	        padding: 5px;
+	        margin-right: 12px;
+	        float: left;
+	        font-size: 0.8rem;
+	        background: darken(#0090c4, 10%);
+
+	        &:hover {
+	          background: #0090c4;
+	        }
+
+	        input[type=email] {
+	          -webkit-border-radius: 2px;
+	          -moz-border-radius: 2px;
+	          border-radius: 2px;
+	          padding-left: 5px;
+	          width: 230px;
+	          border: 1px solid #e2dedb;
+	          height: 26px;
+	          line-height: 2;
+	        }
+
+	        .newsletter-submit {
+	          padding: 5px 8px;
+	          background: transparent;
+	          border: 0 none;
+	          color: #fff;
+	          margin: 0px;
+	          line-height: 1;
+	          height: 27px;
+	        }
+	      }
+	    }
 
 			& > a {
 				display: none;
