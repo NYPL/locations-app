@@ -5,21 +5,26 @@
     <div class='main-filters'>
       <span class='heading'>
         Filter By:
+        <span class="main-filter-toggle" ng-click="expand = !expand" 
+        ng-class="{'icon-arrow-right2': !expand, 'icon-arrow-down2': expand}"></span>
       </span>
-      <span class='filterable-by'>
-        <button data-ng-repeat="term in terms" data-ng-click="setSubterms($index, term)"
-          data-ng-class="{active: $index == selected}">
-          {{term.name}}
-        </button>
-        <button data-ng-click="setLocations(divisionLocations)" data-ng-class="{active: activeFilter}">Locations</button>
+      <span class='filters-wrapper' collapse="expand" duration="2500">
+        <span class='filterable-by'>
+          <button data-ng-repeat="term in terms" data-ng-click="setSubterms($index, term)"
+            data-ng-class="{active: $index == selected}">
+            {{term.name}}
+          </button>
+          <button data-ng-click="setLocations(divisionLocations)" data-ng-class="{active: activeFilter}">Locations</button>
+        </span>
+
+        <div class='sub-filters'>
+          <ul data-ng-class="{'locations-active': activeFilter}" data-ng-if="subterms">
+            <li class="term {{term.name}}" data-ng-repeat="term in subterms">
+              <a href="" data-ng-click="filterDivisionsBy($index, term)" data-ng-model="term.name" data-ng-class="{active: $index == selectedSubterm}">{{term.name}}</a>
+            </li>
+          </ul>
+        </div>
       </span>
-    </div>
-    <div class='sub-filters'>
-      <ul data-ng-class="{'locations-active': activeFilter}" data-ng-if="subterms">
-        <li class="term {{term.name}}" data-ng-repeat="term in subterms">
-          <a href="" data-ng-click="filterDivisionsBy($index, term)" data-ng-model="term.name" data-ng-class="{active: $index == selectedSubterm}">{{term.name}}</a>
-        </li>
-      </ul>
     </div>
   </div>
 
@@ -47,6 +52,7 @@
               <p data-ng-if="division.hours">Hours Today: {{division.hoursToday | timeFormat}}</p>
             </div>
 
+            <!-- SIBL  -->
             <div class="division-wrapper" data-ng-if="division.slug == 'sibl'">
               <a data-ui-sref="location({location: division.slug})"
                 analytics-on="click" analytics-category="Locations"
@@ -63,11 +69,10 @@
               </h4>
               <p data-ng-if="division.hours">Hours Today: {{division.hoursToday | timeFormat}}</p>
             </div>
-
+            <!-- SIBL END -->
           </div>
         </div>
       </div>
     </div>
   </section>
-
 </section>
