@@ -94,6 +94,11 @@ class Locinator < Sinatra::Base
     @rq = request
     erb :widget
   end
+
+  get %r{/research-collections} do
+    @rq = request
+    erb :research_collections
+  end
     
   get %r{/.*$} do
     @rq = request

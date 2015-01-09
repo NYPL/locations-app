@@ -240,4 +240,12 @@
     angular
         .module('nypl_widget')
         .filter('hoursTodayFormat', hoursTodayFormat);
+
+     angular
+        .module('nypl_research_collections')
+        .filter('timeFormat', timeFormat)
+        .filter('dateToISO', dateToISO)
+        .filter('capitalize', capitalize)
+        .filter('hoursTodayFormat', hoursTodayFormat)
+        .filter('truncate', truncate);
 })();

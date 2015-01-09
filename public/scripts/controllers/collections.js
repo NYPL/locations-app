@@ -46,7 +46,6 @@
 
                   divisions.push(sibl);
                   $scope.divisionLocations.push(sibl);
-                  console.log(divisions);
                 });
       };
 
@@ -153,6 +152,6 @@
   }
 
   angular
-    .module('nypl_locations')
+    .module('nypl_research_collections')
     .controller('CollectionsCtrl', CollectionsCtrl);
 })();

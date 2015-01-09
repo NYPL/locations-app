@@ -1,0 +1,124 @@
+<!doctype html>
+<html xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="nypl_research_collections" data-ng-strict-di>
+  <head>
+    <%#= New Relic Snippets %>
+    <%if settings.locinator_env == "development" %>
+    <%= erb :newrelic_dev %>
+    <%elsif settings.locinator_env == "qa" %>
+    <%= erb :newrelic_qa %>
+    <%elsif settings.locinator_env == "production" %>
+    <%= erb :newrelic_prod %>
+    <% end %>
+
+    <% if ! settings.env_config["optimizely"].nil? %>
+    <script src="<%= settings.env_config["optimizely"] %>"></script>
+    <% end %>
+    <meta charset="utf-8">
+    <title data-ng-bind="'NYPL | ' + $root.title">NYPL |</title>
+    <meta name="fragment" content="!" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <!-- OG -->
+    <meta name="twitter:card" content="summary" />
+    <meta property="og:title" content="NYPL Research Collections" />
+    <meta property="og:site_name" content="The New York Public Library" />
+    <meta property="og:url" content="http://nypl.org/research-collections" />
+    <meta property="og:description" content="The mission of The New York Public Library is to inspire lifelong learning, advance knowledge, and strengthen our communities." />
+    <meta property="og:type" content="website" />
+
+    <meta name="keywords" content="NYPL, The New York Public Library, Manhattan, Bronx, Staten Island" />
+
+    <link rel="shortcut icon" type="image/ico" href="http://ux-static.nypl.org/images/favicon.ico">
+
+<% if settings.env_config["angular_src"] == "ux-static-staging" %>
+    <link rel="stylesheet" href="http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.6/css/nyplbase.min.css">
+<% else %>
+    <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.6/css/nyplbase.min.css">
+<% end %>
+
+<% if @rq.forwarded? %>
+    <base href="<%= settings.baseurl %>">
+    <link rel="stylesheet" href="<%= settings.baseurl %>css/locations.min.css">
+<% else %>
+    <base href="/">
+    <link rel="stylesheet" href="css/locations.min.css">
+<% end %>
+  </head>
+  <body>
+    <!--[if lt IE 9]>
+      <div class="browser-upgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/?locale=en">upgrade your browser</a> to improve your experience.</div>
+    <![endif]-->
+
+    <!-- Site Wide Alerts -->
+    <nypl-site-alerts></nypl-site-alerts>
+
+    <!-- Header -->
+    <div ng-include="'views/header.html'"></div>
+
+    <!-- Main Navigation -->
+    <nypl-navigation></nypl-navigation>
+
+    <div class="wrapper">
+        <!-- Locinator App -->
+        <div class="nypl-locations" data-ui-view data-autoscroll="false" scrolltop></div>
+    </div>
+    
+    <!-- Footer -->
+    <nypl-footer></nypl-footer>
+
+    <!-- Loading Directive -->
+    <div id="loadingWidget" loading-widget>
+        <div class="loader-icon icon-spinner2"></div>
+    </div>
+
+    <% if !settings.env_config["google_analytics"].nil? %>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', '<%= settings.env_config["google_analytics"] %>', 'shrouded-caverns-5062.herokuapp.com');
+    </script>
+    <% end %>
+
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+    
+    <!-- Bower components -->
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <!-- endbower -->
+    <!-- Other components -->
+    <script src="vendor/jquery.cookies.js"></script>
+    <!-- end other components -->
+
+<% if settings.env_config["angular_src"] == "bower" %>
+<%= erb :angular_bower %>
+<% elsif settings.env_config["angular_src"] == "ux-static-staging" %>
+<%= erb :angular_ux_static_staging %>
+<% else %>
+<%= erb :angular_ux_static %>
+<% end %>
+    
+    <!-- Angular dependent Bower components -->
+    <script src="bower_components/newrelic-timing/newrelic-timing.min.js"></script>
+    <script src="bower_components/newrelic-timing/newrelic-timing-angular.min.js"></script>
+    <!-- end Bower components -->
+
+    <!-- App Config -->
+    <script>
+      var locations_cfg = <%= settings.app_cfg %>
+    </script>
+<% if settings.env_config["app_src"] == "minified" %>
+<%= erb :minified_app %>
+<% else %>
+<%= erb :full_app %>
+<% end %>
+
+</body>
+</html>

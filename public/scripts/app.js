@@ -98,18 +98,6 @@ nypl_locations.config([
                 });
         }
 
-        function LoadDivisions(config, nyplLocationsService) {
-            console.log('test1');
-            return nyplLocationsService
-                .allDivisions()
-                .then(function (data) {
-                    return data.divisions;
-                })
-                .catch(function (err) {
-                    throw err;
-                });
-        }
-
         function Amenities($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
                 .amenities($stateParams.amenity)
@@ -122,7 +110,6 @@ nypl_locations.config([
         }
 
         function getConfig(nyplLocationsService) {
-            console.log('test)');
             return nyplLocationsService.getConfig();
         }
 
@@ -200,16 +187,6 @@ nypl_locations.config([
                 data: {
                     parentState: 'location',
                     crumbName: '{{division.name}}'
-                }
-            })
-            .state('research-collections', {
-                url: '/research-collections',
-                templateUrl: 'views/research-collections.html',
-                controller: 'CollectionsCtrl',
-                label: 'Collections',
-                resolve: {
-                    config: getConfig,
-                    divisions: LoadDivisions
                 }
             })
             .state('amenities', {
@@ -451,6 +428,67 @@ var nypl_widget = angular.module('nypl_widget', [
                     config: getConfig,
                     data: LoadLocation
                 },
+            });
+    }
+]);
+
+/**
+ * @ngdoc overview
+ * @module nypl_research_collections
+ * @name nypl_research_collections
+ * @requires ngSanitize
+ * @requires ui.router
+ * @requires locationService
+ * @requires coordinateService
+ * @requires angulartics
+ * @requires angulartics.google.analytics
+ * @description
+ * Research collections.
+ */
+var nypl_research_collections = angular.module('nypl_research_collections', [
+    'ngSanitize',
+    'ui.router',
+    'locationService',
+    'coordinateService',
+    'angulartics',
+    'angulartics.google.analytics',
+    'nyplNavigation',
+    'nyplSSO',
+    'nyplSearch'
+])
+.config(['$locationProvider', '$stateProvider', '$urlRouterProvider',
+    function ($locationProvider, $stateProvider, $urlRouterProvider) {
+        'use strict';
+
+        function LoadDivisions(config, nyplLocationsService) {
+            return nyplLocationsService
+                .allDivisions()
+                .then(function (data) {
+                    return data.divisions;
+                })
+                .catch(function (err) {
+                    throw err;
+                });
+        }
+
+        function getConfig(nyplLocationsService) {
+            return nyplLocationsService.getConfig();
+        }
+
+        // uses the HTML5 History API, remove hash (need to test)
+        $locationProvider.html5Mode(true);
+        $urlRouterProvider.otherwise('/research-collections');
+
+        $stateProvider
+            .state('division', {
+                url: '/research-collections',
+                templateUrl: 'views/research-collections.html',
+                controller: 'CollectionsCtrl',
+                label: 'Research Collections',
+                resolve: {
+                    config: getConfig,
+                    divisions: LoadDivisions
+                }
             });
     }
 ]);

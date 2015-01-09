@@ -714,4 +714,12 @@
     .directive('librarianchatbutton', librarianchatbutton)
     .directive('emailusbutton', emailusbutton);
 
+  angular
+    .module('nypl_research_collections')
+    .directive('todayshours', todayshours)
+    .directive('loadingWidget', loadingWidget)
+    .directive('nyplFundraising', nyplFundraising)
+    .directive('librarianchatbutton', librarianchatbutton)
+    .directive('emailusbutton', emailusbutton);
+
 })();

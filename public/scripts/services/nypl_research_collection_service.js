@@ -58,7 +58,7 @@
   }
 
   angular
-    .module('nypl_locations')
+    .module('nypl_research_collections')
     .factory('researchCollectionService', researchCollectionService);
 
 })();
