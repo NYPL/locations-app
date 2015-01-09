@@ -432,6 +432,11 @@ var nypl_widget = angular.module('nypl_widget', [
     }
 ]);
 
+// Add Holiday Closings
+nypl_widget.run(function ($rootScope, nyplUtility) {
+    $rootScope.holiday = nyplUtility.holidayClosings();
+});
+
 /**
  * @ngdoc overview
  * @module nypl_research_collections
@@ -445,7 +450,7 @@ var nypl_widget = angular.module('nypl_widget', [
  * @description
  * Research collections.
  */
-var nypl_research_collections = angular.module('nypl_research_collections', [
+angular.module('nypl_research_collections', [
     'ngSanitize',
     'ui.router',
     'locationService',
@@ -456,20 +461,9 @@ var nypl_research_collections = angular.module('nypl_research_collections', [
     'nyplSSO',
     'nyplSearch'
 ])
-.config([
-    '$locationProvider',
-    '$stateProvider',
-    '$urlRouterProvider',
-    '$parseProvider',
-    function (
-        $locationProvider,
-        $stateProvider,
-        $urlRouterProvider,
-        $parseProvider
-    ) {
+.config(['$locationProvider', '$stateProvider', '$urlRouterProvider',
+    function ($locationProvider, $stateProvider, $urlRouterProvider) {
         'use strict';
-
-        $parseProvider.unwrapPromises(true);
 
         function LoadDivisions(config, nyplLocationsService) {
             return nyplLocationsService
@@ -504,7 +498,3 @@ var nypl_research_collections = angular.module('nypl_research_collections', [
     }
 ]);
 
-// Add Holiday Closings
-nypl_widget.run(function ($rootScope, nyplUtility) {
-    $rootScope.holiday = nyplUtility.holidayClosings();
-});

@@ -101,19 +101,6 @@ nypl_locations.config([
         }
         LoadDivision.$inject = ["$stateParams", "config", "nyplLocationsService"];
 
-        function LoadDivisions(config, nyplLocationsService) {
-            console.log('test1');
-            return nyplLocationsService
-                .allDivisions()
-                .then(function (data) {
-                    return data.divisions;
-                })
-                .catch(function (err) {
-                    throw err;
-                });
-        }
-        LoadDivisions.$inject = ["config", "nyplLocationsService"];
-
         function Amenities($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
                 .amenities($stateParams.amenity)
@@ -127,7 +114,6 @@ nypl_locations.config([
         Amenities.$inject = ["$stateParams", "config", "nyplLocationsService"];
 
         function getConfig(nyplLocationsService) {
-            console.log('test)');
             return nyplLocationsService.getConfig();
         }
         getConfig.$inject = ["nyplLocationsService"];
@@ -206,16 +192,6 @@ nypl_locations.config([
                 data: {
                     parentState: 'location',
                     crumbName: '{{division.name}}'
-                }
-            })
-            .state('research-collections', {
-                url: '/research-collections',
-                templateUrl: 'views/research-collections.html',
-                controller: 'CollectionsCtrl',
-                label: 'Collections',
-                resolve: {
-                    config: getConfig,
-                    divisions: LoadDivisions
                 }
             })
             .state('amenities', {
@@ -469,6 +445,70 @@ var nypl_widget = angular.module('nypl_widget', [
 nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility) {
     $rootScope.holiday = nyplUtility.holidayClosings();
 }]);
+
+/**
+ * @ngdoc overview
+ * @module nypl_research_collections
+ * @name nypl_research_collections
+ * @requires ngSanitize
+ * @requires ui.router
+ * @requires locationService
+ * @requires coordinateService
+ * @requires angulartics
+ * @requires angulartics.google.analytics
+ * @description
+ * Research collections.
+ */
+angular.module('nypl_research_collections', [
+    'ngSanitize',
+    'ui.router',
+    'locationService',
+    'coordinateService',
+    'angulartics',
+    'angulartics.google.analytics',
+    'nyplNavigation',
+    'nyplSSO',
+    'nyplSearch'
+])
+.config(['$locationProvider', '$stateProvider', '$urlRouterProvider',
+    function ($locationProvider, $stateProvider, $urlRouterProvider) {
+        'use strict';
+
+        function LoadDivisions(config, nyplLocationsService) {
+            return nyplLocationsService
+                .allDivisions()
+                .then(function (data) {
+                    return data.divisions;
+                })
+                .catch(function (err) {
+                    throw err;
+                });
+        }
+        LoadDivisions.$inject = ["config", "nyplLocationsService"];
+
+        function getConfig(nyplLocationsService) {
+            return nyplLocationsService.getConfig();
+        }
+        getConfig.$inject = ["nyplLocationsService"];
+
+        // uses the HTML5 History API, remove hash (need to test)
+        $locationProvider.html5Mode(true);
+        $urlRouterProvider.otherwise('/research-collections');
+
+        $stateProvider
+            .state('division', {
+                url: '/research-collections',
+                templateUrl: 'views/research-collections.html',
+                controller: 'CollectionsCtrl',
+                label: 'Research Collections',
+                resolve: {
+                    config: getConfig,
+                    divisions: LoadDivisions
+                }
+            });
+    }
+]);
+
 
 /*jslint indent: 2, maxlen: 80, nomen: true */
 /*globals $, window, console, jQuery, angular */
@@ -2191,7 +2231,6 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
 
                   divisions.push(sibl);
                   $scope.divisionLocations.push(sibl);
-                  console.log(divisions);
                 });
       };
 
@@ -2299,7 +2338,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
   CollectionsCtrl.$inject = ["$scope", "$rootScope", "config", "divisions", "nyplLocationsService", "nyplUtility", "researchCollectionService"];
 
   angular
-    .module('nypl_locations')
+    .module('nypl_research_collections')
     .controller('CollectionsCtrl', CollectionsCtrl);
 })();
 
@@ -3739,6 +3778,11 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     .directive('librarianchatbutton', librarianchatbutton)
     .directive('emailusbutton', emailusbutton);
 
+  angular
+    .module('nypl_research_collections')
+    .directive('nyplFooter', nyplFooter)
+    .directive('loadingWidget', loadingWidget);
+
 })();
 
 /*jslint indent: 4, maxlen: 80, nomen: true */
@@ -3982,6 +4026,13 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
 
     angular
         .module('nypl_widget')
+        .filter('hoursTodayFormat', hoursTodayFormat);
+
+     angular
+        .module('nypl_research_collections')
+        .filter('timeFormat', timeFormat)
+        .filter('dateToISO', dateToISO)
+        .filter('capitalize', capitalize)
         .filter('hoursTodayFormat', hoursTodayFormat);
 })();
 
@@ -4846,7 +4897,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
   researchCollectionService.$inject = ["$filter"];
 
   angular
-    .module('nypl_locations')
+    .module('nypl_research_collections')
     .factory('researchCollectionService', researchCollectionService);
 
 })();
@@ -5621,5 +5672,11 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     .module('nypl_widget')
     .factory('nyplUtility', nyplUtility)
     .factory('requestNotificationChannel', requestNotificationChannel);
+
+   angular
+    .module('nypl_research_collections')
+    .factory('nyplUtility', nyplUtility)
+    .factory('requestNotificationChannel', requestNotificationChannel);
+
 })();
 

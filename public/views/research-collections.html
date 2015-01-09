@@ -32,9 +32,6 @@
     <div class='filtered-divisions'>
       <div id="container__divisions" data-ng-if="divisions">
         <h2 class="hdg">DIVISIONS</h2>
-        <div data-ng-repeat='division in sibl.location'>
-          {{division}}
-        </div>
         <div class="grid">
           <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third repeat-animation"
             data-ng-repeat='division in filteredDivisions track by $index'>

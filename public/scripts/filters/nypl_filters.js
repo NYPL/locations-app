@@ -246,6 +246,5 @@
         .filter('timeFormat', timeFormat)
         .filter('dateToISO', dateToISO)
         .filter('capitalize', capitalize)
-        .filter('hoursTodayFormat', hoursTodayFormat)
-        .filter('truncate', truncate);
+        .filter('hoursTodayFormat', hoursTodayFormat);
 })();
