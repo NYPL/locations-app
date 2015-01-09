@@ -456,9 +456,20 @@ var nypl_research_collections = angular.module('nypl_research_collections', [
     'nyplSSO',
     'nyplSearch'
 ])
-.config(['$locationProvider', '$stateProvider', '$urlRouterProvider',
-    function ($locationProvider, $stateProvider, $urlRouterProvider) {
+.config([
+    '$locationProvider',
+    '$stateProvider',
+    '$urlRouterProvider',
+    '$parseProvider',
+    function (
+        $locationProvider,
+        $stateProvider,
+        $urlRouterProvider,
+        $parseProvider
+    ) {
         'use strict';
+
+        $parseProvider.unwrapPromises(true);
 
         function LoadDivisions(config, nyplLocationsService) {
             return nyplLocationsService

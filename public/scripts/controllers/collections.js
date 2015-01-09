@@ -35,18 +35,19 @@
                 // });
       },
       loadSIBL = function () {
-        return nyplLocationsService
-                .singleLocation('sibl')
-                .then(function (data) {
-                  getHoursToday([data.location]);
-                  sibl = data.location;
-                  sibl._embedded.location = {
-                    id: 'SIBL'
-                  };
+        $scope.sibl = nyplLocationsService.singleLocation('sibl');
 
-                  divisions.push(sibl);
-                  $scope.divisionLocations.push(sibl);
-                });
+        console.log($scope.sibl);
+                // .then(function (data) {
+                //   getHoursToday([data.location]);
+                //   sibl = data.location;
+                //   sibl._embedded.location = {
+                //     id: 'SIBL'
+                //   };
+
+                //   divisions.push(sibl);
+                //   $scope.divisionLocations.push(sibl);
+                // });
       };
 
     $rootScope.title = "Research Collections";
@@ -70,7 +71,7 @@
                                 .value();
 
     loadSIBL();
-    loadTerms();
+    // loadTerms();
 
     $scope.setSubterms = function (index, term) {
       var subterms;
