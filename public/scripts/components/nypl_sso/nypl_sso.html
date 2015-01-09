@@ -1,4 +1,25 @@
 <div class='login-donate'>
+  <!-- Email newsletter form -->
+  <div class="header-newsletter-signup">
+    <form id="header-news_signup" action="http://cl.exct.net/subscribe.aspx" 
+      name="subscribeForm" method="post">
+      <input type="hidden" name="thx" value="http://pages.email.nypl.org/confirmation">
+      <input type="hidden" name="err" value="http://pages.email.nypl.org/confirmation">
+      <input type="hidden" name="SubAction" value="sub_add_update">
+      <input type="hidden" name="MID" value="7000413">
+      <input type="hidden" name="Email Type" value="HTML">
+      <input type="hidden" name="lid" value="1061">
+      <input type="email" name="Email Address" placeholder="Get the best of NYPL in your inbox!">
+      <input type="submit" value="SIGN UP" class="Button newsletter-submit"
+        analytics-on="click" analytics-category="eNewsletter"
+        analytics-event="Submit" analytics-label="Header signup">
+      <input type="hidden" name="Source Code" value="Homepage">
+    </form>
+    <div class="newsletter_policy">
+      <a href="http://www.nypl.org/help/about-nypl/legal-notices/privacy-policy">Privacy Policy</a>
+    </div>
+  </div>
+
   <a class='login-button'
     analytics-on="click" analytics-category="SSO"
     analytics-event="Open Login Form" analytics-label="click">

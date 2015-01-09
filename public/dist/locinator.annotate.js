@@ -35,7 +35,6 @@ var nypl_locations = angular.module('nypl_locations', [
     'nyplBreadcrumbs',
     'angulartics',
     'angulartics.google.analytics',
-    'pascalprecht.translate',
     'newrelic-timing'
 ]);
 
@@ -44,14 +43,12 @@ nypl_locations.constant('_', window._);
 nypl_locations.config([
     '$analyticsProvider',
     '$locationProvider',
-    '$translateProvider',
     '$stateProvider',
     '$urlRouterProvider',
     '$crumbProvider',
     function (
         $analyticsProvider,
         $locationProvider,
-        $translateProvider,
         $stateProvider,
         $urlRouterProvider,
         $crumbProvider
@@ -64,14 +61,6 @@ nypl_locations.config([
 
         // uses the HTML5 History API, remove hash (need to test)
         $locationProvider.html5Mode(true);
-
-        // Lazy loads static files with English being
-        // the first language that gets loaded.
-        $translateProvider.useStaticFilesLoader({
-            prefix: 'languages/',
-            suffix: '.json'
-        });
-        $translateProvider.preferredLanguage('en');
 
         function LoadLocation($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
@@ -269,7 +258,7 @@ nypl_locations.run(["$analytics", "$state", "$rootScope", "$location", function 
     $rootScope.$on('$stateChangeStart', function () {
         $rootScope.close_feedback = true;
     });
-    $rootScope.$on('$stateChangeSuccess', function () {
+    $rootScope.$on('$viewContentLoaded', function () {
         $analytics.pageTrack('/locations' + $location.path());
         $rootScope.current_url = $location.absUrl();
     });
@@ -1858,7 +1847,25 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
       templateUrl: 'scripts/components/nypl_sso/nypl_sso.html',
       link: function (scope, element, attrs) {
         var ssoLoginElement = $('.sso-login'),
-          ssoUserButton = $('.login-button');
+          ssoUserButton = $('.login-button'),
+          enews_email = $('#header-news_signup input[type=email]'),
+          enews_submit = $('#header-news_signup input[type=submit]'),
+          enews_container = $('.header-newsletter-signup');
+
+        enews_email.focus(function () {
+          $('.newsletter_policy').slideDown();
+        });
+
+        enews_email.blur(function () {
+          $('.newsletter_policy').slideUp();
+        });
+
+        enews_submit.click(function () {
+          if (enews_email.val() === '') {
+            enews_email.focus();
+            return false;
+          }
+        });
 
         function makeForm(username, pin, checkbox, button) {
           var current_url = '';
@@ -2842,23 +2849,24 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
    * @restrict E
    * @description
    * Directive to display a list of languages to translate the site into.
+   * Commented out until use.
    * @example
    * <pre>
    *  <nypl-translate></nypl-translate>
    * </pre>
    */
-  function nyplTranslate() {
-    return {
-      restrict: 'E',
-      templateUrl: 'scripts/directives/templates/translatebuttons.html',
-      replace: true,
-      controller: function ($scope, $translate) {
-        $scope.translate = function (language) {
-          $translate.use(language);
-        };
-      }
-    };
-  }
+  // function nyplTranslate() {
+  //   return {
+  //     restrict: 'E',
+  //     templateUrl: 'scripts/directives/templates/translatebuttons.html',
+  //     replace: true,
+  //     controller: function ($scope, $translate) {
+  //       $scope.translate = function (language) {
+  //         $translate.use(language);
+  //       };
+  //     }
+  //   };
+  // }
 
   /**
    * @ngdoc directive
@@ -3497,7 +3505,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
   angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
-    .directive('nyplTranslate', nyplTranslate)
+    // .directive('nyplTranslate', nyplTranslate)
     .directive('todayshours', todayshours)
     .directive('emailusbutton', emailusbutton)
     .directive('librarianchatbutton', librarianchatbutton)
