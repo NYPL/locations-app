@@ -173,6 +173,7 @@
      * @description
      * AngularJS service to call different API endpoints.
      */
+
     function nyplLocationsService($http, $q) {
         var api, config,
             jsonp_cb = '?callback=JSON_CALLBACK',
@@ -274,6 +275,21 @@
                 .error(function (data, status) {
                     defer.reject(apiError + ': location');
                 });
+            return defer.promise;
+        };
+
+        locationsApi.allDivisions = function () {
+            var defer = $q.defer();
+
+            $http.jsonp(
+                api + '/divisions/?callback=JSON_CALLBACK', {cache: true}
+            )
+            .success(function (data) {
+                defer.resolve(data);
+            })
+            .error(function (data, status) {
+                defer.reject(apiError + ': division');
+            });
             return defer.promise;
         };
 
@@ -430,6 +446,22 @@
             return defer.promise;
         };
 
+        locationsApi.terms = function () {
+            var defer = $q.defer();
+
+            $http.jsonp(
+                    api + '/terms' + '?callback=JSON_CALLBACK',
+                    {cache: true}
+                )
+                .success(function (data) {
+                    defer.resolve(data);
+                })
+                .error(function (data, status) {
+                    defer.reject(apiError + ': terms');
+                });
+            return defer.promise;
+        };
+
         return locationsApi;
     }
     nyplLocationsService.$inject = ["$http", "$q"];
@@ -484,7 +516,6 @@ var nypl_locations = angular.module('nypl_locations', [
     'nyplBreadcrumbs',
     'angulartics',
     'angulartics.google.analytics',
-    'pascalprecht.translate',
     'newrelic-timing'
 ]);
 
@@ -493,14 +524,12 @@ nypl_locations.constant('_', window._);
 nypl_locations.config([
     '$analyticsProvider',
     '$locationProvider',
-    '$translateProvider',
     '$stateProvider',
     '$urlRouterProvider',
     '$crumbProvider',
     function (
         $analyticsProvider,
         $locationProvider,
-        $translateProvider,
         $stateProvider,
         $urlRouterProvider,
         $crumbProvider
@@ -513,14 +542,6 @@ nypl_locations.config([
 
         // uses the HTML5 History API, remove hash (need to test)
         $locationProvider.html5Mode(true);
-
-        // Lazy loads static files with English being
-        // the first language that gets loaded.
-        $translateProvider.useStaticFilesLoader({
-            prefix: 'languages/',
-            suffix: '.json'
-        });
-        $translateProvider.preferredLanguage('en');
 
         function LoadLocation($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
@@ -561,6 +582,19 @@ nypl_locations.config([
         }
         LoadDivision.$inject = ["$stateParams", "config", "nyplLocationsService"];
 
+        function LoadDivisions(config, nyplLocationsService) {
+            console.log('test1');
+            return nyplLocationsService
+                .allDivisions()
+                .then(function (data) {
+                    return data.divisions;
+                })
+                .catch(function (err) {
+                    throw err;
+                });
+        }
+        LoadDivisions.$inject = ["config", "nyplLocationsService"];
+
         function Amenities($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
                 .amenities($stateParams.amenity)
@@ -574,6 +608,7 @@ nypl_locations.config([
         Amenities.$inject = ["$stateParams", "config", "nyplLocationsService"];
 
         function getConfig(nyplLocationsService) {
+            console.log('test)');
             return nyplLocationsService.getConfig();
         }
         getConfig.$inject = ["nyplLocationsService"];
@@ -654,6 +689,16 @@ nypl_locations.config([
                     crumbName: '{{division.name}}'
                 }
             })
+            .state('research-collections', {
+                url: '/research-collections',
+                templateUrl: 'views/research-collections.html',
+                controller: 'CollectionsCtrl',
+                label: 'Collections',
+                resolve: {
+                    config: getConfig,
+                    divisions: LoadDivisions
+                }
+            })
             .state('amenities', {
                 url: '/amenities',
                 templateUrl: 'views/amenities.html',
@@ -725,10 +770,6 @@ nypl_locations.run(["$analytics", "$state", "$rootScope", "$location", function 
     $rootScope.$on('$stateChangeError', function () {
         $state.go('404');
     });
-}]);
-
-nypl_locations.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility) {
-    $rootScope.holiday = nyplUtility.holidayClosings();
 }]);
 
 // Declare an http interceptor that will signal
@@ -904,6 +945,7 @@ var nypl_widget = angular.module('nypl_widget', [
             });
     }
 ]);
+
 // Add Holiday Closings
 nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility) {
     $rootScope.holiday = nyplUtility.holidayClosings();
@@ -1264,23 +1306,24 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
    * @restrict E
    * @description
    * Directive to display a list of languages to translate the site into.
+   * Commented out until use.
    * @example
    * <pre>
    *  <nypl-translate></nypl-translate>
    * </pre>
    */
-  function nyplTranslate() {
-    return {
-      restrict: 'E',
-      templateUrl: 'scripts/directives/templates/translatebuttons.html',
-      replace: true,
-      controller: function ($scope, $translate) {
-        $scope.translate = function (language) {
-          $translate.use(language);
-        };
-      }
-    };
-  }
+  // function nyplTranslate() {
+  //   return {
+  //     restrict: 'E',
+  //     templateUrl: 'scripts/directives/templates/translatebuttons.html',
+  //     replace: true,
+  //     controller: function ($scope, $translate) {
+  //       $scope.translate = function (language) {
+  //         $translate.use(language);
+  //       };
+  //     }
+  //   };
+  // }
 
   /**
    * @ngdoc directive
@@ -1919,7 +1962,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
   angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
-    .directive('nyplTranslate', nyplTranslate)
+    // .directive('nyplTranslate', nyplTranslate)
     .directive('todayshours', todayshours)
     .directive('emailusbutton', emailusbutton)
     .directive('librarianchatbutton', librarianchatbutton)

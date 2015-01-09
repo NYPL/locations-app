@@ -99,6 +99,7 @@ nypl_locations.config([
         }
 
         function LoadDivisions(config, nyplLocationsService) {
+            console.log('test1');
             return nyplLocationsService
                 .allDivisions()
                 .then(function (data) {
@@ -121,6 +122,7 @@ nypl_locations.config([
         }
 
         function getConfig(nyplLocationsService) {
+            console.log('test)');
             return nyplLocationsService.getConfig();
         }
 

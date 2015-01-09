@@ -35,7 +35,6 @@ var nypl_locations = angular.module('nypl_locations', [
     'nyplBreadcrumbs',
     'angulartics',
     'angulartics.google.analytics',
-    'pascalprecht.translate',
     'newrelic-timing'
 ]);
 
@@ -44,14 +43,12 @@ nypl_locations.constant('_', window._);
 nypl_locations.config([
     '$analyticsProvider',
     '$locationProvider',
-    '$translateProvider',
     '$stateProvider',
     '$urlRouterProvider',
     '$crumbProvider',
     function (
         $analyticsProvider,
         $locationProvider,
-        $translateProvider,
         $stateProvider,
         $urlRouterProvider,
         $crumbProvider
@@ -64,14 +61,6 @@ nypl_locations.config([
 
         // uses the HTML5 History API, remove hash (need to test)
         $locationProvider.html5Mode(true);
-
-        // Lazy loads static files with English being
-        // the first language that gets loaded.
-        $translateProvider.useStaticFilesLoader({
-            prefix: 'languages/',
-            suffix: '.json'
-        });
-        $translateProvider.preferredLanguage('en');
 
         function LoadLocation($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
@@ -112,6 +101,19 @@ nypl_locations.config([
         }
         LoadDivision.$inject = ["$stateParams", "config", "nyplLocationsService"];
 
+        function LoadDivisions(config, nyplLocationsService) {
+            console.log('test1');
+            return nyplLocationsService
+                .allDivisions()
+                .then(function (data) {
+                    return data.divisions;
+                })
+                .catch(function (err) {
+                    throw err;
+                });
+        }
+        LoadDivisions.$inject = ["config", "nyplLocationsService"];
+
         function Amenities($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
                 .amenities($stateParams.amenity)
@@ -125,6 +127,7 @@ nypl_locations.config([
         Amenities.$inject = ["$stateParams", "config", "nyplLocationsService"];
 
         function getConfig(nyplLocationsService) {
+            console.log('test)');
             return nyplLocationsService.getConfig();
         }
         getConfig.$inject = ["nyplLocationsService"];
@@ -205,6 +208,16 @@ nypl_locations.config([
                     crumbName: '{{division.name}}'
                 }
             })
+            .state('research-collections', {
+                url: '/research-collections',
+                templateUrl: 'views/research-collections.html',
+                controller: 'CollectionsCtrl',
+                label: 'Collections',
+                resolve: {
+                    config: getConfig,
+                    divisions: LoadDivisions
+                }
+            })
             .state('amenities', {
                 url: '/amenities',
                 templateUrl: 'views/amenities.html',
@@ -276,10 +289,6 @@ nypl_locations.run(["$analytics", "$state", "$rootScope", "$location", function 
     $rootScope.$on('$stateChangeError', function () {
         $state.go('404');
     });
-}]);
-
-nypl_locations.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility) {
-    $rootScope.holiday = nyplUtility.holidayClosings();
 }]);
 
 // Declare an http interceptor that will signal
@@ -455,6 +464,7 @@ var nypl_widget = angular.module('nypl_widget', [
             });
     }
 ]);
+
 // Add Holiday Closings
 nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility) {
     $rootScope.holiday = nyplUtility.holidayClosings();
@@ -1221,6 +1231,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
      * @description
      * AngularJS service to call different API endpoints.
      */
+
     function nyplLocationsService($http, $q) {
         var api, config,
             jsonp_cb = '?callback=JSON_CALLBACK',
@@ -1322,6 +1333,21 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                 .error(function (data, status) {
                     defer.reject(apiError + ': location');
                 });
+            return defer.promise;
+        };
+
+        locationsApi.allDivisions = function () {
+            var defer = $q.defer();
+
+            $http.jsonp(
+                api + '/divisions/?callback=JSON_CALLBACK', {cache: true}
+            )
+            .success(function (data) {
+                defer.resolve(data);
+            })
+            .error(function (data, status) {
+                defer.reject(apiError + ': division');
+            });
             return defer.promise;
         };
 
@@ -1474,6 +1500,22 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                 })
                 .error(function (data, status) {
                     defer.reject(apiError + ': site-wide alerts');
+                });
+            return defer.promise;
+        };
+
+        locationsApi.terms = function () {
+            var defer = $q.defer();
+
+            $http.jsonp(
+                    api + '/terms' + '?callback=JSON_CALLBACK',
+                    {cache: true}
+                )
+                .success(function (data) {
+                    defer.resolve(data);
+                })
+                .error(function (data, status) {
+                    defer.reject(apiError + ': terms');
                 });
             return defer.promise;
         };
@@ -1858,7 +1900,25 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
       templateUrl: 'scripts/components/nypl_sso/nypl_sso.html',
       link: function (scope, element, attrs) {
         var ssoLoginElement = $('.sso-login'),
-          ssoUserButton = $('.login-button');
+          ssoUserButton = $('.login-button'),
+          enews_email = $('#header-news_signup input[type=email]'),
+          enews_submit = $('#header-news_signup input[type=submit]'),
+          enews_container = $('.header-newsletter-signup');
+
+        enews_email.focus(function () {
+          $('.newsletter_policy').slideDown();
+        });
+
+        enews_email.blur(function () {
+          $('.newsletter_policy').slideUp();
+        });
+
+        enews_submit.click(function () {
+          if (enews_email.val() === '') {
+            enews_email.focus();
+            return false;
+          }
+        });
 
         function makeForm(username, pin, checkbox, button) {
           var current_url = '';
@@ -2081,6 +2141,166 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     .controller('AmenityCtrl', AmenityCtrl)
     .controller('AmenitiesCtrl', AmenitiesCtrl)
     .controller('AmenitiesAtLibraryCtrl', AmenitiesAtLibraryCtrl);
+})();
+
+/*jslint indent: 2, maxlen: 80, nomen: true */
+/*globals nypl_locations, _, angular, jQuery, $location, $ */
+
+(function () {
+  'use strict';
+
+  function CollectionsCtrl(
+    $scope,
+    $rootScope,
+    config,
+    divisions,
+    nyplLocationsService,
+    nyplUtility,
+    researchCollectionService
+  ) {
+    'use strict';
+    var rcValues = researchCollectionService.getResearchValues(),
+      sibl,
+      research_order = config.research_order || ['SASB', 'LPA', 'SC', 'SIBL'],
+      getHoursToday = function(obj) {
+        _.each(obj, function (elem) {
+          if (elem.hours) {
+            elem.hoursToday = nyplUtility.hoursToday(elem.hours);
+          }
+        });
+      },
+      loadTerms = function () {
+        return nyplLocationsService
+                .terms()
+                .then(function (data) {
+                  $scope.terms = data.terms;
+                });
+                // .catch(function (error) {
+                //     throw error;
+                // });
+      },
+      loadSIBL = function () {
+        return nyplLocationsService
+                .singleLocation('sibl')
+                .then(function (data) {
+                  getHoursToday([data.location]);
+                  sibl = data.location;
+                  sibl._embedded.location = {
+                    id: 'SIBL'
+                  };
+
+                  divisions.push(sibl);
+                  $scope.divisionLocations.push(sibl);
+                  console.log(divisions);
+                });
+      };
+
+    $rootScope.title = "Research Collections";
+    $scope.divisions = divisions;
+    // Get saved values first, if not then the default will display.
+    $scope.subterms = rcValues.subterms;
+    $scope.activeFilter = false;
+    $scope.filteredDivisions = rcValues.filteredDivisions || divisions;
+    $scope.divisionLocations = _.chain(divisions)
+                                .pluck('_embedded')
+                                .flatten()
+                                .pluck('location')
+                                .indexBy('id')
+                                .sortBy( function (elem) {
+                                  return nyplUtility.researchLibraryOrder(
+                                    research_order,
+                                    elem.id
+                                  );
+                                })
+                                .flatten()
+                                .value();
+
+    loadSIBL();
+    loadTerms();
+
+    $scope.setSubterms = function (index, term) {
+      var subterms;
+
+      // The Subjects term has nested terms so we must pluck the 
+      // terms property from every term. Check the API.
+      if (term.id == 42) {
+        subterms = _.chain($scope.terms[index].terms)
+          .pluck('terms')
+          .flatten(true)
+          .unique()
+          .value();
+      } else {
+      // The Media term has all the terms listed as a flat array.
+        subterms = $scope.terms[index].terms;
+      }
+
+      // Save the filter. Need to add one for the the parent term.
+      researchCollectionService.setResearchValue('subterms', subterms);
+      $scope.subterms = subterms;
+
+      // For the data-ng-class for the active buttons. Reset the subterm button.
+      $scope.selected = index;
+      $scope.activeFilter = false;
+      $scope.selectedSubterm = undefined;
+    };
+
+    $scope.filterDivisionsBy = function (index, selectedTerm) {
+      var termID = selectedTerm.id;
+
+      // Set class active to the subterm.
+      $scope.selectedSubterm = index;
+      $scope.filteredDivisions = $scope.divisions.filter(function (division) {
+        var found;
+
+        // Only search through divisions with terms property
+        if (division.terms) {
+          // Search through each parent term
+          _.each(division.terms, function (parentTerm) {
+            // If already found, no need to keep searching;
+            if (!found) {
+              // Find the term where the ID matches what was selected
+              found = _.find(parentTerm.terms, function (term) {
+                return term.id === termID;
+              });
+            }
+          });
+        } else if (division._embedded.location) {
+          // Matches Locations w/ ID
+          found = division._embedded.location.id === termID;
+        }
+
+        // Return the boolean value of found. True if there's an object,
+        // false if no object was found.
+        return !!found;
+      });
+
+      // Save the filtered divisions for later.
+      researchCollectionService
+        .setResearchValue('filteredDivisions', $scope.filteredDivisions);
+    };
+
+    $scope.setLocations = function (obj) {
+      // Toggles Active filter
+      $scope.activeFilter = $scope.activeFilter === false ? true : false;
+      $scope.selected = undefined;
+      $scope.selectedSubterm = undefined;
+
+      // Ensure data exists
+      if (obj) {
+        $scope.subterms = $scope.activeFilter === true ? obj : undefined;
+      } else {
+        throw new Error('Could not determine filtered locations. Check API response');
+      }
+    };
+
+    // Assign Today's hours
+    getHoursToday($scope.divisions);
+  }
+  CollectionsCtrl.$inject = ["$scope", "$rootScope", "config", "divisions", "nyplLocationsService", "nyplUtility", "researchCollectionService"];
+
+  angular
+    .module('nypl_locations')
+    .controller('CollectionsCtrl', CollectionsCtrl);
 })();
 
 /*jslint indent: 4, maxlen: 80, nomen: true */
@@ -2842,23 +3062,24 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
    * @restrict E
    * @description
    * Directive to display a list of languages to translate the site into.
+   * Commented out until use.
    * @example
    * <pre>
    *  <nypl-translate></nypl-translate>
    * </pre>
    */
-  function nyplTranslate() {
-    return {
-      restrict: 'E',
-      templateUrl: 'scripts/directives/templates/translatebuttons.html',
-      replace: true,
-      controller: function ($scope, $translate) {
-        $scope.translate = function (language) {
-          $translate.use(language);
-        };
-      }
-    };
-  }
+  // function nyplTranslate() {
+  //   return {
+  //     restrict: 'E',
+  //     templateUrl: 'scripts/directives/templates/translatebuttons.html',
+  //     replace: true,
+  //     controller: function ($scope, $translate) {
+  //       $scope.translate = function (language) {
+  //         $translate.use(language);
+  //       };
+  //     }
+  //   };
+  // }
 
   /**
    * @ngdoc directive
@@ -3497,7 +3718,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
   angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
-    .directive('nyplTranslate', nyplTranslate)
+    // .directive('nyplTranslate', nyplTranslate)
     .directive('todayshours', todayshours)
     .directive('emailusbutton', emailusbutton)
     .directive('librarianchatbutton', librarianchatbutton)
@@ -4561,6 +4782,72 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
   angular
     .module('nypl_locations')
     .factory('nyplGeocoderService', nyplGeocoderService);
+
+})();
+
+/*jslint nomen: true, indent: 2, maxlen: 80, browser: true */
+/*globals nypl_locations, angular, console, $window, _ */
+
+(function () {
+  'use strict';
+
+  /**
+   * @ngdoc service
+   * @name nypl_locations.service:researchService
+   * @description
+   * ...
+   */
+  function researchCollectionService($filter) {
+    var researchService = {},
+      researchValues = {};
+
+    /**
+     * @ngdoc function
+     * @name setResearchValue
+     * @methodOf nypl_locations.service:researchService
+     * @param {string} prop ...  
+     * @param {string} val ...
+     * @returns {object} ...
+     * @description
+     * ...
+     */
+    researchService.setResearchValue = function (prop, val) {
+      researchValues[prop] = val;
+      return this;
+    };
+
+    /**
+     * @ngdoc function
+     * @name getResearchValues
+     * @methodOf nypl_locations.service:researchService
+     * @returns {object} ...
+     * @description
+     * ...
+     */
+    researchService.getResearchValues = function () {
+      return researchValues;
+    };
+
+    /**
+     * @ngdoc function
+     * @name resetResearchValues
+     * @methodOf nypl_locations.service:researchService
+     * @returns {object} ...
+     * @description
+     * ...
+     */
+    researchService.resetResearchValues = function () {
+      researchValues = {};
+      return this;
+    };
+
+    return researchService;
+  }
+  researchCollectionService.$inject = ["$filter"];
+
+  angular
+    .module('nypl_locations')
+    .factory('researchCollectionService', researchCollectionService);
 
 })();
 
