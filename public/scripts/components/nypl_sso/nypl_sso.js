@@ -28,7 +28,25 @@
       templateUrl: 'scripts/components/nypl_sso/nypl_sso.html',
       link: function (scope, element, attrs) {
         var ssoLoginElement = $('.sso-login'),
-          ssoUserButton = $('.login-button');
+          ssoUserButton = $('.login-button'),
+          enews_email = $('#header-news_signup input[type=email]'),
+          enews_submit = $('#header-news_signup input[type=submit]'),
+          enews_container = $('.header-newsletter-signup');
+
+        enews_email.focus(function () {
+          $('.newsletter_policy').slideDown();
+        });
+
+        enews_email.blur(function () {
+          $('.newsletter_policy').slideUp();
+        });
+
+        enews_submit.click(function () {
+          if (enews_email.val() === '') {
+            enews_email.focus();
+            return false;
+          }
+        });
 
         function makeForm(username, pin, checkbox, button) {
           var current_url = '';

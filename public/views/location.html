@@ -15,7 +15,7 @@
         <div class="callout branch-open" data-ng-if="location.open">
           <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat:'short'}}" holiday="holiday" />
           <div id="location-hours" class="location-hours">
-            <h2 class="flush--ends hdg">{{ 'REGULAR_HOURS' | translate }}
+            <h2 class="flush--ends hdg">Regular Hours
               <span id="toggle-hours" ng-click="expand = !expand"
                 ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span>
             </h2>
@@ -28,9 +28,12 @@
                 </td>
               </tr>
             </table>
-	          <p class="smallprint" data-ng-if="location.type == 'research'">
-	            {{ 'IDV_DIVISION_HOURS' | translate }}
+	          <p class="smallprint note" data-ng-if="location.type == 'research'">
+	            Note: See division pages for individual hours
 	          </p>
+            <a class="btn btn--natural closings-link" data-ng-href="//nypl.org/help/closings">
+              Holiday closing information
+            </a>
           </div>
         </div>
         <div class="callout branch-closed" data-ng-if="!location.open">
@@ -48,7 +51,7 @@
             <span class="p-postal-code">{{location.postal_code}}</span>
             <div class="p-tel">{{location.contacts.phone}}</div>
             <div class="p-manager" data-ng-if="location.contacts.manager">
-              {{ 'LIBRARY_MANAGER' | translate }}: {{location.contacts.manager}}
+              Library Manager: {{location.contacts.manager}}
             </div>
           </div>
 
@@ -80,7 +83,7 @@
               analytics-on="click" analytics-category="Locations"
               analytics-event="Directions" analytics-label="{{location.name}} (location)"
               data-ng-href="https://maps.google.com/maps?saddr={{locationStart}}&daddr={{locationDest}}">
-              {{ 'DIRECTIONS' | translate }}
+              Get Directions
             </a>
           </div>
 
@@ -90,7 +93,7 @@
               data-ng-href="{{ location._links.on_shelves.href }}"
               analytics-on="click" analytics-category="Locations"
               analytics-event="Click" analytics-label="On Our Shelves">
-              {{ 'SHELVES' | translate }}
+              On Our Shelves Now
             </a>
           </div>
 
@@ -118,7 +121,7 @@
       <div class="grid__item one-whole">
         <div class="callout">
           <div class='amenities-title'>
-            <h5>{{ 'AMENITIES_HEADER' | translate }}: </h5>
+            <h5>Highlighted Amenities: </h5>
           </div>
           <ul data-ng-if="location.amenities_list">
             <li data-ng-repeat="amenity in location.amenities_list" class="{{amenity.amenity.icon}}">
@@ -132,7 +135,7 @@
           <div class="amenities-all-link">
             <a id="all_amenities" data-ui-sref="amenities-at-location({location: location.slug})"
             class="read-more">
-              {{ 'ALL_AMENITIES' | translate }}
+              See all amenities
             </a>
           </div>
         </div>
@@ -142,7 +145,7 @@
 
   <!-- Divisions (API dependent) -->
   <div id="container__divisions" data-ng-if="location.type == 'research' && location._embedded.divisions">
-    <h2 class="hdg">{{ 'DIVISION_HEADER' | translate }}</h2>
+    <h2 class="hdg">DIVISIONS</h2>
     <div class="grid">
       <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
         data-ng-repeat='division in location._embedded.divisions'>
@@ -175,7 +178,7 @@
 
   <!-- Features -->
   <div id="container__features" data-ng-if="location._embedded.features">
-    <h2 class="hdg">{{ 'FEATURED' | translate }}</h2>
+    <h2 class="hdg">FEATURED</h2>
     <div class="grid">
       <div class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in location._embedded.features'>
         <a data-ng-href="{{feature._links.self.href}}" data-ng-if="feature.image"
@@ -199,7 +202,7 @@
 
   <!-- Events -->
   <div id="container__events" data-ng-if="location._embedded.events">
-    <h2 class="hdg">{{ 'EVENTS' | translate }}</h2>
+    <h2 class="hdg">EVENTS</h2>
     <ul class="grid">
       <li class="chunk one-whole desk-one-third" data-ng-repeat="event in location._embedded.events">
         <h3 class="event__title">
@@ -246,7 +249,7 @@
       <a class="read-more events-more" data-ng-href="{{location._links.events.all}}"
         analytics-on="click" analytics-category="Locations"
         analytics-event="Event" analytics-label="See all">
-        {{ 'MORE_EVENTS' | translate }}
+        See more events
       </a>
     </div>
   </div>
@@ -254,13 +257,13 @@
   <!-- About (multi-view conditional) -->
   <div id="container__about">
     <h2 class="hdg" data-ng-if="location.type == 'circulating'">
-      {{ 'ABOUT' | translate }}
+      ABOUT
     </h2>
     <div class="grid">
       <div id="about" class="grid__item one-whole"
         data-ng-class="{true: 'lap-and-up-two-thirds', false: ''}[location.type == 'research']">
         <h2 class="hdg" data-ng-if="location.type == 'research'">
-          {{ 'ABOUT' | translate }}
+          About
         </h2>
         <div class="grid">
           <div id="location-secondary-img" class="grid__item one-whole lap-and-up-one-half" data-ng-if="location.images.interior">
@@ -275,7 +278,7 @@
               <a class="read-more" data-ng-href="{{location._links.self.about}}"
                 analytics-on="click" analytics-category="Locations"
                 analytics-event="Click" analytics-label="Learn More">
-                {{ 'ABOUT_MORE' | translate }}
+                Learn more
               </a>
             </div>
           </div>
@@ -286,12 +289,12 @@
 
         <!-- Display Plan your visit info only in Research and Division locations -->
         <div id="plan-your-visit">
-          <h2 class="hdg">{{ 'PLAN_YOUR_VISIT' | translate }}</h2>
+          <h2 class="hdg">Plan Your Visit</h2>
           <a data-ng-if="location._links.contact.href" data-ng-href="{{location._links.contact.href}}"
             class="btn" id="ask-librarian"
             analytics-on="click" analytics-category="Locations"
             analytics-event="Click" analytics-label="Email Librarian">
-            {{ 'ASK_LIBRARIAN' | translate }}
+            Email a Librarian
           </a>
           <!-- Plan your visit items -->
           <ul class="soft-half--ends delta" data-ng-if="location.plan_your_visit">
@@ -310,7 +313,7 @@
 
   <!-- Blogs (conditonal) -->
   <div id="container__blogs" data-ng-if="location._embedded.blogs">
-    <h2 class="hdg">{{ 'BLOGS' |translate }}</h2>
+    <h2 class="hdg">BLOGS</h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
         <h3>
@@ -340,14 +343,14 @@
       <a class="read-more blogs-more" data-ng-href="{{location._links.blogs.all}}"
         analytics-on="click" analytics-category="Locations"
         analytics-event="Click" analytics-label="See all">
-        {{ 'MORE_BLOGS' | translate }}
+        See more blog posts
       </a>
     </div>
   </div>
 
   <!-- Exhibitions (conditional) -->
   <div id="container__exhibitions" data-ng-if="location._embedded.exhibitions">
-    <h2 class="hdg">{{ 'EXHIBITIONS' | translate }}</h2>
+    <h2 class="hdg">EXHIBITIONS</h2>
     <div class="grid">
       <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat="exhibition in location._embedded.exhibitions | orderBy:'-start'">
         <a data-ng-href="{{exhibition._links.self.href}}" data-ng-if="exhibition.image"

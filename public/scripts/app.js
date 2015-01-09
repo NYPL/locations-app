@@ -35,7 +35,6 @@ var nypl_locations = angular.module('nypl_locations', [
     'nyplBreadcrumbs',
     'angulartics',
     'angulartics.google.analytics',
-    'pascalprecht.translate',
     'newrelic-timing'
 ]);
 
@@ -44,14 +43,12 @@ nypl_locations.constant('_', window._);
 nypl_locations.config([
     '$analyticsProvider',
     '$locationProvider',
-    '$translateProvider',
     '$stateProvider',
     '$urlRouterProvider',
     '$crumbProvider',
     function (
         $analyticsProvider,
         $locationProvider,
-        $translateProvider,
         $stateProvider,
         $urlRouterProvider,
         $crumbProvider
@@ -64,14 +61,6 @@ nypl_locations.config([
 
         // uses the HTML5 History API, remove hash (need to test)
         $locationProvider.html5Mode(true);
-
-        // Lazy loads static files with English being
-        // the first language that gets loaded.
-        $translateProvider.useStaticFilesLoader({
-            prefix: 'languages/',
-            suffix: '.json'
-        });
-        $translateProvider.preferredLanguage('en');
 
         function LoadLocation($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
@@ -264,7 +253,7 @@ nypl_locations.run(function ($analytics, $state, $rootScope, $location) {
     $rootScope.$on('$stateChangeStart', function () {
         $rootScope.close_feedback = true;
     });
-    $rootScope.$on('$stateChangeSuccess', function () {
+    $rootScope.$on('$viewContentLoaded', function () {
         $analytics.pageTrack('/locations' + $location.path());
         $rootScope.current_url = $location.absUrl();
     });
