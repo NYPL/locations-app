@@ -583,7 +583,6 @@ nypl_locations.config([
         LoadDivision.$inject = ["$stateParams", "config", "nyplLocationsService"];
 
         function LoadDivisions(config, nyplLocationsService) {
-            console.log('test1');
             return nyplLocationsService
                 .allDivisions()
                 .then(function (data) {
@@ -608,7 +607,6 @@ nypl_locations.config([
         Amenities.$inject = ["$stateParams", "config", "nyplLocationsService"];
 
         function getConfig(nyplLocationsService) {
-            console.log('test)');
             return nyplLocationsService.getConfig();
         }
         getConfig.$inject = ["nyplLocationsService"];

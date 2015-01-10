@@ -10,17 +10,27 @@
       </span>
       <span class='filters-wrapper' collapse="expand" duration="2500">
         <span class='filterable-by'>
-          <button data-ng-repeat="term in terms" data-ng-click="setSubterms($index, term)"
-            data-ng-class="{active: $index == selected}">
+          <button data-ng-repeat="term in terms"
+            data-ng-click="setSubterms($index, term)"
+            data-ng-class="{active: selected == $index}">
             {{term.name}}
           </button>
-          <button data-ng-click="setLocations(divisionLocations)" data-ng-class="{active: activeFilter}">Locations</button>
+         <!--  <button data-ng-click="setLocations(divisionLocations)" data-ng-class="{active: activeFilter}">Locations</button> -->
         </span>
 
         <div class='sub-filters'>
-          <ul data-ng-class="{'locations-active': activeFilter}" data-ng-if="subterms">
-            <li class="term {{term.name}}" data-ng-repeat="term in subterms">
-              <a href="" data-ng-click="filterDivisionsBy($index, term)" data-ng-model="term.name" data-ng-class="{active: $index == selectedSubterm}">{{term.name}}</a>
+          <ul data-ng-class="{'locations-active': activeFilter}">
+            <li class="term {{term.name}}" data-ng-repeat="term in terms[0].terms" data-ng-show="active_filter == 'Subjects'">
+              <a href="" data-ng-click="filterDivisionsBy($index, term)"
+                data-ng-model="term.name" data-ng-class="{active: subjectFilter == 'term.name'}">{{term.name}}</a>
+            </li>
+            <li class="term {{term.name}}" data-ng-repeat="term in terms[1].terms" data-ng-show="active_filter == 'Media'">
+              <a href="" data-ng-click="filterDivisionsBy($index, term)"
+                data-ng-model="term.name" data-ng-class="{active: $index == selectedSubterm}">{{term.name}}</a>
+            </li>
+            <li class="term {{term.name}}" data-ng-repeat="term in terms[2].locations" data-ng-show="active_filter == 'Locations'">
+              <a href="" data-ng-click="filterDivisionsBy($index, term)"
+                data-ng-model="term.name" data-ng-class="{active: $index == selectedSubterm}">{{term.name}}</a>
             </li>
           </ul>
         </div>

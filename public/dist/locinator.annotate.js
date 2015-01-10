@@ -102,7 +102,6 @@ nypl_locations.config([
         LoadDivision.$inject = ["$stateParams", "config", "nyplLocationsService"];
 
         function LoadDivisions(config, nyplLocationsService) {
-            console.log('test1');
             return nyplLocationsService
                 .allDivisions()
                 .then(function (data) {
@@ -127,7 +126,6 @@ nypl_locations.config([
         Amenities.$inject = ["$stateParams", "config", "nyplLocationsService"];
 
         function getConfig(nyplLocationsService) {
-            console.log('test)');
             return nyplLocationsService.getConfig();
         }
         getConfig.$inject = ["nyplLocationsService"];
@@ -2173,6 +2171,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         return nyplLocationsService
                 .terms()
                 .then(function (data) {
+                  console.log(data.terms);
                   $scope.terms = data.terms;
                 });
                 // .catch(function (error) {
@@ -2191,10 +2190,10 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
 
                   divisions.push(sibl);
                   $scope.divisionLocations.push(sibl);
-                  console.log(divisions);
                 });
       };
 
+    $scope.active_filter = 'subjects';
     $rootScope.title = "Research Collections";
     $scope.divisions = divisions;
     // Get saved values first, if not then the default will display.
@@ -2215,28 +2214,30 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                                 .flatten()
                                 .value();
 
+
+    console.log($scope.divisionLocations);
     loadSIBL();
     loadTerms();
 
     $scope.setSubterms = function (index, term) {
       var subterms;
 
-      // The Subjects term has nested terms so we must pluck the 
-      // terms property from every term. Check the API.
-      if (term.id == 42) {
-        subterms = _.chain($scope.terms[index].terms)
-          .pluck('terms')
-          .flatten(true)
-          .unique()
-          .value();
-      } else {
-      // The Media term has all the terms listed as a flat array.
-        subterms = $scope.terms[index].terms;
-      }
+      $scope.active_filter = term.name;
+      // // The Subjects term has nested terms so we must pluck the
+      // // terms property from every term. Check the API.
+      // if (term.id == 42) {
+      //   subterms = _.chain($scope.terms[index].terms)
+      //     .pluck('terms')
+      //     .flatten(true)
+      //     .unique()
+      //     .value();
+      // } else {
+      // // The Media term has all the terms listed as a flat array.
+      //   subterms = $scope.terms[index].terms;
+      // }
 
       // Save the filter. Need to add one for the the parent term.
       researchCollectionService.setResearchValue('subterms', subterms);
-      $scope.subterms = subterms;
 
       // For the data-ng-class for the active buttons. Reset the subterm button.
       $scope.selected = index;
@@ -2247,6 +2248,9 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     $scope.filterDivisionsBy = function (index, selectedTerm) {
       var termID = selectedTerm.id;
 
+      subjectFilter
+console.log(index);
+console.log(selectedTerm);
       // Set class active to the subterm.
       $scope.selectedSubterm = index;
       $scope.filteredDivisions = $scope.divisions.filter(function (division) {
