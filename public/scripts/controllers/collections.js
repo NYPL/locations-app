@@ -28,13 +28,11 @@
         return nyplLocationsService
                 .terms()
                 .then(function (data) {
-                  console.log(data.terms);
                   data.terms.push({
                     name: 'Locations',
                     locations: $scope.divisionLocations
                   });
                   $scope.terms = data.terms;
-                  console.log($scope.terms);
                 });
                 // .catch(function (error) {
                 //     throw error;
@@ -55,6 +53,7 @@
                 });
       };
 
+    $scope.filter_results = [];
     $scope.active_filter = 'subjects';
     $rootScope.title = "Research Collections";
     $scope.divisions = divisions;
@@ -76,8 +75,6 @@
                                 .flatten()
                                 .value();
 
-
-    console.log($scope.divisionLocations);
     loadSIBL();
     loadTerms();
 
@@ -109,18 +106,49 @@
 
       // For the data-ng-class for the active buttons. Reset the subterm button.
       $scope.selected = index;
-      $scope.activeFilter = false;
-      $scope.selectedSubterm = undefined;
+      // $scope.selectedSubterm = undefined;
     };
 
-    $scope.filterDivisionsBy = function (index, selectedTerm) {
-      var termID = selectedTerm.id;
+    function activeSubterm(label, term) {
+      console.log($scope.filter_results);
+      console.log(_.indexOf($scope.filter_results, {name: term.name, label: label}) !== -1);
+      if (_.findWhere($scope.filter_results, {label: label, name: term.name, active: true})) {
+        $scope['selected' + label + 'Subterm'] = undefined;
+        $scope.filter_results.pop();
+        return;
+      }
 
-      subjectFilter
-console.log(index);
-console.log(selectedTerm);
-      // Set class active to the subterm.
-      $scope.selectedSubterm = index;
+      if (!_.findWhere($scope.filter_results, {label: label})) {
+        $scope.filter_results.push({label: label, name: term.name});
+      } else {
+        _.each($scope.filter_results, function (subterm) {
+          if (subterm.label == label) {
+            subterm.name = term.name;
+          }
+        });
+      }
+    }
+
+    function selectSubTermForCategory(index, term) {
+      switch ($scope.active_filter) {
+        case 'Subjects':
+          $scope.selectedSubjectsSubterm = index;
+          activeSubterm('Subjects', term);
+          break;
+        case 'Media':
+          $scope.selectedMediaSubterm = index;
+          activeSubterm('Media', term);
+          break;
+        case 'Locations':
+          $scope.selectedLocationsSubterm = index;
+          activeSubterm('Locations', term);
+          break;
+        default:
+          break;
+      }
+    }
+
+    function filterDivisions(termID) {
       $scope.filteredDivisions = $scope.divisions.filter(function (division) {
         var found;
 
@@ -145,10 +173,17 @@ console.log(selectedTerm);
         // false if no object was found.
         return !!found;
       });
+    }
+
+    $scope.filterDivisionsBy = function (index, selectedTerm) {
+      // For highlighting the active subterm
+      selectSubTermForCategory(index, selectedTerm);
 
       // Save the filtered divisions for later.
       researchCollectionService
         .setResearchValue('filteredDivisions', $scope.filteredDivisions);
+
+      return filterDivisions(selectedTerm.id)
     };
 
     $scope.setLocations = function (obj) {
