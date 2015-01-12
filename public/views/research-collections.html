@@ -31,15 +31,20 @@
               <a href="" data-ng-click="filterDivisionsBy($index, term)"
                 data-ng-model="term.name" data-ng-class="{active: $index == selectedLocationsSubterm}">{{term.name}}</a>
             </li>
+
+           <!--  <li data-ng-repeat-start="subterm in terms">
+              <p data-ng-repeat="s in subterm.terms">{{s.name}}</p>
+            <li data-ng-repeat-end>
+ -->
           </ul>
         </div>
       </span>
     </div>
 
-    <div class="filter_results" data-ng-if='filter_results.length != 0'>
+    <div class="filter_results" data-ng-if='active_filter'>
       Current filters:
       <ul>
-        <li data-ng-repeat='fr in filter_results'>
+        <li data-ng-repeat='fr in filter_results | filter:{active: true}'>
           {{fr.label}}: {{fr.name}}
         </li>
       </ul>

@@ -28,11 +28,21 @@
         return nyplLocationsService
                 .terms()
                 .then(function (data) {
-                  data.terms.push({
+                  var dataTerms = [];
+                  dataTerms.push({
+                    name: 'Subjects',
+                    terms: _.chain(data.terms[0].terms)
+                            .pluck('terms')
+                            .flatten(true)
+                            .unique()
+                            .value()
+                  });
+                  dataTerms.push(data.terms[1]);
+                  dataTerms.push({
                     name: 'Locations',
                     locations: $scope.divisionLocations
                   });
-                  $scope.terms = data.terms;
+                  $scope.terms = dataTerms;
                 });
                 // .catch(function (error) {
                 //     throw error;
@@ -53,7 +63,11 @@
                 });
       };
 
-    $scope.filter_results = [];
+    $scope.filter_results = [
+      {label: 'Subjects', name: '', active: false},
+      {label: 'Media', name: '', active: false},
+      {label: 'Locations', name: '', active: false}
+    ];
     $scope.active_filter = 'subjects';
     $rootScope.title = "Research Collections";
     $scope.divisions = divisions;
@@ -88,42 +102,33 @@
       }
 
       $scope.active_filter = term.name;
-      // // The Subjects term has nested terms so we must pluck the
-      // // terms property from every term. Check the API.
-      // if (term.id == 42) {
-      //   subterms = _.chain($scope.terms[index].terms)
-      //     .pluck('terms')
-      //     .flatten(true)
-      //     .unique()
-      //     .value();
-      // } else {
-      // // The Media term has all the terms listed as a flat array.
-      //   subterms = $scope.terms[index].terms;
-      // }
 
       // Save the filter. Need to add one for the the parent term.
       researchCollectionService.setResearchValue('subterms', subterms);
 
       // For the data-ng-class for the active buttons. Reset the subterm button.
       $scope.selected = index;
-      // $scope.selectedSubterm = undefined;
     };
 
     function activeSubterm(label, term) {
-      console.log($scope.filter_results);
-      console.log(_.indexOf($scope.filter_results, {name: term.name, label: label}) !== -1);
-      if (_.findWhere($scope.filter_results, {label: label, name: term.name, active: true})) {
-        $scope['selected' + label + 'Subterm'] = undefined;
-        $scope.filter_results.pop();
-        return;
-      }
+      var currentSelected = _.findWhere(
+          $scope.filter_results,
+          {label: label, name: term.name}
+        );
 
-      if (!_.findWhere($scope.filter_results, {label: label})) {
-        $scope.filter_results.push({label: label, name: term.name});
-      } else {
+      if (!currentSelected) {
         _.each($scope.filter_results, function (subterm) {
           if (subterm.label == label) {
             subterm.name = term.name;
+            subterm.active = true;
+          }
+        });
+      } else {
+        $scope['selected' + label + 'Subterm'] = undefined;
+        _.each($scope.filter_results, function (subterm) {
+          if (subterm.label == label) {
+            subterm.name = '';
+            subterm.active = false;
           }
         });
       }
@@ -183,7 +188,7 @@
       researchCollectionService
         .setResearchValue('filteredDivisions', $scope.filteredDivisions);
 
-      return filterDivisions(selectedTerm.id)
+      return filterDivisions(selectedTerm.id);
     };
 
     $scope.setLocations = function (obj) {
