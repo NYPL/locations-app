@@ -480,7 +480,7 @@ angular.module('nypl_research_collections', [
             return nyplLocationsService.getConfig();
         }
 
-        // uses the HTML5 History API, remove hash (need to test)
+        // uses the HTML5 History API
         $locationProvider.html5Mode(true);
         $urlRouterProvider.otherwise('/research-collections');
 
