@@ -462,6 +462,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
 angular.module('nypl_research_collections', [
     'ngSanitize',
     'ui.router',
+    'ngAnimate',
     'locationService',
     'coordinateService',
     'angulartics',
@@ -2393,11 +2394,6 @@ angular.module('nypl_research_collections', [
           // }
         // }
 
-        console.log(foundArr);
-
-        if (foundArr.length === idsToCheck.length) {
-          console.log('same length');
-        }
         // Return the boolean value of found. True if there's an object,
         // false if no object was found.
         return (foundArr.length === idsToCheck.length);

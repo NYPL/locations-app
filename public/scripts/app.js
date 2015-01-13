@@ -453,6 +453,7 @@ nypl_widget.run(function ($rootScope, nyplUtility) {
 angular.module('nypl_research_collections', [
     'ngSanitize',
     'ui.router',
+    'ngAnimate',
     'locationService',
     'coordinateService',
     'angulartics',
