@@ -29,7 +29,7 @@
          */
         locationsApi.getConfig = function () {
             var defer = $q.defer();
-
+console.log('calling config');
             if (config) {
                defer.resolve(config);
             } else {
@@ -119,7 +119,7 @@
 
         locationsApi.allDivisions = function () {
             var defer = $q.defer();
-
+console.log('calling all divisions');
             $http.jsonp(
                 api + '/divisions/?callback=JSON_CALLBACK', {cache: true}
             )
@@ -287,7 +287,7 @@
 
         locationsApi.terms = function () {
             var defer = $q.defer();
-
+console.log('calling all terms');
             $http.jsonp(
                     api + '/terms' + '?callback=JSON_CALLBACK',
                     {cache: true}
