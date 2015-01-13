@@ -64,9 +64,9 @@
       };
 
     $scope.filter_results = [
-      {label: 'Subjects', name: '', active: false},
-      {label: 'Media', name: '', active: false},
-      {label: 'Locations', name: '', active: false}
+      {label: 'Subjects', name: '', id: undefined, active: false},
+      {label: 'Media', name: '', id: undefined, active: false},
+      {label: 'Locations', name: '', id: undefined, active: false}
     ];
     $scope.active_filter = 'subjects';
     $rootScope.title = "Research Collections";
@@ -121,72 +121,113 @@
           if (subterm.label == label) {
             subterm.name = term.name;
             subterm.active = true;
+            subterm.id = term.id;
           }
         });
+        return true;
       } else {
         $scope['selected' + label + 'Subterm'] = undefined;
         _.each($scope.filter_results, function (subterm) {
           if (subterm.label == label) {
             subterm.name = '';
             subterm.active = false;
+            subterm.id = undefined;
           }
         });
+        return false;
       }
     }
 
     function selectSubTermForCategory(index, term) {
+      var selectOrDeselect;
       switch ($scope.active_filter) {
         case 'Subjects':
           $scope.selectedSubjectsSubterm = index;
-          activeSubterm('Subjects', term);
+          selectOrDeselect = activeSubterm('Subjects', term);
           break;
         case 'Media':
           $scope.selectedMediaSubterm = index;
-          activeSubterm('Media', term);
+          selectOrDeselect = activeSubterm('Media', term);
           break;
         case 'Locations':
           $scope.selectedLocationsSubterm = index;
-          activeSubterm('Locations', term);
+          selectOrDeselect = activeSubterm('Locations', term);
           break;
         default:
           break;
       }
+
+      return selectOrDeselect;
     }
 
-    function filterDivisions(termID) {
+    function getIDFilters() {
+      return _.chain($scope.filter_results)
+              .filter(function (filter) {
+                return filter.active;
+              })
+              .map(function (filter){
+                return filter.id; 
+              })
+              .value();
+    }
+
+    function filterDivisions() {
+      var idsToCheck = getIDFilters();
+
       $scope.filteredDivisions = $scope.divisions.filter(function (division) {
-        var found;
+        var foundArr = [];
+
+        // if (!termID) return true;
 
         // Only search through divisions with terms property
-        if (division.terms) {
-          // Search through each parent term
-          _.each(division.terms, function (parentTerm) {
-            // If already found, no need to keep searching;
+        // if (division.terms) {
+          _.each(idsToCheck, function (termID) {
+            var found = false;
+            // Search through each parent term
+            _.each(division.terms, function (parentTerm) {
+              // If already found, no need to keep searching;
+              if (!found) {
+                // Find the term where the ID matches what was selected
+                found = _.find(parentTerm.terms, function (term) {
+                  return term.id === termID;
+                });
+                if (found) foundArr.push(true);
+              }
+            });
+
             if (!found) {
-              // Find the term where the ID matches what was selected
-              found = _.find(parentTerm.terms, function (term) {
-                return term.id === termID;
-              });
+              if (division._embedded.location.id === termID) {
+                foundArr.push(true);
+              }
             }
           });
-        } else if (division._embedded.location) {
+        // } else if (division._embedded.location) {
           // Matches Locations w/ ID
-          found = division._embedded.location.id === termID;
-        }
+          // if (division._embedded.location.id === termID) {
+          //   foundArr.push(true);
+          // }
+        // }
 
+        console.log(foundArr);
+
+        if (foundArr.length === idsToCheck.length) {
+          console.log('same length');
+        }
         // Return the boolean value of found. True if there's an object,
         // false if no object was found.
-        return !!found;
+        return (foundArr.length === idsToCheck.length);
       });
     }
 
     $scope.filterDivisionsBy = function (index, selectedTerm) {
       // For highlighting the active subterm
-      selectSubTermForCategory(index, selectedTerm);
+      if (!selectSubTermForCategory(index, selectedTerm)) {
+        return filterDivisions();
+      }
 
-      // Save the filtered divisions for later.
-      researchCollectionService
-        .setResearchValue('filteredDivisions', $scope.filteredDivisions);
+      // // Save the filtered divisions for later.
+      // researchCollectionService
+      //   .setResearchValue('filteredDivisions', $scope.filteredDivisions);
 
       return filterDivisions(selectedTerm.id);
     };

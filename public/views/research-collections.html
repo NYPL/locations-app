@@ -27,7 +27,7 @@
               <a href="" data-ng-click="filterDivisionsBy($index, term)"
                 data-ng-model="term.name" data-ng-class="{active: $index == selectedMediaSubterm}">{{term.name}}</a>
             </li>
-            <li class="term {{term.name}}" data-ng-repeat="term in terms[2].locations" data-ng-show="active_filter == 'Locations'">
+            <li class="term {{term.name}}" data-ng-repeat="term in terms[2].locations" data-ng-show="active_filter == 'Locations'" data-ng-class="{mobileRemove: $index != selectedLocationsSubterm, active: active_filter == 'Locations'}">
               <a href="" data-ng-click="filterDivisionsBy($index, term)"
                 data-ng-model="term.name" data-ng-class="{active: $index == selectedLocationsSubterm}">{{term.name}}</a>
             </li>
