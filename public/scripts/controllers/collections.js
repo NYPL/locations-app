@@ -28,16 +28,17 @@
         return nyplLocationsService
                 .terms()
                 .then(function (data) {
+                  console.log(data);
                   var dataTerms = [];
+                  dataTerms.push(data.terms[0]);
                   dataTerms.push({
                     name: 'Subjects',
-                    terms: _.chain(data.terms[0].terms)
+                    terms: _.chain(data.terms[1].terms)
                             .pluck('terms')
                             .flatten(true)
                             .unique()
                             .value()
                   });
-                  dataTerms.push(data.terms[1]);
                   dataTerms.push({
                     name: 'Locations',
                     locations: $scope.divisionLocations
