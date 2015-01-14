@@ -2,7 +2,6 @@
 /*global describe, require, beforeEach, browser, it,
 console, protractor, expect, element, by */
 
-
 describe('Google analytics configuration', function () {
   'use strict';
 
@@ -24,14 +23,14 @@ describe('Google analytics configuration', function () {
            "}";
   }
 
+  // Structure of pageview array for angularitics plugin
+  // ['send', 'pageview', 'URL']
   describe('Page view tracking', function () {
     beforeEach(function () {
       browser.get('/');
       browser.waitForAngular();
       browser.executeScript(mockGA());
     });
-    // Structure of array
-    // ['send', 'pageview', 'URL']
 
     it('should log a branch path as a page view', function () {
       // This triggers a click event and a pageview event
@@ -64,7 +63,8 @@ describe('Google analytics configuration', function () {
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
         expect(ga[4][1]).toEqual('pageview');
-        expect(ga[4][2]).toEqual('/locations/divisions/general-research-division');
+        expect(ga[4][2])
+          .toEqual('/locations/divisions/general-research-division');
       });
     });
 
@@ -87,14 +87,14 @@ describe('Google analytics configuration', function () {
     });
   });
 
+  // Structure of event array for angularitics plugin
+  // ['send', 'event', {eventLabel: '', eventAction: '', eventCategory: ''}]
   describe('Homepage event tracking', function () {
     beforeEach(function () {
       browser.get('/');
       browser.waitForAngular();
       browser.executeScript(mockGA());
     });
-    // Structure of array
-    // ['send', 'event', 'Category', 'Event/Action', 'Label']
 
     describe('Geolocation search button', function () {
       beforeEach(function () {
@@ -105,9 +105,10 @@ describe('Google analytics configuration', function () {
 
       it('should track a click event', function () {
         browser.executeScript('return window.ga_msg;').then(function (ga) {
-          expect(ga[0][2]).toEqual('Locations');
-          expect(ga[0][3]).toEqual('Filter by');
-          expect(ga[0][4]).toEqual('Near me');
+          console.log(ga);
+          expect(ga[0][2].eventCategory).toEqual('Locations');
+          expect(ga[0][2].eventAction).toEqual('Filter by');
+          expect(ga[0][2].eventLabel).toEqual('Near me');
         });
       });
 
@@ -124,9 +125,9 @@ describe('Google analytics configuration', function () {
         landingPage.onlyResearch.click();
 
         browser.executeScript('return window.ga_msg;').then(function (ga) {
-          expect(ga[0][2]).toEqual('Locations');
-          expect(ga[0][3]).toEqual('Filter by');
-          expect(ga[0][4]).toEqual('Research');
+          expect(ga[0][2].eventCategory).toEqual('Locations');
+          expect(ga[0][2].eventAction).toEqual('Filter by');
+          expect(ga[0][2].eventLabel).toEqual('Research');
         });
       });
     });
@@ -137,9 +138,9 @@ describe('Google analytics configuration', function () {
           landingPage.mapViewBtn.click();
 
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Locations');
-            expect(ga[0][3]).toEqual('View');
-            expect(ga[0][4]).toEqual('Map view');
+            expect(ga[0][2].eventCategory).toEqual('Locations');
+            expect(ga[0][2].eventAction).toEqual('View');
+            expect(ga[0][2].eventLabel).toEqual('Map view');
 
             expect(ga[1][1]).toEqual('pageview');
             expect(ga[1][2]).toEqual('/locations/map');
@@ -156,9 +157,9 @@ describe('Google analytics configuration', function () {
           landingPage.listViewBtn.click();
 
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[2][2]).toEqual('Locations');
-            expect(ga[2][3]).toEqual('View');
-            expect(ga[2][4]).toEqual('List view');
+            expect(ga[2][2].eventCategory).toEqual('Locations');
+            expect(ga[2][2].eventAction).toEqual('View');
+            expect(ga[2][2].eventLabel).toEqual('List view');
 
             expect(ga[3][1]).toEqual('pageview');
             expect(ga[3][2]).toEqual('/locations/list');
@@ -175,9 +176,9 @@ describe('Google analytics configuration', function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
             // ga[0] is the click event on the library name from the list
             // ga[1] is the pageview event
-            expect(ga[0][2]).toEqual('Locations');
-            expect(ga[0][3]).toEqual('Click');
-            expect(ga[0][4]).toEqual('115th Street Library (list)');
+            expect(ga[0][2].eventCategory).toEqual('Locations');
+            expect(ga[0][2].eventAction).toEqual('Click');
+            expect(ga[0][2].eventLabel).toEqual('115th Street Library (list)');
 
             expect(ga[1][1]).toEqual('pageview');
             expect(ga[1][2]).toEqual('/locations/115th-street');
@@ -196,9 +197,9 @@ describe('Google analytics configuration', function () {
             // ga[0] is the pageview to the map page (from the search)
             // ga[1] is the click event on the library name from the list
             // ga[2] is the pageview event
-            expect(ga[2][2]).toEqual('Locations');
-            expect(ga[2][3]).toEqual('Click');
-            expect(ga[2][4]).toEqual('Mid-Manhattan Library (map)');
+            expect(ga[2][2].eventCategory).toEqual('Locations');
+            expect(ga[2][2].eventAction).toEqual('Click');
+            expect(ga[2][2].eventLabel).toEqual('Mid-Manhattan Library (map)');
 
             expect(ga[3][1]).toEqual('pageview');
             expect(ga[3][2]).toEqual('/locations/mid-manhattan-library');
@@ -212,9 +213,9 @@ describe('Google analytics configuration', function () {
           browser.waitForAngular();
 
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Locations');
-            expect(ga[0][3]).toEqual('View map');
-            expect(ga[0][4]).toEqual('115th Street Library (list)');
+            expect(ga[0][2].eventCategory).toEqual('Locations');
+            expect(ga[0][2].eventAction).toEqual('View map');
+            expect(ga[0][2].eventLabel).toEqual('115th Street Library (list)');
 
             expect(ga[1][1]).toEqual('pageview');
             expect(ga[1][2]).toEqual('/locations/map');
@@ -230,9 +231,9 @@ describe('Google analytics configuration', function () {
           landingPage.nthLocViewMapBtn(0).click();
 
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[2][2]).toEqual('Locations');
-            expect(ga[2][3]).toEqual('View map');
-            expect(ga[2][4]).toEqual('115th Street Library (map)');
+            expect(ga[2][2].eventCategory).toEqual('Locations');
+            expect(ga[2][2].eventAction).toEqual('View map');
+            expect(ga[2][2].eventLabel).toEqual('115th Street Library (map)');
           });
         });
 
@@ -267,16 +268,16 @@ describe('Google analytics configuration', function () {
   });
 
   describe('Branch/Research tracking', function () {
-    it('should track clicking on the "On Our Shelves Now" button', function () {
+    it('should track a click on the "On Our Shelves Now" button', function () {
       browser.get('/67th-street');
       browser.waitForAngular();
       browser.executeScript(mockGA());
 
       locationPage.catalog_link.click(function () {
         browser.executeScript('return window.ga_msg;').then(function (ga) {
-          expect(ga[0][2]).toEqual('Locations');
-          expect(ga[0][3]).toEqual('Click');
-          expect(ga[0][4]).toEqual('On Our Shelves');
+          expect(ga[0][2].eventCategory).toEqual('Locations');
+          expect(ga[0][2].eventAction).toEqual('Click');
+          expect(ga[0][2].eventLabel).toEqual('On Our Shelves');
         });
       });
     });
@@ -291,38 +292,40 @@ describe('Google analytics configuration', function () {
       it('should track on a branch', function () {
         locationPage.directions_link.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Locations');
-            expect(ga[0][3]).toEqual('Directions');
-            expect(ga[0][4]).toEqual('115th Street Library (location)');
+            expect(ga[0][2].eventCategory).toEqual('Locations');
+            expect(ga[0][2].eventAction).toEqual('Directions');
+            expect(ga[0][2].eventLabel)
+              .toEqual('115th Street Library (location)');
           });
         });
       });
     });
 
-    // it('should track social media click events', function () {
-    //   browser.get('/115th-street');
-    //   browser.waitForAngular();
-    //   browser.executeScript(mockGA());
+      // it('should track social media click events', function () {
+      //   browser.get('/115th-street');
+      //   browser.waitForAngular();
+      //   browser.executeScript(mockGA());
 
-    //   locationPage.social_media.each(function (sm) {
-    //     sm.click().then(function () {
-    //       browser.navigate().back();
-    //       browser.getAllWindowHandles().then(function (handles) {
-    //         var newWindowHandle = handles[1];
+      //   locationPage.social_media.each(function (sm) {
+      //     sm.click().then(function () {
+      //       browser.navigate().back();
+      //       browser.getAllWindowHandles().then(function (handles) {
+      //         var newWindowHandle = handles[1];
 
-    //         browser.switchTo().window(newWindowHandle).then(function () {
-    //           browser.driver.close().then(function () {
-    //             browser.switchTo().window(appWindow);
-    //           });
-    //         });
+      //         browser.switchTo().window(newWindowHandle).then(function () {
+      //           browser.driver.close().then(function () {
+      //             browser.switchTo().window(appWindow);
+      //           });
+      //         });
 
-    //         browser.executeScript('return window.ga_msg;').then(function (ga) {
-    //           console.log(ga);
-    //         });
-    //       });
-    //     });
-    //   });
-    // });
+      //         browser.executeScript('return window.ga_msg;')
+      //             .then(function (ga) {
+      //           console.log(ga);
+      //         });
+      //       });
+      //     });
+      //   });
+      // });
 
     it('should track the NYPL ASK click event', function () {
       browser.get('/115th-street');
@@ -332,9 +335,9 @@ describe('Google analytics configuration', function () {
       locationPage.askNYPL.click();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[0][2]).toEqual('Locations');
-        expect(ga[0][3]).toEqual('Click');
-        expect(ga[0][4]).toEqual('Chat');
+        expect(ga[0][2].eventCategory).toEqual('Locations');
+        expect(ga[0][2].eventAction).toEqual('Click');
+        expect(ga[0][2].eventLabel).toEqual('Chat');
       });
     });
 
@@ -346,9 +349,9 @@ describe('Google analytics configuration', function () {
       locationPage.askNYPL.click();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[0][2]).toEqual('Locations');
-        expect(ga[0][3]).toEqual('Click');
-        expect(ga[0][4]).toEqual('Chat');
+        expect(ga[0][2].eventCategory).toEqual('Locations');
+        expect(ga[0][2].eventAction).toEqual('Click');
+        expect(ga[0][2].eventLabel).toEqual('Chat');
       });
     });
 
@@ -360,9 +363,9 @@ describe('Google analytics configuration', function () {
       locationPage.askNYPL.click();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[0][2]).toEqual('Locations');
-        expect(ga[0][3]).toEqual('Click');
-        expect(ga[0][4]).toEqual('Chat');
+        expect(ga[0][2].eventCategory).toEqual('Locations');
+        expect(ga[0][2].eventAction).toEqual('Click');
+        expect(ga[0][2].eventLabel).toEqual('Chat');
       });
     });
 
@@ -376,9 +379,9 @@ describe('Google analytics configuration', function () {
         browser.waitForAngular();
 
         browser.executeScript('return window.ga_msg;').then(function (ga) {
-          expect(ga[0][2]).toEqual('Locations');
-          expect(ga[0][3]).toEqual('Division Title');
-          expect(ga[0][4]).toEqual('Dorot Jewish Division');
+          expect(ga[0][2].eventCategory).toEqual('Locations');
+          expect(ga[0][2].eventAction).toEqual('Division Title');
+          expect(ga[0][2].eventLabel).toEqual('Dorot Jewish Division');
         });
       });
 
@@ -391,22 +394,21 @@ describe('Google analytics configuration', function () {
         browser.waitForAngular();
 
         browser.executeScript('return window.ga_msg;').then(function (ga) {
-          expect(ga[0][2]).toEqual('Locations');
-          expect(ga[0][3]).toEqual('Division Title');
-          expect(ga[0][4]).toEqual('Rare Book Division');
+          expect(ga[0][2].eventCategory).toEqual('Locations');
+          expect(ga[0][2].eventAction).toEqual('Division Title');
+          expect(ga[0][2].eventLabel).toEqual('Rare Book Division');
         });
 
         element(by.linkText('George Arents Collection')).click();
         browser.waitForAngular();
         browser.executeScript('return window.ga_msg;').then(function (ga) {
-          expect(ga[2][2]).toEqual('Locations');
-          expect(ga[2][3]).toEqual('Division Title');
-          expect(ga[2][4]).toEqual('George Arents Collection');
+          expect(ga[2][2].eventCategory).toEqual('Locations');
+          expect(ga[2][2].eventAction).toEqual('Division Title');
+          expect(ga[2][2].eventLabel).toEqual('George Arents Collection');
         });
 
       });
     });
-
   });
 
   describe('Autofill events', function () {
@@ -423,9 +425,9 @@ describe('Google analytics configuration', function () {
         browser.waitForAngular();
 
         browser.executeScript('return window.ga_msg;').then(function (ga) {
-          expect(ga[0][2]).toEqual('Locations');
-          expect(ga[0][3]).toEqual('Accept');
-          expect(ga[0][4]).toEqual('Grand Central Library');
+          expect(ga[0][2].eventCategory).toEqual('Locations');
+          expect(ga[0][2].eventAction).toEqual('Accept');
+          expect(ga[0][2].eventLabel).toEqual('Grand Central Library');
 
           expect(ga[1][1]).toEqual('pageview');
           expect(ga[1][2]).toEqual('/locations/grand-central');
@@ -437,9 +439,9 @@ describe('Google analytics configuration', function () {
       browser.waitForAngular();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[0][2]).toEqual('Locations');
-        expect(ga[0][3]).toEqual('Search');
-        expect(ga[0][4]).toEqual('grand');
+        expect(ga[0][2].eventCategory).toEqual('Locations');
+        expect(ga[0][2].eventAction).toEqual('Search');
+        expect(ga[0][2].eventLabel).toEqual('grand');
 
         expect(ga[1][1]).toEqual('pageview');
         expect(ga[1][2]).toEqual('/locations/map');
@@ -453,9 +455,9 @@ describe('Google analytics configuration', function () {
       browser.waitForAngular();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[0][2]).toEqual('Locations');
-        expect(ga[0][3]).toEqual('Select');
-        expect(ga[0][4]).toEqual('Baychester Library');
+        expect(ga[0][2].eventCategory).toEqual('Locations');
+        expect(ga[0][2].eventAction).toEqual('Select');
+        expect(ga[0][2].eventLabel).toEqual('Baychester Library');
 
         expect(ga[1][1]).toEqual('pageview');
         expect(ga[1][2]).toEqual('/locations/baychester');
@@ -469,9 +471,9 @@ describe('Google analytics configuration', function () {
       browser.waitForAngular();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[0][2]).toEqual('Locations');
-        expect(ga[0][3]).toEqual('Select search');
-        expect(ga[0][4]).toEqual('tottenville');
+        expect(ga[0][2].eventCategory).toEqual('Locations');
+        expect(ga[0][2].eventAction).toEqual('Select search');
+        expect(ga[0][2].eventLabel).toEqual('tottenville');
 
         expect(ga[1][1]).toEqual('pageview');
         expect(ga[1][2]).toEqual('/locations/map');
@@ -485,9 +487,9 @@ describe('Google analytics configuration', function () {
       browser.waitForAngular();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[0][2]).toEqual('Locations');
-        expect(ga[0][3]).toEqual('Select view map');
-        expect(ga[0][4]).toEqual('Harlem Library');
+        expect(ga[0][2].eventCategory).toEqual('Locations');
+        expect(ga[0][2].eventAction).toEqual('Select view map');
+        expect(ga[0][2].eventLabel).toEqual('Harlem Library');
 
         expect(ga[1][1]).toEqual('pageview');
         expect(ga[1][2]).toEqual('/locations/map');
@@ -507,9 +509,9 @@ describe('Google analytics configuration', function () {
       it('should track a click event on the Get Directions link', function () {
         widgetPage.directions_link.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Location Widget');
-            expect(ga[0][3]).toEqual('Directions');
-            expect(ga[0][4]).toEqual('New Dorp Library');
+            expect(ga[0][2].eventCategory).toEqual('Location Widget');
+            expect(ga[0][2].eventAction).toEqual('Directions');
+            expect(ga[0][2].eventLabel).toEqual('New Dorp Library');
           });
         });
       });
@@ -517,9 +519,9 @@ describe('Google analytics configuration', function () {
       it('should track a click even on the social media icons', function () {
         widgetPage.social_media.get(0).click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Location Widget');
-            expect(ga[0][3]).toEqual('Social Media');
-            expect(ga[0][4]).toEqual('Facebook');
+            expect(ga[0][2].eventCategory).toEqual('Location Widget');
+            expect(ga[0][2].eventAction).toEqual('Social Media');
+            expect(ga[0][2].eventLabel).toEqual('Facebook');
           });
         });
       });
@@ -527,9 +529,9 @@ describe('Google analytics configuration', function () {
       it('should track a click event on the \'Learn More\' link', function () {
         widgetPage.locinator_url.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Location Widget');
-            expect(ga[0][3]).toEqual('Click');
-            expect(ga[0][4]).toEqual('Learn More');
+            expect(ga[0][2].eventCategory).toEqual('Location Widget');
+            expect(ga[0][2].eventAction).toEqual('Click');
+            expect(ga[0][2].eventLabel).toEqual('Learn More');
           });
         });
       });
@@ -537,9 +539,9 @@ describe('Google analytics configuration', function () {
       it('should track a click event on the Donate button', function () {
         widgetPage.donate_btn.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Location Widget');
-            expect(ga[0][3]).toEqual('Click');
-            expect(ga[0][4]).toEqual('Fundraising');
+            expect(ga[0][2].eventCategory).toEqual('Location Widget');
+            expect(ga[0][2].eventAction).toEqual('Click');
+            expect(ga[0][2].eventLabel).toEqual('Fundraising');
           });
         });
       });
@@ -547,19 +549,19 @@ describe('Google analytics configuration', function () {
       it('should track a click event on the NYPL Chat link', function () {
         widgetPage.askNYPL.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Location Widget');
-            expect(ga[0][3]).toEqual('Click');
-            expect(ga[0][4]).toEqual('Chat');
+            expect(ga[0][2].eventCategory).toEqual('Location Widget');
+            expect(ga[0][2].eventAction).toEqual('Click');
+            expect(ga[0][2].eventLabel).toEqual('Chat');
           });
         });
       });
 
-      it('should track a click event on the Email a Question link', function () {
+      it('should track a click event on Email a Question link', function () {
         widgetPage.email_us.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Location Widget');
-            expect(ga[0][3]).toEqual('Click');
-            expect(ga[0][4]).toEqual('Email Question');
+            expect(ga[0][2].eventCategory).toEqual('Location Widget');
+            expect(ga[0][2].eventAction).toEqual('Click');
+            expect(ga[0][2].eventLabel).toEqual('Email Question');
           });
         });
       });
@@ -575,9 +577,9 @@ describe('Google analytics configuration', function () {
       it('should track a click even on the social media icons', function () {
         widgetPage.social_media.get(0).click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Location Widget');
-            expect(ga[0][3]).toEqual('Social Media');
-            expect(ga[0][4]).toEqual('Facebook');
+            expect(ga[0][2].eventCategory).toEqual('Location Widget');
+            expect(ga[0][2].eventAction).toEqual('Social Media');
+            expect(ga[0][2].eventLabel).toEqual('Facebook');
           });
         });
       });
@@ -585,9 +587,9 @@ describe('Google analytics configuration', function () {
       it('should track a click event on the \'Learn More\' link', function () {
         widgetPage.locinator_url.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Location Widget');
-            expect(ga[0][3]).toEqual('Click');
-            expect(ga[0][4]).toEqual('Learn More');
+            expect(ga[0][2].eventCategory).toEqual('Location Widget');
+            expect(ga[0][2].eventAction).toEqual('Click');
+            expect(ga[0][2].eventLabel).toEqual('Learn More');
           });
         });
       });
@@ -595,9 +597,9 @@ describe('Google analytics configuration', function () {
       it('should track a click event on the Donate button', function () {
         widgetPage.donate_btn.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Location Widget');
-            expect(ga[0][3]).toEqual('Click');
-            expect(ga[0][4]).toEqual('Fundraising');
+            expect(ga[0][2].eventCategory).toEqual('Location Widget');
+            expect(ga[0][2].eventAction).toEqual('Click');
+            expect(ga[0][2].eventLabel).toEqual('Fundraising');
           });
         });
       });
@@ -605,19 +607,19 @@ describe('Google analytics configuration', function () {
       it('should track a click event on the NYPL Chat link', function () {
         widgetPage.askNYPL.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Location Widget');
-            expect(ga[0][3]).toEqual('Click');
-            expect(ga[0][4]).toEqual('Chat');
+            expect(ga[0][2].eventCategory).toEqual('Location Widget');
+            expect(ga[0][2].eventAction).toEqual('Click');
+            expect(ga[0][2].eventLabel).toEqual('Chat');
           });
         });
       });
 
-      it('should track a click event on the Email a Question link', function () {
+      it('should track a click event on Email a Question link', function () {
         widgetPage.email_us.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Location Widget');
-            expect(ga[0][3]).toEqual('Click');
-            expect(ga[0][4]).toEqual('Email Question');
+            expect(ga[0][2].eventCategory).toEqual('Location Widget');
+            expect(ga[0][2].eventAction).toEqual('Click');
+            expect(ga[0][2].eventLabel).toEqual('Email Question');
           });
         });
       });
@@ -633,9 +635,9 @@ describe('Google analytics configuration', function () {
       it('should track a click event on the \'Learn More\' link', function () {
         widgetPage.locinator_url.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Location Widget');
-            expect(ga[0][3]).toEqual('Click');
-            expect(ga[0][4]).toEqual('Learn More');
+            expect(ga[0][2].eventCategory).toEqual('Location Widget');
+            expect(ga[0][2].eventAction).toEqual('Click');
+            expect(ga[0][2].eventLabel).toEqual('Learn More');
           });
         });
       });
@@ -643,9 +645,9 @@ describe('Google analytics configuration', function () {
       it('should track a click event on the Donate button', function () {
         widgetPage.donate_btn.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Location Widget');
-            expect(ga[0][3]).toEqual('Click');
-            expect(ga[0][4]).toEqual('Fundraising');
+            expect(ga[0][2].eventCategory).toEqual('Location Widget');
+            expect(ga[0][2].eventAction).toEqual('Click');
+            expect(ga[0][2].eventLabel).toEqual('Fundraising');
           });
         });
       });
@@ -653,19 +655,19 @@ describe('Google analytics configuration', function () {
       it('should track a click event on the NYPL Chat link', function () {
         widgetPage.askNYPL.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Location Widget');
-            expect(ga[0][3]).toEqual('Click');
-            expect(ga[0][4]).toEqual('Chat');
+            expect(ga[0][2].eventCategory).toEqual('Location Widget');
+            expect(ga[0][2].eventAction).toEqual('Click');
+            expect(ga[0][2].eventLabel).toEqual('Chat');
           });
         });
       });
 
-      it('should track a click event on the Email a Question link', function () {
+      it('should track a click event on Email a Question link', function () {
         widgetPage.email_us.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Location Widget');
-            expect(ga[0][3]).toEqual('Click');
-            expect(ga[0][4]).toEqual('Email Question');
+            expect(ga[0][2].eventCategory).toEqual('Location Widget');
+            expect(ga[0][2].eventAction).toEqual('Click');
+            expect(ga[0][2].eventLabel).toEqual('Email Question');
           });
         });
       });
@@ -686,9 +688,9 @@ describe('Google analytics configuration', function () {
       footerLinks.first().click();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[0][2]).toEqual('footer');
-        expect(ga[0][3]).toEqual('Click');
-        expect(ga[0][4]).toEqual('/help/about-nypl');
+        expect(ga[0][2].eventCategory).toEqual('footer');
+        expect(ga[0][2].eventAction).toEqual('Click');
+        expect(ga[0][2].eventLabel).toEqual('/help/about-nypl');
       });
     });
 
@@ -696,9 +698,9 @@ describe('Google analytics configuration', function () {
       footerLinks.get(3).click();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[0][2]).toEqual('footer');
-        expect(ga[0][3]).toEqual('Click');
-        expect(ga[0][4]).toEqual('/help/about-nypl/careers-nypl');
+        expect(ga[0][2].eventCategory).toEqual('footer');
+        expect(ga[0][2].eventAction).toEqual('Click');
+        expect(ga[0][2].eventLabel).toEqual('/help/about-nypl/careers-nypl');
       });
     });
 
@@ -706,9 +708,9 @@ describe('Google analytics configuration', function () {
       footerLinks.get(7).click();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[0][2]).toEqual('footer');
-        expect(ga[0][3]).toEqual('Click');
-        expect(ga[0][4]).toEqual('/voices/connect-nypl');
+        expect(ga[0][2].eventCategory).toEqual('footer');
+        expect(ga[0][2].eventAction).toEqual('Click');
+        expect(ga[0][2].eventLabel).toEqual('/voices/connect-nypl');
       });
     });
 
@@ -716,20 +718,20 @@ describe('Google analytics configuration', function () {
       footerLinks.get(11).click();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[0][2]).toEqual('footer');
-        expect(ga[0][3]).toEqual('Click');
-        expect(ga[0][4]).toEqual('/help/about-nypl/legal-notices/' +
+        expect(ga[0][2].eventCategory).toEqual('footer');
+        expect(ga[0][2].eventAction).toEqual('Click');
+        expect(ga[0][2].eventLabel).toEqual('/help/about-nypl/legal-notices/' +
           'privacy-policy');
       });
     });
 
-    it('should track clicking on Gifts of Materials to NYPL link', function () {
+    it('should track a click on Gifts of Materials to NYPL link', function () {
       footerLinks.get(15).click();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[0][2]).toEqual('footer');
-        expect(ga[0][3]).toEqual('Click');
-        expect(ga[0][4]).toEqual('/help/about-nypl/legal-notices/' +
+        expect(ga[0][2].eventCategory).toEqual('footer');
+        expect(ga[0][2].eventAction).toEqual('Click');
+        expect(ga[0][2].eventLabel).toEqual('/help/about-nypl/legal-notices/' +
           'policy-gifts-materials');
       });
     });
@@ -738,9 +740,9 @@ describe('Google analytics configuration', function () {
       footerLinks.get(17).click();
 
       browser.executeScript('return window.ga_msg;').then(function (ga) {
-        expect(ga[0][2]).toEqual('footer');
-        expect(ga[0][3]).toEqual('Click');
-        expect(ga[0][4]).toEqual('/node/107747');
+        expect(ga[0][2].eventCategory).toEqual('footer');
+        expect(ga[0][2].eventAction).toEqual('Click');
+        expect(ga[0][2].eventLabel).toEqual('/node/107747');
       });
     });
   });
@@ -760,7 +762,7 @@ describe('Google analytics configuration', function () {
       it('should track a click on the NYPL logo', function () {
         header.nypl_logo.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Header');
+            expect(ga[0][2].eventCategory).toEqual('Header');
           });
         });
       });
@@ -768,12 +770,12 @@ describe('Google analytics configuration', function () {
       it('should track a click on the donate button', function () {
         header.donate_button.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('Header');
+            expect(ga[0][2].eventCategory).toEqual('Header');
           });
         });
       });
     });
-    
+
     describe('Category: SSO', function () {
       describe('Logged out', function () {
         beforeEach(function () {
@@ -786,35 +788,13 @@ describe('Google analytics configuration', function () {
           header.loginBtn.click();
 
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[0][2]).toEqual('SSO');
-            expect(ga[0][3]).toEqual('Open Login Form');
-            expect(ga[0][4]).toEqual('click');
+            expect(ga[0][2].eventCategory).toEqual('SSO');
+            expect(ga[0][2].eventAction).toEqual('Open Login Form');
+            expect(ga[0][2].eventLabel).toEqual('click');
           });
         });
-
-        // Not sure how to mock being on mobile
-        // it('should track a click on the mobile open login form', function () {
-        //   header.mobileLoginBtn.click(function () {
-        //     browser.executeScript('return window.ga_msg;').then(function (ga) {
-        //       console.log(ga);
-        //       expect(ga[0][2]).toEqual('Header');
-        //     });
-        //   });
-        // });
-
-        // Goes to Bibliocommons
-        // it('should track a click to the log in button', function () {
-        //   header.loginBtn.click();
-        //   // header.loginSubmit.click();
-        //     browser.executeScript('return window.ga_msg;').then(function (ga) {
-        //       console.log(ga);
-        //       expect(ga[1][2]).toEqual('SSO');
-        //       expect(ga[1][3]).toEqual('');
-        //       expect(ga[1][4]).toEqual('click');
-        //     });
-        // });
       });
-  
+
       describe('Logged in', function () {
         // Must mock being logged in for the log out button to show
         it('should track a click to the log out button', function () {
@@ -827,13 +807,13 @@ describe('Google analytics configuration', function () {
           header.logOutBtn.click(function () {
             browser.executeScript('return window.ga_msg;').then(function (ga) {
               console.log(ga);
-              expect(ga[0][2]).toEqual('Header');
+              expect(ga[0][2].eventCategory).toEqual('Header');
             });
           });
         });
       });
     });
-    
+
     describe('Category: Header Search', function () {
       beforeEach(function () {
         browser.get('/eastchester');
@@ -845,18 +825,18 @@ describe('Google analytics configuration', function () {
         header.searchInputField.click();
 
         browser.executeScript('return window.ga_msg;').then(function (ga) {
-          expect(ga[0][2]).toEqual('Header Search');
-          expect(ga[0][3]).toEqual('Focused');
-          expect(ga[0][4]).toEqual('Search Box');
+          expect(ga[0][2].eventCategory).toEqual('Header Search');
+          expect(ga[0][2].eventAction).toEqual('Focused');
+          expect(ga[0][2].eventLabel).toEqual('Search Box');
         });
       });
 
       it('should track when an empty search was attempted', function () {
         header.searchBtn.click();
         browser.executeScript('return window.ga_msg;').then(function (ga) {
-          expect(ga[0][2]).toEqual('Header Search');
-          expect(ga[0][3]).toEqual('Empty Search');
-          expect(ga[0][4]).toEqual('');
+          expect(ga[0][2].eventCategory).toEqual('Header Search');
+          expect(ga[0][2].eventAction).toEqual('Empty Search');
+          expect(ga[0][2].eventLabel).toBe(null);
         });
       });
 
@@ -864,9 +844,9 @@ describe('Google analytics configuration', function () {
         header.searchInputField.click();
         header.radioBtn_catalog.click();
         browser.executeScript('return window.ga_msg;').then(function (ga) {
-          expect(ga[1][2]).toEqual('Header Search');
-          expect(ga[1][3]).toEqual('Select');
-          expect(ga[1][4]).toEqual('catalog');
+          expect(ga[1][2].eventCategory).toEqual('Header Search');
+          expect(ga[1][2].eventAction).toEqual('Select');
+          expect(ga[1][2].eventLabel).toEqual('catalog');
         });
       });
 
@@ -874,24 +854,13 @@ describe('Google analytics configuration', function () {
         header.searchInputField.click();
         header.radioBtn_website.click(function () {
           browser.executeScript('return window.ga_msg;').then(function (ga) {
-            expect(ga[1][2]).toEqual('Header Search');
-            expect(ga[1][3]).toEqual('Select');
-            expect(ga[1][4]).toEqual('nypl.org');
-          });
-        });
-      });
-
-      it('should track when a search to the catalog was made', function () {
-        header.searchInputField.click();
-        header.radioBtn_catalog.click();
-        header.searchInputField.sendKeys('Dune');
-        header.searchBtn.click(function () {
-          browser.executeScript('return window.ga_msg;').then(function (ga) {
+            expect(ga[1][2].eventCategory).toEqual('Header Search');
+            expect(ga[1][2].eventAction).toEqual('Select');
+            expect(ga[1][2].eventLabel).toEqual('nypl.org');
           });
         });
       });
     });
-    
   });
 
 });
