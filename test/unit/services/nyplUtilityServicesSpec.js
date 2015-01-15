@@ -1,4 +1,4 @@
-/*jslint indent: 2, maxlen: 80 */
+/*jslint nomen: true, unparam: true, indent: 2, maxlen: 80 */
 /*globals element, by, google, module, window, jasmine, document,
 describe, expect, beforeEach, inject, it, angular, spyOn, afterEach */
 
@@ -163,7 +163,7 @@ describe('NYPL Utility Service Tests', function () {
           desc: 'The Rose Main Reading Room and the Bill Blass ' +
             'Public Catalog Room in the Stephen A. Schwarzman Building ' +
             'will be temporarily closed.',
-          start: '2014-09-10T10:45:10-04:00',
+          start: '2014-09-10T10:45:10-04:00'
         });
       });
     });
@@ -198,8 +198,8 @@ describe('NYPL Utility Service Tests', function () {
         var marker_address = nyplUtility.getAddressString(location, true);
 
         expect(marker_address)
-          .toEqual("<a href='/locations/115th-street'>115th Street Library</a>" +
-            "<br />203 West 115th Street<br />New York, NY, 10026");
+          .toEqual("<a href='/locations/115th-street'>115th Street Library" +
+            "</a><br />203 West 115th Street<br />New York, NY, 10026");
       });
 
       it('should print the address without markup', function () {
@@ -281,14 +281,14 @@ describe('NYPL Utility Service Tests', function () {
       // The alert objects have more properties which are
       // not needed for the service function
       var alerts = [
-        {start: "2014-05-17T00:00:00-04:00", end: "2014-05-27T01:00:00-04:00",
-          body: "The New York Public Library will be closed from May 24 " +
-            "through May 26 in observance of Memorial Day."},
-        {start: "2014-06-27T00:00:00-04:00", end: "2014-07-06T01:00:00-04:00",
-          body: "All units of the NYPL are closed July 4 - July 5."},
-        {start: "2014-08-23T00:00:00-04:00", end: "2014-09-02T01:00:00-04:00",
-          body: "The New York Public Library will be closed August 30th " +
-            "through September 1st in observance of Labor Day"}
+          {start: "2014-05-17T00:00:00-04:00", end: "2014-05-27T01:00:00-04:00",
+            body: "The New York Public Library will be closed from May 24 " +
+              "through May 26 in observance of Memorial Day."},
+          {start: "2014-06-27T00:00:00-04:00", end: "2014-07-06T01:00:00-04:00",
+            body: "All units of the NYPL are closed July 4 - July 5."},
+          {start: "2014-08-23T00:00:00-04:00", end: "2014-09-02T01:00:00-04:00",
+            body: "The New York Public Library will be closed August 30th " +
+              "through September 1st in observance of Labor Day"}
         ],
         one_alert = {
           start: "2014-08-23T00:00:00-04:00",
@@ -336,7 +336,7 @@ describe('NYPL Utility Service Tests', function () {
 
       it('should return null if the input is not an array', function () {
         expect(nyplUtility.alerts('this is not a valid alert')).toBe(null);
-      })
+      });
     });
 
     describe('nyplUtility.popupWindow', function () {
@@ -360,7 +360,9 @@ describe('NYPL Utility Service Tests', function () {
 
           expect(window.open).toHaveBeenCalled();
           expect(window.open).toHaveBeenCalledWith(
-            nyplChatLink, '', 'menubar=1,resizable=1,width=300,height=500'
+            nyplChatLink,
+            '',
+            'menubar=1,resizable=1,width=300,height=500'
           );
         });
 
@@ -479,8 +481,9 @@ describe('NYPL Utility Service Tests', function () {
 
       it('should return an empty string is google or yahoo were not passed',
         function () {
-          expect(nyplUtility.calendarLink('someOtherService', nypl_event, location))
-            .toEqual('');
+          expect(
+            nyplUtility.calendarLink('someOtherService', nypl_event, location)
+          ).toEqual('');
         });
     });
 
@@ -662,7 +665,7 @@ describe('NYPL Utility Service Tests', function () {
         var html = "<p>hello world</p>";
 
         expect(
-          nyplUtility.returnHTML('<p>hello world</p>').$$unwrapTrustedValue()
+          nyplUtility.returnHTML(html).$$unwrapTrustedValue()
         ).toEqual('<p>hello world</p>');
       });
     });
@@ -677,21 +680,24 @@ describe('NYPL Utility Service Tests', function () {
      */
     describe('nyplUtility.divisionHasAppointment()', function () {
       var divisions_with_appointments =
-        ["ARN","RBK","MSS","BRG","PRN","PHG","SPN","CPS"];
+        ["ARN", "RBK", "MSS", "BRG", "PRN", "PHG", "SPN", "CPS"];
 
-      it('should have the divisionHasAppointment function available', function () {
-        expect(nyplUtility.divisionHasAppointment).toBeDefined();
-      });
+      it('should have the divisionHasAppointment function available',
+        function () {
+          expect(nyplUtility.divisionHasAppointment).toBeDefined();
+        });
 
       it('should return false because Map Division should not have the link',
         function () {
-          expect(nyplUtility.divisionHasAppointment(divisions_with_appointments, 'MAP'))
+          expect(nyplUtility
+            .divisionHasAppointment(divisions_with_appointments, 'MAP'))
             .toBe(false);
         });
 
       it('should return true because Arents Division should have the link',
         function () {
-          expect(nyplUtility.divisionHasAppointment(divisions_with_appointments, 'ARN'))
+          expect(nyplUtility
+            .divisionHasAppointment(divisions_with_appointments, 'ARN'))
             .toBe(true);
         });
     });
@@ -702,9 +708,10 @@ describe('NYPL Utility Service Tests', function () {
     describe('nyplUtility.researchLibraryOrder()', function () {
       var research_order = ['SASB', 'LPA', 'SC', 'SIBL'];
 
-      it('should have the researchLibraryOrder function available', function () {
-        expect(nyplUtility.researchLibraryOrder).toBeDefined();
-      });
+      it('should have the researchLibraryOrder function available',
+        function () {
+          expect(nyplUtility.researchLibraryOrder).toBeDefined();
+        });
 
       it('should return 0 for SASB', function () {
         expect(nyplUtility.researchLibraryOrder(research_order, 'SASB'))
@@ -763,8 +770,9 @@ describe('NYPL Utility Service Tests', function () {
       });
 
       // check to see if it has the expected function
-      it('should calculate an event already started with an' + 
-        ' end date less than 365 days from today', function () {
+      it('should calculate an event already started with an' +
+        ' end date less than 365 days from today',
+        function () {
           var date = new Date(2014, 8, 29),
             MockDate = Date;
 
@@ -777,42 +785,46 @@ describe('NYPL Utility Service Tests', function () {
 
           mockedStartDate = '2014-09-05T00:00:00Z'; // September 5th, 2014
           mockedEndDate = '2014-10-18T00:00:00Z'; // October 18, 2014
-          formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
+          formattedDate =
+            nyplUtility.formatDate(mockedStartDate, mockedEndDate);
 
           expect(formattedDate).toEqual("Now through October 18, 2014");
           Date = MockDate;
-      });
+        });
 
       // check to see if it has the expected function
-      it('should calculate an upcoming event with an end ' + 
+      it('should calculate an upcoming event with an end ' +
         'date less than 365 days from today', function () {
-        mockedStartDate = '2015-02-27T00:00:00Z'; // February 27th, 2015
-        mockedEndDate = '2015-04-18T00:00:00Z'; // April 18, 2015
-        formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
+          mockedStartDate = '2015-02-27T00:00:00Z'; // February 27th, 2015
+          mockedEndDate = '2015-04-18T00:00:00Z'; // April 18, 2015
+          formattedDate =
+            nyplUtility.formatDate(mockedStartDate, mockedEndDate);
 
-        expect(formattedDate).toEqual("Opening February 27, 2015");
-      });
+          expect(formattedDate).toEqual("Opening February 27, 2015");
+        });
 
       // check to see if it has the expected function
-      it('should calculate an event already past today\'s date and' + 
+      it('should calculate an event already past today\'s date and' +
         ' less than 365 days from today', function () {
-        mockedStartDate = '2014-08-27T00:00:00Z'; // August 27, 2014
-        mockedEndDate = '2014-09-20T00:00:00Z'; // September 20, 2014
-        formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
+          mockedStartDate = '2014-08-27T00:00:00Z'; // August 27, 2014
+          mockedEndDate = '2014-09-20T00:00:00Z'; // September 20, 2014
+          formattedDate =
+            nyplUtility.formatDate(mockedStartDate, mockedEndDate);
 
-        expect(formattedDate).toEqual("August 27, 2014 through September 20, 2014");
-      });
+          expect(formattedDate)
+            .toEqual("August 27, 2014 through September 20, 2014");
+        });
 
 
-      it('should calculate an ongoing event that has an end date of' + 
+      it('should calculate an ongoing event that has an end date of' +
         ' more than 365 days from today\'s date', function () {
-        mockedStartDate = '1998-01-01T00:00:00Z'; // January 01, 1998
-        mockedEndDate = '2048-12-31T00:00:00Z'; // December 31, 2048
-        formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
+          mockedStartDate = '1998-01-01T00:00:00Z'; // January 01, 1998
+          mockedEndDate = '2048-12-31T00:00:00Z'; // December 31, 2048
+          formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
 
-        expect(formattedDate).toEqual("Ongoing");
-      });
-    })
+          expect(formattedDate).toEqual("Ongoing");
+        });
+    });
 
   }); /* End nyplUtility service */
 

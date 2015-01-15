@@ -1,4 +1,4 @@
-/*jslint indent: 2, maxlen: 80 */
+/*jslint nomen: true, unparam: true, indent: 2, maxlen: 80 */
 /*globals element, by, module, module, window, jasmine,
 describe, expect, beforeEach, inject, it, angular, spyOn */
 
@@ -33,11 +33,11 @@ describe('Locinator controllers', function () {
       httpBackend,
       nypl_geocoder_mock,
       config = {
-        api_root: "http://locations-api-beta.nypl.org"
+        api_root: "http://dev.locations.api.nypl.org"
       };
 
     beforeEach(function () {
-      module('nypl_locations')
+      module('nypl_locations');
 
       inject(function (
         _nyplLocationsService_,
@@ -85,7 +85,7 @@ describe('Locinator controllers', function () {
     //     var locations_reponse = '[{"id":"AG","geolocation":' +
     //         '{"coordinates":[-73.9436,40.7943]},' +
     //         '"name":"Aguilar","locationDest":"Aguilar undefined ' +
-    //         'undefined, undefined, undefined","distance":"","highlight":""}]';
+    //         'undefined, undefined,undefined","distance":"","highlight":""}]';
 
     //     expect(scope.locations).not.toBeDefined();
 
@@ -155,13 +155,13 @@ describe('Locinator controllers', function () {
           $httpBackend
             .expectGET('/languages/en.json')
             .respond('public/languages/en.json');
-        })
+        });
       });
 
       // it('should get coordinates from a zipcode',
       //   inject(function () {
       //     $httpBackend
-      //       .expectGET("http://evening-mesa-7447-160.herokuapp.com/locations")
+      //       .expectGET("dev.locations.api.nypl.org/api/v0.5/locations")
       //       .respond(200, '{"locations" : [{"id": "AG", "geolocation":' +
       //         '{"coordinates":[-73.9436, 40.7943]}, "name":"Aguilar"}]}');
 

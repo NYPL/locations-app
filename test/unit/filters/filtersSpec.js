@@ -185,8 +185,7 @@ describe('NYPL Filter Unit Tests', function () {
         expect(hoursTodayFormatFilter({
           'today': {'open': '10:00', 'close': '18:00'},
           'tomorrow': {'open': '10:00', 'close': '18:00'}
-        }))
-        .toEqual('10:00am-6:00pm');
+        })).toEqual('10:00am-6:00pm');
       });
     });
 
@@ -230,16 +229,17 @@ describe('NYPL Filter Unit Tests', function () {
           .toEqual('Open tomorrow 10am-6pm');
       });
 
-      it('should display the open times for tomorrow with minutes', function () {
-        // Returns 19 for 7pm after a library has closed.
-        Date.prototype.getHours = function () { return 19; };
+      it('should display the open times for tomorrow with minutes',
+        function () {
+          // Returns 19 for 7pm after a library has closed.
+          Date.prototype.getHours = function () { return 19; };
 
-        expect(hoursTodayFormatFilter({
-          'today': {'open': '10:30', 'close': '18:30'},
-          'tomorrow': {'open': '10:30', 'close': '18:30'}
-        }, 'short'))
-          .toEqual('Open tomorrow 10:30am-6:30pm');
-      });
+          expect(hoursTodayFormatFilter({
+            'today': {'open': '10:30', 'close': '18:30'},
+            'tomorrow': {'open': '10:30', 'close': '18:30'}
+          }, 'short'))
+            .toEqual('Open tomorrow 10:30am-6:30pm');
+        });
 
       it('should display the open times for later today', function () {
         // Returns 7 for 7am in the morning before a library has opened.
