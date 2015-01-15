@@ -71,10 +71,12 @@ describe('NYPL Geocoder Service Tests', function () {
         rootScope = $rootScope;
         httpBackend = _$httpBackend_;
 
-        httpBackend
-          .expectGET('languages/en.json')
-          .respond('public/languages/en.json');
+        // httpBackend
+        //   .expectGET('languages/en.json')
+        //   .respond('public/languages/en.json');
 
+
+        // Not sure how or why this happens...
         httpBackend
           .expectGET('views/locations.html')
           .respond('public/views/locations.html');
@@ -82,8 +84,17 @@ describe('NYPL Geocoder Service Tests', function () {
         httpBackend
           .expectGET('views/location-list-view.html')
           .respond('public/views/location-list-view.html');
+
+        httpBackend
+          .expectGET('views/404.html')
+          .respond('public/views/404.html');
       });
     });
+
+    // afterEach(function() {
+    //   httpBackend.verifyNoOutstandingExpectation();
+    //   httpBackend.verifyNoOutstandingRequest();
+    // });
 
     it('should expose some functions', function () {
       expect(nyplGeocoderService.geocodeAddress).toBeDefined();

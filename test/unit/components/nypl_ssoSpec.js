@@ -17,9 +17,9 @@ describe('nyplSSO module', function () {
   beforeEach(inject(function (_$httpBackend_) {
     httpBackend = _$httpBackend_;
 
-    httpBackend
-        .expectGET('languages/en.json')
-        .respond('public/languages/en.json');
+    // httpBackend
+    //     .expectGET('languages/en.json')
+    //     .respond('public/languages/en.json');
   }));
 
   describe('Service: ssoStatus', function () {

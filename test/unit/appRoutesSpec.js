@@ -34,7 +34,7 @@ describe('Locinator State Routing', function () {
         $state = _$state_;
         $rootScope = _$rootScope_.$new();
         $injector = _$injector_;
-        $httpBackend = _$httpBackend_;
+        // $httpBackend = _$httpBackend_;
 
         // $httpBackend.expectGET('views/404.html').respond(200, '/views');
         // $httpBackend

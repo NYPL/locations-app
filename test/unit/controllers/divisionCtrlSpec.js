@@ -198,11 +198,10 @@ describe('DivisionCtrl', function () {
       httpBackend = _$httpBackend_;
       nyplLocationsService = _nyplLocationsService_;
 
-      httpBackend
-        .expectGET('languages/en.json')
-        .respond('public/languages/en.json');
+      // httpBackend
+      //   .expectGET('languages/en.json')
+      //   .respond('public/languages/en.json');
 
-      // TODO:
       // Find out why this is needed:
       httpBackend
         .expectGET('views/locations.html')

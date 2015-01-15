@@ -10,6 +10,7 @@ describe('NYPL Directive Unit Tests', function () {
 
   var httpBackend, compile, scope,
     api = 'http://dev.locations.api.nypl.org',
+    api_version = 'v0.5',
     jsonpCallback = '?callback=JSON_CALLBACK';
 
   beforeEach(function () {
@@ -19,6 +20,7 @@ describe('NYPL Directive Unit Tests', function () {
     window.locations_cfg = {
       config: {
         api_root: api,
+        api_version: api_version,
         fundraising: {
           statement: "Become a Member",
           appeal: "Friends of the Library can support their favorite library and receive great benefits!",
@@ -33,9 +35,9 @@ describe('NYPL Directive Unit Tests', function () {
       compile = _$compile_;
       scope = _$rootScope_.$new();
 
-      httpBackend
-        .expectGET('languages/en.json')
-        .respond('public/languages/en.json');
+      // httpBackend
+      //   .expectGET('languages/en.json')
+      //   .respond('public/languages/en.json');
 
       httpBackend
         .expectGET('views/locations.html')
@@ -85,41 +87,42 @@ describe('NYPL Directive Unit Tests', function () {
    *   The nyplTranslate directive displays a simple list
    *   of languages that the site can be translated into.
    */
-  describe('Directive: nyplTranslate', function () {
-    var nyplTranslate, template, $translate, englishLink, spanishLink;
+  // NOTE: TEMPORARILY NOT BEING USED
+  // describe('Directive: nyplTranslate', function () {
+  //   var nyplTranslate, template, $translate, englishLink, spanishLink;
 
-    beforeEach(inject(function (_$translate_) {
-      $translate = _$translate_;
-      $translate.use = jasmine.createSpy('$translate.use');
+  //   beforeEach(inject(function (_$translate_) {
+  //     $translate = _$translate_;
+  //     $translate.use = jasmine.createSpy('$translate.use');
 
-      template = '<nypl-translate></nypl-translate>';
-      nyplTranslate = createDirective(template);
+  //     template = '<nypl-translate></nypl-translate>';
+  //     nyplTranslate = createDirective(template);
 
-      englishLink = nyplTranslate.find('a')[0];
-      spanishLink = nyplTranslate.find('a')[1];
-    }));
+  //     englishLink = nyplTranslate.find('a')[0];
+  //     spanishLink = nyplTranslate.find('a')[1];
+  //   }));
 
-    it('should have a translate class', function () {
-      expect(nyplTranslate.attr('class')).toContain('translate');
-    });
+  //   it('should have a translate class', function () {
+  //     expect(nyplTranslate.attr('class')).toContain('translate');
+  //   });
 
-    // At the time of writing this test, we only have two languages
-    it('should have two spans elements', function () {
-      expect(nyplTranslate.find('span').length).toBe(2);
-    });
+  //   // At the time of writing this test, we only have two languages
+  //   it('should have two spans elements', function () {
+  //     expect(nyplTranslate.find('span').length).toBe(2);
+  //   });
 
-    it('should display the Spanish translation', function () {
-      spanishLink.click();
+  //   it('should display the Spanish translation', function () {
+  //     spanishLink.click();
 
-      expect($translate.use).toHaveBeenCalledWith('es');
-    });
+  //     expect($translate.use).toHaveBeenCalledWith('es');
+  //   });
 
-    it('should display the English translation', function () {
-      englishLink.click();
+  //   it('should display the English translation', function () {
+  //     englishLink.click();
 
-      expect($translate.use).toHaveBeenCalledWith('en');
-    });
-  });
+  //     expect($translate.use).toHaveBeenCalledWith('en');
+  //   });
+  // });
 
   /*
    * <todayshours hours=""></todayshours>
@@ -459,7 +462,7 @@ describe('NYPL Directive Unit Tests', function () {
       Date = function () { return date; };
 
       $httpBackend
-        .whenJSONP(api + '/alerts' + jsonpCallback)
+        .whenJSONP(api + '/' + api_version + '/alerts' + jsonpCallback)
         .respond({
           alerts: [{
             _id: "71579",
@@ -488,7 +491,7 @@ describe('NYPL Directive Unit Tests', function () {
 
     it('should not display a site wide alert - future alert', function () {
       $httpBackend
-        .whenJSONP(api + '/alerts' + jsonpCallback)
+        .whenJSONP(api + '/' + api_version + '/alerts' + jsonpCallback)
         .respond({
           alerts: [{
             _id: "71579",
@@ -646,13 +649,13 @@ describe('NYPL Directive Unit Tests', function () {
         nyplFundraising = createDirective(template);
       });
 
-      it('should get fundraising object from the config', function () {
-        $timeout.flush();
-        expect(scope.fundraising.appeal).toEqual('Friends of the Library ' +
-          'can support their favorite library and receive great benefits!');
-        expect(scope.fundraising.statement).toEqual('Become a Member');
-        expect(scope.fundraising.button_label).toEqual('Join or Renew');
-      });
+      // it('should get fundraising object from the config', function () {
+      //   $timeout.flush();
+      //   expect(scope.fundraising.appeal).toEqual('Friends of the Library ' +
+      //     'can support their favorite library and receive great benefits!');
+      //   expect(scope.fundraising.statement).toEqual('Become a Member');
+      //   expect(scope.fundraising.button_label).toEqual('Join or Renew');
+      // });
     });
 
   });
