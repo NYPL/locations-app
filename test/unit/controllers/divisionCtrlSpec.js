@@ -1,4 +1,4 @@
-/*jslint indent: 2, maxlen: 80 */
+/*jslint nomen: true, unparam: true, indent: 2, maxlen: 80 */
 /*globals element, by, module, module, window, jasmine,
 describe, expect, beforeEach, inject, it, angular, spyOn */
 
@@ -32,7 +32,8 @@ var mockGeneralResearch = {
       { site: "twitter", href: "http://twitter.com/NYPL_GRD"}
     ],
     synonyms: null,
-    fundraising: {id: 275290,
+    fundraising: {
+      id: 275290,
       statement: "Friends of the Library can support their favorite library" +
         " and receive great benefits!",
       appeal: "Become a Member",
@@ -59,8 +60,8 @@ var mockGeneralResearch = {
             { day: "Wed", open: "10:00", close: "19:45" },
             { day: "Thu", open: "10:00", close: "17:45" },
             { day: "Fri", open: "10:00", close: "17:45" },
-            { day: "Sat", open: "10:00", close: "17:45" }]
-          }
+            { day: "Sat", open: "10:00", close: "17:45" }
+          ]}
         }
       ],
       location: {
@@ -213,7 +214,7 @@ describe('DivisionCtrl', function () {
 
       nyplLocationsService.getConfig();
       httpBackend.flush();
-    })
+    });
   });
 
   describe('General Research Division', function () {
@@ -225,7 +226,8 @@ describe('DivisionCtrl', function () {
       DivisionCtrl = _$controller_('DivisionCtrl', {
         $scope: scope,
         config: {api_root: 'http://locations-api-beta.nypl.org',
-          divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN","PHG","SPN","CPS"]},
+          divisions_with_appointments: ["ARN", "RBK", "MSS", "BRG",
+            "PRN", "PHG", "SPN", "CPS"]},
         division: mockGeneralResearch
       });
     }));
@@ -280,7 +282,8 @@ describe('DivisionCtrl', function () {
       DivisionCtrl = _$controller_('DivisionCtrl', {
         $scope: scope,
         config: {api_root: 'http://locations-api-beta.nypl.org',
-          divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN","PHG","SPN","CPS"]},
+          divisions_with_appointments: ["ARN", "RBK", "MSS", "BRG",
+            "PRN", "PHG", "SPN", "CPS"]},
         division: mockArentsDivision
       });
     }));
@@ -326,7 +329,8 @@ describe('DivisionCtrl', function () {
       DivisionCtrl = _$controller_('DivisionCtrl', {
         $scope: scope,
         config: {api_root: 'http://locations-api-beta.nypl.org',
-          divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN","PHG","SPN","CPS"]},
+          divisions_with_appointments: ["ARN", "RBK", "MSS", "BRG",
+            "PRN", "PHG", "SPN", "CPS"]},
         division: mockArentsDivisionHours
       });
     }));

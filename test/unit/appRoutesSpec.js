@@ -1,21 +1,23 @@
-/*jslint indent: 2, maxlen: 80 */
+/*jslint nomen: true, unparam: true, indent: 2, maxlen: 80 */
 /*globals element, by, module, module, window, jasmine,
 describe, expect, beforeEach, inject, it, angular, spyOn */
 
 describe('Locinator State Routing', function () {
   'use strict';
 
-  var $rootScope, $injector, $state, $httpBackend, $templateCache, nyplLocationsService, $q;
-  var configObj = { api_root: 'dev.locations.api.nypl.org',
-    featured_amenities: { global: 3, local: 2 }};
-  
+  var $rootScope, $injector, $state, $httpBackend, nyplLocationsService,
+    configObj = {
+      api_root: 'dev.locations.api.nypl.org',
+      featured_amenities: { global: 3, local: 2 }
+    };
+
   function testStateConfig(stateConfig, expectedConfig) {
     expect(stateConfig.url).toEqual(expectedConfig.url);
     expect(stateConfig.abstract).toBe(expectedConfig.abstract);
     expect(stateConfig.templateUrl).toEqual(expectedConfig.templateUrl);
     expect(stateConfig.controller).toEqual(expectedConfig.controller);
     expect(stateConfig.label).toEqual(expectedConfig.label);
-  };
+  }
 
   describe('Locinator', function () {
     beforeEach(function () {
@@ -24,13 +26,14 @@ describe('Locinator State Routing', function () {
         $provide.value('nyplLocationsService', nyplLocationsService = {});
         nyplLocationsService.getConfig = jasmine.createSpy('getConfig')
           .and.returnValue(configObj);
-        nyplLocationsService.singleDivision = jasmine.createSpy('singleDivision')
+        nyplLocationsService.singleDivision =
+          jasmine.createSpy('singleDivision')
           .and.returnValue({division: 'Map Division'});
         nyplLocationsService.amenities = jasmine.createSpy('amenities')
           .and.returnValue({amenities: 'amenities'});
       });
 
-      inject(function (_$rootScope_, _$state_, _$injector_, _$httpBackend_, _$templateCache_) {
+      inject(function (_$rootScope_, _$state_, _$injector_, _$httpBackend_) {
         $state = _$state_;
         $rootScope = _$rootScope_.$new();
         $injector = _$injector_;
@@ -56,7 +59,7 @@ describe('Locinator State Routing', function () {
           controller: 'LocationsCtrl',
           label: 'Locations'
         };
-        
+
         testStateConfig(stateConfig, expectedConfig);
         expect($injector.invoke(stateConfig.resolve.config)).toEqual(configObj);
       });
@@ -71,7 +74,7 @@ describe('Locinator State Routing', function () {
           controller: undefined,
           label: 'Locations'
         };
-        
+
         testStateConfig(stateConfig, expectedConfig);
       });
 
@@ -85,7 +88,7 @@ describe('Locinator State Routing', function () {
           controller: 'MapCtrl',
           label: 'Locations'
         };
-        
+
         testStateConfig(stateConfig, expectedConfig);
       });
 
@@ -99,10 +102,11 @@ describe('Locinator State Routing', function () {
           controller: 'DivisionCtrl',
           label: 'Division'
         };
-        
+
         testStateConfig(stateConfig, expectedConfig);
         expect($injector.invoke(stateConfig.resolve.config)).toEqual(configObj);
-        expect($injector.invoke(stateConfig.resolve.division).then).toBeDefined();
+        expect($injector.invoke(stateConfig.resolve.division).then)
+          .toBeDefined();
       });
 
       it('should return the division state', function () {
@@ -115,10 +119,11 @@ describe('Locinator State Routing', function () {
           controller: 'DivisionCtrl',
           label: 'Division'
         };
-        
+
         testStateConfig(stateConfig, expectedConfig);
         expect($injector.invoke(stateConfig.resolve.config)).toEqual(configObj);
-        // expect($injector.invoke(stateConfig.resolve.division).then).toBeDefined();
+        // expect($injector.invoke(stateConfig.resolve.division).then)
+        //  .toBeDefined();
       });
 
       it('should return amenities state', function () {
@@ -131,7 +136,7 @@ describe('Locinator State Routing', function () {
           controller: 'AmenitiesCtrl',
           label: 'Amenities'
         };
-        
+
         testStateConfig(stateConfig, expectedConfig);
         expect($injector.invoke(stateConfig.resolve.config)).toEqual(configObj);
         // expect($injector.invoke(stateConfig.resolve.amenities))
@@ -148,7 +153,7 @@ describe('Locinator State Routing', function () {
           controller: 'AmenityCtrl',
           label: 'Amenities'
         };
-        
+
         testStateConfig(stateConfig, expectedConfig);
         expect($injector.invoke(stateConfig.resolve.config)).toEqual(configObj);
 
@@ -164,7 +169,7 @@ describe('Locinator State Routing', function () {
           controller: 'AmenitiesAtLibraryCtrl',
           label: undefined
         };
-        
+
         testStateConfig(stateConfig, expectedConfig);
         expect($injector.invoke(stateConfig.resolve.config)).toEqual(configObj);
 
@@ -180,7 +185,7 @@ describe('Locinator State Routing', function () {
           controller: undefined,
           label: undefined
         };
-        
+
         testStateConfig(stateConfig, expectedConfig);
         expect(stateConfig.resolve).not.toBeDefined();
       });
@@ -195,7 +200,7 @@ describe('Locinator State Routing', function () {
           controller: 'LocationCtrl',
           label: undefined
         };
-        
+
         testStateConfig(stateConfig, expectedConfig);
         expect($injector.invoke(stateConfig.resolve.config)).toEqual(configObj);
       });
@@ -215,10 +220,10 @@ describe('Locinator State Routing', function () {
       });
 
       it('should go to a subdivision page', function () {
-        expect($state.href('subdivision',
-          {division: 'general-research-division',
-          subdivision:'periodicals-room'}
-        )).toEqual('/divisions/general-research-division/periodicals-room');
+        expect($state.href('subdivision', {
+          division: 'general-research-division',
+          subdivision: 'periodicals-room'
+        })).toEqual('/divisions/general-research-division/periodicals-room');
       });
 
       it('should go to a division page', function () {
@@ -236,8 +241,10 @@ describe('Locinator State Routing', function () {
       });
 
       it('should go to an amenities at location page', function () {
-        expect($state.href('amenities-at-location', {location: 'grand-central'}))
-          .toEqual('/amenities/loc/grand-central');
+        expect($state.href(
+          'amenities-at-location',
+          {location: 'grand-central'}
+        )).toEqual('/amenities/loc/grand-central');
       });
 
       it('should go to a 404 page', function () {
@@ -258,18 +265,19 @@ describe('Locinator State Routing', function () {
         $provide.value('nyplLocationsService', nyplLocationsService = {});
         nyplLocationsService.getConfig = jasmine.createSpy('getConfig')
           .and.returnValue(configObj);
-        nyplLocationsService.singleDivision = jasmine.createSpy('singleDivision')
+        nyplLocationsService.singleDivision =
+          jasmine.createSpy('singleDivision')
           .and.returnValue({division: 'Map Division'});
         nyplLocationsService.amenities = jasmine.createSpy('amenities')
           .and.returnValue({amenities: 'amenities'});
       });
 
-      inject(function (_$rootScope_, _$state_, _$injector_, _$httpBackend_, _$templateCache_) {
+      inject(function (_$rootScope_, _$state_, _$injector_, _$httpBackend_) {
         $state = _$state_;
         $rootScope = _$rootScope_.$new();
         $injector = _$injector_;
         $httpBackend = _$httpBackend_;
-      })
+      });
     });
 
     describe('Router configuration', function () {
@@ -285,7 +293,7 @@ describe('Locinator State Routing', function () {
           controller: 'WidgetCtrl',
           label: undefined
         };
-        
+
         testStateConfig(stateConfig, expectedConfig);
         expect($injector.invoke(stateConfig.resolve.config)).toEqual(configObj);
         expect($injector.invoke(stateConfig.resolve.data)).toBeDefined();
@@ -301,7 +309,7 @@ describe('Locinator State Routing', function () {
           controller: 'WidgetCtrl',
           label: 'Division'
         };
-        
+
         testStateConfig(stateConfig, expectedConfig);
         expect($injector.invoke(stateConfig.resolve.config)).toEqual(configObj);
         // expect($injector.invoke(stateConfig.resolve.data)).toBeDefined();
@@ -317,7 +325,7 @@ describe('Locinator State Routing', function () {
           controller: 'WidgetCtrl',
           label: undefined
         };
-        
+
         testStateConfig(stateConfig, expectedConfig);
         expect($injector.invoke(stateConfig.resolve.config)).toEqual(configObj);
         // expect($injector.invoke(stateConfig.resolve.data)).toBeDefined();
@@ -326,11 +334,11 @@ describe('Locinator State Routing', function () {
 
     describe('Router URLs', function () {
       it('should go to a subdivision page', function () {
-        expect($state.href('subdivision',
-          {division: 'general-research-division',
-          subdivision:'periodicals-room'}
-        ))
-        .toEqual('/widget/divisions/general-research-division/periodicals-room');
+        expect($state.href('subdivision', {
+          division: 'general-research-division',
+          subdivision:'periodicals-room'
+        })).toEqual('/widget/divisions/general-research-division/' +
+          'periodicals-room');
       });
 
       it('should go to a division page', function () {
@@ -344,5 +352,4 @@ describe('Locinator State Routing', function () {
       });
     });
   });
-  
 });

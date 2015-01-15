@@ -6,7 +6,17 @@ describe, expect, beforeEach, inject, it, angular */
  * <nyplbreadcrumbs></nyplbreadcrumbs>
  */
 describe('Directive: nyplbreadcrumbs', function () {
+  'use strict';
+
   var nyplbreadcrumbs, html, httpBackend, compile, scope;
+
+  function createDirective(template) {
+    var element;
+    element = compile(template)(scope);
+    scope.$digest();
+
+    return element;
+  }
 
   beforeEach(function () {
     module('nypl_locations');
@@ -26,14 +36,6 @@ describe('Directive: nyplbreadcrumbs', function () {
     nyplbreadcrumbs = createDirective(html);
   });
 
-  function createDirective(template) {
-    var element;
-    element = compile(template)(scope);
-    scope.$digest();
-
-    return element;
-  }
-
   it('should create an unordered list with class breadcrumb', function () {
     var crumbList = nyplbreadcrumbs.find('ul');
     expect(crumbList.attr('class')).toContain('breadcrumb');
@@ -43,22 +45,24 @@ describe('Directive: nyplbreadcrumbs', function () {
     expect(nyplbreadcrumbs.attr('crumb-name')).toBeTruthy();
   });
 
-  it('should contain attribute "crumb-name" value to be "data.crumbName"', function () {
-    expect(nyplbreadcrumbs.attr('crumb-name')).toBe('data.crumbName');
-  });
+  it('should contain attribute "crumb-name" value to be "data.crumbName"',
+    function () {
+      expect(nyplbreadcrumbs.attr('crumb-name')).toBe('data.crumbName');
+    });
 
   it('should create an empty breadcrumbs scope array element', function () {
     var isoScope = nyplbreadcrumbs.isolateScope();
     expect(isoScope.breadcrumbs.length).toBeLessThan(1);
   });
 
-  it('once a Crumb is inserted, it should add elements to breadcrumbs array', function () {
-    var isoScope = nyplbreadcrumbs.isolateScope();
+  it('once a Crumb is inserted, it should add elements to breadcrumbs array',
+    function () {
+      var isoScope = nyplbreadcrumbs.isolateScope();
 
-    isoScope.breadcrumbs.push({
-      displayName: 'Amenities',
-      route: 'amenities'
+      isoScope.breadcrumbs.push({
+        displayName: 'Amenities',
+        route: 'amenities'
+      });
+      expect(isoScope.breadcrumbs.length).toBeGreaterThan(0);
     });
-    expect(isoScope.breadcrumbs.length).toBeGreaterThan(0);
-  });
 });
