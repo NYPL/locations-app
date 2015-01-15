@@ -1,5 +1,6 @@
 /*jslint indent: 2, maxlen: 80, nomen: true */
-/*globals nypl_locations, _, angular, jQuery, $location, $ */
+/*globals nypl_locations, _, angular, jQuery,
+console, $location, $ */
 
 (function () {
   'use strict';
@@ -13,11 +14,10 @@
     nyplUtility,
     researchCollectionService
   ) {
-    'use strict';
     var rcValues = researchCollectionService.getResearchValues(),
       sibl,
       research_order = config.research_order || ['SASB', 'LPA', 'SC', 'SIBL'],
-      getHoursToday = function(obj) {
+      getHoursToday = function (obj) {
         _.each(obj, function (elem) {
           if (elem.hours) {
             elem.hoursToday = nyplUtility.hoursToday(elem.hours);
@@ -26,69 +26,91 @@
       },
       loadTerms = function () {
         return nyplLocationsService
-                .terms()
-                .then(function (data) {
-                  console.log(data);
-                  var dataTerms = [];
-                  dataTerms.push(data.terms[0]);
-                  dataTerms.push({
-                    name: 'Subjects',
-                    terms: _.chain(data.terms[1].terms)
-                            .pluck('terms')
-                            .flatten(true)
-                            .unique()
-                            .value()
-                  });
-                  dataTerms.push({
-                    name: 'Locations',
-                    locations: $scope.divisionLocations
-                  });
-                  $scope.terms = dataTerms;
-                });
-                // .catch(function (error) {
-                //     throw error;
-                // });
+          .terms()
+          .then(function (data) {
+            var dataTerms = [];
+            _.each(data.terms, function (term) {
+              var newTerms = term.terms,
+                index = term.name === 'Subjects' ? 0 : 1;
+
+              if (term.name === 'Subjects') {
+                newTerms = _.chain(term.terms)
+                          .pluck('terms')
+                          .flatten(true)
+                          .unique()
+                          .value()
+              }
+
+              dataTerms[index] = {
+                id: term.id,
+                name: term.name,
+                terms: newTerms
+              };
+            });
+            dataTerms.push({
+              name: 'Locations',
+              locations: $scope.divisionLocations
+            });
+            $scope.terms = dataTerms;
+          });
+          // .finally(function (data) {
+          //   $scope.terms[2] = ({
+          //     name: 'Locations',
+          //     locations: $scope.divisionLocations
+          //   });
+          // });
+          // .catch(function (error) {
+          //     throw error;
+          // });
       },
       loadSIBL = function () {
         return nyplLocationsService
-                .singleLocation('sibl')
-                .then(function (data) {
-                  getHoursToday([data.location]);
-                  sibl = data.location;
-                  sibl._embedded.location = {
-                    id: 'SIBL'
-                  };
+          .singleLocation('sibl')
+          .then(function (data) {
+            getHoursToday([data.location]);
+            sibl = data.location;
+            sibl._embedded.location = {
+              id: 'SIBL'
+            };
 
-                  divisions.push(sibl);
-                  $scope.divisionLocations.push(sibl);
-                });
+            $scope.filteredDivisions.push(sibl);
+            $scope.divisions.push(sibl);
+            $scope.divisionLocations.push(sibl);
+          });
       };
 
+    $rootScope.title = "Research Collections";
     $scope.filter_results = [
       {label: 'Subjects', name: '', id: undefined, active: false},
       {label: 'Media', name: '', id: undefined, active: false},
       {label: 'Locations', name: '', id: undefined, active: false}
     ];
-    $scope.active_filter = 'subjects';
-    $rootScope.title = "Research Collections";
     $scope.divisions = divisions;
-    // Get saved values first, if not then the default will display.
-    $scope.subterms = rcValues.subterms;
-    $scope.activeFilter = false;
-    $scope.filteredDivisions = rcValues.filteredDivisions || divisions;
+    $scope.terms = [];
+
+    $scope.filteredDivisions = rcValues.filteredDivisions || _.chain(divisions)
+      .sortBy(function (elem) {
+        return elem.name;
+      })
+      .flatten()
+      .value();
+
     $scope.divisionLocations = _.chain(divisions)
-                                .pluck('_embedded')
-                                .flatten()
-                                .pluck('location')
-                                .indexBy('id')
-                                .sortBy( function (elem) {
-                                  return nyplUtility.researchLibraryOrder(
-                                    research_order,
-                                    elem.id
-                                  );
-                                })
-                                .flatten()
-                                .value();
+      .pluck('_embedded')
+      .flatten()
+      .pluck('location')
+      .indexBy('id')
+      .sortBy(function (elem) {
+        return nyplUtility.researchLibraryOrder(
+          research_order,
+          elem.id
+        );
+      })
+      .flatten()
+      .value();
+
+    // Assign Today's hours
+    getHoursToday($scope.filteredDivisions);
 
     loadSIBL();
     loadTerms();
@@ -96,7 +118,7 @@
     $scope.setSubterms = function (index, term) {
       var subterms;
 
-      if ($scope.selected == index) {
+      if ($scope.selected === index) {
         $scope.selected = undefined;
         $scope.active_filter = undefined;
         return;
@@ -105,83 +127,83 @@
       $scope.active_filter = term.name;
 
       // Save the filter. Need to add one for the the parent term.
-      researchCollectionService.setResearchValue('subterms', subterms);
+      // researchCollectionService.setResearchValue('subterms', subterms);
 
-      // For the data-ng-class for the active buttons. Reset the subterm button.
+      // For the data-ng-class for the active buttons.
+      // Reset the subterm button.
       $scope.selected = index;
     };
 
     function activeSubterm(label, term) {
       var currentSelected = _.findWhere(
-          $scope.filter_results,
-          {label: label, name: term.name}
-        );
+        $scope.filter_results,
+        {label: label, name: term.name}
+      );
 
       if (!currentSelected) {
         _.each($scope.filter_results, function (subterm) {
-          if (subterm.label == label) {
+          if (subterm.label === label) {
             subterm.name = term.name;
             subterm.active = true;
             subterm.id = term.id;
           }
         });
         return true;
-      } else {
-        $scope['selected' + label + 'Subterm'] = undefined;
-        _.each($scope.filter_results, function (subterm) {
-          if (subterm.label == label) {
-            subterm.name = '';
-            subterm.active = false;
-            subterm.id = undefined;
-          }
-        });
-        return false;
       }
+
+      $scope['selected' + label + 'Subterm'] = undefined;
+      _.each($scope.filter_results, function (subterm) {
+        if (subterm.label === label) {
+          subterm.name = '';
+          subterm.active = false;
+          subterm.id = undefined;
+        }
+      });
+      return false;
     }
 
     function selectSubTermForCategory(index, term) {
-      var selectOrDeselect;
       switch ($scope.active_filter) {
-        case 'Subjects':
-          $scope.selectedSubjectsSubterm = index;
-          selectOrDeselect = activeSubterm('Subjects', term);
-          break;
-        case 'Media':
-          $scope.selectedMediaSubterm = index;
-          selectOrDeselect = activeSubterm('Media', term);
-          break;
-        case 'Locations':
-          $scope.selectedLocationsSubterm = index;
-          selectOrDeselect = activeSubterm('Locations', term);
-          break;
-        default:
-          break;
+      case 'Subjects':
+        $scope.selectedSubjectsSubterm = index;
+        activeSubterm('Subjects', term);
+        break;
+      case 'Media':
+        $scope.selectedMediaSubterm = index;
+        activeSubterm('Media', term);
+        break;
+      case 'Locations':
+        $scope.selectedLocationsSubterm = index;
+        activeSubterm('Locations', term);
+        break;
+      default:
+        break;
       }
-
-      return selectOrDeselect;
     }
 
     function getIDFilters() {
       return _.chain($scope.filter_results)
-              .filter(function (filter) {
-                return filter.active;
-              })
-              .map(function (filter){
-                return filter.id; 
-              })
-              .value();
+        .filter(function (filter) {
+          return filter.active;
+        })
+        .map(function (filter) {
+          return filter.id;
+        })
+        .value();
     }
 
     function filterDivisions() {
       var idsToCheck = getIDFilters();
 
-      $scope.filteredDivisions = $scope.divisions.filter(function (division) {
-        var foundArr = [];
+      // Filter and sort
+      $scope.filteredDivisions = _.chain($scope.divisions)
+        .filter(function (division) {
+          var foundArr = [];
 
-        // if (!termID) return true;
+          if (!division.terms) {
+            return false;
+          }
 
-        // Only search through divisions with terms property
-        // if (division.terms) {
           _.each(idsToCheck, function (termID) {
             var found = false;
             // Search through each parent term
@@ -192,7 +214,9 @@
                 found = _.find(parentTerm.terms, function (term) {
                   return term.id === termID;
                 });
-                if (found) foundArr.push(true);
+                if (found) {
+                  foundArr.push(true);
+                }
               }
             });
 
@@ -202,32 +226,30 @@
               }
             }
           });
-        // } else if (division._embedded.location) {
-          // Matches Locations w/ ID
-          // if (division._embedded.location.id === termID) {
-          //   foundArr.push(true);
-          // }
-        // }
 
-        // Return the boolean value of found. True if there's an object,
-        // false if no object was found.
-        return (foundArr.length === idsToCheck.length);
-      });
+          // Return the boolean value of found. True if there's an object,
+          // false if no object was found.
+          return (foundArr.length === idsToCheck.length);
+        })
+        .sortBy(function (elem) {
+          return elem.name;
+        })
+        .flatten()
+        .value();
     }
 
     $scope.filterDivisionsBy = function (index, selectedTerm) {
       // For highlighting the active subterm
-      if (!selectSubTermForCategory(index, selectedTerm)) {
-        return filterDivisions();
-      }
+      selectSubTermForCategory(index, selectedTerm);
 
       // // Save the filtered divisions for later.
       // researchCollectionService
       //   .setResearchValue('filteredDivisions', $scope.filteredDivisions);
 
-      return filterDivisions(selectedTerm.id);
+      return filterDivisions();
     };
 
+    // Not currently being used:
     $scope.setLocations = function (obj) {
       // Toggles Active filter
       $scope.activeFilter = $scope.activeFilter === false ? true : false;
@@ -238,15 +260,15 @@
       if (obj) {
         $scope.subterms = $scope.activeFilter === true ? obj : undefined;
       } else {
-        throw new Error('Could not determine filtered locations. Check API response');
+        throw new Error('Could not determine filtered locations.' +
+          ' Check API response');
       }
     };
 
-    // Assign Today's hours
-    getHoursToday($scope.divisions);
   }
 
   angular
     .module('nypl_research_collections')
     .controller('CollectionsCtrl', CollectionsCtrl);
+
 })();
