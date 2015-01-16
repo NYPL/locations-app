@@ -214,9 +214,9 @@ console, $location, $ */
         .filter(function (division) {
           var foundArr = [];
 
-          if (!division.terms) {
-            return false;
-          }
+          // if (!division.terms) {
+          //   return false;
+          // }
 
           _.each(idsToCheck, function (termID) {
             var found = false;

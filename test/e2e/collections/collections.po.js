@@ -8,10 +8,12 @@ var CollectionPage = function () {
   this.title = element(by.css('.title'));
   this.terms = element.all(by.repeater('term in terms'));
   this.categoryTerms = element.all(by.css('.categoryTerm'));
-  this.subjectSubterms = element.all(by.repeater('term in terms[0].terms'));
-  this.mediaSubterms = element.all(by.repeater('term in terms[1].terms'));
-  this.locationSubterms = element.all(by.repeater('term in terms[2].terms'));
-
+  // this.subjectSubterms = element.all(by.repeater('term in terms[0].terms'));
+  // this.mediaSubterms = element.all(by.repeater('term in terms[1].terms'));
+  // this.locationSubterms = element.all(by.repeater('term in terms[2].locations'));
+  this.subjectSubterms = element.all(by.css('.subjectSubterms'));
+  this.mediaSubterms = element.all(by.css('.mediaSubterms'));
+  this.locationSubterms = element.all(by.css('.locationSubterms'));
 
   this.getTerm = function (n) {
     return this.terms.get(n);
