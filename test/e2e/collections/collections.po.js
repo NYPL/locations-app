@@ -7,23 +7,26 @@ var CollectionPage = function () {
   // Heading
   this.title = element(by.css('.title'));
   this.terms = element.all(by.repeater('term in terms'));
-  this.subterms = element.all(by.repeater('term in subterms'));
+  this.categoryTerms = element.all(by.css('.categoryTerm'));
+  this.subjectSubterms = element.all(by.repeater('term in terms[0].terms'));
+  this.mediaSubterms = element.all(by.repeater('term in terms[1].terms'));
+  this.locationSubterms = element.all(by.repeater('term in terms[2].terms'));
 
 
   this.getTerm = function (n) {
     return this.terms.get(n);
   };
 
-  this.subjectTerm = function () {
-    return this.getTerm(0);
+  this.getSubjectSubterm = function (n) {
+    return this.subjectSubterms.get(n);
   };
 
-  this.mediaTerm = function () {
-    return this.getTerm(1);
+  this.getMediaSubterm = function (n) {
+    return this.mediaSubterms.get(n);
   };
 
-  this.subtermsButton = function (n) {
-    return this.subterms.get(n).element(by.css('button'));
+  this.getLocationSubterm = function (n) {
+    return this.locationSubterms.get(n);
   };
 
   // Results

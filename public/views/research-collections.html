@@ -10,7 +10,7 @@
       </span>
       <span class='filters-wrapper' collapse="expand" duration="2500">
         <span class='filterable-by'>
-          <button data-ng-repeat="term in terms"
+          <button data-ng-repeat="term in terms" class="categoryTerm"
             data-ng-click="selectCategory($index, term)"
             data-ng-class="{active: categorySelected == $index}">
             {{term.name}}
@@ -19,15 +19,15 @@
 
         <div class='sub-filters'>
           <ul data-ng-class="{'locations-active': activeCategory}">
-            <li class="term {{term.name}}" data-ng-repeat="term in terms[0].terms" data-ng-show="activeCategory == 'Subjects'">
+            <li class="term {{term.name}}" data-ng-repeat="term in terms[0].terms" data-ng-show="activeCategory == 'Subjects'" class="subjectSubterms">
               <a href="" data-ng-click="filterDivisionsBy($index, term)"
                 data-ng-model="term.name" data-ng-class="{active: $index == selectedSubjectsSubterm}">{{term.name}}</a>
             </li>
-            <li class="term {{term.name}}" data-ng-repeat="term in terms[1].terms" data-ng-show="activeCategory == 'Media'">
+            <li class="term {{term.name}}" data-ng-repeat="term in terms[1].terms" data-ng-show="activeCategory == 'Media'" class="mediaSubterms">
               <a href="" data-ng-click="filterDivisionsBy($index, term)"
                 data-ng-model="term.name" data-ng-class="{active: $index == selectedMediaSubterm}">{{term.name}}</a>
             </li>
-            <li class="term {{term.name}}" data-ng-repeat="term in terms[2].locations" data-ng-show="activeCategory == 'Locations'">
+            <li class="term {{term.name}}" data-ng-repeat="term in terms[2].locations" data-ng-show="activeCategory == 'Locations'" class="locationSubterms">
               <a href="" data-ng-click="filterDivisionsBy($index, term)"
                 data-ng-model="term.name" data-ng-class="{active: $index == selectedLocationsSubterm}">{{term.name}}</a>
             </li>
