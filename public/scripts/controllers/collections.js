@@ -30,6 +30,7 @@ console, $location, $ */
             var dataTerms = [];
             _.each(data.terms, function (term) {
               var newTerms = term.terms,
+                subjectsSubterms = [],
                 index = term.name === 'Subjects' ? 0 : 1;
 
               if (term.name === 'Subjects') {
@@ -38,6 +39,22 @@ console, $location, $ */
                           .flatten(true)
                           .unique()
                           .value()
+
+                // Get the parent term if there are no children terms.
+                // _.each(term.terms, function (subterm) {
+                //   if (!subterm.terms) {
+                //     subjectsSubterms.push({
+                //       name: subterm.name,
+                //       id: subterm.id
+                //     });
+                //   } else {
+                //     _.each(subterm.terms, function  (term) {
+                //       subjectsSubterms.push(term);
+                //     });
+                //   }
+                // });
+
+                // newTerms = subjectsSubterms;
               }
 
               dataTerms[index] = {
