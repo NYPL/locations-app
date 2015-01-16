@@ -3,7 +3,6 @@
 console, $location, $ */
 
 (function () {
-  'use strict';
 
   function CollectionsCtrl(
     $scope,
@@ -115,23 +114,21 @@ console, $location, $ */
     loadSIBL();
     loadTerms();
 
-    $scope.setSubterms = function (index, term) {
-      var subterms;
-
-      if ($scope.selected === index) {
-        $scope.selected = undefined;
-        $scope.active_filter = undefined;
+    $scope.selectCategory = function (index, term) {
+      if ($scope.categorySelected === index) {
+        $scope.categorySelected = undefined;
+        $scope.activeCategory = undefined;
         return;
       }
 
-      $scope.active_filter = term.name;
+      $scope.activeCategory = term.name;
 
       // Save the filter. Need to add one for the the parent term.
       // researchCollectionService.setResearchValue('subterms', subterms);
 
       // For the data-ng-class for the active buttons.
       // Reset the subterm button.
-      $scope.selected = index;
+      $scope.categorySelected = index;
     };
 
     function activeSubterm(label, term) {
@@ -163,7 +160,7 @@ console, $location, $ */
     }
 
     function selectSubTermForCategory(index, term) {
-      switch ($scope.active_filter) {
+      switch ($scope.activeCategory) {
       case 'Subjects':
         $scope.selectedSubjectsSubterm = index;
         activeSubterm('Subjects', term);
@@ -248,23 +245,6 @@ console, $location, $ */
 
       return filterDivisions();
     };
-
-    // Not currently being used:
-    $scope.setLocations = function (obj) {
-      // Toggles Active filter
-      $scope.activeFilter = $scope.activeFilter === false ? true : false;
-      $scope.selected = undefined;
-      $scope.selectedSubterm = undefined;
-
-      // Ensure data exists
-      if (obj) {
-        $scope.subterms = $scope.activeFilter === true ? obj : undefined;
-      } else {
-        throw new Error('Could not determine filtered locations.' +
-          ' Check API response');
-      }
-    };
-
   }
 
   angular

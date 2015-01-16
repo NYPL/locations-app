@@ -11,23 +11,23 @@
       <span class='filters-wrapper' collapse="expand" duration="2500">
         <span class='filterable-by'>
           <button data-ng-repeat="term in terms"
-            data-ng-click="setSubterms($index, term)"
-            data-ng-class="{active: selected == $index}">
+            data-ng-click="selectCategory($index, term)"
+            data-ng-class="{active: categorySelected == $index}">
             {{term.name}}
           </button>
         </span>
 
         <div class='sub-filters'>
-          <ul data-ng-class="{'locations-active': active_filter}">
-            <li class="term {{term.name}}" data-ng-repeat="term in terms[0].terms" data-ng-show="active_filter == 'Subjects'">
+          <ul data-ng-class="{'locations-active': activeCategory}">
+            <li class="term {{term.name}}" data-ng-repeat="term in terms[0].terms" data-ng-show="activeCategory == 'Subjects'">
               <a href="" data-ng-click="filterDivisionsBy($index, term)"
                 data-ng-model="term.name" data-ng-class="{active: $index == selectedSubjectsSubterm}">{{term.name}}</a>
             </li>
-            <li class="term {{term.name}}" data-ng-repeat="term in terms[1].terms" data-ng-show="active_filter == 'Media'">
+            <li class="term {{term.name}}" data-ng-repeat="term in terms[1].terms" data-ng-show="activeCategory == 'Media'">
               <a href="" data-ng-click="filterDivisionsBy($index, term)"
                 data-ng-model="term.name" data-ng-class="{active: $index == selectedMediaSubterm}">{{term.name}}</a>
             </li>
-            <li class="term {{term.name}}" data-ng-repeat="term in terms[2].locations" data-ng-show="active_filter == 'Locations'" data-ng-class="{mobileRemove: $index != selectedLocationsSubterm, active: active_filter == 'Locations'}">
+            <li class="term {{term.name}}" data-ng-repeat="term in terms[2].locations" data-ng-show="activeCategory == 'Locations'">
               <a href="" data-ng-click="filterDivisionsBy($index, term)"
                 data-ng-model="term.name" data-ng-class="{active: $index == selectedLocationsSubterm}">{{term.name}}</a>
             </li>
