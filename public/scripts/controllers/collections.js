@@ -28,17 +28,11 @@ console, $location, $ */
           .terms()
           .then(function (data) {
             var dataTerms = [];
+
             _.each(data.terms, function (term) {
               var newTerms = term.terms,
                 subjectsSubterms = [],
                 index = term.name === 'Subjects' ? 0 : 1;
-
-              if (term.name === 'Subjects') {
-                newTerms = _.chain(term.terms)
-                          .pluck('terms')
-                          .flatten(true)
-                          .unique()
-                          .value()
 
                 // Get the parent term if there are no children terms.
                 // _.each(term.terms, function (subterm) {
@@ -54,15 +48,13 @@ console, $location, $ */
                 //   }
                 // });
 
-                // newTerms = subjectsSubterms;
-              }
-
               dataTerms[index] = {
                 id: term.id,
                 name: term.name,
                 terms: newTerms
               };
             });
+
             dataTerms.push({
               name: 'Locations',
               locations: $scope.divisionLocations
