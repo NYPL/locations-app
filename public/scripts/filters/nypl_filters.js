@@ -108,6 +108,15 @@
                 today = elem.today;
                 tomorrow = elem.tomorrow;
 
+                // If there are no open or closed times for today's object
+                // Then default to return 'Closed Today' with proper error log
+                if (!today.open || !today.close) {
+                    console.log(
+                        "Returned object is undefined for open/closed property"
+                    );
+                    return 'Closed today';
+                }
+
                 // Assign open time obj
                 if (today.open) {
                     open_time = getHoursObject(today.open);
@@ -128,35 +137,26 @@
                     tomorrow_close_time = getHoursObject(tomorrow.close);
                 }
 
-                // If there are no open or closed times for today's object
-                // Then default to return 'Closed Today' with proper error log
-                if (!today.open || !today.close) {
-                    console.log(
-                        "Returned object is undefined for open/closed property"
-                    );
-                    return 'Closed today';
-                }
-
                 // If the current time is past today's closing time but
                 // before midnight, display that it will be open 'tomorrow',
                 // if there is data for tomorrow's time.
                 if (hour_now_military >= closed_time.military) {
                     if (tomorrow_open_time && tomorrow_close_time) {
                         return 'Open tomorrow ' + tomorrow_open_time.hours +
-                            (tomorrow_open_time.mins !== 0 ? ':' + tomorrow_open_time.mins : '')
+                            (parseInt(tomorrow_open_time.mins, 10) !== 0 ? ':' + tomorrow_open_time.mins : '')
                             + tomorrow_open_time.meridian + '-' + tomorrow_close_time.hours +
-                            (tomorrow_close_time.mins !== 0 ? ':' + tomorrow_close_time.mins : '')
+                            (parseInt(tomorrow_close_time.mins, 10) !== 0 ? ':' + tomorrow_close_time.mins : '')
                             + tomorrow_close_time.meridian;
                     }
-                    return "Closed today";
+                    return 'Closed today';
                 }
 
                 // Display a time range if the library has not opened yet
                 if (hour_now_military < open_time.military) {
                     return 'Open today ' + open_time.hours +
-                        (open_time.mins !== 0 ? ':' + open_time.mins : '') 
+                        (parseInt(open_time.mins, 10) !== 0 ? ':' + open_time.mins : '') 
                         + open_time.meridian + '-' + closed_time.hours +
-                        (closed_time.mins !== 0 ? ':' + closed_time.mins : '')
+                        (parseInt(closed_time.mins, 10) !== 0 ? ':' + closed_time.mins : '')
                         + closed_time.meridian;
                 }
                 // Displays as default once the library has opened
