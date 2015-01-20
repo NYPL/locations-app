@@ -165,7 +165,7 @@
                         + closed_time.mins : '')
                         + closed_time.meridian;
             }
-            return 'hoursToday Filter: Not available';
+            return 'Not available';
         };
     }
 

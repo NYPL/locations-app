@@ -145,7 +145,7 @@ describe('NYPL Filter Unit Tests', function () {
     /* Test when the library is closed or missing data is passed */
     describe('when closed', function () {
       it('should be false if no input is given', function () {
-        expect(hoursTodayFormatFilter('')).toEqual('hoursToday Filter: Not available');
+        expect(hoursTodayFormatFilter('')).toEqual('Not available');
       });
 
       // Note how the following tests don't have data for the 'tomorrow'
