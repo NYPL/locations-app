@@ -142,6 +142,21 @@ describe('NYPL Filter Unit Tests', function () {
       expect(angular.isFunction(hoursTodayFormatFilter)).toBe(true);
     });
 
+    /* Tests each case missing an .open/.close property */
+    it('should display "Closed today" if no .open or .closed ' + 
+      'object properties are in place', function () {
+
+      expect(
+        hoursTodayFormatFilter({
+          'today': {'close': null}
+        })).toEqual('Closed today');
+
+      expect(
+        hoursTodayFormatFilter({
+          'today': {'open': null}
+        })).toEqual('Closed today');
+    });
+
     /* Test when the library is closed or missing data is passed */
     describe('when closed', function () {
       it('should be false if no input is given', function () {
