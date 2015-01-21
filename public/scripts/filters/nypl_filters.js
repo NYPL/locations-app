@@ -85,6 +85,7 @@
      * ...
      */
     function hoursTodayFormat() {
+        'use strict';
         function getHoursObject(time) {
             time = time.split(':');
             return _.object(
@@ -111,9 +112,7 @@
                 // If there are no open or closed times for today's object
                 // Then default to return 'Closed Today' with proper error log
                 if (!today.open || !today.close) {
-                    console.log(
-                        "Returned object is undefined for open/closed property"
-                    );
+                    console.log("Obj is undefined for open/close properties");
                     return 'Closed today';
                 }
 
@@ -154,7 +153,7 @@
                 // Display a time range if the library has not opened yet
                 if (hour_now_military < open_time.military) {
                     return 'Open today ' + open_time.hours +
-                        (parseInt(open_time.mins, 10) !== 0 ? ':' + open_time.mins : '') 
+                        (parseInt(open_time.mins, 10) !== 0 ? ':' + open_time.mins : '')
                         + open_time.meridian + '-' + closed_time.hours +
                         (parseInt(closed_time.mins, 10) !== 0 ? ':' + closed_time.mins : '')
                         + closed_time.meridian;
