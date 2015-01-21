@@ -658,11 +658,21 @@
           });
         };
 
-        this.filterTermWithin = function(data, searchTerm) {
+        this.filterTermWithin = function(data, searchTerm, property) {
           return _.filter(data, function(elem) {
-            if (elem.name) {
-              return elem.name.toLowerCase().
-                indexOf(searchTerm.toLowerCase()) >= 0;
+            if (property === 'name') {
+              if (elem.name) {
+                return elem.name.toLowerCase().
+                  indexOf(searchTerm.toLowerCase()) >= 0;
+              }
+            }
+            else if (property === 'slug') {
+              if (elem.slug || elem.id) {
+                return elem.slug.toLowerCase().
+                  indexOf(searchTerm.substring(1, searchTerm.length).toLowerCase()) >= 0 
+                  || elem.id.toLowerCase().
+                  indexOf(searchTerm.substring(1, searchTerm.length).toLowerCase()) >= 0;
+              }
             }
             return false;
           });
@@ -671,9 +681,15 @@
         this.updateSearchText = function(data, searchTerm) {
           if (searchTerm === '' || !searchTerm || !data) return;
 
-          if (searchTerm.length > 1) {
+          if (searchTerm.length >= 1) {
             $scope.items    = this.filterStartsWith(data, searchTerm);
-            $scope.filtered = this.filterTermWithin(data, searchTerm);
+
+            // Filter through slug only
+            if (searchTerm.charAt(0) === '!') {
+              $scope.filtered = this.filterTermWithin(data, searchTerm, 'slug');
+            } else {
+              $scope.filtered = this.filterTermWithin(data, searchTerm, 'name');
+            }
 
             if ($scope.items[0]) {
               $scope.lookahead   = $scope.items[0].name.substring(searchTerm.length);
