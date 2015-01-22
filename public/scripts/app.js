@@ -482,7 +482,7 @@ angular.module('nypl_research_collections', [
         }
 
         // uses the HTML5 History API
-        // $locationProvider.html5Mode(true);
+        $locationProvider.html5Mode(true);
         $urlRouterProvider.otherwise('/');
 
         $stateProvider
