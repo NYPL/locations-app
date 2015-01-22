@@ -19,8 +19,14 @@
         <span class="p-postal-code">{{data.postal_code}}</span>
         <div class="p-tel">{{data.contacts.phone}}</div>
         <div class="p-manager" data-ng-if="data.contacts.manager">
-          Library Manager: {{data.contacts.manager}}
+          <span data-ng-if="data.contacts.manager.title">
+            {{ data.contacts.manager.title }}:
+          </span>
+          <span data-ng-if="data.contacts.manager.fn">
+            {{ data.contacts.manager.fn }}
+          </span>
         </div>
+
       </div>
 
       <div class="p-adr" data-ng-if="division">
@@ -36,7 +42,12 @@
         <span class="p-postal-code">{{data._embedded.location.postal_code}}</span>
         <div class="p-tel">{{data.contacts.phone}}</div>
         <div class="p-manager" data-ng-if="data.contacts.manager">
-          Library Manager: {{data.contacts.manager}}
+          <span data-ng-if="data.contacts.manager.title">
+            {{ data.contacts.manager.title }}:
+          </span>
+          <span data-ng-if="data.contacts.manager.fn">
+            {{ data.contacts.manager.fn }}
+          </span>
         </div>
       </div>
 

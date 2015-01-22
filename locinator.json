@@ -16,7 +16,7 @@
     "qa": {
       "url": "http://qa.locations.nypl.org",
       "api": "http://qa.locations.api.nypl.org/api",
-      "api_version": "v0.5",
+      "api_version": "v0.6",
       "nyplbase": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.1/css/nyplbase.min.css",
       "optimizely": null,
       "google_analytics": "UA-1420324-123",
