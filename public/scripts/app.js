@@ -483,7 +483,7 @@ angular.module('nypl_research_collections', [
 
         // uses the HTML5 History API
         $locationProvider.html5Mode(true);
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/research-collections');
 
         $stateProvider
             .state('division', {
