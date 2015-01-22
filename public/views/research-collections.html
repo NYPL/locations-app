@@ -2,6 +2,17 @@
 
   <h2 class="title">Research Collections</h2>
   <div class='collection-filters'>
+
+    <div class="filter_results">
+      Current filters:
+      <ul>
+        <li data-ng-repeat='fr in filter_results | filter:{active: true}'>
+          {{fr.label}}: {{fr.name}}
+        </li>
+      </ul>
+
+    </div>
+
     <div class='main-filters'>
       <span class='heading'>
         Filter By:
@@ -18,8 +29,8 @@
         </span>
 
         <div class='sub-filters'>
-          <ul data-ng-class="{'locations-active': activeCategory}">
-            <li class="term {{term.name}}" data-ng-repeat="term in terms[0].terms" data-ng-show="activeCategory == 'Subjects'" class="subjectSubterms" style="position: relative;">
+          <ul class='three-columns'>
+            <li class="term {{term.name}}" data-ng-repeat="term in terms[0].terms" data-ng-show="activeCategory == 'Subjects'" class="subjectSubterms">
               <a href="" data-ng-click="filterDivisionsBy($index, term)"
                 data-ng-model="term.name" data-ng-class="{active: $index == selectedSubjectsSubterm}">{{term.name}}</a>
               <collapsible-filters data="term.terms" data-ng-if="term.terms"></collapsible-filters>
@@ -36,16 +47,6 @@
 
         </div>
       </span>
-    </div>
-
-    <div class="filter_results">
-      Current filters:
-      <ul>
-        <li data-ng-repeat='fr in filter_results | filter:{active: true}'>
-          {{fr.label}}: {{fr.name}}
-        </li>
-      </ul>
-
     </div>
   </div>
 

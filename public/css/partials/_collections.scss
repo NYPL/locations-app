@@ -74,12 +74,12 @@
 			margin: 0 0 0 73px;
 		}
 
-		ul {
+		> ul {
 			margin: 0;
 			padding: 0;
 			list-style-type: none;
 
-			@include breakpoint($min, $post-palm) {
+			/*@include breakpoint($min, $post-palm) {
 				-moz-column-count: 2;
 				-moz-column-gap: 10px;
 				-webkit-column-count: 2;
@@ -106,20 +106,19 @@
 					column-count: 2;
 					column-gap: 20px;
 				}
-			}
+			}*/
 
-			li {
+			> li {
 				margin: 4px 0px;
 				padding: 2px 0px;
 
 				a {
-					text-decoration: none;
 					padding: 5px;
 					display: inline-block;
 					border: 1px solid transparent;
-					width: 100%;
+					width: 90%;
 
-					@include breakpoint($min, $post-palm) {
+					@include breakpoint($min, 481px) {
 						width: auto;
 					}
 					&.active {

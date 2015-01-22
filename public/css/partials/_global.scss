@@ -500,3 +500,46 @@ time {
 		}
 	}
 }
+
+// Utility classes that generate column based lists
+.two-columns {
+	overflow: hidden;
+	> li {
+			@include breakpoint($min, $post-palm) {
+				width: 50%;
+				float:left;
+				display:inline;
+			}
+	}
+}
+.three-columns {
+	overflow: hidden;
+	> li {
+		@include breakpoint($min, 481px) {
+			width: 50%;
+			float:left;
+			display:inline;			
+		}
+		@include breakpoint($min, $post-palm) {
+			width: 33.333%;
+		}
+	}
+}
+
+// Collapsible Filters Directive (Research Collections)
+.collapsible-filters {
+	position: absolute;
+	z-index: 100;
+	color: black;
+	background-color: white;
+	width: 85%;
+	@include breakpoint($min, 481px) {
+		width: auto;
+	}
+
+	> ul {
+		margin: 5px;
+		padding: 0;
+		list-style-type: none;
+	}
+}
