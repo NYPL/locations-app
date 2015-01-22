@@ -419,6 +419,38 @@
 
   /**
    * @ngdoc directive
+   * @name nypl_locations.directive:collapsibleFilters
+   * @restrict AEC
+   * @scope
+   * @description
+   * Collapsible Filters: Hides/Displays filterable data
+   * @example
+   * <pre>
+   *  <collapsible-filters data='object'></collapsible-filters>
+   * </pre>
+   */
+  function collapsibleFilters() {
+    return {
+      restrict: 'AE',
+      templateUrl: 'scripts/directives/templates/collapsible-filters.html',
+      replace: false,
+      scope: {
+        data: '=data'
+      },
+      link: function ($scope, elem, attrs) {
+
+        $scope.$watch('data', function(newValue, oldValue) {
+            console.log(newValue, oldValue);
+        });
+
+        $scope.items = $scope.data || undefined;
+
+      }
+    };
+  }
+
+  /**
+   * @ngdoc directive
    * @name nypl_locations.directive:nyplAutofill
    * @restrict AEC
    * @scope
@@ -716,6 +748,7 @@
 
   angular
     .module('nypl_research_collections')
+    .directive('collapsibleFilters', collapsibleFilters)
     .directive('nyplFooter', nyplFooter)
     .directive('loadingWidget', loadingWidget);
 
