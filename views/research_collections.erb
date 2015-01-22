@@ -1,14 +1,6 @@
 <!doctype html>
 <html xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="nypl_research_collections" data-ng-strict-di>
   <head>
-    <%#= New Relic Snippets %>
-    <%if settings.locinator_env == "development" %>
-    <%= erb :newrelic_dev %>
-    <%elsif settings.locinator_env == "qa" %>
-    <%= erb :newrelic_qa %>
-    <%elsif settings.locinator_env == "production" %>
-    <%= erb :newrelic_prod %>
-    <% end %>
 
     <% if ! settings.env_config["optimizely"].nil? %>
     <script src="<%= settings.env_config["optimizely"] %>"></script>
