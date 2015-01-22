@@ -2,6 +2,16 @@
 
   <h2 class="title">Research Collections</h2>
   <div class='collection-filters'>
+    <div class="active-filters" data-ng-if="showActiveFilters">
+      Current filters:
+      <div>
+        <span data-ng-repeat='activeFilter in filter_results | filter:{active: true}'>
+          {{activeFilter.label}}: <a data-ng-click="removeFilter(activeFilter)" class="active-filter">{{activeFilter.name}}
+            <span class="icon-cancel-circle"></span></a>
+        <span>
+      </div>
+    </div>
+
     <div class='main-filters'>
       <span class='heading'>
         Filter By:
@@ -37,15 +47,6 @@
       </span>
     </div>
 
-    <div class="filter_results">
-      Current filters:
-      <ul>
-        <li data-ng-repeat='fr in filter_results | filter:{active: true}'>
-          {{fr.label}}: {{fr.name}}
-        </li>
-      </ul>
-
-    </div>
   </div>
 
   <section class="collections-results">

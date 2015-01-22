@@ -201,6 +201,12 @@ console, $location, $ */
     function filterDivisions() {
       var idsToCheck = getIDFilters();
 
+      if (idsToCheck.length) {
+        $scope.showActiveFilters = true;
+      } else {
+        $scope.showActiveFilters = false;
+      }
+
       // Filter and sort
       $scope.filteredDivisions = _.chain($scope.divisions)
         .filter(function (division) {
@@ -243,6 +249,17 @@ console, $location, $ */
         .flatten()
         .value();
     }
+
+    $scope.removeFilter = function (filter) {
+      $scope['selected' + filter.label + 'Subterm'] = undefined;
+      filter.active = false;
+      filter.name = '';
+      filter.id = undefined;
+
+      filterDivisions();
+      // Now go through the process of filtering again:
+    };
+
 
     $scope.filterDivisionsBy = function (index, selectedTerm) {
       // For highlighting the active subterm
