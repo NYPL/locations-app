@@ -30,13 +30,10 @@
     <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.6/css/nyplbase.min.css">
 <% end %>
 
-<% if @rq.forwarded? %>
-    <base href="<%= settings.baseurl %>" target="_parent">
+
+    <base href="<%= settings.baseurl %>">
     <link rel="stylesheet" href="<%= settings.baseurl %>css/locations.min.css">
-<% else %>
-    <base href="/" target="_parent">
-    <link rel="stylesheet" href="css/locations.min.css">
-<% end %>
+
 
   </head>
   <body>
