@@ -34,8 +34,10 @@
         <div class="p-street-address">{{data._embedded.location.street_address}}</div>
         <div data-ng-if="data.cross_street">{{data._embedded.location.cross_street}}</div>
         <div data-ng-if="data.floor">
-          <span>{{data.floor}}, </span>
-          <span data-ng-if="data.room" class="room">Room {{data.room}}</span>
+          <span>{{data.floor}}</span>
+          <span data-ng-if="data.room" class="room" style="margin-left: -5px;">
+          , Room {{data.room}}
+          </span>
         </div>
         <span class="p-locality">{{data._embedded.location.locality}}</span>, 
         <span class="p-region">{{data._embedded.location.region}}</span>, 
