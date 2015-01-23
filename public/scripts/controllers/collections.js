@@ -89,7 +89,7 @@ console, $location, $ */
 
     $rootScope.title = "Research Collections";
     $scope.filter_results = [
-      {label: 'Subjects', name: '', id: undefined, active: false},
+      {label: 'Subjects', name: '', id: undefined, active: false, subterms: undefined},
       {label: 'Media', name: '', id: undefined, active: false},
       {label: 'Locations', name: '', id: undefined, active: false}
     ];
@@ -152,6 +152,9 @@ console, $location, $ */
             subterm.name = term.name;
             subterm.active = true;
             subterm.id = term.id;
+            if (subterm.label === 'Subjects') {
+              subterm.subterms = term.terms;
+            }
           }
         });
         return true;
@@ -163,6 +166,9 @@ console, $location, $ */
           subterm.name = '';
           subterm.active = false;
           subterm.id = undefined;
+          if (subterm.label === 'Subjects') {
+            subterm.subterms = undefined;
+          }
         }
       });
       return false;
@@ -187,10 +193,20 @@ console, $location, $ */
       }
     }
 
+    function getSubjectFilters() {
+      if ($scope.filter_results[0].active) {
+        if ($scope.filter_results[0].subterms) {
+          return $scope.filter_results[0].subterms;
+        }
+        return [{id: $scope.filter_results[0].id}];
+      }
+      return false;
+    }
+
     function getIDFilters() {
       return _.chain($scope.filter_results)
         .filter(function (filter) {
-          return filter.active;
+          return (filter.active && filter.label !== 'Subjects');
         })
         .map(function (filter) {
           return filter.id;
@@ -200,48 +216,87 @@ console, $location, $ */
 
     function filterDivisions() {
       var idsToCheck = getIDFilters();
+      var savedFilteredArr = [];
 
-      // Filter and sort
-      $scope.filteredDivisions = _.chain($scope.divisions)
-        .filter(function (division) {
-          var foundArr = [];
+      var subjectFitlers = getSubjectFilters();
+      var filteringbySubjects = false;
 
-          // if (!division.terms) {
-          //   return false;
-          // }
+      if (subjectFitlers.length) {
+        filteringBySubjects = true;
 
-          _.each(idsToCheck, function (termID) {
+        savedFilteredArr = _.chain($scope.divisions)
+          .filter(function (division) {
             var found = false;
-            // Search through each parent term
-            _.each(division.terms, function (parentTerm) {
-              // If already found, no need to keep searching;
+            _.each(subjectFitlers, function (subjectTerm) {
+              // Search through each parent term
+              _.each(division.terms, function (parentTerm) {
+                // If already found, no need to keep searching;
+                if (!found) {
+                  // Find the term where the ID matches what was selected
+                  found = _.find(parentTerm.terms, function (term) {
+                    return term.id === subjectTerm.id;
+                  });
+                }
+              });
+            });
+
+            // Return the boolean value of found. True if there's an object,
+            // false if no object was found.
+            return !!found;
+          })
+          .sortBy(function (elem) {
+            return elem.name;
+          })
+          .flatten()
+          .value();
+
+      } else {
+        savedFilteredArr = $scope.divisions;
+      }
+
+      // No media or locations to filter through
+      if (idsToCheck.length === 0) {
+        $scope.filteredDivisions = savedFilteredArr;
+      } else {
+        // Filter and sort
+        $scope.filteredDivisions = _.chain(savedFilteredArr)
+          .filter(function (division) {
+            var foundArr = [];
+            _.each(idsToCheck, function (termID) {
+              var found = false;
+              // Search through each parent term
+              _.each(division.terms, function (parentTerm) {
+                // If already found, no need to keep searching;
+                if (!found) {
+                  // Find the term where the ID matches what was selected
+                  found = _.find(parentTerm.terms, function (term) {
+                    return term.id === termID;
+                  });
+                  if (found) {
+                    foundArr.push(true);
+                  }
+                }
+              });
+
               if (!found) {
-                // Find the term where the ID matches what was selected
-                found = _.find(parentTerm.terms, function (term) {
-                  return term.id === termID;
-                });
-                if (found) {
+                if (division._embedded.location.id === termID) {
                   foundArr.push(true);
                 }
               }
             });
 
-            if (!found) {
-              if (division._embedded.location.id === termID) {
-                foundArr.push(true);
-              }
-            }
-          });
+            // Return the boolean value of found. True if there's an object,
+            // false if no object was found.
+            return (foundArr.length === idsToCheck.length);
+          })
+          .sortBy(function (elem) {
+            return elem.name;
+          })
+          .flatten()
+          .value();
+      }
 
-          // Return the boolean value of found. True if there's an object,
-          // false if no object was found.
-          return (foundArr.length === idsToCheck.length);
-        })
-        .sortBy(function (elem) {
-          return elem.name;
-        })
-        .flatten()
-        .value();
+      // console.log($scope.filteredDivisions);
     }
 
     $scope.filterDivisionsBy = function (index, selectedTerm) {
