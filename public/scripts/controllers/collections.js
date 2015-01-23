@@ -93,6 +93,9 @@ console, $location, $ */
       {label: 'Media', name: '', id: undefined, active: false},
       {label: 'Locations', name: '', id: undefined, active: false}
     ];
+    
+    // Assign Today's hours
+    getHoursToday(divisions);
     $scope.divisions = divisions;
     $scope.terms = [];
 
@@ -117,9 +120,6 @@ console, $location, $ */
       .flatten()
       .value();
 
-    // Assign Today's hours
-    getHoursToday($scope.filteredDivisions);
-
     loadSIBL();
     loadTerms();
 
@@ -140,7 +140,126 @@ console, $location, $ */
       $scope.categorySelected = index;
     };
 
-    function activeSubterm(label, term) {
+    function getSubjectFilters() {
+      if ($scope.filter_results[0].active) {
+        if ($scope.filter_results[0].subterms) {
+          return $scope.filter_results[0].subterms;
+        }
+        return [{id: $scope.filter_results[0].id}];
+      }
+      return false;
+    }
+
+    // Only get Media and Location filters
+    function getMediaLocationsFilters() {
+      return _.chain($scope.filter_results)
+        .filter(function (filter) {
+          return (filter.active && filter.label !== 'Subjects');
+        })
+        .map(function (filter) {
+          return filter.id;
+        })
+        .value();
+    }
+
+    function filterBySubject(subjectFitlers) {
+      return _.chain($scope.divisions)
+        .filter(function (division) {
+          var found = false;
+          _.each(subjectFitlers, function (subjectTerm) {
+            // Search through each parent term
+            _.each(division.terms, function (parentTerm) {
+              // If already found, no need to keep searching;
+              if (!found) {
+                // Find the term where the ID matches what was selected
+                found = _.find(parentTerm.terms, function (term) {
+                  return term.id === subjectTerm.id;
+                });
+              }
+            });
+          });
+
+          // Return the boolean value of found. True if there's an object,
+          // false if no object was found.
+          return !!found;
+        })
+        .sortBy(function (elem) {
+          return elem.name;
+        })
+        .flatten()
+        .value();
+    }
+
+    function filterByMediaAndLocation(idsToCheck, savedFilteredArr) {
+      return _.chain(savedFilteredArr)
+        .filter(function (division) {
+          var foundArr = [];
+          _.each(idsToCheck, function (termID) {
+
+            var found = false;
+            // Search through each parent term
+            _.each(division.terms, function (parentTerm) {
+              // If already found, no need to keep searching;
+              if (!found) {
+                // Find the term where the ID matches what was selected
+                found = _.find(parentTerm.terms, function (term) {
+                  return term.id === termID;
+                });
+                if (found) {
+                  foundArr.push(true);
+                }
+              }
+            });
+
+            if (!found) {
+              if (division._embedded.location.id === termID) {
+                foundArr.push(true);
+              }
+            }
+          });
+
+          // Return the boolean value of found. True if there's an object,
+          // false if no object was found.
+          return (foundArr.length === idsToCheck.length);
+        })
+        .sortBy(function (elem) {
+          return elem.name;
+        })
+        .flatten()
+        .value();
+    }
+
+    function filterDivisions() {
+      var idsToCheck = getMediaLocationsFilters(),
+        savedFilteredArr = [],
+        subjectFitlers = getSubjectFilters();
+
+      // Display the "Current Filters:" if there are any ids to filter by
+      if (idsToCheck.length || subjectFitlers.length) {
+        $scope.showActiveFilters = true;
+      } else {
+        $scope.showActiveFilters = false;
+      }
+
+      // If there are subjects to filter through, do those first
+      if (subjectFitlers.length) {
+        savedFilteredArr = filterBySubject(subjectFitlers);
+      } else {
+        // If no subjects to filter through, use all the divisions
+        savedFilteredArr = $scope.divisions;
+      }
+
+      // No Media or Locations to filter through
+      if (idsToCheck.length === 0) {
+        $scope.filteredDivisions = savedFilteredArr;
+      } else {
+        // Filter through Media or Location ids
+        $scope.filteredDivisions =
+          filterByMediaAndLocation(idsToCheck, savedFilteredArr);
+      }
+    }
+
+    function fixTermName(label, term) {
       var name;
 
       if (label === "Locations") {
@@ -153,12 +272,18 @@ console, $location, $ */
         name = term.name;
       }
 
-      var currentSelected = _.findWhere(
-        $scope.filter_results,
-        {label: label, name: name}
-      );
+      return name;
+    }
 
+    function activeSubterm(term) {
+      var label = $scope.activeCategory,
+        name = fixTermName(label, term),
+        currentSelected = _.findWhere(
+          $scope.filter_results,
+          {label: label, name: name}
+        );
 
+      // Selection doesn't exist so add it
       if (!currentSelected) {
         _.each($scope.filter_results, function (subterm) {
           if (subterm.label === label) {
@@ -170,10 +295,10 @@ console, $location, $ */
             }
           }
         });
-
-        return true;
+        return;
       }
 
+      // Exists so remove it
       $scope['selected' + label + 'Subterm'] = undefined;
       _.each($scope.filter_results, function (subterm) {
         if (subterm.label === label) {
@@ -185,154 +310,19 @@ console, $location, $ */
           }
         }
       });
-      return false;
+      return;
     }
 
-    function selectSubTermForCategory(index, term) {
-      switch ($scope.activeCategory) {
-      case 'Subjects':
-        $scope.selectedSubjectsSubterm = index;
-        activeSubterm('Subjects', term);
-        break;
-      case 'Media':
-        $scope.selectedMediaSubterm = index;
-        activeSubterm('Media', term);
-        break;
-      case 'Locations':
-        $scope.selectedLocationsSubterm = index;
-        activeSubterm('Locations', term);
-        break;
-      default:
-        break;
-      }
+    function showSubtermsForCategory(index) {
+      $scope['selected' + $scope.activeCategory + 'Subterm'] = index;
     }
-
-    function getSubjectFilters() {
-      if ($scope.filter_results[0].active) {
-        if ($scope.filter_results[0].subterms) {
-          return $scope.filter_results[0].subterms;
-        }
-        return [{id: $scope.filter_results[0].id}];
-      }
-      return false;
-    }
-
-    function getIDFilters() {
-      return _.chain($scope.filter_results)
-        .filter(function (filter) {
-          return (filter.active && filter.label !== 'Subjects');
-        })
-        .map(function (filter) {
-          return filter.id;
-        })
-        .value();
-    }
-
-    function filterDivisions() {
-      var idsToCheck = getIDFilters();
-      var savedFilteredArr = [];
-      var subjectFitlers = getSubjectFilters();
-      var filteringbySubjects = false;
-
-      if (idsToCheck.length || subjectFitlers.length) {
-        $scope.showActiveFilters = true;
-      } else {
-        $scope.showActiveFilters = false;
-      }
-
-      if (subjectFitlers.length) {
-        filteringBySubjects = true;
-
-        savedFilteredArr = _.chain($scope.divisions)
-          .filter(function (division) {
-            var found = false;
-            _.each(subjectFitlers, function (subjectTerm) {
-              // Search through each parent term
-              _.each(division.terms, function (parentTerm) {
-                // If already found, no need to keep searching;
-                if (!found) {
-                  // Find the term where the ID matches what was selected
-                  found = _.find(parentTerm.terms, function (term) {
-                    return term.id === subjectTerm.id;
-                  });
-                }
-              });
-            });
-
-            // Return the boolean value of found. True if there's an object,
-            // false if no object was found.
-            return !!found;
-          })
-          .sortBy(function (elem) {
-            return elem.name;
-          })
-          .flatten()
-          .value();
-
-      } else {
-        savedFilteredArr = $scope.divisions;
-      }
-
-      // No media or locations to filter through
-      if (idsToCheck.length === 0) {
-        $scope.filteredDivisions = savedFilteredArr;
-      } else {
-        // Filter and sort
-        $scope.filteredDivisions = _.chain(savedFilteredArr)
-          .filter(function (division) {
-            var foundArr = [];
-            _.each(idsToCheck, function (termID) {
-
-              var found = false;
-              // Search through each parent term
-              _.each(division.terms, function (parentTerm) {
-                // If already found, no need to keep searching;
-                if (!found) {
-                  // Find the term where the ID matches what was selected
-                  found = _.find(parentTerm.terms, function (term) {
-                    return term.id === termID;
-                  });
-                  if (found) {
-                    foundArr.push(true);
-                  }
-                }
-              });
-
-              if (!found) {
-                if (division._embedded.location.id === termID) {
-                  foundArr.push(true);
-                }
-              }
-            });
-
-            // Return the boolean value of found. True if there's an object,
-            // false if no object was found.
-            return (foundArr.length === idsToCheck.length);
-          })
-          .sortBy(function (elem) {
-            return elem.name;
-          })
-          .flatten()
-          .value();
-      }
-
-      // console.log($scope.filteredDivisions);
-    }
-
-    $scope.removeFilter = function (filter) {
-      $scope['selected' + filter.label + 'Subterm'] = undefined;
-      filter.active = false;
-      filter.name = '';
-      filter.id = undefined;
-
-      filterDivisions();
-      // Now go through the process of filtering again:
-    };
-
 
     $scope.filterDivisionsBy = function (index, selectedTerm) {
-      // For highlighting the active subterm
-      selectSubTermForCategory(index, selectedTerm);
+      // Display the correct list for the selected category
+      showSubtermsForCategory(index);
+
+      // Highlight the current selected subterm
+      activeSubterm(selectedTerm);
 
       // // Save the filtered divisions for later.
       // researchCollectionService
@@ -340,6 +330,17 @@ console, $location, $ */
 
       return filterDivisions();
     };
+
+    $scope.removeFilter = function (filter) {
+      $scope['selected' + filter.label + 'Subterm'] = undefined;
+      filter.active = false;
+      filter.name = '';
+      filter.id = undefined;
+
+      // Now go through the process of filtering again:
+      filterDivisions();
+    };
+
   }
 
   angular
