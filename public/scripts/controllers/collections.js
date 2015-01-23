@@ -169,10 +169,6 @@ console, $location, $ */
               subterm.subterms = term.terms;
             }
           }
-
-          if (subterm.label === 'Subjects') {
-            subterm.subterms = term.terms;
-          }
         });
 
         return true;
@@ -188,9 +184,6 @@ console, $location, $ */
             subterm.subterms = undefined;
           }
         }
-        if (subterm.label === 'Subjects') {
-            subterm.subterms = undefined;
-          }
       });
       return false;
     }
@@ -241,7 +234,7 @@ console, $location, $ */
       var subjectFitlers = getSubjectFilters();
       var filteringbySubjects = false;
 
-      if (idsToCheck.length) {
+      if (idsToCheck.length || subjectFitlers.length) {
         $scope.showActiveFilters = true;
       } else {
         $scope.showActiveFilters = false;
