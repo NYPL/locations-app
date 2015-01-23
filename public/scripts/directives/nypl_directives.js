@@ -444,7 +444,6 @@
         });
 
         $scope.items = $scope.data || undefined;
-
       }
     };
   }
