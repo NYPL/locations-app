@@ -93,6 +93,9 @@ console, $location, $ */
       {label: 'Media', name: '', id: undefined, active: false},
       {label: 'Locations', name: '', id: undefined, active: false}
     ];
+    
+    // Assign Today's hours
+    getHoursToday(divisions);
     $scope.divisions = divisions;
     $scope.terms = [];
 
@@ -117,9 +120,6 @@ console, $location, $ */
       .flatten()
       .value();
 
-    // Assign Today's hours
-    getHoursToday($scope.filteredDivisions);
-
     loadSIBL();
     loadTerms();
 
@@ -140,67 +140,19 @@ console, $location, $ */
       $scope.categorySelected = index;
     };
 
-    function activeSubterm(label, term) {
-      var name;
-
-      if (label === "Locations") {
-        if (term.id === "SIBL" || term.id === "LPA") {
-          name = term.slug.toUpperCase();
-        } else {
-          name = (term.slug).charAt(0).toUpperCase() + (term.slug).slice(1);
-        }
-      } else {
-        name = term.name;
-      }
-
-      var currentSelected = _.findWhere(
-        $scope.filter_results,
-        {label: label, name: name}
-      );
-
-
-      if (!currentSelected) {
-        _.each($scope.filter_results, function (subterm) {
-          if (subterm.label === label) {
-            subterm.name = name;
-            subterm.active = true;
-            subterm.id = term.id;
-            if (subterm.label === 'Subjects') {
-              subterm.subterms = term.terms;
-            }
-          }
-        });
-
-        return true;
-      }
-
-      $scope['selected' + label + 'Subterm'] = undefined;
-      _.each($scope.filter_results, function (subterm) {
-        if (subterm.label === label) {
-          subterm.name = '';
-          subterm.active = false;
-          subterm.id = undefined;
-          if (subterm.label === 'Subjects') {
-            subterm.subterms = undefined;
-          }
-        }
-      });
-      return false;
-    }
-
     function selectSubTermForCategory(index, term) {
       switch ($scope.activeCategory) {
       case 'Subjects':
         $scope.selectedSubjectsSubterm = index;
-        activeSubterm('Subjects', term);
+        // activeSubterm('Subjects', term);
         break;
       case 'Media':
         $scope.selectedMediaSubterm = index;
-        activeSubterm('Media', term);
+        // activeSubterm('Media', term);
         break;
       case 'Locations':
         $scope.selectedLocationsSubterm = index;
-        activeSubterm('Locations', term);
+        // activeSubterm('Locations', term);
         break;
       default:
         break;
@@ -217,6 +169,7 @@ console, $location, $ */
       return false;
     }
 
+    // Only get Media and Location filters
     function getIDFilters() {
       return _.chain($scope.filter_results)
         .filter(function (filter) {
@@ -325,14 +278,65 @@ console, $location, $ */
       filter.name = '';
       filter.id = undefined;
 
-      filterDivisions();
       // Now go through the process of filtering again:
+      filterDivisions();
     };
 
+    function activeSubterm(term) {
+      var label = $scope.activeCategory;
+
+      var name;
+
+      if (label === "Locations") {
+        if (term.id === "SIBL" || term.id === "LPA") {
+          name = term.slug.toUpperCase();
+        } else {
+          name = (term.slug).charAt(0).toUpperCase() + (term.slug).slice(1);
+        }
+      } else {
+        name = term.name;
+      }
+
+      var currentSelected = _.findWhere(
+        $scope.filter_results,
+        {label: label, name: name}
+      );
+
+
+      if (!currentSelected) {
+        _.each($scope.filter_results, function (subterm) {
+          if (subterm.label === label) {
+            subterm.name = name;
+            subterm.active = true;
+            subterm.id = term.id;
+            if (subterm.label === 'Subjects') {
+              subterm.subterms = term.terms;
+            }
+          }
+        });
+
+        return true;
+      }
+
+      $scope['selected' + label + 'Subterm'] = undefined;
+      _.each($scope.filter_results, function (subterm) {
+        if (subterm.label === label) {
+          subterm.name = '';
+          subterm.active = false;
+          subterm.id = undefined;
+          if (subterm.label === 'Subjects') {
+            subterm.subterms = undefined;
+          }
+        }
+      });
+      return false;
+    }
 
     $scope.filterDivisionsBy = function (index, selectedTerm) {
       // For highlighting the active subterm
       selectSubTermForCategory(index, selectedTerm);
+
+      activeSubterm(selectedTerm);
 
       // // Save the filtered divisions for later.
       // researchCollectionService
