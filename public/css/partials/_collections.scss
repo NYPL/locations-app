@@ -87,8 +87,8 @@
 					margin: 0px;
 					padding: 5px;
 					display: inline-block;
-					text-decoration: underline;
-					border: 1px solid transparent;
+					text-decoration: none;
+					border: 1px solid #CCC;
 					width: 85%;
 
 					@include breakpoint($min, 481px) {
