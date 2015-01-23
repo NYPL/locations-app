@@ -159,28 +159,6 @@ console, $location, $ */
       );
 
 
-      // if (term.terms) {
-      //   // console.log(term.terms);
-      //   $scope.filteredDivisions = $scope.divisions.filter(function (division) {
-      //     var found = false;
-
-      //     if (division.terms && division.terms[1]) {
-      //       _.each(term.terms, function (searchingTerm) {
-      //         if (!found) {
-      //           // Only looks in Subjects
-      //           // console.log(division.terms[1].terms);
-      //           found = _.findWhere(division.terms[1].terms, {
-      //             id: searchingTerm.id
-      //           });
-      //           // console.log(found);
-      //         }
-      //       });
-      //     }
-      //     // console.log(!!found)
-      //     return !!found;
-      //   });
-      // }
-
       if (!currentSelected) {
         _.each($scope.filter_results, function (subterm) {
           if (subterm.label === label) {
@@ -231,48 +209,14 @@ console, $location, $ */
     }
 
     function getIDFilters() {
-      var allCombinations = [];
-      _.each($scope.filter_results[0].subterms, function (term) {
-        var arr = [term.id];
-        if ($scope.filter_results[1].active) {
-          arr.push($scope.filter_results[1].id);
-        }
-        if ($scope.filter_results[2].active) {
-          arr.push($scope.filter_results[2].id);
-        }
-
-        allCombinations.push(arr);
-      });
-// console.log($scope.filter_results);
-      // if parent
-      var subjects = _.pluck($scope.filter_results[0].subterms, 'id');
-      var mediaLocations = [];
-
-      if ($scope.filter_results[1].active) {
-        mediaLocations.push($scope.filter_results[1].id);
-      }
-      if ($scope.filter_results[2].active) {
-        mediaLocations.push($scope.filter_results[2].id);
-      }
-console.log(mediaLocations);
-
-      if ($scope.filter_results[0].subterms) {
-        _.each($scope.filter_results[0].subterms, function (term) {
-          console.log(mediaLocations.concat(term.id));
-        });
-      }
-//       console.log(_.cross(subjects, mediaLocations));
-
-      // console.log(allCombinations);
-      return allCombinations;
-      // return _.chain($scope.filter_results)
-      //   .filter(function (filter) {
-      //     return filter.active;
-      //   })
-      //   .map(function (filter) {
-      //     return filter.id;
-      //   })
-      //   .value();
+      return _.chain($scope.filter_results)
+        .filter(function (filter) {
+          return filter.active;
+        })
+        .map(function (filter) {
+          return filter.id;
+        })
+        .value();
     }
 
     function filterDivisions() {
@@ -343,7 +287,7 @@ console.log(mediaLocations);
     $scope.filterDivisionsBy = function (index, selectedTerm) {
       // For highlighting the active subterm
       selectSubTermForCategory(index, selectedTerm);
-console.log(selectedTerm);
+
       // // Save the filtered divisions for later.
       // researchCollectionService
       //   .setResearchValue('filteredDivisions', $scope.filteredDivisions);
