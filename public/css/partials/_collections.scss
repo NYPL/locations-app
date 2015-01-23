@@ -68,7 +68,7 @@
 	}
 
 	.sub-filters {
-		margin: 5px 10px;
+		margin: 5px 0px;
 
 		@include breakpoint($min, $post-palm) {
 			margin: 0 0 0 73px;
@@ -79,44 +79,17 @@
 			padding: 0;
 			list-style-type: none;
 
-			/*@include breakpoint($min, $post-palm) {
-				-moz-column-count: 2;
-				-moz-column-gap: 10px;
-				-webkit-column-count: 2;
-				-webkit-column-gap: 10px;
-				column-count: 2;
-				column-gap: 10px;
-			}
-
-			@include breakpoint($min, $post-tablet) {
-				-moz-column-count: 3;
-				-moz-column-gap: 10px;
-				-webkit-column-count: 3;
-				-webkit-column-gap: 10px;
-				column-count: 3;
-				column-gap: 10px;
-			}
-
-			&.locations-active {
-				@include breakpoint($min, $post-tablet) {
-					-moz-column-count: 2;
-					-moz-column-gap: 20px;
-					-webkit-column-count: 2;
-					-webkit-column-gap: 20px;
-					column-count: 2;
-					column-gap: 20px;
-				}
-			}*/
-
 			> li {
-				margin: 4px 0px;
+				margin: 6px 0px 8px;
 				padding: 2px 0px;
 
-				a {
+				> a {
+					margin: 0px;
 					padding: 5px;
 					display: inline-block;
+					text-decoration: underline;
 					border: 1px solid transparent;
-					width: 90%;
+					width: 85%;
 
 					@include breakpoint($min, 481px) {
 						width: auto;

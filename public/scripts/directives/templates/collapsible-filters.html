@@ -1,6 +1,8 @@
-<span class='collapsible-controls' data-ng-click="showDetails = !showDetails">X</span>
-<div class='collapsible-filters' data-ng-show='showDetails'>
-	<ul>
+<span class='collapsible-control icon-arrow-down2' data-ng-click="showFilters = !showFilters" 
+data-ng-class="{'open': showFilters}">
+</span>
+<div class='collapsible-filters' data-ng-show='showFilters'>
+	<ul class='two-columns'>
 		<li data-ng-repeat='filter in items'>
 			<a href="">{{filter.name}}</a>
 		</li>
