@@ -165,6 +165,9 @@ console, $location, $ */
             subterm.name = name;
             subterm.active = true;
             subterm.id = term.id;
+            if (subterm.label === 'Subjects') {
+              subterm.subterms = term.terms;
+            }
           }
 
           if (subterm.label === 'Subjects') {
@@ -181,6 +184,9 @@ console, $location, $ */
           subterm.name = '';
           subterm.active = false;
           subterm.id = undefined;
+          if (subterm.label === 'Subjects') {
+            subterm.subterms = undefined;
+          }
         }
         if (subterm.label === 'Subjects') {
             subterm.subterms = undefined;
@@ -208,10 +214,20 @@ console, $location, $ */
       }
     }
 
+    function getSubjectFilters() {
+      if ($scope.filter_results[0].active) {
+        if ($scope.filter_results[0].subterms) {
+          return $scope.filter_results[0].subterms;
+        }
+        return [{id: $scope.filter_results[0].id}];
+      }
+      return false;
+    }
+
     function getIDFilters() {
       return _.chain($scope.filter_results)
         .filter(function (filter) {
-          return filter.active;
+          return (filter.active && filter.label !== 'Subjects');
         })
         .map(function (filter) {
           return filter.id;
@@ -221,6 +237,9 @@ console, $location, $ */
 
     function filterDivisions() {
       var idsToCheck = getIDFilters();
+      var savedFilteredArr = [];
+      var subjectFitlers = getSubjectFilters();
+      var filteringbySubjects = false;
 
       if (idsToCheck.length) {
         $scope.showActiveFilters = true;
@@ -228,17 +247,49 @@ console, $location, $ */
         $scope.showActiveFilters = false;
       }
 
-      // Filter and sort
-      $scope.filteredDivisions = _.chain($scope.divisions)
-        .filter(function (division) {
-          var foundArr = [];
+      if (subjectFitlers.length) {
+        filteringBySubjects = true;
 
-          // if (!division.terms) {
-          //   return false;
-          // }
+        savedFilteredArr = _.chain($scope.divisions)
+          .filter(function (division) {
+            var found = false;
+            _.each(subjectFitlers, function (subjectTerm) {
+              // Search through each parent term
+              _.each(division.terms, function (parentTerm) {
+                // If already found, no need to keep searching;
+                if (!found) {
+                  // Find the term where the ID matches what was selected
+                  found = _.find(parentTerm.terms, function (term) {
+                    return term.id === subjectTerm.id;
+                  });
+                }
+              });
+            });
 
-          _.each(idsToCheck, function (idArr) {
-            _.each(idArr, function (termID) {
+            // Return the boolean value of found. True if there's an object,
+            // false if no object was found.
+            return !!found;
+          })
+          .sortBy(function (elem) {
+            return elem.name;
+          })
+          .flatten()
+          .value();
+
+      } else {
+        savedFilteredArr = $scope.divisions;
+      }
+
+      // No media or locations to filter through
+      if (idsToCheck.length === 0) {
+        $scope.filteredDivisions = savedFilteredArr;
+      } else {
+        // Filter and sort
+        $scope.filteredDivisions = _.chain(savedFilteredArr)
+          .filter(function (division) {
+            var foundArr = [];
+            _.each(idsToCheck, function (termID) {
+
               var found = false;
               // Search through each parent term
               _.each(division.terms, function (parentTerm) {
@@ -260,17 +311,19 @@ console, $location, $ */
                 }
               }
             });
-          });
 
-          // Return the boolean value of found. True if there's an object,
-          // false if no object was found.
-          return (foundArr.length === idsToCheck.length);
-        })
-        .sortBy(function (elem) {
-          return elem.name;
-        })
-        .flatten()
-        .value();
+            // Return the boolean value of found. True if there's an object,
+            // false if no object was found.
+            return (foundArr.length === idsToCheck.length);
+          })
+          .sortBy(function (elem) {
+            return elem.name;
+          })
+          .flatten()
+          .value();
+      }
+
+      // console.log($scope.filteredDivisions);
     }
 
     $scope.removeFilter = function (filter) {
