@@ -89,7 +89,7 @@ console, $location, $ */
 
     $rootScope.title = "Research Collections";
     $scope.filter_results = [
-      {label: 'Subjects', name: '', id: undefined, active: false},
+      {label: 'Subjects', name: '', id: undefined, active: false, subterms: undefined},
       {label: 'Media', name: '', id: undefined, active: false},
       {label: 'Locations', name: '', id: undefined, active: false}
     ];
@@ -141,19 +141,59 @@ console, $location, $ */
     };
 
     function activeSubterm(label, term) {
+      var name;
+
+      if (label === "Locations") {
+        if (term.id === "SIBL" || term.id === "LPA") {
+          name = term.slug.toUpperCase();
+        } else {
+          name = (term.slug).charAt(0).toUpperCase() + (term.slug).slice(1);
+        }
+      } else {
+        name = term.name;
+      }
+
       var currentSelected = _.findWhere(
         $scope.filter_results,
-        {label: label, name: term.name}
+        {label: label, name: name}
       );
+
+
+      // if (term.terms) {
+      //   // console.log(term.terms);
+      //   $scope.filteredDivisions = $scope.divisions.filter(function (division) {
+      //     var found = false;
+
+      //     if (division.terms && division.terms[1]) {
+      //       _.each(term.terms, function (searchingTerm) {
+      //         if (!found) {
+      //           // Only looks in Subjects
+      //           // console.log(division.terms[1].terms);
+      //           found = _.findWhere(division.terms[1].terms, {
+      //             id: searchingTerm.id
+      //           });
+      //           // console.log(found);
+      //         }
+      //       });
+      //     }
+      //     // console.log(!!found)
+      //     return !!found;
+      //   });
+      // }
 
       if (!currentSelected) {
         _.each($scope.filter_results, function (subterm) {
           if (subterm.label === label) {
-            subterm.name = term.name;
+            subterm.name = name;
             subterm.active = true;
             subterm.id = term.id;
           }
+
+          if (subterm.label === 'Subjects') {
+            subterm.subterms = term.terms;
+          }
         });
+
         return true;
       }
 
@@ -164,6 +204,9 @@ console, $location, $ */
           subterm.active = false;
           subterm.id = undefined;
         }
+        if (subterm.label === 'Subjects') {
+            subterm.subterms = undefined;
+          }
       });
       return false;
     }
@@ -188,14 +231,48 @@ console, $location, $ */
     }
 
     function getIDFilters() {
-      return _.chain($scope.filter_results)
-        .filter(function (filter) {
-          return filter.active;
-        })
-        .map(function (filter) {
-          return filter.id;
-        })
-        .value();
+      var allCombinations = [];
+      _.each($scope.filter_results[0].subterms, function (term) {
+        var arr = [term.id];
+        if ($scope.filter_results[1].active) {
+          arr.push($scope.filter_results[1].id);
+        }
+        if ($scope.filter_results[2].active) {
+          arr.push($scope.filter_results[2].id);
+        }
+
+        allCombinations.push(arr);
+      });
+// console.log($scope.filter_results);
+      // if parent
+      var subjects = _.pluck($scope.filter_results[0].subterms, 'id');
+      var mediaLocations = [];
+
+      if ($scope.filter_results[1].active) {
+        mediaLocations.push($scope.filter_results[1].id);
+      }
+      if ($scope.filter_results[2].active) {
+        mediaLocations.push($scope.filter_results[2].id);
+      }
+console.log(mediaLocations);
+
+      if ($scope.filter_results[0].subterms) {
+        _.each($scope.filter_results[0].subterms, function (term) {
+          console.log(mediaLocations.concat(term.id));
+        });
+      }
+//       console.log(_.cross(subjects, mediaLocations));
+
+      // console.log(allCombinations);
+      return allCombinations;
+      // return _.chain($scope.filter_results)
+      //   .filter(function (filter) {
+      //     return filter.active;
+      //   })
+      //   .map(function (filter) {
+      //     return filter.id;
+      //   })
+      //   .value();
     }
 
     function filterDivisions() {
@@ -216,27 +293,29 @@ console, $location, $ */
           //   return false;
           // }
 
-          _.each(idsToCheck, function (termID) {
-            var found = false;
-            // Search through each parent term
-            _.each(division.terms, function (parentTerm) {
-              // If already found, no need to keep searching;
+          _.each(idsToCheck, function (idArr) {
+            _.each(idArr, function (termID) {
+              var found = false;
+              // Search through each parent term
+              _.each(division.terms, function (parentTerm) {
+                // If already found, no need to keep searching;
+                if (!found) {
+                  // Find the term where the ID matches what was selected
+                  found = _.find(parentTerm.terms, function (term) {
+                    return term.id === termID;
+                  });
+                  if (found) {
+                    foundArr.push(true);
+                  }
+                }
+              });
+
               if (!found) {
-                // Find the term where the ID matches what was selected
-                found = _.find(parentTerm.terms, function (term) {
-                  return term.id === termID;
-                });
-                if (found) {
+                if (division._embedded.location.id === termID) {
                   foundArr.push(true);
                 }
               }
             });
-
-            if (!found) {
-              if (division._embedded.location.id === termID) {
-                foundArr.push(true);
-              }
-            }
           });
 
           // Return the boolean value of found. True if there's an object,
@@ -264,7 +343,7 @@ console, $location, $ */
     $scope.filterDivisionsBy = function (index, selectedTerm) {
       // For highlighting the active subterm
       selectSubTermForCategory(index, selectedTerm);
-
+console.log(selectedTerm);
       // // Save the filtered divisions for later.
       // researchCollectionService
       //   .setResearchValue('filteredDivisions', $scope.filteredDivisions);
