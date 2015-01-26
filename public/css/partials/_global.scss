@@ -558,6 +558,12 @@ time {
 			@include breakpoint($min, $post-palm) {
 				margin: 8px 0px;
 			}
+
+			> a {
+				&.active {
+					color: #0090c4;
+				}
+			}
 		}
 	}
 }

@@ -435,15 +435,19 @@
       templateUrl: 'scripts/directives/templates/collapsible-filters.html',
       replace: false,
       scope: {
-        data: '=data'
+        items: '=data',
+        filterItem: '&',
+        filteredResults: '='
       },
       link: function ($scope, elem, attrs) {
-
-        $scope.$watch('data', function(newValue, oldValue) {
-            console.log(newValue, oldValue);
-        });
-
-        $scope.items = $scope.data || undefined;
+        $scope.showFilters = false;
+        $scope.toggleShowFilter = function() {
+          $scope.showFilters = !$scope.showFilters;
+        }
+        // Toggles active filter match
+        $scope.checkActiveFilter = function(results, termID) {
+          return $scope.activeFilter = _.findWhere(results, {id: termID});
+        }
       }
     };
   }

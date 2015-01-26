@@ -32,7 +32,7 @@
             <li class="term {{term.name}}" data-ng-repeat="term in terms[0].terms" data-ng-show="activeCategory == 'Subjects'" class="subjectSubterms">
               <a href="" data-ng-click="filterDivisionsBy($index, term)"
                 data-ng-model="term.name" data-ng-class="{active: $index == selectedSubjectsSubterm}">{{term.name}}</a>
-              <collapsible-filters data="term.terms" data-ng-if="term.terms"></collapsible-filters>
+              <collapsible-filters data="term.terms" data-ng-if="term.terms" filter-item="filterDivisionsBy($index,term)" filtered-results="filter_results"></collapsible-filters>
             </li>
             <li class="term {{term.name}}" data-ng-repeat="term in terms[1].terms" data-ng-show="activeCategory == 'Media'" class="mediaSubterms">
               <a href="" data-ng-click="filterDivisionsBy($index, term)"
