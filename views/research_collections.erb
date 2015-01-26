@@ -27,7 +27,7 @@
 <% if settings.env_config["angular_src"] == "ux-static-staging" %>
     <link rel="stylesheet" href="http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.6/css/nyplbase.min.css">
 <% else %>
-    <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.6/css/nyplbase.min.css">
+    <link rel="stylesheet" type="text/css" href="http://ux-static.nypl.org/nyplbase/0.1.6/css/nyplbase.min.css">
 <% end %>
 
 <% if @rq.forwarded? %>
@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="<%= settings.baseurl %>css/locations.min.css">
 <% else %>
     <base href="/research-collections/">
-    <link rel="stylesheet" href="/research-collections/css/locations.min.css">
+    <link rel="stylesheet" type="text/css" href="/research-collections/css/locations.min.css">
 <% end %>
 
   </head>
