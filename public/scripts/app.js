@@ -487,7 +487,7 @@ angular.module('nypl_research_collections', [
 
         $stateProvider
             .state('division', {
-                url: '/research-collections',
+                url: '/',
                 templateUrl: 'views/research-collections.html',
                 controller: 'CollectionsCtrl',
                 label: 'Research Collections',
