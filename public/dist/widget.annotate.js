@@ -751,7 +751,7 @@ nypl_locations.run(["$analytics", "$state", "$rootScope", "$location", function 
 // Declare an http interceptor that will signal
 // the start and end of each request
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
-nypl_locations.config(['$httpProvider', function ($httpProvider) {
+function httpInterceptor($httpProvider) {
     'use strict';
 
     var $http,
@@ -815,7 +815,10 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
         ];
 
     $httpProvider.responseInterceptors.push(interceptor);
-}]);
+}
+httpInterceptor.$inject = ["$httpProvider"];
+
+nypl_locations.config(httpInterceptor);
 
 /**
  * @ngdoc overview
@@ -975,6 +978,14 @@ angular.module('nypl_research_collections', [
 
         // uses the HTML5 History API
         $locationProvider.html5Mode(true);
+        // $urlRouterProvider.rule(function ($injector, $location) {
+        //     var path = $location.url();
+
+        //     // Remove trailing slash if found
+        //     if (path[path.length - 1] === '/') {
+        //         return path.slice(0, -1);
+        //     }
+        // });
         $urlRouterProvider.otherwise('/research-collections');
 
         $stateProvider
@@ -989,7 +1000,8 @@ angular.module('nypl_research_collections', [
                 }
             });
     }
-]);
+])
+.config(httpInterceptor);
 
 
 /*jslint indent: 4, maxlen: 80, nomen: true */

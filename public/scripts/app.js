@@ -265,7 +265,7 @@ nypl_locations.run(function ($analytics, $state, $rootScope, $location) {
 // Declare an http interceptor that will signal
 // the start and end of each request
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
-nypl_locations.config(['$httpProvider', function ($httpProvider) {
+function httpInterceptor($httpProvider) {
     'use strict';
 
     var $http,
@@ -329,7 +329,9 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
         ];
 
     $httpProvider.responseInterceptors.push(interceptor);
-}]);
+}
+
+nypl_locations.config(httpInterceptor);
 
 /**
  * @ngdoc overview
@@ -505,5 +507,6 @@ angular.module('nypl_research_collections', [
                 }
             });
     }
-]);
+])
+.config(httpInterceptor);
 
