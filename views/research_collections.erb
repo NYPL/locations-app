@@ -32,7 +32,7 @@
 
 <% if @rq.forwarded? %>
     <base href="<%= settings.baseurl %>">
-    <link rel="stylesheet" href="<%= settings.baseurl %>css/locations.min.css">
+    <link rel="stylesheet" type="text/css" href="<%= settings.baseurl %>css/locations.min.css">
 <% else %>
     <base href="/">
     <link rel="stylesheet" href="css/locations.min.css">
@@ -83,11 +83,11 @@
     <![endif]-->
     
     <!-- Bower components -->
-    <script src="bower_components/jquery/jquery.min.js"></script>
-    <script src="bower_components/underscore/underscore.js"></script>
+    <script type="text/javascript" src="bower_components/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
     <!-- endbower -->
     <!-- Other components -->
-    <script src="vendor/jquery.cookies.js"></script>
+    <script type="text/javascript" src="vendor/jquery.cookies.js"></script>
     <!-- end other components -->
 
 <% if settings.env_config["angular_src"] == "bower" %>
@@ -99,12 +99,12 @@
 <% end %>
     
     <!-- Angular dependent Bower components -->
-    <script src="bower_components/newrelic-timing/newrelic-timing.min.js"></script>
-    <script src="bower_components/newrelic-timing/newrelic-timing-angular.min.js"></script>
+    <script type="text/javascript" src="bower_components/newrelic-timing/newrelic-timing.min.js"></script>
+    <script type="text/javascript" src="bower_components/newrelic-timing/newrelic-timing-angular.min.js"></script>
     <!-- end Bower components -->
 
     <!-- App Config -->
-    <script>
+    <script type="text/javascript" >
       var locations_cfg = <%= settings.app_cfg %>
     </script>
 <% if settings.env_config["app_src"] == "minified" %>
