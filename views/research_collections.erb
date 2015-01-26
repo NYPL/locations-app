@@ -31,11 +31,11 @@
 <% end %>
 
 <% if @rq.forwarded? %>
-    <base href="<%= settings.baseurl %>">
-    <link rel="stylesheet" type="text/css" href="<%= settings.baseurl %>css/locations.min.css">
-<% else %>
     <base href="/research-collections/">
     <link rel="stylesheet" type="text/css" href="/research-collections/css/locations.min.css">
+<% else %>
+    <base href="/">
+    <link rel="stylesheet" type="text/css" href="/css/locations.min.css">
 <% end %>
 
   </head>
@@ -60,10 +60,6 @@
     
     <!-- Footer -->
     <nypl-footer></nypl-footer>
-
-    <p>
-        referrer: <%= @rq.referrer %>, forwarded: <%= @rq.forwarded? %>
-    </p>
 
     <!-- Loading Directive -->
     <div id="loadingWidget" loading-widget>
