@@ -70,16 +70,23 @@
 				@include breakpoint($min, $post-palm) {
 					font-size: 16px;
 					font-size: 1.6rem;
-				}		
+				}	
 
+				// Clock figure
 				.figure {
 					display: table-cell;
-					width: 45px;
+					width: 42px;
+
+					@include breakpoint($min, $post-palm) {
+						width: 45px;
+					}
+
 					&:before {
 						vertical-align: -3px;
 					}
 				}
 				
+				// Hour's today message
 				.msg {
 					display: table-cell;
 					line-height: 1.2;
