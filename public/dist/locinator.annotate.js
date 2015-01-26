@@ -4999,16 +4999,8 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
           today = date || new Date(),
           holidays = [
             {
-              day: new Date(2014, 11, 31),
-              title: "The Library will close at 3 p.m. today"
-            },
-            {
-              day: new Date(2015, 0, 1),
-              title: "Closed for New Year's Day"
-            },
-            {
-              day: new Date(2015, 0, 19),
-              title: "Closed for Martin Luther King, Jr. Day"
+              day: new Date(2015, 0, 26),
+              title: "Closing at 5 pm due to severe weather" // Winter storm early closing
             },
             {
               day: new Date(2015, 1, 16),
