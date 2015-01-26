@@ -72,8 +72,18 @@
 					font-size: 1.6rem;
 				}		
 
-				span {
-					vertical-align: 1px;
+				.figure {
+					display: table-cell;
+					width: 45px;
+					&:before {
+						vertical-align: -3px;
+					}
+				}
+				
+				.msg {
+					display: table-cell;
+					line-height: 1.2;
+					font-size: .9em;
 				}
 			}
 		}
