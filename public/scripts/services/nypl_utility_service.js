@@ -306,6 +306,10 @@
               title: "Closing at 5 pm due to severe weather" // Winter storm early closing
             },
             {
+              day: new Date(2015, 0, 27),
+              title: "Closed due to severe weather" // Winter storm early closing
+            },           
+            {
               day: new Date(2015, 1, 16),
               title: "Closed for Presidents' Day"
             },
