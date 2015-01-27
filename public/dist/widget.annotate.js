@@ -1735,6 +1735,41 @@ angular.module('nypl_research_collections', [
 
   /**
    * @ngdoc directive
+   * @name nypl_locations.directive:collapsibleFilters
+   * @restrict AEC
+   * @scope
+   * @description
+   * Collapsible Filters: Hides/Displays filterable data
+   * @example
+   * <pre>
+   *  <collapsible-filters data='object'></collapsible-filters>
+   * </pre>
+   */
+  function collapsibleFilters() {
+    return {
+      restrict: 'AE',
+      templateUrl: 'scripts/directives/templates/collapsible-filters.html',
+      replace: false,
+      scope: {
+        items: '=data',
+        filterItem: '&',
+        filteredResults: '='
+      },
+      link: function ($scope, elem, attrs) {
+        $scope.showFilters = false;
+        $scope.toggleShowFilter = function() {
+          $scope.showFilters = !$scope.showFilters;
+        }
+        // Toggles active filter match
+        $scope.checkActiveFilter = function(results, termID) {
+          return $scope.activeFilter = _.findWhere(results, {id: termID});
+        }
+      }
+    };
+  }
+
+  /**
+   * @ngdoc directive
    * @name nypl_locations.directive:nyplAutofill
    * @restrict AEC
    * @scope
@@ -2033,6 +2068,7 @@ angular.module('nypl_research_collections', [
 
   angular
     .module('nypl_research_collections')
+    .directive('collapsibleFilters', collapsibleFilters)
     .directive('nyplFooter', nyplFooter)
     .directive('loadingWidget', loadingWidget);
 
