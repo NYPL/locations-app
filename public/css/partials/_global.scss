@@ -500,3 +500,93 @@ time {
 		}
 	}
 }
+
+// Utility classes that generate column based lists
+.two-columns {
+	overflow: hidden;
+	> li {
+			@include breakpoint($min, $post-palm) {
+				width: 50%;
+				float:left;
+				display:inline;
+			}
+	}
+}
+.three-columns {
+	overflow: hidden;
+	> li {
+		@include breakpoint($min, 481px) {
+			width: 50%;
+			float:left;
+			display:inline;			
+		}
+		@include breakpoint($min, $post-palm) {
+			width: 33.333%;
+		}
+	}
+}
+
+// Collapsible Filters Directive (Research Collections)
+.collapsible-filters {
+	position: absolute;
+	z-index: 2;
+	color: black;
+	background-color: white;
+	margin-top: 2px;
+	width: 88%;
+	box-shadow: 2px 2px 6px #C5C2BB;
+
+	@include breakpoint($min, 481px) {
+		width: auto;
+		min-width: 125px;
+		max-width: 220px;
+	}
+
+	// Tablet and up
+	@include breakpoint($min, $post-palm) {
+		max-width: 450px;
+	}
+
+	> ul {
+		margin: 10px;
+		padding: 0;
+		list-style-type: none;
+
+		> li {
+			margin: 10px 0px;
+
+			@include breakpoint($min, $post-palm) {
+				margin: 8px 0px;
+			}
+
+			> a {
+				&.active {
+					color: #0090c4;
+				}
+			}
+		}
+	}
+}
+
+// Toggle Arrow displays/hides pop-up filters
+.collapsible-control {
+	display: inline-block;
+	font-size: 18px;
+	vertical-align: -2px;
+	border: 1px solid #CCC;
+	position: relative;
+	left: -3px;
+	&.open {
+    background: #fff;
+    border: 1px solid #0090c4;
+    color: #0090c4;
+	}
+
+	&:before {
+		margin: 8px 6px 8px 6px;
+	}
+
+	&:hover {
+		cursor: pointer;
+	}
+}
