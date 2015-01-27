@@ -495,9 +495,10 @@ angular.module('nypl_research_collections', [
         // });
         $urlRouterProvider.otherwise('/research-collections');
 
+        var home_url = window.rp_forwarded ? '/' : '/research-collections';
         $stateProvider
             .state('division', {
-                url: '/',
+                url: home_url,
                 templateUrl: 'views/research-collections.html',
                 controller: 'CollectionsCtrl',
                 label: 'Research Collections',
