@@ -493,10 +493,9 @@ angular.module('nypl_research_collections', [
         //         return path.slice(0, -1);
         //     }
         // });
+        $urlRouterProvider.otherwise('/research-collections');
 
         var home_url = window.rp_forwarded ? '/' : '/research-collections';
-
-        $urlRouterProvider.otherwise(home_url);
         $stateProvider
             .state('division', {
                 url: home_url,
