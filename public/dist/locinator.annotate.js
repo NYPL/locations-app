@@ -502,6 +502,7 @@ angular.module('nypl_research_collections', [
 
             // Remove trailing slash if found
             if (path[path.length - 1] === '/') {
+                console.log('removing trailing slash');
                 return path.slice(0, -1);
             }
         });
