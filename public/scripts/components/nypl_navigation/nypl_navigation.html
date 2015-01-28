@@ -114,7 +114,7 @@
         </div>
       </li>
 
-      <li class="dropDown" data-ng-class="{active: 'locations' == activeNav}">
+      <li class="dropDown" data-ng-class="{active: 'Research' == activenav}">
         <a href="http://nypl.org/collections">Research</a>
         <div class="dropDown_Content">
           <ul class="top-level">
@@ -248,10 +248,28 @@
         </div>
       </li>
 
-      <li class="dropDown" data-ng-class="{active: 'locations' == activeNav}">
-        <a href="/locations">Locations</a>
+      <li class="dropDown" data-ng-class="{active: 'Locations' == activenav}">
+        <a data-ng-if="activenav == 'Locations'" data-ui-sref="home.index" href="/locations">Locations</a>
+        <a data-ng-if="activenav == 'Research'" href="/locations">Locations</a>
         <div class="dropDown_Content">
-          <ul>
+          <ul data-ng-if="activenav == 'Locations'">
+            <li>
+              <a data-ui-sref="home.index">All Locations</a>
+            </li>
+            <li>
+              <a data-ui-sref="location({ location: 'schwarzman' })">Schwarzman Building</a>
+            </li>
+            <li>
+              <a data-ui-sref="location({ location: 'lpa' })">Library for the Performing Arts</a>
+            </li>
+            <li>
+              <a data-ui-sref="location({ location: 'schomburg' })">Schomburg Center</a>
+            </li>
+            <li>
+              <a data-ui-sref="location({ location: 'sibl' })">Science, Industry and Business Library</a>
+            </li>
+          </ul>
+          <ul data-ng-if="activenav == 'Research'">
             <li>
               <a href="/locations">All Locations</a>
             </li>
