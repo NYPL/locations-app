@@ -497,19 +497,19 @@ angular.module('nypl_research_collections', [
 
         // uses the HTML5 History API
         $locationProvider.html5Mode(true);
-        // $urlRouterProvider.rule(function ($injector, $location) {
-        //     var path = $location.url();
+        $urlRouterProvider.rule(function ($injector, $location) {
+            var path = $location.url();
 
-        //     // Remove trailing slash if found
-        //     if (path[path.length - 1] === '/') {
-        //         return path.slice(0, -1);
-        //     }
-        // });
-        $urlRouterProvider.otherwise('/research-collections');
-
+            // Remove trailing slash if found
+            if (path[path.length - 1] === '/') {
+                return path.slice(0, -1);
+            }
+        });
+        var home_url = window.rq_forwarded ? '/' : '/research-collections';
+        $urlRouterProvider.otherwise(home_url);
         $stateProvider
             .state('division', {
-                url: '/',
+                url: home_url,
                 templateUrl: 'views/research-collections.html',
                 controller: 'CollectionsCtrl',
                 label: 'Research Collections',
