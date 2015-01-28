@@ -986,7 +986,7 @@ angular.module('nypl_research_collections', [
         //         return path.slice(0, -1);
         //     }
         // });
-        $urlRouterProvider.otherwise('/research-collections');
+        $urlRouterProvider.otherwise('/');
 
         $stateProvider
             .state('division', {
