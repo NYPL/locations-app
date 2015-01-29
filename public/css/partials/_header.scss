@@ -219,7 +219,7 @@ header {
 
 					@include breakpoint($min, $pre-tablet) {
 						position: absolute;
-						right: 82px;
+						right: 85px;
 						border: 2px solid #7d7872;
 						width: 300px;
 						box-shadow: none;
@@ -297,6 +297,7 @@ header {
 
 							a {
 								display: block;
+								max-width: 120px;
 								color: #000;
 								font-size: 14px;
 								margin: 5px 0px;
