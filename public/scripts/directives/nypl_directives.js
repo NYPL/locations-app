@@ -440,10 +440,21 @@
         filteredResults: '='
       },
       link: function ($scope, elem, attrs) {
-        $scope.showFilters = false;
-        $scope.toggleShowFilter = function() {
-          $scope.showFilters = !$scope.showFilters;
+        var filterControl = elem.find('.collapsible-control'),
+            filterBox = elem.find('.collapsible-filters');
+
+        $scope.toggleFilters = function() {
+          if (filterControl.hasClass('open')) {
+            filterControl.removeClass('open');
+            filterBox.removeClass('open');
+          } else {
+            $('.collapsible-control').removeClass('open');
+            $('.collapsible-filters').removeClass('open');
+            filterControl.addClass('open');
+            filterBox.addClass('open');
+          }
         }
+
         // Toggles active filter match
         $scope.checkActiveFilter = function(results, termID) {
           return $scope.activeFilter = _.findWhere(results, {id: termID});

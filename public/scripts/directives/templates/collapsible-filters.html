@@ -1,10 +1,9 @@
-<span class='collapsible-control icon-arrow-down2' data-ng-click="toggleShowFilter()" 
-data-ng-class="{'open': showFilters}">
+<span class='collapsible-control icon-arrow-down2' data-ng-click="toggleFilters()">
 </span>
-<div class='collapsible-filters' data-ng-show='showFilters'>
-	<ul class='two-columns'>
+<div class='collapsible-filters'>
+	<ul>
 		<li data-ng-repeat='filter in items'>
-			<a href="" data-ng-click="filterItem({term: filter}); checkActiveFilter(filteredResults, filter.id)" data-ng-class="{'active': activeFilter.id == filter.id}">{{filter.name}}</a>
+			<a href="" data-ng-click="filterItem({term:filter}); checkActiveFilter(filteredResults, filter.id)" data-ng-class="{'active': activeFilter.id == filter.id}">{{filter.name}}</a>
 		</li>
 	</ul>
 </div>

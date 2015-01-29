@@ -100,8 +100,12 @@
 			list-style-type: none;
 
 			> li {
-				margin: 6px 0px 8px;
+				margin: 6px 10px 8px;
 				padding: 2px 0px;
+
+				@include breakpoint($min, 481px) {
+					margin: 8px 0px;
+				}
 
 				> a {
 					margin: 0px;
@@ -109,10 +113,14 @@
 					display: inline-block;
 					text-decoration: none;
 					border: 1px solid #CCC;
-					width: 85%;
+					width: 82%;
+					@include breakpoint($min, 360px) {
+						width: 85%;
+					}
 
 					@include breakpoint($min, 481px) {
 						width: auto;
+						padding: 5px 10px;
 					}
 					&.active {
 				    background: #fff;
