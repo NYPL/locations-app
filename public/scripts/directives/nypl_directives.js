@@ -292,6 +292,7 @@
       $scope.$watch(
         exp,
         function (newVal, oldVal) {
+          console.log(oldVal, newVal);
           // If values are equal -- just return
           if (newVal === oldVal) {
             return;
@@ -762,6 +763,7 @@
 
   angular
     .module('nypl_research_collections')
+    .directive('collapse', collapse)
     .directive('collapsibleFilters', collapsibleFilters)
     .directive('nyplFooter', nyplFooter)
     .directive('loadingWidget', loadingWidget);

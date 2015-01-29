@@ -67,7 +67,7 @@
 		}
 
 		.filters-wrapper {
-			display: block;
+			//display: block;
 			@include breakpoint($min, $post-palm) {
 				display: inline !important;
 			}

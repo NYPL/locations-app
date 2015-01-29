@@ -15,10 +15,10 @@
     <div class='main-filters'>
       <span class='heading'>
         Filter by:
-        <span class="main-filter-toggle" ng-click="expand = !expand" 
+        <span class="main-filter-toggle" data-ng-click="expand = !expand" 
         ng-class="{'icon-arrow-right2': !expand, 'icon-arrow-down2': expand}"></span>
       </span>
-      <span class='filters-wrapper' collapse="expand" duration="2500">
+      <div class='filters-wrapper' collapse="expand" duration="2500">
         <span class='filterable-by'>
           <button data-ng-repeat="term in terms" class="categoryTerm"
             data-ng-click="selectCategory($index, term)"
@@ -43,9 +43,9 @@
                 data-ng-model="term.name" data-ng-class="{active: $index == selectedLocationsSubterm}">{{term.name}}</a>
             </li>
           </ul>
-
         </div>
-      </span>
+      </div>
+      
     </div>
   </div>
 
