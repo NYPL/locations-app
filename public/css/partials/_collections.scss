@@ -27,6 +27,11 @@
 
 			> span {
 				margin-left: 5px;
+				display: block;
+
+				@include breakpoint($min, $mobile-phone) {
+					display: inline-block;
+				}
 			}
 		}
 

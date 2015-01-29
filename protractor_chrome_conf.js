@@ -35,8 +35,8 @@ exports.config = {
     widget: ['test/e2e/widget/widget.spec.js']
   },
 
-  // onPrepare: function () {
-  //   'use strict';
+  onPrepare: function () {
+    'use strict';
 
   //   // This will generate a screenshot for every test, a json file,
   //   // and an html page with all the results:
@@ -45,12 +45,12 @@ exports.config = {
   //   }));
 
   //   // Generates an xml file
-  //   require('jasmine-reporters');
-  //   jasmine.getEnv()
-  //     .addReporter(
-  //       new jasmine.JUnitXmlReporter('test/results/e2e_xml/', true, true)
-  //     );
-  // },
+    require('jasmine-reporters');
+    jasmine.getEnv()
+      .addReporter(
+        new jasmine.JUnitXmlReporter('test/results/e2e_xml/', true, true)
+      );
+  },
 
   baseUrl: 'http://localhost:9292/',
 

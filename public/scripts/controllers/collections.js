@@ -260,9 +260,16 @@ console, $location, $ */
     }
 
     function fixTermName(label, term) {
-      var name;
+      var name, parentSubject = '';
 
-      if (label === "Locations") {
+      if (label === "Subjects") {
+        _.each($scope.terms[0].terms, function (childterm) {
+          if (_.findWhere(childterm.terms, {name: term.name})) {
+            parentSubject = childterm.name + ' - ';
+          }
+        });
+        name = parentSubject + term.name;
+      } else if (label === "Locations") {
         if (term.id === "SIBL" || term.id === "LPA") {
           name = term.slug.toUpperCase();
         } else {
@@ -291,6 +298,7 @@ console, $location, $ */
             subterm.active = true;
             subterm.id = term.id;
             if (subterm.label === 'Subjects') {
+              subterm.name = name;
               subterm.subterms = term.terms;
             }
           }
