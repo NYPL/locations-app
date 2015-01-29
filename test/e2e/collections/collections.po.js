@@ -15,6 +15,11 @@ var CollectionPage = function () {
   this.mediaSubterms = element.all(by.css('.mediaSubterms'));
   this.locationSubterms = element.all(by.css('.locationSubterms'));
 
+  // Active filters:
+  this.currentSubjectFilter = element(by.css('.active-filter-Subjects'));
+  this.currentMediaFilter = element(by.css('.active-filter-Media'));
+  this.currentLocationsFilter = element(by.css('.active-filter-Locations'));
+
   this.getTerm = function (n) {
     return this.terms.get(n);
   };

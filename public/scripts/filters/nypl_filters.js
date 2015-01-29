@@ -229,6 +229,12 @@
         };
     }
 
+    function slugify() {
+        return function (text) {
+            return text.replace(/\s+/g, '-').toLowerCase();
+        };
+    }
+
     angular
         .module('nypl_locations')
         .filter('timeFormat', timeFormat)
@@ -246,5 +252,6 @@
         .filter('timeFormat', timeFormat)
         .filter('dateToISO', dateToISO)
         .filter('capitalize', capitalize)
-        .filter('hoursTodayFormat', hoursTodayFormat);
+        .filter('hoursTodayFormat', hoursTodayFormat)
+        .filter('slugify', slugify);
 })();
