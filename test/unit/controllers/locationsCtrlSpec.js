@@ -1,3 +1,7 @@
+/*jslint nomen: true, unparam: true, indent: 2, maxlen: 80 */
+/*globals element, by, module, module, window, jasmine,
+describe, expect, beforeEach, inject, it, angular, spyOn */
+
 describe('MapCtrl', function () {
   'use strict';
 
@@ -9,9 +13,9 @@ describe('MapCtrl', function () {
       httpBackend = _$httpBackend_;
       nyplLocationsService = _nyplLocationsService_;
 
-      httpBackend
-        .expectGET('languages/en.json')
-        .respond('public/languages/en.json');
+      // httpBackend
+      //   .expectGET('languages/en.json')
+      //   .respond('public/languages/en.json');
 
       // TODO:
       // Find out why this is needed:

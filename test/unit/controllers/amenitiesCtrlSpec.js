@@ -1,4 +1,4 @@
-/*jslint indent: 2, maxlen: 80 */
+/*jslint nomen: true, unparam: true, indent: 2, maxlen: 80 */
 /*globals element, by, module, module, window, jasmine,
 describe, expect, beforeEach, inject, it, angular, spyOn */
 
@@ -196,7 +196,6 @@ var  mockAllAmenities = {
     api_root: "http://locations-api-beta.nypl.org"
   };
 
-
 describe('Amenities Controllers', function () {
   'use strict';
 
@@ -224,7 +223,8 @@ describe('Amenities Controllers', function () {
     it('should get the mocked data with icons', function () {
       var allAmenitiesWithIcons;
 
-      allAmenitiesWithIcons = nyplAmenities.createAmenitiesCategories(mockAllAmenities.amenities);
+      allAmenitiesWithIcons =
+        nyplAmenities.createAmenitiesCategories(mockAllAmenities.amenities);
 
       expect(scope.amenitiesCategories)
         .toEqual(allAmenitiesWithIcons);
@@ -246,7 +246,7 @@ describe('Amenities Controllers', function () {
     });
 
     it('should display the amenity name on the page', function () {
-      expect(scope.amenity_name).toEqual('Computers for Public Use')
+      expect(scope.amenity_name).toEqual('Computers for Public Use');
     });
 
     it('should get the amenity object', function () {
@@ -255,7 +255,8 @@ describe('Amenities Controllers', function () {
 
     it('should get all the locations where the amenity is available',
       function () {
-        expect(scope.locations).toEqual(mockOneAmenity.amenity._embedded.locations);
+        expect(scope.locations)
+          .toEqual(mockOneAmenity.amenity._embedded.locations);
       });
   });
 
@@ -279,8 +280,8 @@ describe('Amenities Controllers', function () {
     });
 
     it('should add icons to the amenities', function () {
-      var updatedAmenities = 
-          nyplAmenities.allAmenitiesArray(mockAmenitiesAtLibrary._embedded.amenities),
+      var updatedAmenities = nyplAmenities.
+            allAmenitiesArray(mockAmenitiesAtLibrary._embedded.amenities),
         amenitiesCategories =
           nyplAmenities.createAmenitiesCategories(updatedAmenities);
 

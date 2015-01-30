@@ -1,5 +1,5 @@
 /*jslint nomen: true, unparam: true, indent: 2, maxlen: 80 */
-/*globals element, by, module, module,
+/*globals element, by, module, module, window, jasmine,
 describe, expect, beforeEach, inject, it, angular */
 
 /*
@@ -10,6 +10,7 @@ describe('NYPL Directive Unit Tests', function () {
 
   var httpBackend, compile, scope,
     api = 'http://dev.locations.api.nypl.org',
+    api_version = 'v0.5',
     jsonpCallback = '?callback=JSON_CALLBACK';
 
   beforeEach(function () {
@@ -19,11 +20,14 @@ describe('NYPL Directive Unit Tests', function () {
     window.locations_cfg = {
       config: {
         api_root: api,
+        api_version: api_version,
         fundraising: {
           statement: "Become a Member",
-          appeal: "Friends of the Library can support their favorite library and receive great benefits!",
+          appeal: "Friends of the Library can support their favorite " +
+            "library and receive great benefits!",
           button_label: "Join or Renew",
-          link: "https://secure3.convio.net/nypl/site/SPageServer?pagename=branch_friend_form&s_src=FRQ15ZZ_CADN"
+          link: "https://secure3.convio.net/nypl/site/SPageServer?page" +
+            "name=branch_friend_form&s_src=FRQ15ZZ_CADN"
         }
       }
     };
@@ -33,9 +37,9 @@ describe('NYPL Directive Unit Tests', function () {
       compile = _$compile_;
       scope = _$rootScope_.$new();
 
-      httpBackend
-        .expectGET('languages/en.json')
-        .respond('public/languages/en.json');
+      // httpBackend
+      //   .expectGET('languages/en.json')
+      //   .respond('public/languages/en.json');
 
       httpBackend
         .expectGET('views/locations.html')
@@ -85,41 +89,42 @@ describe('NYPL Directive Unit Tests', function () {
    *   The nyplTranslate directive displays a simple list
    *   of languages that the site can be translated into.
    */
-  describe('Directive: nyplTranslate', function () {
-    var nyplTranslate, template, $translate, englishLink, spanishLink;
+  // NOTE: TEMPORARILY NOT BEING USED
+  // describe('Directive: nyplTranslate', function () {
+  //   var nyplTranslate, template, $translate, englishLink, spanishLink;
 
-    beforeEach(inject(function (_$translate_) {
-      $translate = _$translate_;
-      $translate.use = jasmine.createSpy('$translate.use');
+  //   beforeEach(inject(function (_$translate_) {
+  //     $translate = _$translate_;
+  //     $translate.use = jasmine.createSpy('$translate.use');
 
-      template = '<nypl-translate></nypl-translate>';
-      nyplTranslate = createDirective(template);
+  //     template = '<nypl-translate></nypl-translate>';
+  //     nyplTranslate = createDirective(template);
 
-      englishLink = nyplTranslate.find('a')[0];
-      spanishLink = nyplTranslate.find('a')[1];
-    }));
+  //     englishLink = nyplTranslate.find('a')[0];
+  //     spanishLink = nyplTranslate.find('a')[1];
+  //   }));
 
-    it('should have a translate class', function () {
-      expect(nyplTranslate.attr('class')).toContain('translate');
-    });
+  //   it('should have a translate class', function () {
+  //     expect(nyplTranslate.attr('class')).toContain('translate');
+  //   });
 
-    // At the time of writing this test, we only have two languages
-    it('should have two spans elements', function () {
-      expect(nyplTranslate.find('span').length).toBe(2);
-    });
+  //   // At the time of writing this test, we only have two languages
+  //   it('should have two spans elements', function () {
+  //     expect(nyplTranslate.find('span').length).toBe(2);
+  //   });
 
-    it('should display the Spanish translation', function () {
-      spanishLink.click();
+  //   it('should display the Spanish translation', function () {
+  //     spanishLink.click();
 
-      expect($translate.use).toHaveBeenCalledWith('es');
-    });
+  //     expect($translate.use).toHaveBeenCalledWith('es');
+  //   });
 
-    it('should display the English translation', function () {
-      englishLink.click();
+  //   it('should display the English translation', function () {
+  //     englishLink.click();
 
-      expect($translate.use).toHaveBeenCalledWith('en');
-    });
-  });
+  //     expect($translate.use).toHaveBeenCalledWith('en');
+  //   });
+  // });
 
   /*
    * <todayshours hours=""></todayshours>
@@ -225,7 +230,7 @@ describe('NYPL Directive Unit Tests', function () {
   describe('Directive: emailusbutton', function () {
     var emailusbutton, template,
       link = 'http://www.questionpoint.org/crs/servlet/org.oclc.' +
-        'admin.BuildForm?&institution=10208&type=1&language=1';
+      'admin.BuildForm?&institution=10208&type=1&language=1';
 
     beforeEach(inject(function () {
       scope.link = link;
@@ -264,14 +269,19 @@ describe('NYPL Directive Unit Tests', function () {
     });
 
     it('should create a link', function () {
-      expect(librarianchatbutton.text().trim()).toEqual('Chat with a librarian');
+      expect(librarianchatbutton.text().trim())
+        .toEqual('Chat with a librarian');
     });
 
     it('should call the nyplUtility service to open a new window', function () {
       librarianchatbutton.click();
 
       expect(nyplUtility.popupWindow).toHaveBeenCalledWith(
-        'http://www.nypl.org/ask-librarian', 'NYPL Chat', 210, 450);
+        'http://www.nypl.org/ask-librarian',
+        'NYPL Chat',
+        210,
+        450
+      );
     });
 
     it('should add an active class when clicked', function () {
@@ -428,7 +438,7 @@ describe('NYPL Directive Unit Tests', function () {
         });
 
         it('should not have a link to the event', function () {
-          expect(eventRegistration.find('a').length).toBe(0)
+          expect(eventRegistration.find('a').length).toBe(0);
         });
 
         it('should display "Canceled"', function () {
@@ -459,7 +469,7 @@ describe('NYPL Directive Unit Tests', function () {
       Date = function () { return date; };
 
       $httpBackend
-        .whenJSONP(api + '/alerts' + jsonpCallback)
+        .whenJSONP(api + '/' + api_version + '/alerts' + jsonpCallback)
         .respond({
           alerts: [{
             _id: "71579",
@@ -488,7 +498,7 @@ describe('NYPL Directive Unit Tests', function () {
 
     it('should not display a site wide alert - future alert', function () {
       $httpBackend
-        .whenJSONP(api + '/alerts' + jsonpCallback)
+        .whenJSONP(api + '/' + api_version + '/alerts' + jsonpCallback)
         .respond({
           alerts: [{
             _id: "71579",
@@ -551,14 +561,15 @@ describe('NYPL Directive Unit Tests', function () {
           end: '2016-10-20T16:15:41-04:00',
           description: "Test library specific alert"
         };
-        template = "<nypl-library-alert exception='exception'></nypl-library-alert>";
+        template = "<nypl-library-alert exception='exception'>" +
+          "</nypl-library-alert>";
         nyplLibraryAlert = createDirective(template);
       });
 
-      it('should display an alert', function () {
-        // Doesn't work because I'm not testing correctly but not sure how.
-        // expect(scope.libraryAlert).toEqual("Test library specific alert");
-      });
+      // it('should display an alert', function () {
+      //   Doesn't work because I'm not testing correctly but not sure how.
+      //   expect(scope.libraryAlert).toEqual("Test library specific alert");
+      // });
     });
   });
 
@@ -646,13 +657,13 @@ describe('NYPL Directive Unit Tests', function () {
         nyplFundraising = createDirective(template);
       });
 
-      it('should get fundraising object from the config', function () {
-        $timeout.flush();
-        expect(scope.fundraising.appeal).toEqual('Friends of the Library ' +
-          'can support their favorite library and receive great benefits!');
-        expect(scope.fundraising.statement).toEqual('Become a Member');
-        expect(scope.fundraising.button_label).toEqual('Join or Renew');
-      });
+      // it('should get fundraising object from the config', function () {
+      //   $timeout.flush();
+      //   expect(scope.fundraising.appeal).toEqual('Friends of the Library ' +
+      //     'can support their favorite library and receive great benefits!');
+      //   expect(scope.fundraising.statement).toEqual('Become a Member');
+      //   expect(scope.fundraising.button_label).toEqual('Join or Renew');
+      // });
     });
 
   });
@@ -667,7 +678,7 @@ describe('NYPL Directive Unit Tests', function () {
   describe('Directive: nyplSidebar', function () {
     var template, nyplSidebar;
     // All settings configured
-    describe('nyplSidebar with all settings', function (){
+    describe('nyplSidebar with all settings', function () {
 
       beforeEach(inject(function () {
         template = '<nypl-sidebar donate-button="true" ' +
@@ -690,14 +701,14 @@ describe('NYPL Directive Unit Tests', function () {
         expect(nyplSidebar.find('.nypl-ask-widget').length).toBe(1);
       });
 
-      it('should set `donate-url` to value passed in template', function (){
+      it('should set `donate-url` to value passed in template', function () {
         var donateUrl = nyplSidebar.find('.btn--donate');
         expect(donateUrl.attr('href')).toContain('nypl.org');
         expect(donateUrl.length).toBe(1);
       });
     });
     // No settings configured
-    describe('nyplSidebar NO settings', function (){
+    describe('nyplSidebar NO settings', function () {
 
       beforeEach(inject(function () {
         template = '<nypl-sidebar></nypl-sidebar>';
@@ -717,37 +728,38 @@ describe('NYPL Directive Unit Tests', function () {
         expect(nyplSidebar.find('.nypl-ask-widget').length).toBe(0);
       });
 
-      it('should set NOT create `donateurl` since donate-widget is not set', function (){
-        var donateUrl = nyplSidebar.find('.btn--donate');
-        expect(donateUrl.length).toBe(0);
-      });
+      it('should set NOT create `donateurl` since donate-widget is not set',
+        function () {
+          var donateUrl = nyplSidebar.find('.btn--donate');
+          expect(donateUrl.length).toBe(0);
+        });
     });
 
     // No donateUrl set
-    describe('nyplSidebar donate and nyplAsk active, no donateurl', function (){
+    describe('nyplSidebar donate and nyplAsk active, no donateurl',
+      function () {
+        beforeEach(inject(function () {
+          template = '<nypl-sidebar donate-button="true" ' +
+            'nypl-ask="true"></nypl-sidebar>';
+          nyplSidebar = createDirective(template);
+        }));
 
-      beforeEach(inject(function () {
-        template = '<nypl-sidebar donate-button="true" ' +
-          'nypl-ask="true"></nypl-sidebar>';
-        nyplSidebar = createDirective(template);
-      }));
+        it('should compile a donate-widget', function () {
+          expect(nyplSidebar.find('.donate-widget')).toBeTruthy();
+          expect(nyplSidebar.find('.donate-widget').length).toBe(1);
+        });
 
-      it('should compile a donate-widget', function () {
-        expect(nyplSidebar.find('.donate-widget')).toBeTruthy();
-        expect(nyplSidebar.find('.donate-widget').length).toBe(1);
+        it('should compile a nyplAsk-widget', function () {
+          expect(nyplSidebar.find('.nypl-ask-widget')).toBeTruthy();
+          expect(nyplSidebar.find('.nypl-ask-widget').length).toBe(1);
+        });
+
+        it('should set `donate-url` to default convio link', function () {
+          var donateUrl = nyplSidebar.find('.btn--donate');
+          expect(donateUrl.attr('href')).toContain('convio');
+          expect(donateUrl.length).toBe(1);
+        });
       });
-
-      it('should compile a nyplAsk-widget', function () {
-        expect(nyplSidebar.find('.nypl-ask-widget')).toBeTruthy();
-        expect(nyplSidebar.find('.nypl-ask-widget').length).toBe(1);
-      });
-
-      it('should set `donate-url` to default convio link', function (){
-        var donateUrl = nyplSidebar.find('.btn--donate');
-        expect(donateUrl.attr('href')).toContain('convio');
-        expect(donateUrl.length).toBe(1);
-      });
-    });
   });
 
   /*
@@ -782,16 +794,16 @@ describe('NYPL Directive Unit Tests', function () {
 
     beforeEach(inject(function ($rootScope, $compile) {
       $scope = $rootScope.$new();
-      element = angular.element("<nypl-autofill data='locations'" + 
-        " data-ng-model='searchTerm'" + 
-        " map-view='viewMapLibrary(slug)'" + 
-        " geo-search='geocodeAddress(term)'>" + 
+      element = angular.element("<nypl-autofill data='locations'" +
+        " data-ng-model='searchTerm'" +
+        " map-view='viewMapLibrary(slug)'" +
+        " geo-search='geocodeAddress(term)'>" +
         "</nypl-autofill>");
 
       autofill = $compile(element)($scope);
       $rootScope.$digest();
       ctrl = autofill.controller("nyplAutofill");
-      $scope = element.isolateScope() || element.scope()
+      $scope = element.isolateScope() || element.scope();
     }));
 
     it('should compile lookahead and autofill containers', function () {
@@ -805,37 +817,38 @@ describe('NYPL Directive Unit Tests', function () {
         expect(ctrl.openAutofill).toBeDefined();
       });
 
-      it('openAutofill() method should set $scope.focused to be true', function () {
-        $scope.focused = false;
-        ctrl.openAutofill();
-        expect($scope.focused).toBeTruthy();
-      });
+      it('openAutofill() method should set $scope.focused to be true',
+        function () {
+          $scope.focused = false;
+          ctrl.openAutofill();
+          expect($scope.focused).toBeTruthy();
+        });
 
       it('closeAutofill() method should be defined', function () {
         expect(ctrl.closeAutofill).toBeDefined();
       });
-      
-      it('closeAutofill() method should set $scope.focused to be false', function () {
-        $scope.focused = true;
-        ctrl.closeAutofill();
-        expect($scope.focused).toBeFalsy();
-      });
+
+      it('closeAutofill() method should set $scope.focused to be false',
+        function () {
+          $scope.focused = true;
+          ctrl.closeAutofill();
+          expect($scope.focused).toBeFalsy();
+        });
 
       it('resetSearchTerms() method should be defined', function () {
         expect(ctrl.resetSearchTerms).toBeDefined();
       });
 
-      it('resetSearchTerms() method should set $scope.lookahead' + 
+      it('resetSearchTerms() method should set $scope.lookahead' +
         ' and $scope.currentWord to empty strings', function () {
-
-        $scope.lookahead = 'lookahead string';
-        $scope.currentWord = 'currentWord string';
-        ctrl.resetSearchTerms();
-        expect($scope.lookahead).toEqual('');
-        expect($scope.lookahead).toBeDefined();
-        expect($scope.currentWord).toEqual('');
-        expect($scope.currentWord).toBeDefined();
-      });
+          $scope.lookahead = 'lookahead string';
+          $scope.currentWord = 'currentWord string';
+          ctrl.resetSearchTerms();
+          expect($scope.lookahead).toEqual('');
+          expect($scope.lookahead).toBeDefined();
+          expect($scope.currentWord).toEqual('');
+          expect($scope.currentWord).toBeDefined();
+        });
 
       it('activate() method should be defined', function () {
         expect(ctrl.activate).toBeDefined();
@@ -850,7 +863,7 @@ describe('NYPL Directive Unit Tests', function () {
           postal_code: 10031,
           region: "NY",
           slug: "hamilton-grange"
-        }
+        };
         $scope.active = ctrl.activate(item);
         expect($scope.active).toEqual(item);
       });
@@ -859,182 +872,190 @@ describe('NYPL Directive Unit Tests', function () {
         expect(ctrl.activateFirstItem).toBeDefined();
       });
 
-      it('activateFirstItem() method should assign the first item as ' + 
+      it('activateFirstItem() method should assign the first item as ' +
         'the active item and set $scope.activated to be true', function () {
-        $scope.activated = false;
-        $scope.active = undefined;
-        $scope.currentIndex = undefined;
-        $scope.filtered = [
-          {id: "BAR", name: "Baychester Library", _links: {}},
-          {id: "CHR", name: "Chatham Square Library", _links: {}},
-          {id: "CI", name: "City Island Library", _links: {}},
-          {id: "DH", name: "Dongan Hills Library", _links: {}}
-        ];
+          $scope.activated = false;
+          $scope.active = undefined;
+          $scope.currentIndex = undefined;
+          $scope.filtered = [
+            {id: "BAR", name: "Baychester Library", _links: {}},
+            {id: "CHR", name: "Chatham Square Library", _links: {}},
+            {id: "CI", name: "City Island Library", _links: {}},
+            {id: "DH", name: "Dongan Hills Library", _links: {}}
+          ];
 
-        ctrl.activateFirstItem();
-        expect($scope.activated).toBeTruthy();
-        expect($scope.active).toEqual($scope.filtered[0]);
-        expect($scope.currentIndex).toEqual($scope.filtered.indexOf($scope.active));
-      });
+          ctrl.activateFirstItem();
+          expect($scope.activated).toBeTruthy();
+          expect($scope.active).toEqual($scope.filtered[0]);
+          expect($scope.currentIndex)
+            .toEqual($scope.filtered.indexOf($scope.active));
+        });
 
-      it('activateGeocodingItem() method should be defined', function() {
+      it('activateGeocodingItem() method should be defined', function () {
         expect(ctrl.activateGeocodingItem).toBeDefined();
       });
 
-      it('activateGeocodingItem() method should assign the current scope.model ' +
-        'value as the active item within the drop-down list; only if the user has ' + 
-        'activated the drop-down via up/down arrow keys', function() {
-        $scope.activated = true; // User initialized via key press
-        $scope.active = undefined; // No active item past the location list
-        $scope.geocodingactive = false;
-        $scope.model = 'Grand Central';
+      it('activateGeocodingItem() method should assign the current ' +
+        'scope.model value as the active item within the drop-down list; ' +
+        'only if the user has activated the drop-down via up/down arrow keys',
+        function () {
+          $scope.activated = true; // User initialized via key press
+          $scope.active = undefined; // No active item past the location list
+          $scope.geocodingactive = false;
+          $scope.model = 'Grand Central';
 
-        ctrl.activateGeocodingItem();
-        expect($scope.geocodingactive).toBeTruthy();
-        expect($scope.active).toEqual($scope.model);
-      });
+          ctrl.activateGeocodingItem();
+          expect($scope.geocodingactive).toBeTruthy();
+          expect($scope.active).toEqual($scope.model);
+        });
 
-      it('activateNextItem() method should be defined', function() {
+      it('activateNextItem() method should be defined', function () {
         expect(ctrl.activateNextItem).toBeDefined();
       });
 
-      it('activateNextItem() method should check if the geocodingactive boolean' + 
-        'item is active and sets it to false', function() {
-        $scope.geocodingactive = true;
-        ctrl.activateNextItem();
-        expect($scope.geocodingactive).toBeFalsy();
-      });
+      it('activateNextItem() method should check if the geocodingactive ' +
+        'boolean item is active and sets it to false', function () {
+          $scope.geocodingactive = true;
+          ctrl.activateNextItem();
+          expect($scope.geocodingactive).toBeFalsy();
+        });
 
-      it('activateNextItem() method should increase the current index of the locations array ' + 
-        'and activates the next item in the list. Once outside of the length of the list ' +
-        'the active.item is assigned as undefined', function() {
-        $scope.currentIndex = 0;
-        $scope.filtered = [
-          {id: "BAR", name: "Baychester Library", _links: {}},
-          {id: "CHR", name: "Chatham Square Library", _links: {}},
-          {id: "CI", name: "City Island Library", _links: {}},
-          {id: "DH", name: "Dongan Hills Library", _links: {}}
-        ];
-        $scope.active = $scope.filtered[0];
+      it('activateNextItem() method should increase the current index of ' +
+        'the locations array and activates the next item in the list. Once ' +
+        'outside of the length of the list the active.item is assigned ' +
+        'as undefined',
+        function () {
+          $scope.currentIndex = 0;
+          $scope.filtered = [
+            {id: "BAR", name: "Baychester Library", _links: {}},
+            {id: "CHR", name: "Chatham Square Library", _links: {}},
+            {id: "CI", name: "City Island Library", _links: {}},
+            {id: "DH", name: "Dongan Hills Library", _links: {}}
+          ];
+          $scope.active = $scope.filtered[0];
 
-        ctrl.activateNextItem(); // Increase from initial element in array
-        expect($scope.currentIndex).toEqual(1);
-        expect($scope.active).toEqual($scope.filtered[1]);
-        ctrl.activateNextItem(); // Second increase by arrow-down key
-        expect($scope.currentIndex).toEqual(2);
-        expect($scope.active).toEqual($scope.filtered[2]);        
-      });
+          ctrl.activateNextItem(); // Increase from initial element in array
+          expect($scope.currentIndex).toEqual(1);
+          expect($scope.active).toEqual($scope.filtered[1]);
+          ctrl.activateNextItem(); // Second increase by arrow-down key
+          expect($scope.currentIndex).toEqual(2);
+          expect($scope.active).toEqual($scope.filtered[2]);
+        });
 
-      it('activateNextItem() method should set the active element to undefined ' + 
-        'if the index of the array of locations goes out of bounds', function() {
-        $scope.currentIndex = 4; //Current length of list
-        $scope.filtered = [
-          {id: "BAR", name: "Baychester Library", _links: {}},
-          {id: "CHR", name: "Chatham Square Library", _links: {}},
-          {id: "CI", name: "City Island Library", _links: {}},
-          {id: "DH", name: "Dongan Hills Library", _links: {}}
-        ];
-        $scope.active = $scope.filtered[3];
+      it('activateNextItem() method should set the active element to ' +
+        'undefined if the index of the array of locations goes out of bounds',
+        function () {
+          $scope.currentIndex = 4; //Current length of list
+          $scope.filtered = [
+            {id: "BAR", name: "Baychester Library", _links: {}},
+            {id: "CHR", name: "Chatham Square Library", _links: {}},
+            {id: "CI", name: "City Island Library", _links: {}},
+            {id: "DH", name: "Dongan Hills Library", _links: {}}
+          ];
+          $scope.active = $scope.filtered[3];
 
-        ctrl.activateNextItem();
-        expect($scope.currentIndex).toEqual(-1);
-        expect($scope.active).toBeUndefined();
-      });
+          ctrl.activateNextItem();
+          expect($scope.currentIndex).toEqual(-1);
+          expect($scope.active).toBeUndefined();
+        });
 
-      it('activatePreviousItem() method should be defined', function() {
+      it('activatePreviousItem() method should be defined', function () {
         expect(ctrl.activatePreviousItem).toBeDefined();
       });
 
-      it('activatePreviousItem() method should decrease the currentIndex value by 1 ' +
-        'and assign the active item to that index value in the locations array', function() {
-        $scope.currentIndex = 3;
-        $scope.filtered = [
-          {id: "BAR", name: "Baychester Library", _links: {}},
-          {id: "CHR", name: "Chatham Square Library", _links: {}},
-          {id: "CI", name: "City Island Library", _links: {}},
-          {id: "DH", name: "Dongan Hills Library", _links: {}}
-        ];
-        $scope.active = $scope.filtered[3];
+      it('activatePreviousItem() method should decrease the currentIndex ' +
+        'value by 1 and assign the active item to that index value in the ' +
+        'locations array', function () {
+          $scope.currentIndex = 3;
+          $scope.filtered = [
+            {id: "BAR", name: "Baychester Library", _links: {}},
+            {id: "CHR", name: "Chatham Square Library", _links: {}},
+            {id: "CI", name: "City Island Library", _links: {}},
+            {id: "DH", name: "Dongan Hills Library", _links: {}}
+          ];
+          $scope.active = $scope.filtered[3];
 
-        ctrl.activatePreviousItem();
-        expect($scope.currentIndex).toEqual(2);
-        expect($scope.active).toEqual($scope.filtered[2]);
-      });
+          ctrl.activatePreviousItem();
+          expect($scope.currentIndex).toEqual(2);
+          expect($scope.active).toEqual($scope.filtered[2]);
+        });
 
-      it('activatePreviousItem() method should decrease the currentIndex value by 1 ' +
-        'and assign the active item to that index value in the locations array', function() {
-        $scope.currentIndex = 3;
-        $scope.filtered = [
-          {id: "BAR", name: "Baychester Library", _links: {}},
-          {id: "CHR", name: "Chatham Square Library", _links: {}},
-          {id: "CI", name: "City Island Library", _links: {}},
-          {id: "DH", name: "Dongan Hills Library", _links: {}}
-        ];
-        $scope.active = $scope.filtered[3];
+      it('activatePreviousItem() method should decrease the currentIndex ' +
+        'value by 1 and assign the active item to that index value in the ' +
+        'locations array', function () {
+          $scope.currentIndex = 3;
+          $scope.filtered = [
+            {id: "BAR", name: "Baychester Library", _links: {}},
+            {id: "CHR", name: "Chatham Square Library", _links: {}},
+            {id: "CI", name: "City Island Library", _links: {}},
+            {id: "DH", name: "Dongan Hills Library", _links: {}}
+          ];
+          $scope.active = $scope.filtered[3];
 
-        ctrl.activatePreviousItem();
-        expect($scope.currentIndex).toEqual(2);
-        expect($scope.active).toEqual($scope.filtered[2]);
-        ctrl.activatePreviousItem();
-        expect($scope.currentIndex).toEqual(1);
-        expect($scope.active).toEqual($scope.filtered[1]);
-      });
+          ctrl.activatePreviousItem();
+          expect($scope.currentIndex).toEqual(2);
+          expect($scope.active).toEqual($scope.filtered[2]);
+          ctrl.activatePreviousItem();
+          expect($scope.currentIndex).toEqual(1);
+          expect($scope.active).toEqual($scope.filtered[1]);
+        });
 
-      it('setSearchText() method should be defined', function() {
+      it('setSearchText() method should be defined', function () {
         expect(ctrl.setSearchText).toBeDefined();
       });
 
       it('setSearchText() method should update the scope.model ' +
         'variable if a match is found within the location data.' +
-        ' The scope.model and matched word must not be equal.', function() {
-        expect(ctrl.setSearchText).toBeDefined();
-        $scope.model = 'Grand';
-        $scope.completeWord = 'Grand Central Library';
+        ' The scope.model and matched word must not be equal.', function () {
+          expect(ctrl.setSearchText).toBeDefined();
+          $scope.model = 'Grand';
+          $scope.completeWord = 'Grand Central Library';
 
-        ctrl.setSearchText($scope.model);
-        expect($scope.model).toEqual($scope.completeWord);
-      });
+          ctrl.setSearchText($scope.model);
+          expect($scope.model).toEqual($scope.completeWord);
+        });
 
       it('setSearchText() method should not update the scope.model if the ' +
-        'currentWord is empty', function() {
-        $scope.model = 'Grand Central';
-        $scope.completeWord = '';
+        'currentWord is empty', function () {
+          $scope.model = 'Grand Central';
+          $scope.completeWord = '';
 
-        ctrl.setSearchText($scope.model);
-        expect($scope.model).not.toEqual($scope.completeWord);
-      });
+          ctrl.setSearchText($scope.model);
+          expect($scope.model).not.toEqual($scope.completeWord);
+        });
 
       it('setSearchText() method should return if the ' +
-        'scope.model is empty', function() {
-        $scope.model = '';
-        $scope.completeWord = 'Grand Central';
+        'scope.model is empty', function () {
+          $scope.model = '';
+          $scope.completeWord = 'Grand Central';
 
-        ctrl.setSearchText($scope.model);
-        expect($scope.model).not.toEqual($scope.completeWord);
-        expect($scope.model).toBe('');
-      });
+          ctrl.setSearchText($scope.model);
+          expect($scope.model).not.toEqual($scope.completeWord);
+          expect($scope.model).toBe('');
+        });
 
-      it('updateSearchText() method should be defined', function() {
+      it('updateSearchText() method should be defined', function () {
         expect(ctrl.updateSearchText).toBeDefined();
       });
 
-      it('updateSearchText() method should not assign items to both scope.filtered and ' +
-        'scope.items if invalid/empty data is passed', function() {
-        var data, searchTerm = null;
-        $scope.items = undefined;
-        $scope.filtered = undefined;
+      it('updateSearchText() method should not assign items to both ' +
+        'scope.filtered and scope.items if invalid/empty data is passed',
+        function () {
+          var data, searchTerm = null;
+          $scope.items = undefined;
+          $scope.filtered = undefined;
 
-        ctrl.updateSearchText(data, searchTerm);
-        expect($scope.items).toBeUndefined();
-        expect($scope.filtered).toBeUndefined();
-      });
+          ctrl.updateSearchText(data, searchTerm);
+          expect($scope.items).toBeUndefined();
+          expect($scope.filtered).toBeUndefined();
+        });
 
-      it('updateSearchText() method should assign items to both scope.filtered and ' +
-        'scope.items if valid data is passed', function() {
-        $scope.items = undefined;
-        $scope.filtered = undefined;
+      it('updateSearchText() method should assign items to both ' +
+        'scope.filtered and scope.items if valid data is passed', function () {
+          $scope.items = undefined;
+          $scope.filtered = undefined;
 
-        var searchTerm = 'Baychester',
+          var searchTerm = 'Baychester',
             data = [
               {id: "BAR", name: "Baychester Library", _links: {}},
               {id: "CHR", name: "Chatham Square Library", _links: {}},
@@ -1042,17 +1063,18 @@ describe('NYPL Directive Unit Tests', function () {
               {id: "DH", name: "Dongan Hills Library", _links: {}}
             ];
 
-        ctrl.updateSearchText(data, searchTerm);
-        expect($scope.items).toBeDefined();
-        expect($scope.filtered).toBeDefined();
-      });
+          ctrl.updateSearchText(data, searchTerm);
+          expect($scope.items).toBeDefined();
+          expect($scope.filtered).toBeDefined();
+        });
 
-      it('updateSearchText() method should assign items to both scope.filtered and ' +
-        'scope.items if valid data is passed and the searchTerm length is greater than 1', function() {
-        $scope.items = undefined;
-        $scope.filtered = undefined;
+      it('updateSearchText() method should assign items to both ' +
+        'scope.filtered and scope.items if valid data is passed and the ' +
+        'searchTerm length is greater than 1', function () {
+          $scope.items = undefined;
+          $scope.filtered = undefined;
 
-        var searchTerm = 'Ba',
+          var searchTerm = 'Ba',
             data = [
               {id: "BAR", name: "Baychester Library", _links: {}},
               {id: "CHR", name: "Chatham Square Library", _links: {}},
@@ -1060,54 +1082,53 @@ describe('NYPL Directive Unit Tests', function () {
               {id: "DH", name: "Dongan Hills Library", _links: {}}
             ];
 
-        ctrl.updateSearchText(data, searchTerm);
-        expect($scope.items).toBeDefined();
-        expect($scope.filtered).toBeDefined();
-      });
+          ctrl.updateSearchText(data, searchTerm);
+          expect($scope.items).toBeDefined();
+          expect($scope.filtered).toBeDefined();
+        });
 
       it('updateSearchText() method should match Baychester Library and ' +
-        'assign it as the scope.completeWord', function() {
-        var searchTerm = 'Ba',
+        'assign it as the scope.completeWord', function () {
+          var searchTerm = 'Ba',
             data = [
               {id: "BAR", name: "Baychester Library", _links: {}},
               {id: "CHR", name: "Chatham Square Library", _links: {}},
               {id: "CI", name: "City Island Library", _links: {}},
               {id: "DH", name: "Dongan Hills Library", _links: {}}
             ];
-        $scope.completeWord = undefined;
+          $scope.completeWord = undefined;
 
-        ctrl.updateSearchText(data, searchTerm);
-        expect($scope.completeWord).toBe('Baychester Library');
-      });
+          ctrl.updateSearchText(data, searchTerm);
+          expect($scope.completeWord).toBe('Baychester Library');
+        });
 
-      it('updateSearchText() method should find no match for searchTerm Grand ' +
-        'and therefore scope.lookahead, scope.currentWord and scope.completeWord ' +
-        'will return empty', function() {
-
-        var searchTerm = 'Grand',
+      it('updateSearchText() method should find no match for searchTerm ' +
+        'Grand and therefore scope.lookahead, scope.currentWord and ' +
+        'scope.completeWord will return empty', function () {
+          var searchTerm = 'Grand',
             data = [
               {id: "BAR", name: "Baychester Library", _links: {}},
               {id: "CHR", name: "Chatham Square Library", _links: {}},
               {id: "CI", name: "City Island Library", _links: {}},
               {id: "DH", name: "Dongan Hills Library", _links: {}}
             ];
-        $scope.completeWord = undefined;
-        $scope.currentWord = undefined;
-        $scope.lookahead = undefined;
+          $scope.completeWord = undefined;
+          $scope.currentWord = undefined;
+          $scope.lookahead = undefined;
 
-        ctrl.updateSearchText(data, searchTerm);
-        expect($scope.completeWord).toBe('');
-        expect($scope.currentWord).toBe('');
-        expect($scope.lookahead).toBe('');
-      });
+          ctrl.updateSearchText(data, searchTerm);
+          expect($scope.completeWord).toBe('');
+          expect($scope.currentWord).toBe('');
+          expect($scope.lookahead).toBe('');
+        });
 
-      it('filterStartsWith() method should be defined', function() {
+      it('filterStartsWith() method should be defined', function () {
         expect(ctrl.filterStartsWith).toBeDefined();
-      }); 
- 
+      });
+
       it('filterStartsWith() method return a list of matches' +
-        'based on the beginning of the string', function() {
-        var searchTerm = 'Bay',
+        'based on the beginning of the string', function () {
+          var searchTerm = 'Bay',
             data = [
               {id: "BAR", name: "Baychester Library", _links: {}},
               {id: "CHR", name: "Chatham Square Library", _links: {}},
@@ -1115,15 +1136,15 @@ describe('NYPL Directive Unit Tests', function () {
               {id: "DH", name: "Dongan Hills Library", _links: {}}
             ];
 
-        $scope.items = ctrl.filterStartsWith(data, searchTerm);
+          $scope.items = ctrl.filterStartsWith(data, searchTerm);
 
-        expect($scope.items).toBeDefined();
-        expect($scope.items[0].name).toBe('Baychester Library');
-      });
+          expect($scope.items).toBeDefined();
+          expect($scope.items[0].name).toBe('Baychester Library');
+        });
 
       it('filterStartsWith() method return empty if no match is found. ' +
-        'Matching is based on the beginning of the string', function() {
-        var searchTerm = 'Grand',
+        'Matching is based on the beginning of the string', function () {
+          var searchTerm = 'Grand',
             data = [
               {id: "BAR", name: "Baychester Library", _links: {}},
               {id: "CHR", name: "Chatham Square Library", _links: {}},
@@ -1131,16 +1152,16 @@ describe('NYPL Directive Unit Tests', function () {
               {id: "DH", name: "Dongan Hills Library", _links: {}}
             ];
 
-        $scope.items = ctrl.filterStartsWith(data, searchTerm);
+          $scope.items = ctrl.filterStartsWith(data, searchTerm);
 
-        expect($scope.items).toBeDefined();
-        expect($scope.items.length).toBe(0);
-        expect($scope.items[0]).toBeUndefined();;
-      });
+          expect($scope.items).toBeDefined();
+          expect($scope.items.length).toBe(0);
+          expect($scope.items[0]).toBeUndefined();
+        });
 
       it('filterStartsWith() method should return if the NAME property ' +
-        'is not defined within the data object', function() {
-        var searchTerm = 'Lib',
+        'is not defined within the data object', function () {
+          var searchTerm = 'Lib',
             data = [
               {id: "BAR", _links: {}},
               {id: "CHR", _links: {}},
@@ -1151,15 +1172,15 @@ describe('NYPL Directive Unit Tests', function () {
           $scope.items = ctrl.filterStartsWith(data, searchTerm);
           expect($scope.items).toBeDefined();
           expect($scope.items).toEqual([]);
-      }); 
+        });
 
-      it('filterTermWitin() method should be defined', function() {
+      it('filterTermWitin() method should be defined', function () {
         expect(ctrl.filterTermWithin).toBeDefined();
       });
 
       it('filterTermWitin() method should return a list of matches based ' +
-        'on matching the searchTerm anywhere within the string', function() {
-        var searchTerm = 'Lib',
+        'on matching the searchTerm anywhere within the string', function () {
+          var searchTerm = 'Lib',
             data = [
               {id: "BAR", name: "Baychester Library", _links: {}},
               {id: "CHR", name: "Chatham Square Library", _links: {}},
@@ -1170,11 +1191,11 @@ describe('NYPL Directive Unit Tests', function () {
           $scope.filtered = ctrl.filterTermWithin(data, searchTerm);
           expect($scope.filtered).toBeDefined();
           expect($scope.filtered).toEqual(data);
-      });
+        });
 
       it('filterTermWitin() method should return if the NAME property ' +
-        'is not defined within the data object', function() {
-        var searchTerm = 'Lib',
+        'is not defined within the data object', function () {
+          var searchTerm = 'Lib',
             data = [
               {id: "BAR", _links: {}},
               {id: "CHR", _links: {}},
@@ -1185,7 +1206,7 @@ describe('NYPL Directive Unit Tests', function () {
           $scope.filtered = ctrl.filterTermWithin(data, searchTerm);
           expect($scope.filtered).toBeDefined();
           expect($scope.filtered).toEqual([]);
-      }); 
+        });
 
     });
 
