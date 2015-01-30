@@ -101,6 +101,13 @@ console, $location, $ */
     
     // Assign Today's hours
     getHoursToday(divisions);
+    // Assign short name to every location in every division
+    _.each(divisions, function (division) {
+      var location = division._embedded.location;
+      location.short_name =
+        config.research_shortnames[location.id];
+    });
+
     $scope.divisions = divisions;
     $scope.terms = [];
 
