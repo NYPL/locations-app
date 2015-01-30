@@ -37,10 +37,10 @@
       "app_src": "full",
       "closed_img": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/images/branch_closed.jpg",
       "research_shortnames": {
-        "SASB": "Schwarzman",
+        "SASB": "Schwarzman Building",
         "SC": "Schomburg Center",
-        "LPA": "Library for the Performing Arts",
-        "SIBL": "SIBL"
+        "LPA": "Performing Arts Library",
+        "SIBL": "Science, Industry and Business Library"
       }
     },
     "local": {
@@ -53,7 +53,13 @@
       "google_maps": "AIzaSyCeqpIM6ylCguHdJq0Mp9WpaSrLJ3xrBWM",
       "angular_src": "bower",
       "app_src": "full",
-      "closed_img": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/images/branch_closed.jpg"
+      "closed_img": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/images/branch_closed.jpg",
+      "research_shortnames": {
+        "SASB": "Schwarzman Building",
+        "SC": "Schomburg Center",
+        "LPA": "Performing Arts Library",
+        "SIBL": "Science, Industry and Business Library"
+      }
     }
   },
   "divisions_with_appointments": ["ARN", "RBK", "MSS", "BRG", "PRN", "PHG", "SPN", "CPS", "SCF", "SCM", "SCG", "SCP"],
