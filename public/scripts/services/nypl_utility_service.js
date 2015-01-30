@@ -512,13 +512,13 @@
     utility.isMobile = function () {
       var isMobile = {
         android: function () {
-          return navigator.userAgent.match(/Android/i);
+          return navigator.userAgent.match(/(android|bb\d+|meego).+mobile/i);
         },
         blackberry: function () {
           return navigator.userAgent.match(/BlackBerry/i);
         },
         ios: function () {
-          return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+          return navigator.userAgent.match(/iPhone|iPod/i);
         },
         opera: function () {
           return navigator.userAgent.match(/Opera Mini/i);
