@@ -449,6 +449,7 @@ nypl_widget.run(function ($rootScope, nyplUtility) {
  * @requires coordinateService
  * @requires angulartics
  * @requires angulartics.google.analytics
+ * @requires nyplBreadcrumbs
  * @description
  * Research collections.
  */
@@ -462,10 +463,20 @@ angular.module('nypl_research_collections', [
     'angulartics.google.analytics',
     'nyplNavigation',
     'nyplSSO',
+    'nyplBreadcrumbs',
     'nyplSearch'
 ])
-.config(['$locationProvider', '$stateProvider', '$urlRouterProvider',
-    function ($locationProvider, $stateProvider, $urlRouterProvider) {
+.config([
+    '$locationProvider',
+    '$stateProvider',
+    '$urlRouterProvider',
+    '$crumbProvider',
+    function (
+        $locationProvider,
+        $stateProvider,
+        $urlRouterProvider,
+        $crumbProvider
+    ) {
         'use strict';
 
         function LoadDivisions(config, nyplLocationsService) {
@@ -493,6 +504,12 @@ angular.module('nypl_research_collections', [
                 return path.slice(0, -1);
             }
         });
+
+        // Assign proper Breadcrumb name/paths
+        $crumbProvider.setOptions({
+            primaryState: {name:'Home', customUrl: 'http://nypl.org' }
+        });
+
         // var home_url = window.rq_forwarded ? '/' : '/research-collections';
         $urlRouterProvider.otherwise('/');
         $stateProvider
@@ -504,6 +521,9 @@ angular.module('nypl_research_collections', [
                 resolve: {
                     config: getConfig,
                     divisions: LoadDivisions
+                },
+                data: {
+                    crumbName: 'Research Collections'
                 }
             });
     }

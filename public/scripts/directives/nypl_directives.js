@@ -292,7 +292,6 @@
       $scope.$watch(
         exp,
         function (newVal, oldVal) {
-          console.log(oldVal, newVal);
           // If values are equal -- just return
           if (newVal === oldVal) {
             return;
