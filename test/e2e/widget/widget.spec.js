@@ -10,11 +10,12 @@ describe('NYPL Widget', function () {
     research = require('../APImocks/research.js'),
     division = require('../APImocks/division.js'),
     httpBackendMock = function (page, response) {
-      var API_URL = 'http://dev.locations.api.nypl.org';
+      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.5';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
-        .run(function ($httpBackend) {
-          $httpBackend.whenGET('languages/en.json').passThrough();
+        .run(function ($httpBackend, $window) {
+          console.log($window);
+          // $httpBackend.whenGET('languages/en.json').passThrough();
 
           $httpBackend
             .whenJSONP(API_URL + page + '?callback=JSON_CALLBACK')
@@ -33,8 +34,8 @@ describe('NYPL Widget', function () {
 
   describe('Location page', function () {
     beforeEach(function () {
-      // browser.addMockModule('httpBackendMock', httpBackendMock,
-      //   '/locations/grand-central', circulating.good);
+      browser.addMockModule('httpBackendMock', httpBackendMock,
+        '/locations/grand-central', circulating.good);
       browser.get('/widget/grand-central');
       browser.waitForAngular();
     });
@@ -114,8 +115,8 @@ describe('NYPL Widget', function () {
 
   describe('Research page', function () {
     beforeEach(function () {
-      // browser.addMockModule('httpBackendMock', httpBackendMock,
-      //   '/locations/schomburg', research.good);
+      browser.addMockModule('httpBackendMock', httpBackendMock,
+        '/locations/schomburg', research.good);
       browser.get('/widget/schomburg');
       browser.waitForAngular();
     });
@@ -187,8 +188,8 @@ describe('NYPL Widget', function () {
 
   describe('Division page', function () {
     beforeEach(function () {
-      // browser.addMockModule('httpBackendMock', httpBackendMock,
-      //   '/divisions/general-research-division', division.good);
+      browser.addMockModule('httpBackendMock', httpBackendMock,
+        '/divisions/general-research-division', division.good);
       browser.get('/widget/divisions/general-research-division');
       browser.waitForAngular();
     });

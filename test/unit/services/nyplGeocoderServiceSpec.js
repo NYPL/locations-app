@@ -1,4 +1,4 @@
-/*jslint indent: 2, maxlen: 80 */
+/*jslint nomen: true, unparam: true, indent: 2, maxlen: 80 */
 /*globals element, by, google, module, window, jasmine, document,
 describe, expect, beforeEach, inject, it, angular, spyOn, afterEach */
 
@@ -11,11 +11,8 @@ describe('NYPL Geocoder Service Tests', function () {
    * and reverse geocode coordinates.
    */
   describe('Service: nyplGeocoderService', function () {
-    var GeocoderMock,
-      nyplGeocoderService, rootScope,
-      geocodeAddress_return_value,
-      map_controls_push_mock,
-      httpBackend, mapPrototype,
+    var GeocoderMock, nyplGeocoderService, rootScope,
+      map_controls_push_mock, httpBackend, mapPrototype,
       infowindow_open_mock, infowindow_close_mock, infowindow_setContent_mock;
 
     beforeEach(function () {
@@ -61,7 +58,7 @@ describe('NYPL Geocoder Service Tests', function () {
       google.maps.Marker.prototype.setPosition =
         jasmine.createSpy('marker.setPosition');
 
-      GeocoderMock = window.google.maps.Geocoder = 
+      GeocoderMock = window.google.maps.Geocoder =
         jasmine.createSpy('Geocoder');
       window.google.maps.LatLng = jasmine.createSpy('LatLng');
       window.google.maps.LatLngBounds = jasmine.createSpy('LatLngBounds');
@@ -71,10 +68,12 @@ describe('NYPL Geocoder Service Tests', function () {
         rootScope = $rootScope;
         httpBackend = _$httpBackend_;
 
-        httpBackend
-          .expectGET('languages/en.json')
-          .respond('public/languages/en.json');
+        // httpBackend
+        //   .expectGET('languages/en.json')
+        //   .respond('public/languages/en.json');
 
+
+        // Not sure how or why this happens...
         httpBackend
           .expectGET('views/locations.html')
           .respond('public/views/locations.html');
@@ -82,8 +81,17 @@ describe('NYPL Geocoder Service Tests', function () {
         httpBackend
           .expectGET('views/location-list-view.html')
           .respond('public/views/location-list-view.html');
+
+        httpBackend
+          .expectGET('views/404.html')
+          .respond('public/views/404.html');
       });
     });
+
+    // afterEach(function() {
+    //   httpBackend.verifyNoOutstandingExpectation();
+    //   httpBackend.verifyNoOutstandingRequest();
+    // });
 
     it('should expose some functions', function () {
       expect(nyplGeocoderService.geocodeAddress).toBeDefined();
@@ -105,17 +113,18 @@ describe('NYPL Geocoder Service Tests', function () {
 
     /* nyplGeocoderService.geocodeAddress */
     describe('nyplGeocoderService.geocodeAddress', function () {
-      var GeoCodingOK, GeoCodingAlternate, GeoCodingError;
+      var GeoCodingOK, GeoCodingError;
 
       beforeEach(function () {
         GeoCodingOK = function (params, callback) {
           callback(
             // The result param
             [{geometry: {location: {
-                lat: function () { return 40.75298660000001; },
-                lng: function () { return -73.9821364; }
-              }},
-              formatted_address: "New York, NY 10018, USA"}],
+              lat: function () { return 40.75298660000001; },
+              lng: function () { return -73.9821364; }
+            }},
+            formatted_address: "New York, NY 10018, USA"}
+            ],
             // The error param
             'OK'
           );
@@ -301,7 +310,7 @@ describe('NYPL Geocoder Service Tests', function () {
               address = data;
             });
           rootScope.$apply();
-        
+
           expect(address).toEqual("New York, NY 10018, USA");
         });
       });
@@ -368,7 +377,7 @@ describe('NYPL Geocoder Service Tests', function () {
     describe('nyplGeocoderService.drawMap', function () {
       it('should call the Google Maps', function () {
         document.getElementById = function () {
-          return '<div id="all-locations-map"></div>'
+          return '<div id="all-locations-map"></div>';
         };
         nyplGeocoderService
           .drawMap({ lat: 40.7532, long: -73.9822 }, 12, 'all-locations-map');
@@ -485,7 +494,7 @@ describe('NYPL Geocoder Service Tests', function () {
       });
 
     });
-  
+
     describe('nyplGeocoderService.createMarker', function () {
       it('should create a branch marker', function () {
         nyplGeocoderService.createMarker('schwarzman',
@@ -505,7 +514,7 @@ describe('NYPL Geocoder Service Tests', function () {
         expect(google.maps.event.addListener).toHaveBeenCalled();
       });
     });
-  
+
     describe('nyplGeocoderService.hideInfowindow', function () {
       it('should close a Google Maps InfoWindow', function () {
         nyplGeocoderService.hideInfowindow();
@@ -533,20 +542,22 @@ describe('NYPL Geocoder Service Tests', function () {
       });
 
       it('should return true because the branch marker exists', function () {
-          var exists = nyplGeocoderService.doesMarkerExist('schwarzman');
-          expect(exists).toBe(true);
+        var exists = nyplGeocoderService.doesMarkerExist('schwarzman');
+        expect(exists).toBe(true);
       });
 
       it('should return false because the marker does not exist', function () {
-          var exists = nyplGeocoderService.doesMarkerExist('grand-central');
-          expect(exists).toBe(false);
+        var exists = nyplGeocoderService.doesMarkerExist('grand-central');
+        expect(exists).toBe(false);
       });
     });
 
     describe('nyplGeocoderService.createSearchMarker', function () {
       it('should create a marker for the user\'s search query', function () {
-        nyplGeocoderService
-          .createSearchMarker({'latitude': 40, 'longitude': -73}, 'Bryant Park');
+        nyplGeocoderService.createSearchMarker(
+          {'latitude': 40, 'longitude': -73},
+          'Bryant Park'
+        );
 
         expect(google.maps.LatLng).toHaveBeenCalled();
         expect(google.maps.Marker.prototype.setPosition).toHaveBeenCalled();
@@ -556,9 +567,12 @@ describe('NYPL Geocoder Service Tests', function () {
 
     describe('nyplGeocoderService.drawSearchMarker', function () {
       it('should add the search marker to the map', function () {
-        nyplGeocoderService.hideInfowindow = jasmine.createSpy('hideInfowindow');
-        nyplGeocoderService
-          .createSearchMarker({'latitude': 40, 'longitude': -73}, 'Bryant Park');
+        nyplGeocoderService.hideInfowindow =
+          jasmine.createSpy('hideInfowindow');
+        nyplGeocoderService.createSearchMarker(
+          {'latitude': 40, 'longitude': -73},
+          'Bryant Park'
+        );
         nyplGeocoderService.drawSearchMarker();
 
         expect(google.maps.Marker.prototype.setMap).toHaveBeenCalled();
@@ -583,7 +597,8 @@ describe('NYPL Geocoder Service Tests', function () {
       it('should set the search marker map to null to remove it', function () {
         nyplGeocoderService
           .drawMap({lat: 40.7532, long: -73.9822}, 12, 'all-locations-map')
-          .drawSearchMarker({lat: 40.8505949, long: -73.8769982},
+          .drawSearchMarker(
+            {lat: 40.8505949, long: -73.8769982},
             'chelsea piers'
           );
 

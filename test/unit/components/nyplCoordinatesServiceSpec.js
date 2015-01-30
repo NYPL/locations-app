@@ -24,7 +24,7 @@ describe('NYPL coordinateService Module', function () {
 
       $window = {navigator: { geolocation: jasmine.createSpy()} };
 
-      module(function($provide) {
+      module(function ($provide) {
         $provide.value('$window', $window);
       });
 
@@ -142,7 +142,7 @@ describe('NYPL coordinateService Module', function () {
           it('should fail on older browsers without geolocation', function () {
             var returned_error_message,
               error_message =
-                new Error('Your browser does not support Geolocation.')
+                new Error('Your browser does not support Geolocation.');
 
             geolocationMock.getCurrentPosition =
               window.navigator.geolocation.getCurrentPosition =
@@ -158,7 +158,7 @@ describe('NYPL coordinateService Module', function () {
               .catch(function (error) {
                 returned_error_message = error;
               });
-              $rootScope.$digest();
+            $rootScope.$digest();
 
             // getBrowserCoordinates() calls geolocationAvailable() before
             // performing a coordinate lookup.
@@ -167,7 +167,7 @@ describe('NYPL coordinateService Module', function () {
             // since the browser doesn't support geolocation
             expect(geolocationMock.getCurrentPosition).not.toHaveBeenCalled();
             expect(returned_error_message).toEqual(error_message);
-          })
+          });
         });
 
         describe('Permission denied', function () {

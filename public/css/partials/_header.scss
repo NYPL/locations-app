@@ -219,7 +219,7 @@ header {
 
 					@include breakpoint($min, $pre-tablet) {
 						position: absolute;
-						right: 82px;
+						right: 85px;
 						border: 2px solid #7d7872;
 						width: 300px;
 						box-shadow: none;
@@ -297,6 +297,7 @@ header {
 
 							a {
 								display: block;
+								max-width: 120px;
 								color: #000;
 								font-size: 14px;
 								margin: 5px 0px;
@@ -397,7 +398,7 @@ header {
 			margin: 0;
 			padding: 0;
 			position: relative;
-			top: 65px;
+			top: 63px;
 
 
 			@include breakpoint($min, $pre-tablet) {
@@ -453,7 +454,7 @@ header {
 					}
 					&.search-the-website {
 						background-color: #10a2cf;
-						right: 0;
+						right: 2px;
 
 						@include breakpoint($min, $pre-tablet) {
 							background-color: #FFF;
@@ -491,13 +492,14 @@ header {
 			width: 99.5%;
 			border: 1px solid #B4AEA9;
 			margin: 0;
-			padding: 5px;
+			padding: 9px 5px;
 			position: absolute;
 			top: 8px;
-			font-size: 16px;
+			font-size: 17px;
 			line-height: initial !important; //NYPLBase override
 
 			@include breakpoint($min, $pre-tablet) {
+				font-size: 16px;
 				display: inline-block;
 				position: relative;
 				top: inherit;

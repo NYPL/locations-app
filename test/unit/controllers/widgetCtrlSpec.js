@@ -1,4 +1,4 @@
-/*jslint indent: 2, maxlen: 80 */
+/*jslint nomen: true, unparam: true, indent: 2, maxlen: 80 */
 /*globals element, by, module, module, window, jasmine,
 describe, expect, beforeEach, inject, it, angular, spyOn */
 
@@ -27,7 +27,7 @@ var mockGeneralResearchDivision = {
     room: "315",
     slug: "general-research-division",
     social_media: [
-      { site: "facebook",href: "http://www.facebook.com/pages/General-" +
+      { site: "facebook", href: "http://www.facebook.com/pages/General-" +
         "Research-Division-The-New-York-Public-Library/105843439484043"},
       { site: "twitter", href: "http://twitter.com/NYPL_GRD"}
     ],
@@ -147,7 +147,7 @@ describe('WidgetCtrl', function () {
 
       nyplLocationsService.getConfig();
       $rootScope.$apply();
-    })
+    });
   });
 
   describe('Division: General Research Division', function () {
@@ -159,8 +159,8 @@ describe('WidgetCtrl', function () {
       WidgetCtrl = _$controller_('WidgetCtrl', {
         $scope: scope,
         config: {api_root: 'http://locations-api-beta.nypl.org',
-          divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN",
-            "PHG","SPN","CPS"]},
+          divisions_with_appointments: ["ARN", "RBK", "MSS", "BRG", "PRN",
+            "PHG", "SPN", "CPS"]},
         data: mockGeneralResearchDivision
       });
     }));
@@ -227,8 +227,8 @@ describe('WidgetCtrl', function () {
       WidgetCtrl = _$controller_('WidgetCtrl', {
         $scope: scope,
         config: {api_root: 'http://locations-api-beta.nypl.org',
-          divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN",
-            "PHG","SPN","CPS"]},
+          divisions_with_appointments: ["ARN", "RBK", "MSS", "BRG", "PRN",
+            "PHG", "SPN", "CPS"]},
         data: mockPeriodicalsRoom
       });
     }));
@@ -271,8 +271,8 @@ describe('WidgetCtrl', function () {
         $scope: scope,
         config: {api_root: 'http://locations-api-beta.nypl.org',
           closed_img: "http://ux-static.nypl.org/images/branch_closed.jpg",
-          divisions_with_appointments: ["ARN","RBK","MSS","BRG","PRN",
-            "PHG","SPN","CPS"]},
+          divisions_with_appointments: ["ARN", "RBK", "MSS", "BRG", "PRN",
+            "PHG", "SPN", "CPS"]},
         data: mockCathedralLocation
       });
     }));
