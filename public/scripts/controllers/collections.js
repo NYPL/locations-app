@@ -7,6 +7,7 @@ console, $location, $ */
   function CollectionsCtrl(
     $scope,
     $rootScope,
+    $timeout,
     config,
     divisions,
     nyplLocationsService,
