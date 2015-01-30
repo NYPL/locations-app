@@ -30,7 +30,7 @@
           </button>
         </span>
 
-        <div class='sub-filters'>
+        <div class='sub-filters show-hide-animate'>
           <ul class='three-columns' data-ng-class="{'two-columns': activeCategory == 'Locations', 'three-columns': activeCategory != 'Locations'}">
             <li class="term {{term.name | slugify}} subjectSubterms" data-ng-repeat="term in terms[0].terms" data-ng-show="activeCategory == 'Subjects'">
               <a href="" data-ng-click="filterDivisionsBy($index, term)"

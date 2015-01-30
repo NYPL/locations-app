@@ -332,6 +332,14 @@ console, $location, $ */
       // Highlight the current selected subterm
       activeSubterm(selectedTerm);
 
+      // Hides wrapper on mobile only after selection of filter
+      if (nyplUtility.isMobile().any()) {
+        $timeout( function(){
+          $scope.categorySelected = undefined;
+          $scope.activeCategory = undefined;
+        }, 700);
+      }
+
       // // Save the filtered divisions for later.
       // researchCollectionService
       //   .setResearchValue('filteredDivisions', $scope.filteredDivisions);

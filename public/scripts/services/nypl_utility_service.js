@@ -504,6 +504,38 @@
 
     /**
      * @ngdoc function
+     * @name isMobile
+     * @methodOf nypl_locations.service:nyplUtility
+     * @description Offers a variety of helper methods that
+     * assist in determining if the current device is mobile.
+     */
+    utility.isMobile = function () {
+      var isMobile = {
+        android: function () {
+          return navigator.userAgent.match(/Android/i);
+        },
+        blackberry: function () {
+          return navigator.userAgent.match(/BlackBerry/i);
+        },
+        ios: function () {
+          return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+        },
+        opera: function () {
+          return navigator.userAgent.match(/Opera Mini/i);
+        },
+        windows: function () {
+          return navigator.userAgent.match(/IEMobile/i);
+        },
+        any: function () {
+          return (this.android() || this.blackberry() ||
+            this.ios() || this.opera() || this.windows());
+        }
+      };
+      return isMobile;
+    };
+
+    /**
+     * @ngdoc function
      * @name calcDistance
      * @methodOf nypl_locations.service:nyplUtility
      * @param {object} locations ...
