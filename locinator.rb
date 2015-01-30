@@ -30,7 +30,8 @@ class Locinator < Sinatra::Base
         "featured_amenities" => settings.featured_amenities,
         "research_order" => settings.research_order,
         "fundraising" => settings.fundraising,
-        "closed_img" => settings.env_config["closed_img"]
+        "closed_img" => settings.env_config["closed_img"],
+        "research_shortnames" => settings.env_config["research_shortnames"]
       }
     })
 

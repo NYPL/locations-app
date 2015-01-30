@@ -35,7 +35,13 @@
       "google_maps": "AIzaSyCeqpIM6ylCguHdJq0Mp9WpaSrLJ3xrBWM",
       "angular_src": "ux-static-staging",
       "app_src": "full",
-      "closed_img": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/images/branch_closed.jpg"
+      "closed_img": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/images/branch_closed.jpg",
+      "research_shortnames": {
+        "SASB": "Schwarzman",
+        "SC": "Schomburg Center",
+        "LPA": "Library for the Performing Arts",
+        "SIBL": "SIBL"
+      }
     },
     "local": {
       "url": "localhost:9292",

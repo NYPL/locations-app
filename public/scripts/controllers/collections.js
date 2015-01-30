@@ -84,6 +84,10 @@ console, $location, $ */
             $scope.filteredDivisions.push(sibl);
             $scope.divisions.push(sibl);
             $scope.divisionLocations.push(sibl);
+
+            _.each($scope.divisionLocations, function (location) {
+              location.short_name = config.research_shortnames[location.id];
+            });
           });
       };
 
@@ -270,11 +274,7 @@ console, $location, $ */
         });
         name = parentSubject + term.name;
       } else if (label === "Locations") {
-        if (term.id === "SIBL" || term.id === "LPA") {
-          name = term.slug.toUpperCase();
-        } else {
-          name = (term.slug).charAt(0).toUpperCase() + (term.slug).slice(1);
-        }
+          name = term.short_name;
       } else {
         name = term.name;
       }
