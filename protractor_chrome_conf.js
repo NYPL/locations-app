@@ -25,6 +25,7 @@ exports.config = {
       'test/e2e/amenities/amenities_at_branch.spec.js'],
     analytics: ['test/e2e/analytics/analytics.spec.js'],
     collections: ['test/e2e/collections/collections.spec.js'],
+    collections_ga: ['test/e2e/collections/collections-ga.spec.js'],
     division: ['test/e2e/division/division.spec.js'],
     homepage: ['test/e2e/homepage/homepage.spec.js'],
     location: ['test/e2e/location/circulating.spec.js',

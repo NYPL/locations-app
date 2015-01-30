@@ -105,7 +105,6 @@ describe('Google analytics configuration', function () {
 
       it('should track a click event', function () {
         browser.executeScript('return window.ga_msg;').then(function (ga) {
-          console.log(ga);
           expect(ga[0][2].eventCategory).toEqual('Locations');
           expect(ga[0][2].eventAction).toEqual('Filter by');
           expect(ga[0][2].eventLabel).toEqual('Near me');
