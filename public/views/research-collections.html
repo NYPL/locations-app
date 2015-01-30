@@ -24,8 +24,9 @@
       <div class='filters-wrapper' collapse="expand" duration="2500">
         <span class='filterable-by'>
           <button data-ng-repeat="term in terms" class="categoryTerm"
-            data-ng-click="selectCategory($index, term)"
-            data-ng-class="{active: categorySelected == $index}">
+            data-ng-click="selectCategory($index, term)" data-ng-class="{active: categorySelected == $index}"
+            analytics-on="click" analytics-category="Research Collections"
+            analytics-event="Main Filter" analytics-label="{{term.name}}">
             {{term.name}}
           </button>
         </span>
@@ -34,16 +35,28 @@
           <ul class='three-columns' data-ng-class="{'two-columns': activeCategory == 'Locations', 'three-columns': activeCategory != 'Locations'}">
             <li class="term {{term.name | slugify}} subjectSubterms" data-ng-repeat="term in terms[0].terms" data-ng-show="activeCategory == 'Subjects'">
               <a href="" data-ng-click="filterDivisionsBy($index, term)"
-                data-ng-model="term.name" data-ng-class="{active: $index == selectedSubjectsSubterm}">{{term.name}}</a>
+                data-ng-model="term.name" data-ng-class="{active: $index == selectedSubjectsSubterm}"
+                analytics-on="click" analytics-category="Research Collections"
+                analytics-event="Click" analytics-label="{{terms[0].name}}: {{term.name}}">
+                {{term.name}}
+              </a>
               <collapsible-filters data="term.terms" data-ng-if="term.terms" filter-item="filterDivisionsBy($index,term)" filtered-results="filter_results"></collapsible-filters>
             </li>
             <li class="term {{term.name | slugify}} mediaSubterms" data-ng-repeat="term in terms[1].terms" data-ng-show="activeCategory == 'Media'">
               <a href="" data-ng-click="filterDivisionsBy($index, term)"
-                data-ng-model="term.name" data-ng-class="{active: $index == selectedMediaSubterm}">{{term.name}}</a>
+                data-ng-model="term.name" data-ng-class="{active: $index == selectedMediaSubterm}"
+                analytics-on="click" analytics-category="Research Collections"
+                analytics-event="Click" analytics-label="{{terms[1].name}}: {{term.name}}">
+                {{term.name}}
+              </a>
             </li>
             <li class="term {{term.name}} locationSubterms" data-ng-repeat="term in terms[2].locations" data-ng-show="activeCategory == 'Locations'">
               <a href="" data-ng-click="filterDivisionsBy($index, term)"
-                data-ng-model="term.name" data-ng-class="{active: $index == selectedLocationsSubterm}">{{term.name}}</a>
+                data-ng-model="term.name" data-ng-class="{active: $index == selectedLocationsSubterm}"
+                analytics-on="click" analytics-category="Research Collections"
+                analytics-event="Click" analytics-label="{{terms[2].name}}: {{term.name}}">
+                {{term.name}}
+              </a>
             </li>
           </ul>
         </div>
@@ -61,14 +74,14 @@
             data-ng-repeat='division in filteredDivisions track by $index'>
             <div class="division-wrapper" data-ng-if="division.slug != 'sibl'">
               <a data-ng-href="/locations/divisions/{{division.slug}}"
-                analytics-on="click" analytics-category="Locations"
+                analytics-on="click" analytics-category="Research Collections"
                 analytics-event="Division Image" analytics-label="{{division.name}}">
                 <img class="img--outline division-image" data-ng-src="{{division.images.collection_item}}"
                   alt="Image for {{division.name}}" title="Image for {{division.name}}" style="max-height: 235px;" />
               </a>
               <h4 class="division-name">
                 <a data-ng-href="/locations/divisions/{{division.slug}}"
-                  analytics-on="click" analytics-category="Locations"
+                  analytics-on="click" analytics-category="Research Collections"
                   analytics-event="Division Title" analytics-label="{{division.name}}">
                   {{division.name}}
                 </a>
@@ -80,14 +93,14 @@
             <!-- SIBL  -->
             <div class="division-wrapper" data-ng-if="division.slug == 'sibl'">
               <a data-ng-href="/locations/{{division.slug}}"
-                analytics-on="click" analytics-category="Locations"
+                analytics-on="click" analytics-category="Research Collections"
                 analytics-event="Division Image" analytics-label="{{division.name}}">
                 <img class="img--outline division-image" data-ng-src="{{division.images.interior}}"
                   alt="Image for {{division.name}}" title="Image for {{division.name}}" style="max-height: 235px;" />
               </a>
               <h4 class="division-name">
                 <a data-ng-href="/locations/{{division.slug}}"
-                  analytics-on="click" analytics-category="Locations"
+                  analytics-on="click" analytics-category="Research Collections"
                   analytics-event="Division Title" analytics-label="{{division.name}}">
                   {{division.name}}
                 </a>
