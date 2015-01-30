@@ -34,8 +34,8 @@
       </div>
       <% if @location.type != "research" %>
       <div itemprop="contactPoint" itemscope itemtype="http://schema.org/ContactPoint">
-        <span itemprop="contactType">Library Manager</span>
-        <span itemprop="name"><%= @location.contacts['manager'] %></span>
+        <span itemprop="contactType"><%= @location.contacts['manager']['title'] %></span>
+        <span itemprop="name"><%= @location.contacts['manager']['fn'] %></span>
       </div>
       <% end %>
 
