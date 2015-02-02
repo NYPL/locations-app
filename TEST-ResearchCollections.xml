@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+<testsuite name="Research Collections" errors="0" tests="1" failures="0" time="35.935" timestamp="2015-01-29T14:36:42">
+  <testcase classname="Research Collections" name="should display the page title" time="24.544"></testcase>
+</testsuite>
+<testsuite name="Research Collections.Filters section" errors="0" tests="0" failures="0" time="0" timestamp="2015-01-29T14:37:17">
+</testsuite>
+<testsuite name="Research Collections.Filters section.Category Filters" errors="0" tests="3" failures="0" time="11.369" timestamp="2015-01-29T14:37:06">
+  <testcase classname="Research Collections.Filters section.Category Filters" name="should have three filters" time="2.053"></testcase>
+  <testcase classname="Research Collections.Filters section.Category Filters" name="should not have any active category terms active" time="3.397"></testcase>
+  <testcase classname="Research Collections.Filters section.Category Filters" name="should add active class to the filter that was clicked" time="5.899"></testcase>
+</testsuite>
+</testsuites>

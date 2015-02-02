@@ -19,8 +19,14 @@
         <span class="p-postal-code">{{data.postal_code}}</span>
         <div class="p-tel">{{data.contacts.phone}}</div>
         <div class="p-manager" data-ng-if="data.contacts.manager">
-          Library Manager: {{data.contacts.manager}}
+          <span data-ng-if="data.contacts.manager.title">
+            {{ data.contacts.manager.title }}:
+          </span>
+          <span data-ng-if="data.contacts.manager.fn">
+            {{ data.contacts.manager.fn }}
+          </span>
         </div>
+
       </div>
 
       <div class="p-adr" data-ng-if="division">
@@ -28,15 +34,22 @@
         <div class="p-street-address">{{data._embedded.location.street_address}}</div>
         <div data-ng-if="data.cross_street">{{data._embedded.location.cross_street}}</div>
         <div data-ng-if="data.floor">
-          <span>{{data.floor}}, </span>
-          <span data-ng-if="data.room" class="room">Room {{data.room}}</span>
+          <span>{{data.floor}}</span>
+          <span data-ng-if="data.room" class="room" style="margin-left: -5px;">
+          , Room {{data.room}}
+          </span>
         </div>
         <span class="p-locality">{{data._embedded.location.locality}}</span>, 
         <span class="p-region">{{data._embedded.location.region}}</span>, 
         <span class="p-postal-code">{{data._embedded.location.postal_code}}</span>
         <div class="p-tel">{{data.contacts.phone}}</div>
         <div class="p-manager" data-ng-if="data.contacts.manager">
-          Library Manager: {{data.contacts.manager}}
+          <span data-ng-if="data.contacts.manager.title">
+            {{ data.contacts.manager.title }}:
+          </span>
+          <span data-ng-if="data.contacts.manager.fn">
+            {{ data.contacts.manager.fn }}
+          </span>
         </div>
       </div>
 
@@ -85,7 +98,7 @@
     --><div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
       <!-- Display for open Location/Division -->
       <div class="callout branch-open" data-ng-if="data.open">
-        <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat:'short'}}" holiday="holiday" />
+        <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat}}" holiday="holiday" />
       </div>
       <div class="callout branch-closed" data-ng-if="!data.open">
         <h2>Branch is temporarily closed.</h2>

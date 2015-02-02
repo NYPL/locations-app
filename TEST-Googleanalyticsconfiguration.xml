@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+<testsuite name="Google analytics configuration" errors="0" tests="0" failures="0" time="0" timestamp="2015-01-29T14:25:51">
+</testsuite>
+<testsuite name="Google analytics configuration.Page view tracking" errors="0" tests="3" failures="1" time="32.084" timestamp="2015-01-29T14:22:18">
+  <testcase classname="Google analytics configuration.Page view tracking" name="should log a branch path as a page view" time="23.928"></testcase>
+  <testcase classname="Google analytics configuration.Page view tracking" name="should log a division path as a page view" time="5.768"></testcase>
+  <testcase classname="Google analytics configuration.Page view tracking" name="should log amenities path as a page view" time="2.376"><failure>1: Error: No element found using locator: By.cssSelector(&quot;#all_amenities&quot;)</failure></testcase>
+</testsuite>
+<testsuite name="Google analytics configuration.Homepage event tracking" errors="0" tests="0" failures="0" time="0" timestamp="2015-01-29T14:23:29">
+</testsuite>
+<testsuite name="Google analytics configuration.Homepage event tracking.Geolocation search button" errors="0" tests="2" failures="0" time="9.805" timestamp="2015-01-29T14:22:50">
+  <testcase classname="Google analytics configuration.Homepage event tracking.Geolocation search button" name="should track a click event" time="5.082"></testcase>
+  <testcase classname="Google analytics configuration.Homepage event tracking.Geolocation search button" name="should also track a pageview after the click event" time="4.722"></testcase>
+</testsuite>
+<testsuite name="Google analytics configuration.Homepage event tracking.Research Libraries" errors="0" tests="1" failures="0" time="2.48" timestamp="2015-01-29T14:23:00">
+  <testcase classname="Google analytics configuration.Homepage event tracking.Research Libraries" name="should track a click event on the research button" time="2.479"></testcase>
+</testsuite>
+<testsuite name="Google analytics configuration.Homepage event tracking.List and Map View" errors="0" tests="2" failures="0" time="7.778" timestamp="2015-01-29T14:23:02">
+  <testcase classname="Google analytics configuration.Homepage event tracking.List and Map View" name="should track a click and pageview event on the Map View button" time="2.895"></testcase>
+  <testcase classname="Google analytics configuration.Homepage event tracking.List and Map View" name="should track a click and pageview event on the List View button" time="4.883"></testcase>
+</testsuite>
+<testsuite name="Google analytics configuration.Homepage event tracking.Library click events" errors="0" tests="4" failures="1" time="18.581" timestamp="2015-01-29T14:23:10">
+  <testcase classname="Google analytics configuration.Homepage event tracking.Library click events" name="should track a click on a library&apos;s name on the list view" time="2.63"></testcase>
+  <testcase classname="Google analytics configuration.Homepage event tracking.Library click events" name="should track a click on a library&apos;s name on the map view" time="7.074"><failure>1: Expected &apos;Stephen A. Schwarzman Building (map)&apos; to equal &apos;Mid-Manhattan Library (map)&apos;. 2: Expected &apos;/locations/schwarzman&apos; to equal &apos;/locations/mid-manhattan-library&apos;.</failure></testcase>
+  <testcase classname="Google analytics configuration.Homepage event tracking.Library click events" name="should track a click on a library&apos;s View on Map button on the list view" time="4.296"></testcase>
+  <testcase classname="Google analytics configuration.Homepage event tracking.Library click events" name="should track a click on a library&apos;s View on Map button on the map view" time="4.576"></testcase>
+</testsuite>
+<testsuite name="Google analytics configuration.Branch/Research tracking" errors="0" tests="4" failures="0" time="27.139" timestamp="2015-01-29T14:23:29">
+  <testcase classname="Google analytics configuration.Branch/Research tracking" name="should track a click on the &quot;On Our Shelves Now&quot; button" time="8.915"></testcase>
+  <testcase classname="Google analytics configuration.Branch/Research tracking" name="should track the NYPL ASK click event" time="2.644"></testcase>
+  <testcase classname="Google analytics configuration.Branch/Research tracking" name="should track the NYPL ASK click event" time="2.126"></testcase>
+  <testcase classname="Google analytics configuration.Branch/Research tracking" name="should track the NYPL ASK click event" time="1.517"></testcase>
+</testsuite>
+<testsuite name="Google analytics configuration.Branch/Research tracking.Get Directions on a location page" errors="0" tests="1" failures="0" time="5.649" timestamp="2015-01-29T14:23:38">
+  <testcase classname="Google analytics configuration.Branch/Research tracking.Get Directions on a location page" name="should track on a branch" time="5.648"></testcase>
+</testsuite>
+<testsuite name="Google analytics configuration.Branch/Research tracking.division click/page" errors="0" tests="2" failures="0" time="6.286" timestamp="2015-01-29T14:23:50">
+  <testcase classname="Google analytics configuration.Branch/Research tracking.division click/page" name="should track division title click" time="3.145"></testcase>
+  <testcase classname="Google analytics configuration.Branch/Research tracking.division click/page" name="should track subdivision title click" time="3.14"></testcase>
+</testsuite>
+<testsuite name="Google analytics configuration.Autofill events" errors="0" tests="5" failures="0" time="22.22" timestamp="2015-01-29T14:23:56">
+  <testcase classname="Google analytics configuration.Autofill events" name="should track when ENTER was pressed for an accepted search suggestion" time="3.985"></testcase>
+  <testcase classname="Google analytics configuration.Autofill events" name="should track when searching for a string" time="4.797"></testcase>
+  <testcase classname="Google analytics configuration.Autofill events" name="should track selecting on suggested library" time="3.128"></testcase>
+  <testcase classname="Google analytics configuration.Autofill events" name="should track selecting on suggested library" time="5.036"></testcase>
+  <testcase classname="Google analytics configuration.Autofill events" name="should track selecting on suggested library" time="5.272"></testcase>
+</testsuite>
+<testsuite name="Google analytics configuration.Locinator Widget" errors="0" tests="0" failures="0" time="0" timestamp="2015-01-29T14:24:53">
+</testsuite>
+<testsuite name="Google analytics configuration.Locinator Widget.Branch page: New Dorp Library" errors="0" tests="6" failures="0" time="16.151" timestamp="2015-01-29T14:24:18">
+  <testcase classname="Google analytics configuration.Locinator Widget.Branch page: New Dorp Library" name="should track a click event on the Get Directions link" time="3.272"></testcase>
+  <testcase classname="Google analytics configuration.Locinator Widget.Branch page: New Dorp Library" name="should track a click even on the social media icons" time="5.885"></testcase>
+  <testcase classname="Google analytics configuration.Locinator Widget.Branch page: New Dorp Library" name="should track a click event on the &apos;Learn More&apos; link" time="2.892"></testcase>
+  <testcase classname="Google analytics configuration.Locinator Widget.Branch page: New Dorp Library" name="should track a click event on the Donate button" time="1.924"></testcase>
+  <testcase classname="Google analytics configuration.Locinator Widget.Branch page: New Dorp Library" name="should track a click event on the NYPL Chat link" time="0.812"></testcase>
+  <testcase classname="Google analytics configuration.Locinator Widget.Branch page: New Dorp Library" name="should track a click event on Email a Question link" time="1.365"></testcase>
+</testsuite>
+<testsuite name="Google analytics configuration.Locinator Widget.Division page" errors="0" tests="5" failures="0" time="12.337" timestamp="2015-01-29T14:24:34">
+  <testcase classname="Google analytics configuration.Locinator Widget.Division page" name="should track a click even on the social media icons" time="5.718"></testcase>
+  <testcase classname="Google analytics configuration.Locinator Widget.Division page" name="should track a click event on the &apos;Learn More&apos; link" time="2.104"></testcase>
+  <testcase classname="Google analytics configuration.Locinator Widget.Division page" name="should track a click event on the Donate button" time="1.199"></testcase>
+  <testcase classname="Google analytics configuration.Locinator Widget.Division page" name="should track a click event on the NYPL Chat link" time="0.874"></testcase>
+  <testcase classname="Google analytics configuration.Locinator Widget.Division page" name="should track a click event on Email a Question link" time="2.442"></testcase>
+</testsuite>
+<testsuite name="Google analytics configuration.Locinator Widget.Subdivision page" errors="0" tests="4" failures="0" time="6.604" timestamp="2015-01-29T14:24:47">
+  <testcase classname="Google analytics configuration.Locinator Widget.Subdivision page" name="should track a click event on the &apos;Learn More&apos; link" time="2.198"></testcase>
+  <testcase classname="Google analytics configuration.Locinator Widget.Subdivision page" name="should track a click event on the Donate button" time="1.184"></testcase>
+  <testcase classname="Google analytics configuration.Locinator Widget.Subdivision page" name="should track a click event on the NYPL Chat link" time="0.728"></testcase>
+  <testcase classname="Google analytics configuration.Locinator Widget.Subdivision page" name="should track a click event on Email a Question link" time="2.493"></testcase>
+</testsuite>
+<testsuite name="Google analytics configuration.Footer events" errors="0" tests="6" failures="0" time="9.451" timestamp="2015-01-29T14:24:53">
+  <testcase classname="Google analytics configuration.Footer events" name="should track clicking on About NYPL link" time="2.6"></testcase>
+  <testcase classname="Google analytics configuration.Footer events" name="should track clicking on Careers at NYPL link" time="1.272"></testcase>
+  <testcase classname="Google analytics configuration.Footer events" name="should track clicking on Connect with NYPL link" time="1.562"></testcase>
+  <testcase classname="Google analytics configuration.Footer events" name="should track clicking on the Privacy Policy link" time="1.485"></testcase>
+  <testcase classname="Google analytics configuration.Footer events" name="should track a click on Gifts of Materials to NYPL link" time="1.214"></testcase>
+  <testcase classname="Google analytics configuration.Footer events" name="should track clicking on the Chinese translation link" time="1.316"></testcase>
+</testsuite>
+<testsuite name="Google analytics configuration.Header events" errors="0" tests="0" failures="0" time="0" timestamp="2015-01-29T14:25:51">
+</testsuite>
+<testsuite name="Google analytics configuration.Header events.Category: Header" errors="0" tests="3" failures="0" time="5.899" timestamp="2015-01-29T14:25:03">
+  <testcase classname="Google analytics configuration.Header events.Category: Header" name="should track a click on the Classic Catalog link" time="2.727"></testcase>
+  <testcase classname="Google analytics configuration.Header events.Category: Header" name="should track a click on the NYPL logo" time="1.301"></testcase>
+  <testcase classname="Google analytics configuration.Header events.Category: Header" name="should track a click on the donate button" time="1.871"></testcase>
+</testsuite>
+<testsuite name="Google analytics configuration.Header events.Category: SSO" errors="0" tests="0" failures="0" time="0" timestamp="2015-01-29T14:25:45">
+</testsuite>
+<testsuite name="Google analytics configuration.Header events.Category: SSO.Logged out" errors="0" tests="1" failures="0" time="1.904" timestamp="2015-01-29T14:25:09">
+  <testcase classname="Google analytics configuration.Header events.Category: SSO.Logged out" name="should track a click on the desktop open login form" time="1.904"></testcase>
+</testsuite>
+<testsuite name="Google analytics configuration.Header events.Category: SSO.Logged in" errors="0" tests="1" failures="1" time="34.449" timestamp="2015-01-29T14:25:10">
+  <testcase classname="Google analytics configuration.Header events.Category: SSO.Logged in" name="should track a click to the log out button" time="34.449"><failure>1: timeout: timed out after 30000 msec waiting for spec to complete</failure></testcase>
+</testsuite>
+<testsuite name="Google analytics configuration.Header events.Category: Header Search" errors="0" tests="4" failures="1" time="5.855" timestamp="2015-01-29T14:25:45">
+  <testcase classname="Google analytics configuration.Header events.Category: Header Search" name="should track when the input field is focused" time="1.512"></testcase>
+  <testcase classname="Google analytics configuration.Header events.Category: Header Search" name="should track when an empty search was attempted" time="1.328"></testcase>
+  <testcase classname="Google analytics configuration.Header events.Category: Header Search" name="should track when a radio button option was selected" time="1.549"><failure>1: ElementNotVisibleError: element not visible
+  (Session info: chrome=40.0.2214.93)
+  (Driver info: chromedriver=2.12.301326 (093c7e07b4a916b690e784b0374c7f618f1ea4be),platform=Mac OS X 10.10.1 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 38 milliseconds
+Build info: version: &apos;2.44.0&apos;, revision: &apos;76d78cf&apos;, time: &apos;2014-10-23 20:02:37&apos;
+System info: host: &apos;N/A&apos;, ip: &apos;N/A&apos;, os.name: &apos;Mac OS X&apos;, os.arch: &apos;x86_64&apos;, os.version: &apos;10.10.1&apos;, java.version: &apos;1.7.0_55&apos;
+Session ID: 951f8b6faaa1a8d0686b6fbf791a1e67
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities [{platform=MAC, acceptSslCerts=true, javascriptEnabled=true, browserName=chrome, chrome={userDataDir=/var/folders/y5/y8cx0q6n5tx026tkhfdygl000000gq/T/.org.chromium.Chromium.rtpBPc}, rotatable=false, locationContextEnabled=true, mobileEmulationEnabled=false, version=40.0.2214.93, takesHeapSnapshot=true, cssSelectorsEnabled=true, databaseEnabled=false, handlesAlerts=true, browserConnectionEnabled=false, webStorageEnabled=true, nativeEvents=true, applicationCacheEnabled=false, takesScreenshot=true}] 2: TypeError: Cannot read property &apos;1&apos; of null</failure></testcase>
+  <testcase classname="Google analytics configuration.Header events.Category: Header Search" name="should track when a search was submitted for nypl.org" time="1.465"></testcase>
+</testsuite>
+</testsuites>

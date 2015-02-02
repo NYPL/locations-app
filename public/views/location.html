@@ -13,7 +13,7 @@
       <div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
         <!-- Display for open location -->
         <div class="callout branch-open" data-ng-if="location.open">
-          <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat:'short'}}" holiday="holiday" />
+          <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat}}" holiday="holiday" />
           <div id="location-hours" class="location-hours">
             <h2 class="flush--ends hdg">Regular Hours
               <span id="toggle-hours" ng-click="expand = !expand"
@@ -51,7 +51,12 @@
             <span class="p-postal-code">{{location.postal_code}}</span>
             <div class="p-tel">{{location.contacts.phone}}</div>
             <div class="p-manager" data-ng-if="location.contacts.manager">
-              Library Manager: {{location.contacts.manager}}
+              <span data-ng-if="location.contacts.manager.title">
+                {{ location.contacts.manager.title }}:
+              </span>
+              <span data-ng-if="location.contacts.manager.fn">
+               {{ location.contacts.manager.fn }}
+              </span>
             </div>
           </div>
 
