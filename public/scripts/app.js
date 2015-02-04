@@ -35,7 +35,8 @@ var nypl_locations = angular.module('nypl_locations', [
     'nyplBreadcrumbs',
     'angulartics',
     'angulartics.google.analytics',
-    'newrelic-timing'
+    'newrelic-timing',
+    'nyplAlerts'
 ]);
 
 nypl_locations.constant('_', window._);
@@ -46,18 +47,25 @@ nypl_locations.config([
     '$stateProvider',
     '$urlRouterProvider',
     '$crumbProvider',
+    '$nyplAlertsProvider',
     function (
         $analyticsProvider,
         $locationProvider,
         $stateProvider,
         $urlRouterProvider,
-        $crumbProvider
+        $crumbProvider,
+        $nyplAlertsProvider
     ) {
         'use strict';
 
         // Turn off automatic virtual pageviews for GA.
         // In $stateChangeSuccess, /locations/ is added to each page hit.
         $analyticsProvider.virtualPageviews(false);
+
+        $nyplAlertsProvider.setOptions({
+            api_root: 'http://dev.locations.api.nypl.org/api',
+            api_version: 'v0.7'
+        });
 
         // uses the HTML5 History API, remove hash (need to test)
         $locationProvider.html5Mode(true);

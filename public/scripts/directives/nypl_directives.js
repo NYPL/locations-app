@@ -699,7 +699,7 @@
     .directive('librarianchatbutton', librarianchatbutton)
     .directive('scrolltop', scrolltop)
     .directive('eventRegistration', eventRegistration)
-    .directive('nyplSiteAlerts', nyplSiteAlerts)
+    //.directive('nyplSiteAlerts', nyplSiteAlerts)
     .directive('nyplLibraryAlert', nyplLibraryAlert)
     .directive('nyplFundraising', nyplFundraising)
     .directive('nyplSidebar', nyplSidebar)
