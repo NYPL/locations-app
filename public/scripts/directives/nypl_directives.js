@@ -207,7 +207,8 @@
    * @description
    * ...
    */
-  function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
+   // Transfered to nyplAlerts Module
+  /*function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
     return {
       restrict: 'E',
       templateUrl: 'scripts/directives/templates/alerts.html',
@@ -224,7 +225,7 @@
         }, 200);
       }
     };
-  }
+  }*/
 
   /**
    * @ngdoc directive
@@ -235,7 +236,7 @@
    * @description
    * ...
    */
-  function nyplLibraryAlert(nyplUtility) {
+  /*function nyplLibraryAlert(nyplUtility) {
     function alertExpired(startDate, endDate) {
       var sDate = new Date(startDate),
         eDate   = new Date(endDate),
@@ -262,7 +263,7 @@
         }
       }
     };
-  }
+  }*/
 
   /**
    * @ngdoc directive
@@ -700,7 +701,7 @@
     .directive('scrolltop', scrolltop)
     .directive('eventRegistration', eventRegistration)
     //.directive('nyplSiteAlerts', nyplSiteAlerts)
-    .directive('nyplLibraryAlert', nyplLibraryAlert)
+    //.directive('nyplLibraryAlert', nyplLibraryAlert)
     .directive('nyplFundraising', nyplFundraising)
     .directive('nyplSidebar', nyplSidebar)
     .directive('nyplAutofill', nyplAutofill)

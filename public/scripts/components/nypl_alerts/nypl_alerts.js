@@ -47,6 +47,9 @@
           return defer.promise;
         };
 
+        provider['api_url'] = options.api_root;;
+        provider['api_version'] = options.api_version;
+
       return provider;
     }];
   }
@@ -54,11 +57,60 @@
   function nyplAlertsService() {
     var service = {};
 
-    service.setCurrentAlerts = function(obj) {
-      return obj
+    service.activeAlerts = function(obj) {
+      var today = new Date(),
+          sDate,
+          eDate;
+      
+      return _.filter(obj, function(elem) {
+                if (elem.display) {
+                  if (elem.display.start && elem.display.end) {
+                    sDate = new Date(elem.display.start);
+                    eDate = new Date(elem.display.end);
+                    if (sDate.getTime() <= today.getTime() && eDate.getTime() >= today.getTime()) {
+                      return elem;
+                    }
+                  }
+                }
+              });
     };
+
+    service.removeDuplicates = function(obj) {
+      return _.chain(obj)
+              .indexBy('id')
+              .flatten()
+              .uniq(function(elem) {
+                if (elem.msg) {
+                  return elem.msg.toLowerCase();
+                }
+              })
+              .value();
+    };
+
+    service.isAlertExpired = function(startDate, endDate) {
+      var sDate = new Date(startDate),
+        eDate   = new Date(endDate),
+        today   = new Date();
+      return (sDate.getTime() <= today.getTime() &&
+        eDate.getTime() >= today.getTime()) ? false : true;
+    };
+
+    service.setAlerts = function(obj , scope) {
+      var uniqueAlerts = this.removeDuplicates(obj);
+
+      if (scope) {
+        uniqueAlerts = _.where(uniqueAlerts, {scope: scope});
+      }
+
+      // API will handle displaying active alerts?
+      //var activeAlerts = this.isAlertActive(uniqueAlerts);
+      return uniqueAlerts;
+    };
+
     return service;
   }
+
+
 
   /**
    * @ngdoc directive
@@ -68,27 +120,36 @@
    * @description
 
    */
-  function nyplGlobalAlerts($rootScope, $timeout, $nyplAlerts, nyplAlertsService) {
+  function nyplGlobalAlerts($rootScope, $nyplAlerts, nyplAlertsService) {
     return {
       restrict: 'E',
       templateUrl: 'scripts/components/nypl_alerts/nypl_global_alerts.html',
       replace: true,
       scope: false,
       link: function (scope, element, attrs, ctrl) {
-        
         var alerts;
-        $timeout(function () {
-          $nyplAlerts.getGlobalAlerts().then(function (data) {
-            alerts = nyplAlertsService.setCurrentAlerts(data);
-            //$rootScope.alerts = alerts;
-            console.log(alerts);
-          });
-        }, 200);
+        $nyplAlerts.getGlobalAlerts().then(function (data) {
+          alerts = nyplAlertsService.setAlerts(data);
+          $rootScope.alerts = alerts;
+        });
         
-      },
-      ctrl: ['$scope', function($scope) {
+      }
+    };
+  }
 
-      }]
+  function nyplLocationAlerts(nyplAlertsService) {
+    return {
+      restrict: 'E',
+      templateUrl: 'scripts/components/nypl_alerts/nypl_location_alerts.html',
+      replace: true,
+      scope: {
+          alerts: '=alerts'
+      },
+      link: function (scope, element, attrs) {
+        if (scope.alerts) {
+          scope.activeAlerts = nyplAlertsService.setAlerts(scope.alerts, 'location');
+        }
+      }
     };
   }
 
@@ -103,6 +164,6 @@
     .module('nyplAlerts', [])
     .provider('$nyplAlerts', $nyplAlertsProvider)
     .service('nyplAlertsService', nyplAlertsService)
+    .directive('nyplLocationAlerts', nyplLocationAlerts)
     .directive('nyplGlobalAlerts', nyplGlobalAlerts);
-
 })(window, window.angular);
