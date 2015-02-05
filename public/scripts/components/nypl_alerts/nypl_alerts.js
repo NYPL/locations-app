@@ -47,7 +47,7 @@
           return defer.promise;
         };
 
-        provider['alerts'] = '';
+        provider['alerts'] = null;
         provider['api_url'] = options.api_root;
         provider['api_version'] = options.api_version;
 
@@ -101,15 +101,23 @@
     };
 
     // Assigns proper alerts based on scope (optional)
-    service.setAlerts = function(obj , scope) {
-      var uniqueAlerts = this.removeDuplicates(obj);
+    service.setAlerts = function(obj , opts) {
+      if (!obj) return;
 
-      if (scope) {
-        uniqueAlerts = _.where(uniqueAlerts, {scope: scope});
+      var uniqueAlerts = this.removeDuplicates(obj),
+          defaults = {
+            scope: (opts) ? ((opts.scope) ? opts.scope : null) : null,
+            active: (opts) ? ((opts.active) ? opts.active : false) : false
+          };
+
+      if (defaults.scope) {
+        uniqueAlerts = _.where(uniqueAlerts, {scope: defaults.scope});
       }
 
-      // API will handle displaying active alerts?
-      //var activeAlerts = this.activeAlerts(uniqueAlerts);
+      if (defaults.active === true) {
+        uniqueAlerts = this.activeAlerts(uniqueAlerts);
+      }
+
       return uniqueAlerts;
     };
 
@@ -125,17 +133,12 @@
    * @scope
    * @description 
    */
-  function nyplGlobalAlerts($rootScope, $nyplAlerts, nyplAlertsService) {
+  function nyplGlobalAlerts($rootScope) {
     return {
       restrict: 'E',
       templateUrl: 'scripts/components/nypl_alerts/nypl_global_alerts.html',
       replace: true,
-      scope: false,
-      link: function (scope, element, attrs) {
-        // 
-        // console.log($rootScope);
-        // scope.globalAlerts = nyplAlertsService.setAlerts($nyplAlerts.alerts);
-      }
+      scope: false
     };
   }
 
@@ -156,16 +159,19 @@
       },
       link: function (scope, element, attrs) {
         if (scope.alerts) {
-          scope.locationAlerts = nyplAlertsService.setAlerts(scope.alerts, 'location');
+          scope.locationAlerts = nyplAlertsService.setAlerts(scope.alerts, {scope:'location', active:true});
         }
       }
     };
   }
 
   // Initialize Alerts data through Provider
-  function initAlerts($nyplAlerts, $rootScope) {
+  function initAlerts($nyplAlerts, $rootScope, nyplAlertsService) {
+
     $nyplAlerts.getGlobalAlerts().then(function (data) {
-        $rootScope.alerts = $rootScope.alerts || data;
+      var alerts = $rootScope.alerts || data;
+      $rootScope.alerts = nyplAlertsService.setAlerts(alerts);
+      $nyplAlerts.alerts = $rootScope.alerts || data;
     });
   }
 
