@@ -3,8 +3,8 @@
   <!-- Breadcrumbs -->
   <nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>
   
-  <!-- Individual location exception messages -->
-  <nypl-library-alert exception="division.hours.exceptions"></nypl-library-alert>
+  <!-- Individual division alerts -->
+  <nypl-location-alerts alerts="division._embedded.alerts"></nypl-location-alerts>
 
   <div class="container__div_info">
     <h1 class="p-org">{{division.name}}</h1>

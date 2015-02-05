@@ -28,10 +28,10 @@
             url : 'http://' + url;
         };
 
-        // Fetches API response for Alerts, returns a promise
+        // Fetches API response for Alerts
         provider.getGlobalAlerts = function() {
           var defer = $q.defer(),
-            url = this.generateApiUrl(options.api_root, options.api_version);
+              url = this.generateApiUrl(options.api_root, options.api_version);
 
           $http.jsonp(
             url,
@@ -47,7 +47,8 @@
           return defer.promise;
         };
 
-        provider['api_url'] = options.api_root;;
+        provider['alerts'] = '';
+        provider['api_url'] = options.api_root;
         provider['api_version'] = options.api_version;
 
       return provider;
@@ -57,6 +58,7 @@
   function nyplAlertsService() {
     var service = {};
 
+    // Filters Alerts that are within the display range
     service.activeAlerts = function(obj) {
       var today = new Date(),
           sDate,
@@ -67,7 +69,8 @@
                   if (elem.display.start && elem.display.end) {
                     sDate = new Date(elem.display.start);
                     eDate = new Date(elem.display.end);
-                    if (sDate.getTime() <= today.getTime() && eDate.getTime() >= today.getTime()) {
+                    if (sDate.getTime() <= today.getTime() &&
+                      eDate.getTime() >= today.getTime()) {
                       return elem;
                     }
                   }
@@ -75,6 +78,7 @@
               });
     };
 
+    // Removes Alerts with duplicate id's and msg
     service.removeDuplicates = function(obj) {
       return _.chain(obj)
               .indexBy('id')
@@ -87,6 +91,7 @@
               .value();
     };
 
+    // Boolean check if an alert has expired
     service.isAlertExpired = function(startDate, endDate) {
       var sDate = new Date(startDate),
         eDate   = new Date(endDate),
@@ -95,6 +100,7 @@
         eDate.getTime() >= today.getTime()) ? false : true;
     };
 
+    // Assigns proper alerts based on scope (optional)
     service.setAlerts = function(obj , scope) {
       var uniqueAlerts = this.removeDuplicates(obj);
 
@@ -103,7 +109,7 @@
       }
 
       // API will handle displaying active alerts?
-      //var activeAlerts = this.isAlertActive(uniqueAlerts);
+      //var activeAlerts = this.activeAlerts(uniqueAlerts);
       return uniqueAlerts;
     };
 
@@ -117,8 +123,7 @@
    * @name nyplGlobalAlerts.directive:nyplGlobalAlerts
    * @restrict E
    * @scope
-   * @description
-
+   * @description 
    */
   function nyplGlobalAlerts($rootScope, $nyplAlerts, nyplAlertsService) {
     return {
@@ -126,17 +131,21 @@
       templateUrl: 'scripts/components/nypl_alerts/nypl_global_alerts.html',
       replace: true,
       scope: false,
-      link: function (scope, element, attrs, ctrl) {
-        var alerts;
-        $nyplAlerts.getGlobalAlerts().then(function (data) {
-          alerts = nyplAlertsService.setAlerts(data);
-          $rootScope.alerts = alerts;
-        });
-        
+      link: function (scope, element, attrs) {
+        // 
+        // console.log($rootScope);
+        // scope.globalAlerts = nyplAlertsService.setAlerts($nyplAlerts.alerts);
       }
     };
   }
 
+  /**
+   * @ngdoc directive
+   * @name nyplLocationAlerts.directive:nyplLocationAlerts
+   * @restrict E
+   * @scope
+   * @description 
+   */
   function nyplLocationAlerts(nyplAlertsService) {
     return {
       restrict: 'E',
@@ -147,10 +156,17 @@
       },
       link: function (scope, element, attrs) {
         if (scope.alerts) {
-          scope.activeAlerts = nyplAlertsService.setAlerts(scope.alerts, 'location');
+          scope.locationAlerts = nyplAlertsService.setAlerts(scope.alerts, 'location');
         }
       }
     };
+  }
+
+  // Initialize Alerts data through Provider
+  function initAlerts($nyplAlerts, $rootScope) {
+    $nyplAlerts.getGlobalAlerts().then(function (data) {
+        $rootScope.alerts = $rootScope.alerts || data;
+    });
   }
 
 
@@ -164,6 +180,7 @@
     .module('nyplAlerts', [])
     .provider('$nyplAlerts', $nyplAlertsProvider)
     .service('nyplAlertsService', nyplAlertsService)
+    .run(initAlerts)
     .directive('nyplLocationAlerts', nyplLocationAlerts)
-    .directive('nyplGlobalAlerts', nyplGlobalAlerts);
+    .directive('nyplGlobalAlerts', nyplGlobalAlerts)
 })(window, window.angular);

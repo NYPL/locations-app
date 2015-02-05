@@ -207,7 +207,7 @@
    * @description
    * ...
    */
-   // Transfered to nyplAlerts Module
+  // Transfered to nyplAlerts Module
   /*function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
     return {
       restrict: 'E',
@@ -236,6 +236,7 @@
    * @description
    * ...
    */
+  // Transfered to nyplAlerts Module
   /*function nyplLibraryAlert(nyplUtility) {
     function alertExpired(startDate, endDate) {
       var sDate = new Date(startDate),

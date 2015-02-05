@@ -16,6 +16,7 @@
  * @requires nyplSSO
  * @requires nyplNavigation
  * @requires nyplBreadcrumbs
+ * @requires nyplAlerts
  * @requires angulartics
  * @requires angulartics.google.analytics
  * @requires newrelic-timing
@@ -62,6 +63,7 @@ nypl_locations.config([
         // In $stateChangeSuccess, /locations/ is added to each page hit.
         $analyticsProvider.virtualPageviews(false);
 
+        // nyplAlerts required config settings
         $nyplAlertsProvider.setOptions({
             api_root: 'http://dev.locations.api.nypl.org/api',
             api_version: 'v0.7'
