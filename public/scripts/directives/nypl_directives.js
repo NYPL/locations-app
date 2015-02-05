@@ -72,7 +72,7 @@
    * @description
    * ...
    */
-  function todayshours(nyplAlertsService) {
+  function todayshours(nyplAlertsService, nyplUtility) {
     return {
       restrict: 'E',
       templateUrl: 'scripts/directives/templates/todaysHours.html',
@@ -83,17 +83,13 @@
         alerts: '=alerts'
       },
       link: function(scope, elem, attrs) {
-        //console.log(scope);
-        //console.log(nyplAlertsService);
         var locationAlerts, globalAlerts;
 
         if (scope.alerts) {
-          locationAlerts = nyplAlertsService.setAlerts(scope.alerts, 'location', 'active');
-          globalAlerts = nyplAlertsService.setAlerts(scope.alerts, 'all', 'active');
+          locationAlerts = nyplAlertsService.setAlerts(scope.alerts, {active: true});
         }
 
-        console.log(locationAlerts, globalAlerts);
-
+        console.log(locationAlerts);
       }
     };
   }

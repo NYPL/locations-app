@@ -101,19 +101,23 @@
     };
 
     // Assigns proper alerts based on scope (optional)
-    service.setAlerts = function(obj , scope, filter) {
+    service.setAlerts = function(obj , opts) {
       if (!obj) return;
 
-      var uniqueAlerts = this.removeDuplicates(obj);
+      var uniqueAlerts = this.removeDuplicates(obj),
+          defaults = {
+            scope: (opts) ? ((opts.scope) ? opts.scope : null) : null,
+            active: (opts) ? ((opts.active) ? opts.active : false) : false
+          };
 
-      if (scope) {
-        uniqueAlerts = _.where(uniqueAlerts, {scope: scope});
+      if (defaults.scope) {
+        uniqueAlerts = _.where(uniqueAlerts, {scope: defaults.scope});
       }
 
-      if (filter === 'active') {
+      if (defaults.active === true) {
         uniqueAlerts = this.activeAlerts(uniqueAlerts);
       }
-      
+
       return uniqueAlerts;
     };
 
@@ -155,7 +159,7 @@
       },
       link: function (scope, element, attrs) {
         if (scope.alerts) {
-          scope.locationAlerts = nyplAlertsService.setAlerts(scope.alerts, 'location');
+          scope.locationAlerts = nyplAlertsService.setAlerts(scope.alerts, {scope:'location', active:true});
         }
       }
     };
@@ -163,6 +167,7 @@
 
   // Initialize Alerts data through Provider
   function initAlerts($nyplAlerts, $rootScope, nyplAlertsService) {
+
     $nyplAlerts.getGlobalAlerts().then(function (data) {
       var alerts = $rootScope.alerts || data;
       $rootScope.alerts = nyplAlertsService.setAlerts(alerts);
