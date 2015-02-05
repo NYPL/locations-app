@@ -47,7 +47,7 @@
           return defer.promise;
         };
 
-        provider['alerts'] = '';
+        provider['alerts'] = null;
         provider['api_url'] = options.api_root;
         provider['api_version'] = options.api_version;
 
@@ -101,15 +101,19 @@
     };
 
     // Assigns proper alerts based on scope (optional)
-    service.setAlerts = function(obj , scope) {
+    service.setAlerts = function(obj , scope, filter) {
+      if (!obj) return;
+
       var uniqueAlerts = this.removeDuplicates(obj);
 
       if (scope) {
         uniqueAlerts = _.where(uniqueAlerts, {scope: scope});
       }
 
-      // API will handle displaying active alerts?
-      //var activeAlerts = this.activeAlerts(uniqueAlerts);
+      if (filter === 'active') {
+        uniqueAlerts = this.activeAlerts(uniqueAlerts);
+      }
+      
       return uniqueAlerts;
     };
 
@@ -125,17 +129,12 @@
    * @scope
    * @description 
    */
-  function nyplGlobalAlerts($rootScope, $nyplAlerts, nyplAlertsService) {
+  function nyplGlobalAlerts($rootScope) {
     return {
       restrict: 'E',
       templateUrl: 'scripts/components/nypl_alerts/nypl_global_alerts.html',
       replace: true,
-      scope: false,
-      link: function (scope, element, attrs) {
-        // 
-        // console.log($rootScope);
-        // scope.globalAlerts = nyplAlertsService.setAlerts($nyplAlerts.alerts);
-      }
+      scope: false
     };
   }
 
@@ -163,9 +162,11 @@
   }
 
   // Initialize Alerts data through Provider
-  function initAlerts($nyplAlerts, $rootScope) {
+  function initAlerts($nyplAlerts, $rootScope, nyplAlertsService) {
     $nyplAlerts.getGlobalAlerts().then(function (data) {
-        $rootScope.alerts = $rootScope.alerts || data;
+      var alerts = $rootScope.alerts || data;
+      $rootScope.alerts = nyplAlertsService.setAlerts(alerts);
+      $nyplAlerts.alerts = $rootScope.alerts || data;
     });
   }
 
