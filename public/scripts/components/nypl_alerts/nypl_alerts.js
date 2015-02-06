@@ -6,11 +6,16 @@
 
   /** @namespace $nyplAlertsProvider */
   function $nyplAlertsProvider() {
-    var options = {
-          api_root: null,
-          api_version: null
-        };
+    var errors = {
+        url_undefined: '$nyplAlerts: API URL could not be defined',
+        api: '$nyplAlerts: Alerts API could not retrieve data'
+      },
+      options = {
+        api_root: null,
+        api_version: null
+      };
 
+    // Sets Provider options for use
     this.setOptions = function (opts) {
       angular.extend(options, opts);
     };
@@ -20,79 +25,83 @@
         var provider = {};
 
         // Generates a correct Alerts API URL
-        provider.generateApiUrl = function(host, version) {
+        provider.generateApiUrl = function (host, version) {
+          if (!host && !version) { return undefined; }
+
           var jsonCb = '?callback=JSON_CALLBACK',
-              url = host + '/' + version + '/alerts' + jsonCb;
-          
-          return (host.indexOf("http://") == 0 || host.indexOf("https://") == 0) ?
-            url : 'http://' + url;
+            url = host + '/' + version + '/alerts' + jsonCb;
+
+          return (host.indexOf("http://") === 0 ||
+            host.indexOf("https://") === 0) ?
+              url : 'http://' + url;
         };
 
         // Fetches API response for Alerts
-        provider.getGlobalAlerts = function() {
+        provider.getGlobalAlerts = function () {
           var defer = $q.defer(),
-              url = this.generateApiUrl(options.api_root, options.api_version);
+            url = this.generateApiUrl(options.api_root, options.api_version);
 
-          $http.jsonp(
-            url,
-            {cache: true}
-          )
-          .success(function (data) {
-            defer.resolve(data.alerts);
-          })
-          .error(function (data, status) {
-            defer.reject(status,'Alerts API could not retrieve data, verify API');
-          });
-
+          if (!url) {
+            defer.reject(errors.url_undefined);
+          } else {
+            $http.jsonp(
+              url,
+              {cache: true}
+            )
+              .success(function (data) {
+                defer.resolve(data.alerts);
+              })
+              .error(function (data, status) {
+                defer.reject(status, errors.api);
+              });
+          }
           return defer.promise;
         };
 
-        provider['alerts'] = null;
-        provider['api_url'] = options.api_root;
-        provider['api_version'] = options.api_version;
+        provider.alerts = null;
+        provider.api_url = options.api_root || null;
+        provider.api_version = options.api_version || null;
 
-      return provider;
-    }];
+        return provider;
+      }
+    ];
   }
 
   function nyplAlertsService() {
     var service = {};
 
     // Filters Alerts that are within the display range
-    service.activeAlerts = function(obj) {
+    service.activeAlerts = function (obj) {
       var today = new Date(),
-          sDate,
-          eDate;
-      
-      return _.filter(obj, function(elem) {
-                if (elem.display) {
-                  if (elem.display.start && elem.display.end) {
-                    sDate = new Date(elem.display.start);
-                    eDate = new Date(elem.display.end);
-                    if (sDate.getTime() <= today.getTime() &&
-                      eDate.getTime() >= today.getTime()) {
-                      return elem;
-                    }
-                  }
-                }
-              });
+        sDate,
+        eDate;
+
+      return _.filter(obj, function (elem) {
+        if (elem.display) {
+          if (elem.display.start && elem.display.end) {
+            sDate = new Date(elem.display.start);
+            eDate = new Date(elem.display.end);
+            if (sDate.getTime() <= today.getTime() &&
+                eDate.getTime() >= today.getTime()) {
+              return elem;
+            }
+          }
+        }
+      });
     };
 
     // Removes Alerts with duplicate id's and msg
-    service.removeDuplicates = function(obj) {
-      return _.chain(obj)
-              .indexBy('id')
-              .flatten()
-              .uniq(function(elem) {
-                if (elem.msg) {
-                  return elem.msg.toLowerCase();
-                }
-              })
-              .value();
+    service.removeDuplicates = function (obj) {
+      return _.chain(obj).indexBy('id').flatten()
+        .uniq(function (elem) {
+          if (elem.msg) {
+            return elem.msg.toLowerCase();
+          }
+        }).value();
     };
 
     // Boolean check if an alert has expired
-    service.isAlertExpired = function(startDate, endDate) {
+    service.isAlertExpired = function (startDate, endDate) {
       var sDate = new Date(startDate),
         eDate   = new Date(endDate),
         today   = new Date();
@@ -101,14 +110,14 @@
     };
 
     // Assigns proper alerts based on scope (optional)
-    service.setAlerts = function(obj , opts) {
-      if (!obj) return;
+    service.filterAlerts = function (obj, opts) {
+      if (!obj) { return; }
 
       var uniqueAlerts = this.removeDuplicates(obj),
-          defaults = {
-            scope: (opts) ? ((opts.scope) ? opts.scope : null) : null,
-            active: (opts) ? ((opts.active) ? opts.active : false) : false
-          };
+        defaults = {
+          scope: (opts) ? (opts.scope || null) : null,
+          active: (opts) ? (opts.active || false) : false
+        };
 
       if (defaults.scope) {
         uniqueAlerts = _.where(uniqueAlerts, {scope: defaults.scope});
@@ -123,8 +132,6 @@
 
     return service;
   }
-
-
 
   /**
    * @ngdoc directive
@@ -159,7 +166,7 @@
       },
       link: function (scope, element, attrs) {
         if (scope.alerts) {
-          scope.locationAlerts = nyplAlertsService.setAlerts(scope.alerts, {scope:'location', active:true});
+          scope.locationAlerts = nyplAlertsService.filterAlerts(scope.alerts, {scope:'location', active:true});
         }
       }
     };
@@ -167,11 +174,12 @@
 
   // Initialize Alerts data through Provider
   function initAlerts($nyplAlerts, $rootScope, nyplAlertsService) {
-
     $nyplAlerts.getGlobalAlerts().then(function (data) {
       var alerts = $rootScope.alerts || data;
-      $rootScope.alerts = nyplAlertsService.setAlerts(alerts);
+      $rootScope.alerts = nyplAlertsService.filterAlerts(alerts);
       $nyplAlerts.alerts = $rootScope.alerts || data;
+    }).catch(function (error) {
+      throw error;
     });
   }
 
