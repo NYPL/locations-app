@@ -143,7 +143,11 @@
   function nyplGlobalAlerts($rootScope) {
     return {
       restrict: 'E',
-      templateUrl: 'scripts/components/nypl_alerts/templates/nypl_global_alerts.html',
+      template: "<div class='nypl-global-alerts' data-ng-if='$root.alerts'>" +
+                  "<div data-ng-repeat='alert in $root.alerts'>" +
+                    "<p data-ng-bind-html='alert.msg'></p>" +
+                  "</div>" +
+                "</div>",
       replace: true,
       scope: false
     };
@@ -159,14 +163,18 @@
   function nyplLocationAlerts(nyplAlertsService) {
     return {
       restrict: 'E',
-      templateUrl: 'scripts/components/nypl_alerts/templates/nypl_location_alerts.html',
+      template: "<div class='nypl-location-alerts' data-ng-if='locationAlerts'>" +
+                  "<div data-ng-repeat='alert in locationAlerts'>" +
+                    "<p data-ng-bind-html='alert.msg'></p>" +
+                  "</div>" +
+                "</div>",
       replace: true,
       scope: {
           alerts: '=alerts'
       },
       link: function (scope, element, attrs) {
         if (scope.alerts) {
-          scope.locationAlerts = nyplAlertsService.filterAlerts(scope.alerts, {scope:'location', active:true});
+          scope.locationAlerts = nyplAlertsService.filterAlerts(scope.alerts, {scope:'location'});
         }
       }
     };
