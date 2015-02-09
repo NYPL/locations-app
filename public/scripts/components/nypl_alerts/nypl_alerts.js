@@ -143,7 +143,7 @@
   function nyplGlobalAlerts($rootScope) {
     return {
       restrict: 'E',
-      templateUrl: 'scripts/components/nypl_alerts/nypl_global_alerts.html',
+      templateUrl: 'scripts/components/nypl_alerts/templates/nypl_global_alerts.html',
       replace: true,
       scope: false
     };
@@ -159,7 +159,7 @@
   function nyplLocationAlerts(nyplAlertsService) {
     return {
       restrict: 'E',
-      templateUrl: 'scripts/components/nypl_alerts/nypl_location_alerts.html',
+      templateUrl: 'scripts/components/nypl_alerts/templates/nypl_location_alerts.html',
       replace: true,
       scope: {
           alerts: '=alerts'

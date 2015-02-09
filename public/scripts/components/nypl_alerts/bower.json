@@ -1,0 +1,19 @@
+{
+  "name": "nypl_alerts",
+  "description": "NYPL Alerts AngularJS Module",
+  "version": "0.0.1",
+  "authors": [
+    "Rafael Hernandez <rafaelhernandez@nypl.com>",
+    "Edwin Guzman <edwinguzman@nypl.com>"
+  ],
+  "main": [
+    "nypl_alerts.js",
+    "templates/nypl_global_alerts.html",
+    "templates/nypl_location_alerts.html"
+  ],
+  "dependencies": {
+    "angular": ">= 1.2.14",
+    "underscore": "~1.6.0"
+  },
+  "private": true
+}
