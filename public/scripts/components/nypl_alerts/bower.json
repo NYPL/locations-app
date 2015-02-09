@@ -9,7 +9,8 @@
   "main": [
     "nypl_alerts.js",
     "templates/nypl_global_alerts.html",
-    "templates/nypl_location_alerts.html"
+    "templates/nypl_location_alerts.html",
+    "styles/*"
   ],
   "dependencies": {
     "angular": ">= 1.2.14",
