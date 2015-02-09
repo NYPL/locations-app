@@ -9,6 +9,7 @@
         $scope,
         $timeout,
         $state,
+        $nyplAlerts,
         config,
         nyplCoordinatesService,
         nyplGeocoderService,
@@ -287,10 +288,14 @@
                                     markerCoordinates,
                                     locationAddress);
                         }
+
+                        console.log(location.hours.exception);
                     });
 
                     resetPage();
                     nyplSearch.setSearchValue('locations', $scope.locations);
+
+                    configureGlobalAlert();
 
                     return locations;
                 })
@@ -299,6 +304,22 @@
                     throw error;
                 });
         };
+
+        // Applies if the global alert has a closing and is active
+        // then display 'Closed....' instead of the hours in the column.
+        function configureGlobalAlert() {
+            console.log($nyplAlerts.alerts);
+            $scope.closingMessage = '';
+
+            if ($nyplAlerts.alerts.length !== 0) {
+                _.each($nyplAlerts.alerts, function (alert) {
+                    if (alert.applies) {
+                        // Note: will be a different message in the object.
+                        $scope.closingMessage += "Closed " + alert.closed_for + "<br />";
+                    }
+                });
+            }
+        }
 
         $scope.scrollPage = function () {
             var content = angular.element('.container__all-locations'),
