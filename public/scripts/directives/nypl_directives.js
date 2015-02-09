@@ -83,13 +83,12 @@
         alerts: '=alerts'
       },
       link: function(scope, elem, attrs) {
-        var locationAlerts, globalAlerts;
+        var locationAlerts;
 
         if (scope.alerts) {
-          locationAlerts = nyplAlertsService.setAlerts(scope.alerts, {active: true});
+          locationAlerts = nyplAlertsService.filterAlerts(scope.alerts, {active: true});
         }
-
-        console.log(locationAlerts);
+        //console.log(locationAlerts);
       }
     };
   }
