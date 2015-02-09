@@ -11,6 +11,7 @@
         $state,
         $nyplAlerts,
         config,
+        nyplAlertsService,
         nyplCoordinatesService,
         nyplGeocoderService,
         nyplLocationsService,
@@ -289,7 +290,20 @@
                                     locationAddress);
                         }
 
-                        console.log(location.hours.exception);
+                        var location_alert = location._embedded.alerts;
+                        if (location_alert.length) {
+                            _.each(location_alert, function (alert) {
+                                if (alert.scope === 'location' && alert.applies) {
+                                    // Make sure it's not expired
+                                    console.log(
+                                        nyplAlertsService.isAlertExpired(alert.applies.start,
+                                            alert.applies.end)
+                                    );
+                                    // if not expired ...
+                                    location.closed_for = alert.closed_for;
+                                }
+                            });
+                        }
                     });
 
                     resetPage();
