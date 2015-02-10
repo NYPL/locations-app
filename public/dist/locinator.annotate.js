@@ -16,6 +16,7 @@
  * @requires nyplSSO
  * @requires nyplNavigation
  * @requires nyplBreadcrumbs
+ * @requires nyplAlerts
  * @requires angulartics
  * @requires angulartics.google.analytics
  * @requires newrelic-timing
@@ -35,7 +36,8 @@ var nypl_locations = angular.module('nypl_locations', [
     'nyplBreadcrumbs',
     'angulartics',
     'angulartics.google.analytics',
-    'newrelic-timing'
+    'newrelic-timing',
+    'nyplAlerts'
 ]);
 
 nypl_locations.constant('_', window._);
@@ -46,18 +48,26 @@ nypl_locations.config([
     '$stateProvider',
     '$urlRouterProvider',
     '$crumbProvider',
+    '$nyplAlertsProvider',
     function (
         $analyticsProvider,
         $locationProvider,
         $stateProvider,
         $urlRouterProvider,
-        $crumbProvider
+        $crumbProvider,
+        $nyplAlertsProvider
     ) {
         'use strict';
 
         // Turn off automatic virtual pageviews for GA.
         // In $stateChangeSuccess, /locations/ is added to each page hit.
         $analyticsProvider.virtualPageviews(false);
+
+        // nyplAlerts required config settings
+        $nyplAlertsProvider.setOptions({
+            api_root: 'http://dev.locations.api.nypl.org/api',
+            api_version: 'v0.7'
+        });
 
         // uses the HTML5 History API, remove hash (need to test)
         $locationProvider.html5Mode(true);
@@ -449,6 +459,217 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     $rootScope.holiday = nyplUtility.holidayClosings();
 }]);
 
+/*jslint indent: 2, maxlen: 80, nomen: true */
+/*globals $, window, console, jQuery, angular */
+
+(function (window, angular, undefined) {
+  'use strict';
+
+  /** @namespace $nyplAlertsProvider */
+  function $nyplAlertsProvider() {
+    var errors = {
+        url_undefined: '$nyplAlerts: API URL could not be defined',
+        api: '$nyplAlerts: Alerts API could not retrieve data'
+      },
+      options = {
+        api_root: null,
+        api_version: null
+      };
+
+    // Sets Provider options for use
+    this.setOptions = function (opts) {
+      angular.extend(options, opts);
+    };
+
+    this.$get = ['$http', '$q',
+      function ($http, $q) {
+        var provider = {};
+
+        // Generates a correct Alerts API URL
+        provider.generateApiUrl = function (host, version) {
+          if (!host && !version) { return undefined; }
+
+          var jsonCb = '?callback=JSON_CALLBACK',
+            url = host + '/' + version + '/alerts' + jsonCb;
+
+          return (host.indexOf("http://") === 0 ||
+            host.indexOf("https://") === 0) ?
+              url : 'http://' + url;
+        };
+
+        // Fetches API response for Alerts
+        provider.getGlobalAlerts = function () {
+          var defer = $q.defer(),
+            url = this.generateApiUrl(options.api_root, options.api_version);
+
+          if (!url) {
+            defer.reject(errors.url_undefined);
+          } else {
+            $http.jsonp(
+              url,
+              {cache: true}
+            )
+              .success(function (data) {
+                defer.resolve(data.alerts);
+              })
+              .error(function (data, status) {
+                defer.reject(status, errors.api);
+              });
+          }
+          return defer.promise;
+        };
+
+        provider.alerts = null;
+        provider.api_url = options.api_root || null;
+        provider.api_version = options.api_version || null;
+
+        return provider;
+      }
+    ];
+  }
+
+  function nyplAlertsService() {
+    var service = {};
+
+    // Filters Alerts that are within the display range
+    service.activeAlerts = function (obj) {
+      var today = new Date(),
+        sDate,
+        eDate;
+
+      return _.filter(obj, function (elem) {
+        if (elem.display) {
+          if (elem.display.start && elem.display.end) {
+            sDate = new Date(elem.display.start);
+            eDate = new Date(elem.display.end);
+            if (sDate.getTime() <= today.getTime() &&
+                eDate.getTime() >= today.getTime()) {
+              return elem;
+            }
+          }
+        }
+      });
+    };
+
+    // Removes Alerts with duplicate id's and msg
+    service.removeDuplicates = function (obj) {
+      return _.chain(obj).indexBy('id').flatten()
+        .uniq(function (elem) {
+          if (elem.msg) {
+            return elem.msg.toLowerCase();
+          }
+        }).value();
+    };
+
+    // Boolean check if an alert has expired
+    service.isAlertExpired = function (startDate, endDate) {
+      var sDate = new Date(startDate),
+        eDate   = new Date(endDate),
+        today   = new Date();
+      return (sDate.getTime() <= today.getTime() &&
+        eDate.getTime() >= today.getTime()) ? false : true;
+    };
+
+    // Assigns proper alerts based on scope (optional)
+    service.filterAlerts = function (obj, opts) {
+      if (!obj) { return; }
+
+      var uniqueAlerts = this.removeDuplicates(obj),
+        defaults = {
+          scope: (opts) ? (opts.scope || null) : null,
+          active: (opts) ? (opts.active || false) : false
+        };
+
+      if (defaults.scope) {
+        uniqueAlerts = _.where(uniqueAlerts, {scope: defaults.scope});
+      }
+
+      if (defaults.active === true) {
+        uniqueAlerts = this.activeAlerts(uniqueAlerts);
+      }
+
+      return uniqueAlerts;
+    };
+
+    return service;
+  }
+
+  /**
+   * @ngdoc directive
+   * @name nyplGlobalAlerts.directive:nyplGlobalAlerts
+   * @restrict E
+   * @scope
+   * @description 
+   */
+  function nyplGlobalAlerts($rootScope) {
+    return {
+      restrict: 'E',
+      template: "<div class='nypl-global-alerts' data-ng-if='$root.alerts'>" +
+                  "<div data-ng-repeat='alert in $root.alerts'>" +
+                    "<p data-ng-bind-html='alert.msg'></p>" +
+                  "</div>" +
+                "</div>",
+      replace: true,
+      scope: false
+    };
+  }
+  nyplGlobalAlerts.$inject = ["$rootScope"];
+
+  /**
+   * @ngdoc directive
+   * @name nyplLocationAlerts.directive:nyplLocationAlerts
+   * @restrict E
+   * @scope
+   * @description 
+   */
+  function nyplLocationAlerts(nyplAlertsService) {
+    return {
+      restrict: 'E',
+      template: "<div class='nypl-location-alerts' data-ng-if='locationAlerts'>" +
+                  "<div data-ng-repeat='alert in locationAlerts'>" +
+                    "<p data-ng-bind-html='alert.msg'></p>" +
+                  "</div>" +
+                "</div>",
+      replace: true,
+      scope: {
+          alerts: '=alerts'
+      },
+      link: function (scope, element, attrs) {
+        if (scope.alerts) {
+          scope.locationAlerts = nyplAlertsService.filterAlerts(scope.alerts, {scope:'location'});
+        }
+      }
+    };
+  }
+  nyplLocationAlerts.$inject = ["nyplAlertsService"];
+
+  // Initialize Alerts data through Provider
+  function initAlerts($nyplAlerts, $rootScope, nyplAlertsService) {
+    $nyplAlerts.getGlobalAlerts().then(function (data) {
+      var alerts = $rootScope.alerts || data;
+      $rootScope.alerts = nyplAlertsService.filterAlerts(alerts);
+      $nyplAlerts.alerts = $rootScope.alerts || data;
+    }).catch(function (error) {
+      throw error;
+    });
+  }
+  initAlerts.$inject = ["$nyplAlerts", "$rootScope", "nyplAlertsService"];
+
+
+  /**
+   * @ngdoc overview
+   * @module nyplAlerts
+   * @name nyplGlobalAlerts
+   * @description
+   */
+  angular
+    .module('nyplAlerts', [])
+    .provider('$nyplAlerts', $nyplAlertsProvider)
+    .service('nyplAlertsService', nyplAlertsService)
+    .run(initAlerts)
+    .directive('nyplLocationAlerts', nyplLocationAlerts)
+    .directive('nyplGlobalAlerts', nyplGlobalAlerts)
+})(window, window.angular);
 /*jslint indent: 2, maxlen: 80, nomen: true */
 /*globals $, window, console, jQuery, angular */
 
@@ -2876,17 +3097,27 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
    * @description
    * ...
    */
-  function todayshours() {
+  function todayshours(nyplAlertsService, nyplUtility) {
     return {
       restrict: 'E',
       templateUrl: 'scripts/directives/templates/todaysHours.html',
       replace: true,
       scope: {
-        hours: '@',
-        holiday:  '='
+        hours: '=hours',
+        holiday:  '=',
+        alerts: '=alerts'
+      },
+      link: function(scope, elem, attrs) {
+        var locationAlerts;
+
+        if (scope.alerts) {
+          locationAlerts = nyplAlertsService.filterAlerts(scope.alerts, {active: true});
+        }
+        //console.log(locationAlerts);
       }
     };
   }
+  todayshours.$inject = ["nyplAlertsService", "nyplUtility"];
 
   /**
    * @ngdoc directive
@@ -3014,7 +3245,8 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
    * @description
    * ...
    */
-  function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
+  // Transfered to nyplAlerts Module
+  /*function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
     return {
       restrict: 'E',
       templateUrl: 'scripts/directives/templates/alerts.html',
@@ -3031,8 +3263,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         }, 200);
       }
     };
-  }
-  nyplSiteAlerts.$inject = ["$timeout", "nyplLocationsService", "nyplUtility"];
+  }*/
 
   /**
    * @ngdoc directive
@@ -3043,7 +3274,8 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
    * @description
    * ...
    */
-  function nyplLibraryAlert(nyplUtility) {
+  // Transfered to nyplAlerts Module
+  /*function nyplLibraryAlert(nyplUtility) {
     function alertExpired(startDate, endDate) {
       var sDate = new Date(startDate),
         eDate   = new Date(endDate),
@@ -3070,8 +3302,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         }
       }
     };
-  }
-  nyplLibraryAlert.$inject = ["nyplUtility"];
+  }*/
 
   /**
    * @ngdoc directive
@@ -3511,8 +3742,8 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     .directive('librarianchatbutton', librarianchatbutton)
     .directive('scrolltop', scrolltop)
     .directive('eventRegistration', eventRegistration)
-    .directive('nyplSiteAlerts', nyplSiteAlerts)
-    .directive('nyplLibraryAlert', nyplLibraryAlert)
+    //.directive('nyplSiteAlerts', nyplSiteAlerts)
+    //.directive('nyplLibraryAlert', nyplLibraryAlert)
     .directive('nyplFundraising', nyplFundraising)
     .directive('nyplSidebar', nyplSidebar)
     .directive('nyplAutofill', nyplAutofill)
