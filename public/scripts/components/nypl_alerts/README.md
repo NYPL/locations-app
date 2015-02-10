@@ -57,7 +57,30 @@ By utilizing the built-in Provider and Service functions, you can easily retriev
         dest: 'public/css/locations-concat.scss',
       }
     ```
+
     * Then using **grunt-contrib-sass**, compile all concatenated files into a proper minified sass file
+    ```javascript
+    sass: {
+      basic: {
+        options: {
+          style: 'compressed'
+        },
+        files: {
+          'public/css/locations.min.css': 'public/css/locations.scss'
+        }
+      },
+      /* Additional SASS task to compile concatenated sass files into a minified version */
+      basic_with_components: {
+        options: {
+          style: 'compressed'
+        },
+        files: {
+          'public/css/locations.min.css': 'public/css/locations-concat.scss'
+        }
+      }
+    }
+
+    ```
 
     ### SASS
       ```
