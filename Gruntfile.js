@@ -90,6 +90,31 @@ module.exports = function (grunt) {
         bestMatch: true,
       },
       all: ['public/scripts/**/*.js']
+    },
+    concat: {
+      options: {
+      stripBanners: true,
+        banner: "/*!\n <%= locinator %>*/\n",
+      },
+      basic: {
+        src: ['public/css/locations.scss'],
+        dest: 'public/css/locations.css',     
+      },
+      basic_and_components: {
+        src: ['public/css/locations.scss',
+              'public/scripts/components/**/*.scss'],
+        dest: 'public/css/locations-concat.scss',
+      },
+    },
+    sass: {
+      dist: {
+        options: {
+          style: 'compressed'
+        },
+        files: {
+          'public/css/locations.min.css': 'public/css/locations-concat.scss'
+        }
+      }
     }
   });
 
@@ -98,9 +123,12 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-ng-annotate');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-ngdocs');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-sass');
 
   grunt.registerTask('buildJS', [
-    'ngAnnotate', 'uglify'
+    'ngAnnotate', 'uglify',
+    'concat:basic_and_components','sass'
   ]);
 
   grunt.registerTask('docs', ['jsdoc']);

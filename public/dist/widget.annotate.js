@@ -465,6 +465,7 @@
  * @requires nyplSSO
  * @requires nyplNavigation
  * @requires nyplBreadcrumbs
+ * @requires nyplAlerts
  * @requires angulartics
  * @requires angulartics.google.analytics
  * @requires newrelic-timing
@@ -484,7 +485,8 @@ var nypl_locations = angular.module('nypl_locations', [
     'nyplBreadcrumbs',
     'angulartics',
     'angulartics.google.analytics',
-    'newrelic-timing'
+    'newrelic-timing',
+    'nyplAlerts'
 ]);
 
 nypl_locations.constant('_', window._);
@@ -495,18 +497,26 @@ nypl_locations.config([
     '$stateProvider',
     '$urlRouterProvider',
     '$crumbProvider',
+    '$nyplAlertsProvider',
     function (
         $analyticsProvider,
         $locationProvider,
         $stateProvider,
         $urlRouterProvider,
-        $crumbProvider
+        $crumbProvider,
+        $nyplAlertsProvider
     ) {
         'use strict';
 
         // Turn off automatic virtual pageviews for GA.
         // In $stateChangeSuccess, /locations/ is added to each page hit.
         $analyticsProvider.virtualPageviews(false);
+
+        // nyplAlerts required config settings
+        $nyplAlertsProvider.setOptions({
+            api_root: 'http://dev.locations.api.nypl.org/api',
+            api_version: 'v0.7'
+        });
 
         // uses the HTML5 History API, remove hash (need to test)
         $locationProvider.html5Mode(true);
@@ -1253,17 +1263,27 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
    * @description
    * ...
    */
-  function todayshours() {
+  function todayshours(nyplAlertsService, nyplUtility) {
     return {
       restrict: 'E',
       templateUrl: 'scripts/directives/templates/todaysHours.html',
       replace: true,
       scope: {
-        hours: '@',
-        holiday:  '='
+        hours: '=hours',
+        holiday:  '=',
+        alerts: '=alerts'
+      },
+      link: function(scope, elem, attrs) {
+        var locationAlerts;
+
+        if (scope.alerts) {
+          locationAlerts = nyplAlertsService.filterAlerts(scope.alerts, {active: true});
+        }
+        //console.log(locationAlerts);
       }
     };
   }
+  todayshours.$inject = ["nyplAlertsService", "nyplUtility"];
 
   /**
    * @ngdoc directive
@@ -1391,7 +1411,8 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
    * @description
    * ...
    */
-  function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
+  // Transfered to nyplAlerts Module
+  /*function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
     return {
       restrict: 'E',
       templateUrl: 'scripts/directives/templates/alerts.html',
@@ -1408,8 +1429,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         }, 200);
       }
     };
-  }
-  nyplSiteAlerts.$inject = ["$timeout", "nyplLocationsService", "nyplUtility"];
+  }*/
 
   /**
    * @ngdoc directive
@@ -1420,7 +1440,8 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
    * @description
    * ...
    */
-  function nyplLibraryAlert(nyplUtility) {
+  // Transfered to nyplAlerts Module
+  /*function nyplLibraryAlert(nyplUtility) {
     function alertExpired(startDate, endDate) {
       var sDate = new Date(startDate),
         eDate   = new Date(endDate),
@@ -1447,8 +1468,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         }
       }
     };
-  }
-  nyplLibraryAlert.$inject = ["nyplUtility"];
+  }*/
 
   /**
    * @ngdoc directive
@@ -1888,8 +1908,8 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     .directive('librarianchatbutton', librarianchatbutton)
     .directive('scrolltop', scrolltop)
     .directive('eventRegistration', eventRegistration)
-    .directive('nyplSiteAlerts', nyplSiteAlerts)
-    .directive('nyplLibraryAlert', nyplLibraryAlert)
+    //.directive('nyplSiteAlerts', nyplSiteAlerts)
+    //.directive('nyplLibraryAlert', nyplLibraryAlert)
     .directive('nyplFundraising', nyplFundraising)
     .directive('nyplSidebar', nyplSidebar)
     .directive('nyplAutofill', nyplAutofill)

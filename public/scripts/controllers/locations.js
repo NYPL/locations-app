@@ -5,6 +5,7 @@
     'use strict';
 
     function LocationsCtrl(
+        $filter,
         $rootScope,
         $scope,
         $timeout,
@@ -244,6 +245,8 @@
                     locations = data.locations;
                     $scope.locations = locations;
 
+                    configureGlobalAlert();
+
                     _.each($scope.locations, function (location) {
                         var locationAddress =
                                 nyplUtility.getAddressString(location, true),
@@ -257,7 +260,6 @@
                             };
                         };
 
-                        location.hoursToday = nyplUtility.hoursToday;
                         location.locationDest =
                             nyplUtility.getAddressString(location);
 
@@ -267,10 +269,6 @@
                                 amenitiesCount.global,
                                 amenitiesCount.local
                             );
-
-                        // Individual location exception data
-                        location.branchException =
-                            nyplUtility.branchException(location.hours);
 
                         location.research_order =
                             nyplUtility.researchLibraryOrder(
@@ -290,26 +288,24 @@
                                     locationAddress);
                         }
 
-                        var location_alert = location._embedded.alerts;
-                        if (location_alert.length) {
-                            _.each(location_alert, function (alert) {
-                                if (alert.scope === 'location' && alert.applies) {
-                                    // Make sure it's not expired
-                                    console.log(
-                                        nyplAlertsService.isAlertExpired(alert.applies.start,
-                                            alert.applies.end)
-                                    );
-                                    // if not expired ...
-                                    location.closed_for = alert.closed_for;
-                                }
-                            });
-                        }
+                        // location.hoursToday = nyplUtility.hoursToday;
+                        var location_alerts = location._embedded.alerts;
+
+                        location.displayClosingMessage =
+                            displayClosingMessage(location.open, location_alerts);
+
+                        location.hoursOrClosingMessage = 
+                            getHoursOrClosedMessage(
+                                location.open,
+                                location.hours,
+                                getlocationHour,
+                                branchClosedMessage,
+                                getLocationClosedMessages(location_alerts)
+                            );
                     });
 
                     resetPage();
                     nyplSearch.setSearchValue('locations', $scope.locations);
-
-                    configureGlobalAlert();
 
                     return locations;
                 })
@@ -319,17 +315,63 @@
                 });
         };
 
+        function getLocationClosedMessages(alerts) {
+            var alert_messages = '';
+            if (alerts.length) {
+                _.each(alerts, function (alert) {
+                    if (alert.scope === 'location' && alert.applies) {
+                        alert_messages += alert.closed_for;
+                    }
+                });
+            }
+
+            return alert_messages;
+        }
+
+        function displayClosingMessage(branchOpen, alerts) {
+            var alert_messages = getLocationClosedMessages(alerts);
+
+            if (!branchOpen || alert_messages.length) {
+                return true;
+            }
+
+            return false;
+        }
+
+        function getHoursOrClosedMessage(branchOpen, hours, hoursFn, closedFn, alert) {
+            // Open or closed
+            if (branchOpen) {
+                // Now is there a closing alert?
+                if (alert) {
+                    return alert;
+                }
+
+                return $filter('timeFormat')(hoursFn(hours));
+            }
+            return closedFn();
+        }
+
+        function getlocationHour(hours) {
+            return nyplUtility.hoursToday(hours);
+        }
+
+        // eventually should be a utility function
+        // and maybe read from config
+        function branchClosedMessage() {
+            return "<b>Branch is temporarily closed.</b>"
+        }
+
         // Applies if the global alert has a closing and is active
         // then display 'Closed....' instead of the hours in the column.
         function configureGlobalAlert() {
             console.log($nyplAlerts.alerts);
-            $scope.closingMessage = '';
+            $scope.globalClosingMessage = '';
 
-            if ($nyplAlerts.alerts.length !== 0) {
+            if ($nyplAlerts.alerts.length) {
                 _.each($nyplAlerts.alerts, function (alert) {
                     if (alert.applies) {
                         // Note: will be a different message in the object.
-                        $scope.closingMessage += "Closed " + alert.closed_for + "<br />";
+                        $scope.globalClosingMessage += "Closed " + alert.closed_for + "<br />";
                     }
                 });
             }

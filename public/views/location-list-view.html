@@ -95,19 +95,7 @@
             <!-- Today's Hours -->
             <td class="hours-info">
               <div>
-                <p data-ng-if="!location.open" class="branch-closed location-alerts">
-                  <b>Branch is temporarily closed.</b>
-                </p>
-                <p data-ng-if="location.open == false" class="branch-open">
-                  <p data-ng-if="closingMessage" data-ng-bind-html="closingMessage" class="location-alerts"></p>
-                  <p data-ng-if="location.closed_for">
-                    Closed for {{location.closed_for}}
-                  </p>
-
-                  <div data-ng-if="!closingMessage && !location.closed_for">
-                    {{ location.hoursToday(location.hours) | timeFormat }}
-                  </div>
-                </p>
+                <p data-ng-bind-html="location.hoursOrClosingMessage" data-ng-class="{'location-alerts': location.displayClosingMessage}"></p>
               </div>
             </td>
           </tr> <!-- End data-ng-repeat -->
