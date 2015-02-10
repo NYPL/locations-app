@@ -42,7 +42,8 @@ By utilizing the built-in Provider and Service functions, you can easily retriev
     ```html
     <nypl-location-alerts alerts="location._embedded.alerts"></nypl-location-alerts>
     ```
-        **location._embedded.alerts** represents an object that contains a list of alerts. This is a required field within the directive in order to render all location specific alerts.
+    **location._embedded.alerts** represents an object that contains a list of alerts.
+    This is a required field within the directive in order to render all location specific alerts.
 
 5. Import NYPL Alerts styling to your application (optional):
 
