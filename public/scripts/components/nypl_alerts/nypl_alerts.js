@@ -148,6 +148,35 @@
       return uniqueAlerts;
     };
 
+    service.getHoursOrClosedMessage = function (alertMsg, branchIsOpen, hours, hoursFn, closedFn) {
+      // Open or closed
+      if (branchIsOpen) {
+          // Now is there a closing alert?
+          if (alertMsg) {
+              return alertMsg;
+          }
+
+          return hoursFn(hours);
+      }
+      return closedFn();
+    };
+
+    service.activeClosings = function (alerts) {
+      return (this.filterAlerts(alerts, {only_closings: true}).length) ?
+        true : false;
+    }
+
+    service.getActiveMsgs = function (alertsArr) {
+      var alerts = this.filterAlerts(alertsArr, {only_closings: true}),
+        message = '';
+
+        _.each(alerts, function (alert) {
+          message += alert.closed_for + "<br />";
+        });
+
+        return message;
+    };
+
     return service;
   }
 

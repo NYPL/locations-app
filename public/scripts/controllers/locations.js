@@ -250,7 +250,9 @@
                     _.each($scope.locations, function (location) {
                         var locationAddress =
                                 nyplUtility.getAddressString(location, true),
-                            markerCoordinates = {};
+                            markerCoordinates = {},
+                            alerts = location._embedded.alerts,
+                            alertMsgs = nyplAlertsService.getActiveMsgs(alerts);
 
                         if (location.geolocation &&
                                 location.geolocation.coordinates) {
@@ -288,19 +290,17 @@
                                     locationAddress);
                         }
 
-                        // location.hoursToday = nyplUtility.hoursToday;
-                        var location_alerts = location._embedded.alerts;
-
+                        // CSS class for a closing
                         location.displayClosingMessage =
-                            displayClosingMessage(location.open, location_alerts);
-
+                            displayClosingMessage(location.open, alerts);
+                        // Hours or closing message that will display
                         location.hoursOrClosingMessage = 
-                            getHoursOrClosedMessage(
+                            nyplAlertsService.getHoursOrClosedMessage(
+                                alertMsgs,
                                 location.open,
                                 location.hours,
-                                getlocationHour,
-                                branchClosedMessage,
-                                getLocationClosedMessages(location_alerts)
+                                getlocationHours,
+                                branchClosedMessage
                             );
                     });
 
@@ -315,44 +315,20 @@
                 });
         };
 
-        function getLocationClosedMessages(alerts) {
-            var alert_messages = '';
-            if (alerts.length) {
-                _.each(alerts, function (alert) {
-                    if (alert.scope === 'location' && alert.applies) {
-                        alert_messages += alert.closed_for;
-                    }
-                });
-            }
+        // Displaying the closing css class for the text
+        function displayClosingMessage(branchOpen, location_alerts) {
+            var alerts = nyplAlertsService.activeClosings(location_alerts);
 
-            return alert_messages;
-        }
-
-        function displayClosingMessage(branchOpen, alerts) {
-            var alert_messages = getLocationClosedMessages(alerts);
-
-            if (!branchOpen || alert_messages.length) {
+            // Not open or there are closing alerts
+            if (!branchOpen || alerts) {
                 return true;
             }
 
             return false;
         }
 
-        function getHoursOrClosedMessage(branchOpen, hours, hoursFn, closedFn, alert) {
-            // Open or closed
-            if (branchOpen) {
-                // Now is there a closing alert?
-                if (alert) {
-                    return alert;
-                }
-
-                return $filter('timeFormat')(hoursFn(hours));
-            }
-            return closedFn();
-        }
-
-        function getlocationHour(hours) {
-            return nyplUtility.hoursToday(hours);
+        function getlocationHours(hours) {
+            return $filter('timeFormat')(nyplUtility.hoursToday(hours));
         }
 
         // eventually should be a utility function
