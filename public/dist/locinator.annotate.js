@@ -2368,7 +2368,9 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         $scope,
         $timeout,
         $state,
+        $nyplAlerts,
         config,
+        nyplAlertsService,
         nyplCoordinatesService,
         nyplGeocoderService,
         nyplLocationsService,
@@ -2646,10 +2648,27 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                                     markerCoordinates,
                                     locationAddress);
                         }
+
+                        var location_alert = location._embedded.alerts;
+                        if (location_alert.length) {
+                            _.each(location_alert, function (alert) {
+                                if (alert.scope === 'location' && alert.applies) {
+                                    // Make sure it's not expired
+                                    console.log(
+                                        nyplAlertsService.isAlertExpired(alert.applies.start,
+                                            alert.applies.end)
+                                    );
+                                    // if not expired ...
+                                    location.closed_for = alert.closed_for;
+                                }
+                            });
+                        }
                     });
 
                     resetPage();
                     nyplSearch.setSearchValue('locations', $scope.locations);
+
+                    configureGlobalAlert();
 
                     return locations;
                 })
@@ -2658,6 +2677,22 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                     throw error;
                 });
         };
+
+        // Applies if the global alert has a closing and is active
+        // then display 'Closed....' instead of the hours in the column.
+        function configureGlobalAlert() {
+            console.log($nyplAlerts.alerts);
+            $scope.closingMessage = '';
+
+            if ($nyplAlerts.alerts.length !== 0) {
+                _.each($nyplAlerts.alerts, function (alert) {
+                    if (alert.applies) {
+                        // Note: will be a different message in the object.
+                        $scope.closingMessage += "Closed " + alert.closed_for + "<br />";
+                    }
+                });
+            }
+        }
 
         $scope.scrollPage = function () {
             var content = angular.element('.container__all-locations'),
@@ -2804,7 +2839,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         loadPreviousStateOrNewState();
         geolocationAvailable();
     }
-    LocationsCtrl.$inject = ["$rootScope", "$scope", "$timeout", "$state", "config", "nyplCoordinatesService", "nyplGeocoderService", "nyplLocationsService", "nyplUtility", "nyplSearch", "nyplAmenities"];
+    LocationsCtrl.$inject = ["$rootScope", "$scope", "$timeout", "$state", "$nyplAlerts", "config", "nyplAlertsService", "nyplCoordinatesService", "nyplGeocoderService", "nyplLocationsService", "nyplUtility", "nyplSearch", "nyplAmenities"];
     // End LocationsCtrl
 
     function MapCtrl($scope, $timeout, nyplGeocoderService) {

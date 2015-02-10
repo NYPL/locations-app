@@ -5,11 +5,14 @@
     'use strict';
 
     function LocationsCtrl(
+        $filter,
         $rootScope,
         $scope,
         $timeout,
         $state,
+        $nyplAlerts,
         config,
+        nyplAlertsService,
         nyplCoordinatesService,
         nyplGeocoderService,
         nyplLocationsService,
@@ -242,10 +245,14 @@
                     locations = data.locations;
                     $scope.locations = locations;
 
+                    configureGlobalAlert();
+
                     _.each($scope.locations, function (location) {
                         var locationAddress =
                                 nyplUtility.getAddressString(location, true),
-                            markerCoordinates = {};
+                            markerCoordinates = {},
+                            alerts = location._embedded.alerts,
+                            alertMsgs = nyplAlertsService.getActiveMsgs(alerts);
 
                         if (location.geolocation &&
                                 location.geolocation.coordinates) {
@@ -255,7 +262,6 @@
                             };
                         };
 
-                        location.hoursToday = nyplUtility.hoursToday;
                         location.locationDest =
                             nyplUtility.getAddressString(location);
 
@@ -265,10 +271,6 @@
                                 amenitiesCount.global,
                                 amenitiesCount.local
                             );
-
-                        // Individual location exception data
-                        location.branchException =
-                            nyplUtility.branchException(location.hours);
 
                         location.research_order =
                             nyplUtility.researchLibraryOrder(
@@ -287,6 +289,19 @@
                                     markerCoordinates,
                                     locationAddress);
                         }
+
+                        // CSS class for a closing
+                        location.displayClosingMessage =
+                            displayClosingMessage(location.open, alerts);
+                        // Hours or closing message that will display
+                        location.hoursOrClosingMessage = 
+                            nyplAlertsService.getHoursOrClosedMessage(
+                                alertMsgs,
+                                location.open,
+                                location.hours,
+                                getlocationHours,
+                                branchClosedMessage
+                            );
                     });
 
                     resetPage();
@@ -299,6 +314,44 @@
                     throw error;
                 });
         };
+
+        // Displaying the closing css class for the text
+        function displayClosingMessage(branchOpen, location_alerts) {
+            var alerts = nyplAlertsService.activeClosings(location_alerts);
+
+            // Not open or there are closing alerts
+            if (!branchOpen || alerts) {
+                return true;
+            }
+
+            return false;
+        }
+
+        function getlocationHours(hours) {
+            return $filter('timeFormat')(nyplUtility.hoursToday(hours));
+        }
+
+        // eventually should be a utility function
+        // and maybe read from config
+        function branchClosedMessage() {
+            return "<b>Branch is temporarily closed.</b>"
+        }
+
+        // Applies if the global alert has a closing and is active
+        // then display 'Closed....' instead of the hours in the column.
+        function configureGlobalAlert() {
+            console.log($nyplAlerts.alerts);
+            $scope.globalClosingMessage = '';
+
+            if ($nyplAlerts.alerts.length) {
+                _.each($nyplAlerts.alerts, function (alert) {
+                    if (alert.applies) {
+                        // Note: will be a different message in the object.
+                        $scope.globalClosingMessage += "Closed " + alert.closed_for + "<br />";
+                    }
+                });
+            }
+        }
 
         $scope.scrollPage = function () {
             var content = angular.element('.container__all-locations'),
