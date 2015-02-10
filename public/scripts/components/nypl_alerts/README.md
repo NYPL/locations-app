@@ -1,8 +1,6 @@
 NYPL Alerts AngularJS Module
 ===========
 
-## Intro:
-
 This module provides the ability to retrive NYPL global/location alerts for use in your application.
 By utilizing the built-in Provider and Service functions, you can easily retrieve relevant NYPL Alerts in your Angular JS app. Custom directives have also been included to display alerts.
 
@@ -52,7 +50,7 @@ By utilizing the built-in Provider and Service functions, you can easily retriev
     * Using **grunt-contrib-concat**
     ```javascript
     concat: {
-      /* Your basic application with added compontent styles */
+      /* Your basic application with added component styles */
       basic_and_components: {
         src: ['public/css/*.scss',
               'public/scripts/components/**/*.scss'],
