@@ -43,3 +43,23 @@ By utilizing the built-in Provider and Service functions, you can easily retriev
     <nypl-location-alerts alerts="location._embedded.alerts"></nypl-location-alerts>
     ```
         **location._embedded.alerts** represents an object that contains a list of alerts. This is a required field within the directive in order to render all location specific alerts.
+
+5. Import NYPL Alerts styling to your application (optional):
+
+    ### GRUNT
+    * Using **grunt-contrib-concat**
+    ```javascript
+    concat: {
+      /* Your basic application with added compontent styles
+      basic_and_components: {
+        src: ['public/css/*.scss',
+              'public/scripts/components/**/*.scss'],
+        dest: 'public/css/locations-concat.scss',
+      }
+    ```
+    * Then using **grunt-contrib-sass**, compile all concatenated files into a proper minified sass file
+
+    ### SASS
+      ```
+      @import "application_path/scripts/compontents/nypl_alerts/nypl_alerts.scss"
+      ```

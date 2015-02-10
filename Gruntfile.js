@@ -96,18 +96,22 @@ module.exports = function (grunt) {
       stripBanners: true,
         banner: "/*!\n <%= locinator %>*/\n",
       },
-      basic: {
-        src: ['public/css/locations.scss'],
-        dest: 'public/css/locations.css',     
-      },
-      basic_and_components: {
+      basic_with_components: {
         src: ['public/css/locations.scss',
               'public/scripts/components/**/*.scss'],
         dest: 'public/css/locations-concat.scss',
       },
     },
     sass: {
-      dist: {
+      basic: {
+        options: {
+          style: 'compressed'
+        },
+        files: {
+          'public/css/locations.min.css': 'public/css/locations.scss'
+        }
+      },
+      basic_with_components: {
         options: {
           style: 'compressed'
         },
@@ -128,7 +132,13 @@ module.exports = function (grunt) {
 
   grunt.registerTask('buildJS', [
     'ngAnnotate', 'uglify',
-    'concat:basic_and_components','sass'
+    'sass:basic'
+  ]);
+
+  // Additional tasks to handle all Compontent styles
+  grunt.registerTask('buildJS-Components', [
+    'ngAnnotate', 'uglify',
+    'concat:basic_with_components','sass:basic_with_components'
   ]);
 
   grunt.registerTask('docs', ['jsdoc']);
