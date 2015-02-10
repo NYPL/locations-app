@@ -34,8 +34,12 @@ By utilizing the built-in Provider and Service functions, you can easily retriev
 4. Once all the above has been completed you can use any of the included directives:
 
     * ### NYPL global alerts directive
-        <nypl-global-alerts></nypl-global-alerts>
+    ```html
+    <nypl-global-alerts></nypl-global-alerts>
+    ```
 
     * ### NYPL location specific alerts
-        <nypl-location-alerts alerts="location._embedded.alerts"></nypl-location-alerts> 
-        *location._embedded.alerts represents an object that contains a list of alerts*
+    ```html
+    <nypl-location-alerts alerts="location._embedded.alerts"></nypl-location-alerts>
+    ```
+        *__location._embedded.alerts__ represents an object that contains a list of alerts*
