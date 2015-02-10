@@ -37,6 +37,7 @@ By utilizing the built-in Provider and Service functions, you can easily retriev
     ```html
     <nypl-global-alerts></nypl-global-alerts>
     ```
+    This directive will display all global alerts
 
     **NYPL location specific alerts**
     ```html
@@ -45,7 +46,7 @@ By utilizing the built-in Provider and Service functions, you can easily retriev
     **location._embedded.alerts** represents an object that contains a list of alerts.
     This is a required field within the directive in order to render all location specific alerts.
 
-5. Import NYPL Alerts styling to your application (optional):
+5. Import NYPL Alerts styling into your application (optional):
 
     #### GRUNT
     * Using **grunt-contrib-concat**
