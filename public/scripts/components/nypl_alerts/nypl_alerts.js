@@ -71,7 +71,7 @@
     var service = {};
 
     // Filters Alerts that are within the display range
-    service.activeAlerts = function (obj) {
+    service.currentAlerts = function (obj) {
       var today = new Date(),
         sDate,
         eDate;
@@ -89,6 +89,16 @@
         }
       });
     };
+
+    service.filterClosingAlerts = function (obj) {
+      return _.filter(obj, function (elem) {
+        if (elem.applies) {
+          if (elem.applies.start) {
+            return elem;
+          }
+        }
+      });
+    }
 
     // Removes Alerts with duplicate id's and msg
     service.removeDuplicates = function (obj) {
@@ -116,15 +126,23 @@
       var uniqueAlerts = this.removeDuplicates(obj),
         defaults = {
           scope: (opts) ? (opts.scope || null) : null,
-          active: (opts) ? (opts.active || false) : false
+          current: (opts) ? (opts.current || false) : false,
+          only_closings: (opts) ? (opts.only_closings || false) : false
         };
 
+      // Optional scope filter
       if (defaults.scope) {
         uniqueAlerts = _.where(uniqueAlerts, {scope: defaults.scope});
       }
 
-      if (defaults.active === true) {
-        uniqueAlerts = this.activeAlerts(uniqueAlerts);
+      // Optional filter for current alerts that are in range
+      if (defaults.current === true) {
+        uniqueAlerts = this.currentAlerts(uniqueAlerts);
+      }
+
+      // Optional filter for filtering only closings
+      if (defaults.only_closings == true) {
+        uniqueAlerts = this.filterClosingAlerts(uniqueAlerts);
       }
 
       return uniqueAlerts;
@@ -174,7 +192,10 @@
       },
       link: function (scope, element, attrs) {
         if (scope.alerts) {
-          scope.locationAlerts = nyplAlertsService.filterAlerts(scope.alerts, {scope:'location'});
+          scope.locationAlerts = nyplAlertsService.filterAlerts(
+            scope.alerts,
+            {scope:'location'}
+          );
         }
       }
     };
@@ -184,7 +205,7 @@
   function initAlerts($nyplAlerts, $rootScope, nyplAlertsService) {
     $nyplAlerts.getGlobalAlerts().then(function (data) {
       var alerts = $rootScope.alerts || data;
-      $rootScope.alerts = nyplAlertsService.filterAlerts(alerts);
+      $rootScope.alerts = nyplAlertsService.filterAlerts(alerts, {only_closings: true});
       $nyplAlerts.alerts = $rootScope.alerts || data;
     }).catch(function (error) {
       throw error;
