@@ -73,68 +73,67 @@
    * ...
    */
   function todayshours(nyplAlertsService, nyplUtility, $filter) {
-
-    // Uses hoursTodayFormat to render today's hours correctly
-    function getlocationHours(hours) {
-      return $filter('hoursTodayFormat')(nyplUtility.hoursToday(hours));
-    }
-
-    // Retrieves the first alert message (API sets the order)
-    function getAlertMsg(alertsObj) {
-      return 'Closed ' + _.chain(alertsObj)
-        .pluck('closed_for')
-        .flatten(true)
-        .first()
-        .value();
-    }
-
-    /* Generates the correct display for today's hours based
-    * on the stated priority:
-    * 1. Global closing alert
-    * 2. Location closing alert
-    * 3. Regular hours for today
-    */
-    function computeHoursToday(hoursObj, alertsObj) {
-      var alert;
-      if (!hoursObj) { return undefined; }
-
-      if (_.isEmpty(alertsObj)) {
-        return getlocationHours(hoursObj);
-      }
-      else {
-        if ( _.isEmpty(alertsObj.global) && _.isEmpty(alertsObj.location) ) {
-          return getlocationHours(hoursObj);
-        }
-
-        if (alertsObj.global) {
-          return getAlertMsg(alertsObj.global);
-        }
-
-        if (alertsObj.location) {
-          return getAlertMsg(alertsObj.location);
-        }
-
-      }
-    }
-
     return {
-      restrict: 'E',
+      restrict: 'EA',
       templateUrl: 'scripts/directives/templates/todaysHours.html',
-      replace: true,
       scope: {
         hours: '=hours',
         alerts: '=alerts'
       },
-      link: function(scope, elem, attrs) {
-        var alerts = {};
-        if (scope.alerts) {
-          alerts.global = nyplAlertsService.filterAlerts(scope.alerts, {scope: 'all', only_closings: true});
-          alerts.location = nyplAlertsService.filterAlerts(scope.alerts, {scope: 'location', only_closings: true});
+      link: function($scope, elem, attrs, controller) {
+        $scope.alertsObj = {};
+        $scope.hoursObj = $scope.hours || undefined;
+
+        if ($scope.alerts) {
+          $scope.alertsObj.global = nyplAlertsService.filterAlerts($scope.alerts, {scope: 'all', only_closings: true});
+          $scope.alertsObj.location = nyplAlertsService.filterAlerts($scope.alerts, {scope: 'location', only_closings: true});
         }
-        console.log(alerts);
+
         // Proper string assignment for today's hours
-        scope.todaysHours = computeHoursToday(scope.hours, alerts);
-      }
+        $scope.todaysHours = controller.computeHoursToday($scope.hoursObj, $scope.alertsObj);
+      },
+      controller: ['$scope', function($scope) {
+
+        /* Obtains the first alert message from
+        ** the API of filtered current closing alerts.
+        */    
+        this.getAlertMsg = function (alertsObj) {
+          return 'Closed ' + _.chain(alertsObj)
+            .pluck('closed_for')
+            .flatten(true)
+            .first()
+            .value();
+        };
+
+        /* Generates the correct string representation
+        ** for today's hours with proper filter 
+        */       
+        this.getLocationHours = function (hoursObj) {
+          return $filter('hoursTodayFormat')(nyplUtility.hoursToday(hoursObj));
+        };
+
+        /* Generates the correct display for today's hours based
+        ** on the stated priority:
+        ** 1. Global closing alert
+        ** 2. Location closing alert
+        ** 3. Regular hours for today
+        */
+        this.computeHoursToday = function (hoursObj, alertsObj) {
+          if (!hoursObj) { return; }
+
+          if (!alertsObj) {
+            return this.getLocationHours(hoursObj);
+          }
+
+          if (alertsObj.global && alertsObj.global.length) {
+            return this.getAlertMsg(alertsObj.global);
+          }
+          else if (alertsObj.location && alertsObj.location.length) {
+            return this.getAlertMsg(alertsObj.location);
+          }
+          return this.getLocationHours(hoursObj);
+        };
+      }]
     };
   }
 
