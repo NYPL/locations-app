@@ -91,14 +91,29 @@
     };
 
     service.filterClosingAlerts = function (obj) {
+      var today = new Date(),
+        sDate,
+        eDate;
+
       return _.filter(obj, function (elem) {
         if (elem.applies) {
-          if (elem.applies.start) {
-            return elem;
+          if (elem.applies.start && elem.applies.end) {
+            sDate = new Date(elem.applies.start);
+            eDate = new Date(elem.applies.end);
+            if (sDate.getTime() <= today.getTime() &&
+                eDate.getTime() >= today.getTime()) {
+              return elem;
+            }
+          }
+          else if (elem.applies.start) {
+            sDate = new Date(elem.applies.start);
+            if (sDate.getTime() <= today.getTime()) {
+              return elem;
+            }
           }
         }
       });
-    }
+    };
 
     // Removes Alerts with duplicate id's and msg
     service.removeDuplicates = function (obj) {
@@ -135,14 +150,17 @@
         uniqueAlerts = _.where(uniqueAlerts, {scope: defaults.scope});
       }
 
+      // Optional filter for filtering only closings
+      // If enabled, should return immediately, no need to
+      // filter by current
+      if (defaults.only_closings == true) {
+        uniqueAlerts = this.filterClosingAlerts(uniqueAlerts);
+        return uniqueAlerts;
+      }
+
       // Optional filter for current alerts that are in range
       if (defaults.current === true) {
         uniqueAlerts = this.currentAlerts(uniqueAlerts);
-      }
-
-      // Optional filter for filtering only closings
-      if (defaults.only_closings == true) {
-        uniqueAlerts = this.filterClosingAlerts(uniqueAlerts);
       }
 
       return uniqueAlerts;

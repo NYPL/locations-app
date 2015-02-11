@@ -81,7 +81,7 @@
 
     // Retrieves the first alert message (API sets the order)
     function getAlertMsg(alertsObj) {
-      return _.chain(alertsObj)
+      return 'Closed ' + _.chain(alertsObj)
         .pluck('closed_for')
         .flatten(true)
         .first()
@@ -95,16 +95,26 @@
     * 3. Regular hours for today
     */
     function computeHoursToday(hoursObj, alertsObj) {
+      var alert;
       if (!hoursObj) { return undefined; }
 
-      if (alertsObj) {
+      if (_.isEmpty(alertsObj)) {
+        return getlocationHours(hoursObj);
+      }
+      else {
+        if ( _.isEmpty(alertsObj.global) && _.isEmpty(alertsObj.location) ) {
+          return getlocationHours(hoursObj);
+        }
+
         if (alertsObj.global) {
           return getAlertMsg(alertsObj.global);
-        } else if (alertsObj.location) {
+        }
+
+        if (alertsObj.location) {
           return getAlertMsg(alertsObj.location);
         }
+
       }
-      return getlocationHours(hoursObj);
     }
 
     return {
@@ -118,9 +128,11 @@
       link: function(scope, elem, attrs) {
         var alerts = {};
         if (scope.alerts) {
-          alerts.global = nyplAlertsService.filterAlerts(scope.alerts, {scope: 'all', active: true, only_closings: true});
-          alerts.location = nyplAlertsService.filterAlerts(scope.alerts, {scope: 'location', active: true, only_closings: true});
+          alerts.global = nyplAlertsService.filterAlerts(scope.alerts, {scope: 'all', only_closings: true});
+          alerts.location = nyplAlertsService.filterAlerts(scope.alerts, {scope: 'location', only_closings: true});
         }
+        console.log(alerts);
+        // Proper string assignment for today's hours
         scope.todaysHours = computeHoursToday(scope.hours, alerts);
       }
     };
