@@ -80,23 +80,31 @@
         hours: '=hours',
         alerts: '=alerts'
       },
-      link: function($scope, elem, attrs, controller) {
-        $scope.alertsObj = {};
-        $scope.hoursObj = $scope.hours || undefined;
+      link: function ($scope, elem, attrs, ctrl) {
+        var alerts = {},
+          hours = $scope.hours || undefined;
 
         if ($scope.alerts) {
-          $scope.alertsObj.global = nyplAlertsService.filterAlerts($scope.alerts, {scope: 'all', only_closings: true});
-          $scope.alertsObj.location = nyplAlertsService.filterAlerts($scope.alerts, {scope: 'location', only_closings: true});
+          // Retrieve all current global closings
+          alerts.global = nyplAlertsService.filterAlerts(
+            $scope.alerts,
+            {scope: 'all', only_closings: true}
+          );
+
+          // Retrieve all current location closings
+          alerts.location = nyplAlertsService.filterAlerts(
+            $scope.alerts,
+            {scope: 'location', only_closings: true}
+          );
         }
 
         // Proper string assignment for today's hours
-        $scope.todaysHours = controller.computeHoursToday($scope.hoursObj, $scope.alertsObj);
+        $scope.todaysHours = ctrl.computeHoursToday(hours, alerts);
       },
-      controller: ['$scope', function($scope) {
+      controller: ['$scope', function ($scope) {
 
-        /* Obtains the first alert message from
-        ** the API of filtered current closing alerts.
-        */    
+        // Obtains the first alert message from
+        // the API of filtered current closing alerts.
         this.getAlertMsg = function (alertsObj) {
           return 'Closed ' + _.chain(alertsObj)
             .pluck('closed_for')
@@ -105,9 +113,8 @@
             .value();
         };
 
-        /* Generates the correct string representation
-        ** for today's hours with proper filter 
-        */       
+        // Generates the correct string representation
+        // for today's hours with proper filter       
         this.getLocationHours = function (hoursObj) {
           return $filter('hoursTodayFormat')(nyplUtility.hoursToday(hoursObj));
         };
@@ -120,15 +127,13 @@
         */
         this.computeHoursToday = function (hoursObj, alertsObj) {
           if (!hoursObj) { return; }
-
           if (!alertsObj) {
             return this.getLocationHours(hoursObj);
           }
-
           if (alertsObj.global && alertsObj.global.length) {
             return this.getAlertMsg(alertsObj.global);
           }
-          else if (alertsObj.location && alertsObj.location.length) {
+          if (alertsObj.location && alertsObj.location.length) {
             return this.getAlertMsg(alertsObj.location);
           }
           return this.getLocationHours(hoursObj);
