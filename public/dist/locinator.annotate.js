@@ -531,8 +531,9 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
   function nyplAlertsService() {
     var service = {};
 
-    // Filters Alerts that are within the display range
-    service.activeAlerts = function (obj) {
+    // Filters all current Alerts that are 
+    // within the display range
+    service.currentAlerts = function (obj) {
       var today = new Date(),
         sDate,
         eDate;
@@ -546,6 +547,44 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                 eDate.getTime() >= today.getTime()) {
               return elem;
             }
+          }
+        }
+      });
+    };
+
+    // Filters Closing Alerts that have started within
+    // the applies.start & applies.end dates
+    service.currentClosingAlerts = function (obj) {
+      var today = new Date(),
+        sDate,
+        eDate;
+
+      return _.filter(obj, function (elem) {
+        if (elem.applies) {
+          if (elem.applies.start && elem.applies.end) {
+            sDate = new Date(elem.applies.start);
+            eDate = new Date(elem.applies.end);
+            if (sDate.getTime() <= today.getTime() &&
+                eDate.getTime() >= today.getTime()) {
+              return elem;
+            }
+          }
+          else if (elem.applies.start) {
+            sDate = new Date(elem.applies.start);
+            if (sDate.getTime() <= today.getTime()) {
+              return elem;
+            }
+          }
+        }
+      });
+    };
+
+  // Filters All Closing Alerts only
+    service.allClosingAlerts = function (obj) {
+      return _.filter(obj, function (elem) {
+        if (elem.applies) {
+          if (elem.applies.start) {
+            return elem;
           }
         }
       });
@@ -577,18 +616,63 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
       var uniqueAlerts = this.removeDuplicates(obj),
         defaults = {
           scope: (opts) ? (opts.scope || null) : null,
-          active: (opts) ? (opts.active || false) : false
+          current: (opts) ? (opts.current || false) : false,
+          only_closings: (opts) ? (opts.only_closings || false) : false
         };
 
+      // Optional scope filter
       if (defaults.scope) {
         uniqueAlerts = _.where(uniqueAlerts, {scope: defaults.scope});
       }
 
-      if (defaults.active === true) {
-        uniqueAlerts = this.activeAlerts(uniqueAlerts);
+      // Optional filter for filtering only closings by two
+      // factors 1) all 2) current
+      // If enabled, should return immediately, no need to
+      // filter by current
+      if (defaults.only_closings === 'all') {
+        uniqueAlerts = this.allClosingAlerts(uniqueAlerts);
+        return uniqueAlerts;
+      }
+      else if (defaults.only_closings === 'current') {
+        uniqueAlerts = this.currentClosingAlerts(uniqueAlerts);
+        return uniqueAlerts;
+      }
+
+      // Optional filter for current alerts that are in range
+      if (defaults.current === true) {
+        uniqueAlerts = this.currentAlerts(uniqueAlerts);
       }
 
       return uniqueAlerts;
+    };
+
+    service.getHoursOrClosedMessage = function (alertMsg, branchIsOpen, hours, hoursFn, closedFn) {
+      // Open or closed
+      if (branchIsOpen) {
+          // Now is there a closing alert?
+          if (alertMsg) {
+              return alertMsg;
+          }
+
+          return hoursFn(hours);
+      }
+      return closedFn();
+    };
+
+    service.activeClosings = function (alerts) {
+      return (this.filterAlerts(alerts, {only_closings: 'current'}).length) ?
+        true : false;
+    }
+
+    service.getActiveMsgs = function (alertsArr) {
+      var alerts = this.filterAlerts(alertsArr, {only_closings: 'current'}),
+        message = '';
+
+        _.each(alerts, function (alert) {
+          message += alert.closed_for + "<br />";
+        });
+
+        return message;
     };
 
     return service;
@@ -636,7 +720,10 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
       },
       link: function (scope, element, attrs) {
         if (scope.alerts) {
-          scope.locationAlerts = nyplAlertsService.filterAlerts(scope.alerts, {scope:'location'});
+          scope.locationAlerts = nyplAlertsService.filterAlerts(
+            scope.alerts,
+            {scope:'location'}
+          );
         }
       }
     };
@@ -647,7 +734,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
   function initAlerts($nyplAlerts, $rootScope, nyplAlertsService) {
     $nyplAlerts.getGlobalAlerts().then(function (data) {
       var alerts = $rootScope.alerts || data;
-      $rootScope.alerts = nyplAlertsService.filterAlerts(alerts);
+      $rootScope.alerts = nyplAlertsService.filterAlerts(alerts, {only_closings: 'current'});
       $nyplAlerts.alerts = $rootScope.alerts || data;
     }).catch(function (error) {
       throw error;
@@ -2364,6 +2451,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     'use strict';
 
     function LocationsCtrl(
+        $filter,
         $rootScope,
         $scope,
         $timeout,
@@ -2603,10 +2691,14 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                     locations = data.locations;
                     $scope.locations = locations;
 
+                    configureGlobalAlert();
+
                     _.each($scope.locations, function (location) {
                         var locationAddress =
                                 nyplUtility.getAddressString(location, true),
-                            markerCoordinates = {};
+                            markerCoordinates = {},
+                            alerts = location._embedded.alerts,
+                            alertMsgs = nyplAlertsService.getActiveMsgs(alerts);
 
                         if (location.geolocation &&
                                 location.geolocation.coordinates) {
@@ -2616,7 +2708,6 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                             };
                         };
 
-                        location.hoursToday = nyplUtility.hoursToday;
                         location.locationDest =
                             nyplUtility.getAddressString(location);
 
@@ -2626,10 +2717,6 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                                 amenitiesCount.global,
                                 amenitiesCount.local
                             );
-
-                        // Individual location exception data
-                        location.branchException =
-                            nyplUtility.branchException(location.hours);
 
                         location.research_order =
                             nyplUtility.researchLibraryOrder(
@@ -2649,26 +2736,22 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                                     locationAddress);
                         }
 
-                        var location_alert = location._embedded.alerts;
-                        if (location_alert.length) {
-                            _.each(location_alert, function (alert) {
-                                if (alert.scope === 'location' && alert.applies) {
-                                    // Make sure it's not expired
-                                    console.log(
-                                        nyplAlertsService.isAlertExpired(alert.applies.start,
-                                            alert.applies.end)
-                                    );
-                                    // if not expired ...
-                                    location.closed_for = alert.closed_for;
-                                }
-                            });
-                        }
+                        // CSS class for a closing
+                        location.displayClosingMessage =
+                            displayClosingMessage(location.open, alerts);
+                        // Hours or closing message that will display
+                        location.hoursOrClosingMessage = 
+                            nyplAlertsService.getHoursOrClosedMessage(
+                                alertMsgs,
+                                location.open,
+                                location.hours,
+                                getlocationHours,
+                                branchClosedMessage
+                            );
                     });
 
                     resetPage();
                     nyplSearch.setSearchValue('locations', $scope.locations);
-
-                    configureGlobalAlert();
 
                     return locations;
                 })
@@ -2678,17 +2761,39 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                 });
         };
 
+        // Displaying the closing css class for the text
+        function displayClosingMessage(branchOpen, location_alerts) {
+            var alerts = nyplAlertsService.activeClosings(location_alerts);
+
+            // Not open or there are closing alerts
+            if (!branchOpen || alerts) {
+                return true;
+            }
+
+            return false;
+        }
+
+        function getlocationHours(hours) {
+            return $filter('timeFormat')(nyplUtility.hoursToday(hours));
+        }
+
+        // eventually should be a utility function
+        // and maybe read from config
+        function branchClosedMessage() {
+            return "<b>Branch is temporarily closed.</b>"
+        }
+
         // Applies if the global alert has a closing and is active
         // then display 'Closed....' instead of the hours in the column.
         function configureGlobalAlert() {
             console.log($nyplAlerts.alerts);
-            $scope.closingMessage = '';
+            $scope.globalClosingMessage = '';
 
-            if ($nyplAlerts.alerts.length !== 0) {
+            if ($nyplAlerts.alerts.length) {
                 _.each($nyplAlerts.alerts, function (alert) {
                     if (alert.applies) {
                         // Note: will be a different message in the object.
-                        $scope.closingMessage += "Closed " + alert.closed_for + "<br />";
+                        $scope.globalClosingMessage += "Closed " + alert.closed_for + "<br />";
                     }
                 });
             }
@@ -2839,7 +2944,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         loadPreviousStateOrNewState();
         geolocationAvailable();
     }
-    LocationsCtrl.$inject = ["$rootScope", "$scope", "$timeout", "$state", "$nyplAlerts", "config", "nyplAlertsService", "nyplCoordinatesService", "nyplGeocoderService", "nyplLocationsService", "nyplUtility", "nyplSearch", "nyplAmenities"];
+    LocationsCtrl.$inject = ["$filter", "$rootScope", "$scope", "$timeout", "$state", "$nyplAlerts", "config", "nyplAlertsService", "nyplCoordinatesService", "nyplGeocoderService", "nyplLocationsService", "nyplUtility", "nyplSearch", "nyplAmenities"];
     // End LocationsCtrl
 
     function MapCtrl($scope, $timeout, nyplGeocoderService) {
@@ -3132,27 +3237,137 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
    * @description
    * ...
    */
-  function todayshours(nyplAlertsService, nyplUtility) {
+  function todayshours(nyplAlertsService, nyplUtility, $filter) {
     return {
-      restrict: 'E',
+      restrict: 'EA',
+      replace: false,
       templateUrl: 'scripts/directives/templates/todaysHours.html',
+      scope: {
+        hours: '=hours',
+        alerts: '=alerts'
+      },
+      link: function ($scope, elem, attrs, ctrl) {
+        var alerts = {},
+          hours = $scope.hours || undefined;
+
+        if ($scope.alerts) {
+          // Retrieve all current global closings
+          alerts.current_global = nyplAlertsService.filterAlerts(
+            $scope.alerts,
+            {scope: 'all', only_closings: 'current'}
+          );
+
+          // Retrieve all current location closings
+          alerts.current_location = nyplAlertsService.filterAlerts(
+            $scope.alerts,
+            {scope: 'location', only_closings: 'current'}
+          );
+
+          // Retrieve all global closing alerts
+          alerts.all_closings = nyplAlertsService.filterAlerts(
+            $scope.alerts,
+            {only_closings: 'all'}
+          );
+
+        }
+
+        // Proper string assignment for today's hours
+        $scope.todaysHours = ctrl.computeHoursToday(hours, alerts);
+      },
+      controller: ['$scope', function ($scope) {
+
+        // Obtains the first alert message from
+        // the API of filtered current closing alerts.
+        this.getAlertMsg = function (alertsObj) {
+          return 'Closed ' + _.chain(alertsObj)
+            .pluck('closed_for')
+            .flatten(true)
+            .first()
+            .value();
+        };
+
+        // Generates the correct string representation
+        // for today's hours with proper filter       
+        this.getLocationHours = function (hoursObj, alertsObj) {
+          return $filter('hoursTodayFormat')(nyplUtility.hoursToday(hoursObj, alertsObj));
+        };
+
+        /* Generates the correct display for today's hours based
+        ** on the stated priority:
+        ** 1. Global closing alert
+        ** 2. Location closing alert
+        ** 3. Regular hours for today/tomorrow
+        */
+        this.computeHoursToday = function (hoursObj, alertsObj) {
+          if (!hoursObj) { return; }
+          if (!alertsObj) {
+            return this.getLocationHours(hoursObj);
+          }
+          if (alertsObj.current_global && alertsObj.current_global.length) {
+            return this.getAlertMsg(alertsObj.current_global);
+          }
+          if (alertsObj.current_location && alertsObj.current_location.length) {
+            return this.getAlertMsg(alertsObj.current_location);
+          }
+          return this.getLocationHours(hoursObj, alertsObj);
+        };
+      }]
+    };
+  }
+  todayshours.$inject = ["nyplAlertsService", "nyplUtility", "$filter"];
+
+  function hoursTable(nyplAlertsService) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'scripts/directives/templates/hours-table.html',
       replace: true,
       scope: {
         hours: '=hours',
-        holiday:  '=',
         alerts: '=alerts'
       },
-      link: function(scope, elem, attrs) {
-        var locationAlerts;
+      link: function ($scope, elem, attrs, ctrl) {
+        var weeklyHours = $scope.hours || null,
+          alerts = nyplAlertsService.filterAlerts(
+            $scope.alerts,
+            {only_closings: 'current'}
+          ) || [];
 
-        if (scope.alerts) {
-          locationAlerts = nyplAlertsService.filterAlerts(scope.alerts, {active: true});
+        if (weeklyHours && alerts.length) {
+          $scope.hoursThisWeek = ctrl.findAlertsInWeek(weeklyHours, alerts);
+        } else if (weeklyHours) {
+          $scope.hoursThisWeek = weeklyHours;
         }
-        //console.log(locationAlerts);
-      }
+      },
+      controller: ['$scope', function ($scope) {
+
+        this.findAlertsInWeek = function(weekObj, alertsObj) {
+          if (!weekObj && !alertsObj) { return null; }
+
+          var startDay, endDay,
+            week = _.each(weekObj, function (day, index){
+
+            day.alert = _.find(alertsObj, function(alert){
+              if (alert.applies) {
+                if (alert.applies.start && alert.applies.end) {
+                  startDay = new Date(alert.applies.start);
+                  endDay = new Date(alert.applies.end);
+
+                  if (index >= startDay.getUTCDay() && index <= endDay.getUTCDay()) {
+                    return alert;
+                  }
+                }
+              }
+            });
+
+          });
+          return week;
+        };
+
+
+      }]
     };
   }
-  todayshours.$inject = ["nyplAlertsService", "nyplUtility"];
+  hoursTable.$inject = ["nyplAlertsService"];
 
   /**
    * @ngdoc directive
@@ -3773,6 +3988,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     .directive('loadingWidget', loadingWidget)
     // .directive('nyplTranslate', nyplTranslate)
     .directive('todayshours', todayshours)
+    .directive('hoursTable', hoursTable)
     .directive('emailusbutton', emailusbutton)
     .directive('librarianchatbutton', librarianchatbutton)
     .directive('scrolltop', scrolltop)
@@ -3898,7 +4114,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                 now = new Date(),
                 today, tomorrow,
                 tomorrow_open_time, tomorrow_close_time,
-                hour_now_military = now.getHours();
+                tomorrows_alert, hour_now_military = now.getHours();
 
             // If truthy async check
             if (elem) {
@@ -3922,6 +4138,11 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                     closed_time = getHoursObject(today.close);
                 }
 
+                // Assign alert msg for tomorrow if defined
+                if (tomorrow.alert !== null) {
+                    tomorrows_alert = tomorrow.alert.closed_for || null;
+                }
+
                 // Assign tomorrow's open time object
                 if (tomorrow.open !== null) {
                     tomorrow_open_time = getHoursObject(tomorrow.open);
@@ -3936,7 +4157,13 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                 // before midnight, display that it will be open 'tomorrow',
                 // if there is data for tomorrow's time.
                 if (hour_now_military >= closed_time.military) {
-                    if (tomorrow_open_time && tomorrow_close_time) {
+
+                    // If an alert is set for tomorrow, display that first
+                    // before displaying the hours for tomorrow
+                    if (tomorrows_alert) {
+                        return 'Closed tomorrow ' + tomorrows_alert;
+                    }
+                    else if (tomorrow_open_time && tomorrow_close_time) {
                         return 'Open tomorrow ' + tomorrow_open_time.hours +
                             (parseInt(tomorrow_open_time.mins, 10) !== 0 ? ':' + tomorrow_open_time.mins : '')
                             + tomorrow_open_time.meridian + '-' + tomorrow_close_time.hours +
@@ -5029,13 +5256,38 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
      *  the current and tomorrow days.
      * @description ...
      */
-    utility.hoursToday = function (hours) {
+    utility.hoursToday = function (hours, alertsObj) {
       var date = new Date(),
         today = date.getDay(),
         tomorrow = today + 1,
-        hoursToday;
+        hoursToday,
+        alerts,
+        alertStartDate,
+        tomorrowsAlert;
+
+      if(alertsObj) {
+        // Retrieve only global closing alerts
+        // Order is established by API
+        if (alertsObj.all_closings && alertsObj.all_closings.length) {
+          alerts = alertsObj.all_closings;
+        }
+      }
 
       if (hours) {
+        // Obtain tomorrows alert that matches tomorrow
+        if (alerts && alerts.length) {
+          tomorrowsAlert = _.find(alerts, function(alert){
+            if (alert.applies) {
+              alertStartDate = new Date(alert.applies.start);
+              // Priority given to global closing alerts
+              if (alert.scope === 'all' && alertStartDate.getDay() === tomorrow) {
+                return alert;
+              }
+              return alertStartDate.getDay() === tomorrow && alert.scope === 'location';
+            }
+          });
+        }
+
         hoursToday = {
           'today': {
             'day': hours.regular[today].day,
@@ -5045,7 +5297,8 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
           'tomorrow': {
             'day': hours.regular[tomorrow % 7].day,
             'open': hours.regular[tomorrow % 7].open,
-            'close': hours.regular[tomorrow % 7].close
+            'close': hours.regular[tomorrow % 7].close,
+            'alert' : tomorrowsAlert || null
           }
         };
       }
@@ -5218,6 +5471,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
      * @param {array} alerts ...
      * @description ...
      */
+     // Implemented in Alerts Module
     utility.alerts = function (alerts) {
       var today = new Date(),
         todaysAlert = [],
@@ -5253,6 +5507,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
      * @param {obj} date ...
      * @description ...
      */
+     // Implemented in hoursToday directive
     utility.holidayClosings = function (date) {
 
       function sameDay (day1, day2) {

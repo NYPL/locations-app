@@ -66,13 +66,38 @@
      *  the current and tomorrow days.
      * @description ...
      */
-    utility.hoursToday = function (hours) {
+    utility.hoursToday = function (hours, alertsObj) {
       var date = new Date(),
         today = date.getDay(),
         tomorrow = today + 1,
-        hoursToday;
+        hoursToday,
+        alerts,
+        alertStartDate,
+        tomorrowsAlert;
+
+      if(alertsObj) {
+        // Retrieve only global closing alerts
+        // Order is established by API
+        if (alertsObj.all_closings && alertsObj.all_closings.length) {
+          alerts = alertsObj.all_closings;
+        }
+      }
 
       if (hours) {
+        // Obtain tomorrows alert that matches tomorrow
+        if (alerts && alerts.length) {
+          tomorrowsAlert = _.find(alerts, function(alert){
+            if (alert.applies) {
+              alertStartDate = new Date(alert.applies.start);
+              // Priority given to global closing alerts
+              if (alert.scope === 'all' && alertStartDate.getDay() === tomorrow) {
+                return alert;
+              }
+              return alertStartDate.getDay() === tomorrow && alert.scope === 'location';
+            }
+          });
+        }
+
         hoursToday = {
           'today': {
             'day': hours.regular[today].day,
@@ -82,7 +107,8 @@
           'tomorrow': {
             'day': hours.regular[tomorrow % 7].day,
             'open': hours.regular[tomorrow % 7].open,
-            'close': hours.regular[tomorrow % 7].close
+            'close': hours.regular[tomorrow % 7].close,
+            'alert' : tomorrowsAlert || null
           }
         };
       }
@@ -255,7 +281,8 @@
      * @param {array} alerts ...
      * @description ...
      */
-    utility.alerts = function (alerts) {
+     // Implemented in Alerts Module
+    /*utility.alerts = function (alerts) {
       var today = new Date(),
         todaysAlert = [],
         alert_start,
@@ -280,7 +307,7 @@
         }
       }
       return null;
-    };
+    };*/
 
 
     /**
@@ -290,6 +317,7 @@
      * @param {obj} date ...
      * @description ...
      */
+     // Implemented in hoursToday directive
     utility.holidayClosings = function (date) {
 
       function sameDay (day1, day2) {

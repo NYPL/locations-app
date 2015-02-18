@@ -80,22 +80,13 @@
 				}
 			}
 		}
-		
-		.day {
-			font-style: italic;
-			padding: 0 10px 3px 0;
-		}
-		
-		.time {
-			padding: 0px;
-		}
 
 		#toggle-hours {
 			display: inline;
 			position: absolute;
-			width: 152px;
+			width: 78px;
 			left: 0px;
-			top: 2px;
+			top: 2.5px;
 			text-align: right;
 
 
@@ -120,13 +111,31 @@
 				border: none;
 			}
 
-			.weekly-hours {
+			.hours-table-collapse {
 				display: none;
 				margin-bottom: 5px; 
 
 				@include breakpoint($min, $post-palm) {
 					display: block !important;
 				} 
+			}
+
+			.weekly-hours {
+				.day {
+					font-style: italic;
+					padding: 0 10px 3px 0;
+				}
+
+				.time {
+					padding: 0px;
+				}
+
+				// Closed hours
+				tr.closed {
+					.day, .time {
+						color: #AAA;
+					}
+				}
 			}
 
 			.note {

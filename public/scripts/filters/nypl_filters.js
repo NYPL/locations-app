@@ -31,7 +31,7 @@
 
             // Checking if thruthy needed for async calls
             if (time) {
-                if (time.open === null) {
+                if (time.open === null || time.alert) {
                     return 'Closed';
                 }
                 return clockTime(time.open) + ' - ' + clockTime(time.close);
@@ -102,7 +102,7 @@
                 now = new Date(),
                 today, tomorrow,
                 tomorrow_open_time, tomorrow_close_time,
-                hour_now_military = now.getHours();
+                tomorrows_alert, hour_now_military = now.getHours();
 
             // If truthy async check
             if (elem) {
@@ -126,6 +126,11 @@
                     closed_time = getHoursObject(today.close);
                 }
 
+                // Assign alert msg for tomorrow if defined
+                if (tomorrow.alert !== null) {
+                    tomorrows_alert = tomorrow.alert.closed_for || null;
+                }
+
                 // Assign tomorrow's open time object
                 if (tomorrow.open !== null) {
                     tomorrow_open_time = getHoursObject(tomorrow.open);
@@ -140,7 +145,13 @@
                 // before midnight, display that it will be open 'tomorrow',
                 // if there is data for tomorrow's time.
                 if (hour_now_military >= closed_time.military) {
-                    if (tomorrow_open_time && tomorrow_close_time) {
+
+                    // If an alert is set for tomorrow, display that first
+                    // before displaying the hours for tomorrow
+                    if (tomorrows_alert) {
+                        return 'Closed tomorrow ' + tomorrows_alert;
+                    }
+                    else if (tomorrow_open_time && tomorrow_close_time) {
                         return 'Open tomorrow ' + tomorrow_open_time.hours +
                             (parseInt(tomorrow_open_time.mins, 10) !== 0 ? ':' + tomorrow_open_time.mins : '')
                             + tomorrow_open_time.meridian + '-' + tomorrow_close_time.hours +

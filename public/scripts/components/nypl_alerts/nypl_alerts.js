@@ -70,7 +70,8 @@
   function nyplAlertsService() {
     var service = {};
 
-    // Filters Alerts that are within the display range
+    // Filters all current Alerts that are 
+    // within the display range
     service.currentAlerts = function (obj) {
       var today = new Date(),
         sDate,
@@ -90,7 +91,9 @@
       });
     };
 
-    service.filterClosingAlerts = function (obj) {
+    // Filters Closing Alerts that have started within
+    // the applies.start & applies.end dates
+    service.currentClosingAlerts = function (obj) {
       var today = new Date(),
         sDate,
         eDate;
@@ -110,6 +113,17 @@
             if (sDate.getTime() <= today.getTime()) {
               return elem;
             }
+          }
+        }
+      });
+    };
+
+  // Filters All Closing Alerts only
+    service.allClosingAlerts = function (obj) {
+      return _.filter(obj, function (elem) {
+        if (elem.applies) {
+          if (elem.applies.start) {
+            return elem;
           }
         }
       });
@@ -150,11 +164,16 @@
         uniqueAlerts = _.where(uniqueAlerts, {scope: defaults.scope});
       }
 
-      // Optional filter for filtering only closings
+      // Optional filter for filtering only closings by two
+      // factors 1) all 2) current
       // If enabled, should return immediately, no need to
       // filter by current
-      if (defaults.only_closings == true) {
-        uniqueAlerts = this.filterClosingAlerts(uniqueAlerts);
+      if (defaults.only_closings === 'all') {
+        uniqueAlerts = this.allClosingAlerts(uniqueAlerts);
+        return uniqueAlerts;
+      }
+      else if (defaults.only_closings === 'current') {
+        uniqueAlerts = this.currentClosingAlerts(uniqueAlerts);
         return uniqueAlerts;
       }
 
@@ -180,12 +199,12 @@
     };
 
     service.activeClosings = function (alerts) {
-      return (this.filterAlerts(alerts, {only_closings: true}).length) ?
+      return (this.filterAlerts(alerts, {only_closings: 'current'}).length) ?
         true : false;
     }
 
     service.getActiveMsgs = function (alertsArr) {
-      var alerts = this.filterAlerts(alertsArr, {only_closings: true}),
+      var alerts = this.filterAlerts(alertsArr, {only_closings: 'current'}),
         message = '';
 
         _.each(alerts, function (alert) {
@@ -252,7 +271,7 @@
   function initAlerts($nyplAlerts, $rootScope, nyplAlertsService) {
     $nyplAlerts.getGlobalAlerts().then(function (data) {
       var alerts = $rootScope.alerts || data;
-      $rootScope.alerts = nyplAlertsService.filterAlerts(alerts, {only_closings: true});
+      $rootScope.alerts = nyplAlertsService.filterAlerts(alerts, {only_closings: 'current'});
       $nyplAlerts.alerts = $rootScope.alerts || data;
     }).catch(function (error) {
       throw error;

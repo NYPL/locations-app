@@ -75,6 +75,7 @@
   function todayshours(nyplAlertsService, nyplUtility, $filter) {
     return {
       restrict: 'EA',
+      replace: false,
       templateUrl: 'scripts/directives/templates/todaysHours.html',
       scope: {
         hours: '=hours',
@@ -86,16 +87,23 @@
 
         if ($scope.alerts) {
           // Retrieve all current global closings
-          alerts.global = nyplAlertsService.filterAlerts(
+          alerts.current_global = nyplAlertsService.filterAlerts(
             $scope.alerts,
-            {scope: 'all', only_closings: true}
+            {scope: 'all', only_closings: 'current'}
           );
 
           // Retrieve all current location closings
-          alerts.location = nyplAlertsService.filterAlerts(
+          alerts.current_location = nyplAlertsService.filterAlerts(
             $scope.alerts,
-            {scope: 'location', only_closings: true}
+            {scope: 'location', only_closings: 'current'}
           );
+
+          // Retrieve all global closing alerts
+          alerts.all_closings = nyplAlertsService.filterAlerts(
+            $scope.alerts,
+            {only_closings: 'all'}
+          );
+
         }
 
         // Proper string assignment for today's hours
@@ -115,29 +123,91 @@
 
         // Generates the correct string representation
         // for today's hours with proper filter       
-        this.getLocationHours = function (hoursObj) {
-          return $filter('hoursTodayFormat')(nyplUtility.hoursToday(hoursObj));
+        this.getLocationHours = function (hoursObj, alertsObj) {
+          return $filter('hoursTodayFormat')(nyplUtility.hoursToday(hoursObj, alertsObj));
         };
 
         /* Generates the correct display for today's hours based
         ** on the stated priority:
         ** 1. Global closing alert
         ** 2. Location closing alert
-        ** 3. Regular hours for today
+        ** 3. Regular hours for today/tomorrow
         */
         this.computeHoursToday = function (hoursObj, alertsObj) {
           if (!hoursObj) { return; }
           if (!alertsObj) {
             return this.getLocationHours(hoursObj);
           }
-          if (alertsObj.global && alertsObj.global.length) {
-            return this.getAlertMsg(alertsObj.global);
+          if (alertsObj.current_global && alertsObj.current_global.length) {
+            return this.getAlertMsg(alertsObj.current_global);
           }
-          if (alertsObj.location && alertsObj.location.length) {
-            return this.getAlertMsg(alertsObj.location);
+          if (alertsObj.current_location && alertsObj.current_location.length) {
+            return this.getAlertMsg(alertsObj.current_location);
           }
-          return this.getLocationHours(hoursObj);
+          return this.getLocationHours(hoursObj, alertsObj);
         };
+      }]
+    };
+  }
+
+  function hoursTable(nyplAlertsService) {
+    return {
+      restrict: 'EA',
+      templateUrl: 'scripts/directives/templates/hours-table.html',
+      replace: false, // If true, undefined error is thrown
+      scope: {
+        hours: '=hours',
+        alerts: '=alerts'
+      },
+      link: function ($scope, elem, attrs, ctrl) {
+        var weeklyHours = $scope.hours || null,
+          alerts;
+
+        if ($scope.alerts) {
+          alerts = nyplAlertsService.filterAlerts(
+            $scope.alerts,
+            {only_closings: 'current'}
+          );
+        }
+
+        if (weeklyHours && alerts.length) {
+          $scope.hoursThisWeek = ctrl.findAlertsInWeek(weeklyHours, alerts);
+        } else if (weeklyHours) {
+          $scope.hoursThisWeek = weeklyHours;
+        }
+      },
+      controller: ['$scope', function ($scope) {
+
+        this.findAlertsInWeek = function(weekObj, alertsObj) {
+          if (!weekObj && !alertsObj) { return null; }
+
+          var today = new Date().getUTCDay(),
+            startDay, endDay,
+            week = _.each(weekObj, function (day, index){
+
+            day.alert = _.find(alertsObj, function(alert){
+              if (alert.applies && today <= index) {
+                if (alert.applies.start && alert.applies.end) {
+                  startDay = new Date(alert.applies.start);
+                  endDay = new Date(alert.applies.end);
+                  if (index >= startDay.getUTCDay() && index < endDay.getUTCDay()) {
+                    return alert;
+                  }
+                }
+                else if (alert.applies.start && !alert.applies.end) {
+                  startDay = new Date(alert.applies.start);
+                  if (index >= startDay.getUTCDay()) {
+                    return alert;
+                  }
+                }
+              }
+            });
+
+          });
+          return week;
+        };
+
+
       }]
     };
   }
@@ -755,6 +825,7 @@
     .directive('loadingWidget', loadingWidget)
     // .directive('nyplTranslate', nyplTranslate)
     .directive('todayshours', todayshours)
+    .directive('hoursTable', hoursTable)
     .directive('emailusbutton', emailusbutton)
     .directive('librarianchatbutton', librarianchatbutton)
     .directive('scrolltop', scrolltop)
