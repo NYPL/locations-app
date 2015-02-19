@@ -1,5 +1,5 @@
 /*jslint nomen: true, unparam: true, indent: 2, maxlen: 80 */
-/*globals element, by, module, module,
+/*globals element, by, module, module, $, jasmine, spyOn,
 describe, expect, beforeEach, inject, it, angular */
 
 /*
@@ -17,14 +17,12 @@ describe('nyplSSO module', function () {
   beforeEach(inject(function (_$httpBackend_) {
     httpBackend = _$httpBackend_;
 
-    httpBackend
-        .expectGET('languages/en.json')
-        .respond('public/languages/en.json');
+    // httpBackend
+    //     .expectGET('languages/en.json')
+    //     .respond('public/languages/en.json');
   }));
 
   describe('Service: ssoStatus', function () {
-    var ssoStatus;
-
     beforeEach(inject(function (_$httpBackend_, _ssoStatus_) {
       ssoStatus = _ssoStatus_;
     }));
@@ -72,7 +70,7 @@ describe('nyplSSO module', function () {
       it('should store the username in a cookie', function () {
         $.cookie = jasmine.createSpy('cookie');
 
-        ssoStatus.remember('edwinguzman')
+        ssoStatus.remember('edwinguzman');
         expect($.cookie)
           .toHaveBeenCalledWith('remember_me', 'edwinguzman', {path: '/'});
       });
@@ -158,9 +156,10 @@ describe('nyplSSO module', function () {
         $.removeCookie = jasmine.createSpy('removeCookie').and.callFake(remove);
       });
 
-      it('should return false when deleting a cookie which is not set', function () {
-        expect(ssoStatus.forget()).toBe(false);
-      });
+      it('should return false when deleting a cookie which is not set',
+        function () {
+          expect(ssoStatus.forget()).toBe(false);
+        });
 
       it('should return true when deleting a cookie which is set', function () {
         ssoStatus.remember('edwinguzman');
@@ -278,8 +277,8 @@ describe('nyplSSO module', function () {
           .toEqual('Username or bar code:');
         expect(login_form_container.find('.form-item-user-pin').text().trim())
           .toEqual('PIN:');
-        expect(login_form_container.find('.form-item-remember-me').text().trim())
-          .toEqual('Remember me');
+        expect(login_form_container.find('.form-item-remember-me')
+          .text().trim()).toEqual('Remember me');
       });
 
       it('should have help links', function () {
@@ -294,12 +293,14 @@ describe('nyplSSO module', function () {
       });
 
       // it('should show the sso-login form', function () {
-      //   expect(element.find('.sso-login').attr('class')).not.toContain('visible');
+      //   expect(element.find('.sso-login').attr('class'))
+      //    .not.toContain('visible');
 
       //   element.find('.login-button').click();
 
       //   // The login form container should be visible now.
-      //   expect(element.find('.sso-login').attr('class')).toContain('visible');
+      //   expect(element.find('.sso-login').attr('class'))
+      //    .toContain('visible');
       // });
 
       it('should update the logout url when routing', function () {
@@ -346,7 +347,8 @@ describe('nyplSSO module', function () {
       }));
 
       it('should be in the logged in state', function () {
-        expect(element.isolateScope().header_button_label).toEqual('edwinguzman');
+        expect(element.isolateScope().header_button_label)
+          .toEqual('edwinguzman');
       });
 
       // it('should have a logged-in class for the button', function () {

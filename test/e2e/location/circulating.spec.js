@@ -8,11 +8,11 @@ describe('Circulating branch page', function () {
   var locationPage = require('./location.po.js'),
     APIresponse = require('../APImocks/circulating.js'),
     httpBackendMock = function (response) {
-      var API_URL = 'http://dev.locations.api.nypl.org';
+      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.5';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
-          $httpBackend.whenGET('languages/en.json').passThrough();
+          // $httpBackend.whenGET('languages/en.json').passThrough();
 
           $httpBackend
             .whenJSONP(API_URL +

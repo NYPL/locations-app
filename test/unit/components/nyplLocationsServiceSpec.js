@@ -15,14 +15,18 @@ describe('NYPL locationService Module', function () {
    * data from different API endpoints.
    */
   describe('nyplLocationsService', function () {
-    var api = 'http://dev.locations.api.nypl.org',
+    var api = 'http://dev.locations.api.nypl.org/api',
+      api_version = 'v0.5',
       jsonpCallback = '?callback=JSON_CALLBACK',
       error_message = 'Could not reach API: ',
       nyplLocationsService,
       httpBackend,
       $rootScope;
-    
-    window.locations_cfg = { config: { api_root: api } };
+
+    window.locations_cfg = { config: {
+      api_root: api,
+      api_version: api_version
+    }};
 
     beforeEach(function () {
       // load the module.
@@ -39,7 +43,7 @@ describe('NYPL locationService Module', function () {
       });
     });
 
-    afterEach(function() {
+    afterEach(function () {
       httpBackend.verifyNoOutstandingExpectation();
       httpBackend.verifyNoOutstandingRequest();
     });
@@ -58,7 +62,7 @@ describe('NYPL locationService Module', function () {
             });
 
           $rootScope.$apply();
-          expect(configData).toEqual({api_root: api});
+          expect(configData).toEqual({api_root: api, api_version: api_version});
         });
 
         it('should return cached api data', function () {
@@ -74,7 +78,7 @@ describe('NYPL locationService Module', function () {
             });
 
           $rootScope.$apply();
-          expect(configData).toEqual({api_root: api});
+          expect(configData).toEqual({api_root: api, api_version: api_version});
         });
 
         it('should return an error', function () {
@@ -96,7 +100,10 @@ describe('NYPL locationService Module', function () {
       // config variables and then call the rest of the functions that
       // depend on the api config variable;
       beforeEach(function () {
-        window.locations_cfg = { config: { api_root: api } };
+        window.locations_cfg = { config: {
+          api_root: api,
+          api_version: api_version
+        }};
         nyplLocationsService.getConfig();
       });
 
@@ -118,7 +125,7 @@ describe('NYPL locationService Module', function () {
             };
 
           httpBackend
-            .whenJSONP(api + '/locations' + jsonpCallback)
+            .whenJSONP(api + '/' + api_version + '/locations' + jsonpCallback)
             .respond(mockedAllLocationsAPICall);
 
           nyplLocationsService.allLocations()
@@ -136,7 +143,7 @@ describe('NYPL locationService Module', function () {
           var returned_error_message;
 
           httpBackend
-            .whenJSONP(api + '/locations' + jsonpCallback)
+            .whenJSONP(api + '/' + api_version + '/locations' + jsonpCallback)
             .respond(500);
 
           nyplLocationsService.allLocations()
@@ -154,8 +161,8 @@ describe('NYPL locationService Module', function () {
        * nyplLocationsService.singleLocation(location)
        *   location: The location slug passed from Angular's route params.
        *
-       *   Hits the /locations/:location endpoint and returns an object with data
-       *   for one location.
+       *   Hits the /locations/:location endpoint and returns an object
+       *   with data for one location.
        */
       describe('nyplLocationsService.singleLocation(location)', function () {
         it('should return one specific location', function () {
@@ -167,7 +174,8 @@ describe('NYPL locationService Module', function () {
             };
 
           httpBackend
-            .whenJSONP(api +'/locations/hudson-park' + jsonpCallback)
+            .whenJSONP(api + '/' + api_version +
+              '/locations/hudson-park' + jsonpCallback)
             .respond(mockedOneLocationAPICall);
 
           nyplLocationsService.singleLocation('hudson-park')
@@ -184,7 +192,8 @@ describe('NYPL locationService Module', function () {
           var returned_error_message;
 
           httpBackend
-            .whenJSONP(api + '/locations/hudson-park' + jsonpCallback)
+            .whenJSONP(api + '/' + api_version +
+              '/locations/hudson-park' + jsonpCallback)
             .respond(500);
 
           nyplLocationsService.singleLocation('hudson-park')
@@ -216,7 +225,8 @@ describe('NYPL locationService Module', function () {
             };
 
           httpBackend
-            .whenJSONP(api + '/divisions/map-division' + jsonpCallback)
+            .whenJSONP(api + '/' + api_version +
+              '/divisions/map-division' + jsonpCallback)
             .respond(mockedOneDivisionAPICall);
 
           nyplLocationsService.singleDivision('map-division')
@@ -233,7 +243,8 @@ describe('NYPL locationService Module', function () {
           var returned_error_message;
 
           httpBackend
-            .whenJSONP(api + '/divisions/map-division' + jsonpCallback)
+            .whenJSONP(api + '/' + api_version +
+              '/divisions/map-division' + jsonpCallback)
             .respond(500);
 
           nyplLocationsService.singleDivision('map-division')
@@ -271,7 +282,7 @@ describe('NYPL locationService Module', function () {
               };
 
             httpBackend
-              .whenJSONP(api + '/amenities' + jsonpCallback)
+              .whenJSONP(api + '/' + api_version + '/amenities' + jsonpCallback)
               .respond(mockedAmenitiesAPICall);
 
             nyplLocationsService.amenities().then(function (data) {
@@ -288,7 +299,7 @@ describe('NYPL locationService Module', function () {
             var returned_error_message;
 
             httpBackend
-              .whenJSONP(api + '/amenities' + jsonpCallback)
+              .whenJSONP(api + '/' + api_version + '/amenities' + jsonpCallback)
               .respond(500);
 
             nyplLocationsService.amenities()
@@ -320,7 +331,8 @@ describe('NYPL locationService Module', function () {
               };
 
             httpBackend
-              .whenJSONP(api + '/amenities/36' + jsonpCallback)
+              .whenJSONP(api + '/' + api_version +
+                '/amenities/36' + jsonpCallback)
               .respond(mockedAmenityAPICall);
 
             nyplLocationsService.amenities(36).then(function (data) {
@@ -339,7 +351,8 @@ describe('NYPL locationService Module', function () {
             var returned_error_message;
 
             httpBackend
-              .whenJSONP(api + '/amenities/36' + jsonpCallback)
+              .whenJSONP(api + '/' + api_version +
+                '/amenities/36' + jsonpCallback)
               .respond(500);
 
             nyplLocationsService.amenities(36)
@@ -361,56 +374,63 @@ describe('NYPL locationService Module', function () {
       *   Hit's the /locations/:location/services API endpoint and returns all
       *   the services available at that specific location.
       */
-      describe('nyplLocationsServices.amenitiesAtLibrary(location)', function () {
-        it('should return a list of amenities at a location', function () {
-          var amenities_result,
-            // The actual API call has many properties for one location
-            mockedLocationAmenitiesAPICall = {
-              locations: {
-                name: 'Science, Industry and Business Library (SIBL)',
-                _embedded: {
-                  amenities: [
-                    {id: 4, name: "Computers for Public Use", _links: {}},
-                    {id: 6, name: "Wireless Internet Access", _links: {}},
-                    {id: 7, name: "Printing (from PC)", _links: {}},
-                    {id: 8, name: "Wheelchair Accessible Computers", _links: {}}
-                  ]
+      describe('nyplLocationsServices.amenitiesAtLibrary(location)',
+        function () {
+          it('should return a list of amenities at a location', function () {
+            var amenities_result,
+              // The actual API call has many properties for one location
+              mockedLocationAmenitiesAPICall = {
+                locations: {
+                  name: 'Science, Industry and Business Library (SIBL)',
+                  _embedded: {
+                    amenities: [
+                      {id: 4, name: "Computers for Public Use", _links: {}},
+                      {id: 6, name: "Wireless Internet Access", _links: {}},
+                      {id: 7, name: "Printing (from PC)", _links: {}},
+                      {id: 8, name: "Wheelchair Accessible Computers",
+                        _links: {}}
+                    ]
+                  }
                 }
-              }
-            };
+              };
 
-          httpBackend
-            .whenJSONP(api + '/locations/sibl/amenities' + jsonpCallback)
-            .respond(mockedLocationAmenitiesAPICall);
+            httpBackend
+              .whenJSONP(api + '/' + api_version +
+                '/locations/sibl/amenities' + jsonpCallback)
+              .respond(mockedLocationAmenitiesAPICall);
 
-          nyplLocationsService.amenitiesAtLibrary('sibl').then(function (data) {
-            amenities_result = data;
+            nyplLocationsService.amenitiesAtLibrary('sibl')
+              .then(function (data) {
+                amenities_result = data;
+              });
+            httpBackend.flush();
+
+            expect(amenities_result.locations.name)
+              .toEqual('Science, Industry and Business Library (SIBL)');
+            expect(amenities_result.locations._embedded.amenities.length)
+              .toBe(4);
+            expect(amenities_result).toEqual(mockedLocationAmenitiesAPICall);
           });
-          httpBackend.flush();
 
-          expect(amenities_result.locations.name)
-            .toEqual('Science, Industry and Business Library (SIBL)');
-          expect(amenities_result.locations._embedded.amenities.length).toBe(4);
-          expect(amenities_result).toEqual(mockedLocationAmenitiesAPICall);
-        });
+          // Simulate server error
+          it('should return an error', function () {
+            var returned_error_message;
 
-        // Simulate server error
-        it('should return an error', function () {
-          var returned_error_message;
+            httpBackend
+              .whenJSONP(api + '/' + api_version +
+                '/locations/sibl/amenities' + jsonpCallback)
+              .respond(500);
 
-          httpBackend
-            .whenJSONP(api + '/locations/sibl/amenities' + jsonpCallback)
-            .respond(500);
+            nyplLocationsService.amenitiesAtLibrary('sibl')
+              .catch(function (error) {
+                returned_error_message = error;
+              });
+            httpBackend.flush();
 
-          nyplLocationsService.amenitiesAtLibrary('sibl')
-            .catch(function (error) {
-              returned_error_message = error;
-            });
-          httpBackend.flush();
-
-          expect(returned_error_message).toEqual(error_message + 'library-amenity');
-        });
-      }); /* nyplLocationsServices.amenitiesAtLibrary(location) */
+            expect(returned_error_message)
+              .toEqual(error_message + 'library-amenity');
+          });
+        }); /* nyplLocationsServices.amenitiesAtLibrary(location) */
 
       /*
       * nyplLocationsService.alerts()
@@ -436,8 +456,8 @@ describe('NYPL locationService Module', function () {
                   _id: '71581',
                   scope: 'all',
                   title: 'Columbus Day',
-                  body: "The New York Public Library will be closed on Monday, " +
-                    "October 13 in observance of Columbus Day.",
+                  body: "The New York Public Library will be closed on " +
+                    "Monday, October 13 in observance of Columbus Day.",
                   start: "2014-10-06T00:00:00-04:00",
                   end: "2014-10-14T01:00:00-04:00"
                 }
@@ -445,7 +465,7 @@ describe('NYPL locationService Module', function () {
             };
 
           httpBackend
-            .whenJSONP(api + '/alerts' + jsonpCallback)
+            .whenJSONP(api + '/' + api_version + '/alerts' + jsonpCallback)
             .respond(mocked_alerts_API_call);
 
           nyplLocationsService.alerts().then(function (data) {
@@ -462,7 +482,7 @@ describe('NYPL locationService Module', function () {
           var returned_error_message;
 
           httpBackend
-            .whenJSONP(api + '/alerts' + jsonpCallback)
+            .whenJSONP(api + '/' + api_version + '/alerts' + jsonpCallback)
             .respond(500);
 
           nyplLocationsService.alerts()
@@ -471,10 +491,11 @@ describe('NYPL locationService Module', function () {
             });
           httpBackend.flush();
 
-          expect(returned_error_message).toEqual(error_message + 'site-wide alerts');
+          expect(returned_error_message)
+            .toEqual(error_message + 'site-wide alerts');
         });
       }); /* nyplLocationsService.alerts() */
-  
+
     }); /* End function that depend on config */
 
   }); /* End nyplLocationsService */

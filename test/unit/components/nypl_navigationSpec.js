@@ -1,5 +1,5 @@
 /*jslint nomen: true, unparam: true, indent: 2, maxlen: 80 */
-/*globals element, by, module, module,
+/*globals element, by, module, module, spyOn,
 describe, expect, beforeEach, inject, it, angular */
 
 describe('nyplNavigation module', function () {
@@ -13,17 +13,16 @@ describe('nyplNavigation module', function () {
   beforeEach(inject(function (_$httpBackend_) {
     httpBackend = _$httpBackend_;
 
-    httpBackend
-        .expectGET('languages/en.json')
-        .respond('public/languages/en.json');
+    // httpBackend
+    //     .expectGET('languages/en.json')
+    //     .respond('public/languages/en.json');
   }));
 
   function createDirective(template) {
-    var element;
-    element = $compile(template)($scope);
+    var el = $compile(template)($scope);
     $scope.$digest();
 
-    return element;
+    return el;
   }
 
   describe('Directive: nyplCollapsedButtons', function () {

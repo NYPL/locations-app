@@ -1848,7 +1848,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
       link: function (scope, element, attrs) {
         var ssoLoginElement = $('.sso-login'),
           ssoUserButton = $('.login-button'),
-          enews_email = $('#header-news_signup input[type=email]'),
+          enews_email = $('.email-input-field'),
           enews_submit = $('#header-news_signup input[type=submit]'),
           enews_container = $('.header-newsletter-signup');
 
@@ -2041,8 +2041,6 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     .directive('nyplSso', nyplSSO);
 
 })();
-
-
 /*jslint indent: 2, maxlen: 80 */
 /*global nypl_locations, angular */
 
@@ -4253,9 +4251,9 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
           zoom: zoom,
           center: locationCoords,
           mapTypeControl: false,
-          panControl: false,
-          zoomControl: false,
-          scaleControl: false,
+          panControl: true,
+          zoomControl: true,
+          scaleControl: true,
           streetViewControl: false
         };
 
