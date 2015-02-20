@@ -209,9 +209,9 @@
           zoom: zoom,
           center: locationCoords,
           mapTypeControl: false,
-          panControl: false,
-          zoomControl: false,
-          scaleControl: false,
+          panControl: true,
+          zoomControl: true,
+          scaleControl: true,
           streetViewControl: false
         };
 
