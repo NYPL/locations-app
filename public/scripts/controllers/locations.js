@@ -295,7 +295,7 @@
                             displayClosingMessage(location.open, alerts);
                         // Hours or closing message that will display
                         location.hoursOrClosingMessage = 
-                            nyplAlertsService.getHoursOrClosedMessage(
+                            nyplAlertsService.getHoursOrMessage(
                                 alertMsgs,
                                 location.open,
                                 location.hours,

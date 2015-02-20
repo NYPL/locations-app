@@ -1,5 +1,5 @@
 /*jslint indent: 2, maxlen: 80, nomen: true */
-/*globals $, window, console, jQuery, angular */
+/*globals $, window, console, jQuery, angular, _ */
 
 (function (window, angular, undefined) {
   'use strict';
@@ -44,14 +44,11 @@
           if (!url) {
             defer.reject(errors.url_undefined);
           } else {
-            $http.jsonp(
-              url,
-              {cache: true}
-            )
+            $http.jsonp(url, {cache: true})
               .success(function (data) {
                 defer.resolve(data.alerts);
               })
-              .error(function (data, status) {
+              .error(function (status) {
                 defer.reject(status, errors.api);
               });
           }
@@ -63,8 +60,7 @@
         provider.api_version = options.api_version || null;
 
         return provider;
-      }
-    ];
+      }];
   }
 
   function nyplAlertsService() {
@@ -107,8 +103,7 @@
                 eDate.getTime() >= today.getTime()) {
               return elem;
             }
-          }
-          else if (elem.applies.start) {
+          } else if (elem.applies.start) {
             sDate = new Date(elem.applies.start);
             if (sDate.getTime() <= today.getTime()) {
               return elem;
@@ -118,25 +113,26 @@
       });
     };
 
-  // Filters All Closing Alerts only
+    // Filters All Closing Alerts only
     service.allClosingAlerts = function (obj) {
       return _.filter(obj, function (elem) {
-        if (elem.applies) {
-          if (elem.applies.start) {
-            return elem;
-          }
+        if (elem.applies && elem.applies.start) {
+          return elem;
         }
       });
     };
 
     // Removes Alerts with duplicate id's and msg
     service.removeDuplicates = function (obj) {
-      return _.chain(obj).indexBy('id').flatten()
+      return _.chain(obj)
+        .indexBy('id')
+        .flatten()
         .uniq(function (elem) {
           if (elem.msg) {
             return elem.msg.toLowerCase();
           }
-        }).value();
+        })
+        .value();
     };
 
     // Boolean check if an alert has expired
@@ -144,6 +140,7 @@
       var sDate = new Date(startDate),
         eDate   = new Date(endDate),
         today   = new Date();
+
       return (sDate.getTime() <= today.getTime() &&
         eDate.getTime() >= today.getTime()) ? false : true;
     };
@@ -154,9 +151,9 @@
 
       var uniqueAlerts = this.removeDuplicates(obj),
         defaults = {
-          scope: (opts) ? (opts.scope || null) : null,
-          current: (opts) ? (opts.current || false) : false,
-          only_closings: (opts) ? (opts.only_closings || false) : false
+          scope: opts ? (opts.scope || null) : null,
+          current: opts ? (opts.current || false) : false,
+          only_closings: opts ? (opts.only_closings || false) : false
         };
 
       // Optional scope filter
@@ -171,8 +168,7 @@
       if (defaults.only_closings === 'all') {
         uniqueAlerts = this.allClosingAlerts(uniqueAlerts);
         return uniqueAlerts;
-      }
-      else if (defaults.only_closings === 'current') {
+      } else if (defaults.only_closings === 'current') {
         uniqueAlerts = this.currentClosingAlerts(uniqueAlerts);
         return uniqueAlerts;
       }
@@ -185,33 +181,33 @@
       return uniqueAlerts;
     };
 
-    service.getHoursOrClosedMessage = function (alertMsg, branchIsOpen, hours, hoursFn, closedFn) {
+    service.getHoursOrMessage = function (msg, open, hrs, hoursFn, closedFn) {
       // Open or closed
-      if (branchIsOpen) {
-          // Now is there a closing alert?
-          if (alertMsg) {
-              return alertMsg;
-          }
+      if (open) {
+        // Now is there a closing alert?
+        if (msg) {
+          return msg;
+        }
 
-          return hoursFn(hours);
+        return hoursFn(hrs);
       }
       return closedFn();
     };
 
     service.activeClosings = function (alerts) {
       return (this.filterAlerts(alerts, {only_closings: 'current'}).length) ?
-        true : false;
-    }
+          true : false;
+    };
 
     service.getActiveMsgs = function (alertsArr) {
       var alerts = this.filterAlerts(alertsArr, {only_closings: 'current'}),
         message = '';
 
-        _.each(alerts, function (alert) {
-          message += alert.closed_for + "<br />";
-        });
+      if (alerts.length) {
+        message = 'Closed ' + alerts[0].closed_for;
+      }
 
-        return message;
+      return message;
     };
 
     return service;
@@ -247,20 +243,21 @@
   function nyplLocationAlerts(nyplAlertsService) {
     return {
       restrict: 'E',
-      template: "<div class='nypl-location-alerts' data-ng-if='locationAlerts'>" +
+      template: "<div class='nypl-location-alerts'" +
+                    "data-ng-if='locationAlerts'>" +
                   "<div data-ng-repeat='alert in locationAlerts'>" +
                     "<p data-ng-bind-html='alert.msg'></p>" +
                   "</div>" +
                 "</div>",
       replace: true,
       scope: {
-          alerts: '=alerts'
+        alerts: '=alerts'
       },
       link: function (scope, element, attrs) {
         if (scope.alerts) {
           scope.locationAlerts = nyplAlertsService.filterAlerts(
             scope.alerts,
-            {scope:'location'}
+            {scope: 'location'}
           );
         }
       }
@@ -271,7 +268,8 @@
   function initAlerts($nyplAlerts, $rootScope, nyplAlertsService) {
     $nyplAlerts.getGlobalAlerts().then(function (data) {
       var alerts = $rootScope.alerts || data;
-      $rootScope.alerts = nyplAlertsService.filterAlerts(alerts, {only_closings: 'current'});
+      $rootScope.alerts =
+        nyplAlertsService.filterAlerts(alerts, {only_closings: 'current'});
       $nyplAlerts.alerts = $rootScope.alerts || data;
     }).catch(function (error) {
       throw error;
@@ -291,5 +289,6 @@
     .service('nyplAlertsService', nyplAlertsService)
     .run(initAlerts)
     .directive('nyplLocationAlerts', nyplLocationAlerts)
-    .directive('nyplGlobalAlerts', nyplGlobalAlerts)
+    .directive('nyplGlobalAlerts', nyplGlobalAlerts);
+
 })(window, window.angular);
