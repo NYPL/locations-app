@@ -273,7 +273,7 @@
     $nyplAlerts.getGlobalAlerts().then(function (data) {
       var alerts = $rootScope.alerts || data;
       $rootScope.alerts =
-        nyplAlertsService.filterAlerts(alerts, {only_closings: 'current'});
+        nyplAlertsService.filterAlerts(alerts, {current: true});
       $nyplAlerts.alerts = $rootScope.alerts || data;
     }).catch(function (error) {
       throw error;
