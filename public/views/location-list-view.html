@@ -95,7 +95,9 @@
             <!-- Today's Hours -->
             <td class="hours-info">
               <div>
-                <p data-ng-bind-html="location.hoursOrClosingMessage" data-ng-class="{'location-alerts': location.displayClosingMessage}"></p>
+                <p data-ng-bind-html="location.hoursOrClosingMessage"
+                  data-ng-class="{'location-alerts': location.closingMessageClass}">
+                </p>
               </div>
             </td>
           </tr> <!-- End data-ng-repeat -->
