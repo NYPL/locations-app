@@ -200,6 +200,10 @@
     };
 
     service.getActiveMsgs = function (alertsArr) {
+      if (!alertsArr) {
+        return;
+      }
+
       var alerts = this.filterAlerts(alertsArr, {only_closings: 'current'}),
         message = '';
 

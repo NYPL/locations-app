@@ -338,16 +338,11 @@
         // Applies if the global alert has a closing and is active
         // then display 'Closed....' instead of the hours in the column.
         function configureGlobalAlert() {
-            console.log($nyplAlerts.alerts);
             $scope.globalClosingMessage = '';
 
             if ($nyplAlerts.alerts.length) {
-                _.each($nyplAlerts.alerts, function (alert) {
-                    if (alert.applies) {
-                        // Note: will be a different message in the object.
-                        $scope.globalClosingMessage += "Closed " + alert.closed_for + "<br />";
-                    }
-                });
+                $scope.globalClosingMessage += "Closed " +
+                    $nyplAlerts.alerts[0].closed_for;
             }
         }
 
