@@ -291,8 +291,8 @@
                         }
 
                         // CSS class for a closing
-                        location.displayClosingMessage =
-                            displayClosingMessage(location.open, alerts);
+                        location.closingMessageClass =
+                            closingMessageClass(location.open, alerts);
                         // Hours or closing message that will display
                         location.hoursOrClosingMessage = 
                             nyplAlertsService.getHoursOrMessage(
@@ -316,7 +316,7 @@
         };
 
         // Displaying the closing css class for the text
-        function displayClosingMessage(branchOpen, location_alerts) {
+        function closingMessageClass(branchOpen, location_alerts) {
             var alerts = nyplAlertsService.activeClosings(location_alerts);
 
             // Not open or there are closing alerts
@@ -331,8 +331,6 @@
             return $filter('timeFormat')(nyplUtility.hoursToday(hours));
         }
 
-        // eventually should be a utility function
-        // and maybe read from config
         function branchClosedMessage() {
             return "<b>Branch is temporarily closed.</b>"
         }

@@ -83,21 +83,13 @@
             <strong>{{location.distance}} miles</strong>
           </div>
 
-          <!-- Today's Hours -->
-					<div class="todays-hours branch-open" data-ng-if="location.open">
-						<span>Today's Hours</span>:
-            <span data-ng-if="holiday">
-              <strong>{{holiday.title}}</strong>
-            </span>
-            <span data-ng-if="!holiday">
-						  <strong>{{ location.hoursToday(location.hours) | timeFormat }}</strong>
-            </span>
-					</div>
-
-          <!-- Closed flag -->
-          <div data-ng-if="!location.open" class="branch-closed location-alerts">
-            <b>Branch is temporarily closed.</b>
-          </div>
+          <!-- Today's Hours or Branch Closing -->
+          <p>
+            <span data-ng-if="location.open">Today's Hours:</span>
+            <strong><span data-ng-bind-html="location.hoursOrClosingMessage"
+              data-ng-class="{'location-alerts': location.closingMessageClass}">
+            </span></strong>
+          </p>
 
 					<!-- Branch Messages -->
           <div data-ng-if="location.branchException && !location.open" class="loc-exceptions">

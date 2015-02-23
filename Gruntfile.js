@@ -135,9 +135,9 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('sass-basic', ['sass:basic']);
-  // Additional tasks to handle all Compontent styles
+  // Additional tasks to handle all Component styles
   grunt.registerTask('sass-components', [
-    'concat:basic_with_components','sass:basic_with_components'
+    'concat:basic_with_components', 'sass:basic_with_components'
   ]);
 
   grunt.registerTask('docs', ['jsdoc']);
