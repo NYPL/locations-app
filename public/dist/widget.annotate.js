@@ -941,7 +941,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
 
             // Checking if thruthy needed for async calls
             if (time) {
-                if (time.open === null) {
+                if (time.open === null || time.alert) {
                     return 'Closed';
                 }
                 return clockTime(time.open) + ' - ' + clockTime(time.close);
@@ -1357,17 +1357,21 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     return {
       restrict: 'EA',
       templateUrl: 'scripts/directives/templates/hours-table.html',
-      replace: true,
+      replace: false, // If true, undefined error is thrown
       scope: {
         hours: '=hours',
         alerts: '=alerts'
       },
       link: function ($scope, elem, attrs, ctrl) {
         var weeklyHours = $scope.hours || null,
+          alerts;
+
+        if ($scope.alerts) {
           alerts = nyplAlertsService.filterAlerts(
             $scope.alerts,
             {only_closings: 'current'}
-          ) || [];
+          );
+        }
 
         if (weeklyHours && alerts.length) {
           $scope.hoursThisWeek = ctrl.findAlertsInWeek(weeklyHours, alerts);
@@ -1376,31 +1380,32 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         }
       },
       controller: ['$scope', function ($scope) {
-
         this.findAlertsInWeek = function(weekObj, alertsObj) {
           if (!weekObj && !alertsObj) { return null; }
 
-          var startDay, endDay,
-            week = _.each(weekObj, function (day, index){
-
-            day.alert = _.find(alertsObj, function(alert){
-              if (alert.applies) {
-                if (alert.applies.start && alert.applies.end) {
-                  startDay = new Date(alert.applies.start);
-                  endDay = new Date(alert.applies.end);
-
-                  if (index >= startDay.getUTCDay() && index <= endDay.getUTCDay()) {
-                    return alert;
+          var today = new Date().getUTCDay(),
+            startDay, endDay,
+            week = _.each(weekObj, function (day, index) {
+              day.alert = _.find(alertsObj, function(alert) {
+                if (alert.applies && today <= index) {
+                  if (alert.applies.start && alert.applies.end) {
+                    startDay = new Date(alert.applies.start);
+                    endDay = new Date(alert.applies.end);
+                    if (index >= startDay.getUTCDay() && index < endDay.getUTCDay()) {
+                      return alert;
+                    }
+                  } else if (alert.applies.start && !alert.applies.end) {
+                    startDay = new Date(alert.applies.start);
+                    if (index >= startDay.getUTCDay()) {
+                      return alert;
+                    }
                   }
                 }
-              }
+              });
             });
 
-          });
           return week;
         };
-
-
       }]
     };
   }
@@ -2332,7 +2337,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
      * @description ...
      */
      // Implemented in Alerts Module
-    utility.alerts = function (alerts) {
+    /*utility.alerts = function (alerts) {
       var today = new Date(),
         todaysAlert = [],
         alert_start,
@@ -2357,7 +2362,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         }
       }
       return null;
-    };
+    };*/
 
 
     /**
