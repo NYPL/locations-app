@@ -67,7 +67,7 @@
   /**
    * @ngdoc directive
    * @name nypl_locations.directive:todayshours
-   * @restrict E
+   * @restrict EA
    * @scope
    * @description
    * ...
@@ -83,7 +83,7 @@
       },
       link: function ($scope, elem, attrs, ctrl) {
         var alerts = {},
-          hours = $scope.hours || undefined;
+          hours = $scope.hours || null;
 
         if ($scope.alerts) {
           // Retrieve all current global closings
@@ -108,6 +108,8 @@
 
         // Proper string assignment for today's hours
         $scope.todaysHours = ctrl.computeHoursToday(hours, alerts);
+        // Display the clock icon (optional)
+        $scope.showIcon = (attrs.displayIcon === 'true') ? true : false;
       },
       controller: ['$scope', function ($scope) {
 

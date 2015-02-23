@@ -1,6 +1,6 @@
 <div class="h-event" id="hours-today" data-ng-if="todaysHours">
 	<time class="hours-today">
-		<span class='figure icon-clock icon-color-blue'></span>
+		<span data-ng-if="showIcon" class='figure icon-clock icon-color-blue'></span>
 		<span class='msg'>{{todaysHours}}</span>
 	</time>
 </div>
