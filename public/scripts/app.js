@@ -63,12 +63,6 @@ nypl_locations.config([
         // In $stateChangeSuccess, /locations/ is added to each page hit.
         $analyticsProvider.virtualPageviews(false);
 
-        // nyplAlerts required config settings
-        $nyplAlertsProvider.setOptions({
-            api_root: 'http://dev.locations.api.nypl.org/api',
-            api_version: 'v0.7'
-        });
-
         // uses the HTML5 History API, remove hash (need to test)
         $locationProvider.html5Mode(true);
 
@@ -122,6 +116,12 @@ nypl_locations.config([
         function getConfig(nyplLocationsService) {
             return nyplLocationsService.getConfig();
         }
+
+        // nyplAlerts required config settings
+        $nyplAlertsProvider.setOptions({
+            api_root: locations_cfg.config.api_root,
+            api_version: locations_cfg.config.api_version
+        });
 
         $crumbProvider.setOptions({
             primaryState: {name:'Home', customUrl: 'http://nypl.org' },
