@@ -339,10 +339,9 @@
         // then display 'Closed....' instead of the hours in the column.
         function configureGlobalAlert() {
             $scope.globalClosingMessage = '';
-
             if ($nyplAlerts.alerts.length) {
-                $scope.globalClosingMessage += "Closed " +
-                    $nyplAlerts.alerts[0].closed_for;
+                $scope.globalClosingMessage =
+                    nyplAlertsService.getActiveMsgs($nyplAlerts.alerts);
             }
         }
 

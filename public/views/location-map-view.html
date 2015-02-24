@@ -84,16 +84,16 @@
           </div>
 
           <!-- Today's Hours or Branch Closing -->
-          <p>
-            <span data-ng-if="location.open">Today's Hours:</span>
-            <strong><span data-ng-bind-html="location.hoursOrClosingMessage"
-              data-ng-class="{'location-alerts': location.closingMessageClass}">
-            </span></strong>
-          </p>
-
-					<!-- Branch Messages -->
-          <div data-ng-if="location.branchException && !location.open" class="loc-exceptions">
-            <p data-ng-bind-html="location.branchException.desc"></p>
+          <div>
+            <p data-ng-if="globalClosingMessage && location.open" class="location-alerts">
+              {{globalClosingMessage}}
+            </p>
+            <p data-ng-if="globalClosingMessage == '' || !location.open">
+              <span data-ng-if="location.open">Today's Hours:</span>
+              <strong><span data-ng-bind-html="location.hoursOrClosingMessage"
+                data-ng-class="{'location-alerts': location.closingMessageClass}">
+              </span></strong>
+            </p>
           </div>
 
           <!-- Map/Directions Links -->
