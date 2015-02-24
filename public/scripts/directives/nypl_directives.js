@@ -172,8 +172,6 @@
           );
         }
 
-        console.log(alerts);
-
         if (weeklyHours && alerts.length) {
           $scope.hoursThisWeek = ctrl.findAlertsInWeek(weeklyHours, alerts);
         } else if (weeklyHours) {
