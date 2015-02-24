@@ -98,7 +98,7 @@ module.exports = function (grunt) {
       },
       basic_with_components: {
         src: ['public/css/locations.scss',
-              'public/scripts/components/*/*.scss'],
+              'public/scripts/components/nypl_alerts/styles/nypl-alerts.scss'],
         dest: 'public/css/locations-concat.scss',
       },
     },
