@@ -37,7 +37,7 @@
                 openHour = getMilitaryHours(hours.open);
                 closedHour = getMilitaryHours(hours.close);
                 allDay = (sDate.getUTCDay() < eDate.getUTCDay()) ? true : false;
-                
+
                 // First, check if this is an all day closing
                 // Second, check if the alert start hour is before(equal-to) the location's
                 // opening hour or if the alert end hour is after(equal-to) the location's
@@ -45,7 +45,7 @@
                 if (allDay) {
                     displayString = 'Closed ' + (sDate.getUTCMonth() + 1)
                         + '/' + sDate.getUTCDate();
-                } else if (sDate.getUTCHours() <= openHour || eDate.getUTCHours() >= closedHour) {
+                } else if (sDate.getUTCHours() <= openHour && eDate.getUTCHours() >= closedHour) {
                     displayString = 'Closed ' + (sDate.getUTCMonth() + 1)
                         + '/' + sDate.getUTCDate();
                 } else {
