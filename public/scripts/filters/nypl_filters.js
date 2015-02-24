@@ -29,15 +29,23 @@
         }
 
         function closingHoursDisplay(hours, alerts) {
-            var sDate, eDate, 
+            var sDate, eDate, allDay,
                 openHour, closedHour, displayString;
             if (!alerts.length) {
                 sDate = new Date(alerts.applies.start);
                 eDate = new Date(alerts.applies.end);
                 openHour = getMilitaryHours(hours.open);
                 closedHour = getMilitaryHours(hours.close);
-
-                if (sDate.getUTCHours() <= openHour && eDate.getUTCHours() >= closedHour) {
+                allDay = (sDate.getUTCDay() < eDate.getUTCDay()) ? true : false;
+                
+                // First, check if this is an all day closing
+                // Second, check if the alert start hour is before(equal-to) the location's
+                // opening hour or if the alert end hour is after(equal-to) the location's
+                // closing hour. Lastly, default to a short-closing day
+                if (allDay) {
+                    displayString = 'Closed ' + (sDate.getUTCMonth() + 1)
+                        + '/' + sDate.getUTCDate();
+                } else if (sDate.getUTCHours() <= openHour || eDate.getUTCHours() >= closedHour) {
                     displayString = 'Closed ' + (sDate.getUTCMonth() + 1)
                         + '/' + sDate.getUTCDate();
                 } else {

@@ -172,15 +172,11 @@
           );
         }
 
-        console.log(alerts);
-
         if (weeklyHours && alerts.length) {
           $scope.hoursThisWeek = ctrl.findAlertsInWeek(weeklyHours, alerts);
         } else if (weeklyHours) {
           $scope.hoursThisWeek = weeklyHours;
         }
-
-        console.log($scope.hoursThisWeek);
       },
       controller: ['$scope', function ($scope) {
         this.findAlertsInWeek = function(weekObj, alertsObj) {
