@@ -172,26 +172,38 @@
           );
         }
 
+        console.log(alerts);
+
         if (weeklyHours && alerts.length) {
           $scope.hoursThisWeek = ctrl.findAlertsInWeek(weeklyHours, alerts);
         } else if (weeklyHours) {
           $scope.hoursThisWeek = weeklyHours;
         }
+
+        console.log($scope.hoursThisWeek);
       },
       controller: ['$scope', function ($scope) {
         this.findAlertsInWeek = function(weekObj, alertsObj) {
           if (!weekObj && !alertsObj) { return null; }
 
           var today = new Date().getUTCDay(),
-            startDay, endDay,
+            startDay, endDay, allDay,
             week = _.each(weekObj, function (day, index) {
               day.alert = _.find(alertsObj, function(alert) {
                 if (alert.applies && today <= index) {
                   if (alert.applies.start && alert.applies.end) {
                     startDay = new Date(alert.applies.start);
                     endDay = new Date(alert.applies.end);
-                    if (index >= startDay.getUTCDay() && index <= endDay.getUTCDay()) {
-                      return alert;
+                    allDay = (startDay.getUTCDay() < endDay.getUTCDay()) ? true : false;
+
+                    if (allDay) {
+                      if (index >= startDay.getUTCDay() && index < endDay.getUTCDay()) {
+                        return alert;
+                      }
+                    } else {
+                      if (index >= startDay.getUTCDay() && index <= endDay.getUTCDay()) {
+                        return alert;
+                      }
                     }
                   } else if (alert.applies.start && !alert.applies.end) {
                     startDay = new Date(alert.applies.start);
