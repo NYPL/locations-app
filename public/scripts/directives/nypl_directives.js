@@ -168,9 +168,11 @@
         if ($scope.alerts) {
           alerts = nyplAlertsService.filterAlerts(
             $scope.alerts,
-            {only_closings: 'current'}
+            {only_closings: 'all'}
           );
         }
+
+        console.log(alerts);
 
         if (weeklyHours && alerts.length) {
           $scope.hoursThisWeek = ctrl.findAlertsInWeek(weeklyHours, alerts);
