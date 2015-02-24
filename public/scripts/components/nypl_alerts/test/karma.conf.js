@@ -1,0 +1,56 @@
+/*jslint indent: 2, maxlen: 80 */
+/*globals module */
+
+module.exports = function (config) {
+  'use strict';
+
+  config.set({
+    basePath : '../',
+
+    files : [
+      'components/jquery/dist/jquery.js',
+      'components/angular/angular.js',
+      'components/angular-mocks/*.js',
+      'components/angular-sanitize/*.js',
+      'components/underscore/underscore.js',
+      'components/angular-ui-router/release/*.js',
+      'nypl_alerts.js',
+      'test/unit/*.js',
+    ],
+
+    exclude : [
+      'public/bower_components/angular/angular-loader.js',
+      'public/bower_components/angular/*.min.js',
+      'angular-scenario.js',
+      'public/languages/*.json'
+    ],
+
+    autoWatch : true,
+
+    frameworks: ['jasmine'],
+
+    browsers : ['Chrome'],
+
+    plugins : [
+      'karma-junit-reporter',
+      'karma-chrome-launcher',
+      'karma-firefox-launcher',
+      'karma-script-launcher',
+      'karma-jasmine',
+      'karma-ng-html2js-preprocessor',
+      'karma-coverage'
+    ],
+
+    // reporters: ['progress', 'coverage'],
+    
+    // coverageReporter: {
+    //   type: 'html',
+    //   dir: 'test/coverage/'
+    // },
+
+    // ngHtml2JsPreprocessor: {
+    //   stripPrefix: 'public/',
+    //   moduleName: 'directiveTemplates'
+    // }
+  });
+};

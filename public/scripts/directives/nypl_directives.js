@@ -172,6 +172,8 @@
           );
         }
 
+        console.log(alerts);
+
         if (weeklyHours && alerts.length) {
           $scope.hoursThisWeek = ctrl.findAlertsInWeek(weeklyHours, alerts);
         } else if (weeklyHours) {
@@ -190,7 +192,7 @@
                   if (alert.applies.start && alert.applies.end) {
                     startDay = new Date(alert.applies.start);
                     endDay = new Date(alert.applies.end);
-                    if (index >= startDay.getUTCDay() && index < endDay.getUTCDay()) {
+                    if (index >= startDay.getUTCDay() && index <= endDay.getUTCDay()) {
                       return alert;
                     }
                   } else if (alert.applies.start && !alert.applies.end) {

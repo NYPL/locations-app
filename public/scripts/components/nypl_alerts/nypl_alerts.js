@@ -78,6 +78,7 @@
           if (elem.display.start && elem.display.end) {
             sDate = new Date(elem.display.start);
             eDate = new Date(elem.display.end);
+            //console.log(sDate, eDate, today);
             if (sDate.getTime() <= today.getTime() &&
                 eDate.getTime() >= today.getTime()) {
               return elem;

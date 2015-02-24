@@ -14,7 +14,16 @@
   ],
   "dependencies": {
     "angular": ">= 1.2.14",
+    "angular-sanitize": "1.2.14",
+    "angular-ui-router": "~0.2.10",
+    "jquery": "~1.10.2",
     "underscore": "~1.6.0"
+  },
+   "devDependencies": {
+    "angular-mocks": "~1.2.0",
+    "angular-scenario": "~1.2.14",
+    "jasmine": "~2.1.0",
+    "jasmine-jquery": "~2.0.5"
   },
   "private": true
 }

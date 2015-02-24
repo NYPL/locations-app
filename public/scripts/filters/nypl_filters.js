@@ -12,7 +12,13 @@
      * @description
      * Filter formats military time to standard time
      */
-    function timeFormat() {
+    function timeFormat($sce) {
+        function getMilitaryHours(time) {
+            var components = time.split(':'),
+                hours = parseInt(components[0], 10);
+            return hours;
+        }
+
         function clockTime(time) {
             var components = time.split(':'),
                 hours = ((parseInt(components[0], 10) + 11) % 12 + 1),
@@ -22,17 +28,43 @@
             return hours + ":" + minutes + meridiem;
         }
 
+        function closingHoursDisplay(hours, alerts) {
+            var sDate, eDate, 
+                openHour, closedHour, displayString;
+            if (!alerts.length) {
+                sDate = new Date(alerts.applies.start);
+                eDate = new Date(alerts.applies.end);
+                openHour = getMilitaryHours(hours.open);
+                closedHour = getMilitaryHours(hours.close);
+
+                if (sDate.getUTCHours() <= openHour && eDate.getUTCHours() >= closedHour) {
+                    displayString = 'Closed ' + (sDate.getUTCMonth() + 1)
+                        + '/' + sDate.getUTCDate();
+                } else {
+                    displayString = clockTime(hours.open) + ' - ' + clockTime(hours.close)
+                        + '<br />' + 'Changed Hours';
+                }
+            }
+            // Parse as HTML for <br> case
+            return $sce.trustAsHtml(displayString);
+        }
+
         return function output(timeObj) {
             // The time object may have just today's hours
             // or be an object with today's and tomorrow's hours
-            var time = timeObj !== undefined && timeObj.today !== undefined ?
+            var alerts,
+                time = timeObj !== undefined && timeObj.today !== undefined ?
                     timeObj.today :
                     timeObj;
 
             // Checking if thruthy needed for async calls
             if (time) {
-                if (time.open === null || time.alert) {
+                alerts = time.alert || null;
+
+                if (time.open === null) {
                     return 'Closed';
+                } else if (alerts) {
+                    return closingHoursDisplay(time, alerts);
                 }
                 return clockTime(time.open) + ' - ' + clockTime(time.close);
             }

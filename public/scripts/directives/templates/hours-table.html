@@ -1,8 +1,6 @@
 <table class="weekly-hours zeta" data-ng-if="hoursThisWeek">
 	<tr class="{{hours.day}}" data-ng-class="{'open': !hours.alert, 'closed': hours.alert || !hours.open}" data-ng-repeat="hours in hoursThisWeek" data-ng-if="$index != 7">
 		<th class="day">{{hours.day}}</th>
-		<td class="time">
-			{{ hours | timeFormat}}
-		</td>
+		<td class="time" ng-bind-html="hours | timeFormat"></td>
 	</tr>
 </table>
