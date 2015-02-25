@@ -85,7 +85,7 @@ By utilizing the built-in Provider and Service functions, you can easily retriev
     Finally, register a proper Grunt task
     ```javascript
     /* Additional tasks to handle all compontent styles */
-    grunt.registerTask('buildJS-Components', [
+    grunt.registerTask('sass-components', [
     'concat:basic_with_components','sass:basic_with_components'
     ]);
     ```

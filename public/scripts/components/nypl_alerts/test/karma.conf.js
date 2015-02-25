@@ -18,12 +18,7 @@ module.exports = function (config) {
       'test/unit/*.js',
     ],
 
-    exclude : [
-      'public/bower_components/angular/angular-loader.js',
-      'public/bower_components/angular/*.min.js',
-      'angular-scenario.js',
-      'public/languages/*.json'
-    ],
+    exclude : [],
 
     autoWatch : true,
 
