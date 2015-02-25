@@ -81,6 +81,10 @@
             if (sDate.getTime() <= today.getTime() &&
                 eDate.getTime() >= today.getTime()) {
               return elem;
+            } else if (today.getDay() === sDate.getDay() &&
+              eDate.getDay() === today.getDay() && eDate.getTime() 
+              >= today.getTime()) {
+              return elem;
             }
           }
         }
