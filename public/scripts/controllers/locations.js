@@ -292,7 +292,7 @@
 
                         // CSS class for a closing
                         location.closingMessageClass =
-                            closingMessageClass(location.open, alerts);
+                            closingMessageClass(alerts);
                         // Hours or closing message that will display
                         location.hoursOrClosingMessage = 
                             nyplAlertsService.getHoursOrMessage(
@@ -316,11 +316,10 @@
         };
 
         // Displaying the closing css class for the text
-        function closingMessageClass(branchOpen, location_alerts) {
+        function closingMessageClass(location_alerts) {
             var alerts = nyplAlertsService.activeClosings(location_alerts);
 
-            // Not open or there are closing alerts
-            if (!branchOpen || alerts) {
+            if (alerts) {
                 return true;
             }
 
