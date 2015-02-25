@@ -268,7 +268,7 @@
         if (scope.alerts) {
           scope.locationAlerts = nyplAlertsService.filterAlerts(
             scope.alerts,
-            {scope: 'location'}
+            {scope: 'location', current: true}
           );
         }
       }
