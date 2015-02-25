@@ -43,18 +43,17 @@
                 // opening hour or if the alert end hour is after(equal-to) the location's
                 // closing hour. Lastly, default to a short-closing day
                 if (allDay) {
-                    displayString = 'Closed ' + (sDate.getUTCMonth() + 1)
+                    displayString = 'Closed ' + (sDate.getMonth() + 1)
                         + '/' + sDate.getUTCDate();
-                } else if (sDate.getUTCHours() <= openHour && eDate.getUTCHours() >= closedHour) {
-                    displayString = 'Closed ' + (sDate.getUTCMonth() + 1)
-                        + '/' + sDate.getUTCDate();
+                } else if (sDate.getHours() <= openHour && eDate.getHours() >= closedHour) {
+                    displayString = 'Closed ' + (sDate.getMonth() + 1)
+                        + '/' + sDate.getDate();
                 } else {
-                    displayString = clockTime(hours.open) + ' - ' + clockTime(hours.close)
-                        + '<br />' + 'Changed Hours';
+                    displayString = 'Change in hours ' + (sDate.getMonth() + 1)
+                        + '/' + sDate.getDate();
                 }
             }
-            // Parse as HTML for <br> case
-            return $sce.trustAsHtml(displayString);
+            return displayString;
         }
 
         return function output(timeObj) {
