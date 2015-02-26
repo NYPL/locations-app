@@ -103,7 +103,6 @@
             $scope.alerts,
             {only_closings: 'all'}
           );
-
         }
 
         // Proper string assignment for today's hours
@@ -182,7 +181,7 @@
         this.findAlertsInWeek = function(weekObj, alertsObj) {
           if (!weekObj && !alertsObj) { return null; }
 
-          var today = new Date().getUTCDay(),
+          var today = new Date().getDay(),
             startDay, endDay, allDay,
             week = _.each(weekObj, function (day, index) {
               day.alert = _.find(alertsObj, function(alert) {
@@ -190,20 +189,19 @@
                   if (alert.applies.start && alert.applies.end) {
                     startDay = new Date(alert.applies.start);
                     endDay = new Date(alert.applies.end);
-                    allDay = (startDay.getUTCDay() < endDay.getUTCDay()) ? true : false;
-
+                    allDay = (startDay.getDay() < endDay.getDay()) ? true : false;
                     if (allDay) {
-                      if (index >= startDay.getUTCDay() && index < endDay.getUTCDay()) {
+                      if (index >= startDay.getDay() && index < endDay.getDay()) {
                         return alert;
                       }
                     } else {
-                      if (index >= startDay.getUTCDay() && index <= endDay.getUTCDay()) {
+                      if (index >= startDay.getDay() && index <= endDay.getDay()) {
                         return alert;
                       }
                     }
                   } else if (alert.applies.start && !alert.applies.end) {
                     startDay = new Date(alert.applies.start);
-                    if (index >= startDay.getUTCDay()) {
+                    if (index >= startDay.getDay()) {
                       return alert;
                     }
                   }

@@ -78,7 +78,6 @@
           if (elem.display.start && elem.display.end) {
             sDate = new Date(elem.display.start);
             eDate = new Date(elem.display.end);
-            //console.log(sDate, eDate, today);
             if (sDate.getTime() <= today.getTime() &&
                 eDate.getTime() >= today.getTime()) {
               return elem;
@@ -100,8 +99,15 @@
           if (elem.applies.start && elem.applies.end) {
             sDate = new Date(elem.applies.start);
             eDate = new Date(elem.applies.end);
+            // Covers alert within today
             if (sDate.getTime() <= today.getTime() &&
                 eDate.getTime() >= today.getTime()) {
+              return elem;
+            }
+            // Covers early openings
+            else if (today.getDay() === sDate.getDay() &&
+              eDate.getDay() === today.getDay() && eDate.getTime() 
+              >= today.getTime()) {
               return elem;
             }
           } else if (elem.applies.start) {
