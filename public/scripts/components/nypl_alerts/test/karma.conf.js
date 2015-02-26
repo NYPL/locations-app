@@ -36,12 +36,16 @@ module.exports = function (config) {
       'karma-coverage'
     ],
 
-    // reporters: ['progress', 'coverage'],
+    reporters: ['progress', 'coverage'],
+
+    preprocessors: {
+      'nypl_alerts.js': ['coverage']
+    },
     
-    // coverageReporter: {
-    //   type: 'html',
-    //   dir: 'test/coverage/'
-    // },
+    coverageReporter: {
+      type: 'html',
+      dir: 'test/coverage/'
+    },
 
     // ngHtml2JsPreprocessor: {
     //   stripPrefix: 'public/',

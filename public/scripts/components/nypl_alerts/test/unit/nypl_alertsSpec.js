@@ -5,14 +5,63 @@ describe, expect, beforeEach, inject, it, angular */
 describe('NYPL Alerts Component ', function () {
   'use strict';
 
+  var alertsObject = {};
+
+  beforeEach(function () {
+    // Load the module for all tests.
+    module('nyplAlerts', function ($nyplAlertsProvider) {
+      $nyplAlertsProvider.setOptions({
+        api_root: 'http://dev.locations.api.nypl.org/api',
+        api_version: 'v0.7'
+      });
+    });
+
+    // 3 Alerts
+    alertsObject.alerts = [
+      {
+        id: 287824,
+        scope: "all",
+        _links: { web: {href: "http://dev.www.aws.nypl.org/node/287824"} },
+        closed_for: "Daylight closing",
+        msg: "Daylight Test Alert",
+        display: {
+          start: "2015-02-21T00:00:00-05:00",
+          end: "2015-03-10T00:00:00-04:00"
+        },
+        applies: {
+          start: "2015-02-21T00:00:00-05:00",
+          end: "2015-03-10T00:00:00-04:00"
+        }
+      },
+      {
+        id: 283839,
+        scope: "all",
+        _links: { web: {href: "http://dev.www.aws.nypl.org/node/283839"} },
+        msg: "<p>The New York Public Library will be closed on Sunday, " +
+          "April 5.</p>",
+        display: {
+          start: "2015-04-01T00:00:00-04:00",
+          end: "2015-04-06T00:00:00-04:00"
+        }
+      },
+      {
+        id: 283840,
+        scope: "all",
+        _links: { web: {href: "http://dev.www.aws.nypl.org/node/283840"} },
+        msg: "<p>The New York Public Library will be closed from May 23 " +
+          "through May 25 in observance of Memorial Day.</p>",
+        display: {
+          start: "2015-05-17T00:00:00-04:00",
+          end: "2015-05-26T00:00:00-04:00"
+        }
+      }];
+  });
+
   describe('Alerts Service', function () {
-    var nyplAlertsService, alertsObject;
+    var nyplAlertsService;
 
     // excuted before each "it" is run.
     beforeEach(function () {
-      // load the module.
-      module('nyplAlerts');
-
       // inject your service for testing.
       inject(function (_nyplAlertsService_) {
         nyplAlertsService = _nyplAlertsService_;
@@ -29,48 +78,6 @@ describe('NYPL Alerts Component ', function () {
     });
 
     describe('Current Alerts Filter', function () {
-      beforeEach(function () {
-        // 3 Alerts
-        alertsObject = [
-          {
-            id: 287824,
-            scope: "all",
-            _links: { web: {href: "http://dev.www.aws.nypl.org/node/287824"} },
-            closed_for: "Daylight closing",
-            msg: "Daylight Test Alert",
-            display: {
-              start: "2015-02-21T00:00:00-05:00",
-              end: "2015-03-10T00:00:00-04:00"
-            },
-            applies: {
-              start: "2015-02-21T00:00:00-05:00",
-              end: "2015-03-10T00:00:00-04:00"
-            }
-          },
-          {
-            id: 283839,
-            scope: "all",
-            _links: { web: {href: "http://dev.www.aws.nypl.org/node/283839"} },
-            msg: "<p>The New York Public Library will be closed on Sunday, " +
-              "April 5.</p>",
-            display: {
-              start: "2015-04-01T00:00:00-04:00",
-              end: "2015-04-06T00:00:00-04:00"
-            }
-          },
-          {
-            id: 283840,
-            scope: "all",
-            _links: { web: {href: "http://dev.www.aws.nypl.org/node/283840"} },
-            msg: "<p>The New York Public Library will be closed from May 23 " +
-              "through May 25 in observance of Memorial Day.</p>",
-            display: {
-              start: "2015-05-17T00:00:00-04:00",
-              end: "2015-05-26T00:00:00-04:00"
-            }
-          }];
-      });
-
       it('should have a currentAlerts() function', function () {
         expect(angular.isFunction(nyplAlertsService.currentAlerts)).toBe(true);
         expect(nyplAlertsService.currentAlerts).toBeDefined();
@@ -89,7 +96,7 @@ describe('NYPL Alerts Component ', function () {
 
           jasmine.clock().mockDate(todaysDateMock);
 
-          activeAlerts = nyplAlertsService.currentAlerts(alertsObject);
+          activeAlerts = nyplAlertsService.currentAlerts(alertsObject.alerts);
           expect(activeAlerts.length).toBe(1);
         });
 
@@ -102,11 +109,50 @@ describe('NYPL Alerts Component ', function () {
 
           jasmine.clock().mockDate(todaysDateMock);
 
-          activeAlerts = nyplAlertsService.currentAlerts(alertsObject);
+          activeAlerts = nyplAlertsService.currentAlerts(alertsObject.alerts);
           expect(activeAlerts.length).toBe(0);
         });
 
     }); /* End Describe Current Alerts Filter */
 
   }); /* End Describe Alerts Service */
+
+
+  describe('Alerts Directives', function () {
+    var template, compile, scope, httpBackend;
+
+    beforeEach(function () {
+      inject(function (_$compile_, _$rootScope_, _$httpBackend_) {
+        compile = _$compile_;
+        scope = _$rootScope_;
+        httpBackend = _$httpBackend_;
+
+        httpBackend
+          .whenJSONP('http://dev.locations.api.nypl.org/api/v0.7/alerts' +
+            '?callback=JSON_CALLBACK')
+          .respond(alertsObject);
+
+        httpBackend.flush();
+      });
+    });
+
+    function createDirective(template) {
+      var element;
+      element = compile(template)(scope);
+      scope.$digest();
+
+      return element;
+    }
+
+    // it('should compile', function () {
+    //   var globalalerts;
+    //   template = '<nypl-global-alerts></nypl-global-alerts>';
+    //   globalalerts = createDirective(template);
+
+    //   console.log(globalalerts);
+    // });
+  });
+
+
+
 });
