@@ -512,12 +512,6 @@ nypl_locations.config([
         // In $stateChangeSuccess, /locations/ is added to each page hit.
         $analyticsProvider.virtualPageviews(false);
 
-        // nyplAlerts required config settings
-        $nyplAlertsProvider.setOptions({
-            api_root: 'http://dev.locations.api.nypl.org/api',
-            api_version: 'v0.7'
-        });
-
         // uses the HTML5 History API, remove hash (need to test)
         $locationProvider.html5Mode(true);
 
@@ -576,6 +570,12 @@ nypl_locations.config([
             return nyplLocationsService.getConfig();
         }
         getConfig.$inject = ["nyplLocationsService"];
+
+        // nyplAlerts required config settings
+        $nyplAlertsProvider.setOptions({
+            api_root: locations_cfg.config.api_root,
+            api_version: locations_cfg.config.api_version
+        });
 
         $crumbProvider.setOptions({
             primaryState: {name:'Home', customUrl: 'http://nypl.org' },
@@ -922,7 +922,13 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
      * @description
      * Filter formats military time to standard time
      */
-    function timeFormat() {
+    function timeFormat($sce) {
+        function getMilitaryHours(time) {
+            var components = time.split(':'),
+                hours = parseInt(components[0], 10);
+            return hours;
+        }
+
         function clockTime(time) {
             var components = time.split(':'),
                 hours = ((parseInt(components[0], 10) + 11) % 12 + 1),
@@ -932,17 +938,50 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
             return hours + ":" + minutes + meridiem;
         }
 
+        function closingHoursDisplay(hours, alerts) {
+            var sDate, eDate, allDay,
+                openHour, closedHour, displayString;
+            if (!alerts.length) {
+                sDate = new Date(alerts.applies.start);
+                eDate = new Date(alerts.applies.end);
+                openHour = getMilitaryHours(hours.open);
+                closedHour = getMilitaryHours(hours.close);
+                allDay = (sDate.getUTCDay() < eDate.getUTCDay()) ? true : false;
+
+                // First, check if this is an all day closing
+                // Second, check if the alert start hour is before(equal-to) the location's
+                // opening hour or if the alert end hour is after(equal-to) the location's
+                // closing hour. Lastly, default to a short-closing day
+                if (allDay) {
+                    displayString = 'Closed ' + (sDate.getMonth() + 1)
+                        + '/' + sDate.getUTCDate();
+                } else if (sDate.getHours() <= openHour && eDate.getHours() >= closedHour) {
+                    displayString = 'Closed ' + (sDate.getMonth() + 1)
+                        + '/' + sDate.getDate();
+                } else {
+                    displayString = 'Change in hours ' + (sDate.getMonth() + 1)
+                        + '/' + sDate.getDate();
+                }
+            }
+            return displayString;
+        }
+
         return function output(timeObj) {
             // The time object may have just today's hours
             // or be an object with today's and tomorrow's hours
-            var time = timeObj !== undefined && timeObj.today !== undefined ?
+            var alerts,
+                time = timeObj !== undefined && timeObj.today !== undefined ?
                     timeObj.today :
                     timeObj;
 
             // Checking if thruthy needed for async calls
             if (time) {
-                if (time.open === null || time.alert) {
+                alerts = time.alert || null;
+
+                if (time.open === null) {
                     return 'Closed';
+                } else if (alerts) {
+                    return closingHoursDisplay(time, alerts);
                 }
                 return clockTime(time.open) + ' - ' + clockTime(time.close);
             }
@@ -952,6 +991,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
             return '';
         };
     }
+    timeFormat.$inject = ["$sce"];
 
     /**
      * @ngdoc filter
@@ -1269,7 +1309,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
   /**
    * @ngdoc directive
    * @name nypl_locations.directive:todayshours
-   * @restrict E
+   * @restrict EA
    * @scope
    * @description
    * ...
@@ -1285,7 +1325,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
       },
       link: function ($scope, elem, attrs, ctrl) {
         var alerts = {},
-          hours = $scope.hours || undefined;
+          hours = $scope.hours || null;
 
         if ($scope.alerts) {
           // Retrieve all current global closings
@@ -1305,11 +1345,12 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
             $scope.alerts,
             {only_closings: 'all'}
           );
-
         }
 
         // Proper string assignment for today's hours
         $scope.todaysHours = ctrl.computeHoursToday(hours, alerts);
+        // Display the clock icon (optional)
+        $scope.showIcon = (attrs.displayIcon === 'true') ? true : false;
       },
       controller: ['$scope', function ($scope) {
 
@@ -1369,7 +1410,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         if ($scope.alerts) {
           alerts = nyplAlertsService.filterAlerts(
             $scope.alerts,
-            {only_closings: 'current'}
+            {only_closings: 'all'}
           );
         }
 
@@ -1383,20 +1424,27 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         this.findAlertsInWeek = function(weekObj, alertsObj) {
           if (!weekObj && !alertsObj) { return null; }
 
-          var today = new Date().getUTCDay(),
-            startDay, endDay,
+          var today = new Date().getDay(),
+            startDay, endDay, allDay,
             week = _.each(weekObj, function (day, index) {
               day.alert = _.find(alertsObj, function(alert) {
                 if (alert.applies && today <= index) {
                   if (alert.applies.start && alert.applies.end) {
                     startDay = new Date(alert.applies.start);
                     endDay = new Date(alert.applies.end);
-                    if (index >= startDay.getUTCDay() && index < endDay.getUTCDay()) {
-                      return alert;
+                    allDay = (startDay.getDay() < endDay.getDay()) ? true : false;
+                    if (allDay) {
+                      if (index >= startDay.getDay() && index < endDay.getDay()) {
+                        return alert;
+                      }
+                    } else {
+                      if (index >= startDay.getDay() && index <= endDay.getDay()) {
+                        return alert;
+                      }
                     }
                   } else if (alert.applies.start && !alert.applies.end) {
                     startDay = new Date(alert.applies.start);
-                    if (index >= startDay.getUTCDay()) {
+                    if (index >= startDay.getDay()) {
                       return alert;
                     }
                   }
