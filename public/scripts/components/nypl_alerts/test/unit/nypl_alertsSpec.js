@@ -1,57 +1,41 @@
 /*jslint nomen: true, unparam: true, indent: 2, maxlen: 80 */
-/*globals element, by, module, module,
+/*globals element, by, module, module, afterEach, jasmine,
 describe, expect, beforeEach, inject, it, angular */
 
-
-describe('NYPL Alerts Component ', function() {
+describe('NYPL Alerts Component ', function () {
   'use strict';
 
-  describe('Alerts Service', function() {
-    var nyplAlertsService, alertsObject, MockDate;;
+  describe('Alerts Service', function () {
+    var nyplAlertsService, alertsObject;
 
     // excuted before each "it" is run.
-    beforeEach(function (){
+    beforeEach(function () {
       // load the module.
-      module('nyplAlerts')
+      module('nyplAlerts');
 
       // inject your service for testing.
-      inject(function(_nyplAlertsService_) {
+      inject(function (_nyplAlertsService_) {
         nyplAlertsService = _nyplAlertsService_;
       });
+
+      // Doesn't seem like install/uninstall are necessary for mocking dates
+      // but leaving it in case it's used for setTimeout/setInterval time
+      // testing and mocking.
+      jasmine.clock().install();
     });
 
-    describe('Current Alerts Filter', function() {
-      it('should have a currentAlerts() function', function () { 
-        expect(angular.isFunction(nyplAlertsService.currentAlerts)).toBe(true);
-        expect(nyplAlertsService.currentAlerts).toBeDefined();
-      });
+    afterEach(function () {
+      jasmine.clock().uninstall();
+    });
 
-      it('should filter current alerts that have started ' +
-        'and have not ended. Does not account for closing alerts. ' +
-        'Should return one current alert based on set date as today', function () {
-        var date = new Date(2015, 2, 1),
-          activeAlerts,
-          MockDate = Date;
-
-        Date = function (alertDate) {
-          if (alertDate) {
-            // the Date function gets called with the alert's display
-            // start and end times, so we DO NOT want to mock those dates.
-            return new MockDate(alertDate);
-          }
-          // This is to return "today's date" which we mock above.
-          return date;
-        };
-
+    describe('Current Alerts Filter', function () {
+      beforeEach(function () {
         // 3 Alerts
-        alertsObject = [{
+        alertsObject = [
+          {
             id: 287824,
             scope: "all",
-            _links: {
-              web: {
-                href: "http://dev.www.aws.nypl.org/node/287824"
-              }
-            },
+            _links: { web: {href: "http://dev.www.aws.nypl.org/node/287824"} },
             closed_for: "Daylight closing",
             msg: "Daylight Test Alert",
             display: {
@@ -66,12 +50,9 @@ describe('NYPL Alerts Component ', function() {
           {
             id: 283839,
             scope: "all",
-            _links: {
-              web: {
-                href: "http://dev.www.aws.nypl.org/node/283839"
-              }
-            },
-            msg: "<p>The New York Public Library will be closed on Sunday, April 5.</p>",
+            _links: { web: {href: "http://dev.www.aws.nypl.org/node/283839"} },
+            msg: "<p>The New York Public Library will be closed on Sunday, " +
+              "April 5.</p>",
             display: {
               start: "2015-04-01T00:00:00-04:00",
               end: "2015-04-06T00:00:00-04:00"
@@ -80,92 +61,52 @@ describe('NYPL Alerts Component ', function() {
           {
             id: 283840,
             scope: "all",
-            _links: {
-              web: {
-                href: "http://dev.www.aws.nypl.org/node/283840"
-              }
-            },
-            msg: "<p>The New York Public Library will be closed from May 23 through May 25 in observance of Memorial Day.</p>",
+            _links: { web: {href: "http://dev.www.aws.nypl.org/node/283840"} },
+            msg: "<p>The New York Public Library will be closed from May 23 " +
+              "through May 25 in observance of Memorial Day.</p>",
             display: {
               start: "2015-05-17T00:00:00-04:00",
               end: "2015-05-26T00:00:00-04:00"
             }
           }];
-
-        activeAlerts = nyplAlertsService.currentAlerts(alertsObject);
-        expect(activeAlerts.length).toBe(1);
-
-        Date = MockDate;
       });
 
-      /*it('should filter current alerts that have started ' +
-        'and have not ended. Does not account for closing alerts. ' +
-        'Should return no results since all alerts are not within ' +
-        'todays date', function () {
+      it('should have a currentAlerts() function', function () {
+        expect(angular.isFunction(nyplAlertsService.currentAlerts)).toBe(true);
+        expect(nyplAlertsService.currentAlerts).toBeDefined();
+      });
 
-        var date = new Date(2015, 1, 10);
-        MockDate = Date;
-        Date = function () { return date; };
+      it('should filter current alerts that have started and have not ended.' +
+        ' Does not account for closing alerts. Should return one current ' +
+        'alert based on set date as today',
+          function () {
+          // Today's date will be March 1st.
+          // Whenever `new Date()` is called, we will replace it with
+          // the mocked date. But when it's called with parameters,
+          // those parameters will take priority.
+          var todaysDateMock = new Date(2015, 2, 1),
+            activeAlerts;
 
-        // 3 Alerts
-        alertsObject = [{
-          id: 287824,
-          scope: "all",
-          _links: {
-            web: {
-              href: "http://dev.www.aws.nypl.org/node/287824"
-            }
-          },
-          closed_for: "Daylight closing",
-          msg: "Daylight Test Alert",
-          display: {
-            start: "2015-02-21T00:00:00-05:00",
-            end: "2015-03-01T00:00:00-04:00"
-          },
-          applies: {
-            start: "2015-02-21T00:00:00-05:00",
-            end: "2015-03-10T00:00:00-04:00"
-          }
-        },
-        {
-          id: 283839,
-          scope: "all",
-          _links: {
-            web: {
-              href: "http://dev.www.aws.nypl.org/node/283839"
-            }
-          },
-          msg: "<p>The New York Public Library will be closed on Sunday, April 5.</p>",
-          display: {
-            start: "2015-04-01T00:00:00-04:00",
-            end: "2015-04-06T00:00:00-04:00"
-          }
-        },
-        {
-          id: 283840,
-          scope: "all",
-          _links: {
-            web: {
-              href: "http://dev.www.aws.nypl.org/node/283840"
-            }
-          },
-          msg: "<p>The New York Public Library will be closed from May 23 through May 25 in observance of Memorial Day.</p>",
-          display: {
-            start: "2015-05-17T00:00:00-04:00",
-            end: "2015-05-26T00:00:00-04:00"
-          }
-        }];
+          jasmine.clock().mockDate(todaysDateMock);
 
+          activeAlerts = nyplAlertsService.currentAlerts(alertsObject);
+          expect(activeAlerts.length).toBe(1);
+        });
 
-        var result = nyplAlertsService.currentAlerts(alertsObject);
-        expect(result.length).toBe(0);
-        console.log(date);
+      it('should filter current alerts that have started and have not ' +
+        'ended. Does not account for closing alerts. Should return no ' +
+        'results since all alerts are not within todays date',
+        function () {
+          var todaysDateMock = new Date(2015, 1, 10),
+            activeAlerts;
 
+          jasmine.clock().mockDate(todaysDateMock);
 
-      }); */
+          activeAlerts = nyplAlertsService.currentAlerts(alertsObject);
+          expect(activeAlerts.length).toBe(0);
+        });
 
-    });
+    }); /* End Describe Current Alerts Filter */
 
-  });
-
+  }); /* End Describe Alerts Service */
 });
