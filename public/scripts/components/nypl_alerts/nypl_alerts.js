@@ -26,7 +26,7 @@
 
         // Generates a correct Alerts API URL
         provider.generateApiUrl = function (host, version) {
-          if (!host && !version) { return undefined; }
+          if (!host || !version) { return undefined; }
 
           var jsonCb = '?callback=JSON_CALLBACK',
             url = host + '/' + version + '/alerts' + jsonCb;
@@ -49,7 +49,7 @@
                 defer.resolve(data.alerts);
               })
               .error(function (status) {
-                defer.reject(status, errors.api);
+                defer.reject(errors.api);
               });
           }
           return defer.promise;
@@ -255,13 +255,13 @@
    * @scope
    * @description 
    */
-  function nyplLocationAlerts(nyplAlertsService) {
+  function nyplLocationAlerts(nyplAlertsService, $sce) {
     return {
       restrict: 'E',
       template: "<div class='nypl-location-alerts'" +
                     "data-ng-if='locationAlerts'>" +
                   "<div data-ng-repeat='alert in locationAlerts'>" +
-                    "<p data-ng-bind-html='alert.msg'></p>" +
+                    "<p data-ng-bind-html='alert.msg'>" +
                   "</div>" +
                 "</div>",
       replace: true,
@@ -299,7 +299,7 @@
    * @description
    */
   angular
-    .module('nyplAlerts', [])
+    .module('nyplAlerts', ['ngSanitize'])
     .provider('$nyplAlerts', $nyplAlertsProvider)
     .service('nyplAlertsService', nyplAlertsService)
     .run(initAlerts)

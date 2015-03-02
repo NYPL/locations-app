@@ -5,54 +5,215 @@ describe, expect, beforeEach, inject, it, angular */
 describe('NYPL Alerts Component', function () {
   'use strict';
 
-  var alertsObject = {};
+  var alertsObject = {},
+    todaysDateMock;
 
-  describe('Broken Implementations', function () {
-    describe('Broken module setup', function () {
-      it('should throw an error because no URL was added', function () {
-        var rootScope;
+  describe('Broken Module Setup', function () {
+    // DO NOT pass API URL or version.
+    it('should throw an error because no URL was added', function () {
+      var rootScope;
 
-        // Note that no settings were passed in the provider
-        module('nyplAlerts');
-        inject(function (_$rootScope_) {
-          rootScope = _$rootScope_;
-        });
-
-        expect(rootScope.$apply)
-          .toThrow('$nyplAlerts: API URL could not be defined');
+      // Note that no settings were passed in the provider
+      module('nyplAlerts');
+      inject(function (_$rootScope_) {
+        rootScope = _$rootScope_;
       });
 
-      // it('should throw an error because no API version was added', function () {
-      //   var rootScope, httpBackend;
-
-      //   module('nyplAlerts', function ($nyplAlertsProvider) {
-      //     $nyplAlertsProvider.setOptions({
-      //       api_root: "http://dev.locations.api.nypl.org/api",
-      //       api_version: "v0.7"
-      //     });
-      //   });
-
-      //   inject(function (_$rootScope_, _$httpBackend_) {
-      //     rootScope = _$rootScope_;
-      //     httpBackend = _$httpBackend_;
-
-      //     httpBackend
-      //       .whenJSONP('http://dev.locations.api.nypl.org/api/v0.7/alerts' +
-      //         '?callback=JSON_CALLBACK')
-      //       .respond(500);
-
-      //     httpBackend.flush();
-      //   });
-
-      //   // rootScope.$apply();
-      //   expect(rootScope)
-      //     .toThrow('$nyplAlerts: API URL could not be defined');
-      // });
+      expect(rootScope.$apply)
+        .toThrow('$nyplAlerts: API URL could not be defined');
     });
 
-  }); /* End Broken Implementation */
+    // Passed API URL and version but the API is down or
+    // returning an error.
+    it('should throw an error because no API version was added', function () {
+      var rootScope, httpBackend, $nyplAlerts, gerror;
 
-  describe('Working module setup', function () {
+      module('nyplAlerts', function ($nyplAlertsProvider) {
+        $nyplAlertsProvider.setOptions({
+          api_root: "http://dev.locations.api.nypl.org/api",
+          api_version: "v0.7"
+        });
+      });
+
+      inject(function (_$rootScope_, _$httpBackend_, _$nyplAlerts_) {
+        $nyplAlerts = _$nyplAlerts_;
+        rootScope = _$rootScope_;
+        httpBackend = _$httpBackend_;
+
+        httpBackend
+          .whenJSONP('http://dev.locations.api.nypl.org/api/v0.7/alerts' +
+            '?callback=JSON_CALLBACK')
+          .respond(500);
+      });
+
+      expect(httpBackend.flush)
+        .toThrow('$nyplAlerts: Alerts API could not retrieve data');
+    });
+  }); /* End Broken Module Setup */
+
+
+  describe('Alerts provider functions', function () {
+    var nyplAlerts, api_url, api_version, rootScope, httpBackend;
+
+    beforeEach(function () {
+      api_url = 'http://locations.api.nypl.org/api';
+      api_version = 'v0.7';
+    });
+
+    describe('Provider object variables', function () {
+      beforeEach(function () {
+        module('nyplAlerts', function ($nyplAlertsProvider) {
+          $nyplAlertsProvider.setOptions({
+            api_root: api_url,
+            api_version: api_version
+          });
+        });
+
+        inject(function (_$nyplAlerts_) {
+          nyplAlerts = _$nyplAlerts_;
+        });
+      });
+
+      it('should have configuration variables but no alerts', function () {
+        expect(nyplAlerts.alerts).toBe(null);
+        expect(nyplAlerts.api_url).toBe(api_url);
+        expect(nyplAlerts.api_version).toBe(api_version);
+      });
+    }); /* End Provider object variables */
+
+    describe('generateApiUrl()', function () {
+      beforeEach(function () {
+        module('nyplAlerts', function ($nyplAlertsProvider) {
+          $nyplAlertsProvider.setOptions({
+            api_root: api_url,
+            api_version: api_version
+          });
+        });
+
+        inject(function (_$nyplAlerts_) {
+          nyplAlerts = _$nyplAlerts_;
+        });
+      });
+
+      it('should return undefined with no data passed', function () {
+        expect(nyplAlerts.generateApiUrl()).not.toBeDefined();
+      });
+
+      it('should return undefined with no version set', function () {
+        expect(nyplAlerts.generateApiUrl(api_url)).not.toBeDefined();
+      });
+
+      it('should return undefined with no version set', function () {
+        expect(nyplAlerts.generateApiUrl('', api_version)).not.toBeDefined();
+      });
+
+      it('should return a correct URL', function () {
+        // The function adds /alerts and the JSONP callback
+        expect(nyplAlerts.generateApiUrl(api_url, api_version))
+          .toEqual(
+            api_url + '/' + api_version + '/alerts?callback=JSON_CALLBACK'
+          );
+      });
+    }); /* End generateApiUrl() */
+
+    describe('getGlobalAlerts()', function () {
+      describe('No API URL or version was set', function () {
+        beforeEach(function () {
+          module('nyplAlerts', function ($nyplAlertsProvider) {
+            $nyplAlertsProvider.setOptions();
+          });
+
+          inject(function (_$nyplAlerts_, _$rootScope_) {
+            nyplAlerts = _$nyplAlerts_;
+            rootScope = _$rootScope_;
+          });
+
+        });
+
+        it('should throw an error', function () {
+          expect(rootScope.$apply)
+            .toThrow('$nyplAlerts: API URL could not be defined');
+        });
+      });
+
+      describe('API URL and version configuration was set', function () {
+        beforeEach(function () {
+          module('nyplAlerts', function ($nyplAlertsProvider) {
+            $nyplAlertsProvider.setOptions({
+              api_root: api_url,
+              api_version: api_version
+            });
+          });
+
+          inject(function (_$nyplAlerts_, _$rootScope_, _$httpBackend_) {
+            nyplAlerts = _$nyplAlerts_;
+            rootScope = _$rootScope_;
+            httpBackend = _$httpBackend_;
+          });
+        });
+
+        it('should return json from the API call', function () {
+          var returnedAlertArray,
+            mockedAlertArray = {
+              alerts: [
+                {
+                  id: 287824,
+                  scope: "all",
+                  _links: { web: {href: "http://dev.www.aws.nypl.org/node/287824"} },
+                  closed_for: "Daylight closing",
+                  msg: "Daylight Test Alert",
+                  display: {
+                    start: "2015-02-21T00:00:00-05:00",
+                    end: "2015-03-10T00:00:00-04:00"
+                  },
+                  applies: {
+                    start: "2015-02-21T00:00:00-05:00",
+                    end: "2015-03-10T00:00:00-04:00"
+                  }
+                }
+              ]};
+
+          httpBackend
+            .whenJSONP('http://locations.api.nypl.org/api/v0.7/alerts' +
+              '?callback=JSON_CALLBACK')
+            .respond(mockedAlertArray);
+
+          nyplAlerts.getGlobalAlerts().then(function (data) {
+            returnedAlertArray = data;
+          });
+
+          httpBackend.flush();
+
+          expect(returnedAlertArray).toEqual(mockedAlertArray.alerts);
+        });
+
+        it('should throw an error because the API is down =(', function () {
+          var api_error;
+
+          httpBackend
+            .whenJSONP('http://locations.api.nypl.org/api/v0.7/alerts' +
+              '?callback=JSON_CALLBACK')
+            .respond(500);
+
+          nyplAlerts.getGlobalAlerts()
+            .then()
+            .catch(function (error) {
+              api_error = error
+            });
+
+          // Hard to test this because it runs initially in the
+          // module's run function...
+          expect(httpBackend.flush)
+            .toThrow('$nyplAlerts: Alerts API could not retrieve data');
+        });
+      }); /* End API and Version configuration was set */
+
+    }); /* End getGlobalAlerts() */
+
+  }); /* End Alerts provider functions */
+
+
+  describe('Working Module Setup', function () {
     beforeEach(function () {
       // Load the module for all tests.
       module('nyplAlerts', function ($nyplAlertsProvider) {
@@ -120,13 +281,14 @@ describe('NYPL Alerts Component', function () {
     });
 
     describe('Alerts Service', function () {
-      var nyplAlertsService;
+      var nyplAlertsService, activeAlerts, nyplAlerts;
 
       // excuted before each "it" is run.
       beforeEach(function () {
         // inject your service for testing.
-        inject(function (_nyplAlertsService_) {
+        inject(function (_nyplAlertsService_, _$nyplAlerts_) {
           nyplAlertsService = _nyplAlertsService_;
+          nyplAlerts = _$nyplAlerts_;
         });
 
         // Doesn't seem like install/uninstall are necessary for mocking dates
@@ -149,25 +311,23 @@ describe('NYPL Alerts Component', function () {
           ' Does not account for closing alerts. Should return one current ' +
           'alert based on set date as today',
             function () {
-            // Today's date will be March 1st.
-            // Whenever `new Date()` is called, we will replace it with
-            // the mocked date. But when it's called with parameters,
-            // those parameters will take priority.
-            var todaysDateMock = new Date(2015, 2, 1),
-              activeAlerts;
+              // Today's date will be March 1st.
+              // Whenever `new Date()` is called, we will replace it with
+              // the mocked date. But when it's called with parameters,
+              // those parameters will take priority.
+              todaysDateMock = new Date(2015, 2, 3);
 
-            jasmine.clock().mockDate(todaysDateMock);
+              jasmine.clock().mockDate(todaysDateMock);
 
-            activeAlerts = nyplAlertsService.currentAlerts(alertsObject.alerts);
-            expect(activeAlerts.length).toBe(1);
+              activeAlerts = nyplAlertsService.currentAlerts(alertsObject.alerts);
+              expect(activeAlerts.length).toBe(1);
           });
 
         it('should filter current alerts that have started and have not ' +
           'ended. Does not account for closing alerts. Should return no ' +
           'results since all alerts are not within todays date',
           function () {
-            var todaysDateMock = new Date(2015, 1, 10),
-              activeAlerts;
+            todaysDateMock = new Date(2015, 1, 10);
 
             // There should be no 'current' alerts on February 10th.
             jasmine.clock().mockDate(todaysDateMock);
@@ -177,6 +337,28 @@ describe('NYPL Alerts Component', function () {
           });
 
       });  /* End Describe Current Alerts Filter */
+
+      describe('getActiveMsgs()', function () {
+        it('should have a getActiveMsgs() function', function () {
+          expect(angular.isFunction(nyplAlertsService.getActiveMsgs)).toBe(true);
+          expect(nyplAlertsService.getActiveMsgs).toBeDefined();
+        });
+
+        it('should return undefined if no alerts were passed', function () {
+          expect(nyplAlertsService.getActiveMsgs())
+            .not.toBeDefined();
+        });
+
+        it('should return a message with "Closed" added in the beginning ' +
+          'of the string', function () {
+            todaysDateMock = new Date(2015, 1, 27);
+            jasmine.clock().mockDate(todaysDateMock);
+
+            expect(nyplAlertsService.getActiveMsgs(alertsObject.alerts))
+              .toEqual('Closed Daylight closing');
+          });
+      });
+
     }); /* End Describe Alerts Service */
 
     describe('Alerts Directives', function () {
@@ -191,7 +373,7 @@ describe('NYPL Alerts Component', function () {
           httpBackend
             .whenJSONP('http://dev.locations.api.nypl.org/api/v0.7/alerts' +
               '?callback=JSON_CALLBACK')
-            .respond(alertsObject);
+            .respond(alertsObject.alerts);
 
           httpBackend.flush();
         });
@@ -212,10 +394,10 @@ describe('NYPL Alerts Component', function () {
       }
 
       describe('Location Alerts Directive', function () {
-        var locationAlertDirective;
+        var locationAlertDirective, ngRepeatElements;
 
         beforeEach(function () {
-          scope.alerts = alertsObject;
+          scope.alerts = alertsObject.alerts;
           template = '<nypl-location-alerts alerts="alerts">' +
             '</nypl-location-alerts>';
 
@@ -224,15 +406,12 @@ describe('NYPL Alerts Component', function () {
         });
 
         describe('Active alerts', function () {
-          beforeEach(function () {
-            locationAlertDirective = createDirective(template);
-          });
-
           it('should compile', function () {
             // The location alert appears on 2/27.
-            var todaysDateMock = new Date(2015, 1, 27);
-
+            todaysDateMock = new Date(2015, 1, 27);
             jasmine.clock().mockDate(todaysDateMock);
+
+            locationAlertDirective = createDirective(template);
 
             expect(locationAlertDirective.next().attr('class'))
               .toContain('nypl-location-alerts');
@@ -240,20 +419,20 @@ describe('NYPL Alerts Component', function () {
 
           // Schwarzman alert appears on 2/26 - 2/27
           it('should contain contain one alert', function () {
-            var todaysDateMock = new Date(2015, 1, 27),
-              ngRepeatElements;
-
+            todaysDateMock = new Date(2015, 1, 27);
             jasmine.clock().mockDate(todaysDateMock);
+
+            locationAlertDirective = createDirective(template);
             ngRepeatElements = locationAlertDirective.next().find('p');
 
             expect(ngRepeatElements.length).toEqual(1);
           });
 
           it('should display a Schwarzman location text alert', function () {
-            var todaysDateMock = new Date(2015, 1, 27),
-              ngRepeatElements;
-
+            todaysDateMock = new Date(2015, 1, 27);
             jasmine.clock().mockDate(todaysDateMock);
+
+            locationAlertDirective = createDirective(template);
             ngRepeatElements = locationAlertDirective.next().find('p');
 
             expect(ngRepeatElements.text()).toEqual("Schwarzman will be " +
@@ -264,20 +443,18 @@ describe('NYPL Alerts Component', function () {
         describe('No active alerts', function () {
           it('should not compile if there are no alerts', function () {
             // No location alert appears on 2/10.
-            var todaysDateMock = new Date(2015, 1, 10);
-
+            todaysDateMock = new Date(2015, 1, 10);
             jasmine.clock().mockDate(todaysDateMock);
 
             locationAlertDirective = createDirective(template);
+
             expect(locationAlertDirective.next()).toEqual({});
             expect(locationAlertDirective.next().attr('class'))
               .not.toBeDefined();
           });
 
           it('should not display any alerts', function () {
-            var todaysDateMock = new Date(2015, 1, 2),
-              ngRepeatElements;
-
+            todaysDateMock = new Date(2015, 1, 2);
             jasmine.clock().mockDate(todaysDateMock);
 
             locationAlertDirective = createDirective(template);
@@ -287,31 +464,75 @@ describe('NYPL Alerts Component', function () {
             expect(locationAlertDirective.next()).toEqual({});
             expect(ngRepeatElements.length).toEqual(0);
           });
-
         });
-
       }); /* End Location Alerts Directive */
 
       describe('Global Alerts', function () {
-        var globalAlertsDirective;
+        var globalAlertsDirective, nyplAlertsService;
 
         beforeEach(function () {
+          // Injexting the Alerts service so we can use the filterAlerts()
+          // function that is used in the initAlerts() function in the 
+          // module's run initialization.
+          inject(function (_nyplAlertsService_) {
+            nyplAlertsService = _nyplAlertsService_;
+          });
+
+          // We don't need the Schwarzman location alert in
+          // the all alerts array
+          alertsObject.alerts.pop();
+
           template = '<nypl-global-alerts></nypl-global-alerts>';
 
           // DO NOT compile the directive in the before each so we can
           // test out different situations below
         });
 
-        it('should compile', function () {
-          var todaysDateMock = new Date(2015, 2, 28);
-
+        it('should not compile', function () {
+          todaysDateMock = new Date(2015, 2, 20);
           jasmine.clock().mockDate(todaysDateMock);
 
+          scope.alerts = nyplAlertsService.
+              filterAlerts(alertsObject.alerts, {current: true});
           globalAlertsDirective = createDirective(template);
+
+          expect(scope.alerts.length).toBe(0);
           expect(globalAlertsDirective.next().attr('class'))
-            .toContain('nypl-global-alerts');
+            .not.toBeDefined();
         });
 
+        it('should display Memorial Day alert', function () {
+          // Mocking May 20th.
+          todaysDateMock = new Date(2015, 4, 20);
+          jasmine.clock().mockDate(todaysDateMock);
+
+          scope.alerts = nyplAlertsService.
+              filterAlerts(alertsObject.alerts, {current: true});
+          globalAlertsDirective = createDirective(template);
+
+          expect(globalAlertsDirective.next().attr('class'))
+            .toContain('nypl-global-alerts');
+          // Because the alert message is already wrapped in a p tag
+          // from the API!!
+          expect(globalAlertsDirective.next().find('p').find('p').text())
+            .toEqual('The New York Public Library will be closed from May ' +
+              '23 through May 25 in observance of Memorial Day.')
+        });
+
+        it('should display mock daylight savings alert', function () {
+          // Mocking March 5th.
+          todaysDateMock = new Date(2015, 2, 5);
+          jasmine.clock().mockDate(todaysDateMock);
+
+          scope.alerts = nyplAlertsService.
+              filterAlerts(alertsObject.alerts, {current: true});
+          globalAlertsDirective = createDirective(template);
+
+          expect(globalAlertsDirective.next().attr('class'))
+            .toContain('nypl-global-alerts');
+          expect(globalAlertsDirective.next().find('p').text())
+            .toEqual('Daylight Test Alert')
+        });
       }); /* End Global Alerts Directive */
 
     }); /* End Alerts Directives */
