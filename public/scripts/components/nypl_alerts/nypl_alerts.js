@@ -126,6 +126,10 @@
 
     // Filters All Closing Alerts only
     service.allClosingAlerts = function (obj) {
+      if (!obj) {
+        return;
+      }
+
       return _.filter(obj, function (elem) {
         if (elem.applies && elem.applies.start) {
           return elem;
@@ -135,6 +139,10 @@
 
     // Removes Alerts with duplicate id's and msg
     service.removeDuplicates = function (obj) {
+      if (!obj) {
+        return;
+      }
+
       return _.chain(obj)
         .indexBy('id')
         .flatten()
@@ -192,21 +200,32 @@
       return uniqueAlerts;
     };
 
-    service.getHoursOrMessage = function (msg, open, hrs, hoursFn, closedFn) {
+    service.getHoursOrMessage = function (opts) {
+      if (!opts) {
+        return;
+      }
+
+      var message = opts.message || '',
+        open = opts.open || false,
+        hours = opts.hours || undefined,
+        hoursFn = opts.hoursFn || undefined,
+        closedFn = opts.closedFn || undefined;
+
       // Open or closed
       if (open) {
         // Now is there a closing alert?
-        if (msg) {
-          return msg;
+        if (message) {
+          return message;
         }
 
-        return hoursFn(hrs);
+        return hoursFn(hours);
       }
       return closedFn();
     };
 
     service.activeClosings = function (alerts) {
-      return (this.filterAlerts(alerts, {only_closings: 'current'}).length) ?
+      var activeAlerts = this.filterAlerts(alerts, {only_closings: 'current'});
+      return (activeAlerts && activeAlerts.length) ?
           true : false;
     };
 

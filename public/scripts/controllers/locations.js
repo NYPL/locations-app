@@ -251,6 +251,7 @@
                         var locationAddress =
                                 nyplUtility.getAddressString(location, true),
                             markerCoordinates = {},
+                            hoursMessageOpts,
                             alerts = location._embedded.alerts,
                             alertMsgs = nyplAlertsService.getActiveMsgs(alerts);
 
@@ -293,15 +294,18 @@
                         // CSS class for a closing
                         location.closingMessageClass =
                             closingMessageClass(alerts);
+
+                        hoursMessageOpts = {
+                            message: alertMsgs,
+                            open: location.open,
+                            hours: location.hours,
+                            hoursFn: getlocationHours,
+                            closedFn: branchClosedMessage
+                        };
                         // Hours or closing message that will display
                         location.hoursOrClosingMessage = 
-                            nyplAlertsService.getHoursOrMessage(
-                                alertMsgs,
-                                location.open,
-                                location.hours,
-                                getlocationHours,
-                                branchClosedMessage
-                            );
+                            nyplAlertsService
+                                .getHoursOrMessage(hoursMessageOpts);
                     });
 
                     resetPage();

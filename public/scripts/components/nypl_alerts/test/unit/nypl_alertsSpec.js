@@ -51,9 +51,10 @@ describe('NYPL Alerts Component', function () {
     });
   }); /* End Broken Module Setup */
 
-
   describe('Alerts provider functions', function () {
-    var nyplAlerts, api_url, api_version, rootScope, httpBackend;
+    var nyplAlerts, api_url, api_version, rootScope, httpBackend,
+      https_api_url = 'https://locations.api.nypl.org/api',
+      no_protocal_api = 'locations.api.nypl.org/api';
 
     beforeEach(function () {
       api_url = 'http://locations.api.nypl.org/api';
@@ -82,37 +83,48 @@ describe('NYPL Alerts Component', function () {
     }); /* End Provider object variables */
 
     describe('generateApiUrl()', function () {
-      beforeEach(function () {
-        module('nyplAlerts', function ($nyplAlertsProvider) {
-          $nyplAlertsProvider.setOptions({
-            api_root: api_url,
-            api_version: api_version
-          });
+      describe('Normal http API url', function () {
+        it('should return undefined with no data passed', function () {
+          expect(nyplAlerts.generateApiUrl()).not.toBeDefined();
         });
 
-        inject(function (_$nyplAlerts_) {
-          nyplAlerts = _$nyplAlerts_;
+        it('should return undefined with no version set', function () {
+          expect(nyplAlerts.generateApiUrl(api_url)).not.toBeDefined();
+        });
+
+        it('should return undefined with no version set', function () {
+          expect(nyplAlerts.generateApiUrl('', api_version)).not.toBeDefined();
+        });
+
+        it('should return a correct URL', function () {
+          // The function adds /alerts and the JSONP callback
+          expect(nyplAlerts.generateApiUrl(api_url, api_version))
+            .toEqual(
+              api_url + '/' + api_version + '/alerts?callback=JSON_CALLBACK'
+            );
         });
       });
 
-      it('should return undefined with no data passed', function () {
-        expect(nyplAlerts.generateApiUrl()).not.toBeDefined();
+      describe('https API url', function () {
+        it('should return a correct URL', function () {
+          expect(nyplAlerts.generateApiUrl(https_api_url, api_version))
+            .toEqual(
+              https_api_url + '/' +
+              api_version + '/alerts?callback=JSON_CALLBACK'
+            );
+        });
       });
 
-      it('should return undefined with no version set', function () {
-        expect(nyplAlerts.generateApiUrl(api_url)).not.toBeDefined();
-      });
-
-      it('should return undefined with no version set', function () {
-        expect(nyplAlerts.generateApiUrl('', api_version)).not.toBeDefined();
-      });
-
-      it('should return a correct URL', function () {
-        // The function adds /alerts and the JSONP callback
-        expect(nyplAlerts.generateApiUrl(api_url, api_version))
-          .toEqual(
-            api_url + '/' + api_version + '/alerts?callback=JSON_CALLBACK'
-          );
+      describe('No protocol API url', function () {
+        it('should return a correct URL', function () {
+          // We expect 'http://' to be added to the url if there
+          // is no protocol
+          expect(nyplAlerts.generateApiUrl(no_protocal_api, api_version))
+            .toEqual(
+              api_url + '/' +
+              api_version + '/alerts?callback=JSON_CALLBACK'
+            );
+        });
       });
     }); /* End generateApiUrl() */
 
@@ -276,7 +288,21 @@ describe('NYPL Alerts Component', function () {
             start: "2015-02-27T16:00:00-05:00",
             end: "2015-02-27T18:00:00-05:00"
           }
-        }    
+        },
+        {
+          id: 287839,
+          scope: "all",
+          _links: { self: {href: "http://dev.www.aws.nypl.org/node/287839"} },
+          closed_for: "another mocked closing",
+          msg: "All locations will be closed for some reason.",
+          display: {
+            start: "2015-03-24T09:00:00-05:00",
+            end: "2015-03-25T16:00:00-05:00"
+          },
+          applies: {
+            start: "2015-03-25T16:00:00-05:00"
+          }
+        }  
       ];
     });
 
@@ -321,6 +347,7 @@ describe('NYPL Alerts Component', function () {
 
               activeAlerts = nyplAlertsService.currentAlerts(alertsObject.alerts);
               expect(activeAlerts.length).toBe(1);
+              expect(activeAlerts[0].closed_for).toEqual('Daylight closing');
           });
 
         it('should filter current alerts that have started and have not ' +
@@ -336,7 +363,112 @@ describe('NYPL Alerts Component', function () {
             expect(activeAlerts.length).toBe(0);
           });
 
+        it('should filter current alerts and display one without and applies' +
+          ' end date',
+          function () {
+            todaysDateMock = new Date(2015, 2, 25);
+
+            // There should be no 'current' alerts on February 10th.
+            jasmine.clock().mockDate(todaysDateMock);
+
+            activeAlerts = nyplAlertsService.currentAlerts(alertsObject.alerts);
+            expect(activeAlerts.length).toBe(1);
+            expect(activeAlerts[0].closed_for)
+              .toEqual('another mocked closing');
+          });
+
       });  /* End Describe Current Alerts Filter */
+
+      describe('activeClosings()', function () {
+        it('should have an activeClosings() function', function () {
+          expect(angular.isFunction(nyplAlertsService.activeClosings)).toBe(true);
+          expect(nyplAlertsService.activeClosings).toBeDefined();
+        });
+
+        it('should return false if no alerts were passed', function () {
+          expect(nyplAlertsService.activeClosings()).toBe(false);
+        });
+
+        it('should return false when there are alerts, but no active closings',
+          function () {
+            todaysDateMock = new Date(2015, 2, 15);
+            jasmine.clock().mockDate(todaysDateMock);
+
+            expect(nyplAlertsService.activeClosings(alertsObject.alerts))
+              .toBe(false);
+          });
+
+        it('should return true when there is an active closings',
+          function () {
+            todaysDateMock = new Date(2015, 2, 3);
+            jasmine.clock().mockDate(todaysDateMock);
+
+            expect(nyplAlertsService.activeClosings(alertsObject.alerts))
+              .toBe(true);
+          });
+      }); /* End activeClosings() */
+
+      describe('getHoursOrMessage()', function () {
+        var hoursMessageOpts = {},
+          closedBranchMessage,
+          locationHours;
+
+        beforeEach(function () {
+          // Mock these functions
+
+          closedBranchMessage = function () {
+            return "Branch is temporarily closed.";
+          };
+
+          locationHours = function () {
+            return "10am - 6pm";
+          };
+        });
+
+        it('should have an getHoursOrMessage() function', function () {
+          expect(angular.isFunction(nyplAlertsService.getHoursOrMessage)).toBe(true);
+          expect(nyplAlertsService.getHoursOrMessage).toBeDefined();
+        });
+
+        it('should return undefined if no options were passed', function () {
+          expect(nyplAlertsService.getHoursOrMessage()).not.toBeDefined();
+        });
+
+        it('should call the ', function () {
+
+        });
+      }); /* End getHoursOrMessage() */
+
+      describe('allClosingAlerts()', function () {
+        it('should have an allClosingAlerts() function', function () {
+          expect(angular.isFunction(nyplAlertsService.allClosingAlerts)).toBe(true);
+          expect(nyplAlertsService.allClosingAlerts).toBeDefined();
+        });
+
+        it('should return undefined if no obj was passed', function () {
+          expect(nyplAlertsService.allClosingAlerts()).not.toBeDefined();
+        });
+
+        // Missing tests
+      });
+
+      describe('removeDuplicates()', function () {
+        it('should have an removeDuplicates() function', function () {
+          expect(angular.isFunction(nyplAlertsService.removeDuplicates)).toBe(true);
+          expect(nyplAlertsService.removeDuplicates).toBeDefined();
+        });
+
+        // Missing tests
+      });
+
+      describe('isAlertExpired()', function () {
+        it('should have an isAlertExpired() function', function () {
+          expect(angular.isFunction(nyplAlertsService.isAlertExpired)).toBe(true);
+          expect(nyplAlertsService.isAlertExpired).toBeDefined();
+        });
+
+        // Missing tests
+      });
 
       describe('getActiveMsgs()', function () {
         it('should have a getActiveMsgs() function', function () {
@@ -357,7 +489,16 @@ describe('NYPL Alerts Component', function () {
             expect(nyplAlertsService.getActiveMsgs(alertsObject.alerts))
               .toEqual('Closed Daylight closing');
           });
-      });
+
+        it('should return an empty string if there are no active alerts',
+          function () {
+            todaysDateMock = new Date(2015, 2, 15);
+            jasmine.clock().mockDate(todaysDateMock);
+
+            expect(nyplAlertsService.getActiveMsgs(alertsObject.alerts))
+              .toEqual('');
+          });
+      }); /* End getActiveMsgs() */
 
     }); /* End Describe Alerts Service */
 
@@ -396,75 +537,91 @@ describe('NYPL Alerts Component', function () {
       describe('Location Alerts Directive', function () {
         var locationAlertDirective, ngRepeatElements;
 
-        beforeEach(function () {
-          scope.alerts = alertsObject.alerts;
-          template = '<nypl-location-alerts alerts="alerts">' +
-            '</nypl-location-alerts>';
-
-          // DO NOT compile the directive in the before each so we can
-          // test out different situations below
-        });
-
-        describe('Active alerts', function () {
+        describe('With no returned alerts data', function () {
           it('should compile', function () {
-            // The location alert appears on 2/27.
-            todaysDateMock = new Date(2015, 1, 27);
-            jasmine.clock().mockDate(todaysDateMock);
+            scope.alerts = undefined;
+            template = '<nypl-location-alerts alerts="alerts">' +
+              '</nypl-location-alerts>';
+
 
             locationAlertDirective = createDirective(template);
-
+            expect(locationAlertDirective.next()).toEqual({});
             expect(locationAlertDirective.next().attr('class'))
-              .toContain('nypl-location-alerts');
-          });
-
-          // Schwarzman alert appears on 2/26 - 2/27
-          it('should contain contain one alert', function () {
-            todaysDateMock = new Date(2015, 1, 27);
-            jasmine.clock().mockDate(todaysDateMock);
-
-            locationAlertDirective = createDirective(template);
-            ngRepeatElements = locationAlertDirective.next().find('p');
-
-            expect(ngRepeatElements.length).toEqual(1);
-          });
-
-          it('should display a Schwarzman location text alert', function () {
-            todaysDateMock = new Date(2015, 1, 27);
-            jasmine.clock().mockDate(todaysDateMock);
-
-            locationAlertDirective = createDirective(template);
-            ngRepeatElements = locationAlertDirective.next().find('p');
-
-            expect(ngRepeatElements.text()).toEqual("Schwarzman will be " +
-              "closing early on Friday 2/27/2015 at 4:00PM");
+              .not.toContain('nypl-location-alerts');
           });
         });
 
-        describe('No active alerts', function () {
-          it('should not compile if there are no alerts', function () {
-            // No location alert appears on 2/10.
-            todaysDateMock = new Date(2015, 1, 10);
-            jasmine.clock().mockDate(todaysDateMock);
+        describe('With returned alerts data', function () {
+          beforeEach(function () {
+            scope.alerts = alertsObject.alerts;
+            template = '<nypl-location-alerts alerts="alerts">' +
+              '</nypl-location-alerts>';
 
-            locationAlertDirective = createDirective(template);
-
-            expect(locationAlertDirective.next()).toEqual({});
-            expect(locationAlertDirective.next().attr('class'))
-              .not.toBeDefined();
+            // DO NOT compile the directive in the before each so we can
+            // test out different situations below
           });
 
-          it('should not display any alerts', function () {
-            todaysDateMock = new Date(2015, 1, 2);
-            jasmine.clock().mockDate(todaysDateMock);
+          describe('Active alerts', function () {
+            it('should compile', function () {
+              // The location alert appears on 2/27.
+              todaysDateMock = new Date(2015, 1, 27);
+              jasmine.clock().mockDate(todaysDateMock);
 
-            locationAlertDirective = createDirective(template);
-            ngRepeatElements = locationAlertDirective.next().find('p');
+              locationAlertDirective = createDirective(template);
 
-            // Should be an empty object - no elements to display
-            expect(locationAlertDirective.next()).toEqual({});
-            expect(ngRepeatElements.length).toEqual(0);
+              expect(locationAlertDirective.next().attr('class'))
+                .toContain('nypl-location-alerts');
+            });
+
+            // Schwarzman alert appears on 2/26 - 2/27
+            it('should contain contain one alert', function () {
+              todaysDateMock = new Date(2015, 1, 27);
+              jasmine.clock().mockDate(todaysDateMock);
+
+              locationAlertDirective = createDirective(template);
+              ngRepeatElements = locationAlertDirective.next().find('p');
+
+              expect(ngRepeatElements.length).toEqual(1);
+            });
+
+            it('should display a Schwarzman location text alert', function () {
+              todaysDateMock = new Date(2015, 1, 27);
+              jasmine.clock().mockDate(todaysDateMock);
+
+              locationAlertDirective = createDirective(template);
+              ngRepeatElements = locationAlertDirective.next().find('p');
+
+              expect(ngRepeatElements.text()).toEqual("Schwarzman will be " +
+                "closing early on Friday 2/27/2015 at 4:00PM");
+            });
           });
-        });
+
+          describe('No active alerts', function () {
+            it('should not compile if there are no alerts', function () {
+              // No location alert appears on 2/10.
+              todaysDateMock = new Date(2015, 1, 10);
+              jasmine.clock().mockDate(todaysDateMock);
+
+              locationAlertDirective = createDirective(template);
+
+              expect(locationAlertDirective.next()).toEqual({});
+              expect(locationAlertDirective.next().attr('class'))
+                .not.toBeDefined();
+            });
+
+            it('should not display any alerts', function () {
+              todaysDateMock = new Date(2015, 1, 2);
+              jasmine.clock().mockDate(todaysDateMock);
+
+              locationAlertDirective = createDirective(template);
+              ngRepeatElements = locationAlertDirective.next().find('p');
+
+              // Should be an empty object - no elements to display
+              expect(locationAlertDirective.next()).toEqual({});
+              expect(ngRepeatElements.length).toEqual(0);
+            });
+          });
+        }); /* End With returned alerts data */
       }); /* End Location Alerts Directive */
 
       describe('Global Alerts', function () {
