@@ -115,7 +115,7 @@
         // Obtains the first alert message from
         // the API of filtered current closing alerts.
         this.getAlertMsg = function (alertsObj) {
-          return 'Closed ' + _.chain(alertsObj)
+          return _.chain(alertsObj)
             .pluck('closed_for')
             .flatten(true)
             .first()
