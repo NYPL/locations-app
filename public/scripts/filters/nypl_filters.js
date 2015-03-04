@@ -29,31 +29,33 @@
         }
 
         function closingHoursDisplay(hours, alerts) {
-            var sDate, eDate, allDay,
+            var sDate, eDate, allDay, regHours,
                 openHour, closedHour, displayString;
+
             if (!alerts.length) {
                 sDate = new Date(alerts.applies.start);
                 eDate = new Date(alerts.applies.end);
                 openHour = getMilitaryHours(hours.open);
                 closedHour = getMilitaryHours(hours.close);
-                allDay = (sDate.getUTCDay() < eDate.getUTCDay()) ? true : false;
+                regHours = clockTime(hours.open) + ' - ' + clockTime(hours.close);
+                allDay = (sDate.getDay() < eDate.getDay()) ? true : false;
 
                 // First, check if this is an all day closing
                 // Second, check if the alert start hour is before(equal-to) the location's
                 // opening hour or if the alert end hour is after(equal-to) the location's
-                // closing hour. Lastly, default to a short-closing day
+                // closing hour. Lastly, default to a partial closing.
                 if (allDay) {
-                    displayString = 'Closed ' + (sDate.getMonth() + 1)
-                        + '/' + sDate.getUTCDate();
+                    displayString = regHours + '<br />' + 'Closed - '
+                    + (sDate.getMonth() + 1) + '/' + sDate.getDate();
                 } else if (sDate.getHours() <= openHour && eDate.getHours() >= closedHour) {
-                    displayString = 'Closed ' + (sDate.getMonth() + 1)
-                        + '/' + sDate.getDate();
+                    displayString = regHours + '<br />' + 'Closed - '
+                    + (sDate.getMonth() + 1) + '/' + sDate.getDate();
                 } else {
-                    displayString = 'Change in hours ' + (sDate.getMonth() + 1)
-                        + '/' + sDate.getDate();
+                    displayString = regHours + '<br />' + 'Change in hours - '
+                    + (sDate.getMonth() + 1) + '/' + sDate.getDate();
                 }
             }
-            return displayString;
+            return $sce.trustAsHtml(displayString);
         }
 
         return function output(timeObj) {
