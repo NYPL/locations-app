@@ -138,6 +138,12 @@
 						color: #AAA;
 					}
 				}
+
+				tr.today {
+					.time {
+						font-weight: bolder;
+					}
+				}
 			}
 
 			.note {

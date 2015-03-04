@@ -939,31 +939,33 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         }
 
         function closingHoursDisplay(hours, alerts) {
-            var sDate, eDate, allDay,
+            var sDate, eDate, allDay, regHours,
                 openHour, closedHour, displayString;
+
             if (!alerts.length) {
                 sDate = new Date(alerts.applies.start);
                 eDate = new Date(alerts.applies.end);
                 openHour = getMilitaryHours(hours.open);
                 closedHour = getMilitaryHours(hours.close);
-                allDay = (sDate.getUTCDay() < eDate.getUTCDay()) ? true : false;
+                regHours = clockTime(hours.open) + ' - ' + clockTime(hours.close);
+                allDay = (sDate.getDay() < eDate.getDay()) ? true : false;
 
                 // First, check if this is an all day closing
                 // Second, check if the alert start hour is before(equal-to) the location's
                 // opening hour or if the alert end hour is after(equal-to) the location's
-                // closing hour. Lastly, default to a short-closing day
+                // closing hour. Lastly, default to a partial closing.
                 if (allDay) {
-                    displayString = 'Closed ' + (sDate.getMonth() + 1)
-                        + '/' + sDate.getUTCDate();
+                    displayString = regHours + '<br />' + 'Closed - '
+                    + (sDate.getMonth() + 1) + '/' + sDate.getDate();
                 } else if (sDate.getHours() <= openHour && eDate.getHours() >= closedHour) {
-                    displayString = 'Closed ' + (sDate.getMonth() + 1)
-                        + '/' + sDate.getDate();
+                    displayString = regHours + '<br />' + 'Closed - '
+                    + (sDate.getMonth() + 1) + '/' + sDate.getDate();
                 } else {
-                    displayString = 'Change in hours ' + (sDate.getMonth() + 1)
-                        + '/' + sDate.getDate();
+                    displayString = regHours + '<br />' + 'Change in hours - '
+                    + (sDate.getMonth() + 1) + '/' + sDate.getDate();
                 }
             }
-            return displayString;
+            return $sce.trustAsHtml(displayString);
         }
 
         return function output(timeObj) {
@@ -1357,7 +1359,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         // Obtains the first alert message from
         // the API of filtered current closing alerts.
         this.getAlertMsg = function (alertsObj) {
-          return 'Closed ' + _.chain(alertsObj)
+          return _.chain(alertsObj)
             .pluck('closed_for')
             .flatten(true)
             .first()
@@ -1410,7 +1412,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         if ($scope.alerts) {
           alerts = nyplAlertsService.filterAlerts(
             $scope.alerts,
-            {only_closings: 'all'}
+            {only_closings: 'week'}
           );
         }
 
@@ -1421,37 +1423,43 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         }
       },
       controller: ['$scope', function ($scope) {
+        // Iterate through the current alerts of the week.
+        // Attach the alert pertaining to the day by it's index
+        // to the week object
         this.findAlertsInWeek = function(weekObj, alertsObj) {
           if (!weekObj && !alertsObj) { return null; }
 
           var today = new Date().getDay(),
             startDay, endDay, allDay,
             week = _.each(weekObj, function (day, index) {
+              // Assign today's day to the week day
+              day.is_today = (index === today) ? true : false;
+
+              // Assign the relevant alerts within a 7 day window
               day.alert = _.find(alertsObj, function(alert) {
-                if (alert.applies && today <= index) {
-                  if (alert.applies.start && alert.applies.end) {
-                    startDay = new Date(alert.applies.start);
-                    endDay = new Date(alert.applies.end);
-                    allDay = (startDay.getDay() < endDay.getDay()) ? true : false;
-                    if (allDay) {
-                      if (index >= startDay.getDay() && index < endDay.getDay()) {
-                        return alert;
-                      }
-                    } else {
-                      if (index >= startDay.getDay() && index <= endDay.getDay()) {
-                        return alert;
-                      }
-                    }
-                  } else if (alert.applies.start && !alert.applies.end) {
-                    startDay = new Date(alert.applies.start);
-                    if (index >= startDay.getDay()) {
+                // A non-infinite closing
+                if (alert.applies.start && alert.applies.end) {
+                  startDay = new Date(alert.applies.start);
+                  endDay = new Date(alert.applies.end);
+                  allDay = (startDay.getDay() < endDay.getDay()) ? true : false;
+
+                  if (allDay) {
+                    if (index >= startDay.getDay() && index < endDay.getDay()) {
                       return alert;
                     }
+                  } else {
+                    if (index >= startDay.getDay() && index <= endDay.getDay()) {
+                      return alert;
+                    }
+                  }
+                } else if (alert.applies.start && !alert.applies.end) {
+                  startDay = new Date(alert.applies.start);
+                  if (index >= startDay.getDay()) {
+                    return alert;
                   }
                 }
               });
             });
-
           return week;
         };
       }]
