@@ -26,7 +26,22 @@ module.exports = function (grunt) {
     ngAnnotate: {
       locinator: {
         files: {
-          'public/dist/locinator.annotate.js': ['public/scripts/**/*.js'],
+          'public/dist/locinator.annotate.js': [
+            // 'public/scripts/**/*.js'
+            'public/scripts/app.js',
+            'public/scripts/components/nypl_alerts/nypl_alerts.js',
+            'public/scripts/components/nypl_breadcrumbs/*.js',
+            'public/scripts/components/nypl_feedback/*.js',
+            'public/scripts/components/nypl_navigation/*.js',
+            'public/scripts/components/nypl_search/*.js',
+            'public/scripts/components/nypl_sso/*.js',
+            'public/scripts/components/nypl_coordinates.js',
+            'public/scripts/components/nypl_locations_api.js',
+            'public/scripts/controllers/*.js',
+            'public/scripts/directives/*.js',
+            'public/scripts/filters/*.js',
+            'public/scripts/services/*.js'
+          ],
           'public/dist/widget.annotate.js': [
             'public/scripts/components/nypl_coordinates.js',
             'public/scripts/components/nypl_locations_api.js',

@@ -487,7 +487,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
 
         // Generates a correct Alerts API URL
         provider.generateApiUrl = function (host, version) {
-          if (!host && !version) { return undefined; }
+          if (!host || !version) { return undefined; }
 
           var jsonCb = '?callback=JSON_CALLBACK',
             url = host + '/' + version + '/alerts' + jsonCb;
@@ -510,7 +510,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                 defer.resolve(data.alerts);
               })
               .error(function (status) {
-                defer.reject(status, errors.api);
+                defer.reject(errors.api);
               });
           }
           return defer.promise;
@@ -587,6 +587,10 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
 
     // Filters All Closing Alerts only
     service.allClosingAlerts = function (obj) {
+      if (!obj) {
+        return;
+      }
+
       return _.filter(obj, function (elem) {
         if (elem.applies && elem.applies.start) {
           return elem;
@@ -596,6 +600,10 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
 
     // Removes Alerts with duplicate id's and msg
     service.removeDuplicates = function (obj) {
+      if (!obj) {
+        return;
+      }
+
       return _.chain(obj)
         .indexBy('id')
         .flatten()
@@ -653,21 +661,32 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
       return uniqueAlerts;
     };
 
-    service.getHoursOrMessage = function (msg, open, hrs, hoursFn, closedFn) {
+    service.getHoursOrMessage = function (opts) {
+      if (!opts) {
+        return;
+      }
+
+      var message = opts.message || '',
+        open = opts.open || false,
+        hours = opts.hours || undefined,
+        hoursFn = opts.hoursFn || undefined,
+        closedFn = opts.closedFn || undefined;
+
       // Open or closed
       if (open) {
         // Now is there a closing alert?
-        if (msg) {
-          return msg;
+        if (message) {
+          return message;
         }
 
-        return hoursFn(hrs);
+        return hoursFn(hours);
       }
       return closedFn();
     };
 
     service.activeClosings = function (alerts) {
-      return (this.filterAlerts(alerts, {only_closings: 'current'}).length) ?
+      var activeAlerts = this.filterAlerts(alerts, {only_closings: 'current'});
+      return (activeAlerts && activeAlerts.length) ?
           true : false;
     };
 
@@ -763,7 +782,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
    * @description
    */
   angular
-    .module('nyplAlerts', [])
+    .module('nyplAlerts', ['ngSanitize'])
     .provider('$nyplAlerts', $nyplAlertsProvider)
     .service('nyplAlertsService', nyplAlertsService)
     .run(initAlerts)
@@ -771,221 +790,6 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     .directive('nyplGlobalAlerts', nyplGlobalAlerts);
 
 })(window, window.angular);
-
-/*jslint indent: 2, maxlen: 80 */
-/*globals module */
-
-module.exports = function (config) {
-  'use strict';
-
-  config.set({
-    basePath : '../',
-
-    files : [
-      'components/jquery/dist/jquery.js',
-      'components/angular/angular.js',
-      'components/angular-mocks/*.js',
-      'components/angular-sanitize/*.js',
-      'components/underscore/underscore.js',
-      'components/angular-ui-router/release/*.js',
-      'nypl_alerts.js',
-      'test/unit/*.js',
-    ],
-
-    exclude : [],
-
-    autoWatch : true,
-
-    frameworks: ['jasmine'],
-
-    browsers : ['Chrome'],
-
-    plugins : [
-      'karma-junit-reporter',
-      'karma-chrome-launcher',
-      'karma-firefox-launcher',
-      'karma-script-launcher',
-      'karma-jasmine',
-      'karma-ng-html2js-preprocessor',
-      'karma-coverage'
-    ],
-
-    reporters: ['progress', 'coverage'],
-
-    preprocessors: {
-      'nypl_alerts.js': ['coverage']
-    },
-    
-    coverageReporter: {
-      type: 'html',
-      dir: 'test/coverage/'
-    },
-
-    // ngHtml2JsPreprocessor: {
-    //   stripPrefix: 'public/',
-    //   moduleName: 'directiveTemplates'
-    // }
-  });
-};
-
-/*jslint nomen: true, unparam: true, indent: 2, maxlen: 80 */
-/*globals element, by, module, module, afterEach, jasmine,
-describe, expect, beforeEach, inject, it, angular */
-
-describe('NYPL Alerts Component ', function () {
-  'use strict';
-
-  var alertsObject = {};
-
-  beforeEach(function () {
-    // Load the module for all tests.
-    module('nyplAlerts', function ($nyplAlertsProvider) {
-      $nyplAlertsProvider.setOptions({
-        api_root: 'http://dev.locations.api.nypl.org/api',
-        api_version: 'v0.7'
-      });
-    });
-
-    // 3 Alerts
-    alertsObject.alerts = [
-      {
-        id: 287824,
-        scope: "all",
-        _links: { web: {href: "http://dev.www.aws.nypl.org/node/287824"} },
-        closed_for: "Daylight closing",
-        msg: "Daylight Test Alert",
-        display: {
-          start: "2015-02-21T00:00:00-05:00",
-          end: "2015-03-10T00:00:00-04:00"
-        },
-        applies: {
-          start: "2015-02-21T00:00:00-05:00",
-          end: "2015-03-10T00:00:00-04:00"
-        }
-      },
-      {
-        id: 283839,
-        scope: "all",
-        _links: { web: {href: "http://dev.www.aws.nypl.org/node/283839"} },
-        msg: "<p>The New York Public Library will be closed on Sunday, " +
-          "April 5.</p>",
-        display: {
-          start: "2015-04-01T00:00:00-04:00",
-          end: "2015-04-06T00:00:00-04:00"
-        }
-      },
-      {
-        id: 283840,
-        scope: "all",
-        _links: { web: {href: "http://dev.www.aws.nypl.org/node/283840"} },
-        msg: "<p>The New York Public Library will be closed from May 23 " +
-          "through May 25 in observance of Memorial Day.</p>",
-        display: {
-          start: "2015-05-17T00:00:00-04:00",
-          end: "2015-05-26T00:00:00-04:00"
-        }
-      }];
-  });
-
-  describe('Alerts Service', function () {
-    var nyplAlertsService;
-
-    // excuted before each "it" is run.
-    beforeEach(function () {
-      // inject your service for testing.
-      inject(function (_nyplAlertsService_) {
-        nyplAlertsService = _nyplAlertsService_;
-      });
-
-      // Doesn't seem like install/uninstall are necessary for mocking dates
-      // but leaving it in case it's used for setTimeout/setInterval time
-      // testing and mocking.
-      jasmine.clock().install();
-    });
-
-    afterEach(function () {
-      jasmine.clock().uninstall();
-    });
-
-    describe('Current Alerts Filter', function () {
-      it('should have a currentAlerts() function', function () {
-        expect(angular.isFunction(nyplAlertsService.currentAlerts)).toBe(true);
-        expect(nyplAlertsService.currentAlerts).toBeDefined();
-      });
-
-      it('should filter current alerts that have started and have not ended.' +
-        ' Does not account for closing alerts. Should return one current ' +
-        'alert based on set date as today',
-          function () {
-          // Today's date will be March 1st.
-          // Whenever `new Date()` is called, we will replace it with
-          // the mocked date. But when it's called with parameters,
-          // those parameters will take priority.
-          var todaysDateMock = new Date(2015, 2, 1),
-            activeAlerts;
-
-          jasmine.clock().mockDate(todaysDateMock);
-
-          activeAlerts = nyplAlertsService.currentAlerts(alertsObject.alerts);
-          expect(activeAlerts.length).toBe(1);
-        });
-
-      it('should filter current alerts that have started and have not ' +
-        'ended. Does not account for closing alerts. Should return no ' +
-        'results since all alerts are not within todays date',
-        function () {
-          var todaysDateMock = new Date(2015, 1, 10),
-            activeAlerts;
-
-          jasmine.clock().mockDate(todaysDateMock);
-
-          activeAlerts = nyplAlertsService.currentAlerts(alertsObject.alerts);
-          expect(activeAlerts.length).toBe(0);
-        });
-
-    }); /* End Describe Current Alerts Filter */
-
-  }); /* End Describe Alerts Service */
-
-
-  describe('Alerts Directives', function () {
-    var template, compile, scope, httpBackend;
-
-    beforeEach(function () {
-      inject(function (_$compile_, _$rootScope_, _$httpBackend_) {
-        compile = _$compile_;
-        scope = _$rootScope_;
-        httpBackend = _$httpBackend_;
-
-        httpBackend
-          .whenJSONP('http://dev.locations.api.nypl.org/api/v0.7/alerts' +
-            '?callback=JSON_CALLBACK')
-          .respond(alertsObject);
-
-        httpBackend.flush();
-      });
-    });
-
-    function createDirective(template) {
-      var element;
-      element = compile(template)(scope);
-      scope.$digest();
-
-      return element;
-    }
-
-    // it('should compile', function () {
-    //   var globalalerts;
-    //   template = '<nypl-global-alerts></nypl-global-alerts>';
-    //   globalalerts = createDirective(template);
-
-    //   console.log(globalalerts);
-    // });
-  });
-
-
-
-});
 
 /*jslint indent: 2, maxlen: 80, nomen: true */
 /*globals $, window, console, jQuery, angular */
@@ -1485,167 +1289,6 @@ describe('NYPL Alerts Component ', function () {
     .directive('nyplBreadcrumbs', nyplBreadcrumbs);
 
 })(window, window.angular);
-/*jslint indent: 2, maxlen: 80 */
-/*globals nypl_locations, angular */
-
-(function () {
-  'use strict';
-
-  /**
-   * @ngdoc service
-   * @name coordinateService.service:nyplCoordinatesService
-   * @requires $q
-   * @requires $window
-   * @description
-   * AngularJS service to get a user's geolocation coordinates and calculate
-   * the distance between two points.
-   */
-  function nyplCoordinatesService($q, $window) {
-    var geoCoords = null,
-      coordinatesService = {};
-
-    /**
-     * @ngdoc function
-     * @name geolocationAvailable
-     * @methodOf coordinateService.service:nyplCoordinatesService
-     * @returns {boolean} True if navigator and navigator.geolocation are
-     *  available in the browser, false otherwise.
-     */
-    coordinatesService.geolocationAvailable = function () {
-      return (!$window.navigator && !$window.navigator.geolocation) ?
-          false :
-          true;
-    };
-
-    /**
-     * @ngdoc function
-     * @name getBrowserCoordinates
-     * @methodOf coordinateService.service:nyplCoordinatesService
-     * @returns {object} Deferred promise. If it resolves, it will return an
-     *  object with the user's current position as latitude and longitude
-     *  properties. If it is rejected, it will return an error message based
-     *  on what kind of error occurred.
-     * @example
-     * <pre>
-     *  nyplCoordinatesService.getBrowserCoordinates()
-     *    .then(function (position) {
-     *      var userCoords = _.pick(position, 'latitude', 'longitude');
-     *    })
-     *    .catch(function (error) {
-     *      throw error;
-     *    });
-     * </pre>
-     */
-    coordinatesService.getBrowserCoordinates = function () {
-      // Object containing success/failure conditions
-      var defer = $q.defer();
-
-      // Verify the browser supports Geolocation
-      if (!this.geolocationAvailable()) {
-        defer.reject(new Error("Your browser does not support Geolocation."));
-      } else {
-        // Use stored coords, FF bug fix
-        // if (geoCoords) {
-        //   defer.resolve(geoCoords);
-        // } else {
-        $window.navigator.geolocation.getCurrentPosition(
-          function (position) {
-            // Extract coordinates for geoPosition obj
-            geoCoords = position.coords;
-            defer.resolve(geoCoords);
-
-            // Testing a user's location that is more than 
-            // 25miles of any NYPL location
-            // var coords = {
-            //     'latitude': 42.3581,
-            //     'longitude': -71.0636
-            // }
-            // defer.resolve(coords);
-          },
-          function (error) {
-            switch (error.code) {
-            case error.PERMISSION_DENIED:
-              defer.reject(new Error("Permission denied."));
-              break;
-
-            case error.POSITION_UNAVAILABLE:
-              defer.reject(new Error("The position is currently unavailable."));
-              break;
-
-            case error.TIMEOUT:
-              defer.reject(new Error("The request timed out."));
-              break;
-
-            default:
-              defer.reject(new Error("Unknown error."));
-              break;
-            }
-          },
-          {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 600000
-          }
-        );
-        // }
-      }
-
-      return defer.promise; // Enables 'then' callback
-    };
-
-    /**
-     * @ngdoc function
-     * @name getDistance
-     * @methodOf coordinateService.service:nyplCoordinatesService
-     * @param {number} lat1 Latitude of first location.
-     * @param {number} lon1 Longitude of first location.
-     * @param {number} lat2 Latitude of second location.
-     * @param {number} lon2 Longitude of second location.
-     * @returns {number} Distance in miles between two different locations.
-     * @example
-     * <pre>
-     *  var distance =
-     *    nyplCoordinatesService.getDistance(40.1, -73.1, 41.1, -73.2);
-     * </pre>
-     */
-    coordinatesService.getDistance = function (lat1, lon1, lat2, lon2) {
-      if (!lat1 || !lon2 || !lat2 || !lon2) {
-        return undefined;
-      }
-
-      var radlat1 = Math.PI * lat1 / 180,
-        radlat2 = Math.PI * lat2 / 180,
-        theta = lon1 - lon2,
-        radtheta = Math.PI * theta / 180,
-        distance;
-
-      distance = Math.sin(radlat1) * Math.sin(radlat2) +
-        Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-      distance = Math.acos(distance);
-      distance = distance * 180 / Math.PI;
-      distance = distance * 60 * 1.1515;
-      return Math.ceil(distance * 100) / 100;
-    };
-
-    return coordinatesService;
-  }
-  nyplCoordinatesService.$inject = ["$q", "$window"];
-
-  /**
-   * @ngdoc overview
-   * @module coordinateService
-   * @name coordinateService
-   * @description
-   * AngularJS module that provides a service to use a browser's geolocation
-   * coordinates and a function to calculate distance between two points.
-   */
-  angular
-    .module('coordinateService', [])
-    .factory('nyplCoordinatesService', nyplCoordinatesService);
-
-})();
-
-
 /*jslint indent: 2, maxlen: 80, nomen: true */
 /*globals $, window, console, jQuery, angular */
 
@@ -1734,294 +1377,6 @@ describe('NYPL Alerts Component ', function () {
     .directive('nyplFeedback', nyplFeedback);
 
 })();
-/*jslint indent: 4, maxlen: 80 */
-/*globals angular */
-
-(function () {
-    'use strict';
-
-    /**
-     * @ngdoc service
-     * @name locationService.service:nyplLocationsService
-     * @requires $http
-     * @requires $q
-     * @description
-     * AngularJS service to call different API endpoints.
-     */
-    function nyplLocationsService($http, $q) {
-        var api, config,
-            jsonp_cb = '?callback=JSON_CALLBACK',
-            apiError = 'Could not reach API',
-            locationsApi = {};
-
-        /**
-         * @ngdoc function
-         * @name getConfig
-         * @methodOf locationService.service:nyplLocationsService
-         * @returns {object} Deferred promise.
-         * @description
-         * Used to get Sinatra generated config variables.
-         */
-        locationsApi.getConfig = function () {
-            var defer = $q.defer();
-
-            if (config) {
-               defer.resolve(config);
-            } else {
-                config = window.locations_cfg.config;
-
-                if (config) {
-                    api = config.api_root + '/' + config.api_version;
-                    defer.resolve(config);
-                } else {
-                    defer.reject(apiError + ': config');
-                }
-            }
-
-            return defer.promise;
-        }
-
-        /**
-         * @ngdoc function
-         * @name allLocations
-         * @methodOf locationService.service:nyplLocationsService
-         * @returns {object} Deferred promise. If it resolves, JSON response
-         *  from the API of all NYPL locations. If it is rejected, an
-         *  error message is returned saying that it "Could not reach API".
-         * @description Get all locations
-         * @example
-         * <pre>
-         *  nyplLocationsService.allLocations()
-         *    .then(function (data) {
-         *      var locations = data.locations;
-         *    });
-         *    .catch(function (error) {
-         *      // error = "Could not reach API"
-         *    });
-         * </pre>
-         */
-        locationsApi.allLocations = function () {
-            var defer = $q.defer();
-
-            $http.jsonp(
-                    api + '/locations' + jsonp_cb,
-                    {cache: true}
-                )
-                .success(function (data) {
-                    defer.resolve(data);
-                })
-                .error(function (data, status) {
-                    defer.reject(apiError + ': locations');
-                });
-            return defer.promise;
-        };
-
-        /**
-         * @ngdoc function
-         * @name singleLocation
-         * @methodOf locationService.service:nyplLocationsService
-         * @param {string} location The slug of the location to look up.
-         * @returns {object} Deferred promise. If it resolves, JSON response
-         *  from the API of a specific NYPL locations. If it is rejected,
-         *  an error message is returned saying that it "Could not reach API".
-         * @description Get single location.
-         * @example
-         * <pre>
-         *  nyplLocationsService.singleLocation('schwarzman')
-         *    .then(function (data) {
-         *      var location = data.location;
-         *    });
-         *    .catch(function (error) {
-         *      // error = "Could not reach API"
-         *    });
-         * </pre>
-         */
-        locationsApi.singleLocation = function (location) {
-            var defer = $q.defer();
-
-            $http.jsonp(
-                    api + '/locations/' + location + jsonp_cb,
-                    {cache: true}
-                )
-                .success(function (data) {
-                    defer.resolve(data);
-                })
-                .error(function (data, status) {
-                    defer.reject(apiError + ': location');
-                });
-            return defer.promise;
-        };
-
-        /**
-         * @ngdoc function
-         * @name singleDivision
-         * @methodOf locationService.service:nyplLocationsService
-         * @param {string} division The slug of the division to look up.
-         * @returns {object} Deferred promise. If it resolves, JSON response
-         *  from the API of an NYPL Division. If it is rejected, an error
-         *  message is returned saying that it "Could not reach API".
-         * @description Get single division.
-         * @example
-         * <pre>
-         *  nyplLocationsService.singleLocation('map-division')
-         *    .then(function (data) {
-         *      var division = data.division;
-         *    });
-         *    .catch(function (error) {
-         *      // error = "Could not reach API"
-         *    });
-         * </pre>
-         */
-        locationsApi.singleDivision = function (division) {
-            var defer = $q.defer();
-
-            $http.jsonp(
-                    api + '/divisions/' + division + jsonp_cb,
-                    {cache: true}
-                )
-                .success(function (data) {
-                    defer.resolve(data);
-                })
-                .error(function (data, status) {
-                    defer.reject(apiError + ': division');
-                });
-            return defer.promise;
-        };
-
-        /**
-         * @ngdoc function
-         * @name amenities
-         * @methodOf locationService.service:nyplLocationsService
-         * @param {string} [amenity] The id of the amenity to look up.
-         * @returns {object} Deferred promise. If it resolves, JSON response
-         *  from the API. If no param was passed, it will return all the
-         *  amenities at NYPL. If the param was passed, it will return a list
-         *  of all the NYPL locations where the amenity passed is available.
-         *  If it is rejected, an error message is returned saying that it
-         *  "Could not reach API".
-         * @description Get all amenities.
-         * @example
-         * <pre>
-         *  nyplLocationsService.amenities()
-         *    .then(function (data) {
-         *      var amenities = data;
-         *    });
-         *    .catch(function (error) {
-         *      // error = "Could not reach API"
-         *    });
-         *
-         *  nyplLocationsService.amenities('7950')
-         *    .then(function (data) {
-         *      var amenity = data;
-         *    });
-         *    .catch(function (error) {
-         *      // error = "Could not reach API"
-         *    });
-         * </pre>
-         */
-        locationsApi.amenities = function (amenity) {
-            var defer = $q.defer(),
-                url = !amenity ? '/amenities' : '/amenities/' + amenity;
-
-            $http.jsonp(api + url + jsonp_cb, {cache: true})
-                .success(function (data) {
-                    defer.resolve(data);
-                })
-                .error(function (data, status) {
-                    defer.reject(apiError + ': amenities');
-                });
-            return defer.promise;
-        };
-
-        /**
-         * @ngdoc function
-         * @name amenitiesAtLibrary
-         * @methodOf locationService.service:nyplLocationsService
-         * @param {string} location The slug of the location to look up
-         *  all amenities available at that location.
-         * @returns {object} Deferred promise. If it resolves, JSON response
-         *  from the API of all amenities available at the location. If it is
-         *  rejected, an error message is returned saying that it
-         *  "Could not reach API".
-         * @description Get amenities at a library.
-         * @example
-         * <pre>
-         *  nyplLocationsService.amenitiesAtLibrary('115th-street')
-         *    .then(function (data) {
-         *      var location = data.location;
-         *    });
-         *    .catch(function (error) {
-         *      // error = "Could not reach API"
-         *    });
-         * </pre>
-         */
-        locationsApi.amenitiesAtLibrary = function (location) {
-            var defer = $q.defer();
-
-            $http.jsonp(
-                    api + '/locations/' + location + '/amenities' + jsonp_cb,
-                    {cache: true}
-                )
-                .success(function (data) {
-                    defer.resolve(data);
-                })
-                .error(function (data, status) {
-                    defer.reject(apiError + ': library-amenity');
-                });
-            return defer.promise;
-        };
-
-        /**
-         * @ngdoc function
-         * @name alerts
-         * @methodOf locationService.service:nyplLocationsService
-         * @returns {object} Deferred promise. If it resolves, JSON response
-         *  from the API of alerts that display site-wide.
-         * @description Get all alerts.
-         * @example
-         * <pre>
-         *  nyplLocationsService.alerts()
-         *    .then(function (data) {
-         *      var amenities = data.alerts;
-         *    });
-         *    .catch(function (error) {
-         *      // error = "Could not reach API"
-         *    });
-         * </pre>
-         */
-        locationsApi.alerts = function () {
-            var defer = $q.defer();
-
-            $http.jsonp(
-                    api + '/alerts' + jsonp_cb,
-                    {cache: true}
-                )
-                .success(function (data) {
-                    defer.resolve(data);
-                })
-                .error(function (data, status) {
-                    defer.reject(apiError + ': site-wide alerts');
-                });
-            return defer.promise;
-        };
-
-        return locationsApi;
-    }
-    nyplLocationsService.$inject = ["$http", "$q"];
-
-    /**
-     * @ngdoc overview
-     * @module locationService
-     * @name locationService
-     * @description
-     * AngularJS module that provides a service to call the API endpoints.
-     */
-    angular
-        .module('locationService', [])
-        .factory('nyplLocationsService', nyplLocationsService);
-
-})();
-
 /*jslint indent: 2, maxlen: 80, nomen: true */
 /*globals $, window, console, jQuery, angular */
 
@@ -2580,6 +1935,455 @@ describe('NYPL Alerts Component ', function () {
 
 })();
 /*jslint indent: 2, maxlen: 80 */
+/*globals nypl_locations, angular */
+
+(function () {
+  'use strict';
+
+  /**
+   * @ngdoc service
+   * @name coordinateService.service:nyplCoordinatesService
+   * @requires $q
+   * @requires $window
+   * @description
+   * AngularJS service to get a user's geolocation coordinates and calculate
+   * the distance between two points.
+   */
+  function nyplCoordinatesService($q, $window) {
+    var geoCoords = null,
+      coordinatesService = {};
+
+    /**
+     * @ngdoc function
+     * @name geolocationAvailable
+     * @methodOf coordinateService.service:nyplCoordinatesService
+     * @returns {boolean} True if navigator and navigator.geolocation are
+     *  available in the browser, false otherwise.
+     */
+    coordinatesService.geolocationAvailable = function () {
+      return (!$window.navigator && !$window.navigator.geolocation) ?
+          false :
+          true;
+    };
+
+    /**
+     * @ngdoc function
+     * @name getBrowserCoordinates
+     * @methodOf coordinateService.service:nyplCoordinatesService
+     * @returns {object} Deferred promise. If it resolves, it will return an
+     *  object with the user's current position as latitude and longitude
+     *  properties. If it is rejected, it will return an error message based
+     *  on what kind of error occurred.
+     * @example
+     * <pre>
+     *  nyplCoordinatesService.getBrowserCoordinates()
+     *    .then(function (position) {
+     *      var userCoords = _.pick(position, 'latitude', 'longitude');
+     *    })
+     *    .catch(function (error) {
+     *      throw error;
+     *    });
+     * </pre>
+     */
+    coordinatesService.getBrowserCoordinates = function () {
+      // Object containing success/failure conditions
+      var defer = $q.defer();
+
+      // Verify the browser supports Geolocation
+      if (!this.geolocationAvailable()) {
+        defer.reject(new Error("Your browser does not support Geolocation."));
+      } else {
+        // Use stored coords, FF bug fix
+        // if (geoCoords) {
+        //   defer.resolve(geoCoords);
+        // } else {
+        $window.navigator.geolocation.getCurrentPosition(
+          function (position) {
+            // Extract coordinates for geoPosition obj
+            geoCoords = position.coords;
+            defer.resolve(geoCoords);
+
+            // Testing a user's location that is more than 
+            // 25miles of any NYPL location
+            // var coords = {
+            //     'latitude': 42.3581,
+            //     'longitude': -71.0636
+            // }
+            // defer.resolve(coords);
+          },
+          function (error) {
+            switch (error.code) {
+            case error.PERMISSION_DENIED:
+              defer.reject(new Error("Permission denied."));
+              break;
+
+            case error.POSITION_UNAVAILABLE:
+              defer.reject(new Error("The position is currently unavailable."));
+              break;
+
+            case error.TIMEOUT:
+              defer.reject(new Error("The request timed out."));
+              break;
+
+            default:
+              defer.reject(new Error("Unknown error."));
+              break;
+            }
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 600000
+          }
+        );
+        // }
+      }
+
+      return defer.promise; // Enables 'then' callback
+    };
+
+    /**
+     * @ngdoc function
+     * @name getDistance
+     * @methodOf coordinateService.service:nyplCoordinatesService
+     * @param {number} lat1 Latitude of first location.
+     * @param {number} lon1 Longitude of first location.
+     * @param {number} lat2 Latitude of second location.
+     * @param {number} lon2 Longitude of second location.
+     * @returns {number} Distance in miles between two different locations.
+     * @example
+     * <pre>
+     *  var distance =
+     *    nyplCoordinatesService.getDistance(40.1, -73.1, 41.1, -73.2);
+     * </pre>
+     */
+    coordinatesService.getDistance = function (lat1, lon1, lat2, lon2) {
+      if (!lat1 || !lon2 || !lat2 || !lon2) {
+        return undefined;
+      }
+
+      var radlat1 = Math.PI * lat1 / 180,
+        radlat2 = Math.PI * lat2 / 180,
+        theta = lon1 - lon2,
+        radtheta = Math.PI * theta / 180,
+        distance;
+
+      distance = Math.sin(radlat1) * Math.sin(radlat2) +
+        Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+      distance = Math.acos(distance);
+      distance = distance * 180 / Math.PI;
+      distance = distance * 60 * 1.1515;
+      return Math.ceil(distance * 100) / 100;
+    };
+
+    return coordinatesService;
+  }
+  nyplCoordinatesService.$inject = ["$q", "$window"];
+
+  /**
+   * @ngdoc overview
+   * @module coordinateService
+   * @name coordinateService
+   * @description
+   * AngularJS module that provides a service to use a browser's geolocation
+   * coordinates and a function to calculate distance between two points.
+   */
+  angular
+    .module('coordinateService', [])
+    .factory('nyplCoordinatesService', nyplCoordinatesService);
+
+})();
+
+
+/*jslint indent: 4, maxlen: 80 */
+/*globals angular */
+
+(function () {
+    'use strict';
+
+    /**
+     * @ngdoc service
+     * @name locationService.service:nyplLocationsService
+     * @requires $http
+     * @requires $q
+     * @description
+     * AngularJS service to call different API endpoints.
+     */
+    function nyplLocationsService($http, $q) {
+        var api, config,
+            jsonp_cb = '?callback=JSON_CALLBACK',
+            apiError = 'Could not reach API',
+            locationsApi = {};
+
+        /**
+         * @ngdoc function
+         * @name getConfig
+         * @methodOf locationService.service:nyplLocationsService
+         * @returns {object} Deferred promise.
+         * @description
+         * Used to get Sinatra generated config variables.
+         */
+        locationsApi.getConfig = function () {
+            var defer = $q.defer();
+
+            if (config) {
+               defer.resolve(config);
+            } else {
+                config = window.locations_cfg.config;
+
+                if (config) {
+                    api = config.api_root + '/' + config.api_version;
+                    defer.resolve(config);
+                } else {
+                    defer.reject(apiError + ': config');
+                }
+            }
+
+            return defer.promise;
+        }
+
+        /**
+         * @ngdoc function
+         * @name allLocations
+         * @methodOf locationService.service:nyplLocationsService
+         * @returns {object} Deferred promise. If it resolves, JSON response
+         *  from the API of all NYPL locations. If it is rejected, an
+         *  error message is returned saying that it "Could not reach API".
+         * @description Get all locations
+         * @example
+         * <pre>
+         *  nyplLocationsService.allLocations()
+         *    .then(function (data) {
+         *      var locations = data.locations;
+         *    });
+         *    .catch(function (error) {
+         *      // error = "Could not reach API"
+         *    });
+         * </pre>
+         */
+        locationsApi.allLocations = function () {
+            var defer = $q.defer();
+
+            $http.jsonp(
+                    api + '/locations' + jsonp_cb,
+                    {cache: true}
+                )
+                .success(function (data) {
+                    defer.resolve(data);
+                })
+                .error(function (data, status) {
+                    defer.reject(apiError + ': locations');
+                });
+            return defer.promise;
+        };
+
+        /**
+         * @ngdoc function
+         * @name singleLocation
+         * @methodOf locationService.service:nyplLocationsService
+         * @param {string} location The slug of the location to look up.
+         * @returns {object} Deferred promise. If it resolves, JSON response
+         *  from the API of a specific NYPL locations. If it is rejected,
+         *  an error message is returned saying that it "Could not reach API".
+         * @description Get single location.
+         * @example
+         * <pre>
+         *  nyplLocationsService.singleLocation('schwarzman')
+         *    .then(function (data) {
+         *      var location = data.location;
+         *    });
+         *    .catch(function (error) {
+         *      // error = "Could not reach API"
+         *    });
+         * </pre>
+         */
+        locationsApi.singleLocation = function (location) {
+            var defer = $q.defer();
+
+            $http.jsonp(
+                    api + '/locations/' + location + jsonp_cb,
+                    {cache: true}
+                )
+                .success(function (data) {
+                    defer.resolve(data);
+                })
+                .error(function (data, status) {
+                    defer.reject(apiError + ': location');
+                });
+            return defer.promise;
+        };
+
+        /**
+         * @ngdoc function
+         * @name singleDivision
+         * @methodOf locationService.service:nyplLocationsService
+         * @param {string} division The slug of the division to look up.
+         * @returns {object} Deferred promise. If it resolves, JSON response
+         *  from the API of an NYPL Division. If it is rejected, an error
+         *  message is returned saying that it "Could not reach API".
+         * @description Get single division.
+         * @example
+         * <pre>
+         *  nyplLocationsService.singleLocation('map-division')
+         *    .then(function (data) {
+         *      var division = data.division;
+         *    });
+         *    .catch(function (error) {
+         *      // error = "Could not reach API"
+         *    });
+         * </pre>
+         */
+        locationsApi.singleDivision = function (division) {
+            var defer = $q.defer();
+
+            $http.jsonp(
+                    api + '/divisions/' + division + jsonp_cb,
+                    {cache: true}
+                )
+                .success(function (data) {
+                    defer.resolve(data);
+                })
+                .error(function (data, status) {
+                    defer.reject(apiError + ': division');
+                });
+            return defer.promise;
+        };
+
+        /**
+         * @ngdoc function
+         * @name amenities
+         * @methodOf locationService.service:nyplLocationsService
+         * @param {string} [amenity] The id of the amenity to look up.
+         * @returns {object} Deferred promise. If it resolves, JSON response
+         *  from the API. If no param was passed, it will return all the
+         *  amenities at NYPL. If the param was passed, it will return a list
+         *  of all the NYPL locations where the amenity passed is available.
+         *  If it is rejected, an error message is returned saying that it
+         *  "Could not reach API".
+         * @description Get all amenities.
+         * @example
+         * <pre>
+         *  nyplLocationsService.amenities()
+         *    .then(function (data) {
+         *      var amenities = data;
+         *    });
+         *    .catch(function (error) {
+         *      // error = "Could not reach API"
+         *    });
+         *
+         *  nyplLocationsService.amenities('7950')
+         *    .then(function (data) {
+         *      var amenity = data;
+         *    });
+         *    .catch(function (error) {
+         *      // error = "Could not reach API"
+         *    });
+         * </pre>
+         */
+        locationsApi.amenities = function (amenity) {
+            var defer = $q.defer(),
+                url = !amenity ? '/amenities' : '/amenities/' + amenity;
+
+            $http.jsonp(api + url + jsonp_cb, {cache: true})
+                .success(function (data) {
+                    defer.resolve(data);
+                })
+                .error(function (data, status) {
+                    defer.reject(apiError + ': amenities');
+                });
+            return defer.promise;
+        };
+
+        /**
+         * @ngdoc function
+         * @name amenitiesAtLibrary
+         * @methodOf locationService.service:nyplLocationsService
+         * @param {string} location The slug of the location to look up
+         *  all amenities available at that location.
+         * @returns {object} Deferred promise. If it resolves, JSON response
+         *  from the API of all amenities available at the location. If it is
+         *  rejected, an error message is returned saying that it
+         *  "Could not reach API".
+         * @description Get amenities at a library.
+         * @example
+         * <pre>
+         *  nyplLocationsService.amenitiesAtLibrary('115th-street')
+         *    .then(function (data) {
+         *      var location = data.location;
+         *    });
+         *    .catch(function (error) {
+         *      // error = "Could not reach API"
+         *    });
+         * </pre>
+         */
+        locationsApi.amenitiesAtLibrary = function (location) {
+            var defer = $q.defer();
+
+            $http.jsonp(
+                    api + '/locations/' + location + '/amenities' + jsonp_cb,
+                    {cache: true}
+                )
+                .success(function (data) {
+                    defer.resolve(data);
+                })
+                .error(function (data, status) {
+                    defer.reject(apiError + ': library-amenity');
+                });
+            return defer.promise;
+        };
+
+        /**
+         * @ngdoc function
+         * @name alerts
+         * @methodOf locationService.service:nyplLocationsService
+         * @returns {object} Deferred promise. If it resolves, JSON response
+         *  from the API of alerts that display site-wide.
+         * @description Get all alerts.
+         * @example
+         * <pre>
+         *  nyplLocationsService.alerts()
+         *    .then(function (data) {
+         *      var amenities = data.alerts;
+         *    });
+         *    .catch(function (error) {
+         *      // error = "Could not reach API"
+         *    });
+         * </pre>
+         */
+        locationsApi.alerts = function () {
+            var defer = $q.defer();
+
+            $http.jsonp(
+                    api + '/alerts' + jsonp_cb,
+                    {cache: true}
+                )
+                .success(function (data) {
+                    defer.resolve(data);
+                })
+                .error(function (data, status) {
+                    defer.reject(apiError + ': site-wide alerts');
+                });
+            return defer.promise;
+        };
+
+        return locationsApi;
+    }
+    nyplLocationsService.$inject = ["$http", "$q"];
+
+    /**
+     * @ngdoc overview
+     * @module locationService
+     * @name locationService
+     * @description
+     * AngularJS module that provides a service to call the API endpoints.
+     */
+    angular
+        .module('locationService', [])
+        .factory('nyplLocationsService', nyplLocationsService);
+
+})();
+
+/*jslint indent: 2, maxlen: 80 */
 /*global nypl_locations, angular */
 
 (function () {
@@ -2925,6 +2729,7 @@ describe('NYPL Alerts Component ', function () {
                         var locationAddress =
                                 nyplUtility.getAddressString(location, true),
                             markerCoordinates = {},
+                            hoursMessageOpts,
                             alerts = location._embedded.alerts,
                             alertMsgs = nyplAlertsService.getActiveMsgs(alerts);
 
@@ -2967,15 +2772,18 @@ describe('NYPL Alerts Component ', function () {
                         // CSS class for a closing
                         location.closingMessageClass =
                             closingMessageClass(alerts);
+
+                        hoursMessageOpts = {
+                            message: alertMsgs,
+                            open: location.open,
+                            hours: location.hours,
+                            hoursFn: getlocationHours,
+                            closedFn: branchClosedMessage
+                        };
                         // Hours or closing message that will display
                         location.hoursOrClosingMessage = 
-                            nyplAlertsService.getHoursOrMessage(
-                                alertMsgs,
-                                location.open,
-                                location.hours,
-                                getlocationHours,
-                                branchClosedMessage
-                            );
+                            nyplAlertsService
+                                .getHoursOrMessage(hoursMessageOpts);
                     });
 
                     resetPage();
@@ -4943,7 +4751,6 @@ describe('NYPL Alerts Component ', function () {
 
       geocoder.geocode(geocodeOptions, function (result, status) {
           if (status === google.maps.GeocoderStatus.OK) {
-            // console.log(result);
             coords.lat  = result[0].geometry.location.lat();
             coords.long = result[0].geometry.location.lng();
             coords.name = result[0].formatted_address;
