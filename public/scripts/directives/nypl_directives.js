@@ -98,7 +98,14 @@
             {scope: 'location', only_closings: 'current'}
           );
 
+          // Retrieve all current division closings
+          alerts.current_division = nyplAlertsService.filterAlerts(
+            $scope.alerts,
+            {scope: 'division', only_closings: 'current'}
+          );
+
           // Retrieve all global closing alerts
+          // Used to determine tomorrow's hours message
           alerts.all_closings = nyplAlertsService.filterAlerts(
             $scope.alerts,
             {only_closings: 'all'}
@@ -132,7 +139,8 @@
         ** on the stated priority:
         ** 1. Global closing alert
         ** 2. Location closing alert
-        ** 3. Regular hours for today/tomorrow
+        ** 3. Division closing alert
+        ** 4. Regular hours for today/tomorrow
         */
         this.computeHoursToday = function (hoursObj, alertsObj) {
           if (!hoursObj) { return; }
@@ -144,6 +152,9 @@
           }
           if (alertsObj.current_location && alertsObj.current_location.length) {
             return this.getAlertMsg(alertsObj.current_location);
+          }
+          if (alertsObj.current_division && alertsObj.current_division.length) {
+            return this.getAlertMsg(alertsObj.current_division);
           }
           return this.getLocationHours(hoursObj, alertsObj);
         };
@@ -163,7 +174,7 @@
       link: function ($scope, elem, attrs, ctrl) {
         var weeklyHours = $scope.hours || null,
           alerts;
-
+        // Filter alerts only if available
         if ($scope.alerts) {
           alerts = nyplAlertsService.filterAlerts(
             $scope.alerts,
@@ -183,39 +194,45 @@
         // to the week object
         this.findAlertsInWeek = function(weekObj, alertsObj) {
           if (!weekObj && !alertsObj) { return null; }
-
-          var today = new Date().getDay(),
-            startDay, endDay, allDay,
+          var _this = this,
+            today = new Date().getDay(),
             week = _.each(weekObj, function (day, index) {
-              // Assign today's day to the week day
+              // Assign today's day to the current week
               day.is_today = (index === today) ? true : false;
-
-              // Assign the relevant alerts within a 7 day window
-              day.alert = _.find(alertsObj, function(alert) {
-                // A non-infinite closing
-                if (alert.applies.start && alert.applies.end) {
-                  startDay = new Date(alert.applies.start);
-                  endDay = new Date(alert.applies.end);
-                  allDay = (startDay.getDay() < endDay.getDay()) ? true : false;
-
-                  if (allDay) {
-                    if (index >= startDay.getDay() && index < endDay.getDay()) {
-                      return alert;
-                    }
-                  } else {
-                    if (index >= startDay.getDay() && index <= endDay.getDay()) {
-                      return alert;
-                    }
-                  }
-                } else if (alert.applies.start && !alert.applies.end) {
-                  startDay = new Date(alert.applies.start);
-                  if (index >= startDay.getDay()) {
-                    return alert;
-                  }
-                }
-              });
+              // Assign any current closing alert to the day of the week
+              day.alert = _this.assignCurrentDayAlert(alertsObj, index);
             });
           return week;
+        };
+
+        // Finds any current matching closing alert relevant to
+        // the day of the week.
+        this.assignCurrentDayAlert = function(alertsObj, dayIndex) {
+          var startDay, endDay, allDay,
+            index = dayIndex;
+          return _.find(alertsObj, function(alert) {
+            // A non-infinite closing
+            if (alert.applies.start && alert.applies.end) {
+              startDay = new Date(alert.applies.start);
+              endDay = new Date(alert.applies.end);
+              allDay = (startDay.getDay() < endDay.getDay()) ? true : false;
+
+              if (allDay) {
+                if (index >= startDay.getDay() && index < endDay.getDay()) {
+                  return alert;
+                }
+              } else {
+                if (index >= startDay.getDay() && index <= endDay.getDay()) {
+                  return alert;
+                }
+              }
+            } else if (alert.applies.start && !alert.applies.end) {
+              startDay = new Date(alert.applies.start);
+              if (index >= startDay.getDay()) {
+                return alert;
+              }
+            }
+          });
         };
       }]
     };
