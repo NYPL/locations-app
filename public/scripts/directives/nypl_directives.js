@@ -175,20 +175,22 @@
       },
       link: function ($scope, elem, attrs, ctrl) {
         var weeklyHours = $scope.hours || null,
-          alerts;
+          scopedAlerts,
+          weekClosingAlerts;
         // Filter alerts only if available
         if ($scope.alerts) {
-          alerts = nyplAlertsService.filterAlerts(
+          weekClosingAlerts = nyplAlertsService.filterAlerts(
             $scope.alerts,
             {only_closings: 'week'}
           );
         }
-
-        if (weeklyHours && alerts.length) {
-          $scope.hoursThisWeek = ctrl.findAlertsInWeek(weeklyHours, alerts);
-        } else if (weeklyHours) {
-          $scope.hoursThisWeek = weeklyHours;
+        // Sort Alerts by Scope 1) all 2) location 3) division
+        if (weekClosingAlerts && weekClosingAlerts.length) {
+          scopedAlerts = nyplAlertsService.sortAlertsByScope(weekClosingAlerts);
         }
+
+        $scope.hoursThisWeek = (scopedAlerts) ?
+          ctrl.findAlertsInWeek(weeklyHours, scopedAlerts) : weeklyHours;
       },
       controller: ['$scope', function ($scope) {
         // Iterate through the current alerts of the week.
@@ -213,11 +215,12 @@
           var startDay, endDay, allDay,
             index = dayIndex;
           return _.find(alertsObj, function(alert) {
+
             // A non-infinite closing
             if (alert.applies.start && alert.applies.end) {
               startDay = new Date(alert.applies.start);
               endDay = new Date(alert.applies.end);
-              allDay = (startDay.getDay() < endDay.getDay()) ? true : false;
+              allDay = (startDay.getDate() < endDay.getDate()) ? true : false;
 
               if (allDay) {
                 if (index >= startDay.getDay() && index < endDay.getDay()) {
