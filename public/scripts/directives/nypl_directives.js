@@ -143,7 +143,9 @@
         ** 4. Regular hours for today/tomorrow
         */
         this.computeHoursToday = function (hoursObj, alertsObj) {
-          if (!hoursObj) { return; }
+          if (!hoursObj) {
+            return 'Not available';
+          }
           if (!alertsObj) {
             return this.getLocationHours(hoursObj);
           }
