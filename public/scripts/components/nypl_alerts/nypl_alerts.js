@@ -124,6 +124,26 @@
       });
     };
 
+    // Filters Closing Alerts that have started within
+    // 7 days of today's date
+    service.currentWeekClosingAlerts = function (obj) {
+      var today = new Date(),
+        sevenDaysFromToday = new Date(today.getTime() + 6 * 24 * 60 * 60 * 1000),
+        sDate;
+
+      return _.filter(obj, function (elem) {
+        if (elem.applies) {
+          if (elem.applies.start) {
+            sDate = new Date(elem.applies.start);
+            // Covers alert within today's 7 day week
+            if (sevenDaysFromToday.getTime() >= sDate.getTime()) {
+              return elem;
+            }
+          }
+        }
+      });
+    };
+
     // Filters All Closing Alerts only
     service.allClosingAlerts = function (obj) {
       if (!obj) {
@@ -189,6 +209,9 @@
         return uniqueAlerts;
       } else if (defaults.only_closings === 'current') {
         uniqueAlerts = this.currentClosingAlerts(uniqueAlerts);
+        return uniqueAlerts;
+      } else if (defaults.only_closings === 'week') {
+        uniqueAlerts = this.currentWeekClosingAlerts(uniqueAlerts);
         return uniqueAlerts;
       }
 

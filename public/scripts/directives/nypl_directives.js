@@ -115,7 +115,7 @@
         // Obtains the first alert message from
         // the API of filtered current closing alerts.
         this.getAlertMsg = function (alertsObj) {
-          return 'Closed ' + _.chain(alertsObj)
+          return _.chain(alertsObj)
             .pluck('closed_for')
             .flatten(true)
             .first()
@@ -167,7 +167,7 @@
         if ($scope.alerts) {
           alerts = nyplAlertsService.filterAlerts(
             $scope.alerts,
-            {only_closings: 'all'}
+            {only_closings: 'week'}
           );
         }
 
@@ -178,37 +178,43 @@
         }
       },
       controller: ['$scope', function ($scope) {
+        // Iterate through the current alerts of the week.
+        // Attach the alert pertaining to the day by it's index
+        // to the week object
         this.findAlertsInWeek = function(weekObj, alertsObj) {
           if (!weekObj && !alertsObj) { return null; }
 
           var today = new Date().getDay(),
             startDay, endDay, allDay,
             week = _.each(weekObj, function (day, index) {
+              // Assign today's day to the week day
+              day.is_today = (index === today) ? true : false;
+
+              // Assign the relevant alerts within a 7 day window
               day.alert = _.find(alertsObj, function(alert) {
-                if (alert.applies && today <= index) {
-                  if (alert.applies.start && alert.applies.end) {
-                    startDay = new Date(alert.applies.start);
-                    endDay = new Date(alert.applies.end);
-                    allDay = (startDay.getDay() < endDay.getDay()) ? true : false;
-                    if (allDay) {
-                      if (index >= startDay.getDay() && index < endDay.getDay()) {
-                        return alert;
-                      }
-                    } else {
-                      if (index >= startDay.getDay() && index <= endDay.getDay()) {
-                        return alert;
-                      }
-                    }
-                  } else if (alert.applies.start && !alert.applies.end) {
-                    startDay = new Date(alert.applies.start);
-                    if (index >= startDay.getDay()) {
+                // A non-infinite closing
+                if (alert.applies.start && alert.applies.end) {
+                  startDay = new Date(alert.applies.start);
+                  endDay = new Date(alert.applies.end);
+                  allDay = (startDay.getDay() < endDay.getDay()) ? true : false;
+
+                  if (allDay) {
+                    if (index >= startDay.getDay() && index < endDay.getDay()) {
                       return alert;
                     }
+                  } else {
+                    if (index >= startDay.getDay() && index <= endDay.getDay()) {
+                      return alert;
+                    }
+                  }
+                } else if (alert.applies.start && !alert.applies.end) {
+                  startDay = new Date(alert.applies.start);
+                  if (index >= startDay.getDay()) {
+                    return alert;
                   }
                 }
               });
             });
-
           return week;
         };
       }]
