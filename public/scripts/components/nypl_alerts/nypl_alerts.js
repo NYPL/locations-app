@@ -124,8 +124,7 @@
       });
     };
 
-    // Filters Closing Alerts that have started within
-    // 7 days of today's date
+    // Filters Closing Alerts that are within the next 7 days
     service.currentWeekClosingAlerts = function (obj) {
       var today = new Date(),
         sevenDaysFromToday = new Date(today.getTime() + 6 * 24 * 60 * 60 * 1000),
@@ -136,7 +135,9 @@
           if (elem.applies.start) {
             sDate = new Date(elem.applies.start);
             // Covers alert within today's 7 day week
-            if (sevenDaysFromToday.getTime() >= sDate.getTime()) {
+            if ((sevenDaysFromToday.getTime() >= sDate.getTime()) &&
+              (today.getTime() <= sDate.getTime())) {
+              console.log(elem);
               return elem;
             }
           }
@@ -240,19 +241,19 @@
     };
 
     service.getHoursOrMessage = function (opts) {
-      if (!opts) {
+      if (!opts || !opts.closedFn) {
         return;
       }
 
       var message = opts.message || '',
         open = opts.open || false,
         hours = opts.hours || undefined,
-        hoursFn = opts.hoursFn || undefined,
-        closedFn = opts.closedFn || undefined;
+        hoursFn = opts.hoursFn,
+        closedFn = opts.closedFn;
 
       // Open or closed
       if (open) {
-        // Now is there a closing alert?
+        // Now is there an alert message?
         if (message) {
           return message;
         }

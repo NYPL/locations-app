@@ -302,7 +302,10 @@ describe('NYPL Alerts Component', function () {
           applies: {
             start: "2015-03-25T16:00:00-05:00"
           }
-        }  
+        },
+        {
+          // Adding empty alerts object on purpose
+        }
       ];
     });
 
@@ -327,10 +330,14 @@ describe('NYPL Alerts Component', function () {
         jasmine.clock().uninstall();
       });
 
-      describe('Current Alerts Filter', function () {
+      describe('currentAlerts()', function () {
         it('should have a currentAlerts() function', function () {
           expect(angular.isFunction(nyplAlertsService.currentAlerts)).toBe(true);
           expect(nyplAlertsService.currentAlerts).toBeDefined();
+        });
+
+        it('should return an empty array if no data was passed', function () {
+          expect(nyplAlertsService.currentAlerts().length).toBe(0);
         });
 
         it('should filter current alerts that have started and have not ended.' +
@@ -368,7 +375,6 @@ describe('NYPL Alerts Component', function () {
           function () {
             todaysDateMock = new Date(2015, 2, 25);
 
-            // There should be no 'current' alerts on February 10th.
             jasmine.clock().mockDate(todaysDateMock);
 
             activeAlerts = nyplAlertsService.currentAlerts(alertsObject.alerts);
@@ -377,7 +383,25 @@ describe('NYPL Alerts Component', function () {
               .toEqual('another mocked closing');
           });
 
-      });  /* End Describe Current Alerts Filter */
+      });  /* End Describe Current Alerts  */
+
+      describe('currentClosingAlerts()', function () {
+        it('should have a currentClosingAlerts() function', function () {
+          expect(angular.isFunction(nyplAlertsService.currentClosingAlerts)).toBe(true);
+          expect(nyplAlertsService.currentClosingAlerts).toBeDefined();
+        });
+
+        it('should return one closing alert object', function () {
+          todaysDateMock = new Date(2015, 3, 25);
+          jasmine.clock().mockDate(todaysDateMock);
+
+          var alert = nyplAlertsService
+            .currentClosingAlerts(alertsObject.alerts);
+
+          expect(alert[0].closed_for).toEqual('another mocked closing');
+          expect(alert[0].msg).toEqual('All locations will be closed for some reason.');
+        });
+      });
 
       describe('activeClosings()', function () {
         it('should have an activeClosings() function', function () {
@@ -411,11 +435,11 @@ describe('NYPL Alerts Component', function () {
       describe('getHoursOrMessage()', function () {
         var hoursMessageOpts = {},
           closedBranchMessage,
-          locationHours;
+          locationHours,
+          closedMessage;
 
         beforeEach(function () {
           // Mock these functions
-
           closedBranchMessage = function () {
             return "Branch is temporarily closed.";
           };
@@ -423,19 +447,61 @@ describe('NYPL Alerts Component', function () {
           locationHours = function () {
             return "10am - 6pm";
           };
+
+          closedMessage = 'Mocked closed alert message';
         });
 
         it('should have an getHoursOrMessage() function', function () {
-          expect(angular.isFunction(nyplAlertsService.getHoursOrMessage)).toBe(true);
+          expect(angular.isFunction(nyplAlertsService.getHoursOrMessage))
+            .toBe(true);
           expect(nyplAlertsService.getHoursOrMessage).toBeDefined();
         });
 
-        it('should return undefined if no options were passed', function () {
-          expect(nyplAlertsService.getHoursOrMessage()).not.toBeDefined();
+        describe('No options passed', function () {
+          it('should return undefined if no options were passed', function () {
+            expect(nyplAlertsService.getHoursOrMessage()).not.toBeDefined();
+          });
+
+          it('should return undefined if no closed function was passed',
+            function () {
+              hoursMessageOpts.hoursFn = locationHours;
+              expect(nyplAlertsService.getHoursOrMessage(hoursMessageOpts))
+                .not.toBeDefined();
+            });
         });
 
-        it('should call the ', function () {
+        describe('The branch is closed', function () {
+          it('should call the closed function',
+            function () {
+              hoursMessageOpts.open = false;
+              hoursMessageOpts.hoursFn = locationHours;
+              hoursMessageOpts.closedFn = closedBranchMessage;
 
+              expect(nyplAlertsService.getHoursOrMessage(hoursMessageOpts))
+                .toEqual('Branch is temporarily closed.')
+            });
+        });
+
+        describe('The branch is open', function () {
+          beforeEach(function () {
+            hoursMessageOpts.open = true;
+            hoursMessageOpts.hoursFn = locationHours;
+            hoursMessageOpts.closedFn = closedBranchMessage;
+          });
+
+          it('should display the hours because there is no alert message',
+            function () {
+              expect(nyplAlertsService.getHoursOrMessage(hoursMessageOpts))
+                .toEqual('10am - 6pm');
+            });
+
+          it('should display the message because there is an alert', function () {
+            var closed
+            hoursMessageOpts.message = closedMessage;
+
+            expect(nyplAlertsService.getHoursOrMessage(hoursMessageOpts))
+              .toEqual(closedMessage);
+          });
         });
       }); /* End getHoursOrMessage() */
 
@@ -449,7 +515,33 @@ describe('NYPL Alerts Component', function () {
           expect(nyplAlertsService.allClosingAlerts()).not.toBeDefined();
         });
 
-        // Missing tests
+        it('should return undefined if no obj was passed', function () {
+          // In alertsObject.alerts, there are three alert objects with closings 
+          expect(nyplAlertsService.allClosingAlerts(alertsObject.alerts).length)
+            .toBe(3);
+        });
+      });
+
+      describe('currentWeekClosingAlerts()', function () {
+        it('should have an currentWeekClosingAlerts() function', function () {
+          expect(angular.isFunction(nyplAlertsService.currentWeekClosingAlerts)).toBe(true);
+          expect(nyplAlertsService.currentWeekClosingAlerts).toBeDefined();
+        });
+
+        it('should return undefined if no obj was passed', function () {
+          expect(nyplAlertsService.currentWeekClosingAlerts().length)
+            .toBe(0);
+        });
+
+        it('should return undefined if no obj was passed', function () {
+          todaysDateMock = new Date(2015, 2, 20);
+          jasmine.clock().mockDate(todaysDateMock);
+
+          expect(
+            nyplAlertsService.currentWeekClosingAlerts(alertsObject.alerts).length
+          )
+            .toEqual(0);
+        });
       });
 
       describe('removeDuplicates()', function () {
