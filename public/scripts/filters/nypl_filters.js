@@ -194,7 +194,7 @@
                     // If an alert is set for tomorrow, display that first
                     // before displaying the hours for tomorrow
                     if (tomorrows_alert) {
-                        return 'Closed tomorrow ' + tomorrows_alert;
+                        return 'Tomorrow: ' + tomorrows_alert;
                     }
                     else if (tomorrow_open_time && tomorrow_close_time) {
                         return 'Open tomorrow ' + tomorrow_open_time.hours +

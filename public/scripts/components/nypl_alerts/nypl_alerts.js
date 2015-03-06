@@ -157,6 +157,22 @@
       });
     };
 
+    // Sort Alerts by scope order
+    // 1) all 2) location 3) division
+    service.sortAlertsByScope = function (obj) {
+      return _.chain(obj)
+      .sortBy(function(elem) {
+        return elem.scope.toLowerCase() === 'all';
+      })
+      .sortBy(function(elem) {
+        return elem.scope.toLowerCase() === 'location';
+      })
+      .sortBy(function(elem) {
+        return elem.scope.toLowerCase() === 'division';
+      })
+      .value();
+    };
+
     // Removes Alerts with duplicate id's and msg
     service.removeDuplicates = function (obj) {
       if (!obj) {
