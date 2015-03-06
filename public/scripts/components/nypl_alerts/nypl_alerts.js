@@ -69,8 +69,8 @@
     // Filters all current Alerts that are 
     // within the display range
     service.currentAlerts = function (obj) {
-      var today = new Date(),
-        sDate,
+      var today = moment();
+      var sDate,
         eDate;
 
       return _.filter(obj, function (elem) {
@@ -78,12 +78,12 @@
           if (elem.display.start && elem.display.end) {
             sDate = new Date(elem.display.start);
             eDate = new Date(elem.display.end);
-            if (sDate.getTime() <= today.getTime() &&
-                eDate.getTime() >= today.getTime()) {
+            if (sDate.getTime() <= today.valueOf() &&
+                eDate.getTime() >= today.valueOf()) {
               return elem;
-            } else if (today.getDay() === sDate.getDay() &&
-              eDate.getDay() === today.getDay() && eDate.getTime() 
-              >= today.getTime()) {
+            } else if (today.day() === sDate.getDay() &&
+              eDate.getDay() === today.day() && eDate.getTime() 
+              >= today.valueOf()) {
               return elem;
             }
           }
@@ -94,7 +94,7 @@
     // Filters Closing Alerts that have started within
     // the applies.start & applies.end dates
     service.currentClosingAlerts = function (obj) {
-      var today = new Date(),
+      var today = moment(),
         sDate,
         eDate;
 
@@ -104,19 +104,19 @@
             sDate = new Date(elem.applies.start);
             eDate = new Date(elem.applies.end);
             // Covers alert within today
-            if (sDate.getTime() <= today.getTime() &&
-                eDate.getTime() >= today.getTime()) {
+            if (sDate.getTime() <= today.valueOf() &&
+                eDate.getTime() >= today.valueOf()) {
               return elem;
             }
             // Covers early openings
-            else if (today.getDay() === sDate.getDay() &&
-              eDate.getDay() === today.getDay() && eDate.getTime() 
-              >= today.getTime()) {
+            else if (today.day() === sDate.getDay() &&
+              eDate.getDay() === today.day() && eDate.getTime() 
+              >= today.valueOf()) {
               return elem;
             }
           } else if (elem.applies.start) {
             sDate = new Date(elem.applies.start);
-            if (sDate.getTime() <= today.getTime()) {
+            if (sDate.getTime() <= today.valueOf()) {
               return elem;
             }
           }
@@ -127,8 +127,8 @@
     // Filters Closing Alerts that have started within
     // 7 days of today's date
     service.currentWeekClosingAlerts = function (obj) {
-      var today = new Date(),
-        sevenDaysFromToday = new Date(today.getTime() + 6 * 24 * 60 * 60 * 1000),
+      var today = moment(),
+        sevenDaysFromToday = moment().add(7, 'days'),
         sDate;
 
       return _.filter(obj, function (elem) {
@@ -136,7 +136,7 @@
           if (elem.applies.start) {
             sDate = new Date(elem.applies.start);
             // Covers alert within today's 7 day week
-            if (sevenDaysFromToday.getTime() >= sDate.getTime()) {
+            if (sevenDaysFromToday.valueOf() >= sDate.getTime()) {
               return elem;
             }
           }
@@ -178,10 +178,10 @@
     service.isAlertExpired = function (startDate, endDate) {
       var sDate = new Date(startDate),
         eDate   = new Date(endDate),
-        today   = new Date();
+        today   = moment();
 
-      return (sDate.getTime() <= today.getTime() &&
-        eDate.getTime() >= today.getTime()) ? false : true;
+      return (sDate.getTime() <= today.valueOf() &&
+        eDate.getTime() >= today.valueOf()) ? false : true;
     };
 
     // Assigns proper alerts based on scope (optional)

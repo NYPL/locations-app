@@ -184,7 +184,9 @@
         this.findAlertsInWeek = function(weekObj, alertsObj) {
           if (!weekObj && !alertsObj) { return null; }
 
-          var today = new Date().getDay(),
+          // Use moment().day() to get the current day of the week
+          // based on the default timezone which was set in app.js
+          var today = moment().day(),
             startDay, endDay, allDay,
             week = _.each(weekObj, function (day, index) {
               // Assign today's day to the week day

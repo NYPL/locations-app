@@ -139,11 +139,15 @@
         }
 
         return function (elem) {
+            // Not sure yet if this will suffice to get the dynamic
+            // hours today
+            // moment().get('hours'); or get('hour')??
+
             var open_time, closed_time,
-                now = new Date(),
+                now = moment(),
                 today, tomorrow,
                 tomorrow_open_time, tomorrow_close_time,
-                tomorrows_alert, hour_now_military = now.getHours();
+                tomorrows_alert, hour_now_military = now.get('hour');
 
             // If truthy async check
             if (elem) {

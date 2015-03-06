@@ -137,6 +137,9 @@ nypl_locations.config([
             }
         })
 
+        // Set default time zone.
+        moment.tz.setDefault("America/New_York");
+
         // This next line breaks unit tests which doesn't make sense since
         // unit tests should not test the whole app. BUT since we are testing
         // directives and using $rootScope.$digest or $rootScope.$apply,
