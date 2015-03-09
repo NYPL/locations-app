@@ -12,7 +12,7 @@ describe('Locations: Division - Testing General Research Division',
       // Function that creates a module that is injected at run time,
       // overrides and mocks httpbackend to mock API call. 
       httpBackendMock = function (response) {
-        var API_URL = 'http://dev.locations.api.nypl.org/api/v0.5';
+        var API_URL = 'http://dev.locations.api.nypl.org/api/v0.6';
 
         angular.module('httpBackendMock', ['ngMockE2E'])
           .run(function ($httpBackend) {
