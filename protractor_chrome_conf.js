@@ -51,7 +51,7 @@ exports.config = {
   //       new jasmine.JUnitXmlReporter('test/results/e2e_xml/', true, true)
   //     );
   // },
-
+  // framework: 'jasmine2',
   baseUrl: 'http://localhost:9292/',
 
   // Options to be passed to Jasmine-node.
