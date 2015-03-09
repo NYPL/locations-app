@@ -4,6 +4,9 @@
 var HtmlReporter = require('protractor-html-screenshot-reporter');
 
 exports.config = {
+  // Use Jasmine 2.x.x, need Protractor version 1.6.0+
+  framework: 'jasmine2',
+
   // Do not start a Selenium Standalone sever - only run this using chrome.
   // chromeOnly: true,
   // chromeDriver: './node_modules/protractor/selenium/chromedriver',
@@ -51,7 +54,7 @@ exports.config = {
   //       new jasmine.JUnitXmlReporter('test/results/e2e_xml/', true, true)
   //     );
   // },
-  // framework: 'jasmine2',
+
   baseUrl: 'http://localhost:9292/',
 
   // Options to be passed to Jasmine-node.
