@@ -137,7 +137,6 @@
             // Covers alert within today's 7 day week
             if ((sevenDaysFromToday.getTime() >= sDate.getTime()) &&
               (today.getTime() <= sDate.getTime())) {
-              console.log(elem);
               return elem;
             }
           }
@@ -161,6 +160,8 @@
     // Sort Alerts by scope order
     // 1) all 2) location 3) division
     service.sortAlertsByScope = function (obj) {
+      if (!obj) { return; }
+
       return _.chain(obj)
       .sortBy(function(elem) {
         return elem.scope.toLowerCase() === 'all';
@@ -193,6 +194,10 @@
 
     // Boolean check if an alert has expired
     service.isAlertExpired = function (startDate, endDate) {
+      if (!startDate || !endDate) {
+        return;
+      }
+
       var sDate = new Date(startDate),
         eDate   = new Date(endDate),
         today   = new Date();
