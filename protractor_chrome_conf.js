@@ -20,6 +20,7 @@ exports.config = {
   // Spec patterns are relative to the current working directly when
   // protractor is called.
   suites: {
+    alerts:['test/e2e/alerts/alerts.spec.js'],
     amenities: ['test/e2e/amenities/all_amenities.spec.js',
       'test/e2e/amenities/amenity.spec.js',
       'test/e2e/amenities/amenities_at_branch.spec.js'],
