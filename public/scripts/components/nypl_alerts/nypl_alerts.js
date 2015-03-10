@@ -136,7 +136,7 @@
             sDate = new Date(elem.applies.start);
             // Covers alert within today's 7 day week
             if ((sevenDaysFromToday.valueOf() >= sDate.getTime()) &&
-              (today.valueOf() <= sDate.getTime())) {
+              (today.day() <= sDate.getDay())) {
               return elem;
             }
           }
