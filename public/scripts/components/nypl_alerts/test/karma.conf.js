@@ -8,12 +8,14 @@ module.exports = function (config) {
     basePath : '../',
 
     files : [
-      'components/jquery/dist/jquery.js',
+      'components/jquery/dist/jquery.min.js',
       'components/angular/angular.js',
       'components/angular-mocks/*.js',
       'components/angular-sanitize/*.js',
       'components/underscore/underscore.js',
       'components/angular-ui-router/release/*.js',
+      'components/moment/min/moment-with-locales.min.js',
+      'components/moment-timezone/builds/moment-timezone-with-data.min.js',
       'nypl_alerts.js',
       'test/unit/*.js',
     ],
