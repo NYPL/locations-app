@@ -8,7 +8,7 @@ module.exports = function (config) {
     basePath : '../',
 
     files : [
-      'components/jquery/dist/jquery.js',
+      // 'components/jquery/dist/jquery.js',
       'components/angular/angular.js',
       'components/angular-mocks/*.js',
       'components/angular-sanitize/*.js',
