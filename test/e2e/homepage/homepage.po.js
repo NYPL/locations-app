@@ -74,6 +74,10 @@ var LandingPage = function () {
     return this.nthLoc(n).element(by.css('.icon-map'));
   };
 
+  this.nthLocTodaysHoursText = function (n) {
+    return this.nthLoc(n).element(by.css('.hours-info')).getText();
+  };
+
   this.firstLocDist = function () {
     return this.nthLocDist(0);
   };
