@@ -14,6 +14,8 @@ module.exports = function (config) {
       'components/angular-sanitize/*.js',
       'components/underscore/underscore.js',
       'components/angular-ui-router/release/*.js',
+      'components/moment/min/moment-with-locales.min.js',
+      'components/moment-timezone/builds/moment-timezone-with-data.min.js',
       'nypl_alerts.js',
       'test/unit/*.js',
     ],

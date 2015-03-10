@@ -754,7 +754,6 @@ describe('NYPL Alerts Component', function () {
             template = '<nypl-location-alerts alerts="alerts">' +
               '</nypl-location-alerts>';
 
-
             locationAlertDirective = createDirective(template);
             expect(locationAlertDirective.next()).toEqual({});
             expect(locationAlertDirective.next().attr('class'))
