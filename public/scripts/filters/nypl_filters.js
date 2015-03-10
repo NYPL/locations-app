@@ -45,15 +45,15 @@
                 // opening hour or if the alert end hour is after(equal-to) the location's
                 // closing hour. Lastly, default to a partial closing.
                 if (allDay) {
-                    displayString = regHours + '<br />' + 'Closed - '
-                    + (sDate.getMonth() + 1) + '/' + sDate.getDate();
+                    displayString = 'Closed *';
                 } else if (sDate.getHours() <= openHour && eDate.getHours() >= closedHour) {
-                    displayString = regHours + '<br />' + 'Closed - '
-                    + (sDate.getMonth() + 1) + '/' + sDate.getDate();
-                } else {
-                    displayString = regHours + '<br />' + 'Change in hours - '
-                    + (sDate.getMonth() + 1) + '/' + sDate.getDate();
+                    displayString = 'Closed *'
+                } else if (openHour < sDate.getHours() && closedHour <= eDate.getHours()) {
+                    displayString = 'Opening late *';
+                } else if (closedHour > eDate.getHours() && openHour >= sDate.getHours()) {
+                    displayString = 'Closing early *';
                 }
+
             }
             return $sce.trustAsHtml(displayString);
         }
