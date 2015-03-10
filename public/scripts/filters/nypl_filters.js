@@ -49,9 +49,9 @@
                 } else if (sDate.getHours() <= openHour && eDate.getHours() >= closedHour) {
                     displayString = 'Closed *'
                 } else if (openHour < sDate.getHours() && closedHour <= eDate.getHours()) {
-                    displayString = 'Opening late *';
-                } else if (closedHour > eDate.getHours() && openHour >= sDate.getHours()) {
                     displayString = 'Closing early *';
+                } else if (closedHour > eDate.getHours() && openHour >= sDate.getHours()) {
+                    displayString = 'Opening late *';
                 }
 
             }
