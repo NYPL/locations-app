@@ -17,22 +17,12 @@
           <todayshours class="todays-hours" hours="location.hours" alerts="location._embedded.alerts" display-icon="true" />
 
           <div id="location-hours" class="location-hours">
-            <h2 class="flush--ends hdg">Hours
-              <span id="toggle-hours" ng-click="expand = !expand"
-                ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span>
-            </h2>
-            <!-- Weekly Hours Table -->
-            <div class='hours-table-collapse' collapse="expand" duration="2500">
-              <hours-table hours="location.hours.regular" alerts="location._embedded.alerts">
-              </hours-table>
-            </div>
-
-	          <p class="smallprint note" data-ng-if="location.type == 'research'">
-	            Note: See division pages for individual hours
-	          </p>
-            <a class="btn btn--natural closings-link" data-ng-href="//nypl.org/help/closings">
-              Holiday closing information
-            </a>
+            <!-- Hours Table -->
+            <hours-table hours="location.hours.regular" alerts="location._embedded.alerts" location-type="location.type">
+            </hours-table>
+            <p class="smallprint note" data-ng-if="location.type == 'research'">
+              Note: See division pages for individual hours
+            </p>
           </div>
         </div>
         <div class="callout branch-closed" data-ng-if="!location.open">

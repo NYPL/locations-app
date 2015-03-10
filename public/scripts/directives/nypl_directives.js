@@ -122,7 +122,7 @@
         // Obtains the first alert message from
         // the API of filtered current closing alerts.
         this.getAlertMsg = function (alertsObj) {
-          return _.chain(alertsObj)
+          return 'Today: ' + _.chain(alertsObj)
             .pluck('closed_for')
             .flatten(true)
             .first()
@@ -168,15 +168,16 @@
     return {
       restrict: 'EA',
       templateUrl: 'scripts/directives/templates/hours-table.html',
-      replace: false, // If true, undefined error is thrown
+      replace: true,
       scope: {
         hours: '=hours',
         alerts: '=alerts'
       },
       link: function ($scope, elem, attrs, ctrl) {
-        var weeklyHours = $scope.hours || null,
+        var weeklyHours = angular.copy($scope.hours) || null,
           scopedAlerts,
           weekClosingAlerts;
+
         // Filter alerts only if available
         if ($scope.alerts) {
           weekClosingAlerts = nyplAlertsService.filterAlerts(
@@ -189,8 +190,32 @@
           scopedAlerts = nyplAlertsService.sortAlertsByScope(weekClosingAlerts);
         }
 
-        $scope.hoursThisWeek = (scopedAlerts) ?
-          ctrl.findAlertsInWeek(weeklyHours, scopedAlerts) : weeklyHours;
+        // Assign dynamic week hours with closings
+        $scope.dynamicWeekHours = (scopedAlerts) ?
+          ctrl.findAlertsInWeek(weeklyHours, scopedAlerts) : null;
+
+        $scope.regularWeekHours = $scope.hours || null;
+
+        $scope.buttonText = (scopedAlerts) ? 'Regular hours' : 'Hours this week';
+
+        // Hide Regular hours only if Dynamic hours are defined
+        if ($scope.dynamicWeekHours) {
+          elem.addClass('hide-regular-hours');
+        }
+
+        // Toggle Hours visible only if dynamic hours are defined
+        $scope.toggleHoursTable = function() {
+          if (elem.hasClass('hide-regular-hours')) {
+            elem.removeClass('hide-regular-hours');
+            elem.addClass('hide-dynamic-hours');
+            $scope.buttonText = 'Hours this week';
+          }
+          else if (elem.hasClass('hide-dynamic-hours')) {
+            elem.removeClass('hide-dynamic-hours');
+            elem.addClass('hide-regular-hours');
+            $scope.buttonText = 'Regular hours';
+          }
+        };
       },
       controller: ['$scope', function ($scope) {
         // Iterate through the current alerts of the week.
@@ -198,6 +223,7 @@
         // to the week object
         this.findAlertsInWeek = function(weekObj, alertsObj) {
           if (!weekObj && !alertsObj) { return null; }
+
 
           // Use moment().day() to get the current day of the week
           // based on the default timezone which was set in app.js
@@ -208,8 +234,18 @@
               day.is_today = (index === today) ? true : false;
               // Assign any current closing alert to the day of the week
               day.alert = _this.assignCurrentDayAlert(alertsObj, index);
+
+              // Assign the dynamic date
+              day.date = _this.assignDynamicDate(index);
             });
           return week;
+        };
+
+        this.assignDynamicDate = function(index) {
+          var today = moment(),
+            date;
+          date = today.day(index);
+          return date.format('MM/DD');
         };
 
         // Finds any current matching closing alert relevant to
@@ -608,8 +644,8 @@
         $scope.active;
         $scope.currentIndex;
 
-        var input  = angular.element(document.getElementById('searchTerm')),
-          html   = angular.element(document.getElementsByTagName('html'));
+        var input = angular.element(document.getElementById('searchTerm')),
+          html = angular.element(document.getElementsByTagName('html'));
 
         input.bind('focus', function() {
           $scope.$apply( function() { 

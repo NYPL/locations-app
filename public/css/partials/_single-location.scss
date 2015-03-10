@@ -106,6 +106,23 @@
 				margin-left: 48px;
 			}
 
+			.hours-table-wrapper {
+
+				&.hide-regular-hours {
+					.reg-week-hours-wrapper {
+						display: none;
+					}
+				}
+				&.hide-dynamic-hours {
+					.dynamic-week-hours-wrapper {
+						display: none;
+					}
+					.dynamic-hours-note {
+						display: none;
+					}
+				}
+			}
+
 			.hdg {
 				position: relative;
 				border: none;
@@ -121,6 +138,11 @@
 			}
 
 			.weekly-hours {
+				.date {
+					vertical-align: top;
+					padding: 0 5px 3px 0;
+				}
+
 				.day {
 					vertical-align: top;
 					font-style: italic;
@@ -134,15 +156,12 @@
 
 				// Closed hours
 				tr.closed {
-					.day, .time {
+					.time {
 						color: #AAA;
 					}
 				}
 
 				tr.today {
-					.time {
-						font-weight: bolder;
-					}
 				}
 			}
 
@@ -150,7 +169,7 @@
 				margin-bottom: .5rem;
 			}
 
-			.closings-link {
+			.closings-link, .hours-toggle-btn {
 				margin-left: 1px;
 			}
 		}

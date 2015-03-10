@@ -16,23 +16,13 @@
           <todayshours class="todays-hours" hours="division.hours" alerts="division._embedded.alerts" display-icon="true" />
           
           <div id="location-hours" class="location-hours" data-ng-if="division.hours">
-            <h2 class="flush--ends hdg">
-              Hours
-              <span id="toggle-hours" ng-click="expand = !expand"
-                ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span>
-            </h2>
-            <!-- Weekly Hours Table -->
-            <div class='hours-table-collapse' collapse="expand" duration="2500">
-              <hours-table hours="division.hours.regular" alerts="division._embedded.alerts">
-              </hours-table>
-            </div>
+            <!-- Hours Table -->
+            <hours-table hours="division.hours.regular" alerts="division._embedded.alerts">
+            </hours-table>
 
             <p class="smallprint note" data-ng-if="division.open && division._embedded.divisions">
               Note: See sub-division pages for individual hours
             </p>
-            <a class="btn btn--natural closings-link" data-ng-href="//nypl.org/help/closings">
-              Holiday closing information
-            </a>
           </div>
         </div>
         <div class="callout branch-closed" data-ng-if="!division.open">
