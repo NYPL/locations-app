@@ -283,7 +283,7 @@
         message = '';
 
       if (alerts.length) {
-        message = 'Closed ' + alerts[0].closed_for;
+        message = alerts[0].closed_for;
       }
 
       return message;
