@@ -29,12 +29,12 @@
 		</table>
 	</div>
 
-  <p class="smallprint note" data-ng-if="locationType == 'research'">
-    Note: See division pages for individual hours
-  </p>
+	<p class="smallprint note dynamic-hours-note" data-ng-if="dynamicWeekHours">
+		* Indicates change to regular hours
+	</p>
 
   <!-- Toggles Hours Table -->
-  <button class="btn--natural" data-ng-if="dynamicWeekHours" data-ng-click="toggleHoursTable()">
+  <button class="btn--natural hours-toggle-btn" data-ng-if="dynamicWeekHours" data-ng-click="toggleHoursTable()">
   	{{buttonText}}
   </button>
 

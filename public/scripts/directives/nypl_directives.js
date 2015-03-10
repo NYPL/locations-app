@@ -171,8 +171,7 @@
       replace: true,
       scope: {
         hours: '=hours',
-        alerts: '=alerts',
-        locationType: '=locationType'
+        alerts: '=alerts'
       },
       link: function ($scope, elem, attrs, ctrl) {
         var weeklyHours = angular.copy($scope.hours) || null,
@@ -214,10 +213,9 @@
           else if (elem.hasClass('hide-dynamic-hours')) {
             elem.removeClass('hide-dynamic-hours');
             elem.addClass('hide-regular-hours');
-            $scope.buttonText = 'Regular Hours';
+            $scope.buttonText = 'Regular hours';
           }
         };
-
       },
       controller: ['$scope', function ($scope) {
         // Iterate through the current alerts of the week.

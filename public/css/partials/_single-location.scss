@@ -117,6 +117,9 @@
 					.dynamic-week-hours-wrapper {
 						display: none;
 					}
+					.dynamic-hours-note {
+						display: none;
+					}
 				}
 			}
 
@@ -159,9 +162,6 @@
 				}
 
 				tr.today {
-					.time {
-						font-weight: bolder;
-					}
 				}
 			}
 
@@ -169,7 +169,7 @@
 				margin-bottom: .5rem;
 			}
 
-			.closings-link {
+			.closings-link, .hours-toggle-btn {
 				margin-left: 1px;
 			}
 		}

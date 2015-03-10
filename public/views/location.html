@@ -20,6 +20,9 @@
             <!-- Hours Table -->
             <hours-table hours="location.hours.regular" alerts="location._embedded.alerts" location-type="location.type">
             </hours-table>
+            <p class="smallprint note" data-ng-if="location.type == 'research'">
+              Note: See division pages for individual hours
+            </p>
           </div>
         </div>
         <div class="callout branch-closed" data-ng-if="!location.open">
