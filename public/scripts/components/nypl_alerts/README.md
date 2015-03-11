@@ -1,7 +1,7 @@
 NYPL Alerts AngularJS Module
 ===========
 
-This module provides the ability to retrive NYPL global/location alerts for use in your application.
+This module provides the ability to retrive NYPL global/location/division alerts for use in your application.
 By utilizing the built-in Provider and Service functions, you can easily retrieve relevant NYPL Alerts in your Angular JS app. Custom directives have also been included to display alerts.
 
 ## Installation/Use:
@@ -24,7 +24,7 @@ By utilizing the built-in Provider and Service functions, you can easily retriev
     .config(['$nyplAlertsProvider', function ($nyplAlertsProvider) {
         // nyplAlerts required config settings
         $nyplAlertsProvider.setOptions({
-            api_root: 'http://dev.locations.api.nypl.org/api',
+            api_root: 'http://locations.api.nypl.org/api',
             api_version: 'v0.7'
         });    
     });
