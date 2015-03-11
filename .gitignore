@@ -12,3 +12,4 @@ test/results
 docs
 ngdocs
 test/coverage/*
+Gemfile.lock

@@ -294,6 +294,8 @@
                         // CSS class for a closing
                         location.closingMessageClass =
                             closingMessageClass(alerts);
+                        location.todaysHoursDisplay =
+                            alertMsgs ? '' : 'Today\'s Hours:';
 
                         hoursMessageOpts = {
                             message: alertMsgs,

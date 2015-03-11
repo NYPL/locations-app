@@ -98,8 +98,8 @@
                 <p data-ng-if="globalClosingMessage && location.open" class="location-alerts">
                   {{globalClosingMessage}}
                 </p>
-                <p data-ng-if="globalClosingMessage == '' || !location.open" data-ng-bind-html="location.hoursOrClosingMessage"
-                  data-ng-class="{'location-alerts': location.closingMessageClass}">
+                <p data-ng-if="globalClosingMessage == '' || !location.open"
+                  data-ng-bind-html="location.hoursOrClosingMessage">
                 </p>
               </div>
             </td>

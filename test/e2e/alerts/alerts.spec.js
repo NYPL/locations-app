@@ -33,32 +33,90 @@ describe('NYPL Alerts Module', function () {
     };
 
   describe('Global Alerts', function () {
-    beforeEach(function () {
-      // browser.addMockModule('httpBackendMock', httpBackendMock,
-      //     APIresponse.global);
-      browser.get('/');
-      browser.waitForAngular();
-      // jasmine.clock().install();
+    describe('Homepage', function () {
+      beforeEach(function () {
+        // browser.addMockModule('httpBackendMock', httpBackendMock,
+        //     APIresponse.global);
+        browser.get('/');
+        browser.waitForAngular();
+      });
+
+      it('should not have any global alerts', function () {
+        // var todaysDateMock = new Date(2015, 1, 25);
+        // jasmine.clock().mockDate(todaysDateMock);
+
+        expect(header.globalAlertsContainer.isPresent()).toBe(false);
+      });
+
+      it('should have one global alert', function () {
+        // var todaysDateMock = new Date(2015, 2, 9);
+        // jasmine.clock().mockDate(todaysDateMock);
+
+        // expect(header.globalAlertsContainer.isPresent()).toBe(true);
+      });
+
+      it('should display closed branch message', function () {
+        // 115th is closed on dev
+        expect(homepage.nthLocTodaysHoursText(0))
+          .toEqual('Branch is temporarily closed.');
+      });
+
+      it('should display message or hours', function () {
+        // 115th is closed on dev
+        homepage.onlyResearch.click();
+        expect(homepage.nthLocTodaysHoursText(0))
+          .toEqual('Closed due to Repairs');
+        expect(homepage.nthLocTodaysHoursText(2))
+          .toEqual('10:00am - 8:00pm');
+      });
     });
 
-    // afterEach(function () {
-    //   jasmine.clock().uninstall();
-    // });
+    describe('Map Page', function () {
+      beforeEach(function () {
+        // browser.addMockModule('httpBackendMock', httpBackendMock,
+        //     APIresponse.global);
+        browser.get('/map');
+        browser.waitForAngular();
+      });
 
-    it('should not have any global alerts', function () {
-      // var todaysDateMock = new Date(2015, 1, 25);
-      // jasmine.clock().mockDate(todaysDateMock);
+      it('should not have any global alerts', function () {
+        expect(header.globalAlertsContainer.isPresent()).toBe(false);
+      });
 
-      expect(header.globalAlertsContainer.isPresent()).toBe(false);
-    });
+      it('should display closed branch message', function () {
+        // 115th is closed on dev
+        expect(homepage.nthLocTodaysHoursText(0))
+          .toEqual('Branch is temporarily closed.');
+      });
 
-    it('should have one global alert', function () {
-      // var todaysDateMock = new Date(2015, 2, 9);
-      // jasmine.clock().mockDate(todaysDateMock);
-
-      expect(header.globalAlertsContainer.isPresent()).toBe(true);
+      it('should display closed branch message', function () {
+        // 115th is closed on dev
+        homepage.onlyResearch.click();
+        expect(homepage.nthLocTodaysHoursText(0))
+          .toEqual('Closed due to Repairs');
+        expect(homepage.nthLocTodaysHoursText(2))
+          .toEqual('Today\'s Hours: 10:00am - 8:00pm');
+      });
     });
 
   }); /* End Global Alerts */
 
+  describe('Location Alerts', function () {
+    beforeEach(function () {
+        // browser.addMockModule('httpBackendMock', httpBackendMock,
+        //     APIresponse.global);
+        browser.get('/schwarzman');
+        browser.waitForAngular();
+      });
+
+      it('should not have any global alerts', function () {
+        expect(header.globalAlertsContainer.isPresent()).toBe(false);
+      });
+
+      it('should have one global alert', function () {
+        // expect(header.globalAlertsContainer.isPresent()).toBe(true);
+      });
+  });
+
 });
+

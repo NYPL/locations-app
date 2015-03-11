@@ -537,7 +537,7 @@ describe('NYPL Alerts Component', function () {
 
             expect(nyplAlertsService
                 .currentWeekClosingAlerts(alertsObject.alerts).length)
-              .toEqual(1);
+              .toEqual(2);
           });
       });
 
@@ -683,7 +683,7 @@ describe('NYPL Alerts Component', function () {
             jasmine.clock().mockDate(todaysDateMock);
 
             expect(nyplAlertsService.getActiveMsgs(alertsObject.alerts))
-              .toEqual('Closed Daylight closing');
+              .toEqual('Daylight closing');
           });
 
         it('should return an empty string if there are no active alerts',
