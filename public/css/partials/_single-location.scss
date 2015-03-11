@@ -140,9 +140,6 @@
 
 			.weekly-hours {
 				tr {
-					border-bottom: 3px solid transparent;
-					border-top: 3px solid transparent;
-
 					// Closed hours
 					&.closed {
 						.time {
@@ -151,8 +148,8 @@
 					}
 
 					&.today {
+						background-color: #FFF;
 					  border-left: 2px solid #0090C4;
-					  background-color: #fcfce0;
 					}
 
 					.date {
@@ -163,7 +160,7 @@
 					.day {
 						vertical-align: middle;
 						font-style: italic;
-						padding: 0 10px 0 0;
+						padding: 2px 10px 2px 0;
 					}
 
 					.time {
