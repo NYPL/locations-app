@@ -318,7 +318,7 @@
      * @description ...
      */
      // Implemented in hoursToday directive
-    utility.holidayClosings = function (date) {
+    /*utility.holidayClosings = function (date) {
 
       function sameDay (day1, day2) {
         return day1.getFullYear() === day2.getFullYear()
@@ -376,6 +376,7 @@
       }
       return undefined;
     };
+    */
 
     /**
      * @ngdoc function

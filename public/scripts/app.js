@@ -1,7 +1,6 @@
 /*jslint nomen: true, indent: 4, maxlen: 80 */
 /*globals angular, window, headerScripts */
 
-
 /**
  * @ngdoc overview
  * @module nypl_locations
@@ -59,13 +58,6 @@ nypl_locations.config([
     ) {
         'use strict';
 
-        // Turn off automatic virtual pageviews for GA.
-        // In $stateChangeSuccess, /locations/ is added to each page hit.
-        $analyticsProvider.virtualPageviews(false);
-
-        // uses the HTML5 History API, remove hash (need to test)
-        $locationProvider.html5Mode(true);
-
         function LoadLocation($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
                 .singleLocation($stateParams.location)
@@ -117,12 +109,20 @@ nypl_locations.config([
             return nyplLocationsService.getConfig();
         }
 
+        // Turn off automatic virtual pageviews for GA.
+        // In $stateChangeSuccess, /locations/ is added to each page hit.
+        $analyticsProvider.virtualPageviews(false);
+
+        // uses the HTML5 History API, remove hash (need to test)
+        $locationProvider.html5Mode(true);
+
         // nyplAlerts required config settings
         $nyplAlertsProvider.setOptions({
             api_root: locations_cfg.config.api_root,
             api_version: locations_cfg.config.api_version
         });
 
+        // Breadcrumbs initialized states
         $crumbProvider.setOptions({
             primaryState: {name:'Home', customUrl: 'http://nypl.org' },
             secondaryState: {name:'Locations', customUrl: 'home.index' }
@@ -275,10 +275,6 @@ nypl_locations.run(function ($analytics, $state, $rootScope, $location) {
     });
 });
 
-nypl_locations.run(function ($rootScope, nyplUtility) {
-    $rootScope.holiday = nyplUtility.holidayClosings();
-});
-
 // Declare an http interceptor that will signal
 // the start and end of each request
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
@@ -355,6 +351,7 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
  * @requires ngSanitize
  * @requires ui.router
  * @requires locationService
+ * @requires nyplAlerts
  * @requires coordinateService
  * @requires angulartics
  * @requires angulartics.google.analytics
@@ -365,12 +362,22 @@ var nypl_widget = angular.module('nypl_widget', [
     'ngSanitize',
     'ui.router',
     'locationService',
+    'nyplAlerts',
     'coordinateService',
     'angulartics',
     'angulartics.google.analytics'
 ])
-.config(['$locationProvider', '$stateProvider', '$urlRouterProvider',
-    function ($locationProvider, $stateProvider, $urlRouterProvider) {
+.config([
+    '$locationProvider',
+    '$stateProvider',
+    '$urlRouterProvider',
+    '$nyplAlertsProvider',
+    function (
+        $locationProvider,
+        $stateProvider,
+        $urlRouterProvider,
+        $nyplAlertsProvider
+    ) {
         'use strict';
 
         function LoadLocation($stateParams, config, nyplLocationsService) {
@@ -417,6 +424,12 @@ var nypl_widget = angular.module('nypl_widget', [
         $locationProvider.html5Mode(true);
         // $urlRouterProvider.otherwise('/widget/sasb');
 
+        // nyplAlerts required config settings
+        $nyplAlertsProvider.setOptions({
+            api_root: locations_cfg.config.api_root,
+            api_version: locations_cfg.config.api_version
+        });
+
         $stateProvider
             .state('subdivision', {
                 url: '/widget/divisions/:division/:subdivision',
@@ -448,7 +461,3 @@ var nypl_widget = angular.module('nypl_widget', [
             });
     }
 ]);
-// Add Holiday Closings
-nypl_widget.run(function ($rootScope, nyplUtility) {
-    $rootScope.holiday = nyplUtility.holidayClosings();
-});
