@@ -76,13 +76,13 @@
       return _.filter(obj, function (elem) {
         if (elem.display) {
           if (elem.display.start && elem.display.end) {
-            sDate = new Date(elem.display.start);
-            eDate = new Date(elem.display.end);
-            if (sDate.getTime() <= today.valueOf() &&
-                eDate.getTime() >= today.valueOf()) {
+            sDate = moment(elem.display.start);
+            eDate = moment(elem.display.end);
+            if (sDate.valueOf() <= today.valueOf() &&
+                eDate.valueOf() >= today.valueOf()) {
               return elem;
-            } else if (today.day() === sDate.getDay() &&
-              eDate.getDay() === today.day() && eDate.getTime() 
+            } else if (today.day() === sDate.day() &&
+              eDate.day() === today.day() && eDate.valueOf()
               >= today.valueOf()) {
               return elem;
             }
@@ -92,7 +92,7 @@
     };
 
     // Filters Closing Alerts that have started within
-    // the applies.start & applies.end dates
+    // the applies.start & applies.end dates (optional)
     service.currentClosingAlerts = function (obj) {
       var today = moment(),
         sDate,
@@ -101,22 +101,22 @@
       return _.filter(obj, function (elem) {
         if (elem.applies) {
           if (elem.applies.start && elem.applies.end) {
-            sDate = new Date(elem.applies.start);
-            eDate = new Date(elem.applies.end);
+            sDate = moment(elem.applies.start);
+            eDate = moment(elem.applies.end);
             // Covers alert within today
-            if (sDate.getTime() <= today.valueOf() &&
-                eDate.getTime() >= today.valueOf()) {
+            if (sDate.valueOf() <= today.valueOf() &&
+                eDate.valueOf() >= today.valueOf()) {
               return elem;
             }
             // Covers early openings
-            else if (today.day() === sDate.getDay() &&
-              eDate.getDay() === today.day() && eDate.getTime() 
+            else if (today.day() === sDate.day() &&
+              eDate.day() === today.day() && eDate.valueOf() 
               >= today.valueOf()) {
               return elem;
             }
           } else if (elem.applies.start) {
-            sDate = new Date(elem.applies.start);
-            if (sDate.getTime() <= today.valueOf()) {
+            sDate = moment(elem.applies.start);
+            if (sDate.valueOf() <= today.valueOf()) {
               return elem;
             }
           }
@@ -133,10 +133,10 @@
       return _.filter(obj, function (elem) {
         if (elem.applies) {
           if (elem.applies.start) {
-            sDate = new Date(elem.applies.start);
+            sDate = moment(elem.applies.start);
             // Covers alert within today's 7 day week
-            if ((sevenDaysFromToday.valueOf() >= sDate.getTime()) &&
-              (today.day() <= sDate.getDay())) {
+            if (sevenDaysFromToday.valueOf() >= sDate.valueOf() &&
+              today.day() <= sDate.day()) {
               return elem;
             }
           }
@@ -198,12 +198,12 @@
         return;
       }
 
-      var sDate = new Date(startDate),
-        eDate   = new Date(endDate),
+      var sDate = moment(startDate),
+        eDate   = moment(endDate),
         today   = moment();
 
-      return (sDate.getTime() <= today.valueOf() &&
-        eDate.getTime() >= today.valueOf()) ? false : true;
+      return (sDate.valueOf() <= today.valueOf() &&
+        eDate.valueOf() >= today.valueOf()) ? false : true;
     };
 
     // Assigns proper alerts based on scope (optional)
