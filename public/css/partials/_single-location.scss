@@ -100,14 +100,15 @@
 		}
 
 		#location-hours {
-			margin: .75em 0 .75em 36px;
+			margin: .75em 5px .75em 5px;
 
 			@include breakpoint($min, $post-palm) {
-				margin-left: 48px;
+				margin-left: 45px;
+				margin-right: 0px;
 			}
 
 			.hours-table-wrapper {
-
+				// Shows/Hides dynamic/regular hours table
 				&.hide-regular-hours {
 					.reg-week-hours-wrapper {
 						display: none;
@@ -138,30 +139,37 @@
 			}
 
 			.weekly-hours {
-				.date {
-					vertical-align: top;
-					padding: 0 5px 3px 0;
-				}
+				tr {
+					border-bottom: 3px solid transparent;
+					border-top: 3px solid transparent;
 
-				.day {
-					vertical-align: top;
-					font-style: italic;
-					padding: 0 10px 3px 0;
-				}
-
-				.time {
-					vertical-align: top;
-					padding: 0px;
-				}
-
-				// Closed hours
-				tr.closed {
-					.time {
-						color: #AAA;
+					// Closed hours
+					&.closed {
+						.time {
+							color: #AAA;
+						}
 					}
-				}
 
-				tr.today {
+					&.today {
+					  border-left: 2px solid #1790CF;
+					  background-color: #f4f4f4;
+					}
+
+					.date {
+						vertical-align: middle;
+						padding: 0 0 0 3px;
+					}
+
+					.day {
+						vertical-align: middle;
+						font-style: italic;
+						padding: 0 10px 0 0;
+					}
+
+					.time {
+						vertical-align: middle;
+						padding: 0px;
+					}
 				}
 			}
 
@@ -171,6 +179,11 @@
 
 			.closings-link, .hours-toggle-btn {
 				margin-left: 1px;
+			}
+
+			.hours-toggle-btn {
+				display: block;
+				width: 210px;
 			}
 		}
 	}

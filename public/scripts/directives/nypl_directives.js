@@ -234,8 +234,7 @@
               day.is_today = (index === today) ? true : false;
               // Assign any current closing alert to the day of the week
               day.alert = _this.assignCurrentDayAlert(alertsObj, index);
-
-              // Assign the dynamic date
+              // Assign the dynamic date for each week day
               day.date = _this.assignDynamicDate(index);
             });
           return week;
@@ -243,8 +242,7 @@
 
         this.assignDynamicDate = function(index) {
           var today = moment(),
-            date;
-          date = today.day(index);
+            date = today.day(index);
           return date.format('MM/DD');
         };
 

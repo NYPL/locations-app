@@ -33,28 +33,28 @@
                 openHour, closedHour, displayString;
 
             if (!alerts.length) {
-                sDate = new Date(alerts.applies.start);
-                eDate = new Date(alerts.applies.end);
+                sDate = moment(alerts.applies.start);
+                eDate = moment(alerts.applies.end);
                 openHour = getMilitaryHours(hours.open);
                 closedHour = getMilitaryHours(hours.close);
-                regHours = clockTime(hours.open) + ' - ' + clockTime(hours.close);
-                allDay = (sDate.getDay() < eDate.getDay()) ? true : false;
+                allDay = (sDate.day() < eDate.day()) ? true : false;
 
                 // First, check if this is an all day closing
-                // Second, check if the alert start hour is before(equal-to) the location's
-                // opening hour or if the alert end hour is after(equal-to) the location's
-                // closing hour. Lastly, default to a partial closing.
+                // Then, verify that it is an early closing or late opening
+                // Finally, if the user enters something outside of those bounds
+                // default to a change in hours.
                 if (allDay) {
                     displayString = 'Closed *';
-                } else if (sDate.getHours() <= openHour && eDate.getHours() >= closedHour) {
+                } else if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
                     displayString = 'Closed *'
-                } else if (openHour < sDate.getHours() && closedHour <= eDate.getHours()) {
-                    displayString = 'Opening late *';
-                } else if (closedHour > eDate.getHours() && openHour >= sDate.getHours()) {
-                    console.log(sDate, openHour, sDate.getHours(), closedHour, eDate.getHours());
+                } else if (openHour < sDate.hours() && closedHour <= eDate.hours()) {
                     displayString = 'Closing early *';
+                } else if (closedHour > eDate.hours() && openHour >= sDate.hours()) {
+                    //console.log(sDate.format("dddd, MMMM Do YYYY, h:mm a"),'open hour:'+ openHour, 'start hour:' + sDate.hours(), 'close hour:' + closedHour, 'end hour:' + eDate.hours());
+                    displayString = 'Opening late *';
+                } else {
+                    displayString = 'Change in hours *';
                 }
-
             }
             return $sce.trustAsHtml(displayString);
         }
