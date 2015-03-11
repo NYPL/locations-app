@@ -697,6 +697,66 @@ describe('NYPL Alerts Component', function () {
       }); /* End getActiveMsgs() */
 
       describe('filterAlerts()', function () {
+        var alertsObj = {};
+        //Alerts
+        alertsObj.alerts = [
+          {
+            id: 287824,
+            scope: "all",
+            _links: { web: {href: "http://dev.www.aws.nypl.org/node/287824"} },
+            closed_for: "Daylight closing",
+            msg: "Daylight Test Alert",
+            display: {
+              start: "2015-02-21T00:00:00-05:00",
+              end: "2015-03-10T00:00:00-04:00"
+            },
+            applies: {
+              start: "2015-02-21T00:00:00-05:00",
+              end: "2015-03-10T00:00:00-04:00"
+            }
+          },
+          {
+            id: 283839,
+            scope: "all",
+            _links: { web: {href: "http://dev.www.aws.nypl.org/node/283839"} },
+            msg: "<p>The New York Public Library will be closed on Sunday, " +
+              "April 5.</p>",
+            display: {
+              start: "2015-04-01T00:00:00-04:00",
+              end: "2015-04-06T00:00:00-04:00"
+            }
+          },
+          {
+            id: 287835,
+            scope: "location",
+            _links: { self: {href: "http://dev.www.aws.nypl.org/node/287835"} },
+            closed_for: "early due to important event",
+            msg: "Schwarzman will be closing early on Friday 2/27/2015 at 4:00PM",
+            display: {
+              start: "2015-02-26T09:00:00-05:00",
+              end: "2015-02-27T18:00:00-05:00"
+            },
+            applies: {
+              start: "2015-02-27T16:00:00-05:00",
+              end: "2015-02-27T18:00:00-05:00"
+            }
+          },
+          {
+            id: 287839,
+            scope: "division",
+            _links: { self: {href: "http://dev.www.aws.nypl.org/node/287839"} },
+            closed_for: "another mocked closing",
+            msg: "Division will be closed for some reason.",
+            display: {
+              start: "2015-03-24T09:00:00-05:00",
+              end: "2015-03-27T16:00:00-05:00"
+            },
+            applies: {
+              start: "2015-03-24T16:00:00-05:00"
+            }
+          }
+        ];
+
         it('should have a filterAlerts() function', function () {
           expect(angular.isFunction(nyplAlertsService.filterAlerts)).toBe(true);
           expect(nyplAlertsService.filterAlerts).toBeDefined();
@@ -706,7 +766,95 @@ describe('NYPL Alerts Component', function () {
           expect(nyplAlertsService.filterAlerts()).not.toBeDefined();
         });
 
-        it('should return "all" closings', function () {
+        it('should return "all" closing alerts. Meaning all alerts that contain an ' +
+          'applies.start or applies.end dates. Scope is ignored.', function () {
+          expect(nyplAlertsService.filterAlerts(
+            alertsObj.alerts,
+            {only_closings: 'all'}
+          ).length).toEqual(3);
+        });
+
+        it('should return "current" closing alerts. Meaning all current alerts ' +
+          'that contain an applies start or applies end date AND are within the ' +
+          'set mocked date', function () {
+
+          todaysDateMock = new Date(2015, 1, 27);
+          jasmine.clock().mockDate(todaysDateMock);
+
+          expect(nyplAlertsService.filterAlerts(
+            alertsObj.alerts,
+            {only_closings: 'current'}
+          ).length).toEqual(2);
+        });
+
+        it('should return the "week" closing alerts. Meaning all alerts pertaining to the ' +
+          'week based from today\'s mocked date AND that contain an applies start or applies ' +
+          'end date', function () {
+
+          // Start of the week is Feb 22
+          // Week Alerts cover: Feb 22, 23, 24, 25, 26, 27, 28
+          todaysDateMock = new Date(2015, 1, 22);
+          jasmine.clock().mockDate(todaysDateMock);
+
+          expect(nyplAlertsService.filterAlerts(
+            alertsObj.alerts,
+            {only_closings: 'week'}
+          ).length).toEqual(2);
+        });
+
+        it('should return the "current" alerts. Meaning all alerts wheather they are closing ' +
+          'or non closing and are current based on today\'s mocked date', function () {
+
+          todaysDateMock = new Date(2015, 1, 27);
+          jasmine.clock().mockDate(todaysDateMock);
+          // No scope.
+          expect(nyplAlertsService.filterAlerts(
+            alertsObj.alerts,
+            {current: true}
+          ).length).toEqual(2);
+        });
+
+        it('should return the "current" alerts. Meaning all alerts wheather they are closing ' +
+          'or non closing and are current based on today\'s mocked date with set scope -- LOCATION',
+          function () {
+
+          todaysDateMock = new Date(2015, 1, 27);
+          jasmine.clock().mockDate(todaysDateMock);
+
+          expect(nyplAlertsService.filterAlerts(
+            alertsObj.alerts,
+            {scope: 'location',
+            current: true}
+          ).length).toEqual(1);
+        });
+
+
+        it('should return the "current" alerts. Meaning all alerts wheather they are closing ' +
+          'or non closing and are current based on today\'s mocked date with set scope -- ALL.'
+          , function () {
+
+          todaysDateMock = new Date(2015, 1, 27);
+          jasmine.clock().mockDate(todaysDateMock);
+
+          expect(nyplAlertsService.filterAlerts(
+            alertsObj.alerts,
+            {scope: 'all',
+            current: true}
+          ).length).toEqual(1);
+        });
+
+        it('should return the "current" alerts. Meaning all alerts wheather they are closing ' +
+          'or non closing and are current based on today\'s mocked date with set scope -- DIVISION.'
+          , function () {
+
+          todaysDateMock = new Date(2015, 2, 25);
+          jasmine.clock().mockDate(todaysDateMock);
+
+          expect(nyplAlertsService.filterAlerts(
+            alertsObj.alerts,
+            {scope: 'division',
+            current: true}
+          ).length).toEqual(1);
         });
 
       }); /* End filterAlerts() */
