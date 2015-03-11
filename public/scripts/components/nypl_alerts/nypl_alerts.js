@@ -63,11 +63,29 @@
       }];
   }
 
+  /**
+   * @ngdoc service
+   * @name nyplAlerts.service:nyplAlertsService
+   * @requires moment
+   * @description
+   * NYPL Alerts Service helper methods to assist with
+   * filtering, sorting, retrieving specific key->values
+   * from an Alerts array of objects.
+   */
   function nyplAlertsService() {
     var service = {};
 
-    // Filters all current Alerts that are 
-    // within the display range
+    /**
+     * @ngdoc function
+     * @name currentAlerts
+     * @methodOf nyplAlerts.service:nyplAlertsService
+     * @param {object} Alerts Array Objects
+     * @returns {object} An array of filtered alert objects
+     * @description
+     *  currentAlerts filters an array of alert objects that
+     *  are within the range of today's date based of the
+     *  display.start/display.end properties.
+     */
     service.currentAlerts = function (obj) {
       var today = moment();
       var sDate,
@@ -91,8 +109,17 @@
       });
     };
 
-    // Filters Closing Alerts that have started within
-    // the applies.start & applies.end dates (optional)
+    /**
+     * @ngdoc function
+     * @name currentClosingAlerts
+     * @methodOf nyplAlerts.service:nyplAlertsService
+     * @param {object} Alerts Array Objects
+     * @returns {object} An array of filtered alert objects
+     * @description
+     *  currentClosingAlerts filters an array of alert objects that
+     *  are within the range of today's date based of the
+     *  applies.start/applies.end properties (optional).
+     */
     service.currentClosingAlerts = function (obj) {
       var today = moment(),
         sDate,
@@ -124,7 +151,17 @@
       });
     };
 
-    // Filters Closing Alerts that are within the next 7 days
+    /**
+     * @ngdoc function
+     * @name currentWeekClosingAlerts
+     * @methodOf nyplAlerts.service:nyplAlertsService
+     * @param {object} Alerts Array Objects
+     * @returns {object} An array of filtered alert objects
+     * @description
+     *  currentWeekClosingAlerts filters an array of alert objects
+     *  that include seven days from today's date based of the
+     *  applies.start property.
+     */
     service.currentWeekClosingAlerts = function (obj) {
       var today = moment(),
         sevenDaysFromToday = moment().add(7, 'days'),
@@ -144,7 +181,17 @@
       });
     };
 
-    // Filters All Closing Alerts only
+    /**
+     * @ngdoc function
+     * @name allClosingAlerts
+     * @methodOf nyplAlerts.service:nyplAlertsService
+     * @param {object} Alerts Array Objects
+     * @returns {object} An array of filtered alert objects
+     * @description
+     *  allClosingAlerts filters an array of alert objects
+     *  that have an applies.start property only. Date is 
+     *  not taken into consideration for this filter.
+     */
     service.allClosingAlerts = function (obj) {
       if (!obj) {
         return;
@@ -157,8 +204,16 @@
       });
     };
 
-    // Sort Alerts by scope order
-    // 1) all 2) location 3) division
+    /**
+     * @ngdoc function
+     * @name sortAlertsByScope
+     * @methodOf nyplAlerts.service:nyplAlertsService
+     * @param {object} Alerts Array Objects
+     * @returns {object} An array of alert objects
+     * @description
+     *  sortAlertsByScope sorts an array of alert objects
+     *  by the following order 1) all 2) location 3) division.
+     */
     service.sortAlertsByScope = function (obj) {
       if (!obj) { return; }
 
@@ -175,7 +230,17 @@
       .value();
     };
 
-    // Removes Alerts with duplicate id's and msg
+    /**
+     * @ngdoc function
+     * @name removeDuplicates
+     * @methodOf nyplAlerts.service:nyplAlertsService
+     * @param {object} Alerts Array Objects
+     * @returns {object} An array of filtered alert objects
+     * @description
+     *  removeDuplicates filters an array of alert objects
+     *  to remove any duplicate alerts by checking for
+     *  unique alert id's and unique alert messages.
+     */
     service.removeDuplicates = function (obj) {
       if (!obj) {
         return;
@@ -192,7 +257,18 @@
         .value();
     };
 
-    // Boolean check if an alert has expired
+    /**
+     * @ngdoc function
+     * @name isAlertExpired
+     * @methodOf nyplAlerts.service:nyplAlertsService
+     * @param {object} Alert Start Date
+     * @param {object} Alert End Date
+     * @returns {boolean} True or False
+     * @description
+     *  isAlertExpired checks whether an alert has expired
+     *  based on today's date and ensuring that it is within
+     *  the range of the start and end alert dates.
+     */
     service.isAlertExpired = function (startDate, endDate) {
       if (!startDate || !endDate) {
         return;
@@ -206,7 +282,19 @@
         eDate.valueOf() >= today.valueOf()) ? false : true;
     };
 
-    // Assigns proper alerts based on scope (optional)
+    /**
+     * @ngdoc function
+     * @name filterAlerts
+     * @methodOf nyplAlerts.service:nyplAlertsService
+     * @param {object} Alerts Array Objects
+     * @param {object} Multiple filtering parameters
+     * @returns {object} An array of filtered alert objects
+     * @description
+     *  filterAlerts filters an array of alert objects
+     *  primarily by uniqueness. The optional parameters
+     *  continue to filter the Alerts array based on the
+     *  desired result
+     */
     service.filterAlerts = function (obj, opts) {
       if (!obj) { return; }
 
@@ -245,6 +333,18 @@
       return uniqueAlerts;
     };
 
+    /**
+     * @ngdoc function
+     * @name getHoursOrMessage
+     * @methodOf nyplAlerts.service:nyplAlertsService
+     * @param {object} Options
+     * @returns {string} String representation of hours/message
+     * @description
+     *  getHoursOrMessage Checks if a branch is open, then verifies
+     *  if an alert message exists. If it does, it returns the message.
+     *  If no alert message exists, it returns the hours as a string.
+     *  desired result
+     */
     service.getHoursOrMessage = function (opts) {
       if (!opts || !opts.closedFn) {
         return;
