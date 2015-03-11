@@ -145,6 +145,10 @@ describe('WidgetCtrl', function () {
       nyplLocationsService = _nyplLocationsService_;
       $rootScope = _$rootScope_;
 
+      httpBackend
+          .whenJSONP('http://dev.locations.api.nypl.org/api/v0.6/alerts' +
+            '?callback=JSON_CALLBACK')
+          .respond({});
       nyplLocationsService.getConfig();
       $rootScope.$apply();
     });
@@ -180,7 +184,7 @@ describe('WidgetCtrl', function () {
     it('should have hours today, mocking for Tuesday', function () {
       expect(scope.hoursToday).toEqual({
         today : { day : 'Tue', open : '10:00', close : '19:45' },
-        tomorrow : { day : 'Wed', open : '10:00', close : '19:45' }
+        tomorrow : { day : 'Wed', open : '10:00', close : '19:45', alert: null}
       });
     });
 
@@ -249,7 +253,7 @@ describe('WidgetCtrl', function () {
     it('should have hours today, mocking Wednesday', function () {
       expect(scope.hoursToday).toEqual({
         today : { day : 'Wed', open : '10:00', close : '19:45' },
-        tomorrow : { day : 'Thu', open : '10:00', close : '17:45' } });
+        tomorrow : { day : 'Thu', open : '10:00', close : '17:45', alert: null} });
     });
 
     it('should have a closed image, coming from /config', function () {

@@ -8,7 +8,7 @@ describe, expect, beforeEach, inject, it, angular */
 describe('Directive: nyplbreadcrumbs', function () {
   'use strict';
 
-  var nyplbreadcrumbs, html, httpBackend, compile, scope;
+  var nyplbreadcrumbs, html, httpBackend, compile, scope, locations_cfg;
 
   function createDirective(template) {
     var element;

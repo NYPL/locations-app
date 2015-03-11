@@ -16,7 +16,7 @@ describe('NYPL locationService Module', function () {
    */
   describe('nyplLocationsService', function () {
     var api = 'http://dev.locations.api.nypl.org/api',
-      api_version = 'v0.5',
+      api_version = 'v0.6',
       jsonpCallback = '?callback=JSON_CALLBACK',
       error_message = 'Could not reach API: ',
       nyplLocationsService,
