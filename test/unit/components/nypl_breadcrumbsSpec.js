@@ -8,7 +8,22 @@ describe, expect, beforeEach, inject, it, angular */
 describe('Directive: nyplbreadcrumbs', function () {
   'use strict';
 
-  var nyplbreadcrumbs, html, httpBackend, compile, scope, locations_cfg;
+  var nyplbreadcrumbs, html, httpBackend, compile, scope;
+
+  window.locations_cfg = {
+    config: {
+      api_root: 'dev.locations.api.nypl.org/api',
+      api_version: 'v0.7',
+      fundraising: {
+        statement: "Become a Member",
+        appeal: "Friends of the Library can support their favorite " +
+          "library and receive great benefits!",
+        button_label: "Join or Renew",
+        link: "https://secure3.convio.net/nypl/site/SPageServer?page" +
+          "name=branch_friend_form&s_src=FRQ15ZZ_CADN"
+      }
+    }
+  };
 
   function createDirective(template) {
     var element;

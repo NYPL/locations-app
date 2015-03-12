@@ -37,9 +37,10 @@ describe('NYPL Directive Unit Tests', function () {
       compile = _$compile_;
       scope = _$rootScope_.$new();
 
-      // httpBackend
-      //   .expectGET('languages/en.json')
-      //   .respond('public/languages/en.json');
+      httpBackend
+        .whenJSONP('http://dev.locations.api.nypl.org/api/v0.7/alerts' +
+          '?callback=JSON_CALLBACK')
+        .respond({});
 
       httpBackend
         .expectGET('views/locations.html')
@@ -51,6 +52,11 @@ describe('NYPL Directive Unit Tests', function () {
 
       httpBackend.flush();
     });
+  });
+
+  afterEach(function() {
+    httpBackend.verifyNoOutstandingExpectation();
+    httpBackend.verifyNoOutstandingRequest();
   });
 
   function createDirective(template) {

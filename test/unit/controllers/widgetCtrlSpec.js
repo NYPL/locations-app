@@ -146,7 +146,7 @@ describe('WidgetCtrl', function () {
       $rootScope = _$rootScope_;
 
       httpBackend
-          .whenJSONP('http://dev.locations.api.nypl.org/api/v0.6/alerts' +
+          .whenJSONP('http://dev.locations.api.nypl.org/api/v0.7/alerts' +
             '?callback=JSON_CALLBACK')
           .respond({});
       nyplLocationsService.getConfig();
