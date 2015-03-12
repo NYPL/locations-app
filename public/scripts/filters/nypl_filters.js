@@ -8,9 +8,13 @@
      * @ngdoc filter
      * @name nypl_locations.filter:timeFormat
      * @param {object} timeObj Object with hours for today and tomorrow.
-     * @returns {string} Closed or open times for a branch.
+     * @returns {string} Closed or open times for a branch with possible
+     *  alert returned.
      * @description
-     * Filter formats military time to standard time
+     *  timeFormat() filter formats military time to standard time. 
+     *  In addition, if an alert is present, it displays 
+     *  the approapriate message for a relevant alert.
+     *  1) all day closing 2) early/late opening/closing
      */
     function timeFormat($sce) {
         function getMilitaryHours(time) {
@@ -50,7 +54,6 @@
                 } else if (openHour < sDate.hours() && closedHour <= eDate.hours()) {
                     displayString = 'Closing early *';
                 } else if (closedHour > eDate.hours() && openHour >= sDate.hours()) {
-                    //console.log(sDate.format("dddd, MMMM Do YYYY, h:mm a"),'open hour:'+ openHour, 'start hour:' + sDate.hours(), 'close hour:' + closedHour, 'end hour:' + eDate.hours());
                     displayString = 'Opening late *';
                 } else {
                     displayString = 'Change in hours *';
@@ -79,7 +82,7 @@
                 return clockTime(time.open) + ' - ' + clockTime(time.close);
             }
 
-            console.log('timeFormat() filter function error: Argument is' +
+            console.log('timeFormat() filter error: Argument is' +
                 ' not defined or empty, verify API response for time');
             return '';
         };
