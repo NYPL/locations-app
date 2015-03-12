@@ -39,7 +39,7 @@
 
         <%= erb :seo_hasdivisions, :locals => {:loc => @div, :parent => 'div', :parent_slug => @div.slug } %> 
 
-        <% if @div.features.count > 0 %>
+        <% if ! @div.features.nil? %>
           <%= erb :seo_features, :locals => {:features => @div.features} %> 
         <% end %>
 
