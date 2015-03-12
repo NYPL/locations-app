@@ -34,6 +34,8 @@ module.exports = function (config) {
     exclude : [
       'public/scripts/components/nypl_alerts/components/**/*.js',
       'public/scripts/components/nypl_alerts/node_modules/**/*.js',
+      'public/scripts/components/nypl_alerts/test/**/*.js',
+      // 'public/scripts/components/nypl_alerts/node_modules/**/*.js',
       // 'public/scripts/components/nypl_alerts/test/unit/nypl_alertsSpec.js',
       'public/bower_components/angular/angular-loader.js',
       'public/bower_components/angular/*.min.js',
