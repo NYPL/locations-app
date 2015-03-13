@@ -95,10 +95,10 @@
             <!-- Today's Hours -->
             <td class="hours-info">
               <div>
-                <p data-ng-if="globalClosingMessage && location.open" class="location-alerts">
-                  {{globalClosingMessage}}
+                <p data-ng-if="globalClosingMessage && location.open">
+                  <b>{{globalClosingMessage}}</b>
                 </p>
-                <p data-ng-if="globalClosingMessage == '' || !location.open"
+                <p data-ng-if="!globalClosingMessage || location.open"
                   data-ng-bind-html="location.hoursOrClosingMessage">
                 </p>
               </div>

@@ -85,10 +85,10 @@
 
           <!-- Today's Hours or Branch Closing -->
           <div class="hours-info">
-            <p data-ng-if="globalClosingMessage && location.open" class="location-alerts">
-              {{globalClosingMessage}}
+            <p data-ng-if="globalClosingMessage && location.open">
+              <b>{{globalClosingMessage}}<b>
             </p>
-            <p data-ng-if="globalClosingMessage == '' || !location.open">
+            <p data-ng-if="!globalClosingMessage || location.open">
               <span data-ng-if="location.todaysHoursDisplay && location.open"
                 data-ng-bind-html="location.todaysHoursDisplay">
               </span>

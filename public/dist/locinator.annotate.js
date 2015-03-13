@@ -551,7 +551,7 @@ var nypl_widget = angular.module('nypl_widget', [
      * @ngdoc function
      * @name currentAlerts
      * @methodOf nyplAlerts.service:nyplAlertsService
-     * @param {object} Alerts Array Objects
+     * @param {object} obj Alerts Array Objects
      * @returns {object} An array of filtered alert objects
      * @description
      *  currentAlerts filters an array of alert objects that
@@ -581,7 +581,7 @@ var nypl_widget = angular.module('nypl_widget', [
      * @ngdoc function
      * @name currentClosingAlerts
      * @methodOf nyplAlerts.service:nyplAlertsService
-     * @param {object} Alerts Array Objects
+     * @param {object} obj Alerts Array Objects
      * @returns {object} An array of filtered alert objects
      * @description
      *  currentClosingAlerts filters an array of alert objects that
@@ -623,7 +623,7 @@ var nypl_widget = angular.module('nypl_widget', [
      * @ngdoc function
      * @name currentWeekClosingAlerts
      * @methodOf nyplAlerts.service:nyplAlertsService
-     * @param {object} Alerts Array Objects
+     * @param {object} obj Alerts Array Objects
      * @returns {object} An array of filtered alert objects
      * @description
      *  currentWeekClosingAlerts filters an array of alert objects
@@ -656,7 +656,7 @@ var nypl_widget = angular.module('nypl_widget', [
      * @ngdoc function
      * @name allClosingAlerts
      * @methodOf nyplAlerts.service:nyplAlertsService
-     * @param {object} Alerts Array Objects
+     * @param {object} obj Alerts Array Objects
      * @returns {object} An array of filtered alert objects
      * @description
      *  allClosingAlerts filters an array of alert objects
@@ -808,7 +808,7 @@ var nypl_widget = angular.module('nypl_widget', [
      * @ngdoc function
      * @name getHoursOrMessage
      * @methodOf nyplAlerts.service:nyplAlertsService
-     * @param {object} Options
+     * @param {object} opts Options object
      * @returns {string} String representation of hours/message
      * @description
      *  getHoursOrMessage Checks if a branch is open, then verifies
@@ -886,10 +886,11 @@ var nypl_widget = angular.module('nypl_widget', [
 
   /**
    * @ngdoc directive
-   * @name nyplGlobalAlerts.directive:nyplGlobalAlerts
+   * @name nyplAlerts.directive:nyplGlobalAlerts
    * @restrict E
    * @scope
-   * @description 
+   * @description
+   * Global alert directive.
    */
   function nyplGlobalAlerts($rootScope) {
     return {
@@ -907,10 +908,11 @@ var nypl_widget = angular.module('nypl_widget', [
 
   /**
    * @ngdoc directive
-   * @name nyplLocationAlerts.directive:nyplLocationAlerts
+   * @name nyplAlerts.directive:nyplLocationAlerts
    * @restrict E
    * @scope
-   * @description 
+   * @description
+   * Alert directive for individual locations and divisions.
    */
   function nyplLocationAlerts(nyplAlertsService) {
     return {
@@ -944,6 +946,26 @@ var nypl_widget = angular.module('nypl_widget', [
       $rootScope.alerts =
         nyplAlertsService.filterAlerts(alerts, {current: true});
       $nyplAlerts.alerts = $rootScope.alerts || data;
+      // $rootScope.alerts = [{
+      //   id: 291819,
+      //   scope: "all",
+      //   _links: {
+      //   web: {
+      //   href: "http://qa.www.aws.nypl.org/node/291819"
+      //   }
+      //   },
+      //   closed_for: "early closing for testing LOC-631",
+      //   msg: "<p>qa global closing alert</p>",
+      //   display: {
+      //   start: "2015-03-12T00:00:00-04:00",
+      //   end: "2015-03-15T00:00:00-04:00"
+      //   },
+      //   applies: {
+      //   start: "2015-03-13T09:00:00-04:00",
+      //   end: "2015-03-13T18:00:00-04:00"
+      //   }
+      //   }];
+      // $nyplAlerts.alerts = $rootScope.alerts;
     }).catch(function (error) {
       throw error;
     });
@@ -954,7 +976,9 @@ var nypl_widget = angular.module('nypl_widget', [
   /**
    * @ngdoc overview
    * @module nyplAlerts
+   * @name nyplAlerts
    * @description
+   * NYPL Alerts module
    */
   angular
     .module('nyplAlerts', ['ngSanitize'])
@@ -2996,7 +3020,7 @@ var nypl_widget = angular.module('nypl_widget', [
         // Applies if the global alert has a closing and is active
         // then display 'Closed....' instead of the hours in the column.
         function configureGlobalAlert() {
-            $scope.globalClosingMessage = '';
+            $scope.globalClosingMessage;
             if ($nyplAlerts.alerts.length) {
                 $scope.globalClosingMessage =
                     nyplAlertsService.getCurrentActiveMessage($nyplAlerts.alerts);

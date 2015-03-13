@@ -343,7 +343,7 @@
         // Applies if the global alert has a closing and is active
         // then display 'Closed....' instead of the hours in the column.
         function configureGlobalAlert() {
-            $scope.globalClosingMessage = '';
+            $scope.globalClosingMessage;
             if ($nyplAlerts.alerts.length) {
                 $scope.globalClosingMessage =
                     nyplAlertsService.getCurrentActiveMessage($nyplAlerts.alerts);
