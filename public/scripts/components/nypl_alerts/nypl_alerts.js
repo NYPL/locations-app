@@ -79,7 +79,7 @@
      * @ngdoc function
      * @name currentAlerts
      * @methodOf nyplAlerts.service:nyplAlertsService
-     * @param {object} Alerts Array Objects
+     * @param {object} obj Alerts Array Objects
      * @returns {object} An array of filtered alert objects
      * @description
      *  currentAlerts filters an array of alert objects that
@@ -109,7 +109,7 @@
      * @ngdoc function
      * @name currentClosingAlerts
      * @methodOf nyplAlerts.service:nyplAlertsService
-     * @param {object} Alerts Array Objects
+     * @param {object} obj Alerts Array Objects
      * @returns {object} An array of filtered alert objects
      * @description
      *  currentClosingAlerts filters an array of alert objects that
@@ -151,7 +151,7 @@
      * @ngdoc function
      * @name currentWeekClosingAlerts
      * @methodOf nyplAlerts.service:nyplAlertsService
-     * @param {object} Alerts Array Objects
+     * @param {object} obj Alerts Array Objects
      * @returns {object} An array of filtered alert objects
      * @description
      *  currentWeekClosingAlerts filters an array of alert objects
@@ -184,7 +184,7 @@
      * @ngdoc function
      * @name allClosingAlerts
      * @methodOf nyplAlerts.service:nyplAlertsService
-     * @param {object} Alerts Array Objects
+     * @param {object} obj Alerts Array Objects
      * @returns {object} An array of filtered alert objects
      * @description
      *  allClosingAlerts filters an array of alert objects
@@ -336,7 +336,7 @@
      * @ngdoc function
      * @name getHoursOrMessage
      * @methodOf nyplAlerts.service:nyplAlertsService
-     * @param {object} Options
+     * @param {object} opts Options object
      * @returns {string} String representation of hours/message
      * @description
      *  getHoursOrMessage Checks if a branch is open, then verifies
@@ -414,10 +414,11 @@
 
   /**
    * @ngdoc directive
-   * @name nyplGlobalAlerts.directive:nyplGlobalAlerts
+   * @name nyplAlerts.directive:nyplGlobalAlerts
    * @restrict E
    * @scope
-   * @description 
+   * @description
+   * Global alert directive.
    */
   function nyplGlobalAlerts($rootScope) {
     return {
@@ -434,10 +435,11 @@
 
   /**
    * @ngdoc directive
-   * @name nyplLocationAlerts.directive:nyplLocationAlerts
+   * @name nyplAlerts.directive:nyplLocationAlerts
    * @restrict E
    * @scope
-   * @description 
+   * @description
+   * Alert directive for individual locations and divisions.
    */
   function nyplLocationAlerts(nyplAlertsService) {
     return {
@@ -479,7 +481,9 @@
   /**
    * @ngdoc overview
    * @module nyplAlerts
+   * @name nyplAlerts
    * @description
+   * NYPL Alerts module
    */
   angular
     .module('nyplAlerts', ['ngSanitize'])
