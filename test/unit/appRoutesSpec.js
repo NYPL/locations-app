@@ -7,13 +7,13 @@ describe('Locinator State Routing', function () {
 
   var $rootScope, $injector, $state, $httpBackend, nyplLocationsService,
     configObj = {
-      api_root: 'dev.locations.api.nypl.org',
+      api_root: 'http://dev.locations.api.nypl.org/api',
       featured_amenities: { global: 3, local: 2 }
     };
 
   window.locations_cfg = {
     config: {
-      api_root: 'dev.locations.api.nypl.org/api',
+      api_root: 'http://dev.locations.api.nypl.org/api',
       api_version: 'v0.7',
       fundraising: {
         statement: "Become a Member",

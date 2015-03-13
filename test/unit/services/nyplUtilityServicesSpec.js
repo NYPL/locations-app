@@ -12,7 +12,20 @@ describe('NYPL Utility Service Tests', function () {
    */
   describe('Service: nyplUtility ', function () {
     var nyplUtility, date;
-
+    window.locations_cfg = {
+      config: {
+        api_root: 'http://dev.locations.api.nypl.org/api',
+        api_version: 'v0.7',
+        fundraising: {
+          statement: "Become a Member",
+          appeal: "Friends of the Library can support their favorite " +
+            "library and receive great benefits!",
+          button_label: "Join or Renew",
+          link: "https://secure3.convio.net/nypl/site/SPageServer?page" +
+            "name=branch_friend_form&s_src=FRQ15ZZ_CADN"
+        }
+      }
+    };
     beforeEach(function () {
       module('nypl_locations');
       // inject your service for testing.

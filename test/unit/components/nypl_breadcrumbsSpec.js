@@ -27,6 +27,11 @@ describe('Directive: nyplbreadcrumbs', function () {
       compile = _$compile_;
       scope = _$rootScope_.$new();
 
+      httpBackend
+          .whenJSONP('http://dev.locations.api.nypl.org/api/v0.7/alerts' +
+            '?callback=JSON_CALLBACK')
+          .respond({});
+
       // httpBackend
       //   .expectGET('languages/en.json')
       //   .respond('public/languages/en.json');

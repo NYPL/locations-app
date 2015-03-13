@@ -82,9 +82,11 @@ describe('NYPL Geocoder Service Tests', function () {
           .expectGET('views/location-list-view.html')
           .respond('public/views/location-list-view.html');
 
-        httpBackend
-          .expectGET('views/404.html')
-          .respond('public/views/404.html');
+        // httpBackend
+        //   .expectGET('views/404.html')
+        //   .respond('public/views/404.html');
+
+        // httpBackend.flush();
       });
     });
 

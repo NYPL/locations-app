@@ -225,7 +225,7 @@ describe('DivisionCtrl', function () {
       scope = _$rootScope_.$new();
       DivisionCtrl = _$controller_('DivisionCtrl', {
         $scope: scope,
-        config: {api_root: 'http://locations-api-beta.nypl.org',
+        config: {api_root: 'http://dev.locations.api.nypl.org/api',
           divisions_with_appointments: ["ARN", "RBK", "MSS", "BRG",
             "PRN", "PHG", "SPN", "CPS"]},
         division: mockGeneralResearch
