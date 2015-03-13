@@ -99,10 +99,6 @@
             if (sDate.valueOf() <= today.valueOf() &&
                 eDate.valueOf() >= today.valueOf()) {
               return elem;
-            } else if (today.day() === sDate.day() &&
-              eDate.day() === today.day() && eDate.valueOf()
-              >= today.valueOf()) {
-              return elem;
             }
           }
         }
@@ -168,14 +164,13 @@
       // started at 11am, the current time won't catch it.
       // If you start from the start of the day, you'll catch it.
       var today = moment().startOf('day'),
-        sevenDaysFromToday = moment().add(7, 'days'),
+        sevenDaysFromToday = moment().add(7, 'days').endOf('day'),
         sDate;
 
       return _.filter(obj, function (elem) {
         if (elem.applies) {
           if (elem.applies.start) {
             sDate = moment(elem.applies.start);
-
             if (sevenDaysFromToday.valueOf() >= sDate.valueOf() &&
               today.valueOf() <= sDate.valueOf()) {
               return elem;
@@ -372,12 +367,34 @@
       return closedFn();
     };
 
+    /**
+     * @ngdoc function
+     * @name activeClosings
+     * @methodOf nyplAlerts.service:nyplAlertsService
+     * @param {object} Alerts Array Object
+     * @returns {boolean} True/False dependent on any current alerts
+     * @description
+     *  activeClosings is a boolean check that returns true if any
+     *  current alerts are returned from the filter. If no alerts
+     *  are returned then, false is the return value.
+     */
     service.activeClosings = function (alerts) {
       var activeAlerts = this.filterAlerts(alerts, {only_closings: 'current'});
       return (activeAlerts && activeAlerts.length) ?
-          true : false;
+        true : false;
     };
 
+    /**
+     * @ngdoc function
+     * @name getActiveMsgs
+     * @methodOf nyplAlerts.service:nyplAlertsService
+     * @param {object} Alerts Array of objects
+     * @returns {string} Closed for message as String
+     * @description
+     *  getActiveMsgs obtains the first closed_for key->value
+     *  of filtered current closing alerts. If no alerts are
+     *  found, an empty string is returned.
+     */
     service.getActiveMsgs = function (alertsArr) {
       if (!alertsArr) {
         return;
@@ -453,6 +470,7 @@
       var alerts = $rootScope.alerts || data;
       $rootScope.alerts =
         nyplAlertsService.filterAlerts(alerts, {current: true});
+      console.log($rootScope.alerts);
       $nyplAlerts.alerts = $rootScope.alerts || data;
     }).catch(function (error) {
       throw error;
