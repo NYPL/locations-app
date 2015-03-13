@@ -386,26 +386,25 @@
 
     /**
      * @ngdoc function
-     * @name getActiveMsgs
+     * @name getCurrentActiveMessage
      * @methodOf nyplAlerts.service:nyplAlertsService
      * @param {object} Alerts Array of objects
      * @returns {string} Closed for message as String
      * @description
-     *  getActiveMsgs obtains the first closed_for key->value
+     *  getCurrentActiveMessage obtains the first closed_for key->value
      *  of filtered current closing alerts. If no alerts are
      *  found, an empty string is returned.
      */
-    service.getActiveMsgs = function (alertsArr) {
+    service.getCurrentActiveMessage = function (alertsArr) {
       if (!alertsArr) {
         return;
       }
 
       var alerts = this.filterAlerts(alertsArr, {only_closings: 'current'}),
-        message = '';
-
-      if (alerts.length) {
-        message = alerts[0].closed_for;
-      }
+        message = _.chain(alerts)
+          .pluck('closed_for')
+          .first()
+          .value();
 
       return message;
     };

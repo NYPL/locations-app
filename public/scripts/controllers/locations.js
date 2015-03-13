@@ -253,7 +253,7 @@
                             markerCoordinates = {},
                             hoursMessageOpts,
                             alerts = location._embedded.alerts,
-                            alertMsgs = nyplAlertsService.getActiveMsgs(alerts);
+                            alertMsgs = nyplAlertsService.getCurrentActiveMessage(alerts);
 
                         if (location.geolocation &&
                                 location.geolocation.coordinates) {
@@ -346,7 +346,7 @@
             $scope.globalClosingMessage = '';
             if ($nyplAlerts.alerts.length) {
                 $scope.globalClosingMessage =
-                    nyplAlertsService.getActiveMsgs($nyplAlerts.alerts);
+                    nyplAlertsService.getCurrentActiveMessage($nyplAlerts.alerts);
             }
         }
 
