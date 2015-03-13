@@ -112,8 +112,6 @@
           );
         }
 
-        // console.log(alerts);
-
         // Proper string assignment for today's hours
         $scope.todaysHours = ctrl.computeHoursToday(hours, alerts);
         // Display the clock icon (optional)
@@ -192,17 +190,14 @@
           scopedAlerts = nyplAlertsService.sortAlertsByScope(weekClosingAlerts);
         }
 
-        console.log(scopedAlerts);
-
         // Assign dynamic week hours with closings
         $scope.dynamicWeekHours = (scopedAlerts) ?
           ctrl.findAlertsInWeek(weeklyHours, scopedAlerts) : null;
 
         $scope.regularWeekHours = $scope.hours || null;
+        $scope.buttonText = (scopedAlerts) ? 'Regular hours' : 'Upcoming hours';
 
-        $scope.buttonText = (scopedAlerts) ? 'Regular hours' : 'Hours this week';
-
-        // Hide Regular hours only if Dynamic hours are defined
+        // Hide Regular hours only if dynamic hours are defined
         if ($scope.dynamicWeekHours) {
           elem.addClass('hide-regular-hours');
         }
@@ -212,7 +207,7 @@
           if (elem.hasClass('hide-regular-hours')) {
             elem.removeClass('hide-regular-hours');
             elem.addClass('hide-dynamic-hours');
-            $scope.buttonText = 'Hours this week';
+            $scope.buttonText = 'Upcoming hours';
           }
           else if (elem.hasClass('hide-dynamic-hours')) {
             elem.removeClass('hide-dynamic-hours');
@@ -247,14 +242,12 @@
         this.assignDynamicDate = function(index) {
           var today = moment(),
             date;
-
           if (index < today.weekday()) {
             date = moment().weekday(index + 7);
-            return date.format('MM/DD');
           } else {
             date = moment().weekday(index);
-            return date.format('MM/DD');
           }
+          return date.format('MM/DD');
         };
 
         // Finds any current matching closing alert relevant to
