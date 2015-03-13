@@ -163,18 +163,19 @@
      *  applies.start property.
      */
     service.currentWeekClosingAlerts = function (obj) {
-      var today = moment(),
+      // Get the start of the day for today.
+      // If you're checking today at 12pm, but there's already an alert that
+      // started at 11am, the current time won't catch it.
+      // If you start from the start of the day, you'll catch it.
+      var today = moment().startOf('day'),
         sevenDaysFromToday = moment().add(7, 'days'),
         sDate;
-
-      console.log(today.valueOf(), sevenDaysFromToday.valueOf());
 
       return _.filter(obj, function (elem) {
         if (elem.applies) {
           if (elem.applies.start) {
             sDate = moment(elem.applies.start);
-            // Covers alert within today's 7 day week
-            console.log(sDate.valueOf());
+
             if (sevenDaysFromToday.valueOf() >= sDate.valueOf() &&
               today.valueOf() <= sDate.valueOf()) {
               return elem;

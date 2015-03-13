@@ -112,7 +112,7 @@
           );
         }
 
-        console.log(alerts);
+        // console.log(alerts);
 
         // Proper string assignment for today's hours
         $scope.todaysHours = ctrl.computeHoursToday(hours, alerts);
