@@ -469,7 +469,6 @@
       var alerts = $rootScope.alerts || data;
       $rootScope.alerts =
         nyplAlertsService.filterAlerts(alerts, {current: true});
-      console.log($rootScope.alerts);
       $nyplAlerts.alerts = $rootScope.alerts || data;
     }).catch(function (error) {
       throw error;
@@ -480,7 +479,6 @@
   /**
    * @ngdoc overview
    * @module nyplAlerts
-   * @name nyplGlobalAlerts
    * @description
    */
   angular
