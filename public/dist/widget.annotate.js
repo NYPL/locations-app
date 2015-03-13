@@ -450,7 +450,6 @@
 /*jslint nomen: true, indent: 4, maxlen: 80 */
 /*globals angular, window, headerScripts */
 
-
 /**
  * @ngdoc overview
  * @module nypl_locations
@@ -508,13 +507,6 @@ nypl_locations.config([
     ) {
         'use strict';
 
-        // Turn off automatic virtual pageviews for GA.
-        // In $stateChangeSuccess, /locations/ is added to each page hit.
-        $analyticsProvider.virtualPageviews(false);
-
-        // uses the HTML5 History API, remove hash (need to test)
-        $locationProvider.html5Mode(true);
-
         function LoadLocation($stateParams, config, nyplLocationsService) {
             return nyplLocationsService
                 .singleLocation($stateParams.location)
@@ -571,12 +563,20 @@ nypl_locations.config([
         }
         getConfig.$inject = ["nyplLocationsService"];
 
+        // Turn off automatic virtual pageviews for GA.
+        // In $stateChangeSuccess, /locations/ is added to each page hit.
+        $analyticsProvider.virtualPageviews(false);
+
+        // uses the HTML5 History API, remove hash (need to test)
+        $locationProvider.html5Mode(true);
+
         // nyplAlerts required config settings
         $nyplAlertsProvider.setOptions({
             api_root: locations_cfg.config.api_root,
             api_version: locations_cfg.config.api_version
         });
 
+        // Breadcrumbs initialized states
         $crumbProvider.setOptions({
             primaryState: {name:'Home', customUrl: 'http://nypl.org' },
             secondaryState: {name:'Locations', customUrl: 'home.index' }
@@ -590,6 +590,9 @@ nypl_locations.config([
                 return path.slice(0, -1);
             }
         })
+
+        // Set default time zone.
+        moment.tz.setDefault("America/New_York");
 
         // This next line breaks unit tests which doesn't make sense since
         // unit tests should not test the whole app. BUT since we are testing
@@ -726,10 +729,6 @@ nypl_locations.run(["$analytics", "$state", "$rootScope", "$location", function 
     });
 }]);
 
-nypl_locations.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility) {
-    $rootScope.holiday = nyplUtility.holidayClosings();
-}]);
-
 // Declare an http interceptor that will signal
 // the start and end of each request
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
@@ -806,6 +805,7 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
  * @requires ngSanitize
  * @requires ui.router
  * @requires locationService
+ * @requires nyplAlerts
  * @requires coordinateService
  * @requires angulartics
  * @requires angulartics.google.analytics
@@ -816,12 +816,22 @@ var nypl_widget = angular.module('nypl_widget', [
     'ngSanitize',
     'ui.router',
     'locationService',
+    'nyplAlerts',
     'coordinateService',
     'angulartics',
     'angulartics.google.analytics'
 ])
-.config(['$locationProvider', '$stateProvider', '$urlRouterProvider',
-    function ($locationProvider, $stateProvider, $urlRouterProvider) {
+.config([
+    '$locationProvider',
+    '$stateProvider',
+    '$urlRouterProvider',
+    '$nyplAlertsProvider',
+    function (
+        $locationProvider,
+        $stateProvider,
+        $urlRouterProvider,
+        $nyplAlertsProvider
+    ) {
         'use strict';
 
         function LoadLocation($stateParams, config, nyplLocationsService) {
@@ -872,6 +882,12 @@ var nypl_widget = angular.module('nypl_widget', [
         $locationProvider.html5Mode(true);
         // $urlRouterProvider.otherwise('/widget/sasb');
 
+        // nyplAlerts required config settings
+        $nyplAlertsProvider.setOptions({
+            api_root: locations_cfg.config.api_root,
+            api_version: locations_cfg.config.api_version
+        });
+
         $stateProvider
             .state('subdivision', {
                 url: '/widget/divisions/:division/:subdivision',
@@ -903,11 +919,6 @@ var nypl_widget = angular.module('nypl_widget', [
             });
     }
 ]);
-// Add Holiday Closings
-nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility) {
-    $rootScope.holiday = nyplUtility.holidayClosings();
-}]);
-
 /*jslint indent: 4, maxlen: 80, nomen: true */
 /*globals nypl_locations, console, _, angular */
 
@@ -918,9 +929,13 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
      * @ngdoc filter
      * @name nypl_locations.filter:timeFormat
      * @param {object} timeObj Object with hours for today and tomorrow.
-     * @returns {string} Closed or open times for a branch.
+     * @returns {string} Closed or open times for a branch with possible
+     *  alert returned.
      * @description
-     * Filter formats military time to standard time
+     *  timeFormat() filter formats military time to standard time. 
+     *  In addition, if an alert is present, it displays 
+     *  the approapriate message for a relevant alert.
+     *  1) all day closing 2) early/late opening/closing
      */
     function timeFormat($sce) {
         function getMilitaryHours(time) {
@@ -943,26 +958,26 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                 openHour, closedHour, displayString;
 
             if (!alerts.length) {
-                sDate = new Date(alerts.applies.start);
-                eDate = new Date(alerts.applies.end);
+                sDate = moment(alerts.applies.start);
+                eDate = moment(alerts.applies.end);
                 openHour = getMilitaryHours(hours.open);
                 closedHour = getMilitaryHours(hours.close);
-                regHours = clockTime(hours.open) + ' - ' + clockTime(hours.close);
-                allDay = (sDate.getDay() < eDate.getDay()) ? true : false;
+                allDay = (sDate.day() < eDate.day()) ? true : false;
 
                 // First, check if this is an all day closing
-                // Second, check if the alert start hour is before(equal-to) the location's
-                // opening hour or if the alert end hour is after(equal-to) the location's
-                // closing hour. Lastly, default to a partial closing.
+                // Then, verify that it is an early closing or late opening
+                // Finally, if the user enters something outside of those bounds
+                // default to a change in hours.
                 if (allDay) {
-                    displayString = regHours + '<br />' + 'Closed - '
-                    + (sDate.getMonth() + 1) + '/' + sDate.getDate();
-                } else if (sDate.getHours() <= openHour && eDate.getHours() >= closedHour) {
-                    displayString = regHours + '<br />' + 'Closed - '
-                    + (sDate.getMonth() + 1) + '/' + sDate.getDate();
+                    displayString = 'Closed *';
+                } else if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
+                    displayString = 'Closed *'
+                } else if (openHour < sDate.hours() && closedHour <= eDate.hours()) {
+                    displayString = 'Closing early *';
+                } else if (closedHour > eDate.hours() && openHour >= sDate.hours()) {
+                    displayString = 'Opening late *';
                 } else {
-                    displayString = regHours + '<br />' + 'Change in hours - '
-                    + (sDate.getMonth() + 1) + '/' + sDate.getDate();
+                    displayString = 'Change in hours *';
                 }
             }
             return $sce.trustAsHtml(displayString);
@@ -988,7 +1003,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                 return clockTime(time.open) + ' - ' + clockTime(time.close);
             }
 
-            console.log('timeFormat() filter function error: Argument is' +
+            console.log('timeFormat() filter error: Argument is' +
                 ' not defined or empty, verify API response for time');
             return '';
         };
@@ -1050,11 +1065,15 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         }
 
         return function (elem) {
+            // Not sure yet if this will suffice to get the dynamic
+            // hours today
+            // moment().get('hours'); or get('hour')??
+
             var open_time, closed_time,
-                now = new Date(),
+                now = moment(),
                 today, tomorrow,
                 tomorrow_open_time, tomorrow_close_time,
-                tomorrows_alert, hour_now_military = now.getHours();
+                tomorrows_alert, hour_now_military = now.get('hour');
 
             // If truthy async check
             if (elem) {
@@ -1101,7 +1120,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
                     // If an alert is set for tomorrow, display that first
                     // before displaying the hours for tomorrow
                     if (tomorrows_alert) {
-                        return 'Closed tomorrow ' + tomorrows_alert;
+                        return 'Tomorrow: ' + tomorrows_alert;
                     }
                     else if (tomorrow_open_time && tomorrow_close_time) {
                         return 'Open tomorrow ' + tomorrow_open_time.hours +
@@ -1342,7 +1361,14 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
             {scope: 'location', only_closings: 'current'}
           );
 
+          // Retrieve all current division closings
+          alerts.current_division = nyplAlertsService.filterAlerts(
+            $scope.alerts,
+            {scope: 'division', only_closings: 'current'}
+          );
+
           // Retrieve all global closing alerts
+          // Used to determine tomorrow's hours message
           alerts.all_closings = nyplAlertsService.filterAlerts(
             $scope.alerts,
             {only_closings: 'all'}
@@ -1359,7 +1385,7 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         // Obtains the first alert message from
         // the API of filtered current closing alerts.
         this.getAlertMsg = function (alertsObj) {
-          return _.chain(alertsObj)
+          return 'Today: ' + _.chain(alertsObj)
             .pluck('closed_for')
             .flatten(true)
             .first()
@@ -1376,10 +1402,13 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         ** on the stated priority:
         ** 1. Global closing alert
         ** 2. Location closing alert
-        ** 3. Regular hours for today/tomorrow
+        ** 3. Division closing alert
+        ** 4. Regular hours for today/tomorrow
         */
         this.computeHoursToday = function (hoursObj, alertsObj) {
-          if (!hoursObj) { return; }
+          if (!hoursObj) {
+            return 'Not available';
+          }
           if (!alertsObj) {
             return this.getLocationHours(hoursObj);
           }
@@ -1388,6 +1417,9 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
           }
           if (alertsObj.current_location && alertsObj.current_location.length) {
             return this.getAlertMsg(alertsObj.current_location);
+          }
+          if (alertsObj.current_division && alertsObj.current_division.length) {
+            return this.getAlertMsg(alertsObj.current_division);
           }
           return this.getLocationHours(hoursObj, alertsObj);
         };
@@ -1400,27 +1432,53 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
     return {
       restrict: 'EA',
       templateUrl: 'scripts/directives/templates/hours-table.html',
-      replace: false, // If true, undefined error is thrown
+      replace: true,
       scope: {
         hours: '=hours',
         alerts: '=alerts'
       },
       link: function ($scope, elem, attrs, ctrl) {
-        var weeklyHours = $scope.hours || null,
-          alerts;
+        var weeklyHours = angular.copy($scope.hours) || null,
+          scopedAlerts,
+          weekClosingAlerts;
 
+        // Filter alerts only if available
         if ($scope.alerts) {
-          alerts = nyplAlertsService.filterAlerts(
+          weekClosingAlerts = nyplAlertsService.filterAlerts(
             $scope.alerts,
             {only_closings: 'week'}
           );
         }
-
-        if (weeklyHours && alerts.length) {
-          $scope.hoursThisWeek = ctrl.findAlertsInWeek(weeklyHours, alerts);
-        } else if (weeklyHours) {
-          $scope.hoursThisWeek = weeklyHours;
+        // Sort Alerts by Scope 1) all 2) location 3) division
+        if (weekClosingAlerts && weekClosingAlerts.length) {
+          scopedAlerts = nyplAlertsService.sortAlertsByScope(weekClosingAlerts);
         }
+
+        // Assign dynamic week hours with closings
+        $scope.dynamicWeekHours = (scopedAlerts) ?
+          ctrl.findAlertsInWeek(weeklyHours, scopedAlerts) : null;
+
+        $scope.regularWeekHours = $scope.hours || null;
+        $scope.buttonText = (scopedAlerts) ? 'Regular hours' : 'Upcoming hours';
+
+        // Hide Regular hours only if dynamic hours are defined
+        if ($scope.dynamicWeekHours) {
+          elem.addClass('hide-regular-hours');
+        }
+
+        // Toggle Hours visible only if dynamic hours are defined
+        $scope.toggleHoursTable = function() {
+          if (elem.hasClass('hide-regular-hours')) {
+            elem.removeClass('hide-regular-hours');
+            elem.addClass('hide-dynamic-hours');
+            $scope.buttonText = 'Upcoming hours';
+          }
+          else if (elem.hasClass('hide-dynamic-hours')) {
+            elem.removeClass('hide-dynamic-hours');
+            elem.addClass('hide-regular-hours');
+            $scope.buttonText = 'Regular hours';
+          }
+        };
       },
       controller: ['$scope', function ($scope) {
         // Iterate through the current alerts of the week.
@@ -1429,38 +1487,62 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         this.findAlertsInWeek = function(weekObj, alertsObj) {
           if (!weekObj && !alertsObj) { return null; }
 
-          var today = new Date().getDay(),
-            startDay, endDay, allDay,
+
+          // Use moment().day() to get the current day of the week
+          // based on the default timezone which was set in app.js
+          var _this = this,
+            today = moment().day(),
             week = _.each(weekObj, function (day, index) {
-              // Assign today's day to the week day
+              // Assign today's day to the current week
               day.is_today = (index === today) ? true : false;
-
-              // Assign the relevant alerts within a 7 day window
-              day.alert = _.find(alertsObj, function(alert) {
-                // A non-infinite closing
-                if (alert.applies.start && alert.applies.end) {
-                  startDay = new Date(alert.applies.start);
-                  endDay = new Date(alert.applies.end);
-                  allDay = (startDay.getDay() < endDay.getDay()) ? true : false;
-
-                  if (allDay) {
-                    if (index >= startDay.getDay() && index < endDay.getDay()) {
-                      return alert;
-                    }
-                  } else {
-                    if (index >= startDay.getDay() && index <= endDay.getDay()) {
-                      return alert;
-                    }
-                  }
-                } else if (alert.applies.start && !alert.applies.end) {
-                  startDay = new Date(alert.applies.start);
-                  if (index >= startDay.getDay()) {
-                    return alert;
-                  }
-                }
-              });
+              // Assign any current closing alert to the day of the week
+              day.alert = _this.assignCurrentDayAlert(alertsObj, index);
+              // Assign the dynamic date for each week day
+              day.date = _this.assignDynamicDate(index);
             });
           return week;
+        };
+
+        this.assignDynamicDate = function(index) {
+          var today = moment(),
+            date;
+          if (index < today.weekday()) {
+            date = moment().weekday(index + 7);
+          } else {
+            date = moment().weekday(index);
+          }
+          return date.format('MM/DD');
+        };
+
+        // Finds any current matching closing alert relevant to
+        // the day of the week.
+        this.assignCurrentDayAlert = function(alertsObj, dayIndex) {
+          var startDay, endDay, allDay,
+            index = dayIndex;
+          return _.find(alertsObj, function(alert) {
+
+            // A non-infinite closing
+            if (alert.applies.start && alert.applies.end) {
+              startDay = new Date(alert.applies.start);
+              endDay = new Date(alert.applies.end);
+              allDay = (startDay.getDate() < endDay.getDate()) ? true : false;
+
+              if (allDay) {
+                if (index >= startDay.getDay() && index < endDay.getDay()) {
+                  return alert;
+                }
+              } else {
+                if (index >= startDay.getDay() && index <= endDay.getDay()) {
+                  return alert;
+                }
+              }
+            } else if (alert.applies.start && !alert.applies.end) {
+              startDay = new Date(alert.applies.start);
+              if (index >= startDay.getDay()) {
+                return alert;
+              }
+            }
+          });
         };
       }]
     };
@@ -1834,8 +1916,8 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
         $scope.active;
         $scope.currentIndex;
 
-        var input  = angular.element(document.getElementById('searchTerm')),
-          html   = angular.element(document.getElementsByTagName('html'));
+        var input = angular.element(document.getElementById('searchTerm')),
+          html = angular.element(document.getElementsByTagName('html'));
 
         input.bind('focus', function() {
           $scope.$apply( function() { 
@@ -2173,8 +2255,11 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
      * @methodOf nypl_locations.service:nyplUtility
      * @param {object} hours Object with a regular property that is an
      *  array with the open and close times for every day.
-     * @returns {object} An object with the open and close times for
-     *  the current and tomorrow days.
+     * @param {object} alerts Object with an array of alerts pertaining
+     *  to each location/division api endpoint.
+     * @returns {object} An object with the open/close times for
+     *  the today/tomorrow and an alert property for tomorrow's
+     *  potential alert.
      * @description ...
      */
     utility.hoursToday = function (hours, alertsObj) {
@@ -2195,16 +2280,18 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
       }
 
       if (hours) {
-        // Obtain tomorrows alert that matches tomorrow
+        // Obtain tomorrow's alert
         if (alerts && alerts.length) {
           tomorrowsAlert = _.find(alerts, function(alert){
             if (alert.applies) {
-              alertStartDate = new Date(alert.applies.start);
-              // Priority given to global closing alerts
-              if (alert.scope === 'all' && alertStartDate.getDay() === tomorrow) {
+              alertStartDate = moment(alert.applies.start);
+              // Priority: 1) Global 2) Location 3) Division
+              if (alert.scope === 'all' && alertStartDate.day() === tomorrow) {
+                return alert;
+              } else if (alert.scope === 'location' && alertStartDate.day() === tomorrow) {
                 return alert;
               }
-              return alertStartDate.getDay() === tomorrow && alert.scope === 'location';
+              return alert.scope === 'division' && alertStartDate.day() === tomorrow;
             }
           });
         }
@@ -2383,109 +2470,6 @@ nypl_widget.run(["$rootScope", "nyplUtility", function ($rootScope, nyplUtility)
       });
 
       return social_media;
-    };
-
-    /**
-     * @ngdoc function
-     * @name alerts
-     * @methodOf nypl_locations.service:nyplUtility
-     * @param {array} alerts ...
-     * @description ...
-     */
-     // Implemented in Alerts Module
-    /*utility.alerts = function (alerts) {
-      var today = new Date(),
-        todaysAlert = [],
-        alert_start,
-        alert_end;
-
-      if (!alerts) {
-        return null;
-      }
-
-      if (Array.isArray(alerts) && alerts.length > 0) {
-        _.each(alerts, function (alert) {
-          alert_start = new Date(alert.start);
-          alert_end = new Date(alert.end);
-
-          if (alert_start <= today && today <= alert_end) {
-            todaysAlert.push(alert.body);
-          }
-        });
-
-        if (!angular.isUndefined(todaysAlert)) {
-          return _.uniq(todaysAlert);
-        }
-      }
-      return null;
-    };*/
-
-
-    /**
-     * @ngdoc function
-     * @name holidayClosings
-     * @methodOf nypl_locations.service:nyplUtility
-     * @param {obj} date ...
-     * @description ...
-     */
-     // Implemented in hoursToday directive
-    utility.holidayClosings = function (date) {
-
-      function sameDay (day1, day2) {
-        return day1.getFullYear() === day2.getFullYear()
-          && day1.getDate() === day2.getDate()
-          && day1.getMonth() === day2.getMonth();
-      }
-
-      var holiday,
-          today = date || new Date(),
-          holidays = [
-            {
-              day: new Date(2015, 0, 26),
-              title: "Closing at 5 pm due to severe weather" // Winter storm early closing
-            },
-            {
-              day: new Date(2015, 0, 27),
-              title: "Closed due to severe weather" // Winter storm early closing
-            },           
-            {
-              day: new Date(2015, 1, 16),
-              title: "Closed for Presidents' Day"
-            },
-            {
-              day: new Date(2015, 3, 5),
-              title: "Closed for Easter"
-            },
-            {
-              day: new Date(2015, 4, 23),
-              title: "Closed for Memorial Day weekend"
-            },
-            {
-              day: new Date(2015, 4, 24),
-              title: "Closed for Memorial Day weekend"
-            },
-            {
-              day: new Date(2015, 4, 25),
-              title: "Closed for Memorial Day weekend"
-            },
-            {
-              day: new Date(2015, 6, 4),
-              title: "Closed for Independence Day"
-            }
-          ];
-
-      holiday = _.filter(holidays, function(item) {
-                  if ( sameDay(item.day, today) ) {
-                    return item;
-                  }
-                });
-      if (holiday.length > 0) {
-        return {
-          day: holiday[0].day,
-          title: holiday[0].title
-        };
-      }
-      return undefined;
     };
 
     /**
