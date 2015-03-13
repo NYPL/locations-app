@@ -472,26 +472,6 @@
       $rootScope.alerts =
         nyplAlertsService.filterAlerts(alerts, {current: true});
       $nyplAlerts.alerts = $rootScope.alerts || data;
-      // $rootScope.alerts = [{
-      //   id: 291819,
-      //   scope: "all",
-      //   _links: {
-      //   web: {
-      //   href: "http://qa.www.aws.nypl.org/node/291819"
-      //   }
-      //   },
-      //   closed_for: "early closing for testing LOC-631",
-      //   msg: "<p>qa global closing alert</p>",
-      //   display: {
-      //   start: "2015-03-12T00:00:00-04:00",
-      //   end: "2015-03-15T00:00:00-04:00"
-      //   },
-      //   applies: {
-      //   start: "2015-03-13T09:00:00-04:00",
-      //   end: "2015-03-13T18:00:00-04:00"
-      //   }
-      //   }];
-      // $nyplAlerts.alerts = $rootScope.alerts;
     }).catch(function (error) {
       throw error;
     });
