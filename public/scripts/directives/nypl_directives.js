@@ -112,6 +112,8 @@
           );
         }
 
+        console.log(alerts);
+
         // Proper string assignment for today's hours
         $scope.todaysHours = ctrl.computeHoursToday(hours, alerts);
         // Display the clock icon (optional)
@@ -190,6 +192,8 @@
           scopedAlerts = nyplAlertsService.sortAlertsByScope(weekClosingAlerts);
         }
 
+        console.log(scopedAlerts);
+
         // Assign dynamic week hours with closings
         $scope.dynamicWeekHours = (scopedAlerts) ?
           ctrl.findAlertsInWeek(weeklyHours, scopedAlerts) : null;
@@ -242,8 +246,15 @@
 
         this.assignDynamicDate = function(index) {
           var today = moment(),
-            date = today.day(index);
-          return date.format('MM/DD');
+            date;
+
+          if (index < today.weekday()) {
+            date = moment().weekday(index + 7);
+            return date.format('MM/DD');
+          } else {
+            date = moment().weekday(index);
+            return date.format('MM/DD');
+          }
         };
 
         // Finds any current matching closing alert relevant to
