@@ -207,6 +207,9 @@
         $scope.dynamicWeekHours = (scopedAlerts) ?
           ctrl.findAlertsInWeek(weeklyHours, scopedAlerts) : null;
 
+        console.log($scope.dynamicWeekHours);
+        console.log(scopedAlerts);
+
         $scope.regularWeekHours = $scope.hours || null;
         $scope.buttonText = (scopedAlerts) ? 'Regular hours' : 'Upcoming hours';
 
@@ -272,9 +275,13 @@
             if (alert.applies.start && alert.applies.end) {
               startDay = moment(alert.applies.start);
               endDay = moment(alert.applies.end);
-              if (dayDate.date() >= startDay.date() 
+              alert.infinite = false;
+              if (dayDate.date() === startDay.date()
                 && dayDate.date() <= endDay.date()) {
-                alert.infinite = false;
+                return alert;
+              }
+              if (dayDate.date() > startDay.date()
+                && dayDate.date() < endDay.date()) {
                 return alert;
               }
             } else if (alert.applies.start && !alert.applies.end) {
