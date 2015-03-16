@@ -523,6 +523,44 @@ describe('NYPL Directive Unit Tests', function () {
   }); /* End todayshours */
 
   /*
+   * <hours-table hours="" alerts="" location-type=""></hours-table>
+   *
+   */
+  describe('Directive: hoursTable', function () {
+    var hoursTable, element, ctrl, $scope;
+
+    describe('Methods:', function () {
+
+      beforeEach(inject(function ($rootScope, $compile) {
+        $scope = $rootScope.$new();
+        element = angular.element("<hours-table hours='' alerts='' location-type=''></hours-table>");
+
+        hoursTable = $compile(element)($scope);
+        $rootScope.$digest();
+        ctrl = hoursTable.controller("hoursTable");
+        $scope = element.isolateScope() || element.scope();
+      }));
+
+      it('findAlertsInWeek method should be defined', function() {
+        expect(ctrl.findAlertsInWeek).toBeDefined();
+      });
+
+      it('assignDynamicDate method should be defined', function() {
+        expect(ctrl.assignDynamicDate).toBeDefined();
+      });
+
+      it('assignCurrentDayAlert method should be defined', function() {
+        expect(ctrl.assignCurrentDayAlert).toBeDefined();
+      });
+
+      it('toggleHoursTable method should be defined', function() {
+        expect($scope.toggleHoursTable).toBeDefined();
+      });
+
+    });
+  });
+
+  /*
    * <emailusbutton link="" />
    *   Generates a link to email a librarian.
    */
