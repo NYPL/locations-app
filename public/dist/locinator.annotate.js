@@ -3554,16 +3554,6 @@ var nypl_widget = angular.module('nypl_widget', [
           scopedAlerts,
           weekClosingAlerts;
 
-        // $scope.alerts.push({
-        //   id: 235246,
-        //   scope: 'all',
-        //   _links: {web: {href: "http://dev.www.aws.nypl.org/node/235246"}},
-        //   msg: 'qa test alerts',
-        //   display: {start: '2015-03-17T00:00:00-05:00', end: '2015-03-26T00:00:00-05:00'},
-        //   closed_for: 'early closing',
-        //   applies: {start: '2015-03-18T00:00:00-05:00', end: '2015-03-26T00:00:00-05:00'}
-        // });
-
         // Filter alerts only if available
         if ($scope.alerts) {
           weekClosingAlerts = nyplAlertsService.filterAlerts(
@@ -3571,8 +3561,6 @@ var nypl_widget = angular.module('nypl_widget', [
             {only_closings: 'week'}
           );
         }
-
-        //console.log(weekClosingAlerts);
 
         // Sort Alerts by Scope 1) all 2) location 3) division
         if (weekClosingAlerts && weekClosingAlerts.length) {
@@ -3582,9 +3570,6 @@ var nypl_widget = angular.module('nypl_widget', [
         // Assign dynamic week hours with closings
         $scope.dynamicWeekHours = (scopedAlerts) ?
           ctrl.findAlertsInWeek(weeklyHours, scopedAlerts) : null;
-
-        console.log($scope.dynamicWeekHours);
-        console.log(scopedAlerts);
 
         $scope.regularWeekHours = $scope.hours || null;
         $scope.buttonText = (scopedAlerts) ? 'Regular hours' : 'Upcoming hours';
@@ -3645,7 +3630,6 @@ var nypl_widget = angular.module('nypl_widget', [
         // the date of the given week.
         this.assignCurrentDayAlert = function(alertsObj, dayDate) {
           var startDay, endDay;
-
           return _.find(alertsObj, function (alert) {
             // A non-infinite closing
             if (alert.applies.start && alert.applies.end) {
@@ -3661,6 +3645,7 @@ var nypl_widget = angular.module('nypl_widget', [
                 return alert;
               }
             } else if (alert.applies.start && !alert.applies.end) {
+              // Infinite closing
               alert.infinite = true;
               return alert;
             }
