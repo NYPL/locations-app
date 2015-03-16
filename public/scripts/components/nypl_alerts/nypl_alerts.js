@@ -164,7 +164,7 @@
       // started at 11am, the current time won't catch it.
       // If you start from the start of the day, you'll catch it.
       var today = moment().startOf('day'),
-        sevenDaysFromToday = moment().add(7, 'days').endOf('day'),
+        sevenDaysFromToday = moment().add(7, 'days').startOf('day'),
         sDate;
 
       return _.filter(obj, function (elem) {
@@ -173,6 +173,8 @@
             sDate = moment(elem.applies.start);
             if (sevenDaysFromToday.valueOf() >= sDate.valueOf() &&
               today.valueOf() <= sDate.valueOf()) {
+              return elem;
+            } else if (today.valueOf() >= sDate.valueOf()) {
               return elem;
             }
           }

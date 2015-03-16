@@ -41,13 +41,13 @@
                 eDate = moment(alerts.applies.end);
                 openHour = getMilitaryHours(hours.open);
                 closedHour = getMilitaryHours(hours.close);
-                allDay = (sDate.day() < eDate.day()) ? true : false;
+                allDay = (sDate.date() < eDate.date()) ? true : false;
 
                 // First, check if this is an all day closing
                 // Then, verify that it is an early closing or late opening
                 // Finally, if the user enters something outside of those bounds
                 // default to a change in hours.
-                if (allDay) {
+                if (allDay || alert.infinite === true) {
                     displayString = 'Closed *';
                 } else if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
                     displayString = 'Closed *'

@@ -178,6 +178,16 @@
           scopedAlerts,
           weekClosingAlerts;
 
+        // $scope.alerts.push({
+        //   id: 235246,
+        //   scope: 'all',
+        //   _links: {web: {href: "http://dev.www.aws.nypl.org/node/235246"}},
+        //   msg: 'qa test alerts',
+        //   display: {start: '2015-03-17T00:00:00-05:00', end: '2015-03-26T00:00:00-05:00'},
+        //   closed_for: 'early closing',
+        //   applies: {start: '2015-03-18T00:00:00-05:00', end: '2015-03-26T00:00:00-05:00'}
+        // });
+
         // Filter alerts only if available
         if ($scope.alerts) {
           weekClosingAlerts = nyplAlertsService.filterAlerts(
@@ -185,6 +195,9 @@
             {only_closings: 'week'}
           );
         }
+
+        //console.log(weekClosingAlerts);
+
         // Sort Alerts by Scope 1) all 2) location 3) division
         if (weekClosingAlerts && weekClosingAlerts.length) {
           scopedAlerts = nyplAlertsService.sortAlertsByScope(weekClosingAlerts);
@@ -193,6 +206,9 @@
         // Assign dynamic week hours with closings
         $scope.dynamicWeekHours = (scopedAlerts) ?
           ctrl.findAlertsInWeek(weeklyHours, scopedAlerts) : null;
+
+        console.log($scope.dynamicWeekHours);
+        console.log(scopedAlerts);
 
         $scope.regularWeekHours = $scope.hours || null;
         $scope.buttonText = (scopedAlerts) ? 'Regular hours' : 'Upcoming hours';
@@ -223,7 +239,6 @@
         this.findAlertsInWeek = function(weekObj, alertsObj) {
           if (!weekObj && !alertsObj) { return null; }
 
-
           // Use moment().day() to get the current day of the week
           // based on the default timezone which was set in app.js
           var _this = this,
@@ -231,10 +246,10 @@
             week = _.each(weekObj, function (day, index) {
               // Assign today's day to the current week
               day.is_today = (index === today) ? true : false;
-              // Assign any current closing alert to the day of the week
-              day.alert = _this.assignCurrentDayAlert(alertsObj, index);
               // Assign the dynamic date for each week day
               day.date = _this.assignDynamicDate(index);
+              // Assign any current closing alert to the day of the week
+              day.alert = _this.assignCurrentDayAlert(alertsObj, day.date);
             });
           return week;
         };
@@ -247,36 +262,31 @@
           } else {
             date = moment().weekday(index);
           }
-          return date.format('MM/DD');
+          return date;
         };
 
         // Finds any current matching closing alert relevant to
-        // the day of the week.
-        this.assignCurrentDayAlert = function(alertsObj, dayIndex) {
-          var startDay, endDay, allDay,
-            index = dayIndex;
-          return _.find(alertsObj, function(alert) {
+        // the date of the given week.
+        this.assignCurrentDayAlert = function(alertsObj, dayDate) {
+          var startDay, endDay;
 
+          return _.find(alertsObj, function (alert) {
             // A non-infinite closing
             if (alert.applies.start && alert.applies.end) {
-              startDay = new Date(alert.applies.start);
-              endDay = new Date(alert.applies.end);
-              allDay = (startDay.getDate() < endDay.getDate()) ? true : false;
-
-              if (allDay) {
-                if (index >= startDay.getDay() && index < endDay.getDay()) {
-                  return alert;
-                }
-              } else {
-                if (index >= startDay.getDay() && index <= endDay.getDay()) {
-                  return alert;
-                }
-              }
-            } else if (alert.applies.start && !alert.applies.end) {
-              startDay = new Date(alert.applies.start);
-              if (index >= startDay.getDay()) {
+              startDay = moment(alert.applies.start);
+              endDay = moment(alert.applies.end);
+              alert.infinite = false;
+              if (dayDate.date() === startDay.date()
+                && dayDate.date() <= endDay.date()) {
                 return alert;
               }
+              if (dayDate.date() > startDay.date()
+                && dayDate.date() < endDay.date()) {
+                return alert;
+              }
+            } else if (alert.applies.start && !alert.applies.end) {
+              alert.infinite = true;
+              return alert;
             }
           });
         };
