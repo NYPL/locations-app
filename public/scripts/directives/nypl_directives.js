@@ -244,7 +244,7 @@
               // Assign the dynamic date for each week day
               day.date = _this.assignDynamicDate(index);
               // Assign any current closing alert to the day of the week
-              day.alert = _this.assignCurrentDayAlert(alertsObj, index, day.date);
+              day.alert = _this.assignCurrentDayAlert(alertsObj, day.date);
             });
           return week;
         };
@@ -262,9 +262,8 @@
 
         // Finds any current matching closing alert relevant to
         // the day of the week.
-        this.assignCurrentDayAlert = function(alertsObj, dayIndex, dayDate) {
-          var startDay, endDay, allDay,
-            index = dayIndex,
+        this.assignCurrentDayAlert = function(alertsObj, dayDate) {
+          var startDay, endDay,
             weekDay = new Date(dayDate);
 
           return _.find(alertsObj, function (alert) {
@@ -272,24 +271,14 @@
             if (alert.applies.start && alert.applies.end) {
               startDay = new Date(alert.applies.start);
               endDay = new Date(alert.applies.end);
-              allDay = (startDay.getDate() < endDay.getDate()) ? true : false;
 
-              if (allDay) {
-                if (weekDay.getTime() >= startDay.getTime()
-                  && weekDay.getTime() < endDay.getTime()) {
-                  return alert;
-                }
-              } else {
-                if (weekDay.getTime() >= startDay.getTime()
-                  && weekDay.getTime() < endDay.getTime()) {
-                  return alert;
-                }
+              if (weekDay.getDate() >= startDay.getDate()
+                && weekDay.getDate() < endDay.getDate()) {
+                return alert;
               }
             } else if (alert.applies.start && !alert.applies.end) {
               startDay = new Date(alert.applies.start);
-              // if (index >= startDay.getDay()) {
-                return alert;
-              // }
+              return alert;
             }
           });
         };
