@@ -295,7 +295,7 @@
                         location.closingMessageClass =
                             closingMessageClass(alerts);
                         location.todaysHoursDisplay =
-                            alertMsgs ? '' : 'Today\'s Hours:';
+                            alertMsgs ? 'Today:' : 'Today\'s Hours:';
 
                         hoursMessageOpts = {
                             message: alertMsgs,
