@@ -196,6 +196,8 @@
           );
         }
 
+        //console.log(weekClosingAlerts);
+
         // Sort Alerts by Scope 1) all 2) location 3) division
         if (weekClosingAlerts && weekClosingAlerts.length) {
           scopedAlerts = nyplAlertsService.sortAlertsByScope(weekClosingAlerts);
@@ -270,7 +272,7 @@
             if (alert.applies.start && alert.applies.end) {
               startDay = moment(alert.applies.start);
               endDay = moment(alert.applies.end);
-              if (dayDate.date() === startDay.date() 
+              if (dayDate.date() >= startDay.date() 
                 && dayDate.date() <= endDay.date()) {
                 alert.infinite = false;
                 return alert;
