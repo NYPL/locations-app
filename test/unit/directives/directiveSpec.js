@@ -529,17 +529,17 @@ describe('NYPL Directive Unit Tests', function () {
   describe('Directive: hoursTable', function () {
     var hoursTable, element, ctrl, $scope;
 
+    beforeEach(inject(function ($rootScope, $compile) {
+      $scope = $rootScope.$new();
+      element = angular.element("<hours-table hours='' alerts='' location-type=''></hours-table>");
+
+      hoursTable = $compile(element)($scope);
+      $rootScope.$digest();
+      ctrl = hoursTable.controller("hoursTable");
+      $scope = element.isolateScope() || element.scope();
+    }));
+
     describe('Methods:', function () {
-
-      beforeEach(inject(function ($rootScope, $compile) {
-        $scope = $rootScope.$new();
-        element = angular.element("<hours-table hours='' alerts='' location-type=''></hours-table>");
-
-        hoursTable = $compile(element)($scope);
-        $rootScope.$digest();
-        ctrl = hoursTable.controller("hoursTable");
-        $scope = element.isolateScope() || element.scope();
-      }));
 
       it('findAlertsInWeek method should be defined', function() {
         expect(ctrl.findAlertsInWeek).toBeDefined();
@@ -558,6 +558,13 @@ describe('NYPL Directive Unit Tests', function () {
       });
 
     });
+
+    describe('Regular hours without any closing alerts for the week',
+      function () {
+
+
+    });
+
   });
 
   /*

@@ -39,7 +39,7 @@ module.exports = function (config) {
       'public/scripts/app.js',
       'public/scripts/directives/templates/*.html',
       'public/scripts/components/**/*.html',
-      'test/unit/**/*.js'
+      'test/unit/directives/*.js'
     ],
 
     exclude : [
