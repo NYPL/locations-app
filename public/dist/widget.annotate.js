@@ -1460,7 +1460,7 @@ var nypl_widget = angular.module('nypl_widget', [
             ctrl.findAlertsInWeek(weeklyHours, scopedAlerts) : null;
 
         $scope.regularWeekHours = $scope.hours || null;
-        $scope.buttonText = (scopedAlerts) ? 'Regular hours' : 'Upcoming hours';
+        $scope.buttonText = (scopedAlerts) ? 'Regular hours' : null;
 
         // Hide Regular hours only if dynamic hours are defined
         if ($scope.dynamicWeekHours) {

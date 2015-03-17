@@ -927,13 +927,14 @@ var nypl_widget = angular.module('nypl_widget', [
                 "</div>",
       replace: true,
       scope: {
-        alerts: '=alerts'
+        alerts: '=alerts',
+        type: '@'
       },
       link: function (scope, element, attrs) {
-        if (scope.alerts) {
+        if (scope.alerts && scope.type.length) {
           scope.locationAlerts = nyplAlertsService.filterAlerts(
             scope.alerts,
-            {scope: 'location', current: true}
+            {scope: scope.type, current: true}
           );
         }
       }
@@ -3572,7 +3573,7 @@ var nypl_widget = angular.module('nypl_widget', [
             ctrl.findAlertsInWeek(weeklyHours, scopedAlerts) : null;
 
         $scope.regularWeekHours = $scope.hours || null;
-        $scope.buttonText = (scopedAlerts) ? 'Regular hours' : 'Upcoming hours';
+        $scope.buttonText = (scopedAlerts) ? 'Regular hours' : null;
 
         // Hide Regular hours only if dynamic hours are defined
         if ($scope.dynamicWeekHours) {
