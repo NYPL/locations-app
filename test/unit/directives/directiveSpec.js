@@ -556,12 +556,16 @@ describe('NYPL Directive Unit Tests', function () {
       it('toggleHoursTable method should be defined', function() {
         expect($scope.toggleHoursTable).toBeDefined();
       });
-
     });
 
-    describe('Regular hours without any closing alerts for the week',
-      function () {
+    describe('Directive with Regular hours without any closing ' + 
+      'alerts for the week',function () {
 
+      it('should compile', function() {
+        $scope.hours = {};
+        expect(hoursTable.find('.hours-table-wrapper')).toBeTruthy();
+        expect(hoursTable.find('.closing-link')).toBeTruthy();
+      });
 
     });
 
