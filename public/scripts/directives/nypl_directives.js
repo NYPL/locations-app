@@ -205,6 +205,8 @@
         $scope.dynamicWeekHours = (scopedAlerts) ?
           ctrl.findAlertsInWeek(weeklyHours, scopedAlerts) : null;
 
+        console.log($scope.dynamicWeekHours);
+
         $scope.regularWeekHours = $scope.hours || null;
         $scope.buttonText = (scopedAlerts) ? 'Regular hours' : 'Upcoming hours';
 
@@ -261,7 +263,7 @@
         };
 
         // Finds any current matching closing alert relevant to
-        // the day of the week.
+        // the date of the given week.
         this.assignCurrentDayAlert = function(alertsObj, dayDate) {
           var startDay, endDay,
             weekDay = new Date(dayDate);
@@ -269,15 +271,15 @@
           return _.find(alertsObj, function (alert) {
             // A non-infinite closing
             if (alert.applies.start && alert.applies.end) {
-              startDay = new Date(alert.applies.start);
-              endDay = new Date(alert.applies.end);
-
-              if (weekDay.getDate() >= startDay.getDate()
-                && weekDay.getDate() < endDay.getDate()) {
+              startDay = moment(alert.applies.start);
+              endDay = moment(alert.applies.end);
+              if (dayDate.date() === startDay.date() 
+                && dayDate.date() <= endDay.date()) {
+                alert.infinite = false;
                 return alert;
               }
             } else if (alert.applies.start && !alert.applies.end) {
-              startDay = new Date(alert.applies.start);
+              alert.infinite = true;
               return alert;
             }
           });
