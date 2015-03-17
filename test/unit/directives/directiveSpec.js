@@ -529,17 +529,17 @@ describe('NYPL Directive Unit Tests', function () {
   describe('Directive: hoursTable', function () {
     var hoursTable, element, ctrl, $scope;
 
+    beforeEach(inject(function ($rootScope, $compile) {
+      $scope = $rootScope.$new();
+      element = angular.element("<hours-table hours='' alerts='' location-type=''></hours-table>");
+
+      hoursTable = $compile(element)($scope);
+      $rootScope.$digest();
+      ctrl = hoursTable.controller("hoursTable");
+      $scope = element.isolateScope() || element.scope();
+    }));
+
     describe('Methods:', function () {
-
-      beforeEach(inject(function ($rootScope, $compile) {
-        $scope = $rootScope.$new();
-        element = angular.element("<hours-table hours='' alerts='' location-type=''></hours-table>");
-
-        hoursTable = $compile(element)($scope);
-        $rootScope.$digest();
-        ctrl = hoursTable.controller("hoursTable");
-        $scope = element.isolateScope() || element.scope();
-      }));
 
       it('findAlertsInWeek method should be defined', function() {
         expect(ctrl.findAlertsInWeek).toBeDefined();
@@ -556,8 +556,19 @@ describe('NYPL Directive Unit Tests', function () {
       it('toggleHoursTable method should be defined', function() {
         expect($scope.toggleHoursTable).toBeDefined();
       });
+    });
+
+    describe('Directive with Regular hours without any closing ' + 
+      'alerts for the week',function () {
+
+      it('should compile', function() {
+        $scope.hours = {};
+        expect(hoursTable.find('.hours-table-wrapper')).toBeTruthy();
+        expect(hoursTable.find('.closing-link')).toBeTruthy();
+      });
 
     });
+
   });
 
   /*

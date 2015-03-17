@@ -454,13 +454,14 @@
                 "</div>",
       replace: true,
       scope: {
-        alerts: '=alerts'
+        alerts: '=alerts',
+        type: '@'
       },
       link: function (scope, element, attrs) {
-        if (scope.alerts) {
+        if (scope.alerts && scope.type.length) {
           scope.locationAlerts = nyplAlertsService.filterAlerts(
             scope.alerts,
-            {scope: 'location', current: true}
+            {scope: scope.type, current: true}
           );
         }
       }
