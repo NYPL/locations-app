@@ -1,5 +1,5 @@
-/*jslint unparam: true, indent: 2, maxlen: 80 */
-/*globals nypl_locations, $window, angular */
+/*jslint unparam: true, indent: 2, maxlen: 80, nomen: true */
+/*globals nypl_locations, $window, angular, _, moment */
 
 (function () {
   'use strict';
@@ -18,13 +18,13 @@
       restrict: "A",
       link: function (scope, element) {
         var startRequestHandler = function (event) {
-          // got the request start notification, show the element
-          element.addClass('show');
-        },
-        endRequestHandler = function (event) {
-          // got the request start notification, show the element
-          element.removeClass('show');
-        };
+            // got the request start notification, show the element
+            element.addClass('show');
+          },
+          endRequestHandler = function (event) {
+            // got the request start notification, show the element
+            element.removeClass('show');
+          };
 
         // hide the element initially
         if (element.hasClass('show')) {
@@ -193,7 +193,7 @@
 
         // Assign dynamic week hours with closings
         $scope.dynamicWeekHours = (scopedAlerts) ?
-          ctrl.findAlertsInWeek(weeklyHours, scopedAlerts) : null;
+            ctrl.findAlertsInWeek(weeklyHours, scopedAlerts) : null;
 
         $scope.regularWeekHours = $scope.hours || null;
         $scope.buttonText = (scopedAlerts) ? 'Regular hours' : 'Upcoming hours';
@@ -204,13 +204,12 @@
         }
 
         // Toggle Hours visible only if dynamic hours are defined
-        $scope.toggleHoursTable = function() {
+        $scope.toggleHoursTable = function () {
           if (elem.hasClass('hide-regular-hours')) {
             elem.removeClass('hide-regular-hours');
             elem.addClass('hide-dynamic-hours');
             $scope.buttonText = 'Upcoming hours';
-          }
-          else if (elem.hasClass('hide-dynamic-hours')) {
+          } else if (elem.hasClass('hide-dynamic-hours')) {
             elem.removeClass('hide-dynamic-hours');
             elem.addClass('hide-regular-hours');
             $scope.buttonText = 'Regular hours';
@@ -221,7 +220,7 @@
         // Iterate through the current alerts of the week.
         // Attach the alert pertaining to the day by it's index
         // to the week object
-        this.findAlertsInWeek = function(weekObj, alertsObj) {
+        this.findAlertsInWeek = function (weekObj, alertsObj) {
           if (!weekObj && !alertsObj) { return null; }
 
           // Use moment().day() to get the current day of the week
@@ -239,7 +238,7 @@
           return week;
         };
 
-        this.assignDynamicDate = function(index) {
+        this.assignDynamicDate = function (index) {
           var today = moment(),
             date;
           if (index < today.weekday()) {
@@ -252,7 +251,7 @@
 
         // Finds any current matching closing alert relevant to
         // the date of the given week.
-        this.assignCurrentDayAlert = function(alertsObj, dayDate) {
+        this.assignCurrentDayAlert = function (alertsObj, dayDate) {
           var startDay, endDay;
           return _.find(alertsObj, function (alert) {
             // A non-infinite closing
@@ -261,11 +260,11 @@
               endDay = moment(alert.applies.end);
               alert.infinite = false;
               if (dayDate.date() === startDay.date()
-                && dayDate.date() <= endDay.date()) {
+                  && dayDate.date() <= endDay.date()) {
                 return alert;
               }
               if (dayDate.date() > startDay.date()
-                && dayDate.date() < endDay.date()) {
+                  && dayDate.date() < endDay.date()) {
                 return alert;
               }
             } else if (alert.applies.start && !alert.applies.end) {
@@ -357,9 +356,9 @@
    */
   function eventRegistration($filter) {
     function eventStarted(startDate) {
-        var sDate = new Date(startDate),
-          today   = new Date();
-        return (sDate.getTime() > today.getTime()) ? true : false;
+      var sDate = new Date(startDate),
+        today   = new Date();
+      return (sDate.getTime() > today.getTime()) ? true : false;
     }
 
     return {
@@ -378,13 +377,13 @@
           // Check if the event has already started
           scope.eventRegStarted = eventStarted(scope.registration.start);
 
-          if (scope.registration.type == 'Online') {
+          if (scope.registration.type === 'Online') {
             scope.online = true;
-            scope.reg_msg = (scope.eventRegStarted) ? 
-                            'Online, opens ' + $filter('date')(scope.registration.start, 'MM/dd') :
-                            'Online';
-          }
-          else {
+            scope.reg_msg = (scope.eventRegStarted) ?
+                'Online, opens ' +
+                  $filter('date')(scope.registration.start, 'MM/dd') :
+                'Online';
+          } else {
             scope.reg_msg = scope.registration.type;
           }
         }
@@ -575,8 +574,8 @@
       link: function (scope, elem, attrs) {
         var url = "https://secure3.convio.net/nypl/site/SPageServer?page" +
           "name=donation_form&JServSessionIdr003=dwcz55yj27.app304a&s_" +
-          "src=FRQ14ZZ_SWBN";      
-        scope.donateUrl = (attrs.donateurl || url);      
+          "src=FRQ14ZZ_SWBN";
+        scope.donateUrl = (attrs.donateurl || url);
       }
     };
   }
@@ -644,33 +643,32 @@
         var input = angular.element(document.getElementById('searchTerm')),
           html = angular.element(document.getElementsByTagName('html'));
 
-        input.bind('focus', function() {
-          $scope.$apply( function() { 
+        input.bind('focus', function () {
+          $scope.$apply(function () {
             controller.openAutofill();
           });
         });
 
-        input.bind('click', function(e) {
+        input.bind('click', function (e) {
           e.stopPropagation();
         });
 
-        input.bind('keyup', function(e) {
+        input.bind('keyup', function (e) {
           // Tab & Enter keys
           if (e.keyCode === 13) {
-            $scope.$apply( function() {
+            $scope.$apply(function () {
               // User has pressed up/down arrows
               if ($scope.activated) {
                 // Transition to location page
-                if ($scope.active.slug){
+                if ($scope.active.slug) {
                   $scope.activated = false;
                   controller.closeAutofill();
                   $scope.model = $scope.active.name;
                   $state.go(
-                    'location', 
+                    'location',
                     { location: $scope.active.slug }
                   );
-                }
-                else {
+                } else {
                   //Geocoding Search
                   $scope.geoSearch({term: $scope.model});
                   $scope.geocodingactive = false;
@@ -704,14 +702,14 @@
 
           // Right Arrow
           if (e.keyCode === 39) {
-            $scope.$apply( function() {
+            $scope.$apply(function () {
               controller.setSearchText($scope.model);
             });
           }
 
           // Backspace
           if (e.keyCode === 8) {
-            $scope.$apply( function() { $scope.lookahead = ''; });
+            $scope.$apply(function () { $scope.lookahead = ''; });
           }
 
           // Escape key
@@ -726,7 +724,7 @@
         });
 
         // Tab, Enter and Escape keys
-        input.bind('keydown', function(e) {
+        input.bind('keydown', function (e) {
           if (e.keyCode === 9 || e.keyCode === 13 || e.keyCode === 27) {
             e.preventDefault();
           }
@@ -734,7 +732,7 @@
           // Up Arrow
           if (e.keyCode === 38) {
             e.preventDefault();
-            $scope.$apply(function() {
+            $scope.$apply(function () {
               if (!$scope.activated) {
                 controller.activateFirstItem();
               }
@@ -747,7 +745,7 @@
           // Down Arrow
           if (e.keyCode === 40) {
             e.preventDefault();
-            $scope.$apply(function() {
+            $scope.$apply(function () {
               if (!$scope.activated) {
                 controller.activateFirstItem();
               }
@@ -759,18 +757,18 @@
           }
         });
 
-        html.bind('click', function(e) {
-          $scope.$apply( function() {
+        html.bind('click', function (e) {
+          $scope.$apply(function () {
             controller.closeAutofill();
           });
         });
 
         function initAutofill() {
-          $scope.$watch('model', function(newValue, oldValue) {
+          $scope.$watch('model', function (newValue, oldValue) {
             controller.updateSearchText($scope.data, newValue);
           });
 
-          $scope.$on('$stateChangeSuccess', function() {
+          $scope.$on('$stateChangeSuccess', function () {
             controller.resetSearchTerms();
             controller.closeAutofill();
           });
@@ -778,31 +776,30 @@
 
         initAutofill();
       },
-      controller: ['$scope', function($scope) {
-        $scope.lookahead = '',
-        $scope.currentWord = '',
+      controller: ['$scope', function ($scope) {
+        $scope.lookahead = '';
+        $scope.currentWord = '';
         $scope.completeWord = '';
 
-        this.closeAutofill = function() {
+        this.closeAutofill = function () {
           return $scope.focused = false;
         };
 
-        this.openAutofill = function() {
+        this.openAutofill = function () {
           return $scope.focused = true;
         };
 
-
-        this.activate = function(item) {
+        this.activate = function (item) {
           return item;
         };
 
-        this.activateFirstItem = function() {
+        this.activateFirstItem = function () {
           $scope.active = $scope.filtered[0];
           $scope.currentIndex = $scope.filtered.indexOf($scope.active);
           $scope.activated = true;
         };
 
-        this.activateNextItem = function() {
+        this.activateNextItem = function () {
           $scope.geocodingactive = false;
           if ($scope.currentIndex < $scope.filtered.length && $scope.currentIndex >= 0) {
             $scope.currentIndex = $scope.filtered.indexOf($scope.active) + 1;
@@ -814,7 +811,7 @@
           }
         };
 
-        this.activatePreviousItem = function() {
+        this.activatePreviousItem = function () {
           $scope.geocodingactive = false;
           if ($scope.currentIndex === -1) {
             $scope.currentIndex = $scope.filtered.length - 1;
@@ -833,30 +830,32 @@
           }
         };
 
-        this.setSearchText = function(model) {
-          if ( $scope.completeWord === $scope.model || 
-            $scope.completeWord === '' || 
-            $scope.model === '') return;
+        this.setSearchText = function (model) {
+          if ($scope.completeWord === $scope.model ||
+              $scope.completeWord === '' || 
+              $scope.model === '') {
+            return;
+          }
           return $scope.model = $scope.completeWord;
         };
 
-        this.resetSearchTerms = function() {
+        this.resetSearchTerms = function () {
           $scope.lookahead   = '';
           $scope.currentWord = '';
         };
 
-        this.filterStartsWith = function(data, searchTerm) {
-          return _.filter(data, function(elem) {
+        this.filterStartsWith = function (data, searchTerm) {
+          return _.filter(data, function (elem) {
             if (elem.name) {
-              return elem.name.substring(0, searchTerm.length).toLowerCase() 
+              return elem.name.substring(0, searchTerm.length).toLowerCase()
                 === searchTerm.toLowerCase();
             }
             return false;
           });
         };
 
-        this.filterTermWithin = function(data, searchTerm) {
-          return _.filter(data, function(elem) {
+        this.filterTermWithin = function (data, searchTerm) {
+          return _.filter(data, function (elem) {
             if (elem.name) {
               return elem.name.toLowerCase().
                 indexOf(searchTerm.toLowerCase()) >= 0;
@@ -865,7 +864,7 @@
           });
         };
 
-        this.updateSearchText = function(data, searchTerm) {
+        this.updateSearchText = function (data, searchTerm) {
           if (searchTerm === '' || !searchTerm || !data) return;
 
           if (searchTerm.length > 1) {

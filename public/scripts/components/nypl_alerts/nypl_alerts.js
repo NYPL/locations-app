@@ -1,5 +1,5 @@
 /*jslint indent: 2, maxlen: 80, nomen: true */
-/*globals $, window, console, jQuery, angular, _ */
+/*globals $, window, console, jQuery, angular, _, moment */
 
 (function (window, angular, undefined) {
   'use strict';
@@ -87,8 +87,8 @@
      *  display.start/display.end properties.
      */
     service.currentAlerts = function (obj) {
-      var today = moment();
-      var sDate,
+      var today = moment(),
+        sDate,
         eDate;
 
       return _.filter(obj, function (elem) {
@@ -133,8 +133,8 @@
             }
             // Covers early openings
             else if (today.day() === sDate.day() &&
-              eDate.day() === today.day() && eDate.valueOf() 
-              >= today.valueOf()) {
+                eDate.day() === today.day() && eDate.valueOf()
+                >= today.valueOf()) {
               return elem;
             }
           } else if (elem.applies.start) {
@@ -172,7 +172,7 @@
           if (elem.applies.start) {
             sDate = moment(elem.applies.start);
             if (sevenDaysFromToday.valueOf() >= sDate.valueOf() &&
-              today.valueOf() <= sDate.valueOf()) {
+                today.valueOf() <= sDate.valueOf()) {
               return elem;
             } else if (today.valueOf() >= sDate.valueOf()) {
               return elem;
@@ -219,16 +219,16 @@
       if (!obj) { return; }
 
       return _.chain(obj)
-      .sortBy(function(elem) {
-        return elem.scope.toLowerCase() === 'all';
-      })
-      .sortBy(function(elem) {
-        return elem.scope.toLowerCase() === 'location';
-      })
-      .sortBy(function(elem) {
-        return elem.scope.toLowerCase() === 'division';
-      })
-      .value();
+        .sortBy(function (elem) {
+          return elem.scope.toLowerCase() === 'all';
+        })
+        .sortBy(function (elem) {
+          return elem.scope.toLowerCase() === 'location';
+        })
+        .sortBy(function (elem) {
+          return elem.scope.toLowerCase() === 'division';
+        })
+        .value();
     };
 
     /**
@@ -383,7 +383,7 @@
     service.activeClosings = function (alerts) {
       var activeAlerts = this.filterAlerts(alerts, {only_closings: 'current'});
       return (activeAlerts && activeAlerts.length) ?
-        true : false;
+          true : false;
     };
 
     /**
