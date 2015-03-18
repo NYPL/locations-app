@@ -259,11 +259,14 @@
               startDay = moment(alert.applies.start);
               endDay = moment(alert.applies.end);
               alert.infinite = false;
-              if (dayDate.date() === startDay.date()
+              if (dayDate.isBetween(startDay, endDay)) {
+                return alert;
+              }
+              else if (dayDate.date() === startDay.date()
                   && dayDate.date() <= endDay.date()) {
                 return alert;
               }
-              if (dayDate.date() > startDay.date()
+              else if (dayDate.date() > startDay.date()
                   && dayDate.date() < endDay.date()) {
                 return alert;
               }

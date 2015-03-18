@@ -41,7 +41,7 @@
                 eDate = moment(alerts.applies.end);
                 openHour = getMilitaryHours(hours.open);
                 closedHour = getMilitaryHours(hours.close);
-                allDay = (sDate.date() < eDate.date()) ? true : false;
+                allDay = (eDate.isAfter(sDate, 'day')) ? true : false;
 
                 // First, check if this is an all day closing
                 // Then, verify that it is an early closing or late opening
