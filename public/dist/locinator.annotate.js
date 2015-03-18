@@ -3636,11 +3636,14 @@ var nypl_widget = angular.module('nypl_widget', [
               startDay = moment(alert.applies.start);
               endDay = moment(alert.applies.end);
               alert.infinite = false;
-              if (dayDate.date() === startDay.date()
+              if (dayDate.isBetween(startDay, endDay)) {
+                return alert;
+              }
+              else if (dayDate.date() === startDay.date()
                   && dayDate.date() <= endDay.date()) {
                 return alert;
               }
-              if (dayDate.date() > startDay.date()
+              else if (dayDate.date() > startDay.date()
                   && dayDate.date() < endDay.date()) {
                 return alert;
               }
@@ -4340,7 +4343,7 @@ var nypl_widget = angular.module('nypl_widget', [
                 eDate = moment(alerts.applies.end);
                 openHour = getMilitaryHours(hours.open);
                 closedHour = getMilitaryHours(hours.close);
-                allDay = (sDate.date() < eDate.date()) ? true : false;
+                allDay = (eDate.isAfter(sDate, 'day')) ? true : false;
 
                 // First, check if this is an all day closing
                 // Then, verify that it is an early closing or late opening
