@@ -43,12 +43,13 @@ module.exports = function (grunt) {
             'public/scripts/services/*.js'
           ],
           'public/dist/widget.annotate.js': [
+            'public/scripts/app.js',
             'public/scripts/components/nypl_coordinates.js',
             'public/scripts/components/nypl_locations_api.js',
-            'public/scripts/app.js',
             'public/scripts/filters/nypl_filters.js',
             'public/scripts/controllers/widget.js',
             'public/scripts/directives/nypl_directives.js',
+            'public/scripts/components/nypl_alerts/nypl_alerts.js',
             'public/scripts/services/nypl_utility_service.js'
           ]
         }
