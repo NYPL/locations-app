@@ -10,9 +10,22 @@ describe('NYPL Utility Service Tests', function () {
    *   An AngularJS service with functions for simple routine and model 
    *   changes and logic that should not be in the controller.
    */
-  describe('Service: nyplUtility', function () {
+  describe('Service: nyplUtility ', function () {
     var nyplUtility, date;
-
+    window.locations_cfg = {
+      config: {
+        api_root: 'http://dev.locations.api.nypl.org/api',
+        api_version: 'v0.7',
+        fundraising: {
+          statement: "Become a Member",
+          appeal: "Friends of the Library can support their favorite " +
+            "library and receive great benefits!",
+          button_label: "Join or Renew",
+          link: "https://secure3.convio.net/nypl/site/SPageServer?page" +
+            "name=branch_friend_form&s_src=FRQ15ZZ_CADN"
+        }
+      }
+    };
     beforeEach(function () {
       module('nypl_locations');
       // inject your service for testing.
@@ -62,7 +75,7 @@ describe('NYPL Utility Service Tests', function () {
 
           expect(JSON.stringify(todayTomorrowObject))
             .toEqual('{"today":{"day":"Wed","open":"10:00","close":"18:00"},' +
-              '"tomorrow":{"day":"Thu","open":"11:00","close":"17:00"}}');
+              '"tomorrow":{"day":"Thu","open":"11:00","close":"17:00","alert":null}}');
         });
 
       it('should return today\'s and tomorrow\'s open and close times ' +
@@ -75,7 +88,7 @@ describe('NYPL Utility Service Tests', function () {
 
           expect(JSON.stringify(todayTomorrowObject))
             .toEqual('{"today":{"day":"Fri","open":"10:00","close":"18:00"},' +
-              '"tomorrow":{"day":"Sat","open":"09:00","close":"17:00"}}');
+              '"tomorrow":{"day":"Sat","open":"09:00","close":"17:00","alert":null}}');
         });
 
       it('should return undefined if no input was given', function () {
@@ -277,67 +290,67 @@ describe('NYPL Utility Service Tests', function () {
      *   if the alert should be live (based on start and end date and 
      *   the date we are checking);
      */
-    describe('nyplUtility.alerts()', function () {
-      // The alert objects have more properties which are
-      // not needed for the service function
-      var alerts = [
-          {start: "2014-05-17T00:00:00-04:00", end: "2014-05-27T01:00:00-04:00",
-            body: "The New York Public Library will be closed from May 24 " +
-              "through May 26 in observance of Memorial Day."},
-          {start: "2014-06-27T00:00:00-04:00", end: "2014-07-06T01:00:00-04:00",
-            body: "All units of the NYPL are closed July 4 - July 5."},
-          {start: "2014-08-23T00:00:00-04:00", end: "2014-09-02T01:00:00-04:00",
-            body: "The New York Public Library will be closed August 30th " +
-              "through September 1st in observance of Labor Day"}
-        ],
-        one_alert = {
-          start: "2014-08-23T00:00:00-04:00",
-          end: "2014-09-02T01:00:00-04:00",
-          description: "The New York Public Library will be closed August " +
-            "30th through September 1st in observance of Labor Day"
-        },
-        bad_alert = {};
+    // describe('nyplUtility.alerts()', function () {
+    //   // The alert objects have more properties which are
+    //   // not needed for the service function
+    //   var alerts = [
+    //       {start: "2014-05-17T00:00:00-04:00", end: "2014-05-27T01:00:00-04:00",
+    //         body: "The New York Public Library will be closed from May 24 " +
+    //           "through May 26 in observance of Memorial Day."},
+    //       {start: "2014-06-27T00:00:00-04:00", end: "2014-07-06T01:00:00-04:00",
+    //         body: "All units of the NYPL are closed July 4 - July 5."},
+    //       {start: "2014-08-23T00:00:00-04:00", end: "2014-09-02T01:00:00-04:00",
+    //         body: "The New York Public Library will be closed August 30th " +
+    //           "through September 1st in observance of Labor Day"}
+    //     ],
+    //     one_alert = {
+    //       start: "2014-08-23T00:00:00-04:00",
+    //       end: "2014-09-02T01:00:00-04:00",
+    //       description: "The New York Public Library will be closed August " +
+    //         "30th through September 1st in observance of Labor Day"
+    //     },
+    //     bad_alert = {};
 
-      it('should have the alerts function available', function () {
-        expect(nyplUtility.alerts).toBeDefined();
-      });
+    //   it('should have the alerts function available', function () {
+    //     expect(nyplUtility.alerts).toBeDefined();
+    //   });
 
-      it('should display the Independence Day alert - array of alerts',
-        function () {
-          date = new Date(2014, 5, 29);
-          // In the alerts, we call new Date multiple times with the dates for
-          // each alert, so if a date is passed, use that, else
-          // mock the current date
-          var MockDate = Date,
-            display_alert;
-          Date = function (alertDate) {
-            if (alertDate) {
-              return new MockDate(alertDate);
-            }
-            return date;
-          };
+    //   it('should display the Independence Day alert - array of alerts',
+    //     function () {
+    //       date = new Date(2014, 5, 29);
+    //       // In the alerts, we call new Date multiple times with the dates for
+    //       // each alert, so if a date is passed, use that, else
+    //       // mock the current date
+    //       var MockDate = Date,
+    //         display_alert;
+    //       Date = function (alertDate) {
+    //         if (alertDate) {
+    //           return new MockDate(alertDate);
+    //         }
+    //         return date;
+    //       };
 
-          display_alert = nyplUtility.alerts(alerts);
+    //       display_alert = nyplUtility.alerts(alerts);
 
-          // The function only returns the body of the alert
-          expect(display_alert)
-            .toEqual(["All units of the NYPL are closed July 4 - July 5."]);
+    //       // The function only returns the body of the alert
+    //       expect(display_alert)
+    //         .toEqual(["All units of the NYPL are closed July 4 - July 5."]);
 
-          Date = MockDate;
-        });
+    //       Date = MockDate;
+    //     });
 
-      it('should return null if the dates are wrong', function () {
-        expect(nyplUtility.alerts(bad_alert)).toBe(null);
-      });
+    //   it('should return null if the dates are wrong', function () {
+    //     expect(nyplUtility.alerts(bad_alert)).toBe(null);
+    //   });
 
-      it('should return null if no input is given', function () {
-        expect(nyplUtility.alerts()).toBe(null);
-      });
+    //   it('should return null if no input is given', function () {
+    //     expect(nyplUtility.alerts()).toBe(null);
+    //   });
 
-      it('should return null if the input is not an array', function () {
-        expect(nyplUtility.alerts('this is not a valid alert')).toBe(null);
-      });
-    });
+    //   it('should return null if the input is not an array', function () {
+    //     expect(nyplUtility.alerts('this is not a valid alert')).toBe(null);
+    //   });
+    // });
 
     describe('nyplUtility.popupWindow', function () {
       var nyplChatLink;
@@ -795,6 +808,16 @@ describe('NYPL Utility Service Tests', function () {
       // check to see if it has the expected function
       it('should calculate an upcoming event with an end ' +
         'date less than 365 days from today', function () {
+          var date = new Date(2014, 8, 29),
+            MockDate = Date;
+
+          Date = function (alertDate) {
+            if (alertDate) {
+              return new MockDate(alertDate);
+            }
+            return date;
+          };
+
           mockedStartDate = '2015-02-27T00:00:00Z'; // February 27th, 2015
           mockedEndDate = '2015-04-18T00:00:00Z'; // April 18, 2015
           formattedDate =

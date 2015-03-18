@@ -1,0 +1,45 @@
+<div class='hours-table-wrapper'>
+
+	<!-- Regular Hours -->
+	<div class='reg-week-hours-wrapper' data-ng-if="regularWeekHours">
+    <h2 class="flush--ends hdg">
+    	Regular Hours
+      <span id="toggle-hours"></span>
+    </h2>
+		<table class="weekly-hours zeta">
+			<tr class="{{hours.day}}" data-ng-class="{'open': !hours.alert, 'closed': hours.alert || !hours.open, 'today': hours.is_today}" data-ng-repeat="hours in regularWeekHours" data-ng-if="$index != 7">
+				<th class="day">{{hours.day}}</th>
+				<td class="time" ng-bind-html="hours | timeFormat"></td>
+			</tr>
+		</table>
+	</div>
+
+	<!-- Dynamic Hours -->
+	<div class='dynamic-week-hours-wrapper' data-ng-if="dynamicWeekHours">
+    <h2 class="flush--ends hdg">
+    	Upcoming hours
+      <span id="toggle-hours"></span>
+    </h2>
+		<table class="weekly-hours zeta">
+			<tr class="{{hours.day}}" data-ng-class="{'open': !hours.alert, 'closed': hours.alert || !hours.open, 'today': hours.is_today}" data-ng-repeat="hours in dynamicWeekHours" data-ng-if="$index != 7">
+				<th class="date">{{hours.date.format('MM/DD')}}</th>
+				<th class="day">{{hours.day}}</th>
+				<td class="time" ng-bind-html="hours | timeFormat"></td>
+			</tr>
+		</table>
+	</div>
+
+	<p class="smallprint note dynamic-hours-note" data-ng-if="dynamicWeekHours">
+		* Indicates change to regular hours
+	</p>
+
+  <!-- Toggles Hours Table -->
+  <button class="btn--natural hours-toggle-btn" data-ng-if="dynamicWeekHours" data-ng-click="toggleHoursTable()">
+  	{{buttonText}}
+  </button>
+
+  <!-- Holiday Closing Link -->
+  <a class="btn btn--natural closings-link" data-ng-href="//nypl.org/help/closings">
+    Holiday closing information
+  </a>
+</div>

@@ -27,6 +27,11 @@ describe('Directive: nyplbreadcrumbs', function () {
       compile = _$compile_;
       scope = _$rootScope_.$new();
 
+      httpBackend
+          .whenJSONP('http://dev.locations.api.nypl.org/api/v0.7/alerts' +
+            '?callback=JSON_CALLBACK')
+          .respond({});
+
       // httpBackend
       //   .expectGET('languages/en.json')
       //   .respond('public/languages/en.json');
@@ -34,6 +39,20 @@ describe('Directive: nyplbreadcrumbs', function () {
 
     html = '<nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>';
     nyplbreadcrumbs = createDirective(html);
+    window.locations_cfg = {
+      config: {
+        api_root: 'dev.locations.api.nypl.org/api',
+        api_version: 'v0.7',
+        fundraising: {
+          statement: "Become a Member",
+          appeal: "Friends of the Library can support their favorite " +
+            "library and receive great benefits!",
+          button_label: "Join or Renew",
+          link: "https://secure3.convio.net/nypl/site/SPageServer?page" +
+            "name=branch_friend_form&s_src=FRQ15ZZ_CADN"
+        }
+      }
+    };
   });
 
   it('should create an unordered list with class breadcrumb', function () {

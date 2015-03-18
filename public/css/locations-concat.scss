@@ -1,0 +1,84 @@
+/*!
+ __                                            __    
+/\ \                      __                  /\ \__
+\ \ \        ___     ___ /\_\    ___      __  \ \ ,_\   ___   _ __
+ \ \ \  __  / __`\  /'___\/\ \ /' _ `\  /'__`\ \ \ \/  / __`\/\`'__\
+  \ \ \_\ \/\ \_\ \/\ \__/\ \ \/\ \/\ \/\ \_\.\_\ \ \_/\ \_\ \ \ \/ 
+   \ \____/\ \____/\ \____\\ \_\ \_\ \_\ \__/.\_\\ \__\ \____/\ \_\ 
+    \/___/  \/___/  \/____/ \/_/\/_/\/_/\/__/\/_/ \/__/\/___/  \/_/ 
+*/
+// Import Mixins
+@import "partials/mixins";
+
+// Import Media Query breakpoints
+@import "partials/breakpoints";
+
+// Import global rules
+@import "partials/global";
+
+// Import Header
+@import "partials/header";
+
+// Import Top Main Navigation
+@import "partials/main-nav";
+
+// Import All Locations
+@import "partials/all-locations";
+
+// Import Individual Location
+@import "partials/single-location";
+
+// Import Individual Division
+@import "partials/single-division";
+
+// Import Events
+@import "partials/events";
+
+// Import Amenities
+@import "partials/amenities";
+
+// Import Sidebar Widgets
+@import "partials/sidebar-widgets";
+
+// Import Footer
+@import "partials/footer";
+
+// Import Widget
+@import "partials/widget";
+
+// Global Alerts Default Styles
+.nypl-global-alerts {
+	background-color: #ECE94C;
+	padding: 12px;
+	position: relative;
+	top: 50px;
+	width: 100%;
+
+	// Tablet devices and up
+	@media screen and (min-width: 767px) {
+		width: auto;
+		top: inherit;
+		margin-bottom: 10px;	
+	}
+
+	p {
+		margin: .25em 0;
+		text-align: center;
+		max-width: 100%; // NYPLBase override
+		font-size: 13px;
+	}
+}
+
+.nypl-location-alerts {
+	background-color: #ffcdcd;
+	border: 1px solid #eee;
+	border-radius: 2px;
+	padding: 1rem 2rem;
+	margin: .5rem 0;
+
+	p {
+		max-width: 100%; // NYPLBase override
+		margin: 0;
+		padding: 3px 0px;
+	}
+}

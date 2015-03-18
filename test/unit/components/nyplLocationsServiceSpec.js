@@ -16,17 +16,39 @@ describe('NYPL locationService Module', function () {
    */
   describe('nyplLocationsService', function () {
     var api = 'http://dev.locations.api.nypl.org/api',
-      api_version = 'v0.5',
+      api_version = 'v0.7',
       jsonpCallback = '?callback=JSON_CALLBACK',
       error_message = 'Could not reach API: ',
       nyplLocationsService,
       httpBackend,
-      $rootScope;
+      $rootScope,
+      globalConfig = {
+        api_root: api,
+        api_version: api_version,
+        fundraising: {
+          statement: "Become a Member",
+          appeal: "Friends of the Library can support their favorite " +
+            "library and receive great benefits!",
+          button_label: "Join or Renew",
+          link: "https://secure3.convio.net/nypl/site/SPageServer?page" +
+            "name=branch_friend_form&s_src=FRQ15ZZ_CADN"
+        }
+      };
 
-    window.locations_cfg = { config: {
-      api_root: api,
-      api_version: api_version
-    }};
+    window.locations_cfg = {
+      config: {
+        api_root: api,
+        api_version: api_version,
+        fundraising: {
+          statement: "Become a Member",
+          appeal: "Friends of the Library can support their favorite " +
+            "library and receive great benefits!",
+          button_label: "Join or Renew",
+          link: "https://secure3.convio.net/nypl/site/SPageServer?page" +
+            "name=branch_friend_form&s_src=FRQ15ZZ_CADN"
+        }
+      }
+    };
 
     beforeEach(function () {
       // load the module.
@@ -62,7 +84,7 @@ describe('NYPL locationService Module', function () {
             });
 
           $rootScope.$apply();
-          expect(configData).toEqual({api_root: api, api_version: api_version});
+          expect(configData).toEqual(globalConfig);
         });
 
         it('should return cached api data', function () {
@@ -78,7 +100,7 @@ describe('NYPL locationService Module', function () {
             });
 
           $rootScope.$apply();
-          expect(configData).toEqual({api_root: api, api_version: api_version});
+          expect(configData).toEqual(globalConfig);
         });
 
         it('should return an error', function () {
