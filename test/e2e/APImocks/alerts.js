@@ -587,13 +587,93 @@ var response = {
           closed_for: "Closed for repairs",
           display: {
           start: "2015-02-12T00:00:00-05:00",
-          end: "2016-01-02T00:00:00-05:00"
+          end: "2015-04-02T00:00:00-05:00"
           },
           applies: {
           start: "2015-02-12T00:00:00-05:00",
-          end: "2016-01-02T00:00:00-05:00"
+          end: "2015-04-02T00:00:00-05:00"
           }
           }
+        ]
+      }
+    }
+  }, /* End New Amsterdam */
+  grand_central: {
+    location: {
+      about: "The Grand Central Branch is conveniently situated for commuters and area workers, as well as families living to the east. The branch offers computers, as well as outlets and data ports along bar-height seating looking out on 46th Street. Collections of DVDs, CDs, large-print, paperbacks, and popular fiction and nonfiction are available for adults, teens, and children. Grand Central is also the home of Teen Central's collections and programs. ",
+      access: "Fully Accessible",
+      accessibility_note: null,
+      contacts: {
+      phone: "(212) 621-0670",
+      manager: {
+      fn: "Genoveve Stowell",
+      title: "Managing Librarian"
+      }
+      },
+      cross_street: "between Lexington &amp; Third Aves.",
+      geolocation: {
+      type: "Point",
+      coordinates: [
+      -73.974,
+      40.7539
+      ]
+      },
+      hours: {
+      regular: [
+      {
+      day: "Sun",
+      open: null,
+      close: null
+      },
+      {
+      day: "Mon",
+      open: "11:00",
+      close: "19:00"
+      },
+      {
+      day: "Tue",
+      open: "10:00",
+      close: "18:00"
+      },
+      {
+      day: "Wed",
+      open: "11:00",
+      close: "18:00"
+      },
+      {
+      day: "Thu",
+      open: "11:00",
+      close: "18:00"
+      },
+      {
+      day: "Fri",
+      open: "11:00",
+      close: "18:00"
+      },
+      {
+      day: "Sat",
+      open: "10:00",
+      close: "17:00"
+      }
+      ]
+      },
+      id: "GC",
+      images: {
+      exterior: "http://cdn-qa.www.aws.nypl.org/sites/default/files/images/locations/871/exterior_grand_central-5512_0.jpg",
+      interior: "http://cdn-qa.www.aws.nypl.org/sites/default/files/images/locations/871/branch_interior_2014_12_01_grand_central-5502a.jpg"
+      },
+      locality: "New York",
+      name: "Grand Central Library",
+      open: true,
+      plan_your_visit: null,
+      postal_code: "10017",
+      region: "NY",
+      slug: "grand-central",
+      street_address: "135 East 46th Street",
+      synonyms: [ ],
+      type: "circulating",
+      _embedded: {
+        alerts: [
         ]
       }
     }
