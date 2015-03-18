@@ -4,7 +4,8 @@
 var LocationPage = function () {
   'use strict';
 
-  this.alert = element(by.binding('libraryAlert'));
+  this.alerts = element.all(by.repeater('alerts in locationAlerts'));
+  this.alerts_container = element(by.css('.nypl-location-alerts'));
 
   this.name = element(by.binding('location.name'));
   this.image = element(by.css('#container__image img'));
@@ -24,8 +25,24 @@ var LocationPage = function () {
   this.social_media =
     element.all(by.repeater('social in location.social_media'));
 
-  this.hoursToday = element(by.css('.hours-today'));
-  this.hours = element.all(by.repeater('hours in location.hours.regular'));
+  /* Hours table */
+  this.hoursToday = element(by.id('hours-today'));
+
+  /* Regular Hours Table */
+  this.regular_hours_table = element(by.css('.reg-week-hours-wrapper'));
+  this.regular_hours_title = this.regular_hours_table.element(by.css('h2'));
+  this.regular_hours = element.all(by.repeater('hours in regularWeekHours'));
+
+  /* Dynamic Hours Table */
+  this.dynamic_hours_table = element(by.css('.dynamic-week-hours-wrapper'));
+  this.dynamic_hours_title = this.dynamic_hours_table.element(by.css('h2'));
+  this.dynamic_hours = element.all(by.repeater('hours in dynamicWeekHours'));
+
+  this.dynamic_hours_note = element(by.css('.dynamic-hours-note'));
+  this.dynamic_hours_btn = element(by.css('.hours-toggle-btn'));
+
+  this.hours_closing_link = element(by.css('.closings-link'));
+
 
   this.allAmenities = element(by.css('#all_amenities'));
 
