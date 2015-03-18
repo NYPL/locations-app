@@ -15,7 +15,7 @@ describe('NYPL Alerts Module', function () {
     // Function that creates a module that is injected at run time,
     // overrides and mocks httpbackend to mock API call. 
     globalhttpBackendMock = function (response, location) {
-      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7',
+      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1',
         loc = location ? '/' + location : '';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
@@ -37,7 +37,7 @@ describe('NYPL Alerts Module', function () {
         });
     },
     locationhttpBackendMock = function (alerts, location, locationMock) {
-      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7';
+      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
@@ -232,13 +232,13 @@ describe('NYPL Alerts Module', function () {
         });
 
         it('should display the closed_for message instead of hours', function () {
-          expect(homepage.nthLocTodaysHoursText(1)).toEqual('Today: Daylight closing');
-          expect(homepage.nthLocTodaysHoursText(2)).toEqual('Today: Daylight closing');
-          expect(homepage.nthLocTodaysHoursText(4)).toEqual('Today: Daylight closing');
-          expect(homepage.nthLocTodaysHoursText(7)).toEqual('Today: Daylight closing');
-          expect(homepage.nthLocTodaysHoursText(22)).toEqual('Today: Daylight closing');
-          expect(homepage.nthLocTodaysHoursText(45)).toEqual('Today: Daylight closing');
-          expect(homepage.nthLocTodaysHoursText(77)).toEqual('Today: Daylight closing');
+          expect(homepage.nthLocTodaysHoursText(1)).toEqual('Daylight closing');
+          expect(homepage.nthLocTodaysHoursText(2)).toEqual('Daylight closing');
+          expect(homepage.nthLocTodaysHoursText(4)).toEqual('Daylight closing');
+          expect(homepage.nthLocTodaysHoursText(7)).toEqual('Daylight closing');
+          expect(homepage.nthLocTodaysHoursText(22)).toEqual('Daylight closing');
+          expect(homepage.nthLocTodaysHoursText(45)).toEqual('Daylight closing');
+          expect(homepage.nthLocTodaysHoursText(77)).toEqual('Daylight closing');
         });
 
         it('should display the closed_for message on the map page', function () {
@@ -271,10 +271,10 @@ describe('NYPL Alerts Module', function () {
           expect(location.alerts_container.isPresent()).toBe(false);
         });
 
-        it('should display when it is open today', function () {
-          // Eh, day specific test... for now.
-          expect(location.hoursToday.getText()).toEqual('Open today until 6pm');
-        });
+        // it('should display when it is open today', function () {
+        //   // Eh, day specific test... for now.
+        //   expect(location.hoursToday.getText()).toEqual('Open today until 6pm');
+        // });
 
         it('should display the regular hours table', function () {
           expect(location.regular_hours_title.getText()).toEqual('REGULAR HOURS');
@@ -308,7 +308,7 @@ describe('NYPL Alerts Module', function () {
         });
 
         it('should display the regular hours table', function () {
-          expect(location.hoursToday.getText()).toEqual('Open today until 6pm');
+          // expect(location.hoursToday.getText()).toEqual('Open today until 6pm');
           expect(location.regular_hours_title.getText()).toEqual('REGULAR HOURS');
           expect(location.dynamic_hours_note.isPresent()).toBe(false);
           expect(location.dynamic_hours_btn.isPresent()).toBe(false);
@@ -358,13 +358,15 @@ describe('NYPL Alerts Module', function () {
         it('should display the regular hours when the button is clicked', function () {
           expect(location.dynamic_hours_title.getText())
             .toEqual('UPCOMING HOURS');
-          expect(location.regular_hours_table.getCssValue('display')).toBe('none');
+          expect(location.regular_hours_table
+            .getCssValue('display')).toBe('none');
 
           location.dynamic_hours_btn.click();
 
           expect(location.regular_hours_title.getText())
             .toEqual('REGULAR HOURS');
-          expect(location.dynamic_hours_table.getCssValue('display')).toBe('none');
+          expect(location.dynamic_hours_table
+            .getCssValue('display')).toBe('none');
         });
       });
 
@@ -373,20 +375,37 @@ describe('NYPL Alerts Module', function () {
   }); /* End Global Alerts */
 
 
-  // describe('Location Alerts', function () {
-  //   beforeEach(function () {
-  //     browser.get('/new-amsterdam');
-  //     browser.waitForAngular();
-  //   });
+  describe('Location Alerts', function () {
+    var mockedAlerts = {alerts: []};
 
-  //   it('should not have any global alerts', function () {
-  //     expect(header.globalAlertsContainer.isPresent()).toBe(false);
-  //   });
+    // mockedAlerts.alerts.push(
+    //   createMockedAlert('all',
+    //     'Daylight Test Alert', undefined, 'Closed for Daylight Savings')
+    // );
+    // APIresponse.lpa.location._embedded.alerts.push(
+    //   createMockedAlert('all',
+    //     'Daylight Test Alert', undefined, 'Closed for Daylight Savings')
+    // );
 
-  //   it('should have one global alert', function () {
-  //     // expect(header.globalAlertsContainer.isPresent()).toBe(true);
-  //   });
-  // });
+    beforeEach(function () {
+      browser.addMockModule(
+        'httpBackendMock',
+        locationhttpBackendMock,
+        mockedAlerts,
+        'new-amsterdam',
+        APIresponse.new_amsterdam);
+      browser.get('/new-amsterdam');
+      browser.waitForAngular();
+    });
+
+    it('should not have any global alerts', function () {
+      expect(header.globalAlertsContainer.isPresent()).toBe(false);
+    });
+
+    it('should have a location alert', function () {
+      expect(location.alerts_container.isPresent()).toBe(true);
+    });
+  });
 
 });
 

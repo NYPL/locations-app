@@ -349,26 +349,26 @@ var response = {
           start: "2015-12-26T00:00:00-05:00",
           end: "2016-01-02T00:00:00-05:00"
           }
+          },
+          {
+          id: 231361,
+          scope: "all",
+          _links: {
+          web: {
+          href: "http://qa.www.aws.nypl.org/node/283896"
           }
-          // ,{
-          // id: 2351361,
-          // scope: "all",
-          // _links: {
-          // web: {
-          // href: "http://qa.www.aws.nypl.org/node/283896"
-          // }
-          // },
-          // msg: "<p>Daylight Test Alert",
-          // closed_for: "Closed for Daylight Savings",
-          // display: {
-          // start: "2015-02-15T00:00:00-05:00",
-          // end: "2016-01-02T00:00:00-05:00"
-          // },
-          // applies: {
-          // start: "2015-02-15T00:00:00-05:00",
-          // end: "2016-01-02T00:00:00-05:00"
-          // }
-          // }
+          },
+          msg: "<p>Daylight Test Alert",
+          closed_for: "Closed for Daylight Savings",
+          display: {
+          start: "2015-02-15T00:00:00-05:00",
+          end: "2016-01-02T00:00:00-05:00"
+          },
+          applies: {
+          start: "2015-02-15T00:00:00-05:00",
+          end: "2016-01-02T00:00:00-05:00"
+          }
+          }
         ]
       }
     } /* end location */
@@ -572,6 +572,25 @@ var response = {
           msg: "<p>All NYPL locations will close at 5 PM on December 31 and will be closed on January 1, 2015.</p>",
           display: {
           start: "2015-12-26T00:00:00-05:00",
+          end: "2016-01-02T00:00:00-05:00"
+          }
+          },
+          {
+          id: 283896,
+          scope: "location",
+          _links: {
+          web: {
+          href: "http://qa.www.aws.nypl.org/node/283896"
+          }
+          },
+          msg: "This branch will be closed for a few days for repairs",
+          closed_for: "Closed for repairs",
+          display: {
+          start: "2015-02-12T00:00:00-05:00",
+          end: "2016-01-02T00:00:00-05:00"
+          },
+          applies: {
+          start: "2015-02-12T00:00:00-05:00",
           end: "2016-01-02T00:00:00-05:00"
           }
           }
