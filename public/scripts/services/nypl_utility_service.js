@@ -62,17 +62,47 @@
      * @methodOf nypl_locations.service:nyplUtility
      * @param {object} hours Object with a regular property that is an
      *  array with the open and close times for every day.
-     * @returns {object} An object with the open and close times for
-     *  the current and tomorrow days.
+     * @param {object} alerts Object with an array of alerts pertaining
+     *  to each location/division api endpoint.
+     * @returns {object} An object with the open/close times for
+     *  the today/tomorrow and an alert property for tomorrow's
+     *  potential alert.
      * @description ...
      */
-    utility.hoursToday = function (hours) {
+    utility.hoursToday = function (hours, alertsObj) {
       var date = new Date(),
         today = date.getDay(),
         tomorrow = today + 1,
-        hoursToday;
+        hoursToday,
+        alerts,
+        alertStartDate,
+        tomorrowsAlert;
+
+      if(alertsObj) {
+        // Retrieve only global closing alerts
+        // Order is established by API
+        if (alertsObj.all_closings && alertsObj.all_closings.length) {
+          alerts = alertsObj.all_closings;
+        }
+      }
 
       if (hours) {
+        // Obtain tomorrow's alert
+        if (alerts && alerts.length) {
+          tomorrowsAlert = _.find(alerts, function(alert){
+            if (alert.applies) {
+              alertStartDate = moment(alert.applies.start);
+              // Priority: 1) Global 2) Location 3) Division
+              if (alert.scope === 'all' && alertStartDate.day() === tomorrow) {
+                return alert;
+              } else if (alert.scope === 'location' && alertStartDate.day() === tomorrow) {
+                return alert;
+              }
+              return alert.scope === 'division' && alertStartDate.day() === tomorrow;
+            }
+          });
+        }
+
         hoursToday = {
           'today': {
             'day': hours.regular[today].day,
@@ -82,7 +112,8 @@
           'tomorrow': {
             'day': hours.regular[tomorrow % 7].day,
             'open': hours.regular[tomorrow % 7].open,
-            'close': hours.regular[tomorrow % 7].close
+            'close': hours.regular[tomorrow % 7].close,
+            'alert' : tomorrowsAlert || null
           }
         };
       }
@@ -246,107 +277,6 @@
       });
 
       return social_media;
-    };
-
-    /**
-     * @ngdoc function
-     * @name alerts
-     * @methodOf nypl_locations.service:nyplUtility
-     * @param {array} alerts ...
-     * @description ...
-     */
-    utility.alerts = function (alerts) {
-      var today = new Date(),
-        todaysAlert = [],
-        alert_start,
-        alert_end;
-
-      if (!alerts) {
-        return null;
-      }
-
-      if (Array.isArray(alerts) && alerts.length > 0) {
-        _.each(alerts, function (alert) {
-          alert_start = new Date(alert.start);
-          alert_end = new Date(alert.end);
-
-          if (alert_start <= today && today <= alert_end) {
-            todaysAlert.push(alert.body);
-          }
-        });
-
-        if (!angular.isUndefined(todaysAlert)) {
-          return _.uniq(todaysAlert);
-        }
-      }
-      return null;
-    };
-
-
-    /**
-     * @ngdoc function
-     * @name holidayClosings
-     * @methodOf nypl_locations.service:nyplUtility
-     * @param {obj} date ...
-     * @description ...
-     */
-    utility.holidayClosings = function (date) {
-
-      function sameDay (day1, day2) {
-        return day1.getFullYear() === day2.getFullYear()
-          && day1.getDate() === day2.getDate()
-          && day1.getMonth() === day2.getMonth();
-      }
-
-      var holiday,
-          today = date || new Date(),
-          holidays = [
-            {
-              day: new Date(2015, 0, 26),
-              title: "Closing at 5 pm due to severe weather" // Winter storm early closing
-            },
-            {
-              day: new Date(2015, 0, 27),
-              title: "Closed due to severe weather" // Winter storm early closing
-            },           
-            {
-              day: new Date(2015, 1, 16),
-              title: "Closed for Presidents' Day"
-            },
-            {
-              day: new Date(2015, 3, 5),
-              title: "Closed for Easter"
-            },
-            {
-              day: new Date(2015, 4, 23),
-              title: "Closed for Memorial Day weekend"
-            },
-            {
-              day: new Date(2015, 4, 24),
-              title: "Closed for Memorial Day weekend"
-            },
-            {
-              day: new Date(2015, 4, 25),
-              title: "Closed for Memorial Day weekend"
-            },
-            {
-              day: new Date(2015, 6, 4),
-              title: "Closed for Independence Day"
-            }
-          ];
-
-      holiday = _.filter(holidays, function(item) {
-                  if ( sameDay(item.day, today) ) {
-                    return item;
-                  }
-                });
-      if (holiday.length > 0) {
-        return {
-          day: holiday[0].day,
-          title: holiday[0].title
-        };
-      }
-      return undefined;
     };
 
     /**

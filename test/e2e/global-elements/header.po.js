@@ -4,6 +4,10 @@
 var Header = function () {
   'use strict';
 
+  // Alerts
+  this.globalAlertsContainer = element(by.css('.nypl-global-alerts'));
+
+  // SSO Form
   this.username = element(by.id('username'));
   this.pin = element(by.id('pin'));
   this.rememberMe = element(by.id('remember_me'));

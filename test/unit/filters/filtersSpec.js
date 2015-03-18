@@ -184,7 +184,7 @@ describe('NYPL Filter Unit Tests', function () {
 
         expect(hoursTodayFormatFilter({
           'today': {'open': '10:00', 'close': '18:00'},
-          'tomorrow': {'open': '10:00', 'close': '18:00'}
+          'tomorrow': {'open': '10:00', 'close': '18:00', 'alert': null}
         }))
           .toEqual('Open today until 6pm');
       });
@@ -195,7 +195,7 @@ describe('NYPL Filter Unit Tests', function () {
 
         expect(hoursTodayFormatFilter({
           'today': {'open': '10:00', 'close': '18:45'},
-          'tomorrow': {'open': '10:00', 'close': '18:45'}
+          'tomorrow': {'open': '10:00', 'close': '18:45', 'alert': null}
         }))
           .toEqual('Open today until 6:45pm');
       });
@@ -209,7 +209,7 @@ describe('NYPL Filter Unit Tests', function () {
 
         expect(hoursTodayFormatFilter({
           'today': {'open': '10:00', 'close': '18:00'},
-          'tomorrow': {'open': '11:00', 'close': '19:00'}
+          'tomorrow': {'open': '11:00', 'close': '19:00', 'alert': null}
         }))
           .toEqual('Open tomorrow 11am-7pm');
       });
@@ -220,7 +220,7 @@ describe('NYPL Filter Unit Tests', function () {
 
         expect(hoursTodayFormatFilter({
           'today': {'open': '10:30', 'close': '18:30'},
-          'tomorrow': {'open': '11:30', 'close': '18:30'}
+          'tomorrow': {'open': '11:30', 'close': '18:30', 'alert': null}
         }, 'short'))
           .toEqual('Open tomorrow 11:30am-6:30pm');
       });
@@ -235,7 +235,7 @@ describe('NYPL Filter Unit Tests', function () {
 
         expect(hoursTodayFormatFilter({
           'today': {'open': '10:00', 'close': '18:00'},
-          'tomorrow': {'open': '11:00', 'close': '19:00'}
+          'tomorrow': {'open': '11:00', 'close': '19:00', 'alert': null}
         }))
           .toEqual('Open today 10am-6pm');
       });
@@ -246,7 +246,7 @@ describe('NYPL Filter Unit Tests', function () {
 
         expect(hoursTodayFormatFilter({
           'today': {'open': '10:30', 'close': '18:30'},
-          'tomorrow': {'open': '10:00', 'close': '18:00'}
+          'tomorrow': {'open': '10:00', 'close': '18:00', 'alert': null}
         }))
           .toEqual('Open today 10:30am-6:30pm');
       });
@@ -262,7 +262,7 @@ describe('NYPL Filter Unit Tests', function () {
         // "Open tomorrow 10am - 6pm". Display that it's just closed.
         expect(hoursTodayFormatFilter({
           'today': {'open': '10:00', 'close': '18:00'},
-          'tomorrow': {'open': null, 'close': null}
+          'tomorrow': {'open': null, 'close': null, 'alert': null}
         })).toEqual('Closed today');
       });
     });
