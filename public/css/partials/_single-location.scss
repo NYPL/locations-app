@@ -17,20 +17,6 @@
 		clear: both;
 	}
 
-	.location-alerts {
-		background-color: #ffcdcd;
-		border: 1px solid #eee;
-		border-radius: 2px;
-		padding: 1rem 2rem;
-		margin: .5rem 0;
-
-		p {
-			max-width: 100%;
-			margin: 0;
-			padding: 3px 0px;
-		}
-	}
-
 	// Image section on top container
 	#container__image {
 		float: left; // Fix for proper positioning on desktop
@@ -94,22 +80,13 @@
 				}
 			}
 		}
-		
-		.day {
-			font-style: italic;
-			padding: 0 10px 3px 0;
-		}
-		
-		.time {
-			padding: 0px;
-		}
 
 		#toggle-hours {
 			display: inline;
 			position: absolute;
-			width: 152px;
+			width: 78px;
 			left: 0px;
-			top: 2px;
+			top: 2.5px;
 			text-align: right;
 
 
@@ -123,10 +100,28 @@
 		}
 
 		#location-hours {
-			margin: .75em 0 .75em 36px;
+			margin: .75em 5px .75em 5px;
 
 			@include breakpoint($min, $post-palm) {
-				margin-left: 48px;
+				margin-left: 15px;
+				margin-right: 15px;
+			}
+
+			.hours-table-wrapper {
+				// Shows/Hides dynamic/regular hours table
+				&.hide-regular-hours {
+					.reg-week-hours-wrapper {
+						display: none;
+					}
+				}
+				&.hide-dynamic-hours {
+					.dynamic-week-hours-wrapper {
+						display: none;
+					}
+					.dynamic-hours-note {
+						display: none;
+					}
+				}
 			}
 
 			.hdg {
@@ -134,7 +129,7 @@
 				border: none;
 			}
 
-			.weekly-hours {
+			.hours-table-collapse {
 				display: none;
 				margin-bottom: 5px; 
 
@@ -143,12 +138,47 @@
 				} 
 			}
 
+			.weekly-hours {
+				tr {
+					// Closed hours
+					&.closed {
+						.time {
+							color: #AAA;
+						}
+					}
+
+					&.today {
+						background-color: #FCFAF7;
+					  border-left: 2px solid #0090C4;
+					}
+
+					.date {
+						vertical-align: middle;
+						padding: 0 0 0 3px;
+					}
+
+					.day {
+						vertical-align: middle;
+						font-style: italic;
+						padding: 2px 10px 2px 0;
+					}
+
+					.time {
+						vertical-align: middle;
+						padding: 0px;
+					}
+				}
+			}
+
 			.note {
 				margin-bottom: .5rem;
 			}
 
-			.closings-link {
-				margin-left: 1px;
+			.closings-link, .hours-toggle-btn {
+				display: block;
+				width: 100%;
+				margin: 10px 0px 10px 1px;
+				text-align: center;
 			}
 		}
 	}

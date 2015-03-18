@@ -8,7 +8,7 @@ describe('Locations: homepage', function () {
   var landingPage = require('./homepage.po.js'),
     APIresponse = require('../APImocks/homepage.js'),
     httpBackendMock = function (response) {
-      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.5';
+      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
@@ -16,11 +16,12 @@ describe('Locations: homepage', function () {
 
           $httpBackend
             .whenJSONP(API_URL + '/locations?callback=JSON_CALLBACK')
-            .respond(response);
+            // .respond(response);
+            .passThrough();
 
           $httpBackend
             .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
-            .respond({});
+            .passThrough();
 
           // For everything else, don't mock
           $httpBackend.whenGET(/^\w+.*/).passThrough();

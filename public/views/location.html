@@ -3,8 +3,8 @@
   <!-- Breadcrumbs -->
   <nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>
   
-  <!-- Individual location exception messages -->
-  <nypl-library-alert exception="location.hours.exceptions"></nypl-library-alert>
+  <!-- Individual location alerts -->
+  <nypl-location-alerts alerts="location._embedded.alerts" type="location"></nypl-location-alerts>
 
   <!-- Location hours, address and image -->
   <div id="container__location_info">
@@ -13,27 +13,16 @@
       <div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
         <!-- Display for open location -->
         <div class="callout branch-open" data-ng-if="location.open">
-          <todayshours class="todays-hours" hours="{{hoursToday | hoursTodayFormat}}" holiday="holiday" />
-          <div id="location-hours" class="location-hours">
-            <h2 class="flush--ends hdg">Regular Hours
-              <span id="toggle-hours" ng-click="expand = !expand"
-                ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span>
-            </h2>
+          <!-- Hours Today -->
+          <todayshours hours="location.hours" alerts="location._embedded.alerts" display-icon="true" />
 
-            <table class="weekly-hours zeta" collapse="expand" duration="2500">
-              <tr class="{{hours.day}}" data-ng-repeat="hours in location.hours.regular" data-ng-if="$index != 7">
-                <th class="day">{{hours.day}}</th>
-                <td class="time">
-                  {{ hours | timeFormat }}
-                </td>
-              </tr>
-            </table>
-	          <p class="smallprint note" data-ng-if="location.type == 'research'">
-	            Note: See division pages for individual hours
-	          </p>
-            <a class="btn btn--natural closings-link" data-ng-href="//nypl.org/help/closings">
-              Holiday closing information
-            </a>
+          <div id="location-hours" class="location-hours">
+            <!-- Hours Table -->
+            <hours-table hours="location.hours.regular" alerts="location._embedded.alerts" location-type="location.type">
+            </hours-table>
+            <p class="smallprint note" data-ng-if="location.type == 'research'">
+              Note: See division pages for individual hours
+            </p>
           </div>
         </div>
         <div class="callout branch-closed" data-ng-if="!location.open">
@@ -168,14 +157,8 @@
               {{division.name}}
             </a>
           </h4>
-          <p data-ng-if="division.hours">
-            <span data-ng-if="holiday">
-              Hours Today: {{holiday.title}}
-            </span>
-            <span data-ng-if="!holiday">
-              Hours Today: {{division.hoursToday | timeFormat}}
-            </span>
-          </p>
+          <!-- Division Hours Today -->
+          <todayshours hours="division.hours" alerts="division._embedded.alerts" />
         </div>
       </div>
     </div>

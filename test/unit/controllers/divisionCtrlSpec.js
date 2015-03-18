@@ -204,16 +204,16 @@ describe('DivisionCtrl', function () {
       //   .respond('public/languages/en.json');
 
       // Find out why this is needed:
-      httpBackend
-        .expectGET('views/locations.html')
-        .respond('public/views/locations.html');
+      // httpBackend
+      //   .expectGET('views/locations.html')
+      //   .respond('public/views/locations.html');
 
-      httpBackend
-        .expectGET('views/location-list-view.html')
-        .respond('public/views/location-list-view.html');
+      // httpBackend
+      //   .expectGET('views/location-list-view.html')
+      //   .respond('public/views/location-list-view.html');
 
       nyplLocationsService.getConfig();
-      httpBackend.flush();
+      // httpBackend.flush();
     });
   });
 
@@ -225,7 +225,7 @@ describe('DivisionCtrl', function () {
       scope = _$rootScope_.$new();
       DivisionCtrl = _$controller_('DivisionCtrl', {
         $scope: scope,
-        config: {api_root: 'http://locations-api-beta.nypl.org',
+        config: {api_root: 'http://dev.locations.api.nypl.org/api',
           divisions_with_appointments: ["ARN", "RBK", "MSS", "BRG",
             "PRN", "PHG", "SPN", "CPS"]},
         division: mockGeneralResearch
@@ -240,7 +240,7 @@ describe('DivisionCtrl', function () {
     it('should have the correct hours for Tuesday', function () {
       var hoursTodayObj = {
         today: {day: 'Tue', open: '10:00', close: '19:45'},
-        tomorrow: {day: 'Wed', open: '10:00', close: '19:45'}
+        tomorrow: {day: 'Wed', open: '10:00', close: '19:45', alert: null}
       };
 
       // From above, we are mocking the day to be Tuesday.
@@ -268,7 +268,7 @@ describe('DivisionCtrl', function () {
     it('should have hours for the embedded division', function () {
       var subdivision_hours = {
         today : { day : 'Tue', open : '10:00', close : '19:45' },
-        tomorrow : { day : 'Wed', open : '10:00', close : '19:45' }
+        tomorrow : { day : 'Wed', open : '10:00', close : '19:45', alert: null}
       };
 
       expect(scope.division._embedded.divisions[0].hoursToday)

@@ -3,8 +3,8 @@
   <!-- Breadcrumbs -->
   <nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>
   
-  <!-- Individual location exception messages -->
-  <nypl-library-alert exception="division.hours.exceptions"></nypl-library-alert>
+  <!-- Individual division alerts -->
+  <nypl-location-alerts alerts="division._embedded.alerts" type="division"></nypl-location-alerts>
 
   <div class="container__div_info">
     <h1 class="p-org">{{division.name}}</h1>
@@ -12,27 +12,17 @@
       <!-- Division Hours -->
       <div id="container__hours" class="grid__item lap-one-half one-whole desk-one-third">
         <div class="callout branch-open" data-ng-if="division.open">
-          <todayshours hours="{{hoursToday | hoursTodayFormat}}" holiday="holiday" />
+          <!-- Hours Today -->
+          <todayshours hours="division.hours" alerts="division._embedded.alerts" display-icon="true" />
+          
           <div id="location-hours" class="location-hours" data-ng-if="division.hours">
-            <h2 class="flush--ends hdg">
-              Regular Hours
-              <span id="toggle-hours" ng-click="expand = !expand"
-                ng-class="{'icon-arrow-down2': !expand, 'icon-arrow-up2': expand}"></span>
-            </h2>
+            <!-- Hours Table -->
+            <hours-table hours="division.hours.regular" alerts="division._embedded.alerts">
+            </hours-table>
 
-            <table class="weekly-hours zeta" collapse="expand" duration="2500">
-              <tr class="{{hours.day}} weekday" data-ng-repeat="hours in division.hours.regular"
-                data-ng-if="$index != 7">
-                <th class="day">{{hours.day}}</th>
-                <td class="time">{{ hours | timeFormat }}</td>
-              </tr>
-            </table>
             <p class="smallprint note" data-ng-if="division.open && division._embedded.divisions">
               Note: See sub-division pages for individual hours
             </p>
-            <a class="btn btn--natural closings-link" data-ng-href="//nypl.org/help/closings">
-              Holiday closing information
-            </a>
           </div>
         </div>
         <div class="callout branch-closed" data-ng-if="!division.open">
@@ -128,14 +118,8 @@
               {{subdivision.name}}
             </a>
           </h4>
-          <p data-ng-if="subdivision.hours">
-            <span data-ng-if="holiday">
-              Hours Today: {{holiday.title}}
-            </span>
-            <span data-ng-if="!holiday">
-              Hours Today: {{subdivision.hoursToday | timeFormat}}
-            </span>
-          </p>
+          <!-- Subdivisions Hours Today -->
+          <todayshours hours="subdivision.hours" alerts="subdivision._embedded.alerts" />
         </div>
       </div>
     </div>

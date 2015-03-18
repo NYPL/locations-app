@@ -5,11 +5,14 @@
     'use strict';
 
     function LocationsCtrl(
+        $filter,
         $rootScope,
         $scope,
         $timeout,
         $state,
+        $nyplAlerts,
         config,
+        nyplAlertsService,
         nyplCoordinatesService,
         nyplGeocoderService,
         nyplLocationsService,
@@ -242,10 +245,15 @@
                     locations = data.locations;
                     $scope.locations = locations;
 
+                    configureGlobalAlert();
+
                     _.each($scope.locations, function (location) {
                         var locationAddress =
                                 nyplUtility.getAddressString(location, true),
-                            markerCoordinates = {};
+                            markerCoordinates = {},
+                            hoursMessageOpts,
+                            alerts = location._embedded.alerts,
+                            alertMsgs = nyplAlertsService.getCurrentActiveMessage(alerts);
 
                         if (location.geolocation &&
                                 location.geolocation.coordinates) {
@@ -255,7 +263,6 @@
                             };
                         };
 
-                        location.hoursToday = nyplUtility.hoursToday;
                         location.locationDest =
                             nyplUtility.getAddressString(location);
 
@@ -265,10 +272,6 @@
                                 amenitiesCount.global,
                                 amenitiesCount.local
                             );
-
-                        // Individual location exception data
-                        location.branchException =
-                            nyplUtility.branchException(location.hours);
 
                         location.research_order =
                             nyplUtility.researchLibraryOrder(
@@ -287,6 +290,24 @@
                                     markerCoordinates,
                                     locationAddress);
                         }
+
+                        // CSS class for a closing
+                        location.closingMessageClass =
+                            closingMessageClass(alerts);
+                        location.todaysHoursDisplay =
+                            alertMsgs ? 'Today:' : 'Today\'s Hours:';
+
+                        hoursMessageOpts = {
+                            message: alertMsgs,
+                            open: location.open,
+                            hours: location.hours,
+                            hoursFn: getlocationHours,
+                            closedFn: branchClosedMessage
+                        };
+                        // Hours or closing message that will display
+                        location.hoursOrClosingMessage = 
+                            nyplAlertsService
+                                .getHoursOrMessage(hoursMessageOpts);
                     });
 
                     resetPage();
@@ -299,6 +320,35 @@
                     throw error;
                 });
         };
+
+        // Displaying the closing css class for the text
+        function closingMessageClass(location_alerts) {
+            var alerts = nyplAlertsService.activeClosings(location_alerts);
+
+            if (alerts) {
+                return true;
+            }
+
+            return false;
+        }
+
+        function getlocationHours(hours) {
+            return $filter('timeFormat')(nyplUtility.hoursToday(hours));
+        }
+
+        function branchClosedMessage() {
+            return "<b>Branch is temporarily closed.</b>"
+        }
+
+        // Applies if the global alert has a closing and is active
+        // then display 'Closed....' instead of the hours in the column.
+        function configureGlobalAlert() {
+            $scope.globalClosingMessage;
+            if ($nyplAlerts.alerts.length) {
+                $scope.globalClosingMessage =
+                    nyplAlertsService.getCurrentActiveMessage($nyplAlerts.alerts);
+            }
+        }
 
         $scope.scrollPage = function () {
             var content = angular.element('.container__all-locations'),
