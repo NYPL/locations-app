@@ -480,6 +480,7 @@
       }
     };
   }
+  nyplBreadcrumbs.$inject = ["$interpolate", "$state", "$crumb"];
 
   /**
    * @ngdoc overview

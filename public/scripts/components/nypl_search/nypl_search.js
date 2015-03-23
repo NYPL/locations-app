@@ -184,6 +184,7 @@
       }
     };
   }
+  nyplSearch.$inject = ['$analytics'];
 
   /**
    * @ngdoc overview

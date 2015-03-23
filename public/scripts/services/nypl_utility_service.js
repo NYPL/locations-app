@@ -43,6 +43,7 @@
 
     return notificationChannel;
   }
+  requestNotificationChannel.$inject = ['$rootScope'];
 
   /**
    * @ngdoc service
@@ -533,6 +534,7 @@
 
     return utility;
   }
+  nyplUtility.$inject = ['$sce', '$window', 'nyplCoordinatesService'];
 
   angular
     .module('nypl_locations')

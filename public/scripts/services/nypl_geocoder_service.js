@@ -492,6 +492,7 @@
 
     return geocoderService;
   }
+  nyplGeocoderService.$inject = ["$q"];
 
   angular
     .module('nypl_locations')

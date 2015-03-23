@@ -92,8 +92,8 @@
           </div>
 
           <div class="social beta" data-ng-if="location.social_media">
-            <a class="{{social.classes}}" data-ng-href="{{social.href}}" id="social_media"
-              data-ng-repeat="social in location.social_media" class="inline"
+            <a class="{{social.classes}} inline" data-ng-href="{{social.href}}" id="social_media"
+              data-ng-repeat="social in location.social_media" data-ng-if="location.social_media.length"
               title="{{social.site | capitalize}}"
               analytics-on="click" analytics-category="Locations"
               analytics-event="Social Media" analytics-label="{{social.site}}"></a>
@@ -118,7 +118,8 @@
             <h5>Highlighted Amenities: </h5>
           </div>
           <ul data-ng-if="location.amenities_list">
-            <li data-ng-repeat="amenity in location.amenities_list" class="{{amenity.amenity.icon}}">
+            <li data-ng-repeat="amenity in location.amenities_list"
+              class="{{amenity.amenity.icon}}" data-ng-if="location.amenities_list.length">
               <a data-ui-sref="amenity({amenity: amenity.amenity.id})">{{amenity.amenity.name}}</a>
             </li>
           </ul>
@@ -165,7 +166,7 @@
   </div>
 
   <!-- Features -->
-  <div id="container__features" data-ng-if="location._embedded.features">
+  <div id="container__features" data-ng-if="location._embedded.features && location._embedded.features.length">
     <h2 class="hdg">FEATURED</h2>
     <div class="grid">
       <div class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in location._embedded.features'>
@@ -189,7 +190,7 @@
   </div>
 
   <!-- Events -->
-  <div id="container__events" data-ng-if="location._embedded.events">
+  <div id="container__events" data-ng-if="location._embedded.events && location._embedded.events.length">
     <h2 class="hdg">EVENTS</h2>
     <ul class="grid">
       <li class="chunk one-whole desk-one-third" data-ng-repeat="event in location._embedded.events">
@@ -286,7 +287,7 @@
           </a>
           <!-- Plan your visit items -->
           <ul class="soft-half--ends delta" data-ng-if="location.plan_your_visit">
-            <li data-ng-repeat="item in location.plan_your_visit">
+            <li data-ng-repeat="item in location.plan_your_visit" data-ng-if="location.plan_your_visit.length">
               <a data-ng-href="{{item.url}}"
                 analytics-on="click" analytics-category="Locations"
                 analytics-event="Plan Your visit" analytics-label="{{item.url}}">
@@ -300,7 +301,7 @@
   </div>
 
   <!-- Blogs (conditonal) -->
-  <div id="container__blogs" data-ng-if="location._embedded.blogs">
+  <div id="container__blogs" data-ng-if="location._embedded.blogs && location._embedded.blogs.length">
     <h2 class="hdg">BLOGS</h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
@@ -337,7 +338,7 @@
   </div>
 
   <!-- Exhibitions (conditional) -->
-  <div id="container__exhibitions" data-ng-if="location._embedded.exhibitions">
+  <div id="container__exhibitions" data-ng-if="location._embedded.exhibitions && location._embedded.exhibitions.length">
     <h2 class="hdg">EXHIBITIONS</h2>
     <div class="grid">
       <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat="exhibition in location._embedded.exhibitions | orderBy:'-start'">

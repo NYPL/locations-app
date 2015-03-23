@@ -71,6 +71,7 @@
       }
     };
   }
+  nyplFeedback.$inject = ["$sce", "$rootScope"];
 
   /**
    * @ngdoc overview

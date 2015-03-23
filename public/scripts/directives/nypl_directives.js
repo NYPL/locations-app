@@ -38,6 +38,7 @@
       }
     };
   }
+  loadingWidget.$inject = ['requestNotificationChannel'];
 
   /**
    * @ngdoc directive
@@ -163,6 +164,7 @@
       }]
     };
   }
+  todayshours.$inject = ['nyplAlertsService', 'nyplUtility', '$filter'];
 
   function hoursTable(nyplAlertsService) {
     return {
@@ -280,6 +282,7 @@
       }]
     };
   }
+  hoursTable.$inject = ['nyplAlertsService'];
 
   /**
    * @ngdoc directive
@@ -332,6 +335,7 @@
       }
     };
   }
+  librarianchatbutton.$inject = ['nyplUtility'];
 
   /**
    * @ngdoc directive
@@ -347,6 +351,7 @@
       });
     };
   }
+  scrolltop.$inject = ['$window'];
 
   /**
    * @ngdoc directive
@@ -393,6 +398,7 @@
       }
     };
   }
+  eventRegistration.$inject = ['$filter'];
 
   /**
    * @ngdoc directive
@@ -550,6 +556,7 @@
       }
     };
   }
+  nyplFundraising.$inject = ['$timeout', 'nyplLocationsService'];
 
   /**
    * @ngdoc directive
@@ -615,6 +622,7 @@
       }
     };
   }
+  nyplFooter.$inject = ['$analytics'];
 
   /**
    * @ngdoc directive
@@ -886,8 +894,8 @@
         };
       }]
     };
-
   }
+  nyplAutofill.$inject = ["$state", "$analytics"];
 
   angular
     .module('nypl_locations')
