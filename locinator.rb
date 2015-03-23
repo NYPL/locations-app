@@ -80,8 +80,13 @@ class Locinator < Sinatra::Base
 
   get %r{/(.+)$}, :spider => true do
     api = Lionactor::Client.new
-    @location = api.location(params['captures'].first)
-    erb :seo_location
+    begin
+      @location = api.location(params['captures'].first)
+      erb :seo_location
+    rescue Lionactor::ResponseError => e
+      status e.status
+      body "Nothing found for \"#{params['captures'].first}\""
+    end
   end
 
   get '/', :spider => true do
