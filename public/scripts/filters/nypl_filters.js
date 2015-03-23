@@ -8,11 +8,21 @@
      * @ngdoc filter
      * @name nypl_locations.filter:timeFormat
      * @param {object} timeObj Object with hours for today and tomorrow.
-     * @returns {string} Closed or open times for a branch.
+     * @returns {string} Closed or open times for a branch with possible
+     *  alert returned.
      * @description
-     * Filter formats military time to standard time
+     *  timeFormat() filter formats military time to standard time. 
+     *  In addition, if an alert is present, it displays 
+     *  the approapriate message for a relevant alert.
+     *  1) all day closing 2) early/late opening/closing
      */
-    function timeFormat() {
+    function timeFormat($sce) {
+        function getMilitaryHours(time) {
+            var components = time.split(':'),
+                hours = parseInt(components[0], 10);
+            return hours;
+        }
+
         function clockTime(time) {
             var components = time.split(':'),
                 hours = ((parseInt(components[0], 10) + 11) % 12 + 1),
@@ -22,22 +32,57 @@
             return hours + ":" + minutes + meridiem;
         }
 
+        function closingHoursDisplay(hours, alerts) {
+            var sDate, eDate, allDay, regHours,
+                openHour, closedHour, displayString;
+
+            if (!alerts.length) {
+                sDate = moment(alerts.applies.start);
+                eDate = moment(alerts.applies.end);
+                openHour = getMilitaryHours(hours.open);
+                closedHour = getMilitaryHours(hours.close);
+                allDay = (eDate.isAfter(sDate, 'day')) ? true : false;
+
+                // First, check if this is an all day closing
+                // Then, verify that it is an early closing or late opening
+                // Finally, if the user enters something outside of those bounds
+                // default to a change in hours.
+                if (allDay || alert.infinite === true) {
+                    displayString = 'Closed *';
+                } else if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
+                    displayString = 'Closed *'
+                } else if (openHour < sDate.hours() && closedHour <= eDate.hours()) {
+                    displayString = 'Closing early *';
+                } else if (closedHour > eDate.hours() && openHour >= sDate.hours()) {
+                    displayString = 'Opening late *';
+                } else {
+                    displayString = 'Change in hours *';
+                }
+            }
+            return $sce.trustAsHtml(displayString);
+        }
+
         return function output(timeObj) {
             // The time object may have just today's hours
             // or be an object with today's and tomorrow's hours
-            var time = timeObj !== undefined && timeObj.today !== undefined ?
+            var alerts,
+                time = timeObj !== undefined && timeObj.today !== undefined ?
                     timeObj.today :
                     timeObj;
 
             // Checking if thruthy needed for async calls
             if (time) {
+                alerts = time.alert || null;
+
                 if (time.open === null) {
                     return 'Closed';
+                } else if (alerts) {
+                    return closingHoursDisplay(time, alerts);
                 }
                 return clockTime(time.open) + ' - ' + clockTime(time.close);
             }
 
-            console.log('timeFormat() filter function error: Argument is' +
+            console.log('timeFormat() filter error: Argument is' +
                 ' not defined or empty, verify API response for time');
             return '';
         };
@@ -80,12 +125,12 @@
      * @ngdoc filter
      * @name nypl_locations.filter:hoursTodayFormat
      * @param {object} elem ...
-     * @param {string} type ...
      * @returns {string} ...
      * @description
      * ...
      */
     function hoursTodayFormat() {
+        'use strict';
         function getHoursObject(time) {
             time = time.split(':');
             return _.object(
@@ -93,104 +138,92 @@
                 [((parseInt(time[0], 10) + 11) % 12 + 1),
                     time[1],
                     (time[0] >= 12 ? 'pm' : 'am'),
-                    time[0]]
+                    parseInt(time[0], 10)]
             );
         }
 
-        return function (elem, type) {
-            var open_time, closed_time, formatted_time,
-                now = new Date(),
+        return function (elem) {
+            // Not sure yet if this will suffice to get the dynamic
+            // hours today
+            // moment().get('hours'); or get('hour')??
+
+            var open_time, closed_time,
+                now = moment(),
                 today, tomorrow,
                 tomorrow_open_time, tomorrow_close_time,
-                hour_now_military = now.getHours();
+                tomorrows_alert, hour_now_military = now.get('hour');
 
             // If truthy async check
             if (elem) {
                 today = elem.today;
                 tomorrow = elem.tomorrow;
 
+                // If there are no open or closed times for today's object
+                // Then default to return 'Closed Today' with proper error log
+                if (!today.open || !today.close) {
+                    console.log("Obj is undefined for open/close properties");
+                    return 'Closed today';
+                }
+
                 // Assign open time obj
                 if (today.open) {
                     open_time = getHoursObject(today.open);
                 }
+
                 // Assign closed time obj
                 if (today.close) {
                     closed_time = getHoursObject(today.close);
                 }
 
-                // If there are no open or close times, then it's closed today
-                if (!today.open || !today.close) {
-                    console.log(
-                        "Returned object is undefined for open/closed elems"
-                    );
-                    return 'Closed today';
+                // Assign alert msg for tomorrow if defined
+                if (tomorrow.alert !== null) {
+                    tomorrows_alert = tomorrow.alert.closed_for || null;
                 }
 
+                // Assign tomorrow's open time object
                 if (tomorrow.open !== null) {
                     tomorrow_open_time = getHoursObject(tomorrow.open);
                 }
+
+                // Assign tomorrow's closed time object
                 if (tomorrow.close !== null) {
                     tomorrow_close_time = getHoursObject(tomorrow.close);
                 }
 
+                // If the current time is past today's closing time but
+                // before midnight, display that it will be open 'tomorrow',
+                // if there is data for tomorrow's time.
                 if (hour_now_military >= closed_time.military) {
-                    // If the current time is past today's closing time but
-                    // before midnight, display that it will be open 'tomorrow',
-                    // if there is data for tomorrow's time.
-                    if (tomorrow_open_time || tomorrow_close_time) {
-                        return 'Open tomorrow ' + tomorrow_open_time.hours +
-                            (parseInt(tomorrow_open_time.mins, 10) !== 0 ?
-                                    ':' + tomorrow_open_time.mins : '') +
-                            tomorrow_open_time.meridian +
-                            '-' + tomorrow_close_time.hours +
-                            (parseInt(tomorrow_close_time.mins, 10) !== 0 ?
-                                    ':' + tomorrow_close_time.mins : '') +
-                            tomorrow_close_time.meridian;
+
+                    // If an alert is set for tomorrow, display that first
+                    // before displaying the hours for tomorrow
+                    if (tomorrows_alert) {
+                        return 'Tomorrow: ' + tomorrows_alert;
                     }
-                    return "Closed today";
+                    else if (tomorrow_open_time && tomorrow_close_time) {
+                        return 'Open tomorrow ' + tomorrow_open_time.hours +
+                            (parseInt(tomorrow_open_time.mins, 10) !== 0 ? ':' + tomorrow_open_time.mins : '')
+                            + tomorrow_open_time.meridian + '-' + tomorrow_close_time.hours +
+                            (parseInt(tomorrow_close_time.mins, 10) !== 0 ? ':' + tomorrow_close_time.mins : '')
+                            + tomorrow_close_time.meridian;
+                    }
+                    return 'Closed today';
                 }
 
-                // If the current time is after midnight but before
-                // the library's open time, display both the start and
-                // end time for today
-                if (tomorrow_open_time &&
-                        hour_now_military >= 0 &&
-                        hour_now_military < tomorrow_open_time.military) {
-                    type = 'long';
-                }
-
-                // The default is checking when the library is currently open.
-                // It will display 'Open today until ...'
-
-                // Multiple cases for args w/ default
-                switch (type) {
-                case 'short':
-                    formatted_time = 'Open today until ' + closed_time.hours +
-                        (parseInt(closed_time.mins, 10) !== 0 ?
-                                ':' + closed_time.mins : '')
+                // Display a time range if the library has not opened yet
+                if (hour_now_military < open_time.military) {
+                    return 'Open today ' + open_time.hours +
+                        (parseInt(open_time.mins, 10) !== 0 ? ':' + open_time.mins : '')
+                        + open_time.meridian + '-' + closed_time.hours +
+                        (parseInt(closed_time.mins, 10) !== 0 ? ':' + closed_time.mins : '')
                         + closed_time.meridian;
-                    break;
-
-                case 'long':
-                    formatted_time = 'Open today ' + open_time.hours +
-                        (parseInt(open_time.mins, 10) !== 0 ?
-                                ':' + open_time.mins : '') +
-                        open_time.meridian + '-' + closed_time.hours +
-                        (parseInt(closed_time.mins, 10) !== 0 ?
-                                ':' + closed_time.mins : '')
-                        + closed_time.meridian;
-                    break;
-
-                default:
-                    formatted_time = open_time.hours + ':' + open_time.mins +
-                        open_time.meridian + '-' + closed_time.hours +
-                        ':' + closed_time.mins + closed_time.meridian;
-                    break;
                 }
-
-                return formatted_time;
+                // Displays as default once the library has opened
+                return 'Open today until ' + closed_time.hours +
+                        (parseInt(closed_time.mins, 10) !== 0 ? ':'
+                        + closed_time.mins : '')
+                        + closed_time.meridian;
             }
-
             return 'Not available';
         };
     }

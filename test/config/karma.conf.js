@@ -13,11 +13,8 @@ module.exports = function (config) {
       'public/bower_components/angular-mocks/*.js',
       'public/bower_components/angular-sanitize/*.js',
       'public/bower_components/angular-ui-router/release/*.js',
-      'public/scripts/**/*.js',
-      'public/scripts/directives/templates/*.html',
-      'public/scripts/components/**/*.html',
-      'public/scripts/components/**/*.js',
-      'test/unit/**/*.js',
+      'public/bower_components/moment/min/moment-with-locales.min.js',
+      'public/bower_components/moment-timezone/builds/moment-timezone-with-data.min.js',
       'public/bower_components/underscore/underscore.js',
       'public/bower_components/angularitics/src/angulartics.js',
       'public/bower_components/angularitics/src/angulartics-ga.js',
@@ -26,14 +23,39 @@ module.exports = function (config) {
       //   'angular-translate-loader-static-files.min.js',
       'public/bower_components/angular-animate/angular-animate.js',
       'public/bower_components/newrelic-timing/newrelic-timing.min.js',
-      'public/bower_components/newrelic-timing/newrelic-timing-angular.min.js'
+      'public/bower_components/newrelic-timing/newrelic-timing-angular.min.js',
+      'public/scripts/app.js',
+      'public/scripts/components/nypl_alerts/nypl_alerts.js',
+      'public/scripts/components/nypl_breadcrumbs/*.js',
+      'public/scripts/components/nypl_feedback/*.js',
+      'public/scripts/components/nypl_navigation/*.js',
+      'public/scripts/components/nypl_search/*.js',
+      'public/scripts/components/nypl_sso/*.js',
+      'public/scripts/components/*.js',
+      'public/scripts/controllers/*.js',
+      'public/scripts/directives/*.js',
+      'public/scripts/filters/*.js',
+      'public/scripts/services/*.js',
+      'public/scripts/app.js',
+      'public/scripts/directives/templates/*.html',
+      'public/scripts/components/**/*.html',
+      'test/unit/**/*.js'
     ],
 
     exclude : [
+      'public/scripts/components/nypl_alerts/components/**/*.js',
+      'public/scripts/components/nypl_alerts/node_modules/**/*.js',
+      'public/scripts/components/nypl_alerts/test/**/*.js',
       'public/bower_components/angular/angular-loader.js',
       'public/bower_components/angular/*.min.js',
       'angular-scenario.js',
       'public/languages/*.json'
+      // 'test/unit/components/*.js'
+      // 'test/unit/controllers/*.js'
+      // 'test/unit/directives/*.js'
+      // 'test/unit/filters/*.js'
+      // 'test/unit/services/*.js'
+      // 'test/unit/*.js'
     ],
 
     autoWatch : true,

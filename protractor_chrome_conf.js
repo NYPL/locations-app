@@ -4,6 +4,9 @@
 var HtmlReporter = require('protractor-html-screenshot-reporter');
 
 exports.config = {
+  // Use Jasmine 2.x.x, need Protractor version 1.6.0+
+  framework: 'jasmine2',
+
   // Do not start a Selenium Standalone sever - only run this using chrome.
   // chromeOnly: true,
   // chromeDriver: './node_modules/protractor/selenium/chromedriver',
@@ -20,6 +23,7 @@ exports.config = {
   // Spec patterns are relative to the current working directly when
   // protractor is called.
   suites: {
+    alerts:['test/e2e/alerts/alerts.spec.js'],
     amenities: ['test/e2e/amenities/all_amenities.spec.js',
       'test/e2e/amenities/amenity.spec.js',
       'test/e2e/amenities/amenities_at_branch.spec.js'],

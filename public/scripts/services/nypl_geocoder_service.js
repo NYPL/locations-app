@@ -134,7 +134,6 @@
 
       geocoder.geocode(geocodeOptions, function (result, status) {
           if (status === google.maps.GeocoderStatus.OK) {
-            // console.log(result);
             coords.lat  = result[0].geometry.location.lat();
             coords.long = result[0].geometry.location.lng();
             coords.name = result[0].formatted_address;
@@ -209,9 +208,9 @@
           zoom: zoom,
           center: locationCoords,
           mapTypeControl: false,
-          panControl: false,
-          zoomControl: false,
-          scaleControl: false,
+          panControl: true,
+          zoomControl: true,
+          scaleControl: true,
           streetViewControl: false
         };
 
