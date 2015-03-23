@@ -931,7 +931,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }
     };
   }
-  nyplLocationAlerts.$inject = ["nyplAlertsService"];
+  nyplLocationAlerts.$inject = ['nyplAlertsService'];
 
   // Initialize Alerts data through Provider
   function initAlerts($nyplAlerts, $rootScope, nyplAlertsService) {
@@ -3281,7 +3281,9 @@ var nypl_widget = angular.module('nypl_widget', [
         });
 
         _.each(location._embedded.features, function (feature) {
-            feature.body = nyplUtility.returnHTML(feature.body);
+            if (typeof feature.body === 'string') {
+                feature.body = nyplUtility.returnHTML(feature.body);
+            }
         });
 
         // Used for the Get Directions link to Google Maps
@@ -3530,7 +3532,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }]
     };
   }
-  todayshours.$inject = ["nyplAlertsService", "nyplUtility", "$filter"];
+  todayshours.$inject = ['nyplAlertsService', 'nyplUtility', '$filter'];
 
   function hoursTable(nyplAlertsService) {
     return {
@@ -3648,7 +3650,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }]
     };
   }
-  hoursTable.$inject = ["nyplAlertsService"];
+  hoursTable.$inject = ['nyplAlertsService'];
 
   /**
    * @ngdoc directive
@@ -3764,7 +3766,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }
     };
   }
-  eventRegistration.$inject = ["$filter"];
+  eventRegistration.$inject = ['$filter'];
 
   /**
    * @ngdoc directive
@@ -3922,7 +3924,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }
     };
   }
-  nyplFundraising.$inject = ["$timeout", "nyplLocationsService"];
+  nyplFundraising.$inject = ['$timeout', 'nyplLocationsService'];
 
   /**
    * @ngdoc directive
@@ -4260,7 +4262,6 @@ var nypl_widget = angular.module('nypl_widget', [
         };
       }]
     };
-
   }
   nyplAutofill.$inject = ["$state", "$analytics"];
 
