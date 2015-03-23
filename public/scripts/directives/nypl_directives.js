@@ -639,9 +639,6 @@
         $scope.activated = false;
         $scope.geocodingactive = false;
         $scope.filtered = [];
-        $scope.items;
-        $scope.active;
-        $scope.currentIndex;
 
         var input = angular.element(document.getElementById('searchTerm')),
           html = angular.element(document.getElementsByTagName('html'));
@@ -714,16 +711,6 @@
           if (e.keyCode === 8) {
             $scope.$apply(function () { $scope.lookahead = ''; });
           }
-
-          // Escape key
-          if (e.keyCode === 27) {
-            /*$scope.$apply( function() { 
-               if (input.blur()) {
-                controller.closeAutofill();
-                $scope.activated = false;
-              }
-            });*/
-          }
         });
 
         // Tab, Enter and Escape keys
@@ -776,7 +763,7 @@
             controller.closeAutofill();
           });
         }
-
+        // Initialize NYPL Autofill
         initAutofill();
       },
       controller: ['$scope', function ($scope) {
@@ -883,7 +870,7 @@
           if (searchTerm.length >= 1) {
             $scope.items    = this.filterStartsWith(data, searchTerm);
 
-            // Filter through slug only
+            // Filter through slug if (!) is typed
             if (searchTerm.charAt(0) === '!') {
               $scope.filtered = this.filterTermWithin(data, searchTerm, 'slug');
             } else {
