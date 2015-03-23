@@ -79,3 +79,13 @@ describe "Single amenity page" do
     expect(last_response.status).to eq 200
   end
 end
+
+describe "Non-existent URLs" do
+  before :each do
+    get '/abc/def/ghi?_escaped_fragment_='
+  end
+
+  it "should return a 404" do
+    expect(last_response.status).to eq 404
+  end
+end
