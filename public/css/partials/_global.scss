@@ -290,6 +290,54 @@ time {
 	}
 }
 
+.autofill-help-text {
+	display: none;
+	@include breakpoint($min, 720px) {
+		display: block;
+		position: absolute;
+	  top: -15px;
+	  left: -110px;
+	  max-width: 95px;
+	}
+
+  .arrow-box-wrapper {
+		position: relative;
+		background: #ffffff;
+		border: 1px solid #eeeeee;
+		box-shadow: -1px 1px 5px -2px #aaa;
+  }
+
+	.arrow-box-wrapper:after, .arrow-box-wrapper:before {
+		left: 100%;
+		top: 35px;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+	}
+
+	.arrow-box-wrapper:after {
+		border-color: rgba(255, 255, 255, 0);
+		border-left-color: #ffffff;
+		border-width: 12px;
+		margin-top: -12px;
+	}
+	.arrow-box-wrapper:before {
+		border-color: rgba(238, 238, 238, 0);
+		border-left-color: #eeeeee;
+		border-width: 14px;
+		margin-top: -13px;
+	}
+
+	p {
+		font-size: 12px;
+		margin: 5px;
+		padding: 0;
+	}
+}
+
 // Firefox specific override rules
 @-moz-document url-prefix() {
 

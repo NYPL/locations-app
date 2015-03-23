@@ -396,75 +396,6 @@
 
   /**
    * @ngdoc directive
-   * @name nypl_locations.directive:nyplSiteAlerts
-   * @restrict E
-   * @requires $timeout
-   * @requires nyplLocationsService
-   * @requires nyplUtility
-   * @description
-   * ...
-   */
-  // Transfered to nyplAlerts Module
-  /*function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
-    return {
-      restrict: 'E',
-      templateUrl: 'scripts/directives/templates/alerts.html',
-      replace: true,
-      // Must be global for unit test to pass. Must find better way to test.
-      // scope: {},
-      link: function (scope, element, attrs) {
-        var alerts;
-        $timeout(function () {
-          nyplLocationsService.alerts().then(function (data) {
-            alerts = data.alerts;
-            scope.sitewidealert = nyplUtility.alerts(alerts);
-          });
-        }, 200);
-      }
-    };
-  }*/
-
-  /**
-   * @ngdoc directive
-   * @name nypl_locations.directive:nyplLibraryAlert
-   * @restrict E
-   * @requires nyplUtility
-   * @scope
-   * @description
-   * ...
-   */
-  // Transfered to nyplAlerts Module
-  /*function nyplLibraryAlert(nyplUtility) {
-    function alertExpired(startDate, endDate) {
-      var sDate = new Date(startDate),
-        eDate   = new Date(endDate),
-        today   = new Date();
-      if (sDate.getTime() <= today.getTime() && eDate.getTime() >= today.getTime()) {
-        return false;
-      }
-      return true;
-    };
-
-    return {
-      restrict: 'E',
-      templateUrl: 'scripts/directives/templates/library-alert.html',
-      replace: true,
-      scope: {
-          exception: '='
-      },
-      link: function (scope, element, attrs) {
-        if (scope.exception) {
-          scope.alertExpired = alertExpired(scope.exception.start, scope.exception.end);
-          if (scope.exception.description !== '' && scope.alertExpired === false) {
-            scope.libraryAlert = scope.exception.description;
-          }
-        }
-      }
-    };
-  }*/
-
-  /**
-   * @ngdoc directive
    * @name nypl_locations.directive:collapse
    * @restrict A
    * @description
@@ -848,11 +779,18 @@
           return _.filter(data, function(elem) {
             if (property === 'name') {
               if (elem.name) {
-                return elem.name.toLowerCase().
-                  indexOf(searchTerm.toLowerCase()) >= 0;
+                return elem
+                  .name.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g,"")
+                  .toLowerCase().
+                  indexOf(
+                    searchTerm
+                    .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g,"")
+                    .toLowerCase()
+                  ) >= 0;
               }
             }
             else if (property === 'slug') {
+              // Supports ID and SLUG properties
               if (elem.slug || elem.id) {
                 return elem.slug.toLowerCase().
                   indexOf(searchTerm.substring(1, searchTerm.length).toLowerCase()) >= 0 
@@ -867,14 +805,16 @@
         this.updateSearchText = function (data, searchTerm) {
           if (searchTerm === '' || !searchTerm || !data) return;
 
-          if (searchTerm.length >= 1) {
-            $scope.items    = this.filterStartsWith(data, searchTerm);
+          if (searchTerm.length > 0) {
+            $scope.items = this.filterStartsWith(data, searchTerm);
 
             // Filter through slug if (!) is typed
             if (searchTerm.charAt(0) === '!') {
               $scope.filtered = this.filterTermWithin(data, searchTerm, 'slug');
+              $scope.filterBySlug = true;
             } else {
               $scope.filtered = this.filterTermWithin(data, searchTerm, 'name');
+              $scope.filterBySlug = false;
             }
 
             if ($scope.items[0]) {
@@ -889,7 +829,6 @@
         };
       }]
     };
-
   }
 
   angular
@@ -902,8 +841,6 @@
     .directive('librarianchatbutton', librarianchatbutton)
     .directive('scrolltop', scrolltop)
     .directive('eventRegistration', eventRegistration)
-    //.directive('nyplSiteAlerts', nyplSiteAlerts)
-    //.directive('nyplLibraryAlert', nyplLibraryAlert)
     .directive('nyplFundraising', nyplFundraising)
     .directive('nyplSidebar', nyplSidebar)
     .directive('nyplAutofill', nyplAutofill)
@@ -916,5 +853,4 @@
     .directive('nyplFundraising', nyplFundraising)
     .directive('librarianchatbutton', librarianchatbutton)
     .directive('emailusbutton', emailusbutton);
-
 })();

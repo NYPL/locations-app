@@ -18,10 +18,16 @@
       View on Map
     </a>
 	</div>
-	<div class="geocoding-search" data-ng-click="geoSearch({term: model})" 
+	<div class="geocoding-search" data-ng-if="!filterBySlug"
+		data-ng-click="geoSearch({term: model})" 
 		ng-class="(geocodingactive) ? 'active' : ''"
 		analytics-on="click" analytics-category="Locations"
     analytics-event="Select search" analytics-label="{{model}}">
 		<p>Search for locations near <b>{{model}}</b></p>
+	</div>
+</div>
+<div class="autofill-help-text" data-ng-if="filterBySlug && model.length > 0">
+	<div class='arrow-box-wrapper'>
+		<p>Short name search is now enabled. Ex: sasb, sibl, mml, aguilar</p>
 	</div>
 </div>
