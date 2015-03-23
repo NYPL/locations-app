@@ -1,15 +1,15 @@
 GIT
   remote: https://bitbucket.org/rdmond/lionactor
-  revision: 9bd3b122ffbd2c2dde1f0e04ce22305303279767
-  tag: 0.0.12
+  revision: 57eae34a271b6e4195b60ee75b03108cd45d9b18
+  tag: 0.0.13
   specs:
-    lionactor (0.0.12)
+    lionactor (0.0.13)
       faraday
 
 GEM
   remote: https://rubygems.org/
   specs:
-    daemons (1.2.1)
+    daemons (1.2.2)
     diff-lcs (1.2.5)
     eventmachine (1.0.7)
     faraday (0.9.1)
