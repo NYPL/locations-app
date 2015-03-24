@@ -38,6 +38,22 @@ describe "tid path" do
       end
     end
   end
+
+  context "with a node id" do
+    context "with a good tid" do
+      it "should return a 302" do
+        get "/tid/64/node/12345"
+        expect(last_response.status).to eq 302
+      end
+    end
+
+    context "with a bad tid" do
+      it "should return a 404" do
+        get "/tid/99999/node/12345"
+        expect(last_response.status).to eq 404
+      end
+    end
+  end
 end
 
 
