@@ -175,18 +175,21 @@ class Locinator < Sinatra::Base
   get %r{/tid/(\d+)(/(.+))?$} do
     tid = params['captures'][0]
     slug = settings.tids[tid]
-    if slug.nil?
-      status 404
-    else
-      page = params['captures'][2].downcase
-      if ['about', 'community', 'details'].include? page
-        redirect to("http://nypl.org/about/locations/#{slug}"), 301
-      end
+    if ! slug.nil?
+      if ! params['captures'][2].nil?
+        page = params['captures'][2].downcase
+        if ['about', 'community', 'details'].include? page
+          redirect to("http://nypl.org/about/locations/#{slug}"), 301
+        end
       
-      if page == 'calendar'
-        redirect to("http://www.nypl.org/events/calendar?location=#{tid}"), 301
+        if page == 'calendar'
+          redirect to("http://www.nypl.org/events/calendar?location=#{tid}"), 301
+        end
       end
     end
+    @rq = request
+    status 404
+    erb :index
   end
 
   get %r{/(.+)$}, :spider => true do
