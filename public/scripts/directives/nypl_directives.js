@@ -555,7 +555,7 @@
    * @description
    * ...
    */
-  function nyplAutofill($state, $analytics) {
+  function nyplAutofill($state, $analytics, nyplSearch) {
     return {
       restrict: 'AEC',
       templateUrl: 'scripts/directives/templates/autofill.html',
@@ -596,6 +596,7 @@
                   $scope.activated = false;
                   controller.closeAutofill();
                   $scope.model = $scope.active.name;
+                  nyplSearch.setSearchValue('searchTerm', $scope.active.name);
                   $state.go(
                     'location',
                     { location: $scope.active.slug }
@@ -702,6 +703,7 @@
             if ($scope.filtered && $scope.filtered.length) {
               location = $scope.filtered[0]; // Top match
               if (searchTerm.toLowerCase() === location.id.toLowerCase()) {
+                nyplSearch.setSearchValue('searchTerm', term);
                 $state.go('location', { location: location.slug });
               } else if (
                 location.name
@@ -713,6 +715,7 @@
                       .toLowerCase()
                   ) >= 0
                 ) {
+                nyplSearch.setSearchValue('searchTerm', term);
                 $state.go('location', { location: location.slug });
               }
             } else {
