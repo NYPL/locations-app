@@ -172,13 +172,13 @@ class Locinator < Sinatra::Base
     erb :seo_division
   end
 
-  get %r{/tid/(\d+)(/(.+))?$} do
-    tid = params['captures'][0]
+  get %r{/tid/(\d+)(/(.+))?$} do |tid, extra, page|
+    #    tid = params['captures'][0]
     slug = settings.tids[tid]
     if ! slug.nil?
-      if ! params['captures'][2].nil?
-        page = params['captures'][2].downcase
-        if ['about', 'community', 'details'].include? page
+      if ! page.nil?
+#        page = params['captures'][].downcase
+        if ['about', 'community', 'details'].include? page.downcase
           redirect to("http://nypl.org/about/locations/#{slug}"), 301
         end
       

@@ -26,19 +26,19 @@ describe "tid path" do
 
   context "with a bad tid" do
     before :each do
-      get '/tid/99999/about'
     end
 
     it "should return a 404" do
+      get '/tid/99999/about'
       expect(last_response.status).to eq 404
     end
 
     context "with nothing after the tid" do
       before :each do
-        get '/tid/99999'
       end
 
       it "should return a 404" do
+        get '/tid/99999'
         expect(last_response.status).to eq 404
       end
     end
