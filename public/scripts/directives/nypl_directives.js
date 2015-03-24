@@ -614,6 +614,7 @@
               // User has pressed enter with auto-complete
               else if (controller.setSearchText($scope.model)) {
                   $scope.model = $scope.items[0].name;
+                  nyplSearch.setSearchValue('searchTerm', $scope.model);
                   controller.closeAutofill();
                   $analytics.eventTrack('Accept',
                     { category: 'Locations', label: $scope.model });
@@ -692,8 +693,8 @@
           });
         });
 
-        // Searches by ID or closest match first
-        // then executes geosearch
+        // Searches by ID or closest match first.
+        // Then executes geosearch if no match is found
         $scope.handleSearch = function (term) {
           if (!term.length) { return; }
           var location,
@@ -821,17 +822,17 @@
               if (elem.name) {
                 return elem
                   .name
-                  .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g,"")
+                  .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "")
                   .toLowerCase()
                   .indexOf(
                     searchTerm
-                    .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g,"")
+                    .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "")
                     .toLowerCase()
                   ) >= 0;
               }
             }
             else if (property === 'id') {
-              // Supports ID property
+              // Supports ID property matching
               if (elem.id) {
                 return elem.id.toLowerCase().
                   indexOf(searchTerm.substring(1, searchTerm.length).toLowerCase()) >= 0;
@@ -855,7 +856,7 @@
               $scope.filtered = this.filterTermWithin(data, searchTerm, 'name');
               $scope.filterBySlug = false;
             }
-
+            // Assign first match as auto-complete text
             if ($scope.items[0]) {
               $scope.lookahead   = $scope.items[0].name.substring(searchTerm.length);
               $scope.currentWord = searchTerm;
