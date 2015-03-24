@@ -2,7 +2,9 @@
 	<p><span>{{currentWord}}</span>{{lookahead}}</p>
 	<p class="hidden">{{completeWord}}</p>
 </div>
-<div class="autofill-container" data-ng-if="model.length > 1 && focused">
+<div class="autofill-container" 
+	data-ng-class="filterBySlug && model.length > 1 ? 'no-geosearch' : ''"
+	data-ng-if="model.length > 1 && focused">
 	<div class="location-item" ng-repeat="item in filtered" 
 	ng-class="(item.id==active.id && activated) ? 'active' : ''">
 	  <div class="location-name">
@@ -26,8 +28,10 @@
 		<p>Search for locations near <b>{{model}}</b></p>
 	</div>
 </div>
-<div class="autofill-help-text" data-ng-if="filterBySlug && model.length > 0">
+<div class="autofill-help-text" 
+	data-ng-class="filterBySlug && model.length > 1 ? 'shift-help-text' : ''"
+	data-ng-if="filterBySlug && model.length > 0">
 	<div class='arrow-box-wrapper'>
-		<p>Short name search is now enabled. Ex: sasb, sibl, mml, aguilar</p>
+		<p>Location ID search is enabled.<br />Examples: !mml, !sibl, !sasb and more...</p>
 	</div>
 </div>

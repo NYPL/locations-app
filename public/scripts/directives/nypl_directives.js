@@ -572,7 +572,9 @@
         $scope.filtered = [];
 
         var input = angular.element(document.getElementById('searchTerm')),
-          html = angular.element(document.getElementsByTagName('html'));
+          html = angular.element(document.getElementsByTagName('html')),
+          helpText = angular.element(document.querySelector('.autofill-help-text')),
+          searchButton = angular.element(document.getElementById('find-location'));
 
         input.bind('focus', function () {
           $scope.$apply(function () {
@@ -609,7 +611,7 @@
                   }
                 }
               }
-              // User has pressed enter with autofill
+              // User has pressed enter with auto-complete
               else if (controller.setSearchText($scope.model)) {
                   $scope.model = $scope.items[0].name;
                   controller.closeAutofill();
@@ -622,8 +624,7 @@
               }
               // No autofill, down/up arrows not pressed
               else {
-                // Geocoding Search only
-                $scope.geoSearch({term: $scope.model});
+                $scope.handleSearch($scope.model);
                 if (input.blur()) {
                   controller.closeAutofill();
                 }
@@ -683,6 +684,41 @@
             controller.closeAutofill();
           });
         });
+
+        searchButton.bind('click', function (e) {
+          e.preventDefault();
+          $scope.$apply(function () {
+            $scope.handleSearch($scope.model);
+          });
+        });
+
+        $scope.handleSearch = function(term) {
+          if (!term.length) { return; }
+          var location,
+            searchTerm = (term.charAt(0) === '!') ? term.slice(1) : term;
+          // Execute search only if term is at least two characters
+          if (searchTerm.length > 1) {
+            if ($scope.filtered && $scope.filtered.length) {
+              location = $scope.filtered[0]; // Top match
+              if (searchTerm.toLowerCase() === location.id.toLowerCase()) {
+                $state.go('location',
+                  { location: location.slug }
+                );
+              } else if (location.name
+                .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g,"")
+                .toLowerCase().
+                indexOf(
+                  searchTerm.toLowerCase()
+                ) >= 0) {
+              $state.go('location',
+                  { location: location.slug }
+                );
+              }
+            } else {
+              $scope.geoSearch({term: searchTerm});
+            }
+          }
+        }
 
         function initAutofill() {
           $scope.$watch('model', function (newValue, oldValue) {
@@ -783,18 +819,14 @@
                   .name.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g,"")
                   .toLowerCase().
                   indexOf(
-                    searchTerm
-                    .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g,"")
-                    .toLowerCase()
+                    searchTerm.toLowerCase()
                   ) >= 0;
               }
             }
-            else if (property === 'slug') {
-              // Supports ID and SLUG properties
-              if (elem.slug || elem.id) {
-                return elem.slug.toLowerCase().
-                  indexOf(searchTerm.substring(1, searchTerm.length).toLowerCase()) >= 0 
-                  || elem.id.toLowerCase().
+            else if (property === 'id') {
+              // Supports ID property
+              if (elem.id) {
+                return elem.id.toLowerCase().
                   indexOf(searchTerm.substring(1, searchTerm.length).toLowerCase()) >= 0;
               }
             }
@@ -810,7 +842,7 @@
 
             // Filter through slug if (!) is typed
             if (searchTerm.charAt(0) === '!') {
-              $scope.filtered = this.filterTermWithin(data, searchTerm, 'slug');
+              $scope.filtered = this.filterTermWithin(data, searchTerm, 'id');
               $scope.filterBySlug = true;
             } else {
               $scope.filtered = this.filterTermWithin(data, searchTerm, 'name');

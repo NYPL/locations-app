@@ -201,6 +201,12 @@ time {
 	border: 1px solid #CCC;
 	padding: 10px;
 
+	&.no-geosearch {
+		.location-item:last-child {
+			border-bottom: none;
+		}
+	}
+
 	.location-item {
 		border-bottom: 1px solid #eee;
 		margin: 0;
@@ -292,24 +298,37 @@ time {
 
 .autofill-help-text {
 	display: none;
+	transition-property: right;
+  transition-duration: .5s;
+  transition-timing: ease;
+  transition-delay: 0;
 	@include breakpoint($min, 720px) {
 		display: block;
 		position: absolute;
-	  top: -15px;
-	  left: -110px;
-	  max-width: 95px;
+	  top: 60px;
+	  right: 0px;
+	  max-width: 130px;
+	  z-index: 2;
+	}
+
+	&.shift-help-text {
+		right: 160px;
+		transition-property: right;
+    transition-duration: .5s;
+    transition-timing: ease;
+    transition-delay: 0;
 	}
 
   .arrow-box-wrapper {
 		position: relative;
-		background: #ffffff;
+		background: #FFFFCD;
 		border: 1px solid #eeeeee;
-		box-shadow: -1px 1px 5px -2px #aaa;
+		box-shadow: 0px 2px 6px -3px #aaa;
   }
 
 	.arrow-box-wrapper:after, .arrow-box-wrapper:before {
-		left: 100%;
-		top: 35px;
+		bottom: 100%;
+		left: 50%;
 		border: solid transparent;
 		content: " ";
 		height: 0;
@@ -319,20 +338,20 @@ time {
 	}
 
 	.arrow-box-wrapper:after {
-		border-color: rgba(255, 255, 255, 0);
-		border-left-color: #ffffff;
+		border-color: rgba(0, 0, 0, 0);
+		border-bottom-color: #FFFFCD;
 		border-width: 12px;
-		margin-top: -12px;
+		margin-left: -12px;
 	}
 	.arrow-box-wrapper:before {
 		border-color: rgba(238, 238, 238, 0);
-		border-left-color: #eeeeee;
+		border-bottom-color: #eee;
 		border-width: 14px;
-		margin-top: -13px;
+		margin-left: -13px;
 	}
 
 	p {
-		font-size: 12px;
+		font-size: 12.25px;
 		margin: 5px;
 		padding: 0;
 	}
