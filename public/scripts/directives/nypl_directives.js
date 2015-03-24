@@ -816,10 +816,13 @@
             if (property === 'name') {
               if (elem.name) {
                 return elem
-                  .name.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g,"")
-                  .toLowerCase().
-                  indexOf(
-                    searchTerm.toLowerCase()
+                  .name
+                  .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g,"")
+                  .toLowerCase()
+                  .indexOf(
+                    searchTerm
+                    .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g,"")
+                    .toLowerCase()
                   ) >= 0;
               }
             }
