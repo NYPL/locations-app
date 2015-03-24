@@ -1664,75 +1664,6 @@ var nypl_widget = angular.module('nypl_widget', [
 
   /**
    * @ngdoc directive
-   * @name nypl_locations.directive:nyplSiteAlerts
-   * @restrict E
-   * @requires $timeout
-   * @requires nyplLocationsService
-   * @requires nyplUtility
-   * @description
-   * ...
-   */
-  // Transfered to nyplAlerts Module
-  /*function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
-    return {
-      restrict: 'E',
-      templateUrl: 'scripts/directives/templates/alerts.html',
-      replace: true,
-      // Must be global for unit test to pass. Must find better way to test.
-      // scope: {},
-      link: function (scope, element, attrs) {
-        var alerts;
-        $timeout(function () {
-          nyplLocationsService.alerts().then(function (data) {
-            alerts = data.alerts;
-            scope.sitewidealert = nyplUtility.alerts(alerts);
-          });
-        }, 200);
-      }
-    };
-  }*/
-
-  /**
-   * @ngdoc directive
-   * @name nypl_locations.directive:nyplLibraryAlert
-   * @restrict E
-   * @requires nyplUtility
-   * @scope
-   * @description
-   * ...
-   */
-  // Transfered to nyplAlerts Module
-  /*function nyplLibraryAlert(nyplUtility) {
-    function alertExpired(startDate, endDate) {
-      var sDate = new Date(startDate),
-        eDate   = new Date(endDate),
-        today   = new Date();
-      if (sDate.getTime() <= today.getTime() && eDate.getTime() >= today.getTime()) {
-        return false;
-      }
-      return true;
-    };
-
-    return {
-      restrict: 'E',
-      templateUrl: 'scripts/directives/templates/library-alert.html',
-      replace: true,
-      scope: {
-          exception: '='
-      },
-      link: function (scope, element, attrs) {
-        if (scope.exception) {
-          scope.alertExpired = alertExpired(scope.exception.start, scope.exception.end);
-          if (scope.exception.description !== '' && scope.alertExpired === false) {
-            scope.libraryAlert = scope.exception.description;
-          }
-        }
-      }
-    };
-  }*/
-
-  /**
-   * @ngdoc directive
    * @name nypl_locations.directive:collapse
    * @restrict A
    * @description
@@ -1909,12 +1840,10 @@ var nypl_widget = angular.module('nypl_widget', [
         $scope.activated = false;
         $scope.geocodingactive = false;
         $scope.filtered = [];
-        $scope.items;
-        $scope.active;
-        $scope.currentIndex;
 
         var input = angular.element(document.getElementById('searchTerm')),
-          html = angular.element(document.getElementsByTagName('html'));
+          html = angular.element(document.getElementsByTagName('html')),
+          searchButton = angular.element(document.getElementById('find-location'));
 
         input.bind('focus', function () {
           $scope.$apply(function () {
@@ -1951,7 +1880,7 @@ var nypl_widget = angular.module('nypl_widget', [
                   }
                 }
               }
-              // User has pressed enter with autofill
+              // User has pressed enter with auto-complete
               else if (controller.setSearchText($scope.model)) {
                   $scope.model = $scope.items[0].name;
                   controller.closeAutofill();
@@ -1964,8 +1893,7 @@ var nypl_widget = angular.module('nypl_widget', [
               }
               // No autofill, down/up arrows not pressed
               else {
-                // Geocoding Search only
-                $scope.geoSearch({term: $scope.model});
+                $scope.handleSearch($scope.model);
                 if (input.blur()) {
                   controller.closeAutofill();
                 }
@@ -1983,16 +1911,6 @@ var nypl_widget = angular.module('nypl_widget', [
           // Backspace
           if (e.keyCode === 8) {
             $scope.$apply(function () { $scope.lookahead = ''; });
-          }
-
-          // Escape key
-          if (e.keyCode === 27) {
-            /*$scope.$apply( function() { 
-               if (input.blur()) {
-                controller.closeAutofill();
-                $scope.activated = false;
-              }
-            });*/
           }
         });
 
@@ -2036,6 +1954,43 @@ var nypl_widget = angular.module('nypl_widget', [
           });
         });
 
+        searchButton.bind('click', function (e) {
+          e.preventDefault();
+          $scope.$apply(function () {
+            $scope.handleSearch($scope.model);
+          });
+        });
+
+        // Searches by ID or closest match first
+        // then executes geosearch
+        $scope.handleSearch = function (term) {
+          if (!term.length) { return; }
+          var location,
+            searchTerm = (term.charAt(0) === '!') ? term.slice(1) : term;
+          // Execute search only if the term is at least two chars
+          if (searchTerm.length > 1) {
+            if ($scope.filtered && $scope.filtered.length) {
+              location = $scope.filtered[0]; // Top match
+              if (searchTerm.toLowerCase() === location.id.toLowerCase()) {
+                $state.go('location', { location: location.slug });
+              } else if (
+                location.name
+                  .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "")
+                  .toLowerCase().
+                  indexOf(
+                    searchTerm
+                      .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "")
+                      .toLowerCase()
+                  ) >= 0
+                ) {
+                $state.go('location', { location: location.slug });
+              }
+            } else {
+              $scope.geoSearch({term: searchTerm});
+            }
+          }
+        };
+
         function initAutofill() {
           $scope.$watch('model', function (newValue, oldValue) {
             controller.updateSearchText($scope.data, newValue);
@@ -2046,7 +2001,7 @@ var nypl_widget = angular.module('nypl_widget', [
             controller.closeAutofill();
           });
         }
-
+        // Initialize NYPL Autofill
         initAutofill();
       },
       controller: ['$scope', function ($scope) {
@@ -2127,11 +2082,27 @@ var nypl_widget = angular.module('nypl_widget', [
           });
         };
 
-        this.filterTermWithin = function (data, searchTerm) {
-          return _.filter(data, function (elem) {
-            if (elem.name) {
-              return elem.name.toLowerCase().
-                indexOf(searchTerm.toLowerCase()) >= 0;
+        this.filterTermWithin = function(data, searchTerm, property) {
+          return _.filter(data, function(elem) {
+            if (property === 'name') {
+              if (elem.name) {
+                return elem
+                  .name
+                  .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g,"")
+                  .toLowerCase()
+                  .indexOf(
+                    searchTerm
+                    .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g,"")
+                    .toLowerCase()
+                  ) >= 0;
+              }
+            }
+            else if (property === 'id') {
+              // Supports ID property
+              if (elem.id) {
+                return elem.id.toLowerCase().
+                  indexOf(searchTerm.substring(1, searchTerm.length).toLowerCase()) >= 0;
+              }
             }
             return false;
           });
@@ -2140,9 +2111,17 @@ var nypl_widget = angular.module('nypl_widget', [
         this.updateSearchText = function (data, searchTerm) {
           if (searchTerm === '' || !searchTerm || !data) return;
 
-          if (searchTerm.length > 1) {
-            $scope.items    = this.filterStartsWith(data, searchTerm);
-            $scope.filtered = this.filterTermWithin(data, searchTerm);
+          if (searchTerm.length > 0) {
+            $scope.items = this.filterStartsWith(data, searchTerm);
+
+            // Filter through slug if (!) is typed
+            if (searchTerm.charAt(0) === '!') {
+              $scope.filtered = this.filterTermWithin(data, searchTerm, 'id');
+              $scope.filterBySlug = true;
+            } else {
+              $scope.filtered = this.filterTermWithin(data, searchTerm, 'name');
+              $scope.filterBySlug = false;
+            }
 
             if ($scope.items[0]) {
               $scope.lookahead   = $scope.items[0].name.substring(searchTerm.length);
@@ -2156,7 +2135,6 @@ var nypl_widget = angular.module('nypl_widget', [
         };
       }]
     };
-
   }
   nyplAutofill.$inject = ["$state", "$analytics"];
 
@@ -2170,8 +2148,6 @@ var nypl_widget = angular.module('nypl_widget', [
     .directive('librarianchatbutton', librarianchatbutton)
     .directive('scrolltop', scrolltop)
     .directive('eventRegistration', eventRegistration)
-    //.directive('nyplSiteAlerts', nyplSiteAlerts)
-    //.directive('nyplLibraryAlert', nyplLibraryAlert)
     .directive('nyplFundraising', nyplFundraising)
     .directive('nyplSidebar', nyplSidebar)
     .directive('nyplAutofill', nyplAutofill)
@@ -2184,7 +2160,6 @@ var nypl_widget = angular.module('nypl_widget', [
     .directive('nyplFundraising', nyplFundraising)
     .directive('librarianchatbutton', librarianchatbutton)
     .directive('emailusbutton', emailusbutton);
-
 })();
 
 /*jslint indent: 2, maxlen: 80, nomen: true */
