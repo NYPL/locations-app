@@ -172,6 +172,16 @@ class Locinator < Sinatra::Base
     erb :seo_division
   end
 
+  get %r{/tid/(\d+)/node/(\d+)} do |tid, nid|
+    slug = settings.tids[tid]
+    if ! slug.nil?
+      redirect to("/node/#{nid}/"), 302
+    end
+    @rq = request
+    status 404
+    erb :index
+  end
+
   get %r{/tid/(\d+)(/([^/]+))?} do |tid, extra, page|
     slug = settings.tids[tid]
     if ! slug.nil?
