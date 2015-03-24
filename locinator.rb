@@ -163,6 +163,10 @@ class Locinator < Sinatra::Base
   get %r{/amenities$}, :spider => true do
     api = Lionactor::Client.new
     @amenities = api.amenities.group_by{|a| a.category}
+    @baseurl = '/'
+    if request.forwarded?
+      @baseurl = settings.baseurl
+    end
     erb :seo_amenities
   end
   
