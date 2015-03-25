@@ -104,11 +104,11 @@
             {scope: 'division', only_closings: 'current'}
           );
 
-          // Retrieve all global closing alerts
+          // Retrieve all global closing alerts for 7 day week
           // Used to determine tomorrow's hours message
           alerts.all_closings = nyplAlertsService.filterAlerts(
             $scope.alerts,
-            {only_closings: 'all'}
+            {only_closings: 'week'}
           );
         }
 

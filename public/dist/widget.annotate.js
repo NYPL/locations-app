@@ -1367,11 +1367,11 @@ var nypl_widget = angular.module('nypl_widget', [
             {scope: 'division', only_closings: 'current'}
           );
 
-          // Retrieve all global closing alerts
+          // Retrieve all global closing alerts for 7 day week
           // Used to determine tomorrow's hours message
           alerts.all_closings = nyplAlertsService.filterAlerts(
             $scope.alerts,
-            {only_closings: 'all'}
+            {only_closings: 'week'}
           );
         }
 
@@ -2614,7 +2614,7 @@ var nypl_widget = angular.module('nypl_widget', [
   function nyplGlobalAlerts($rootScope) {
     return {
       restrict: 'E',
-      template: "<div class='nypl-global-alerts' data-ng-if='$root.alerts'>" +
+      template: "<div class='nypl-global-alerts' data-ng-if='$root.alerts.length'>" +
                   "<div data-ng-repeat='alert in $root.alerts'>" +
                     "<p data-ng-bind-html='alert.msg'></p>" +
                   "</div>" +
@@ -2637,7 +2637,7 @@ var nypl_widget = angular.module('nypl_widget', [
     return {
       restrict: 'E',
       template: "<div class='nypl-location-alerts'" +
-                    "data-ng-if='locationAlerts'>" +
+                    "data-ng-if='locationAlerts.length'>" +
                   "<div data-ng-repeat='alert in locationAlerts'>" +
                     "<p data-ng-bind-html='alert.msg'></p>" +
                   "</div>" +
@@ -2689,7 +2689,6 @@ var nypl_widget = angular.module('nypl_widget', [
     .directive('nyplGlobalAlerts', nyplGlobalAlerts);
 
 })(window, window.angular);
-
 /*jslint nomen: true, indent: 2, maxlen: 80, browser: true */
 /*globals nypl_locations, angular, console, $window, _ */
 
@@ -2763,9 +2762,8 @@ var nypl_widget = angular.module('nypl_widget', [
      * @description ...
      */
     utility.hoursToday = function (hours, alertsObj) {
-      var date = new Date(),
-        today = date.getDay(),
-        tomorrow = today + 1,
+      var today = moment().day(),
+        tomorrow = moment().add(1, 'days').startOf('day'),
         hoursToday,
         alerts,
         alertStartDate,
@@ -2786,12 +2784,12 @@ var nypl_widget = angular.module('nypl_widget', [
             if (alert.applies) {
               alertStartDate = moment(alert.applies.start);
               // Priority: 1) Global 2) Location 3) Division
-              if (alert.scope === 'all' && alertStartDate.day() === tomorrow) {
+              if (alert.scope === 'all' && alertStartDate.isSame(tomorrow, 'day')) {
                 return alert;
-              } else if (alert.scope === 'location' && alertStartDate.day() === tomorrow) {
+              } else if (alert.scope === 'location' && alertStartDate.isSame(tomorrow, 'day')) {
                 return alert;
               }
-              return alert.scope === 'division' && alertStartDate.day() === tomorrow;
+              return alert.scope === 'division' && alertStartDate.isSame(tomorrow, 'day');
             }
           });
         }
@@ -2803,9 +2801,9 @@ var nypl_widget = angular.module('nypl_widget', [
             'close': hours.regular[today].close
           },
           'tomorrow': {
-            'day': hours.regular[tomorrow % 7].day,
-            'open': hours.regular[tomorrow % 7].open,
-            'close': hours.regular[tomorrow % 7].close,
+            'day': hours.regular[tomorrow.day() % 7].day,
+            'open': hours.regular[tomorrow.day() % 7].open,
+            'close': hours.regular[tomorrow.day() % 7].close,
             'alert' : tomorrowsAlert || null
           }
         };
