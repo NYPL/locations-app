@@ -425,7 +425,7 @@
   function nyplGlobalAlerts($rootScope) {
     return {
       restrict: 'E',
-      template: "<div class='nypl-global-alerts' data-ng-if='$root.alerts'>" +
+      template: "<div class='nypl-global-alerts' data-ng-if='$root.alerts.length'>" +
                   "<div data-ng-repeat='alert in $root.alerts'>" +
                     "<p data-ng-bind-html='alert.msg'></p>" +
                   "</div>" +
@@ -447,7 +447,7 @@
     return {
       restrict: 'E',
       template: "<div class='nypl-location-alerts'" +
-                    "data-ng-if='locationAlerts'>" +
+                    "data-ng-if='locationAlerts.length'>" +
                   "<div data-ng-repeat='alert in locationAlerts'>" +
                     "<p data-ng-bind-html='alert.msg'></p>" +
                   "</div>" +
