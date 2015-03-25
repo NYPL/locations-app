@@ -70,9 +70,8 @@
      * @description ...
      */
     utility.hoursToday = function (hours, alertsObj) {
-      var date = new Date(),
-        today = date.getDay(),
-        tomorrow = today + 1,
+      var today = moment().day(),
+        tomorrow = moment().add(1, 'days').startOf('day'),
         hoursToday,
         alerts,
         alertStartDate,
@@ -93,12 +92,12 @@
             if (alert.applies) {
               alertStartDate = moment(alert.applies.start);
               // Priority: 1) Global 2) Location 3) Division
-              if (alert.scope === 'all' && alertStartDate.day() === tomorrow) {
+              if (alert.scope === 'all' && alertStartDate.isSame(tomorrow, 'day')) {
                 return alert;
-              } else if (alert.scope === 'location' && alertStartDate.day() === tomorrow) {
+              } else if (alert.scope === 'location' && alertStartDate.isSame(tomorrow, 'day')) {
                 return alert;
               }
-              return alert.scope === 'division' && alertStartDate.day() === tomorrow;
+              return alert.scope === 'division' && alertStartDate.isSame(tomorrow, 'day');
             }
           });
         }
@@ -110,9 +109,9 @@
             'close': hours.regular[today].close
           },
           'tomorrow': {
-            'day': hours.regular[tomorrow % 7].day,
-            'open': hours.regular[tomorrow % 7].open,
-            'close': hours.regular[tomorrow % 7].close,
+            'day': hours.regular[tomorrow.day() % 7].day,
+            'open': hours.regular[tomorrow.day() % 7].open,
+            'close': hours.regular[tomorrow.day() % 7].close,
             'alert' : tomorrowsAlert || null
           }
         };
