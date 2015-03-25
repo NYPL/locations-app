@@ -210,18 +210,26 @@ class Locinator < Sinatra::Base
     erb :index
   end
 
-  get %r{/(.+)$}, :spider => true do
+  get %r{/(.+)$}, :spider => true do |loc|
     api = Lionactor::Client.new
     begin
-      @location = api.location(params['captures'].first)
-      erb :seo_location
+      # /map and /list are special URLs to open page either respective
+      # tab selected. For SEO, they are just the index page
+      if loc == 'map' or loc == 'list'
+        @locations = api.locations
+        erb :seo_index
+      else
+        # Generally, though, we're looking up the branch
+        @location = api.location(loc)
+        erb :seo_location
+      end
     rescue Lionactor::ResponseError => e
       status e.status
       body "Nothing found for \"#{params['captures'].first}\""
     end
   end
 
-  get '/', :spider => true do
+  get %r'/', :spider => true do
     api = Lionactor::Client.new
     @locations = api.locations
     erb :seo_index
