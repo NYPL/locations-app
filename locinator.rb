@@ -191,11 +191,11 @@ class Locinator < Sinatra::Base
     if ! slug.nil?
       if ! page.nil?
         if ['about', 'community', 'details'].include? page.downcase
-          redirect to("http://nypl.org/about/locations/#{slug}"), 301
+          redirect to("/about/locations/#{slug}"), 301
         end
       
         if page == 'calendar'
-          redirect to("http://www.nypl.org/events/calendar?location=#{tid}"), 301
+          redirect to("/events/calendar?location=#{tid}"), 301
         end
       else
         if request.forwarded?
