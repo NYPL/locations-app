@@ -63,8 +63,8 @@
         </div>
         <!-- Search results from geolocation -->
         <div id="results" data-ng-if="geolocationAddressOrSearchQuery">
-          Showing search results near
-          <a href="">{{geolocationAddressOrSearchQuery}}</a>
+          <span>Showing search results near <a href="">{{geolocationAddressOrSearchQuery}}</a></span>
+          <span class="icon-cancel-circle clear-search" data-ng-click="clearSearch()"></span>
         </div>
       </div>
     </div>

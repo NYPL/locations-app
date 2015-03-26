@@ -1825,7 +1825,7 @@ var nypl_widget = angular.module('nypl_widget', [
    * @description
    * ...
    */
-  function nyplAutofill($state, $analytics) {
+  function nyplAutofill($state, $analytics, nyplSearch) {
     return {
       restrict: 'AEC',
       templateUrl: 'scripts/directives/templates/autofill.html',
@@ -1866,6 +1866,7 @@ var nypl_widget = angular.module('nypl_widget', [
                   $scope.activated = false;
                   controller.closeAutofill();
                   $scope.model = $scope.active.name;
+                  nyplSearch.setSearchValue('searchTerm', $scope.active.name);
                   $state.go(
                     'location',
                     { location: $scope.active.slug }
@@ -1881,8 +1882,9 @@ var nypl_widget = angular.module('nypl_widget', [
                 }
               }
               // User has pressed enter with auto-complete
-              else if (controller.setSearchText($scope.model)) {
+              else if (controller.setSearchText()) {
                   $scope.model = $scope.items[0].name;
+                  nyplSearch.setSearchValue('searchTerm', $scope.model);
                   controller.closeAutofill();
                   $analytics.eventTrack('Accept',
                     { category: 'Locations', label: $scope.model });
@@ -1893,7 +1895,7 @@ var nypl_widget = angular.module('nypl_widget', [
               }
               // No autofill, down/up arrows not pressed
               else {
-                $scope.handleSearch($scope.model);
+                controller.handleSearch($scope.model);
                 if (input.blur()) {
                   controller.closeAutofill();
                 }
@@ -1904,7 +1906,7 @@ var nypl_widget = angular.module('nypl_widget', [
           // Right Arrow
           if (e.keyCode === 39) {
             $scope.$apply(function () {
-              controller.setSearchText($scope.model);
+              controller.setSearchText();
             });
           }
 
@@ -1957,39 +1959,9 @@ var nypl_widget = angular.module('nypl_widget', [
         searchButton.bind('click', function (e) {
           e.preventDefault();
           $scope.$apply(function () {
-            $scope.handleSearch($scope.model);
+            controller.handleSearch($scope.model);
           });
         });
-
-        // Searches by ID or closest match first
-        // then executes geosearch
-        $scope.handleSearch = function (term) {
-          if (!term.length) { return; }
-          var location,
-            searchTerm = (term.charAt(0) === '!') ? term.slice(1) : term;
-          // Execute search only if the term is at least two chars
-          if (searchTerm.length > 1) {
-            if ($scope.filtered && $scope.filtered.length) {
-              location = $scope.filtered[0]; // Top match
-              if (searchTerm.toLowerCase() === location.id.toLowerCase()) {
-                $state.go('location', { location: location.slug });
-              } else if (
-                location.name
-                  .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "")
-                  .toLowerCase().
-                  indexOf(
-                    searchTerm
-                      .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "")
-                      .toLowerCase()
-                  ) >= 0
-                ) {
-                $state.go('location', { location: location.slug });
-              }
-            } else {
-              $scope.geoSearch({term: searchTerm});
-            }
-          }
-        };
 
         function initAutofill() {
           $scope.$watch('model', function (newValue, oldValue) {
@@ -2058,7 +2030,7 @@ var nypl_widget = angular.module('nypl_widget', [
           }
         };
 
-        this.setSearchText = function (model) {
+        this.setSearchText = function () {
           if ($scope.completeWord === $scope.model ||
               $scope.completeWord === '' || 
               $scope.model === '') {
@@ -2088,24 +2060,60 @@ var nypl_widget = angular.module('nypl_widget', [
               if (elem.name) {
                 return elem
                   .name
-                  .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g,"")
+                  .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "")
                   .toLowerCase()
                   .indexOf(
                     searchTerm
-                    .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g,"")
+                    .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "")
                     .toLowerCase()
                   ) >= 0;
               }
             }
             else if (property === 'id') {
-              // Supports ID property
+              // Supports ID property matching
               if (elem.id) {
                 return elem.id.toLowerCase().
-                  indexOf(searchTerm.substring(1, searchTerm.length).toLowerCase()) >= 0;
+                  indexOf(
+                    searchTerm
+                    .substring(1, searchTerm.length)
+                    .toLowerCase()
+                  ) >= 0;
               }
             }
             return false;
           });
+        };
+
+        // Searches by ID or closest match first.
+        // Then executes geoAddressSearch if no match is found
+        this.handleSearch = function (term) {
+          if (!term.length) { return; }
+          var location,
+            searchTerm = (term.charAt(0) === '!') ? term.slice(1) : term;
+          // Execute search only if the term is at least two chars
+          if (searchTerm.length > 1) {
+            if ($scope.filtered && $scope.filtered.length) {
+              location = $scope.filtered[0]; // Top match
+              if (searchTerm.toLowerCase() === location.id.toLowerCase()) {
+                nyplSearch.setSearchValue('searchTerm', term);
+                $state.go('location', { location: location.slug });
+              } else if (
+                location.name
+                  .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "")
+                  .toLowerCase().
+                  indexOf(
+                    searchTerm
+                      .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "")
+                      .toLowerCase()
+                  ) >= 0
+                ) {
+                nyplSearch.setSearchValue('searchTerm', term);
+                $state.go('location', { location: location.slug });
+              }
+            } else {
+              $scope.geoSearch({term: searchTerm});
+            }
+          }
         };
 
         this.updateSearchText = function (data, searchTerm) {
@@ -2114,15 +2122,15 @@ var nypl_widget = angular.module('nypl_widget', [
           if (searchTerm.length > 0) {
             $scope.items = this.filterStartsWith(data, searchTerm);
 
-            // Filter through slug if (!) is typed
+            // Filter through id if (!) is typed
             if (searchTerm.charAt(0) === '!') {
               $scope.filtered = this.filterTermWithin(data, searchTerm, 'id');
-              $scope.filterBySlug = true;
+              $scope.filterById = true;
             } else {
               $scope.filtered = this.filterTermWithin(data, searchTerm, 'name');
-              $scope.filterBySlug = false;
+              $scope.filterById = false;
             }
-
+            // Assign first match as auto-complete text
             if ($scope.items[0]) {
               $scope.lookahead   = $scope.items[0].name.substring(searchTerm.length);
               $scope.currentWord = searchTerm;
@@ -2136,7 +2144,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }]
     };
   }
-  nyplAutofill.$inject = ["$state", "$analytics"];
+  nyplAutofill.$inject = ["$state", "$analytics", "nyplSearch"];
 
   angular
     .module('nypl_locations')
