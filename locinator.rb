@@ -34,6 +34,100 @@ class Locinator < Sinatra::Base
       }
     })
 
+    set :tids, {
+          "36" => "schwarzman",
+          "55" => "lpa",
+          "64" => "schomburg",
+          "65" => "sibl",
+          "1" => "115th-street",
+          "2" => "125th-street",
+          "3" => "58th-street",
+          "4" => "67th-street",
+          "5" => "96th-street",
+          "6" => "aguilar",
+          "7" => "allerton",
+          "2787" => "battery-park-city",
+          "9" => "baychester",
+          "10" => "belmont",
+          "11" => "bloomingdale",
+          "12" => "bronx-library-center",
+          "13" => "castle-hill",
+          "14" => "cathedral",
+          "15" => "chatham-square",
+          "16" => "city-island",
+          "17" => "clasons-point",
+          "18" => "columbus",
+          "19" => "countee-cullen",
+          "20" => "dongan-hills",
+          "21" => "donnell-library-center",
+          "22" => "eastchester",
+          "23" => "edenwald",
+          "24" => "epiphany",
+          "25" => "fort-washington",
+          "26" => "francis-martin",
+          "27" => "george-bruce",
+          "871" => "grand-central",
+          "28" => "grand-concourse",
+          "29" => "great-kills",
+          "30" => "hamilton-fish-park",
+          "31" => "hamilton-grange",
+          "32" => "harlem",
+          "33" => "high-bridge",
+          "34" => "hudson-park",
+          "35" => "huguenot-park",
+          "37" => "hunts-point",
+          "38" => "inwood",
+          "39" => "jefferson-market",
+          "40" => "jerome-park",
+          "41" => "kingsbridge",
+          "42" => "kips-bay",
+          "43" => "macombs-bridge",
+          "7892" => "mariners-harbor",
+          "44" => "melrose",
+          "46" => "morningside-heights",
+          "632" => "morris-park",
+          "48" => "morrisania",
+          "49" => "mosholu",
+          "50" => "mott-haven",
+          "51" => "muhlenberg",
+          "495" => "mulberry-street",
+          "53" => "new-amsterdam",
+          "54" => "new-dorp",
+          "56" => "ottendorfer",
+          "57" => "parkchester",
+          "58" => "pelham-bay",
+          "59" => "port-richmond",
+          "60" => "richmondtown",
+          "61" => "riverdale",
+          "62" => "riverside",
+          "63" => "roosevelt-island",
+          "66" => "sedgwick",
+          "67" => "seward-park",
+          "68" => "soundview",
+          "69" => "south-beach",
+          "70" => "spuyten-duyvil",
+          "71" => "st-agnes",
+          "72" => "st-george-library-center",
+          "73" => "stapleton",
+          "74" => "throgs-neck",
+          "75" => "todt-hill-westerleigh",
+          "76" => "tompkins-square",
+          "77" => "tottenville",
+          "78" => "tremont",
+          "79" => "van-cortlandt",
+          "80" => "van-nest",
+          "81" => "wakefield",
+          "82" => "washington-heights",
+          "83" => "webster",
+          "84" => "west-farms",
+          "85" => "west-new-brighton",
+          "86" => "westchester-square",
+          "87" => "woodlawn-heights",
+          "88" => "woodstock",
+          "89" => "yorkville",
+          "8" => "heiskell"
+        }
+          
   end
 
   before do
@@ -69,6 +163,10 @@ class Locinator < Sinatra::Base
   get %r{/amenities$}, :spider => true do
     api = Lionactor::Client.new
     @amenities = api.amenities.group_by{|a| a.category}
+    @baseurl = '/'
+    if request.forwarded?
+      @baseurl = settings.baseurl
+    end
     erb :seo_amenities
   end
   
@@ -78,13 +176,60 @@ class Locinator < Sinatra::Base
     erb :seo_division
   end
 
-  get %r{/(.+)$}, :spider => true do
-    api = Lionactor::Client.new
-    @location = api.location(params['captures'].first)
-    erb :seo_location
+  get %r{/tid/(\d+)/node/(\d+)} do |tid, nid|
+    slug = settings.tids[tid]
+    if ! slug.nil?
+      redirect to("/node/#{nid}/"), 302
+    end
+    @rq = request
+    status 404
+    erb :index
   end
 
-  get '/', :spider => true do
+  get %r{/tid/(\d+)(/([^/]+))?} do |tid, extra, page|
+    slug = settings.tids[tid]
+    if ! slug.nil?
+      if ! page.nil?
+        if ['about', 'community', 'details'].include? page.downcase
+          redirect to("/about/locations/#{slug}"), 301
+        end
+      
+        if page == 'calendar'
+          redirect to("/events/calendar?location=#{tid}"), 301
+        end
+      else
+        if request.forwarded?
+          redirect to("#{settings.baseurl}/#{slug}"), 301
+        else
+          redirect to(slug), 301
+        end
+      end
+    end
+    @rq = request
+    status 404
+    erb :index
+  end
+
+  get %r{/(.+)$}, :spider => true do |loc|
+    api = Lionactor::Client.new
+    begin
+      # /map and /list are special URLs to open page either respective
+      # tab selected. For SEO, they are just the index page
+      if loc == 'map' or loc == 'list'
+        @locations = api.locations
+        erb :seo_index
+      else
+        # Generally, though, we're looking up the branch
+        @location = api.location(loc)
+        erb :seo_location
+      end
+    rescue Lionactor::ResponseError => e
+      status e.status
+      body "Nothing found for \"#{params['captures'].first}\""
+    end
+  end
+
+  get %r'/', :spider => true do
     api = Lionactor::Client.new
     @locations = api.locations
     erb :seo_index
