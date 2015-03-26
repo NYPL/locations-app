@@ -158,7 +158,12 @@
             </a>
           </h4>
           <!-- Division Hours Today -->
-          <todayshours hours="division.hours" alerts="division._embedded.alerts" />
+          <div class='division-hours-wrapper' data-ng-if="division.open">
+            <todayshours hours="division.hours" alerts="division._embedded.alerts" />
+          </div>
+          <div class='division-hours-wrapper' data-ng-if="!division.open">
+            <b>Division is temporarily closed.</b>
+          </div>
         </div>
       </div>
     </div>

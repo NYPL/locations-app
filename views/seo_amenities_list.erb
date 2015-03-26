@@ -5,7 +5,7 @@
         <ul>
         <% locals[:amenities][cat].sort{|a,b| (a.rank.nil? ? 100: a.rank)  <=> (b.rank.nil? ? 100 : b.rank) }.each do |a| %>
           <li itemscope itemtype="http://schema.org/Service">
-            <a href="<%= (['..'] * locals[:depth]).join('/') %>/amenities/id/<%= a.id %>">
+            <a href="<%= @baseurl %>amenities/id/<%= a.id %>">
               <span itemprop="name"><%= a.name %></span>
             </a>
 
