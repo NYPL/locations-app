@@ -119,7 +119,12 @@
             </a>
           </h4>
           <!-- Subdivisions Hours Today -->
-          <todayshours hours="subdivision.hours" alerts="subdivision._embedded.alerts" />
+          <div class='subdivision-hours-wrapper' data-ng-if="subdivision.open">
+            <todayshours hours="subdivision.hours" alerts="subdivision._embedded.alerts" />
+          </div>
+          <div class='subdivision-hours-wrapper' data-ng-if="!subdivision.open">
+            <b>Division is temporarily closed.</b>
+          </div>
         </div>
       </div>
     </div>
@@ -229,7 +234,7 @@
   <div id="container__features" data-ng-if="division._embedded.features">
     <h2 class="hdg">FEATURED</h2>
     <div class="grid">
-      <div class="chunk one-whole desk-one-third" data-ng-repeat='feature in division._embedded.features'>
+      <div class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in division._embedded.features'>
         <a data-ng-if="feature.image" data-ng-href="{{feature._links.self.href}}"
           analytics-on="click" analytics-category="Locations"
           analytics-event="Feature image" analytics-label="{{feature._links.self.href}}">

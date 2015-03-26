@@ -14,7 +14,12 @@ describe('NYPL Alerts Component', function () {
       var rootScope;
 
       // Note that no settings were passed in the provider
-      module('nyplAlerts');
+      module('nyplAlerts', function ($nyplAlertsProvider) {
+        $nyplAlertsProvider.setOptions({
+          api_root: "",
+          api_version: ""
+        });
+      });
       inject(function (_$rootScope_) {
         rootScope = _$rootScope_;
       });
@@ -79,6 +84,8 @@ describe('NYPL Alerts Component', function () {
         expect(nyplAlerts.alerts).toBe(null);
         expect(nyplAlerts.api_url).toBe(api_url);
         expect(nyplAlerts.api_version).toBe(api_version);
+        expect(angular.isFunction(nyplAlerts.generateApiUrl)).toBe(true);
+        expect(angular.isFunction(nyplAlerts.getGlobalAlerts)).toBe(true);
       });
     }); /* End Provider object variables */
 
@@ -285,8 +292,8 @@ describe('NYPL Alerts Component', function () {
             end: "2015-02-27T18:00:00-05:00"
           },
           applies: {
-            start: "2015-02-27T16:00:00-05:00",
-            end: "2015-02-27T18:00:00-05:00"
+            start: "2015-02-27T00:00:00-05:00",
+            end: "2015-02-28T00:00:00-05:00"
           }
         },
         {
@@ -307,24 +314,14 @@ describe('NYPL Alerts Component', function () {
     });
 
     describe('Alerts Service', function () {
-      var nyplAlertsService, activeAlerts, nyplAlerts;
+      var nyplAlertsService, activeAlerts;
 
       // excuted before each "it" is run.
       beforeEach(function () {
         // inject your service for testing.
         inject(function (_nyplAlertsService_, _$nyplAlerts_) {
           nyplAlertsService = _nyplAlertsService_;
-          nyplAlerts = _$nyplAlerts_;
         });
-
-        // Doesn't seem like install/uninstall are necessary for mocking dates
-        // but leaving it in case it's used for setTimeout/setInterval time
-        // testing and mocking.
-        jasmine.clock().install();
-      });
-
-      afterEach(function () {
-        jasmine.clock().uninstall();
       });
 
       describe('currentAlerts()', function () {
@@ -345,7 +342,7 @@ describe('NYPL Alerts Component', function () {
               // Whenever `new Date()` is called, we will replace it with
               // the mocked date. But when it's called with parameters,
               // those parameters will take priority.
-              todaysDateMock = new Date(2015, 2, 3);
+              todaysDateMock = new Date(2015, 2, 1);
 
               jasmine.clock().mockDate(todaysDateMock);
 
@@ -384,7 +381,8 @@ describe('NYPL Alerts Component', function () {
 
       describe('currentClosingAlerts()', function () {
         it('should have a currentClosingAlerts() function', function () {
-          expect(angular.isFunction(nyplAlertsService.currentClosingAlerts)).toBe(true);
+          expect(angular.isFunction(nyplAlertsService.currentClosingAlerts))
+            .toBe(true);
           expect(nyplAlertsService.currentClosingAlerts).toBeDefined();
         });
 
@@ -504,7 +502,8 @@ describe('NYPL Alerts Component', function () {
 
       describe('allClosingAlerts()', function () {
         it('should have an allClosingAlerts() function', function () {
-          expect(angular.isFunction(nyplAlertsService.allClosingAlerts)).toBe(true);
+          expect(angular.isFunction(nyplAlertsService.allClosingAlerts))
+            .toBe(true);
           expect(nyplAlertsService.allClosingAlerts).toBeDefined();
         });
 
@@ -521,7 +520,8 @@ describe('NYPL Alerts Component', function () {
 
       describe('currentWeekClosingAlerts()', function () {
         it('should have an currentWeekClosingAlerts() function', function () {
-          expect(angular.isFunction(nyplAlertsService.currentWeekClosingAlerts)).toBe(true);
+          expect(angular.isFunction(nyplAlertsService.currentWeekClosingAlerts))
+            .toBe(true);
           expect(nyplAlertsService.currentWeekClosingAlerts).toBeDefined();
         });
 
@@ -537,13 +537,14 @@ describe('NYPL Alerts Component', function () {
 
             expect(nyplAlertsService
                 .currentWeekClosingAlerts(alertsObject.alerts).length)
-              .toEqual(2);
+              .toEqual(3);
           });
       });
 
       describe('sortAlertsByScope()', function () {
         it('should have an sortAlertsByScope() function', function () {
-          expect(angular.isFunction(nyplAlertsService.sortAlertsByScope)).toBe(true);
+          expect(angular.isFunction(nyplAlertsService.sortAlertsByScope))
+            .toBe(true);
           expect(nyplAlertsService.sortAlertsByScope).toBeDefined();
         });
 
@@ -666,14 +667,15 @@ describe('NYPL Alerts Component', function () {
         });
       }); /* End isAlertExpired() */
 
-      describe('getActiveMsgs()', function () {
-        it('should have a getActiveMsgs() function', function () {
-          expect(angular.isFunction(nyplAlertsService.getActiveMsgs)).toBe(true);
-          expect(nyplAlertsService.getActiveMsgs).toBeDefined();
+      describe('getCurrentActiveMessage()', function () {
+        it('should have a getCurrentActiveMessage() function', function () {
+          expect(angular.isFunction(nyplAlertsService.getCurrentActiveMessage))
+            .toBe(true);
+          expect(nyplAlertsService.getCurrentActiveMessage).toBeDefined();
         });
 
         it('should return undefined if no alerts were passed', function () {
-          expect(nyplAlertsService.getActiveMsgs())
+          expect(nyplAlertsService.getCurrentActiveMessage())
             .not.toBeDefined();
         });
 
@@ -682,19 +684,21 @@ describe('NYPL Alerts Component', function () {
             todaysDateMock = new Date(2015, 1, 27);
             jasmine.clock().mockDate(todaysDateMock);
 
-            expect(nyplAlertsService.getActiveMsgs(alertsObject.alerts))
-              .toEqual('Daylight closing');
+            expect(
+              nyplAlertsService.getCurrentActiveMessage(alertsObject.alerts)
+            ).toEqual('Daylight closing');
           });
 
-        it('should return an empty string if there are no active alerts',
+        it('should return undefined if there are no active alerts',
           function () {
             todaysDateMock = new Date(2015, 2, 15);
             jasmine.clock().mockDate(todaysDateMock);
 
-            expect(nyplAlertsService.getActiveMsgs(alertsObject.alerts))
-              .toEqual('');
+            expect(
+              nyplAlertsService.getCurrentActiveMessage(alertsObject.alerts)
+            ).not.toBeDefined();
           });
-      }); /* End getActiveMsgs() */
+      }); /* End getCurrentActiveMessage() */
 
       describe('filterAlerts()', function () {
         var alertsObj = {};
@@ -802,7 +806,7 @@ describe('NYPL Alerts Component', function () {
           ).length).toEqual(2);
         });
 
-        it('should return the "current" alerts. Meaning all alerts wheather they are closing ' +
+        it('should return the "current" alerts. Meaning all alerts whether they are closing ' +
           'or non closing and are current based on today\'s mocked date', function () {
 
           todaysDateMock = new Date(2015, 1, 27);
@@ -814,7 +818,7 @@ describe('NYPL Alerts Component', function () {
           ).length).toEqual(2);
         });
 
-        it('should return the "current" alerts. Meaning all alerts wheather they are closing ' +
+        it('should return the "current" alerts. Meaning all alerts whether they are closing ' +
           'or non closing and are current based on today\'s mocked date with set scope -- LOCATION',
           function () {
 
@@ -829,21 +833,21 @@ describe('NYPL Alerts Component', function () {
         });
 
 
-        it('should return the "current" alerts. Meaning all alerts wheather they are closing ' +
-          'or non closing and are current based on today\'s mocked date with set scope -- ALL.'
-          , function () {
+        it('should return the "current" alerts. Meaning all alerts whether they are closing ' +
+          'or non closing and are current based on today\'s mocked date with set scope -- ALL.',
+            function () {
 
-          todaysDateMock = new Date(2015, 1, 27);
-          jasmine.clock().mockDate(todaysDateMock);
+            todaysDateMock = new Date(2015, 1, 27);
+            jasmine.clock().mockDate(todaysDateMock);
 
-          expect(nyplAlertsService.filterAlerts(
-            alertsObj.alerts,
-            {scope: 'all',
-            current: true}
-          ).length).toEqual(1);
-        });
+            expect(nyplAlertsService.filterAlerts(
+              alertsObj.alerts,
+              {scope: 'all',
+              current: true}
+            ).length).toEqual(1);
+          });
 
-        it('should return the "current" alerts. Meaning all alerts wheather they are closing ' +
+        it('should return the "current" alerts. Meaning all alerts whether they are closing ' +
           'or non closing and are current based on today\'s mocked date with set scope -- DIVISION.'
           , function () {
 
@@ -877,18 +881,12 @@ describe('NYPL Alerts Component', function () {
 
           httpBackend.flush();
         });
-
-        jasmine.clock().install();
-      });
-
-      afterEach(function () {
-        jasmine.clock().uninstall();
       });
 
       function createDirective(template) {
         var element;
         element = compile(template)(scope);
-        scope.$digest();
+        scope.$apply();
 
         return element;
       }
@@ -899,8 +897,8 @@ describe('NYPL Alerts Component', function () {
         describe('With no returned alerts data', function () {
           it('should compile', function () {
             scope.alerts = undefined;
-            template = '<nypl-location-alerts alerts="alerts">' +
-              '</nypl-location-alerts>';
+            template = '<nypl-location-alerts alerts="alerts" ' +
+              'type="location"></nypl-location-alerts>';
 
             locationAlertDirective = createDirective(template);
             expect(locationAlertDirective.next()).toEqual({});
@@ -912,8 +910,8 @@ describe('NYPL Alerts Component', function () {
         describe('With returned alerts data', function () {
           beforeEach(function () {
             scope.alerts = alertsObject.alerts;
-            template = '<nypl-location-alerts alerts="alerts">' +
-              '</nypl-location-alerts>';
+            template = '<nypl-location-alerts alerts="alerts" ' +
+            'type="location"></nypl-location-alerts>';
 
             // DO NOT compile the directive in the before each so we can
             // test out different situations below
@@ -986,7 +984,7 @@ describe('NYPL Alerts Component', function () {
         var globalAlertsDirective, nyplAlertsService;
 
         beforeEach(function () {
-          // Injexting the Alerts service so we can use the filterAlerts()
+          // Injecting the Alerts service so we can use the filterAlerts()
           // function that is used in the initAlerts() function in the 
           // module's run initialization.
           inject(function (_nyplAlertsService_) {
