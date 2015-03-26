@@ -119,7 +119,12 @@
             </a>
           </h4>
           <!-- Subdivisions Hours Today -->
-          <todayshours hours="subdivision.hours" alerts="subdivision._embedded.alerts" />
+          <div class='subdivision-hours-wrapper' data-ng-if="subdivision.open">
+            <todayshours hours="subdivision.hours" alerts="subdivision._embedded.alerts" />
+          </div>
+          <div class='subdivision-hours-wrapper' data-ng-if="!subdivision.open">
+            <b>Division is temporarily closed.</b>
+          </div>
         </div>
       </div>
     </div>
