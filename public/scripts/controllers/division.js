@@ -14,6 +14,11 @@
         $scope.calendarLink = nyplUtility.calendarLink;
         $scope.icalLink = nyplUtility.icalLink;
 
+        nyplUtility.scrollToHash();
+        $scope.createHash = function (id) {
+            nyplUtility.createHash(id);
+        };
+
         if (division.hours) {
             $scope.hoursToday = nyplUtility.hoursToday(division.hours);
 

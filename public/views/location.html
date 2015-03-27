@@ -139,7 +139,7 @@
 
   <!-- Divisions (API dependent) -->
   <div id="container__divisions" data-ng-if="location.type == 'research' && location._embedded.divisions">
-    <h2 class="hdg">DIVISIONS</h2>
+    <h2 class="hdg"><a data-ng-click="createHash('divisions')" id="divisions">DIVISIONS</a></h2>
     <div class="grid">
       <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
         data-ng-repeat='division in location._embedded.divisions'>
@@ -171,7 +171,7 @@
 
   <!-- Features -->
   <div id="container__features" data-ng-if="location._embedded.features">
-    <h2 class="hdg">FEATURED</h2>
+    <h2 class="hdg"><a data-ng-click="createHash('featured')" id="featured">FEATURED</a></h2>
     <div class="grid">
       <div class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in location._embedded.features'>
         <a data-ng-href="{{feature._links.self.href}}" data-ng-if="feature.image"
@@ -195,7 +195,7 @@
 
   <!-- Events -->
   <div id="container__events" data-ng-if="location._embedded.events">
-    <h2 class="hdg">EVENTS</h2>
+    <h2 class="hdg"><a data-ng-click="createHash('events')" id="events">EVENTS</a></h2>
     <ul class="grid">
       <li class="chunk one-whole desk-one-third" data-ng-repeat="event in location._embedded.events">
         <h3 class="event__title">
@@ -250,13 +250,13 @@
   <!-- About (multi-view conditional) -->
   <div id="container__about">
     <h2 class="hdg" data-ng-if="location.type == 'circulating'">
-      ABOUT
+      <a data-ng-click="createHash('about')" id="about">ABOUT</a>
     </h2>
     <div class="grid">
-      <div id="about" class="grid__item one-whole"
+      <div class="grid__item one-whole"
         data-ng-class="{true: 'lap-and-up-two-thirds', false: ''}[location.type == 'research']">
         <h2 class="hdg" data-ng-if="location.type == 'research'">
-          About
+          <a data-ng-click="createHash('about')" id="about">About</a>
         </h2>
         <div class="grid">
           <div id="location-secondary-img" class="grid__item one-whole lap-and-up-one-half" data-ng-if="location.images.interior">
@@ -306,7 +306,7 @@
 
   <!-- Blogs (conditonal) -->
   <div id="container__blogs" data-ng-if="location._embedded.blogs">
-    <h2 class="hdg">BLOGS</h2>
+    <h2 class="hdg"><a data-ng-click="createHash('blogs')" id="blogs">BLOGS</a></h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
         <h3>
@@ -343,7 +343,7 @@
 
   <!-- Exhibitions (conditional) -->
   <div id="container__exhibitions" data-ng-if="location._embedded.exhibitions">
-    <h2 class="hdg">EXHIBITIONS</h2>
+    <h2 class="hdg"><a data-ng-click="createHash('exhibitions')" id="exhibitions">EXHIBITIONS</a></h2>
     <div class="grid">
       <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat="exhibition in location._embedded.exhibitions | orderBy:'-start'">
         <a data-ng-href="{{exhibition._links.self.href}}" data-ng-if="exhibition.image"

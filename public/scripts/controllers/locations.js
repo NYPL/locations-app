@@ -583,6 +583,11 @@
         // Load the user's geolocation coordinates
         loadUserCoordinates();
 
+        nyplUtility.scrollToHash();
+        $scope.createHash = function (id) {
+            nyplUtility.createHash(id);
+        };
+
         $scope.location = location;
         $rootScope.title = location.name;
 
