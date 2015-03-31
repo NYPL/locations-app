@@ -20,7 +20,7 @@
       View on Map
     </a>
 	</div>
-	<div class="geocoding-search"
+	<div class="geocoding-search" data-ng-if="!filterById"
 		data-ng-click="geoSearch({term: model})"
 		data-ng-class="{'active': geocodingactive}"
 		analytics-on="click" analytics-category="Locations"
