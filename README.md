@@ -80,6 +80,8 @@ Third Party
 
 NYPL Components
 These are internal modules found in [public/scripts/components](public/scripts/components).
+* nyplAlerts
+  * nypl_alerts.js - Module that provides an AngularJS Provider, Directives and Service methods to sort, filter and display site-wide/location based alerts from a given API endpoint.
 * nyplBreadcrumbs
   * nypl_breadcrumbs.js - Module that provides an AngularJS directive for breacrumbs navigation.
 * nyplFeedback

@@ -2,9 +2,11 @@
 	<p><span>{{currentWord}}</span>{{lookahead}}</p>
 	<p class="hidden">{{completeWord}}</p>
 </div>
-<div class="autofill-container" data-ng-if="model.length > 1 && focused">
+<div class="autofill-container" 
+	data-ng-class="{'no-geosearch': filterById && model.length > 1}"
+	data-ng-if="model.length > 1 && focused">
 	<div class="location-item" ng-repeat="item in filtered" 
-	ng-class="(item.id==active.id && activated) ? 'active' : ''">
+		data-ng-class="{'active': item.id==active.id && activated}">
 	  <div class="location-name">
 	  	<a data-ui-sref='location({ location: item.slug })'
 	  		analytics-on="click" analytics-category="Locations"
@@ -18,10 +20,18 @@
       View on Map
     </a>
 	</div>
-	<div class="geocoding-search" data-ng-click="geoSearch({term: model})" 
-		ng-class="(geocodingactive) ? 'active' : ''"
+	<div class="geocoding-search"
+		data-ng-click="geoSearch({term: model})"
+		data-ng-class="{'active': geocodingactive}"
 		analytics-on="click" analytics-category="Locations"
     analytics-event="Select search" analytics-label="{{model}}">
 		<p>Search for locations near <b>{{model}}</b></p>
+	</div>
+</div>
+<div class="autofill-help-text" 
+	data-ng-class="{'shift-help-text': filterById && model.length > 1}"
+	data-ng-if="filterById && model.length > 0">
+	<div class='arrow-box-wrapper'>
+		<p>Location symbol search is enabled.<br />Example searches: "!sasb" and "!mml"</p>
 	</div>
 </div>
