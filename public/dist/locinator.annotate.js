@@ -4254,7 +4254,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }]
     };
   }
-  nyplAutofill.$inject = ["$state", "$analytics"];
+  nyplAutofill.$inject = ["$state", "$analytics", "nyplSearch"];
 
   angular
     .module('nypl_locations')
@@ -6062,7 +6062,7 @@ var nypl_widget = angular.module('nypl_widget', [
 
     return utility;
   }
-  nyplUtility.$inject = ['$sce', '$window', 'nyplCoordinatesService'];
+  nyplUtility.$inject = ['$anchorScroll', '$location', '$sce', '$timeout', '$window', 'nyplCoordinatesService'];
 
   angular
     .module('nypl_locations')
