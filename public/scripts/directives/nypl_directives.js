@@ -396,75 +396,6 @@
 
   /**
    * @ngdoc directive
-   * @name nypl_locations.directive:nyplSiteAlerts
-   * @restrict E
-   * @requires $timeout
-   * @requires nyplLocationsService
-   * @requires nyplUtility
-   * @description
-   * ...
-   */
-  // Transfered to nyplAlerts Module
-  /*function nyplSiteAlerts($timeout, nyplLocationsService, nyplUtility) {
-    return {
-      restrict: 'E',
-      templateUrl: 'scripts/directives/templates/alerts.html',
-      replace: true,
-      // Must be global for unit test to pass. Must find better way to test.
-      // scope: {},
-      link: function (scope, element, attrs) {
-        var alerts;
-        $timeout(function () {
-          nyplLocationsService.alerts().then(function (data) {
-            alerts = data.alerts;
-            scope.sitewidealert = nyplUtility.alerts(alerts);
-          });
-        }, 200);
-      }
-    };
-  }*/
-
-  /**
-   * @ngdoc directive
-   * @name nypl_locations.directive:nyplLibraryAlert
-   * @restrict E
-   * @requires nyplUtility
-   * @scope
-   * @description
-   * ...
-   */
-  // Transfered to nyplAlerts Module
-  /*function nyplLibraryAlert(nyplUtility) {
-    function alertExpired(startDate, endDate) {
-      var sDate = new Date(startDate),
-        eDate   = new Date(endDate),
-        today   = new Date();
-      if (sDate.getTime() <= today.getTime() && eDate.getTime() >= today.getTime()) {
-        return false;
-      }
-      return true;
-    };
-
-    return {
-      restrict: 'E',
-      templateUrl: 'scripts/directives/templates/library-alert.html',
-      replace: true,
-      scope: {
-          exception: '='
-      },
-      link: function (scope, element, attrs) {
-        if (scope.exception) {
-          scope.alertExpired = alertExpired(scope.exception.start, scope.exception.end);
-          if (scope.exception.description !== '' && scope.alertExpired === false) {
-            scope.libraryAlert = scope.exception.description;
-          }
-        }
-      }
-    };
-  }*/
-
-  /**
-   * @ngdoc directive
    * @name nypl_locations.directive:collapse
    * @restrict A
    * @description
@@ -624,7 +555,7 @@
    * @description
    * ...
    */
-  function nyplAutofill($state, $analytics) {
+  function nyplAutofill($state, $analytics, nyplSearch) {
     return {
       restrict: 'AEC',
       templateUrl: 'scripts/directives/templates/autofill.html',
@@ -639,12 +570,10 @@
         $scope.activated = false;
         $scope.geocodingactive = false;
         $scope.filtered = [];
-        $scope.items;
-        $scope.active;
-        $scope.currentIndex;
 
         var input = angular.element(document.getElementById('searchTerm')),
-          html = angular.element(document.getElementsByTagName('html'));
+          html = angular.element(document.getElementsByTagName('html')),
+          searchButton = angular.element(document.getElementById('find-location'));
 
         input.bind('focus', function () {
           $scope.$apply(function () {
@@ -667,6 +596,7 @@
                   $scope.activated = false;
                   controller.closeAutofill();
                   $scope.model = $scope.active.name;
+                  nyplSearch.setSearchValue('searchTerm', $scope.active.name);
                   $state.go(
                     'location',
                     { location: $scope.active.slug }
@@ -681,9 +611,10 @@
                   }
                 }
               }
-              // User has pressed enter with autofill
-              else if (controller.setSearchText($scope.model)) {
+              // User has pressed enter with auto-complete
+              else if (controller.setSearchText()) {
                   $scope.model = $scope.items[0].name;
+                  nyplSearch.setSearchValue('searchTerm', $scope.model);
                   controller.closeAutofill();
                   $analytics.eventTrack('Accept',
                     { category: 'Locations', label: $scope.model });
@@ -694,8 +625,7 @@
               }
               // No autofill, down/up arrows not pressed
               else {
-                // Geocoding Search only
-                $scope.geoSearch({term: $scope.model});
+                controller.handleSearch($scope.model);
                 if (input.blur()) {
                   controller.closeAutofill();
                 }
@@ -706,23 +636,13 @@
           // Right Arrow
           if (e.keyCode === 39) {
             $scope.$apply(function () {
-              controller.setSearchText($scope.model);
+              controller.setSearchText();
             });
           }
 
           // Backspace
           if (e.keyCode === 8) {
             $scope.$apply(function () { $scope.lookahead = ''; });
-          }
-
-          // Escape key
-          if (e.keyCode === 27) {
-            /*$scope.$apply( function() { 
-               if (input.blur()) {
-                controller.closeAutofill();
-                $scope.activated = false;
-              }
-            });*/
           }
         });
 
@@ -766,6 +686,13 @@
           });
         });
 
+        searchButton.bind('click', function (e) {
+          e.preventDefault();
+          $scope.$apply(function () {
+            controller.handleSearch($scope.model);
+          });
+        });
+
         function initAutofill() {
           $scope.$watch('model', function (newValue, oldValue) {
             controller.updateSearchText($scope.data, newValue);
@@ -776,7 +703,7 @@
             controller.closeAutofill();
           });
         }
-
+        // Initialize NYPL Autofill
         initAutofill();
       },
       controller: ['$scope', function ($scope) {
@@ -833,7 +760,7 @@
           }
         };
 
-        this.setSearchText = function (model) {
+        this.setSearchText = function () {
           if ($scope.completeWord === $scope.model ||
               $scope.completeWord === '' || 
               $scope.model === '') {
@@ -857,23 +784,78 @@
           });
         };
 
-        this.filterTermWithin = function (data, searchTerm) {
-          return _.filter(data, function (elem) {
-            if (elem.name) {
-              return elem.name.toLowerCase().
-                indexOf(searchTerm.toLowerCase()) >= 0;
+        this.filterTermWithin = function(data, searchTerm, property) {
+          var _this = this;
+          return _.filter(data, function(elem) {
+            if (property === 'name') {
+              if (elem.name) {
+                return _this.cleanText(elem.name)
+                  .indexOf(
+                    _this.cleanText(searchTerm)
+                  ) >= 0;
+              }
+            }
+            else if (property === 'id') {
+              // Supports ID property matching
+              if (elem.id) {
+                return elem.id.toLowerCase()
+                  .indexOf(
+                    searchTerm
+                    .substring(1, searchTerm.length)
+                    .toLowerCase()
+                  ) >= 0;
+              }
             }
             return false;
           });
         };
 
+        this.cleanText = function(text) {
+          return text
+            .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "")
+            .toLowerCase();
+        };
+
+        // Searches by ID or closest match first.
+        // Then executes geoAddressSearch if no match is found
+        this.handleSearch = function (term) {
+          if (!term.length) { return; }
+          var location,
+            searchTerm = (term.charAt(0) === '!') ? term.slice(1) : term;
+          // Execute search only if the term is at least two chars
+          if (searchTerm.length > 1) {
+            if ($scope.filtered && $scope.filtered.length) {
+              location = $scope.filtered[0]; // Top match
+              if (searchTerm.toLowerCase() === location.id.toLowerCase() ||
+                this.cleanText(location.name)
+                .indexOf(
+                  this.cleanText(searchTerm)
+                ) >= 0
+              ) {
+                nyplSearch.setSearchValue('searchTerm', term);
+                $state.go('location', { location: location.slug });
+              }
+            } else {
+              $scope.geoSearch({term: searchTerm});
+            }
+          }
+        };
+
         this.updateSearchText = function (data, searchTerm) {
           if (searchTerm === '' || !searchTerm || !data) return;
 
-          if (searchTerm.length > 1) {
-            $scope.items    = this.filterStartsWith(data, searchTerm);
-            $scope.filtered = this.filterTermWithin(data, searchTerm);
+          if (searchTerm.length > 0) {
+            $scope.items = this.filterStartsWith(data, searchTerm);
 
+            // Filter through id if (!) is typed
+            if (searchTerm.charAt(0) === '!') {
+              $scope.filtered = this.filterTermWithin(data, searchTerm, 'id');
+              $scope.filterById = true;
+            } else {
+              $scope.filtered = this.filterTermWithin(data, searchTerm, 'name');
+              $scope.filterById = false;
+            }
+            // Assign first match as auto-complete text
             if ($scope.items[0]) {
               $scope.lookahead   = $scope.items[0].name.substring(searchTerm.length);
               $scope.currentWord = searchTerm;
@@ -886,7 +868,6 @@
         };
       }]
     };
-
   }
 
   angular
@@ -899,8 +880,6 @@
     .directive('librarianchatbutton', librarianchatbutton)
     .directive('scrolltop', scrolltop)
     .directive('eventRegistration', eventRegistration)
-    //.directive('nyplSiteAlerts', nyplSiteAlerts)
-    //.directive('nyplLibraryAlert', nyplLibraryAlert)
     .directive('nyplFundraising', nyplFundraising)
     .directive('nyplSidebar', nyplSidebar)
     .directive('nyplAutofill', nyplAutofill)
@@ -913,5 +892,4 @@
     .directive('nyplFundraising', nyplFundraising)
     .directive('librarianchatbutton', librarianchatbutton)
     .directive('emailusbutton', emailusbutton);
-
 })();
