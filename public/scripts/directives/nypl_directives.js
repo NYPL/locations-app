@@ -877,7 +877,7 @@
       }]
     };
   }
-  nyplAutofill.$inject = ["$state", "$analytics"];
+  nyplAutofill.$inject = ["$state", "$analytics", "nyplSearch"];
 
   angular
     .module('nypl_locations')
