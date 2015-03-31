@@ -785,25 +785,21 @@
         };
 
         this.filterTermWithin = function(data, searchTerm, property) {
+          var _this = this;
           return _.filter(data, function(elem) {
             if (property === 'name') {
               if (elem.name) {
-                return elem
-                  .name
-                  .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "")
-                  .toLowerCase()
+                return _this.cleanText(elem.name)
                   .indexOf(
-                    searchTerm
-                    .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "")
-                    .toLowerCase()
+                    _this.cleanText(searchTerm)
                   ) >= 0;
               }
             }
             else if (property === 'id') {
               // Supports ID property matching
               if (elem.id) {
-                return elem.id.toLowerCase().
-                  indexOf(
+                return elem.id.toLowerCase()
+                  .indexOf(
                     searchTerm
                     .substring(1, searchTerm.length)
                     .toLowerCase()
@@ -812,6 +808,12 @@
             }
             return false;
           });
+        };
+
+        this.cleanText = function(text) {
+          return text
+            .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "")
+            .toLowerCase();
         };
 
         // Searches by ID or closest match first.
@@ -824,19 +826,12 @@
           if (searchTerm.length > 1) {
             if ($scope.filtered && $scope.filtered.length) {
               location = $scope.filtered[0]; // Top match
-              if (searchTerm.toLowerCase() === location.id.toLowerCase()) {
-                nyplSearch.setSearchValue('searchTerm', term);
-                $state.go('location', { location: location.slug });
-              } else if (
-                location.name
-                  .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "")
-                  .toLowerCase().
-                  indexOf(
-                    searchTerm
-                      .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "")
-                      .toLowerCase()
-                  ) >= 0
-                ) {
+              if (searchTerm.toLowerCase() === location.id.toLowerCase() ||
+                this.cleanText(location.name)
+                .indexOf(
+                  this.cleanText(searchTerm)
+                ) >= 0
+              ) {
                 nyplSearch.setSearchValue('searchTerm', term);
                 $state.go('location', { location: location.slug });
               }
