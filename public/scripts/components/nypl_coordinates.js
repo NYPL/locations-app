@@ -142,6 +142,7 @@
 
     return coordinatesService;
   }
+  nyplCoordinatesService.$inject = ['$q', '$window'];
 
   /**
    * @ngdoc overview

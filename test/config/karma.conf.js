@@ -10,8 +10,8 @@ module.exports = function (config) {
     files : [
       'public/bower_components/jquery/jquery.js',
       'public/bower_components/angular/angular.js',
-      'public/bower_components/angular-mocks/*.js',
-      'public/bower_components/angular-sanitize/*.js',
+      'public/bower_components/angular-mocks/angular-mocks.js',
+      'public/bower_components/angular-sanitize/angular-sanitize.js',
       'public/bower_components/angular-ui-router/release/*.js',
       'public/bower_components/moment/min/moment-with-locales.min.js',
       'public/bower_components/moment-timezone/builds/moment-timezone-with-data.min.js',

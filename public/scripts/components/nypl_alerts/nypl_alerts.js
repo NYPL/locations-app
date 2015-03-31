@@ -434,6 +434,7 @@
       scope: false
     };
   }
+  nyplGlobalAlerts.$inject = ['$rootScope'];
 
   /**
    * @ngdoc directive
@@ -467,6 +468,7 @@
       }
     };
   }
+  nyplLocationAlerts.$inject = ['nyplAlertsService'];
 
   // Initialize Alerts data through Provider
   function initAlerts($nyplAlerts, $rootScope, nyplAlertsService) {
@@ -480,6 +482,7 @@
     });
   }
 
+  initAlerts.$inject = ['$nyplAlerts', '$rootScope', 'nyplAlertsService'];
 
   /**
    * @ngdoc overview

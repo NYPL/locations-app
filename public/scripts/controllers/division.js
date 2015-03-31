@@ -42,6 +42,7 @@
         $scope.has_appointment =
             nyplUtility.divisionHasAppointment(divisionsWithApt, division.id);
     }
+    DivisionCtrl.$inject = ["$rootScope", "$scope", "config", "division", "nyplUtility"];
 
     angular
         .module('nypl_locations')
