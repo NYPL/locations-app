@@ -10,7 +10,7 @@ describe('Locations: Amenities', function () {
     // Function that creates a module that is injected at run time,
     // overrides and mocks httpbackend to mock API call. 
     httpBackendMock = function (response) {
-      var API_URL = 'http://dev.locations.api.nypl.org';
+      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
@@ -34,8 +34,8 @@ describe('Locations: Amenities', function () {
   describe('Good API Call', function () {
     beforeEach(function () {
       // Pass the good JSON from the API call.
-      browser.addMockModule('httpBackendMock', httpBackendMock,
-          APIresponse.good);
+      // browser.addMockModule('httpBackendMock', httpBackendMock,
+      //     APIresponse.good);
       browser.get('/amenities');
       browser.waitForAngular();
     });
