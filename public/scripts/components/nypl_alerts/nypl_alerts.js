@@ -447,15 +447,13 @@
   function nyplLocationAlerts(nyplAlertsService) {
     return {
       restrict: 'E',
-      template: "<div>" +
-                  "<div class='nypl-location-alerts' " +
-                      "data-ng-if='locationAlerts.length'>" +
-                    "<div data-ng-repeat='alert in locationAlerts'>" +
-                      "<p data-ng-bind-html='alert.msg'></p>" +
-                    "</div>" +
+      template: "<div class='nypl-location-alerts' " +
+                    "data-ng-if='locationAlerts.length'>" +
+                  "<div data-ng-repeat='alert in locationAlerts'>" +
+                    "<p data-ng-bind-html='alert.msg'></p>" +
                   "</div>" +
                 "</div>",
-      replace: true,
+      replace: false,
       scope: {
         alerts: '=alerts',
         type: '@'

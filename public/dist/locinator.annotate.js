@@ -85,7 +85,8 @@ nypl_locations.config([
         return subdiv;
       });
     }
-    LoadSubDivision.$inject = ["$q", "$stateParams", "config", "nyplLocationsService"];
+    LoadSubDivision.$inject = ["$q", "$stateParams",
+      "config", "nyplLocationsService"];
 
     function LoadDivision($stateParams, config, nyplLocationsService) {
       return nyplLocationsService
@@ -396,7 +397,8 @@ var nypl_widget = angular.module('nypl_widget', [
         return subdiv;
       });
     }
-    LoadSubDivision.$inject = ["$q", "$stateParams", "config", "nyplLocationsService"];
+    LoadSubDivision.$inject = ["$q", "$stateParams",
+      "config", "nyplLocationsService"];
 
     function LoadDivision($stateParams, config, nyplLocationsService) {
       return nyplLocationsService
@@ -910,13 +912,13 @@ var nypl_widget = angular.module('nypl_widget', [
   function nyplLocationAlerts(nyplAlertsService) {
     return {
       restrict: 'E',
-      template: "<div class='nypl-location-alerts'" +
+      template: "<div class='nypl-location-alerts' " +
                     "data-ng-if='locationAlerts.length'>" +
                   "<div data-ng-repeat='alert in locationAlerts'>" +
                     "<p data-ng-bind-html='alert.msg'></p>" +
                   "</div>" +
                 "</div>",
-      replace: true,
+      replace: false,
       scope: {
         alerts: '=alerts',
         type: '@'
@@ -2567,7 +2569,8 @@ var nypl_widget = angular.module('nypl_widget', [
     $scope.amenitiesCategories =
       nyplAmenities.createAmenitiesCategories(amenities.amenities);
   }
-  AmenitiesCtrl.$inject = ["$rootScope", "$scope", "amenities", "config", "nyplAmenities"];
+  AmenitiesCtrl.$inject = ["$rootScope", "$scope", "amenities",
+    "config", "nyplAmenities"];
 
   // Load an amenity and list all the locations
   // where the amenity can be found.
@@ -2593,7 +2596,8 @@ var nypl_widget = angular.module('nypl_widget', [
     $rootScope.title = location.name;
     $scope.location = location;
   }
-  AmenitiesAtLibraryCtrl.$inject = ["$rootScope", "$scope", "config", "location", "nyplAmenities"];
+  AmenitiesAtLibraryCtrl.$inject = ["$rootScope", "$scope", "config",
+    "location", "nyplAmenities"];
 
   angular
     .module('nypl_locations')
@@ -2603,7 +2607,7 @@ var nypl_widget = angular.module('nypl_widget', [
 })();
 
 /*jslint indent: 4, maxlen: 80, nomen: true */
-/*globals nypl_locations, angular */
+/*globals nypl_locations, angular, _ */
 
 (function () {
     'use strict';
@@ -2646,7 +2650,8 @@ var nypl_widget = angular.module('nypl_widget', [
         $scope.has_appointment =
             nyplUtility.divisionHasAppointment(divisionsWithApt, division.id);
     }
-    DivisionCtrl.$inject = ["$rootScope", "$scope", "config", "division", "nyplUtility"];
+    DivisionCtrl.$inject = ["$rootScope", "$scope", "config",
+        "division", "nyplUtility"];
 
     angular
         .module('nypl_locations')
@@ -3303,7 +3308,8 @@ var nypl_widget = angular.module('nypl_widget', [
             $scope.location.images.closed = config.closed_img;
         }
     }
-    LocationCtrl.$inject = ["$rootScope", "$scope", "$timeout", "config", "location", "nyplCoordinatesService", "nyplUtility", "nyplAmenities"];
+    LocationCtrl.$inject = ["$rootScope", "$scope", "$timeout", "config",
+        "location", "nyplCoordinatesService", "nyplUtility", "nyplAmenities"];
 
     angular
         .module('nypl_locations')
@@ -3368,7 +3374,8 @@ var nypl_widget = angular.module('nypl_widget', [
     // Used for the Get Directions link to Google Maps
     $scope.locationDest = nyplUtility.getAddressString(data);
   }
-  WidgetCtrl.$inject = ["$location", "$rootScope", "$scope", "$timeout", "$window", "config", "data", "nyplCoordinatesService", "nyplUtility"];
+  WidgetCtrl.$inject = ["$location", "$rootScope", "$scope", "$timeout",
+    "$window", "config", "data", "nyplCoordinatesService", "nyplUtility"];
 
   angular
     .module('nypl_widget')
@@ -6062,7 +6069,8 @@ var nypl_widget = angular.module('nypl_widget', [
 
     return utility;
   }
-  nyplUtility.$inject = ['$anchorScroll', '$location', '$sce', '$timeout', '$window', 'nyplCoordinatesService'];
+  nyplUtility.$inject = ['$anchorScroll', '$location', '$sce',
+    '$timeout', '$window', 'nyplCoordinatesService'];
 
   angular
     .module('nypl_locations')
