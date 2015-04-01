@@ -554,7 +554,8 @@
 
     return utility;
   }
-  nyplUtility.$inject = ['$anchorScroll', '$location', '$sce', '$timeout', '$window', 'nyplCoordinatesService'];
+  nyplUtility.$inject = ['$anchorScroll', '$location', '$sce',
+    '$timeout', '$window', 'nyplCoordinatesService'];
 
   angular
     .module('nypl_locations')

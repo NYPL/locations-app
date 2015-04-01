@@ -54,7 +54,8 @@
     // Used for the Get Directions link to Google Maps
     $scope.locationDest = nyplUtility.getAddressString(data);
   }
-  WidgetCtrl.$inject = ["$location", "$rootScope", "$scope", "$timeout", "$window", "config", "data", "nyplCoordinatesService", "nyplUtility"];
+  WidgetCtrl.$inject = ["$location", "$rootScope", "$scope", "$timeout",
+    "$window", "config", "data", "nyplCoordinatesService", "nyplUtility"];
 
   angular
     .module('nypl_widget')

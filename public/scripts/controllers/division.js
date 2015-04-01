@@ -1,5 +1,5 @@
 /*jslint indent: 4, maxlen: 80, nomen: true */
-/*globals nypl_locations, angular */
+/*globals nypl_locations, angular, _ */
 
 (function () {
     'use strict';
@@ -42,7 +42,8 @@
         $scope.has_appointment =
             nyplUtility.divisionHasAppointment(divisionsWithApt, division.id);
     }
-    DivisionCtrl.$inject = ["$rootScope", "$scope", "config", "division", "nyplUtility"];
+    DivisionCtrl.$inject = ["$rootScope", "$scope", "config",
+        "division", "nyplUtility"];
 
     angular
         .module('nypl_locations')

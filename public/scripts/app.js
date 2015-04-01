@@ -85,7 +85,8 @@ nypl_locations.config([
         return subdiv;
       });
     }
-    LoadSubDivision.$inject = ["$q", "$stateParams", "config", "nyplLocationsService"];
+    LoadSubDivision.$inject = ["$q", "$stateParams",
+      "config", "nyplLocationsService"];
 
     function LoadDivision($stateParams, config, nyplLocationsService) {
       return nyplLocationsService
@@ -396,7 +397,8 @@ var nypl_widget = angular.module('nypl_widget', [
         return subdiv;
       });
     }
-    LoadSubDivision.$inject = ["$q", "$stateParams", "config", "nyplLocationsService"];
+    LoadSubDivision.$inject = ["$q", "$stateParams",
+      "config", "nyplLocationsService"];
 
     function LoadDivision($stateParams, config, nyplLocationsService) {
       return nyplLocationsService

@@ -10,7 +10,8 @@
     $scope.amenitiesCategories =
       nyplAmenities.createAmenitiesCategories(amenities.amenities);
   }
-  AmenitiesCtrl.$inject = ["$rootScope", "$scope", "amenities", "config", "nyplAmenities"];
+  AmenitiesCtrl.$inject = ["$rootScope", "$scope", "amenities",
+    "config", "nyplAmenities"];
 
   // Load an amenity and list all the locations
   // where the amenity can be found.
@@ -36,7 +37,8 @@
     $rootScope.title = location.name;
     $scope.location = location;
   }
-  AmenitiesAtLibraryCtrl.$inject = ["$rootScope", "$scope", "config", "location", "nyplAmenities"];
+  AmenitiesAtLibraryCtrl.$inject = ["$rootScope", "$scope", "config",
+    "location", "nyplAmenities"];
 
   angular
     .module('nypl_locations')

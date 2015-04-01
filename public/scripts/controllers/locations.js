@@ -648,7 +648,8 @@
             $scope.location.images.closed = config.closed_img;
         }
     }
-    LocationCtrl.$inject = ["$rootScope", "$scope", "$timeout", "config", "location", "nyplCoordinatesService", "nyplUtility", "nyplAmenities"];
+    LocationCtrl.$inject = ["$rootScope", "$scope", "$timeout", "config",
+        "location", "nyplCoordinatesService", "nyplUtility", "nyplAmenities"];
 
     angular
         .module('nypl_locations')
