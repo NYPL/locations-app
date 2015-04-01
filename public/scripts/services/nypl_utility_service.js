@@ -543,7 +543,7 @@
       if ($location.hash()) {
         $timeout(function () {
           $anchorScroll();
-        }, 1000);
+        }, 900);
       }
     };
 

@@ -6058,7 +6058,7 @@ var nypl_widget = angular.module('nypl_widget', [
       if ($location.hash()) {
         $timeout(function () {
           $anchorScroll();
-        }, 1000);
+        }, 900);
       }
     };
 
