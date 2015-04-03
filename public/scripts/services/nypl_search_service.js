@@ -139,6 +139,7 @@
 
     return search;
   }
+  nyplSearch.$inject = ["$filter"];
 
   angular
     .module('nypl_locations')

@@ -1,4 +1,4 @@
-/*jslint nomen: true, indent: 4, maxlen: 80 */
+/*jslint nomen: true, indent: 2, maxlen: 80 */
 /*globals angular, window, headerScripts */
 
 /**
@@ -23,331 +23,316 @@
  * AngularJS app for NYPL's new Locations section.
  */
 var nypl_locations = angular.module('nypl_locations', [
-    'ngSanitize',
-    'ui.router',
-    'ngAnimate',
-    'locationService',
-    'coordinateService',
-    'nyplFeedback',
-    'nyplSearch',
-    'nyplSSO',
-    'nyplNavigation',
-    'nyplBreadcrumbs',
-    'angulartics',
-    'angulartics.google.analytics',
-    'newrelic-timing',
-    'nyplAlerts'
+  'ngSanitize',
+  'ui.router',
+  'ngAnimate',
+  'locationService',
+  'coordinateService',
+  'nyplFeedback',
+  'nyplSearch',
+  'nyplSSO',
+  'nyplNavigation',
+  'nyplBreadcrumbs',
+  'angulartics',
+  'angulartics.google.analytics',
+  'newrelic-timing',
+  'nyplAlerts'
 ]);
 
 nypl_locations.constant('_', window._);
 
 nypl_locations.config([
-    '$analyticsProvider',
-    '$locationProvider',
-    '$stateProvider',
-    '$urlRouterProvider',
-    '$crumbProvider',
-    '$nyplAlertsProvider',
-    function (
-        $analyticsProvider,
-        $locationProvider,
-        $stateProvider,
-        $urlRouterProvider,
-        $crumbProvider,
-        $nyplAlertsProvider
-    ) {
-        'use strict';
+  '$analyticsProvider',
+  '$locationProvider',
+  '$stateProvider',
+  '$urlRouterProvider',
+  '$crumbProvider',
+  '$nyplAlertsProvider',
+  '$httpProvider',
+  function (
+    $analyticsProvider,
+    $locationProvider,
+    $stateProvider,
+    $urlRouterProvider,
+    $crumbProvider,
+    $nyplAlertsProvider,
+    $httpProvider
+  ) {
+    'use strict';
 
-        function LoadLocation($stateParams, config, nyplLocationsService) {
-            return nyplLocationsService
-                .singleLocation($stateParams.location)
-                .then(function (data) {
-                    return data.location;
-                })
-                .catch(function (err) {
-                    throw err;
-                });
-        }
-        LoadLocation.$inject = ["$stateParams", "config", "nyplLocationsService"];
-
-        function LoadSubDivision($q, $stateParams, config, nyplLocationsService) {
-            var division    = nyplLocationsService
-                                .singleDivision($stateParams.division),
-                subdivision = nyplLocationsService
-                                .singleDivision($stateParams.subdivision);
-
-            return $q.all([division, subdivision]).then(function (data) {
-                var div = data[0].division,
-                    subdiv = data[1].division;
-
-                return subdiv;
-            });
-        }
-        LoadSubDivision.$inject = ["$q", "$stateParams", "config", "nyplLocationsService"];
-
-        function LoadDivision($stateParams, config, nyplLocationsService) {
-            return nyplLocationsService
-                .singleDivision($stateParams.division)
-                .then(function (data) {
-                    return data.division;
-                })
-                .catch(function (err) {
-                    throw err;
-                });
-        }
-        LoadDivision.$inject = ["$stateParams", "config", "nyplLocationsService"];
-
-        function Amenities($stateParams, config, nyplLocationsService) {
-            return nyplLocationsService
-                .amenities($stateParams.amenity)
-                .then(function (data) {
-                    return data;
-                })
-                .catch(function (error) {
-                    throw error;
-                });
-        }
-        Amenities.$inject = ["$stateParams", "config", "nyplLocationsService"];
-
-        function getConfig(nyplLocationsService) {
-            return nyplLocationsService.getConfig();
-        }
-        getConfig.$inject = ["nyplLocationsService"];
-
-        // Turn off automatic virtual pageviews for GA.
-        // In $stateChangeSuccess, /locations/ is added to each page hit.
-        $analyticsProvider.virtualPageviews(false);
-
-        // uses the HTML5 History API, remove hash (need to test)
-        $locationProvider.html5Mode(true);
-
-        // nyplAlerts required config settings
-        $nyplAlertsProvider.setOptions({
-            api_root: locations_cfg.config.api_root,
-            api_version: locations_cfg.config.api_version
-        });
-
-        // Breadcrumbs initialized states
-        $crumbProvider.setOptions({
-            primaryState: {name:'Home', customUrl: 'http://nypl.org' },
-            secondaryState: {name:'Locations', customUrl: 'home.index' }
-        });
-
-        $urlRouterProvider.rule(function ($injector, $location) {
-            var path = $location.url();
-
-            // Remove trailing slash if found
-            if (path[path.length - 1] === '/') {
-                return path.slice(0, -1);
-            }
+    function LoadLocation($stateParams, config, nyplLocationsService) {
+      return nyplLocationsService
+        .singleLocation($stateParams.location)
+        .then(function (data) {
+            return data.location;
         })
-
-        // Set default time zone.
-        moment.tz.setDefault("America/New_York");
-
-        // This next line breaks unit tests which doesn't make sense since
-        // unit tests should not test the whole app. BUT since we are testing
-        // directives and using $rootScope.$digest or $rootScope.$apply,
-        // it will run the app. It may not be necessary for the app though
-        // since, in the run phase, if there is an error when changing state,
-        // the app will go to the 404 state.
-        $urlRouterProvider.otherwise('/404');
-        $stateProvider
-            .state('home', {
-                url: '/',
-                abstract: true,
-                templateUrl: 'views/locations.html',
-                controller: 'LocationsCtrl',
-                label: 'Locations',
-                resolve: {
-                    config: getConfig
-                }
-            })
-            .state('home.index', {
-                templateUrl: 'views/location-list-view.html',
-                url: '',
-                label: 'Locations'
-            })
-            .state('home.list', {
-                templateUrl: 'views/location-list-view.html',
-                url: 'list',
-                label: 'Locations'
-            })
-            .state('home.map', {
-                templateUrl: 'views/location-map-view.html',
-                url: 'map',
-                controller: 'MapCtrl',
-                label: 'Locations'
-            })
-            .state('subdivision', {
-                url: '/divisions/:division/:subdivision',
-                templateUrl: 'views/division.html',
-                controller: 'DivisionCtrl',
-                label: 'Division',
-                resolve: {
-                    config: getConfig,
-                    division: LoadSubDivision
-                },
-                data: {
-                    parentState: 'location',
-                    crumbName: '{{division.name}}'
-                }
-            })
-            .state('division', {
-                url: '/divisions/:division',
-                templateUrl: 'views/division.html',
-                controller: 'DivisionCtrl',
-                label: 'Division',
-                resolve: {
-                    config: getConfig,
-                    division: LoadDivision
-                },
-                data: {
-                    parentState: 'location',
-                    crumbName: '{{division.name}}'
-                }
-            })
-            .state('amenities', {
-                url: '/amenities',
-                templateUrl: 'views/amenities.html',
-                controller: 'AmenitiesCtrl',
-                label: 'Amenities',
-                resolve: {
-                    config: getConfig,
-                    amenities: Amenities
-                },
-                data: {
-                    crumbName: 'Amenities'
-                }
-            })
-            .state('amenity', {
-                url: '/amenities/id/:amenity',
-                templateUrl: 'views/amenities.html',
-                controller: 'AmenityCtrl',
-                label: 'Amenities',
-                resolve: {
-                    config: getConfig,
-                    amenity: Amenities
-                },
-                data: {
-                    parentState: 'amenities',
-                    crumbName: '{{amenity.amenity.name}}'
-                }
-
-            })
-            .state('amenities-at-location', {
-                url: '/amenities/loc/:location',
-                templateUrl: 'views/amenitiesAtLibrary.html',
-                controller: 'AmenitiesAtLibraryCtrl',
-                resolve: {
-                    config: getConfig,
-                    location: LoadLocation
-                },
-                data: {
-                    parentState: 'amenities',
-                    crumbName: '{{location.name}}'
-                }
-            })
-            .state('404', {
-                url: '/404',
-                templateUrl: 'views/404.html'
-            })
-            .state('location', {
-                url: '/:location',
-                templateUrl: 'views/location.html',
-                controller: 'LocationCtrl',
-                resolve: {
-                    config: getConfig,
-                    location: LoadLocation
-                },
-                data: {
-                    crumbName: '{{location.name}}'
-                }
-            });
+        .catch(function (err) {
+            throw err;
+        });
     }
+    LoadLocation.$inject = ["$stateParams", "config", "nyplLocationsService"];
+
+    function LoadSubDivision($q, $stateParams, config, nyplLocationsService) {
+      var division = nyplLocationsService
+                        .singleDivision($stateParams.division),
+        subdivision = nyplLocationsService
+                        .singleDivision($stateParams.subdivision);
+
+      return $q.all([division, subdivision]).then(function (data) {
+        var div = data[0].division,
+          subdiv = data[1].division;
+
+        return subdiv;
+      });
+    }
+    LoadSubDivision.$inject = ["$q", "$stateParams",
+      "config", "nyplLocationsService"];
+
+    function LoadDivision($stateParams, config, nyplLocationsService) {
+      return nyplLocationsService
+        .singleDivision($stateParams.division)
+        .then(function (data) {
+          return data.division;
+        })
+        .catch(function (err) {
+          throw err;
+        });
+    }
+    LoadDivision.$inject = ["$stateParams", "config", "nyplLocationsService"];
+
+    function Amenities($stateParams, config, nyplLocationsService) {
+      return nyplLocationsService
+        .amenities($stateParams.amenity)
+        .then(function (data) {
+          return data;
+        })
+        .catch(function (error) {
+          throw error;
+        });
+    }
+    Amenities.$inject = ["$stateParams", "config", "nyplLocationsService"];
+
+    function getConfig(nyplLocationsService) {
+      return nyplLocationsService.getConfig();
+    }
+    getConfig.$inject = ["nyplLocationsService"];
+
+    // Load the interceptor for the loading image.
+    $httpProvider.interceptors.push(nyplInterceptor);
+
+    // Turn off automatic virtual pageviews for GA.
+    // In $stateChangeSuccess, /locations/ is added to each page hit.
+    $analyticsProvider.virtualPageviews(false);
+
+    // uses the HTML5 History API, remove hash (need to test)
+    $locationProvider.html5Mode(true);
+
+    // nyplAlerts required config settings
+    $nyplAlertsProvider.setOptions({
+      api_root: locations_cfg.config.api_root,
+      api_version: locations_cfg.config.api_version
+    });
+
+    // Breadcrumbs initialized states
+    $crumbProvider.setOptions({
+      primaryState: {name:'Home', customUrl: 'http://nypl.org' },
+      secondaryState: {name:'Locations', customUrl: 'home.index' }
+    });
+
+    $urlRouterProvider.rule(function ($injector, $location) {
+      var path = $location.url();
+
+      // Remove trailing slash if found
+      if (path[path.length - 1] === '/') {
+        return path.slice(0, -1);
+      }
+    });
+
+    // Set default time zone.
+    moment.tz.setDefault("America/New_York");
+
+    // This next line breaks unit tests which doesn't make sense since
+    // unit tests should not test the whole app. BUT since we are testing
+    // directives and using $rootScope.$digest or $rootScope.$apply,
+    // it will run the app. It may not be necessary for the app though
+    // since, in the run phase, if there is an error when changing state,
+    // the app will go to the 404 state.
+    $urlRouterProvider.otherwise('/404');
+    $stateProvider
+      .state('home', {
+        url: '/',
+        abstract: true,
+        templateUrl: 'views/locations.html',
+        controller: 'LocationsCtrl',
+        label: 'Locations',
+        resolve: {
+          config: getConfig
+        }
+      })
+      .state('home.index', {
+        templateUrl: 'views/location-list-view.html',
+        url: '',
+        label: 'Locations'
+      })
+      .state('home.list', {
+        templateUrl: 'views/location-list-view.html',
+        url: 'list',
+        label: 'Locations'
+      })
+      .state('home.map', {
+        templateUrl: 'views/location-map-view.html',
+        url: 'map',
+        controller: 'MapCtrl',
+        label: 'Locations'
+      })
+      .state('subdivision', {
+        url: '/divisions/:division/:subdivision',
+        templateUrl: 'views/division.html',
+        controller: 'DivisionCtrl',
+        label: 'Division',
+        resolve: {
+          config: getConfig,
+          division: LoadSubDivision
+        },
+        data: {
+          parentState: 'location',
+          crumbName: '{{division.name}}'
+        }
+      })
+      .state('division', {
+        url: '/divisions/:division',
+        templateUrl: 'views/division.html',
+        controller: 'DivisionCtrl',
+        label: 'Division',
+        resolve: {
+          config: getConfig,
+          division: LoadDivision
+        },
+        data: {
+          parentState: 'location',
+          crumbName: '{{division.name}}'
+        }
+      })
+      .state('amenities', {
+        url: '/amenities',
+        templateUrl: 'views/amenities.html',
+        controller: 'AmenitiesCtrl',
+        label: 'Amenities',
+        resolve: {
+          config: getConfig,
+          amenities: Amenities
+        },
+        data: {
+          crumbName: 'Amenities'
+        }
+      })
+      .state('amenity', {
+        url: '/amenities/id/:amenity',
+        templateUrl: 'views/amenities.html',
+        controller: 'AmenityCtrl',
+        label: 'Amenities',
+        resolve: {
+          config: getConfig,
+          amenity: Amenities
+        },
+        data: {
+          parentState: 'amenities',
+          crumbName: '{{amenity.amenity.name}}'
+        }
+      })
+      .state('amenities-at-location', {
+        url: '/amenities/loc/:location',
+        templateUrl: 'views/amenitiesAtLibrary.html',
+        controller: 'AmenitiesAtLibraryCtrl',
+        resolve: {
+          config: getConfig,
+          location: LoadLocation
+        },
+        data: {
+          parentState: 'amenities',
+          crumbName: '{{location.name}}'
+        }
+      })
+      .state('404', {
+        url: '/404',
+        templateUrl: 'views/404.html'
+      })
+      .state('location', {
+        url: '/:location',
+        templateUrl: 'views/location.html',
+        controller: 'LocationCtrl',
+        resolve: {
+          config: getConfig,
+          location: LoadLocation
+        },
+        data: {
+          crumbName: '{{location.name}}'
+        }
+      });
+  }
 ]);
 
-nypl_locations.run(["$analytics", "$state", "$rootScope", "$location", function ($analytics, $state, $rootScope, $location) {
+nypl_locations.run(['$analytics', '$state', '$rootScope', '$location',
+  function ($analytics, $state, $rootScope, $location) {
     $rootScope.$on('$stateChangeStart', function () {
-        $rootScope.close_feedback = true;
+      $rootScope.close_feedback = true;
     });
     $rootScope.$on('$viewContentLoaded', function () {
-        $analytics.pageTrack('/locations' + $location.path());
-        $rootScope.current_url = $location.absUrl();
+      $analytics.pageTrack('/locations' + $location.path());
+      $rootScope.current_url = $location.absUrl();
     });
     $rootScope.$on('$stateChangeError', function () {
-        $state.go('404');
+      $state.go('404');
     });
-}]);
+  }]);
 
 // Declare an http interceptor that will signal
 // the start and end of each request
 // Credit: Jim Lasvin -- https://github.com/lavinjj/angularjs-spinner
-nypl_locations.config(['$httpProvider', function ($httpProvider) {
-    'use strict';
+function nyplInterceptor($q, $injector) {
+  var $http, notificationChannel;
 
-    var $http,
-        interceptor = [
-            '$q',
-            '$injector',
-            '$location',
-            function ($q, $injector, $location) {
-                var notificationChannel;
+  return {
+    request: function (config) {
+      // get $http via $injector because of circular dependency problem
+      $http = $http || $injector.get('$http');
+      // don't send notification until all requests are complete
+      if ($http.pendingRequests.length < 1) {
+        // get requestNotificationChannel via $injector
+        // because of circular dependency problem
+        notificationChannel = notificationChannel ||
+          $injector.get('requestNotificationChannel');
+        // send a notification requests are complete
+        notificationChannel.requestStarted();
+      }
+      return config;
+    },
+    response: function (response) {
+      $http = $http || $injector.get('$http');
+      // don't send notification until all requests are complete
+      if ($http.pendingRequests.length < 1) {
+        notificationChannel = notificationChannel ||
+          $injector.get('requestNotificationChannel');
+        // send a notification requests are complete
+        notificationChannel.requestEnded();
+      }
+      return response;
+    },
+    responseError: function (rejection) {
+      $http = $http || $injector.get('$http');
+      // don't send notification until all requests are complete
+      if ($http.pendingRequests.length < 1) {
+        notificationChannel = notificationChannel ||
+          $injector.get('requestNotificationChannel');
+        // send a notification requests are complete
+        notificationChannel.requestEnded();
+      }
+      return $q.reject(rejection);
+    }
+  };
+}
 
-                function success(response) {
-                    // get $http via $injector because
-                    // of circular dependency problem
-                    $http = $http || $injector.get('$http');
-                    // don't send notification until all requests are complete
-                    if ($http.pendingRequests.length < 1) {
-                        // get requestNotificationChannel via $injector
-                        // because of circular dependency problem
-                        notificationChannel = notificationChannel ||
-                            $injector.get('requestNotificationChannel');
-                        // send a notification requests are complete
-                        notificationChannel.requestEnded();
-                    }
-                    return response;
-                }
-
-                function error(response) {
-                    var status = response.status;
-
-                    // get $http via $injector because
-                    // of circular dependency problem
-                    $http = $http || $injector.get('$http');
-                    // don't send notification until all requests are complete
-                    if ($http.pendingRequests.length < 1) {
-                        // get requestNotificationChannel via $injector
-                        // because of circular dependency problem
-                        notificationChannel = notificationChannel ||
-                            $injector.get('requestNotificationChannel');
-                        // send a notification requests are complete
-                        notificationChannel.requestEnded();
-                    }
-                    // Intercept 404 error code from server
-                    if (status === 404) {
-                        $location.path('/404');
-                        return $q.reject(response);
-                    }
-
-                    return $q.reject(response);
-                }
-
-                return function (promise) {
-                    // get requestNotificationChannel via $injector
-                    // because of circular dependency problem
-                    notificationChannel = notificationChannel ||
-                        $injector.get('requestNotificationChannel');
-                    // send a notification requests are complete
-                    notificationChannel.requestStarted();
-                    return promise.then(success, error);
-                };
-            }
-        ];
-
-    $httpProvider.responseInterceptors.push(interceptor);
-}]);
+nyplInterceptor.$inject = ['$q', '$injector'];
 
 /**
  * @ngdoc overview
@@ -364,112 +349,120 @@ nypl_locations.config(['$httpProvider', function ($httpProvider) {
  * AngularJS widget app for About pages on nypl.org.
  */
 var nypl_widget = angular.module('nypl_widget', [
-    'ngSanitize',
-    'ui.router',
-    'locationService',
-    'nyplAlerts',
-    'coordinateService',
-    'angulartics',
-    'angulartics.google.analytics'
+  'ngSanitize',
+  'ui.router',
+  'locationService',
+  'nyplAlerts',
+  'coordinateService',
+  'angulartics',
+  'angulartics.google.analytics'
 ])
 .config([
-    '$locationProvider',
-    '$stateProvider',
-    '$urlRouterProvider',
-    '$nyplAlertsProvider',
-    function (
-        $locationProvider,
-        $stateProvider,
-        $urlRouterProvider,
-        $nyplAlertsProvider
-    ) {
-        'use strict';
+  '$locationProvider',
+  '$stateProvider',
+  '$urlRouterProvider',
+  '$nyplAlertsProvider',
+  '$httpProvider',
+  function (
+    $locationProvider,
+    $stateProvider,
+    $urlRouterProvider,
+    $nyplAlertsProvider,
+    $httpProvider
+  ) {
+    'use strict';
 
-        function LoadLocation($stateParams, config, nyplLocationsService) {
-            return nyplLocationsService
-                .singleLocation($stateParams.location)
-                .then(function (data) {
-                    return data.location;
-                })
-                .catch(function (err) {
-                    throw err;
-                });
-        }
-        LoadLocation.$inject = ["$stateParams", "config", "nyplLocationsService"];
-
-        function LoadSubDivision($q, $stateParams, config, nyplLocationsService) {
-            var division    = nyplLocationsService
-                                .singleDivision($stateParams.division),
-                subdivision = nyplLocationsService
-                                .singleDivision($stateParams.subdivision);
-
-            return $q.all([division, subdivision]).then(function (data) {
-                var div = data[0],division,
-                    subdiv = data[1].division;
-
-                return subdiv;
-            });
-        }
-        LoadSubDivision.$inject = ["$q", "$stateParams", "config", "nyplLocationsService"];
-
-        function LoadDivision($stateParams, config, nyplLocationsService) {
-            return nyplLocationsService
-                .singleDivision($stateParams.division)
-                .then(function (data) {
-                    return data.division;
-                })
-                .catch(function (err) {
-                    throw err;
-                });
-        }
-        LoadDivision.$inject = ["$stateParams", "config", "nyplLocationsService"];
-
-        function getConfig(nyplLocationsService) {
-            return nyplLocationsService.getConfig();
-        }
-        getConfig.$inject = ["nyplLocationsService"];
-
-        // uses the HTML5 History API, remove hash (need to test)
-        $locationProvider.html5Mode(true);
-        // $urlRouterProvider.otherwise('/widget/sasb');
-
-        // nyplAlerts required config settings
-        $nyplAlertsProvider.setOptions({
-            api_root: locations_cfg.config.api_root,
-            api_version: locations_cfg.config.api_version
+    function LoadLocation($stateParams, config, nyplLocationsService) {
+      return nyplLocationsService
+        .singleLocation($stateParams.location)
+        .then(function (data) {
+          return data.location;
+        })
+        .catch(function (err) {
+          throw err;
         });
+    }
+    LoadLocation.$inject = ["$stateParams", "config", "nyplLocationsService"];
 
-        $stateProvider
-            .state('subdivision', {
-                url: '/widget/divisions/:division/:subdivision',
-                templateUrl: 'views/widget.html',
-                controller: 'WidgetCtrl',
-                resolve: {
-                    config: getConfig,
-                    data: LoadSubDivision
-                }
-            })
-            .state('division', {
-                url: '/widget/divisions/:division',
-                templateUrl: 'views/widget.html',
-                controller: 'WidgetCtrl',
-                label: 'Division',
-                resolve: {
-                    config: getConfig,
-                    data: LoadDivision
-                }
-            })
-            .state('widget', {
-                url: '/widget/:location',
-                templateUrl: 'views/widget.html',
-                controller: 'WidgetCtrl',
-                resolve: {
-                    config: getConfig,
-                    data: LoadLocation
-                },
-            });
+    function LoadSubDivision($q, $stateParams, config, nyplLocationsService) {
+      var division  = nyplLocationsService
+                        .singleDivision($stateParams.division),
+        subdivision = nyplLocationsService
+                        .singleDivision($stateParams.subdivision);
+
+      return $q.all([division, subdivision]).then(function (data) {
+        var div = data[0],division,
+          subdiv = data[1].division;
+
+        return subdiv;
+      });
+    }
+    LoadSubDivision.$inject = ["$q", "$stateParams",
+      "config", "nyplLocationsService"];
+
+    function LoadDivision($stateParams, config, nyplLocationsService) {
+      return nyplLocationsService
+        .singleDivision($stateParams.division)
+        .then(function (data) {
+          return data.division;
+        })
+        .catch(function (err) {
+          throw err;
+        });
+    }
+    LoadDivision.$inject = ["$stateParams", "config", "nyplLocationsService"];
+
+    function getConfig(nyplLocationsService) {
+      return nyplLocationsService.getConfig();
+    }
+    getConfig.$inject = ["nyplLocationsService"];
+    LoadDivision.$inject = ["$stateParams", "config", "nyplLocationsService"];
+
+    // Load the interceptor for the loading image.
+    $httpProvider.interceptors.push(nyplInterceptor);
+
+    // uses the HTML5 History API, remove hash (need to test)
+    $locationProvider.html5Mode(true);
+    // $urlRouterProvider.otherwise('/widget/sasb');
+
+    // nyplAlerts required config settings
+    $nyplAlertsProvider.setOptions({
+      api_root: locations_cfg.config.api_root,
+      api_version: locations_cfg.config.api_version
+    });
+
+    $stateProvider
+      .state('subdivision', {
+        url: '/widget/divisions/:division/:subdivision',
+        templateUrl: 'views/widget.html',
+        controller: 'WidgetCtrl',
+        resolve: {
+          config: getConfig,
+          data: LoadSubDivision
+        } 
+      })
+      .state('division', {
+        url: '/widget/divisions/:division',
+        templateUrl: 'views/widget.html',
+        controller: 'WidgetCtrl',
+        label: 'Division',
+        resolve: {
+          config: getConfig,
+          data: LoadDivision
+        }
+      })
+      .state('widget', {
+        url: '/widget/:location',
+        templateUrl: 'views/widget.html',
+        controller: 'WidgetCtrl',
+        resolve: {
+            config: getConfig,
+            data: LoadLocation
+        }
+      });
     }
 ]);
+
 /*jslint indent: 2, maxlen: 80, nomen: true */
 /*globals $, window, console, jQuery, angular, _, moment */
 
@@ -906,7 +899,7 @@ var nypl_widget = angular.module('nypl_widget', [
       scope: false
     };
   }
-  nyplGlobalAlerts.$inject = ["$rootScope"];
+  nyplGlobalAlerts.$inject = ['$rootScope'];
 
   /**
    * @ngdoc directive
@@ -919,13 +912,13 @@ var nypl_widget = angular.module('nypl_widget', [
   function nyplLocationAlerts(nyplAlertsService) {
     return {
       restrict: 'E',
-      template: "<div class='nypl-location-alerts'" +
+      template: "<div class='nypl-location-alerts' " +
                     "data-ng-if='locationAlerts.length'>" +
                   "<div data-ng-repeat='alert in locationAlerts'>" +
                     "<p data-ng-bind-html='alert.msg'></p>" +
                   "</div>" +
                 "</div>",
-      replace: true,
+      replace: false,
       scope: {
         alerts: '=alerts',
         type: '@'
@@ -940,7 +933,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }
     };
   }
-  nyplLocationAlerts.$inject = ["nyplAlertsService"];
+  nyplLocationAlerts.$inject = ['nyplAlertsService'];
 
   // Initialize Alerts data through Provider
   function initAlerts($nyplAlerts, $rootScope, nyplAlertsService) {
@@ -953,8 +946,8 @@ var nypl_widget = angular.module('nypl_widget', [
       throw error;
     });
   }
-  initAlerts.$inject = ["$nyplAlerts", "$rootScope", "nyplAlertsService"];
 
+  initAlerts.$inject = ['$nyplAlerts', '$rootScope', 'nyplAlertsService'];
 
   /**
    * @ngdoc overview
@@ -1619,7 +1612,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }
     };
   }
-  nyplNavigation.$inject = ["ssoStatus", "$window", "$rootScope"];
+  nyplNavigation.$inject = ['ssoStatus', '$window', '$rootScope'];
 
   /**
    * @ngdoc directive
@@ -1872,7 +1865,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }
     };
   }
-  nyplSearch.$inject = ["$analytics"];
+  nyplSearch.$inject = ['$analytics'];
 
   /**
    * @ngdoc overview
@@ -2024,7 +2017,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }
     };
   }
-  nyplSSO.$inject = ["ssoStatus", "$window", "$rootScope"];
+  nyplSSO.$inject = ['ssoStatus', '$window', '$rootScope'];
 
   /**
    * @ngdoc service
@@ -2259,7 +2252,7 @@ var nypl_widget = angular.module('nypl_widget', [
 
     return coordinatesService;
   }
-  nyplCoordinatesService.$inject = ["$q", "$window"];
+  nyplCoordinatesService.$inject = ['$q', '$window'];
 
   /**
    * @ngdoc overview
@@ -2576,7 +2569,8 @@ var nypl_widget = angular.module('nypl_widget', [
     $scope.amenitiesCategories =
       nyplAmenities.createAmenitiesCategories(amenities.amenities);
   }
-  AmenitiesCtrl.$inject = ["$rootScope", "$scope", "amenities", "config", "nyplAmenities"];
+  AmenitiesCtrl.$inject = ["$rootScope", "$scope", "amenities",
+    "config", "nyplAmenities"];
 
   // Load an amenity and list all the locations
   // where the amenity can be found.
@@ -2602,7 +2596,8 @@ var nypl_widget = angular.module('nypl_widget', [
     $rootScope.title = location.name;
     $scope.location = location;
   }
-  AmenitiesAtLibraryCtrl.$inject = ["$rootScope", "$scope", "config", "location", "nyplAmenities"];
+  AmenitiesAtLibraryCtrl.$inject = ["$rootScope", "$scope", "config",
+    "location", "nyplAmenities"];
 
   angular
     .module('nypl_locations')
@@ -2612,7 +2607,7 @@ var nypl_widget = angular.module('nypl_widget', [
 })();
 
 /*jslint indent: 4, maxlen: 80, nomen: true */
-/*globals nypl_locations, angular */
+/*globals nypl_locations, angular, _ */
 
 (function () {
     'use strict';
@@ -2626,6 +2621,11 @@ var nypl_widget = angular.module('nypl_widget', [
         $rootScope.title = division.name;
         $scope.calendarLink = nyplUtility.calendarLink;
         $scope.icalLink = nyplUtility.icalLink;
+
+        nyplUtility.scrollToHash();
+        $scope.createHash = function (id) {
+            nyplUtility.createHash(id);
+        };
 
         if (division.hours) {
             $scope.hoursToday = nyplUtility.hoursToday(division.hours);
@@ -2650,7 +2650,8 @@ var nypl_widget = angular.module('nypl_widget', [
         $scope.has_appointment =
             nyplUtility.divisionHasAppointment(divisionsWithApt, division.id);
     }
-    DivisionCtrl.$inject = ["$rootScope", "$scope", "config", "division", "nyplUtility"];
+    DivisionCtrl.$inject = ["$rootScope", "$scope", "config",
+        "division", "nyplUtility"];
 
     angular
         .module('nypl_locations')
@@ -3244,6 +3245,11 @@ var nypl_widget = angular.module('nypl_widget', [
         // Load the user's geolocation coordinates
         loadUserCoordinates();
 
+        nyplUtility.scrollToHash();
+        $scope.createHash = function (id) {
+            nyplUtility.createHash(id);
+        };
+
         $scope.location = location;
         $rootScope.title = location.name;
 
@@ -3289,7 +3295,9 @@ var nypl_widget = angular.module('nypl_widget', [
         });
 
         _.each(location._embedded.features, function (feature) {
-            feature.body = nyplUtility.returnHTML(feature.body);
+            if (typeof feature.body === 'string') {
+                feature.body = nyplUtility.returnHTML(feature.body);
+            }
         });
 
         // Used for the Get Directions link to Google Maps
@@ -3300,7 +3308,8 @@ var nypl_widget = angular.module('nypl_widget', [
             $scope.location.images.closed = config.closed_img;
         }
     }
-    LocationCtrl.$inject = ["$rootScope", "$scope", "$timeout", "config", "location", "nyplCoordinatesService", "nyplUtility", "nyplAmenities"];
+    LocationCtrl.$inject = ["$rootScope", "$scope", "$timeout", "config",
+        "location", "nyplCoordinatesService", "nyplUtility", "nyplAmenities"];
 
     angular
         .module('nypl_locations')
@@ -3365,7 +3374,8 @@ var nypl_widget = angular.module('nypl_widget', [
     // Used for the Get Directions link to Google Maps
     $scope.locationDest = nyplUtility.getAddressString(data);
   }
-  WidgetCtrl.$inject = ["$location", "$rootScope", "$scope", "$timeout", "$window", "config", "data", "nyplCoordinatesService", "nyplUtility"];
+  WidgetCtrl.$inject = ["$location", "$rootScope", "$scope", "$timeout",
+    "$window", "config", "data", "nyplCoordinatesService", "nyplUtility"];
 
   angular
     .module('nypl_widget')
@@ -3412,7 +3422,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }
     };
   }
-  loadingWidget.$inject = ["requestNotificationChannel"];
+  loadingWidget.$inject = ['requestNotificationChannel'];
 
   /**
    * @ngdoc directive
@@ -3538,7 +3548,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }]
     };
   }
-  todayshours.$inject = ["nyplAlertsService", "nyplUtility", "$filter"];
+  todayshours.$inject = ['nyplAlertsService', 'nyplUtility', '$filter'];
 
   function hoursTable(nyplAlertsService) {
     return {
@@ -3656,7 +3666,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }]
     };
   }
-  hoursTable.$inject = ["nyplAlertsService"];
+  hoursTable.$inject = ['nyplAlertsService'];
 
   /**
    * @ngdoc directive
@@ -3709,7 +3719,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }
     };
   }
-  librarianchatbutton.$inject = ["nyplUtility"];
+  librarianchatbutton.$inject = ['nyplUtility'];
 
   /**
    * @ngdoc directive
@@ -3725,7 +3735,7 @@ var nypl_widget = angular.module('nypl_widget', [
       });
     };
   }
-  scrolltop.$inject = ["$window"];
+  scrolltop.$inject = ['$window'];
 
   /**
    * @ngdoc directive
@@ -3772,7 +3782,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }
     };
   }
-  eventRegistration.$inject = ["$filter"];
+  eventRegistration.$inject = ['$filter'];
 
   /**
    * @ngdoc directive
@@ -3861,7 +3871,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }
     };
   }
-  nyplFundraising.$inject = ["$timeout", "nyplLocationsService"];
+  nyplFundraising.$inject = ['$timeout', 'nyplLocationsService'];
 
   /**
    * @ngdoc directive
@@ -3927,7 +3937,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }
     };
   }
-  nyplFooter.$inject = ["$analytics"];
+  nyplFooter.$inject = ['$analytics'];
 
   /**
    * @ngdoc directive
@@ -5548,7 +5558,7 @@ var nypl_widget = angular.module('nypl_widget', [
 
     return notificationChannel;
   }
-  requestNotificationChannel.$inject = ["$rootScope"];
+  requestNotificationChannel.$inject = ['$rootScope'];
 
   /**
    * @ngdoc service
@@ -5556,10 +5566,18 @@ var nypl_widget = angular.module('nypl_widget', [
    * @requires $sce
    * @requires $window
    * @requires nyplCoordinatesService
+   * @requires $anchorScroll
    * @description
    * AngularJS service with utility functions.
    */
-  function nyplUtility($sce, $window, nyplCoordinatesService) {
+  function nyplUtility(
+    $anchorScroll,
+    $location,
+    $sce,
+    $timeout,
+    $window,
+    nyplCoordinatesService
+  ) {
     var utility = {};
 
     /**
@@ -6036,9 +6054,23 @@ var nypl_widget = angular.module('nypl_widget', [
       return _.indexOf(research_order, id);
     };
 
+    utility.scrollToHash = function () {
+      if ($location.hash()) {
+        $timeout(function () {
+          $anchorScroll();
+        }, 900);
+      }
+    };
+
+    utility.createHash = function (id) {
+      $location.hash(id);
+      this.scrollToHash();
+    };
+
     return utility;
   }
-  nyplUtility.$inject = ["$sce", "$window", "nyplCoordinatesService"];
+  nyplUtility.$inject = ['$anchorScroll', '$location', '$sce',
+    '$timeout', '$window', 'nyplCoordinatesService'];
 
   angular
     .module('nypl_locations')

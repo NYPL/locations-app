@@ -495,6 +495,7 @@
         loadPreviousStateOrNewState();
         geolocationAvailable();
     }
+    LocationsCtrl.$inject = ["$filter", "$rootScope", "$scope", "$timeout", "$state", "$nyplAlerts", "config", "nyplAlertsService", "nyplCoordinatesService", "nyplGeocoderService", "nyplLocationsService", "nyplUtility", "nyplSearch", "nyplAmenities"];
     // End LocationsCtrl
 
     function MapCtrl($scope, $timeout, nyplGeocoderService) {
@@ -552,6 +553,7 @@
             $scope.scrollPage();
         };
     }
+    MapCtrl.$inject = ["$scope", "$timeout", "nyplGeocoderService"];
 
     function LocationCtrl(
         $rootScope,
@@ -582,6 +584,11 @@
 
         // Load the user's geolocation coordinates
         loadUserCoordinates();
+
+        nyplUtility.scrollToHash();
+        $scope.createHash = function (id) {
+            nyplUtility.createHash(id);
+        };
 
         $scope.location = location;
         $rootScope.title = location.name;
@@ -628,7 +635,9 @@
         });
 
         _.each(location._embedded.features, function (feature) {
-            feature.body = nyplUtility.returnHTML(feature.body);
+            if (typeof feature.body === 'string') {
+                feature.body = nyplUtility.returnHTML(feature.body);
+            }
         });
 
         // Used for the Get Directions link to Google Maps
@@ -639,6 +648,8 @@
             $scope.location.images.closed = config.closed_img;
         }
     }
+    LocationCtrl.$inject = ["$rootScope", "$scope", "$timeout", "config",
+        "location", "nyplCoordinatesService", "nyplUtility", "nyplAmenities"];
 
     angular
         .module('nypl_locations')

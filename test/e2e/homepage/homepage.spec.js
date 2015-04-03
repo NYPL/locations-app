@@ -8,7 +8,7 @@ describe('Locations: homepage', function () {
   var landingPage = require('./homepage.po.js'),
     APIresponse = require('../APImocks/homepage.js'),
     httpBackendMock = function (response) {
-      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7';
+      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
@@ -32,7 +32,7 @@ describe('Locations: homepage', function () {
 
   beforeEach(function () {
     // Pass the good JSON from the API call.
-    browser.addMockModule('httpBackendMock', httpBackendMock, APIresponse.good);
+    // browser.addMockModule('httpBackendMock', httpBackendMock, APIresponse.good);
     browser.get('/');
     browser.waitForAngular();
   });
