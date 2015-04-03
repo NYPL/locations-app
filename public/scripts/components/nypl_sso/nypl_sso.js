@@ -131,6 +131,7 @@
       }
     };
   }
+  nyplSSO.$inject = ['ssoStatus', '$window', '$rootScope'];
 
   /**
    * @ngdoc service

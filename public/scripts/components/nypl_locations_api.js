@@ -271,6 +271,7 @@
 
         return locationsApi;
     }
+    nyplLocationsService.$inject = ["$http", "$q"];
 
     /**
      * @ngdoc overview

@@ -541,3 +541,9 @@ time {
 		}
 	}
 }
+
+.hashlink {
+	&:hover {
+		cursor: pointer;
+	}
+}

@@ -87,6 +87,7 @@
             return '';
         };
     }
+    timeFormat.$inject = ["$sce"];
 
     /**
      * @ngdoc filter

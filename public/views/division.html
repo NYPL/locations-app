@@ -99,7 +99,9 @@
 
   <!-- Sub-divisions -->
   <div class="container__sub_divisions" data-ng-if="division._embedded.divisions">
-    <h2 class="hdg">Subdivisions</h2>
+    <h2 class="hdg">
+      <a data-ng-click="createHash('subdivisions')" id="subdivisions" class="hashlink">Subdivisions</a>
+    </h2>
     <div class="grid">
       <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
         data-ng-repeat='subdivision in division._embedded.divisions'>
@@ -134,7 +136,9 @@
   <div class="container__about">
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-three-fifths">
-        <h2 class="hdg">ABOUT THE DIVISION</h2>
+        <h2 class="hdg">
+          <a data-ng-click="createHash('about')" id="about" class="hashlink">ABOUT THE DIVISION</a>
+        </h2>
         <img data-ng-if="division.images.collection_item" class="img--left img--outline division_second_image"
           data-ng-src="{{division.images.collection_item}}" style="max-width: 165px;" />
         <p>{{division.about}}</p>
@@ -178,7 +182,9 @@
 
   <!-- Division Events -->
   <div class="container__events" data-ng-if="division._embedded.events">
-    <h2 class="hdg">EVENTS</h2>
+    <h2 class="hdg">
+      <a data-ng-click="createHash('events')" id="events" class="hashlink">EVENTS</a>
+    </h2>
     <ul class="grid">
       <li class="grid__item one-whole desk-one-third" data-ng-repeat="event in division._embedded.events">
         <h3 class="event__title">
@@ -232,7 +238,9 @@
 
   <!-- Features -->
   <div id="container__features" data-ng-if="division._embedded.features">
-    <h2 class="hdg">FEATURED</h2>
+    <h2 class="hdg">
+      <a data-ng-click="createHash('featured')" id="featured" class="hashlink">FEATURED</a>
+    </h2>
     <div class="grid">
       <div class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in division._embedded.features'>
         <a data-ng-if="feature.image" data-ng-href="{{feature._links.self.href}}"
@@ -256,7 +264,9 @@
 
   <!-- Blogs (conditonal) -->
   <div id="container__blogs" data-ng-if="division._embedded.blogs">
-    <h2 class="hdg">BLOGS</h2>
+    <h2 class="hdg">
+      <a data-ng-click="createHash('blogs')" id="blogs" class="hashlink">BLOGS</a>
+    </h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in division._embedded.blogs'>
         <h3>
