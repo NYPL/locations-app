@@ -43,6 +43,7 @@
 
     return notificationChannel;
   }
+  requestNotificationChannel.$inject = ['$rootScope'];
 
   /**
    * @ngdoc service
@@ -50,10 +51,18 @@
    * @requires $sce
    * @requires $window
    * @requires nyplCoordinatesService
+   * @requires $anchorScroll
    * @description
    * AngularJS service with utility functions.
    */
-  function nyplUtility($sce, $window, nyplCoordinatesService) {
+  function nyplUtility(
+    $anchorScroll,
+    $location,
+    $sce,
+    $timeout,
+    $window,
+    nyplCoordinatesService
+  ) {
     var utility = {};
 
     /**
@@ -530,8 +539,23 @@
       return _.indexOf(research_order, id);
     };
 
+    utility.scrollToHash = function () {
+      if ($location.hash()) {
+        $timeout(function () {
+          $anchorScroll();
+        }, 900);
+      }
+    };
+
+    utility.createHash = function (id) {
+      $location.hash(id);
+      this.scrollToHash();
+    };
+
     return utility;
   }
+  nyplUtility.$inject = ['$anchorScroll', '$location', '$sce',
+    '$timeout', '$window', 'nyplCoordinatesService'];
 
   angular
     .module('nypl_locations')

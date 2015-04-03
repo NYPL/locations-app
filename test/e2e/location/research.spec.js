@@ -8,7 +8,7 @@ describe('Research branch page', function () {
   var locationPage = require('./location.po.js'),
     APIresponse = require('../APImocks/research.js'),
     httpBackendMock = function (response) {
-      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.5';
+      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend) {
