@@ -10,7 +10,7 @@ describe('NYPL Widget', function () {
     research = require('../APImocks/research.js'),
     division = require('../APImocks/division.js'),
     httpBackendMock = function (page, response) {
-      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.6';
+      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(function ($httpBackend, $window) {

@@ -59,6 +59,7 @@
       }
     };
   }
+  nyplNavigation.$inject = ['ssoStatus', '$window', '$rootScope'];
 
   /**
    * @ngdoc directive
