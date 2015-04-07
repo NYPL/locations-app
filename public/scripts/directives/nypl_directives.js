@@ -262,6 +262,7 @@
           return count;
         };
 
+        // Boolean check for same day alert based on the day of the week
         this.isSameDayAlert = function (startDay, endDay, dayOfWeek) {
           var today = moment();
           return (startDay.isSame(endDay, 'day')
@@ -294,7 +295,6 @@
               alert.infinite = false;
               // Handles Early/Late Closings/Openings
               if (_this.isSameDayAlert(startDay, endDay, dayDate)) {
-                //console.log(dayDate.format(), startDay.format(), endDay.format());
                 return alert;
               }
               // All Day Closings
