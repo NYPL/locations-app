@@ -1,0 +1,71 @@
+/** Site-wide Global Rules **/
+
+// Google Fonts
+@import url("//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic");
+
+// Font variables
+$droid-serif: "Droid Serif", sans-serif;
+
+// Page margin
+@page { 
+  size: auto;   /* auto is the initial value */ 
+  /* this affects the margin in the printer settings */ 
+  margin: 5mm 10mm 0mm 10mm;
+} 
+
+body { 
+  /* this affects the margin on the content before sending to printer */ 
+  margin: 0px 10px;
+  font-family: "Lato", "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+// All link tags
+a {
+	color: #000;
+	font-size: inherit;
+}
+
+// Universal heading classes
+.hdg {
+	color: #000;
+}
+
+// Header
+#header {
+	display: none;
+}
+
+// Main Navigation
+#main-nav {
+	display: none;
+}
+
+// Breadcrumbs
+ul.breadcrumb {
+	display: none;
+}
+
+// Global Alerts
+.nypl-global-alerts {
+	display: none;
+}
+
+// Location Alerts
+.nypl-location-alerts {
+	display: none;
+}
+
+// NYPL-Ask/Donate Callouts
+.ask-donate {
+	display: none;
+}
+
+// Footer
+footer {
+	display: none;
+}
+
+// Loader
+#loadingWidget {
+	display: none;
+}
