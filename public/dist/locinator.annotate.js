@@ -2851,7 +2851,7 @@ var nypl_widget = angular.module('nypl_widget', [
                     nyplSearch.setSearchValue('locations', $scope.locations);
                     // Don't sort by distance or the matched results
                     // will not display first.
-                    sortListBy('');
+                    sortListBy(sortByFilter);
                 },
 
             scrollListTop = function () {
