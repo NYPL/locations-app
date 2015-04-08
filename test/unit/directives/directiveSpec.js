@@ -10,7 +10,7 @@ describe('NYPL Directive Unit Tests', function () {
 
   var httpBackend, compile, scope,
     api = 'http://dev.locations.api.nypl.org/api',
-    api_version = 'v0.7',
+    api_version = 'v0.7.1',
     jsonpCallback = '?callback=JSON_CALLBACK';
 
   beforeEach(function () {
@@ -38,7 +38,7 @@ describe('NYPL Directive Unit Tests', function () {
       scope = _$rootScope_;
 
       httpBackend
-        .whenJSONP('http://dev.locations.api.nypl.org/api/v0.7/alerts' +
+        .whenJSONP('http://dev.locations.api.nypl.org/api/' + api_version + '/alerts' +
           '?callback=JSON_CALLBACK')
         .respond({});
 
@@ -85,7 +85,9 @@ describe('NYPL Directive Unit Tests', function () {
       expect(loadingWidget.attr('id')).toEqual('loadingWidget');
     });
 
+    // Currently fails
     it('should remove the show class initially', function () {
+      //console.log(loadingWidget);
       expect(loadingWidget.attr('class')).not.toContain('show');
     });
   });
@@ -344,8 +346,8 @@ describe('NYPL Directive Unit Tests', function () {
           $scope.alerts,
           {scope: 'location', only_closings: 'current'}
         );
-        hoursToday = ctrl.computeHoursToday($scope.hours, alerts);
 
+        hoursToday = ctrl.computeHoursToday($scope.hours, alerts);
         expect(hoursToday).toBe('Today: Closed for a special event');
       });
 
@@ -520,7 +522,7 @@ describe('NYPL Directive Unit Tests', function () {
         expect(hoursToday).toBe('Tomorrow: Closed for a special event');
       });
     });
-  }); /* End todayshours */
+  }) /* End todayshours */
 
   /*
    * <hours-table hours="" alerts="" location-type=""></hours-table>
@@ -1528,7 +1530,8 @@ describe('NYPL Directive Unit Tests', function () {
       });
 
       it('filterTermWitin() method should return a list of matches based ' +
-        'on matching the searchTerm anywhere within the string', function () {
+        'on matching the searchTerm anywhere within the string ' +
+        'with the name property set as the property param.', function () {
           var searchTerm = 'Lib',
             data = [
               {id: "BAR", name: "Baychester Library", _links: {}},
@@ -1537,7 +1540,20 @@ describe('NYPL Directive Unit Tests', function () {
               {id: "DH", name: "Dongan Hills Library", _links: {}}
             ];
 
-          $scope.filtered = ctrl.filterTermWithin(data, searchTerm);
+          $scope.filtered = ctrl.filterTermWithin(data, searchTerm, 'name');
+          expect($scope.filtered).toBeDefined();
+          expect($scope.filtered).toEqual(data);
+        });
+
+      it('filterTermWitin() method should return a list of matches based ' +
+        'on matching the searchTerm anywhere within the string ' +
+        'with the id property set as the property param.', function () {
+          var searchTerm = '!bar',
+            data = [
+              {id: "BAR", name: "Baychester Library", _links: {}}
+            ];
+
+          $scope.filtered = ctrl.filterTermWithin(data, searchTerm, 'id');
           expect($scope.filtered).toBeDefined();
           expect($scope.filtered).toEqual(data);
         });

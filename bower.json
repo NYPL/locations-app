@@ -9,7 +9,7 @@
     "es5-shim": "~2.1.0",
     "jquery": "~1.10.2",
     "sass-bootstrap": "~3.0.2",
-    "underscore": "1.8.2",
+    "underscore": "1.6.0",
     "angularitics": "~0.17",
     "angular-translate": "~2.1.0",
     "angular-ui-router": "~0.2.13",
