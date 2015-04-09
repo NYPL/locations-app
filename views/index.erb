@@ -33,18 +33,20 @@
     <link rel="shortcut icon" type="image/ico" href="http://ux-static.nypl.org/images/favicon.ico">
 
 <% if settings.env_config["angular_src"] == "ux-static-staging" %>
-    <link rel="stylesheet" href="http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.6/css/nyplbase.min.css">
+    <link rel="stylesheet" href="http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.6/css/nyplbase.min.css" type="text/css" media="screen" />
 <% else %>
-    <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.6/css/nyplbase.min.css">
+    <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.6/css/nyplbase.min.css" type="text/css" media="screen" />
 <% end %>
 
 
 <% if @rq.forwarded? %>
     <base href="<%= settings.baseurl %>">
-    <link rel="stylesheet" href="<%= settings.baseurl %>css/locations.min.css">
+    <link rel="stylesheet" href="<%= settings.baseurl %>css/locations.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="<%= settings.baseurl %>css/print.min.css" media="print" />
 <% else %>
     <base href="/">
-    <link rel="stylesheet" href="css/locations.min.css">
+    <link rel="stylesheet" href="css/locations.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/print.min.css" type="text/css" media="print" />
 <% end %>
   </head>
   <body>
