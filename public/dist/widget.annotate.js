@@ -1452,12 +1452,19 @@ var nypl_widget = angular.module('nypl_widget', [
         // Assign dynamic week hours with closings
         $scope.dynamicWeekHours = (scopedAlerts) ?
             ctrl.findAlertsInWeek(weeklyHours, scopedAlerts) : null;
+        // Assign the number of alerts for the week
+        $scope.numAlertsInWeek = ($scope.dynamicWeekHours) ?
+          ctrl.findNumAlertsInWeek($scope.dynamicWeekHours) : 0;
 
         $scope.regularWeekHours = $scope.hours || null;
         $scope.buttonText = (scopedAlerts) ? 'Regular hours' : null;
 
+        // Boolean control to display/hide dynamic week hours
+        $scope.displayDynamicWeek = ($scope.dynamicWeekHours 
+          && $scope.numAlertsInWeek > 0) ? true : false;
+
         // Hide Regular hours only if dynamic hours are defined
-        if ($scope.dynamicWeekHours) {
+        if ($scope.displayDynamicWeek) {
           elem.addClass('hide-regular-hours');
         }
 
@@ -1491,9 +1498,32 @@ var nypl_widget = angular.module('nypl_widget', [
               // Assign the dynamic date for each week day
               day.date = _this.assignDynamicDate(index);
               // Assign any current closing alert to the day of the week
-              day.alert = _this.assignCurrentDayAlert(alertsObj, day.date);
+              // Only for day's that are open.
+              if (day.open !== null && day.close !== null) {
+                day.alert = _this.assignCurrentDayAlert(alertsObj, day.date);
+              }
             });
           return week;
+        };
+
+        // Returns the amount of alerts for a given 7 day week
+        this.findNumAlertsInWeek = function (dynamicWeek) {
+          if (!dynamicWeek) { return 0; }
+          var count = 0;
+          _.each(dynamicWeek, function (elem) {
+            if (elem.alert) {
+              count++;
+            }
+          });
+          return count;
+        };
+
+        // Boolean check for same day alert based on the day of the week
+        this.isSameDayAlert = function (startDay, endDay, dayOfWeek) {
+          var today = moment();
+          return (startDay.isSame(endDay, 'day')
+            && dayOfWeek.isSame(startDay, 'day')
+            && today.isBefore(endDay)) ? true : false;
         };
 
         this.assignDynamicDate = function (index) {
@@ -1510,28 +1540,30 @@ var nypl_widget = angular.module('nypl_widget', [
         // Finds any current matching closing alert relevant to
         // the date of the given week.
         this.assignCurrentDayAlert = function (alertsObj, dayDate) {
-          var startDay, endDay;
+          var startDay,
+            endDay,
+            _this = this;
           return _.find(alertsObj, function (alert) {
             // A non-infinite closing
             if (alert.applies.start && alert.applies.end) {
               startDay = moment(alert.applies.start);
               endDay = moment(alert.applies.end);
               alert.infinite = false;
+              // Handles Early/Late Closings/Openings
+              if (_this.isSameDayAlert(startDay, endDay, dayDate)) {
+                return alert;
+              }
+              // All Day Closings
               if (dayDate.isBetween(startDay, endDay)) {
                 return alert;
               }
-              else if (dayDate.date() === startDay.date()
-                  && dayDate.date() <= endDay.date()) {
-                return alert;
-              }
-              else if (dayDate.date() > startDay.date()
-                  && dayDate.date() < endDay.date()) {
-                return alert;
-              }
             } else if (alert.applies.start && !alert.applies.end) {
+              startDay = moment(alert.applies.start);
               // Infinite closing
               alert.infinite = true;
-              return alert;
+              if (dayDate.isAfter(startDay)) {
+                return alert;
+              }
             }
           });
         };
