@@ -42,11 +42,11 @@
 <% if @rq.forwarded? %>
     <base href="<%= settings.baseurl %>">
     <link rel="stylesheet" href="<%= settings.baseurl %>css/locations.min.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="<%= settings.baseurl %>css/print.min.css" media="print" />
+    <link rel="stylesheet" href="<%= settings.baseurl %>css/print.min.css" />
 <% else %>
     <base href="/">
     <link rel="stylesheet" href="css/locations.min.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="css/print.min.css" type="text/css" media="print" />
+    <link rel="stylesheet" href="css/print.min.css" type="text/css" />
 <% end %>
   </head>
   <body>
