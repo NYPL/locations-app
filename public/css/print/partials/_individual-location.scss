@@ -34,6 +34,9 @@
 			margin: 10px 0px 10px 10px;
 			line-height: 28px;
 
+			.on-shelves {
+				display: none;
+			}
 			.map-directions {
 				display: none;
 			}
@@ -83,6 +86,14 @@
 					th, td {
 						padding: 2px 5px;
 					}
+				}
+
+				.dynamic-week-hours-wrapper {
+					display: none;
+				}
+
+				.hours-toggle-btn {
+					display: none;
 				}
 
 				a.closings-link {
@@ -276,6 +287,11 @@
 			padding: 0;
 
 			&:nth-child(n+4) {
+				display: none;
+			}
+
+			// hide image
+			> a {
 				display: none;
 			}
 

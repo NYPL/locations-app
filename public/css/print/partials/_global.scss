@@ -10,12 +10,12 @@ $droid-serif: "Droid Serif", sans-serif;
 @page { 
   size: auto;   /* auto is the initial value */ 
   /* this affects the margin in the printer settings */ 
-  margin: 5mm 10mm 0mm 10mm;
+  margin: 5mm 10mm 2mm 10mm;
 } 
 
 body { 
   /* this affects the margin on the content before sending to printer */ 
-  margin: 0px 10px;
+  margin: 0px 5px;
   font-family: "Lato", "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -32,7 +32,43 @@ a {
 
 // Header
 #header {
-	display: none;
+	&:before {
+		font-size: 12px;
+		font-family: sans-serif;
+		content: "nypl.org";
+		position: absolute;
+		right: 10px;
+		top: 12px;
+	}
+
+	.nypl-logo {
+		margin: 7px 0px 0px 5px;
+		&:before {
+			content: url(../images/nypl_logo_sm.png);
+		}
+
+		a:before {
+			font-size: 12px;
+			font-family: sans-serif;
+			content: "The New York Public Library";
+			display: block;
+			text-align: center;
+			width: 235px;
+			left: 30%;
+			top: 12px;
+			position: absolute;
+		}
+	}
+
+	.collapsed-buttons {
+		display: none;
+	}
+	.login-donate {
+		display: none;
+	}
+	#search-top {
+		display: none;
+	}
 }
 
 // Main Navigation

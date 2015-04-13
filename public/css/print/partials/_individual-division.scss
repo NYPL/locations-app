@@ -53,6 +53,14 @@
 					}
 				}
 
+				.dynamic-week-hours-wrapper {
+					display: none;
+				}
+
+				.hours-toggle-btn {
+					display: none;
+				}
+
 				a.closings-link {
 					display: none;
 				}
@@ -83,6 +91,9 @@
 			margin: 10px 0px 10px 10px;
 			line-height: 28px;
 
+			.on-shelves {
+				display: none;
+			}
 			.social {
 				display: none;
 			}
