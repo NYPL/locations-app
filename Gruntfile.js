@@ -127,7 +127,8 @@ module.exports = function (grunt) {
           style: 'compressed'
         },
         files: {
-          'public/css/locations.min.css': 'public/css/locations.scss'
+          'public/css/locations.min.css': 'public/css/locations.scss',
+          'public/css/print.min.css': 'public/css/print/print.scss'
         }
       },
       basic_with_components: {
@@ -135,7 +136,8 @@ module.exports = function (grunt) {
           style: 'compressed'
         },
         files: {
-          'public/css/locations.min.css': 'public/css/locations-concat.scss'
+          'public/css/locations.min.css': 'public/css/locations-concat.scss',
+          'public/css/print.min.css': 'public/css/print/print.scss'
         }
       }
     }
