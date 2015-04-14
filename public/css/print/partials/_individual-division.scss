@@ -1,0 +1,263 @@
+/** Individual Division/Sub-Division Pages **/
+@media print {
+	.individual-division {
+		position: relative;
+		.container__div_info {
+			position: relative;
+			height: 500px;
+
+			// Division title
+			> h1 {
+				font-family: $droid-serif;
+				font-size: 23px;
+				font-weight: bold;
+				margin: 10px 0px 0px 0px;
+			}
+
+			// Hours
+			#container__hours {
+				position: absolute;
+				display: block;
+				left: 0px;
+				top: 260px;
+				width: 48%;
+				margin: 0px;
+				padding: 0;
+				border: 1px solid #c5c2bb;
+
+				#hours-today {
+					display: none;
+				}
+				.callout {
+					background-color: transparent; 
+					padding: 9px 12px;
+				}
+				.location-hours {
+					margin: 0;
+					padding: 0;
+
+					.hdg {
+						font-family: $droid-serif;
+						text-transform: uppercase;
+						color: #000;
+						font-size: 17px;
+						font-weight: bold;
+						border: none;
+						padding: 0;
+						margin: 0 0 10px 0;
+					}
+
+					.weekly-hours {
+						margin: 0;
+						th, td {
+							padding: 2px 5px;
+						}
+					}
+
+					.dynamic-week-hours-wrapper {
+						display: none;
+					}
+
+					.hours-toggle-btn {
+						display: none;
+					}
+
+					a.closings-link {
+						display: none;
+					}
+					p.smallprint {
+						display: none;
+					}
+				}
+			}
+			// Division exterior image
+			#container__div_image {
+				display: block;
+				float: left;
+				width: 48%;
+				margin: 10px 10px 10px 5px;
+				padding: 0px;
+
+				img {
+					max-height: 200px;
+				}
+			}
+			// Address/Contact
+			#container__div_address {
+				display: block;
+				font-size: 20px;
+				float: right;
+				width: 48%;
+				padding: 0;
+				margin: 10px 0px 10px 10px;
+				line-height: 28px;
+
+				.on-shelves {
+					display: none;
+				}
+				.social {
+					display: none;
+				}
+				.accessible {
+					color: #666;
+					font-style: italic;
+				}
+			}
+		}
+
+		.container__sub_divisions {
+			border: 1px solid #c5c2bb;
+			position: absolute;
+			top: 260px;
+			right: 0px;
+			width: 48%;
+			margin: 0px;
+			padding: 9px 12px;
+			min-height: 199px;
+
+			.hdg {
+				font-family: $droid-serif;
+				text-transform: uppercase;
+				color: #000;
+				font-size: 17px;
+				font-weight: bold;
+				border: none;
+				padding: 0;
+				margin: 0 0 10px 0;
+			}
+			.subdivision-wrapper {
+				> a {
+					display: none;
+				}
+
+				.subdivision-title {
+					margin: 0 0 10px 5px;
+				}
+
+				.subdivision-hours-wrapper {
+					display: none;
+				}
+			}
+		}
+		// Features List
+		#container__features {
+			clear: both;
+			margin-bottom: 10px;
+
+			// title
+			.hdg {
+				font-family: $droid-serif;
+				font-size: 17px;
+				font-weight: bold;
+				color: #000000;
+				border-bottom: 1px solid #c5c2bb;
+				margin: 0 0 10px 0px;
+			}
+
+			.grid {
+				padding: 0px;
+			}
+
+			.chunk {
+				width: 33%;
+				display: inline-block;
+				margin: 0px 0px 4px 0px;
+				padding: 0;
+				vertical-align: top;
+
+				// hide image
+				> a {
+					display: none;
+				}
+
+				h3.feature-title {
+					font-size: 15px;
+					font-weight: bold;
+					margin: 2px 0px;
+					line-height: 19px;
+					a {
+						text-decoration: none;
+						vertical-align: top;
+					}
+				}
+				.desc {
+					display: none;
+				}
+			}
+		}
+		// Events List (limit to 3)
+		.container__events {
+			clear: both;
+			margin-bottom: 10px;
+
+			// title
+			.hdg {
+				font-family: $droid-serif;
+				font-size: 17px;
+				font-weight: bold;
+				color: #000000;
+				border-bottom: 1px solid #c5c2bb;
+			}
+
+			// list of events
+			ul {
+				padding: 0px;
+				margin: 0px;
+
+				li {
+					width: 33%;
+					display: inline-block;
+					vertical-align: top;
+					margin: 0px 2px 5px 0px;
+					padding: 0;
+
+					&:nth-child(n+4) {
+						display: none;
+					}
+
+					h3 {
+						font-size: 15px;
+						margin: 0 0 5px 0;
+						line-height: 18px;
+
+						a {
+							text-decoration: none;
+						}
+					}
+
+					.date {
+						font-size: 14px;
+						margin-bottom: 5px;
+						font-style: italic;
+					}
+
+					p.desc {
+						display: none;
+					}
+
+					.registration-for-event {
+						display: none;
+					}
+
+					.event-buttons {
+						display: none;
+					}
+				}
+			}
+
+			// more events link
+			a.events-more {
+				display: none;
+			}
+		}
+		// About Section
+		.container__about {
+			display: none;
+		}
+
+		// Blogs List
+		#container__blogs {
+			display: none;
+		}
+	}
+}
