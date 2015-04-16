@@ -19,44 +19,44 @@ describe('NYPL Alerts Module', function () {
         loc = location ? '/' + location : '';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
-        .run(function ($httpBackend) {
-          // Let it handle the actual API response
-          $httpBackend
-            .whenJSONP(API_URL + '/locations' + loc + '?callback=JSON_CALLBACK')
-            .passThrough();
-
+        .run(['$httpBackend', function ($httpBackend) {
           // Mock the alert response
           $httpBackend
             .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
             .respond(response);
 
+          // Let it handle the actual API response
+          $httpBackend
+            .whenJSONP(API_URL + '/locations' + loc + '?callback=JSON_CALLBACK')
+            .passThrough();
+
           // For everything else, don't mock
           $httpBackend.whenGET(/^\w+.*/).passThrough();
           $httpBackend.whenGET(/.*/).passThrough();
           $httpBackend.whenPOST(/^\w+.*/).passThrough();
-        });
+        }]);
     },
     locationhttpBackendMock = function (alerts, location, locationMock) {
       var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
-        .run(function ($httpBackend) {
+        .run(['$httpBackend', function ($httpBackend) {
+          // Mock the alert response
+          $httpBackend
+            .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
+            .respond(alerts);
+
           // Let it handle the actual API response
           $httpBackend
             .whenJSONP(API_URL + '/locations/' +
               location + '?callback=JSON_CALLBACK')
             .respond(locationMock);
 
-          // Mock the alert response
-          $httpBackend
-            .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
-            .respond(alerts);
-
           // For everything else, don't mock
           $httpBackend.whenGET(/^\w+.*/).passThrough();
           $httpBackend.whenGET(/.*/).passThrough();
           $httpBackend.whenPOST(/^\w+.*/).passThrough();
-        });
+        }]);
     };
 
   function addDays(dateObj, numDays) {

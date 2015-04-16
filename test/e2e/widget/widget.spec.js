@@ -13,10 +13,7 @@ describe('NYPL Widget', function () {
       var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
-        .run(function ($httpBackend, $window) {
-          console.log($window);
-          // $httpBackend.whenGET('languages/en.json').passThrough();
-
+        .run(['$httpBackend', function ($httpBackend, $window) {
           $httpBackend
             .whenJSONP(API_URL + page + '?callback=JSON_CALLBACK')
             .respond(response);
@@ -29,7 +26,7 @@ describe('NYPL Widget', function () {
           $httpBackend.whenGET(/^\w+.*/).passThrough();
           $httpBackend.whenGET(/.*/).passThrough();
           $httpBackend.whenPOST(/^\w+.*/).passThrough();
-        });
+        }]);
     };
 
   describe('Location page', function () {

@@ -15,7 +15,7 @@ describe('Locations: Division - Testing General Research Division',
         var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1';
 
         angular.module('httpBackendMock', ['ngMockE2E'])
-          .run(function ($httpBackend) {
+          .run(['$httpBackend', function ($httpBackend) {
             $httpBackend
               .whenJSONP(API_URL +
                 '/divisions/general-research-division?callback=JSON_CALLBACK')
@@ -29,7 +29,7 @@ describe('Locations: Division - Testing General Research Division',
             $httpBackend.whenGET(/^\w+.*/).passThrough();
             $httpBackend.whenGET(/.*/).passThrough();
             $httpBackend.whenPOST(/^\w+.*/).passThrough();
-          });
+          }]);
       };
 
     describe('Good API call', function () {

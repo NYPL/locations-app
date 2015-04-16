@@ -13,9 +13,7 @@ describe('Locations: Amenity', function () {
       var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
-        .run(function ($httpBackend) {
-          // $httpBackend.whenGET('languages/en.json').passThrough();
-
+        .run(['$httpBackend', function ($httpBackend) {
           $httpBackend
             .whenJSONP(API_URL + '/amenities/7964?callback=JSON_CALLBACK')
             .respond(response);
@@ -28,13 +26,13 @@ describe('Locations: Amenity', function () {
           $httpBackend.whenGET(/^\w+.*/).passThrough();
           $httpBackend.whenGET(/.*/).passThrough();
           $httpBackend.whenPOST(/^\w+.*/).passThrough();
-        });
+        }]);
     };
 
   describe('Good API Call', function () {
     beforeEach(function () {
-      // browser.addMockModule('httpBackendMock', httpBackendMock,
-      //     APIresponse.good);
+      browser.addMockModule('httpBackendMock', httpBackendMock,
+          APIresponse.good);
       browser.get('/amenities/id/7964');
     });
 

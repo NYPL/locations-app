@@ -13,9 +13,7 @@ describe('Locations: Amenities at a branch', function () {
       var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
-        .run(function ($httpBackend) {
-          // $httpBackend.whenGET('languages/en.json').passThrough();
-
+        .run(['$httpBackend', function ($httpBackend) {
           $httpBackend
             .whenJSONP(API_URL +
               '/locations/grand-central?callback=JSON_CALLBACK')
@@ -29,14 +27,14 @@ describe('Locations: Amenities at a branch', function () {
           $httpBackend.whenGET(/^\w+.*/).passThrough();
           $httpBackend.whenGET(/.*/).passThrough();
           $httpBackend.whenPOST(/^\w+.*/).passThrough();
-        });
+        }]);
     };
 
   describe('Good API Call', function () {
     beforeEach(function () {
       // Pass the good JSON from the API call.
-      // browser.addMockModule('httpBackendMock', httpBackendMock,
-      //     APIresponse.good);
+      browser.addMockModule('httpBackendMock', httpBackendMock,
+          APIresponse.good);
       browser.get('/amenities/loc/grand-central');
       browser.waitForAngular();
     });
