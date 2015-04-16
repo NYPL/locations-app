@@ -5,7 +5,7 @@ var AmenitiesPage = function () {
   'use strict';
 
   // /amenities
-  this.title = element(by.css('#amenities__title'));
+  this.title = element(by.css('#amenities__title h2'));
 
   this.amenities_categories =
     element.all(by.repeater('category in amenitiesCategories'));

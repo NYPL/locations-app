@@ -7,31 +7,12 @@ describe('Circulating branch page', function () {
 
   var locationPage = require('./location.po.js'),
     APIresponse = require('../APImocks/circulating.js'),
-    httpBackendMock = function (response) {
-      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1';
-
-      angular.module('httpBackendMock', ['ngMockE2E'])
-        .run(['$httpBackend', function ($httpBackend) {
-          $httpBackend
-            .whenJSONP(API_URL +
-              '/locations/grand-central?callback=JSON_CALLBACK')
-            .respond(response);
-
-          $httpBackend
-            .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
-            .respond({});
-
-          // For everything else, don't mock
-          $httpBackend.whenGET(/^\w+.*/).passThrough();
-          $httpBackend.whenGET(/.*/).passThrough();
-          $httpBackend.whenPOST(/^\w+.*/).passThrough();
-        }]);
-    };
+    httpBackendMock = require('../utils/utils.js').httpBackendMock;
 
   beforeEach(function () {
     // Pass the good JSON from the API call.
     browser.addMockModule('httpBackendMock', httpBackendMock,
-      APIresponse.good);
+      '/locations/grand-central', APIresponse.good);
     browser.get('/grand-central');
     browser.waitForAngular();
   });

@@ -7,30 +7,12 @@ describe('Locations: homepage', function () {
   // Check ../support/landingPage.js for code
   var landingPage = require('./homepage.po.js'),
     APIresponse = require('../APImocks/homepage.js'),
-    httpBackendMock = function (response) {
-      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1';
-
-      angular.module('httpBackendMock', ['ngMockE2E'])
-        .run(['$httpBackend', function ($httpBackend) {
-          $httpBackend
-            .whenJSONP(API_URL + '/locations?callback=JSON_CALLBACK')
-            // .respond(response);
-            .passThrough();
-
-          $httpBackend
-            .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
-            .passThrough();
-
-          // For everything else, don't mock
-          $httpBackend.whenGET(/^\w+.*/).passThrough();
-          $httpBackend.whenGET(/.*/).passThrough();
-          $httpBackend.whenPOST(/^\w+.*/).passThrough();
-        }]);
-    };
+    httpBackendMock = require('../utils/utils.js').httpBackendMock;
 
   beforeEach(function () {
     // Pass the good JSON from the API call.
-    browser.addMockModule('httpBackendMock', httpBackendMock, APIresponse.good);
+    browser.addMockModule('httpBackendMock', httpBackendMock,
+      '/locations', APIresponse.good);
     browser.get('/');
     browser.waitForAngular();
   });

@@ -9,30 +9,12 @@ describe('Locations: Amenity', function () {
     APIresponse = require('../APImocks/amenity.js'),
     // Function that creates a module that is injected at run time,
     // overrides and mocks httpbackend to mock API call. 
-    httpBackendMock = function (response) {
-      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1';
-
-      angular.module('httpBackendMock', ['ngMockE2E'])
-        .run(['$httpBackend', function ($httpBackend) {
-          $httpBackend
-            .whenJSONP(API_URL + '/amenities/7964?callback=JSON_CALLBACK')
-            .respond(response);
-
-          $httpBackend
-            .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
-            .respond({});
-
-          // For everything else, don't mock
-          $httpBackend.whenGET(/^\w+.*/).passThrough();
-          $httpBackend.whenGET(/.*/).passThrough();
-          $httpBackend.whenPOST(/^\w+.*/).passThrough();
-        }]);
-    };
+    httpBackendMock = require('../utils/utils.js').httpBackendMock;
 
   describe('Good API Call', function () {
     beforeEach(function () {
       browser.addMockModule('httpBackendMock', httpBackendMock,
-          APIresponse.good);
+        '/amenities/7964', APIresponse.good);
       browser.get('/amenities/id/7964');
     });
 
