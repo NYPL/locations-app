@@ -102,6 +102,7 @@
 
       switch (id) {
       case 7967: // Wireless
+      case 8123: // HotSpot Lending
         icon = 'icon-connection';
         break;
       case 7965: // Laptop
