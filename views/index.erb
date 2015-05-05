@@ -56,6 +56,12 @@
 
     <!-- NYPL Global Alerts -->
     <nypl-global-alerts></nypl-global-alerts>
+    <div class="visuallyhidden">
+        <div>
+            <a href="http://lblpac.nypl.org/klasweb/" title="Click to search the Andrew Heiskell Braille and Talking Book Library">Click to search the Andrew Heiskell Braille and Talking Book Library</a> 
+            <a href="#main-content">Skip Navigation</a>
+        </div>
+    </div>
 
     <!-- Header -->
     <div ng-include="'views/header.html'"></div>
@@ -63,7 +69,7 @@
     <!-- Main Navigation -->
     <nypl-navigation></nypl-navigation>
 
-    <div class="wrapper">
+    <div class="wrapper" id="main-content">
         <!-- Locinator App -->
         <div class="nypl-locations" data-ui-view data-autoscroll="false" scrolltop></div>
     </div>
