@@ -33,7 +33,7 @@
       --><div id="container__div_image" class="grid__item lap-one-half one-whole desk-one-third">
         <!-- Division Image -->
         <img class="img--outline main_division_image" data-ng-src="{{division.images.interior}}"
-          alt="Image of {{division.name}}" title="Image of {{division.name}}">
+          alt="{{division.name}}" title="{{division.name}}">
       </div><!--
       
       --><div id="container__div_address" class="grid__item lap-one-half one-whole desk-one-third">
@@ -111,7 +111,7 @@
             analytics-event="Division Image" analytics-label="{{subdivision.name}}">
             <img data-ng-if="subdivision.images.interior" class="img--outline" 
             data-ng-src="{{subdivision.images.interior}}"
-            alt="Image for {{subdivision.name}}" title="Image for {{subdivision.name}}"/>
+            alt="{{subdivision.name}}" title="{{subdivision.name}}"/>
           </a>
           <h4 class="subdivision-title">
             <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})"

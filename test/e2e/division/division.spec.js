@@ -11,32 +11,13 @@ describe('Locations: Division - Testing General Research Division',
       APIresponse = require('../APImocks/division.js'),
       // Function that creates a module that is injected at run time,
       // overrides and mocks httpbackend to mock API call. 
-      httpBackendMock = function (response) {
-        var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1';
-
-        angular.module('httpBackendMock', ['ngMockE2E'])
-          .run(function ($httpBackend) {
-            $httpBackend
-              .whenJSONP(API_URL +
-                '/divisions/general-research-division?callback=JSON_CALLBACK')
-              .respond(response);
-
-            $httpBackend
-              .whenJSONP(API_URL + '/alerts?callback=JSON_CALLBACK')
-              .respond({});
-
-            // For everything else, don't mock
-            $httpBackend.whenGET(/^\w+.*/).passThrough();
-            $httpBackend.whenGET(/.*/).passThrough();
-            $httpBackend.whenPOST(/^\w+.*/).passThrough();
-          });
-      };
+      httpBackendMock = require('../utils/utils.js').httpBackendMock;
 
     describe('Good API call', function () {
       beforeEach(function () {
         // Pass the good JSON from the API call.
         browser.addMockModule('httpBackendMock', httpBackendMock,
-            APIresponse.good);
+          '/divisions/general-research-division', APIresponse.good);
         browser.get('/divisions/general-research-division');
         browser.waitForAngular();
       });
@@ -208,7 +189,7 @@ describe('Locations: Division - Testing General Research Division',
     describe('Bad API call', function () {
       beforeEach(function () {
         browser.addMockModule('httpBackendMock', httpBackendMock,
-          APIresponse.bad);
+          '/divisions/general-research-division', APIresponse.bad);
         browser.get('/divisions/general-research-division');
         browser.waitForAngular();
       });
