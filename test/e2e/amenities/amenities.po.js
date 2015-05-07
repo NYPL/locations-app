@@ -5,7 +5,7 @@ var AmenitiesPage = function () {
   'use strict';
 
   // /amenities
-  this.title = element(by.css('#amenities__title'));
+  this.title = element(by.css('#amenities__title h2'));
 
   this.amenities_categories =
     element.all(by.repeater('category in amenitiesCategories'));
@@ -20,7 +20,7 @@ var AmenitiesPage = function () {
   this.learn_more = element(by.css('.read-more'));
 
   // /amenities/location/:location-slug
-  this.location_name = element(by.css('#location_name'));
+  this.location_name = element(by.css('#location_name h2'));
 
   // Services callout
   this.services_callout = element(by.css('.services-callout'));
