@@ -8,7 +8,7 @@
           Type a Library name, or enter an address or landmark to search nearby.
         </label>
         <div class="search-box-area">
-          <input class="search-box" id="searchTerm" type="text" data-ng-model="searchTerm"/>
+          <input class="search-box" id="searchTerm" type="text" data-ng-model="searchTerm" autofocus />
           <span class="icon-search"></span>
           <span id="clear-search" class="icon-cancel-circle" data-ng-click="clearSearch()"></span>
 
@@ -78,7 +78,8 @@
       analytics-label="List view">
       List View
     </div>
-    <div class="map-view-btn" data-ui-sref=".map" data-ng-class="{active: $state.includes('home.map')}"
+    <div class="map-view-btn" data-ui-sref=".map"
+      data-ng-class="{active: $state.includes('home.map')}"
       analytics-on="click" analytics-category="Locations" analytics-event="View"
       analytics-label="Map view">
       Map View

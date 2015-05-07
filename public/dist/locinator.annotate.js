@@ -4701,6 +4701,7 @@ var nypl_widget = angular.module('nypl_widget', [
 
       switch (id) {
       case 7967: // Wireless
+      case 8123: // HotSpot Lending
         icon = 'icon-connection';
         break;
       case 7965: // Laptop
@@ -5777,16 +5778,16 @@ var nypl_widget = angular.module('nypl_widget', [
         return '';
       }
 
-      var addressBreak = " ",
-        linkedName = location.name;
+      var addressBreak = ' ',
+        linkedName = '';
 
       if (nicePrint) {
-        addressBreak = "<br />";
         linkedName = "<a href='/locations/" + location.slug +
-          "'>" + location.name + "</a>";
+          "'>" + location.name + "</a><br />";
+        addressBreak = "<br />";
       }
 
-      return linkedName + addressBreak +
+      return linkedName +
         location.street_address + addressBreak +
         location.locality + ", " +
         location.region + ", " +
