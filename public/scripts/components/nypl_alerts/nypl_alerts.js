@@ -132,8 +132,8 @@
               return elem;
             }
             // Covers early openings
-            else if (today.day() === sDate.day() &&
-                eDate.day() === today.day() && eDate.valueOf()
+            else if (today.toDate() === sDate.toDate() &&
+                eDate.toDate() === today.toDate() && eDate.valueOf()
                 >= today.valueOf()) {
               return elem;
             }
