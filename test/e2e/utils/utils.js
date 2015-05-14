@@ -4,7 +4,7 @@
 var utils = {};
 
 utils.httpBackendMock = function (page, response) {
-  var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1';
+  var API_URL = 'http://dev.refinery.aws.nypl.org/api/nypl/locations/v1.0';
 
   angular.module('httpBackendMock', ['ngMockE2E'])
     .run(['$httpBackend', function ($httpBackend, $window) {
