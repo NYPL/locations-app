@@ -145,12 +145,12 @@ describe('WidgetCtrl', function () {
       nyplLocationsService = _nyplLocationsService_;
       $rootScope = _$rootScope_;
 
-      httpBackend
-          .whenJSONP('http://dev.locations.api.nypl.org/api/v0.7/alerts' +
-            '?callback=JSON_CALLBACK')
-          .respond({});
-      nyplLocationsService.getConfig();
-      $rootScope.$apply();
+      // httpBackend
+      //     .whenJSONP('http://dev.refinery.aws.nypl.org/api/nypl/locations/v0.7/alerts' +
+      //       '?callback=JSON_CALLBACK')
+      //     .respond({});
+      // nyplLocationsService.getConfig();
+      // $rootScope.$apply();
     });
   });
 
@@ -162,7 +162,7 @@ describe('WidgetCtrl', function () {
       scope = _$rootScope_.$new();
       WidgetCtrl = _$controller_('WidgetCtrl', {
         $scope: scope,
-        config: {api_root: 'http://locations-api-beta.nypl.org',
+        config: {api_root: 'http://dev.refinery.aws.nypl.org/api/nypl/locations',
           divisions_with_appointments: ["ARN", "RBK", "MSS", "BRG", "PRN",
             "PHG", "SPN", "CPS"]},
         data: mockGeneralResearchDivision
@@ -230,7 +230,7 @@ describe('WidgetCtrl', function () {
       scope = _$rootScope_.$new();
       WidgetCtrl = _$controller_('WidgetCtrl', {
         $scope: scope,
-        config: {api_root: 'http://locations-api-beta.nypl.org',
+        config: {api_root: 'http://dev.refinery.aws.nypl.org/api/nypl/locations',
           divisions_with_appointments: ["ARN", "RBK", "MSS", "BRG", "PRN",
             "PHG", "SPN", "CPS"]},
         data: mockPeriodicalsRoom
@@ -273,7 +273,7 @@ describe('WidgetCtrl', function () {
       scope = _$rootScope_.$new();
       WidgetCtrl = _$controller_('WidgetCtrl', {
         $scope: scope,
-        config: {api_root: 'http://locations-api-beta.nypl.org',
+        config: {api_root: 'http://dev.refinery.aws.nypl.org/api/nypl/locations',
           closed_img: "http://ux-static.nypl.org/images/branch_closed.jpg",
           divisions_with_appointments: ["ARN", "RBK", "MSS", "BRG", "PRN",
             "PHG", "SPN", "CPS"]},

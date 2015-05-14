@@ -33,7 +33,7 @@ describe('Locinator controllers', function () {
       httpBackend,
       nypl_geocoder_mock,
       config = {
-        api_root: "http://dev.locations.api.nypl.org"
+        api_root: "http://dev.refinery.aws.nypl.org/api/nypl/locations"
       };
 
     beforeEach(function () {
