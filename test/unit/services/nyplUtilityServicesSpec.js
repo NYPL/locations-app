@@ -14,8 +14,8 @@ describe('NYPL Utility Service Tests', function () {
     var nyplUtility, date;
     window.locations_cfg = {
       config: {
-        api_root: 'http://dev.locations.api.nypl.org/api',
-        api_version: 'v0.7',
+        api_root: 'http://dev.refinery.aws.nypl.org/api/nypl/locations',
+        api_version: 'v1.0',
         fundraising: {
           statement: "Become a Member",
           appeal: "Friends of the Library can support their favorite " +
@@ -219,8 +219,7 @@ describe('NYPL Utility Service Tests', function () {
         var marker_address = nyplUtility.getAddressString(location);
 
         expect(marker_address)
-          .toEqual("115th Street Library 203 West 115th " +
-            "Street New York, NY, 10026");
+          .toEqual("203 West 115th Street New York, NY, 10026");
       });
 
       it('should return an empty string if no input is given', function () {

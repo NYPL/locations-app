@@ -7,14 +7,15 @@ describe('Locinator State Routing', function () {
 
   var $rootScope, $injector, $state, $httpBackend, nyplLocationsService,
     configObj = {
-      api_root: 'http://dev.locations.api.nypl.org/api',
+      // api_root: 'http://dev.locations.api.nypl.org/api',
+      api_root: 'http://dev.refinery.aws.nypl.org/api/nypl/locations',
       featured_amenities: { global: 3, local: 2 }
     };
 
   window.locations_cfg = {
     config: {
-      api_root: 'http://dev.locations.api.nypl.org/api',
-      api_version: 'v0.7',
+      api_root: 'http://dev.refinery.aws.nypl.org/api/nypl/locations',
+      api_version: 'v1.0',
       fundraising: {
         statement: "Become a Member",
         appeal: "Friends of the Library can support their favorite " +

@@ -193,7 +193,7 @@ var  mockAllAmenities = {
     }
   },
   config = {
-    api_root: "http://locations-api-beta.nypl.org"
+    api_root: "http://dev.refinery.aws.nypl.org/api/nypl/locations"
   };
 
 describe('Amenities Controllers', function () {
