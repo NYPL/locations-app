@@ -1,6 +1,6 @@
 {
   "environments": {
-    "default": "development",
+    "default": "qa",
     "production": {
       "url": "http://locations.nypl.org",
       "api": "http://refinery.aws.nypl.org/api/nypl/locations",
@@ -15,7 +15,7 @@
     },
     "qa": {
       "url": "http://qa.locations.nypl.org",
-      "api": "http://refinery.aws.nypl.org/api/nypl/locations",
+      "api": "http://qa.refinery.aws.nypl.org/api/nypl/locations",
       "api_version": "v1.0",
       "nyplbase": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.1/css/nyplbase.min.css",
       "optimizely": null,
