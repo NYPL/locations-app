@@ -3004,7 +3004,7 @@ var nypl_widget = angular.module('nypl_widget', [
         // then display 'Closed....' instead of the hours in the column.
         function configureGlobalAlert() {
             $scope.globalClosingMessage;
-            if ($nyplAlerts.alerts.length) {
+            if ($nyplAlerts.alerts && $nyplAlerts.alerts.length) {
                 $scope.globalClosingMessage =
                     nyplAlertsService.getCurrentActiveMessage($nyplAlerts.alerts);
             }
