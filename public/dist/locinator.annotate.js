@@ -3966,6 +3966,9 @@ var nypl_widget = angular.module('nypl_widget', [
           $analytics.eventTrack('Click',
                     { category: 'footer', label: linkHref });
         });
+
+        // Dynamic Year
+        scope.year = new Date().getFullYear();
       }
     };
   }
