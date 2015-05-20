@@ -153,8 +153,8 @@
           nDays   = this.numDaysFromToday(eDate, today);
 
         if (!nDays) return;
-        // First check if input is within 365 days
-        if (nDays <= 365) {
+        // First check if input is within 730 days, 2 years
+        if (nDays <= 730) {
           // Millisecond comparison between date.time property
           if (sDate.getTime() <= today.getTime() && eDate.getTime() >= today.getTime()) {
             // Current Event
