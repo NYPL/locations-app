@@ -3004,7 +3004,7 @@ var nypl_widget = angular.module('nypl_widget', [
         // then display 'Closed....' instead of the hours in the column.
         function configureGlobalAlert() {
             $scope.globalClosingMessage;
-            if ($nyplAlerts.alerts.length) {
+            if ($nyplAlerts.alerts && $nyplAlerts.alerts.length) {
                 $scope.globalClosingMessage =
                     nyplAlertsService.getCurrentActiveMessage($nyplAlerts.alerts);
             }
@@ -3966,6 +3966,9 @@ var nypl_widget = angular.module('nypl_widget', [
           $analytics.eventTrack('Click',
                     { category: 'footer', label: linkHref });
         });
+
+        // Dynamic Year
+        scope.year = new Date().getFullYear();
       }
     };
   }
@@ -5686,43 +5689,77 @@ var nypl_widget = angular.module('nypl_widget', [
      * @description ...
      */
     utility.formatDate = function(startDate, endDate) {
-      var formattedDate,
-          months = ['January', 'February', 'March', 'April', 'May', 'June',
-                  'July', 'August', 'September', 'October', 'November', 'December'];
+      var formattedDate;
 
-      this.numDaysFromToday = function(date, today) {
-        return Math.round(((date.valueOf()-today.valueOf()) / 1000 / 86400) - 0.5);
+      this.numDaysBetween = function(start, end) {
+        var s = moment(start),
+          e = moment(end);
+        return e.diff(s, 'days');
+      };
+
+      this.dateToString = function(start, end, type) {
+        var dateString,
+          months = ['January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'];
+
+        if (!start && !end) { return; }
+        // String assignment based on type
+        switch (type) {
+          case "current":
+            dateString = "Open now. Ends " + months[end.getUTCMonth()] +
+              " " + end.getUTCDate() + ", " + end.getUTCFullYear() + ".";
+            break;
+          case "current-ongoing":
+            dateString = "Open now. Ongoing.";
+            break;
+          case "upcoming":
+            dateString = "Opening soon. " + months[start.getUTCMonth()] +
+              " " + start.getUTCDate() + ", " + start.getUTCFullYear() +
+              " - " + months[end.getUTCMonth()] + " " + end.getUTCDate() +
+              ", " + end.getUTCFullYear() + ".";
+            break;
+          case "upcoming-ongoing":
+            dateString = "Opening soon. " + months[sDate.getUTCMonth()] +
+            " " + sDate.getUTCDate() + ", " + sDate.getUTCFullYear() + ".";
+            break;
+          default:
+            dateString = months[start.getUTCMonth()] + " " + start.getUTCDate() + 
+              ", " + start.getUTCFullYear() + " - " + months[end.getUTCMonth()] + 
+              " " + end.getUTCDate() + ", " + end.getUTCFullYear() + ".";
+        }
+        return dateString;
       };
 
       if (startDate && endDate) {
         var sDate = new Date(startDate),
           eDate   = new Date(endDate),
           today   = new Date(),
-          nDays   = this.numDaysFromToday(eDate, today);
+          daysBetweenStartEnd = this.numDaysBetween(sDate, eDate),
+          rangeLimit = 365;
 
-        if (!nDays) return;
-        // First check if input is within 365 days
-        if (nDays <= 365) {
-          // Millisecond comparison between date.time property
-          if (sDate.getTime() <= today.getTime() && eDate.getTime() >= today.getTime()) {
-            // Current Event
-            formattedDate = "Now through " + months[eDate.getUTCMonth()] + " " +
-                            eDate.getUTCDate() + ", " + eDate.getUTCFullYear();
-          }
-          else if (sDate.getTime() > today.getTime() && eDate.getTime() >= today.getTime()) {
-            // Upcoming Event
-            formattedDate = "Opening " + months[sDate.getUTCMonth()] + " " +
-                            sDate.getUTCDate() + ", " + sDate.getUTCFullYear();
-          }
-          else {
-            // Past Event
-            formattedDate = months[sDate.getUTCMonth()] + " " + sDate.getUTCDate() + ", " + 
-                            sDate.getUTCFullYear() + " through " + months[eDate.getUTCMonth()] +
-                            " " + eDate.getUTCDate() + ", " + eDate.getUTCFullYear();
-          }
+        // Current Event and not past 1 year between start and end dates.
+        if (sDate.getTime() <= today.getTime()
+          && eDate.getTime() >= today.getTime()
+          && daysBetweenStartEnd < rangeLimit
+          && daysBetweenStartEnd > 0) {
+          formattedDate = this.dateToString(sDate, eDate, 'current');
         }
+        // Current Event and past 1 year which implies Ongoing
+        else if (sDate.getTime() <= today.getTime()
+          && eDate.getTime() >= today.getTime()
+          && daysBetweenStartEnd > rangeLimit) {
+          formattedDate = this.dateToString(sDate, eDate, 'current-ongoing');
+        }
+        // Upcoming Event and not past 1 year between start and end dates.
+        else if (sDate.getTime() > today.getTime()
+          && eDate.getTime() >= today.getTime()
+          && daysBetweenStartEnd < rangeLimit
+          && daysBetweenStartEnd > 0) {
+          formattedDate = this.dateToString(sDate, eDate, 'upcoming');
+        }
+        // Upcoming Event and past 1 year which implies Ongoing.
         else {
-          formattedDate = "Ongoing";
+          formattedDate = this.dateToString(sDate, eDate, 'upcoming-ongoing');
         }
       }
       return formattedDate;

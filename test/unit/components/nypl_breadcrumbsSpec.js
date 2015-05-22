@@ -28,7 +28,7 @@ describe('Directive: nyplbreadcrumbs', function () {
       scope = _$rootScope_.$new();
 
       httpBackend
-          .whenJSONP('http://dev.locations.api.nypl.org/api/v0.7/alerts' +
+          .whenJSONP('http://dev.refinery.aws.nypl.org/api/nypl/locations/v1.0/alerts' +
             '?callback=JSON_CALLBACK')
           .respond({});
 
@@ -41,8 +41,8 @@ describe('Directive: nyplbreadcrumbs', function () {
     nyplbreadcrumbs = createDirective(html);
     window.locations_cfg = {
       config: {
-        api_root: 'dev.locations.api.nypl.org/api',
-        api_version: 'v0.7',
+        api_root: 'http://dev.refinery.aws.nypl.org/api/nypl/locations',
+        api_version: 'v1.0',
         fundraising: {
           statement: "Become a Member",
           appeal: "Friends of the Library can support their favorite " +

@@ -70,7 +70,7 @@ describe('NYPL Geocoder Service Tests', function () {
 
         // Not sure how or why this happens...
         httpBackend
-          .whenJSONP('http://dev.locations.api.nypl.org/api/v0.7/alerts' +
+          .whenJSONP('http://dev.refinery.aws.nypl.org/api/nypl/locations/v1.0/alerts' +
             '?callback=JSON_CALLBACK')
           .respond({});
 

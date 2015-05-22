@@ -15,7 +15,7 @@ describe('NYPL Alerts Module', function () {
     // Function that creates a module that is injected at run time,
     // overrides and mocks httpbackend to mock API call. 
     globalhttpBackendMock = function (response, location) {
-      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1',
+      var API_URL = 'http://dev.refinery.aws.nypl.org/api/nypl/locations/v1.0',
         loc = location ? '/' + location : '';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
@@ -37,7 +37,7 @@ describe('NYPL Alerts Module', function () {
         }]);
     },
     locationhttpBackendMock = function (alerts, location, locationMock) {
-      var API_URL = 'http://dev.locations.api.nypl.org/api/v0.7.1';
+      var API_URL = 'http://dev.refinery.aws.nypl.org/api/nypl/locations/v1.0';
 
       angular.module('httpBackendMock', ['ngMockE2E'])
         .run(['$httpBackend', function ($httpBackend) {
