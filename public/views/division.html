@@ -281,17 +281,19 @@
           analytics-event="Blog image" analytics-label="{{blog._links.self.href}}">
           <img class="img--left" data-ng-src="{{blog.image}}" alt="" style="max-width: 120px;" />
         </a>
-        <div class="blog_author">
-          <span class="blog_name">By {{blog.author.name}}</span>
+        <div class="blog_author" data-ng-if="blog.author">
+          <span class="blog_name" data-ng-if="blog.author.name">By {{blog.author.name}}</span>
           <span class="blog_position" data-ng-if="blog.author.position">, {{blog.author.position}}</span>
           <span class="blog_location" data-ng-if="blog.author.location">, {{blog.author.location}}</span>
         </div>
-        <time class="date" ><span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span></time>
-        <div class="desc">{{blog.body}}</div>
+        <time class="date" data-ng-if="blog.pubdate">
+          <span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span>
+        </time>
+        <div class="desc" data-ng-if="blog.body">{{blog.body}}</div>
       </div>
     </div>
     <!-- More Blogs Link -->
-    <div class="text--right">
+    <div class="text--right" data-ng-if="division._links.blogs.all">
       <a class="read-more blogs-more" data-ng-href="{{division._links.blogs.all}}">
         See more blog posts
       </a>
