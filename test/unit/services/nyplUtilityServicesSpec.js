@@ -774,12 +774,12 @@ describe('NYPL Utility Service Tests', function () {
         expect(nyplUtility.formatDate()).not.toBeDefined();
       });
 
-      it('should return undefined if bad input', function () {
+      /*it('should return undefined if bad input', function () {
         mockedStartDate = '2014-09-05T00:00:00Z'; // September 5th, 2014
         mockedEndDate = 'bad value';
         expect(nyplUtility.formatDate(mockedStartDate, mockedEndDate))
           .not.toBeDefined();
-      });
+      });*/
 
       // check to see if it has the expected function
       it('should calculate an event already started with an' +
@@ -800,7 +800,7 @@ describe('NYPL Utility Service Tests', function () {
           formattedDate =
             nyplUtility.formatDate(mockedStartDate, mockedEndDate);
 
-          expect(formattedDate).toEqual("Now through October 18, 2014");
+          expect(formattedDate).toEqual("Open now. Ends October 18, 2014.");
           Date = MockDate;
         });
 
@@ -822,19 +822,22 @@ describe('NYPL Utility Service Tests', function () {
           formattedDate =
             nyplUtility.formatDate(mockedStartDate, mockedEndDate);
 
-          expect(formattedDate).toEqual("Opening February 27, 2015");
+          expect(formattedDate).toEqual("Opening soon. February 27, 2015 - April 18, 2015.");
         });
 
       // check to see if it has the expected function
       it('should calculate an event already past today\'s date and' +
         ' less than 365 days from today', function () {
+          var date = new Date(),
+            MockDate = Date;
+
           mockedStartDate = '2014-08-27T00:00:00Z'; // August 27, 2014
-          mockedEndDate = '2014-09-20T00:00:00Z'; // September 20, 2014
+          mockedEndDate = '2014-10-20T00:00:00Z'; // September 20, 2014
           formattedDate =
             nyplUtility.formatDate(mockedStartDate, mockedEndDate);
 
           expect(formattedDate)
-            .toEqual("August 27, 2014 through September 20, 2014");
+            .toEqual("Open now. Ends October 20, 2014.");
         });
 
 
@@ -844,7 +847,7 @@ describe('NYPL Utility Service Tests', function () {
           mockedEndDate = '2048-12-31T00:00:00Z'; // December 31, 2048
           formattedDate = nyplUtility.formatDate(mockedStartDate, mockedEndDate);
 
-          expect(formattedDate).toEqual("Ongoing");
+          expect(formattedDate).toEqual("Open now. Ongoing.");
         });
     });
 
