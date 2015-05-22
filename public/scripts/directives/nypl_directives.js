@@ -582,6 +582,9 @@
           $analytics.eventTrack('Click',
                     { category: 'footer', label: linkHref });
         });
+
+        // Dynamic Year
+        scope.year = new Date().getFullYear();
       }
     };
   }
