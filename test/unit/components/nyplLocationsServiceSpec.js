@@ -15,8 +15,8 @@ describe('NYPL locationService Module', function () {
    * data from different API endpoints.
    */
   describe('nyplLocationsService', function () {
-    var api = 'http://dev.locations.api.nypl.org/api',
-      api_version = 'v0.7',
+    var api = 'http://dev.refinery.aws.nypl.org/api/nypl/locations',
+      api_version = 'v1.0',
       jsonpCallback = '?callback=JSON_CALLBACK',
       error_message = 'Could not reach API: ',
       nyplLocationsService,

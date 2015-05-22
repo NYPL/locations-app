@@ -9,8 +9,8 @@ describe('NYPL Directive Unit Tests', function () {
   'use strict';
 
   var httpBackend, compile, scope,
-    api = 'http://dev.locations.api.nypl.org/api',
-    api_version = 'v0.7.1',
+    api = 'http://dev.refinery.aws.nypl.org/api/nypl/locations',
+    api_version = 'v1.0',
     jsonpCallback = '?callback=JSON_CALLBACK';
 
   beforeEach(function () {
@@ -38,7 +38,7 @@ describe('NYPL Directive Unit Tests', function () {
       scope = _$rootScope_;
 
       httpBackend
-        .whenJSONP('http://dev.locations.api.nypl.org/api/' + api_version + '/alerts' +
+        .whenJSONP('http://dev.refinery.aws.nypl.org/api/nypl/locations/' + api_version + '/alerts' +
           '?callback=JSON_CALLBACK')
         .respond({});
 
