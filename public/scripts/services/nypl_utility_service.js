@@ -141,7 +141,9 @@
       var formattedDate;
 
       this.numDaysBetween = function(start, end) {
-        return Math.round(((end.valueOf()-start.valueOf()) / 1000 / 86400) - 0.5);
+        var s = moment(start),
+          e = moment(end);
+        return e.diff(s, 'days');
       };
 
       this.dateToString = function(start, end, type) {
@@ -187,7 +189,8 @@
         // Current Event and not past 1 year between start and end dates.
         if (sDate.getTime() <= today.getTime()
           && eDate.getTime() >= today.getTime()
-          && daysBetweenStartEnd < rangeLimit) {
+          && daysBetweenStartEnd < rangeLimit
+          && daysBetweenStartEnd > 0) {
           formattedDate = this.dateToString(sDate, eDate, 'current');
         }
         // Current Event and past 1 year which implies Ongoing
@@ -199,7 +202,8 @@
         // Upcoming Event and not past 1 year between start and end dates.
         else if (sDate.getTime() > today.getTime()
           && eDate.getTime() >= today.getTime()
-          && daysBetweenStartEnd < rangeLimit) {
+          && daysBetweenStartEnd < rangeLimit
+          && daysBetweenStartEnd > 0) {
           formattedDate = this.dateToString(sDate, eDate, 'upcoming');
         }
         // Upcoming Event and past 1 year which implies Ongoing.
