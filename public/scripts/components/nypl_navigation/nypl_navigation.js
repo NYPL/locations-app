@@ -22,7 +22,10 @@
   function nyplNavigation(ssoStatus, $window, $rootScope) {
     return {
       restrict: 'E',
-      scope: {},
+      scope: {
+        activenav: '@',
+        menuitem: '@'
+      },
       replace: true,
       templateUrl: 'scripts/components/nypl_navigation/nypl_navigation.html',
       link: function (scope, element, attrs) {
