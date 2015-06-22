@@ -123,7 +123,7 @@
               <ul>
               <li><a href="http://nypl.org/collections/articles-databases">Articles and Databases</a></li>
               <li><a href="http://nypl.org/events/online-exhibitions">Online Exhibitions</a></li>
-              <li><a href="http://digitalgallery.nypl.org/">Digital Gallery</a></li>
+              <li><a href="http://digitalcollections.nypl.org/">Digital Collections</a></li>
               <li><a href="http://nypl.org/collections/labs">NYPL Labs</a></li>
               <li><a href="http://nypl.org/online_projects">Digital Projects</a></li>
               </ul>
@@ -154,7 +154,12 @@
               <h5>Collections</h5>
               <ul>
                 <li>
-                  <a href="http://nypl.org/research-divisions">Research Divisions</a>
+                  <a data-ng-if="activenav == 'Locations' || menuitem == 'profiles'" href="http://nypl.org/research-divisions">Research Divisions</a>
+                  <a data-ng-if="menuitem == 'division'" href="/research-divisions">Research Divisions</a>
+                </li>
+                <li>
+                  <a data-ng-if="activenav == 'Locations' || menuitem == 'division'" href="/staff-profiles">Staff Profiles</a>
+                  <a data-ng-if="menuitem == 'profiles'" data-ui-sref="home">Staff Profiles</a>
                 </li>
                 <li>
                   <a href="http://archives.nypl.org">Manuscripts and Archives</a>
@@ -248,10 +253,11 @@
         </div>
       </li>
 
-      <li class="dropDown active">
-        <a data-ui-sref="home.index">Locations</a>
+      <li class="dropDown" data-ng-class="{active: 'Locations' == activenav}">
+        <a data-ng-if="activenav == 'Locations'" data-ui-sref="home.index" href="/locations">Locations</a>
+        <a data-ng-if="activenav == 'Research'" href="/locations">Locations</a>
         <div class="dropDown_Content">
-          <ul>
+          <ul data-ng-if="activenav == 'Locations'">
             <li>
               <a data-ui-sref="home.index">All Locations</a>
             </li>
@@ -266,6 +272,23 @@
             </li>
             <li>
               <a data-ui-sref="location({ location: 'sibl' })">Science, Industry and Business Library</a>
+            </li>
+          </ul>
+          <ul data-ng-if="activenav == 'Research'">
+            <li>
+              <a href="/locations">All Locations</a>
+            </li>
+            <li>
+              <a href="/locations/schwarzman">Schwarzman Building</a>
+            </li>
+            <li>
+              <a href="/locations/lpa">Library for the Performing Arts</a>
+            </li>
+            <li>
+              <a href="/locations/schomburg">Schomburg Center</a>
+            </li>
+            <li>
+              <a href="/locations/sibl">Science, Industry and Business Library</a>
             </li>
           </ul>
         </div>
