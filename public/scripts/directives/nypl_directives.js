@@ -73,7 +73,7 @@
    * @description
    * ...
    */
-  function todayshours(nyplAlertsService, nyplUtility, $filter) {
+  function todayshours($nyplAlerts, nyplAlertsService, nyplUtility, $filter) {
     return {
       restrict: 'EA',
       replace: false,
@@ -86,13 +86,21 @@
         var alerts = {},
           hours = $scope.hours || null;
 
-        if ($scope.alerts) {
+        // Retrieve all current global closings
+        // Utilize the Global Alerts Provider
+        if ($nyplAlerts.alerts && $nyplAlerts.alerts.length) {
           // Retrieve all current global closings
           alerts.current_global = nyplAlertsService.filterAlerts(
-            $scope.alerts,
+            $nyplAlerts.alerts,
             {scope: 'all', only_closings: 'current'}
           );
+        }
 
+        // Used objects embedded alerts property
+        // Does not include global alerts
+        // Divisions include parent
+        // Locations do not include children
+        if ($scope.alerts) {
           // Retrieve all current location closings
           alerts.current_location = nyplAlertsService.filterAlerts(
             $scope.alerts,
@@ -105,10 +113,12 @@
             {scope: 'division', only_closings: 'current'}
           );
 
-          // Retrieve all global closing alerts for 7 day week
+          // Retrieve all closing alerts for 7 day week
           // Used to determine tomorrow's hours message
+          // First pass in the global alerts, if it is a
+          // location/division closing use that as secondary
           alerts.all_closings = nyplAlertsService.filterAlerts(
-            $scope.alerts,
+            ($nyplAlerts.alerts || $scope.alerts),
             {only_closings: 'week'}
           );
         }
@@ -164,7 +174,7 @@
       }]
     };
   }
-  todayshours.$inject = ['nyplAlertsService', 'nyplUtility', '$filter'];
+  todayshours.$inject = ['$nyplAlerts', 'nyplAlertsService', 'nyplUtility', '$filter'];
 
   function hoursTable(nyplAlertsService) {
     return {
