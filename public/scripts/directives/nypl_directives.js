@@ -89,14 +89,13 @@
         // Retrieve all current global closings
         // Utilize the Global Alerts Provider
         if ($nyplAlerts.alerts && $nyplAlerts.alerts.length) {
-          // Retrieve all current global closings
           alerts.current_global = nyplAlertsService.filterAlerts(
             $nyplAlerts.alerts,
             {scope: 'all', only_closings: 'current'}
           );
         }
 
-        // Used objects embedded alerts property
+        // Used the passed in Objects embedded alerts property
         // Does not include global alerts
         // Divisions include parent
         // Locations do not include children
