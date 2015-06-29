@@ -476,7 +476,9 @@
       var alerts = $rootScope.alerts || data;
       $rootScope.alerts =
         nyplAlertsService.filterAlerts(alerts, {current: true});
-      $nyplAlerts.alerts = $rootScope.alerts || data;
+
+      // Assign Raw Alerts without filter
+      $nyplAlerts.alerts = data;
     }).catch(function (error) {
       throw error;
     });
