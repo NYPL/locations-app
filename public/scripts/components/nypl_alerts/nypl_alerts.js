@@ -459,12 +459,27 @@
         type: '@'
       },
       link: function (scope, element, attrs) {
+        var alertsOne, alertsTwo;
+
         if (scope.alerts && scope.type.length) {
-          scope.locationAlerts = nyplAlertsService.filterAlerts(
+          alertsOne = nyplAlertsService.filterAlerts(
             scope.alerts,
             {scope: scope.type, current: true}
           );
         }
+        // Special Case for Division Alerts
+        // --------------------------------
+        // Check if there are any parent location
+        // alerts and merge both arrays.
+        if (scope.type === 'division') {
+          alertsTwo = nyplAlertsService.filterAlerts(
+            scope.alerts,
+            {scope: 'location', current: true}
+          );
+        }
+
+        scope.locationAlerts = (alertsTwo && alertsTwo.length) ?
+          alertsTwo.concat(alertsOne) : alertsOne;
       }
     };
   }
