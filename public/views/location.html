@@ -339,7 +339,7 @@
         <time class="date" data-ng-if="blog.pubdate">
           <span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span>
         </time>
-        <div class="teaser desc" data-ng-if="blog.body">{{blog.body}}</div>
+        <div class="teaser desc" data-ng-if="blog.body" data-ng-bind-html="blog.body"></div>
       </div>
     </div>
     <!-- More Link -->
