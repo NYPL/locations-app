@@ -69,3 +69,6 @@ DEPENDENCIES
   sinatra-jsonp
   thin
   unicorn
+
+BUNDLED WITH
+   1.10.1

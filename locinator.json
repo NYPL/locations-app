@@ -1,6 +1,6 @@
 {
   "environments": {
-    "default": "development",
+    "default": "production",
     "production": {
       "url": "http://locations.nypl.org",
       "api": "http://refinery.aws.nypl.org/api/nypl/locations",
