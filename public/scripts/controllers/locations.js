@@ -567,8 +567,6 @@
                 }
             };
 
-        console.log(params);
-
         drawMap();
 
         setTimeout(function () {
