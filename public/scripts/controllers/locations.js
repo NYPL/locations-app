@@ -411,6 +411,8 @@
                 .removeMarker('user');
 
             if (isMapPage()) {
+                $location.search('libraries', null);
+                $location.search('nearme', null);
                 nyplGeocoderService.removeMarker('search')
                     .hideInfowindow()
                     .panMap();
