@@ -411,6 +411,7 @@
                 .removeMarker('user');
 
             if (isMapPage()) {
+                // Remove the query params from the URL.
                 $location.search('libraries', null);
                 $location.search('nearme', null);
                 nyplGeocoderService.removeMarker('search')
@@ -481,6 +482,8 @@
 
             $scope.researchBranches = !$scope.researchBranches;
 
+            // Only add and remove the libraries query parameter
+            // if the user is on the map page.
             if ($scope.researchBranches) {
                 if (isMapPage()) {
                     $location.search('libraries', 'research');
@@ -554,11 +557,13 @@
                 }, 1200);
             },
             geolocate = function () {
+                // The value should be nearme=true.
+                // Make sure geolocation is available before attempt.
                 if (nearMe === 'true') {
                     if (nyplCoordinatesService.geolocationAvailable()) {
                         $scope.geolocationOn = true;
+                        $scope.useGeolocation();
                     }
-                    $scope.useGeolocation();
                 }
             },
             displayLibraries = function () {
@@ -569,6 +574,7 @@
 
         drawMap();
 
+        // Load the map and data first
         setTimeout(function () {
             if (nearMe) {
                 geolocate();
