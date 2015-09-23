@@ -70,7 +70,7 @@ nypl_locations.config([
             throw err;
         });
     }
-    LoadLocation.$inject = ["$stateParams", "config", "nyplLocationsService"];
+    LoadLocation.$inject = ['$stateParams', 'config', 'nyplLocationsService'];
 
     function LoadSubDivision($q, $stateParams, config, nyplLocationsService) {
       var division = nyplLocationsService
@@ -85,8 +85,8 @@ nypl_locations.config([
         return subdiv;
       });
     }
-    LoadSubDivision.$inject = ["$q", "$stateParams",
-      "config", "nyplLocationsService"];
+    LoadSubDivision.$inject = ['$q', '$stateParams',
+      'config', 'nyplLocationsService'];
 
     function LoadDivision($stateParams, config, nyplLocationsService) {
       return nyplLocationsService
@@ -98,7 +98,7 @@ nypl_locations.config([
           throw err;
         });
     }
-    LoadDivision.$inject = ["$stateParams", "config", "nyplLocationsService"];
+    LoadDivision.$inject = ['$stateParams', 'config', 'nyplLocationsService'];
 
     function Amenities($stateParams, config, nyplLocationsService) {
       return nyplLocationsService
@@ -110,12 +110,17 @@ nypl_locations.config([
           throw error;
         });
     }
-    Amenities.$inject = ["$stateParams", "config", "nyplLocationsService"];
+    Amenities.$inject = ['$stateParams', 'config', 'nyplLocationsService'];
 
     function getConfig(nyplLocationsService) {
       return nyplLocationsService.getConfig();
     }
-    getConfig.$inject = ["nyplLocationsService"];
+    getConfig.$inject = ['nyplLocationsService'];
+
+    function getQueryParams($stateParams) {
+      return $stateParams;
+    }
+    getQueryParams.$inject = ['$stateParams'];
 
     // Load the interceptor for the loading image.
     $httpProvider.interceptors.push(nyplInterceptor);
@@ -149,7 +154,7 @@ nypl_locations.config([
     });
 
     // Set default time zone.
-    moment.tz.setDefault("America/New_York");
+    moment.tz.setDefault('America/New_York');
 
     // This next line breaks unit tests which doesn't make sense since
     // unit tests should not test the whole app. BUT since we are testing
@@ -181,9 +186,13 @@ nypl_locations.config([
       })
       .state('home.map', {
         templateUrl: 'views/location-map-view.html',
-        url: 'map',
+        url: 'map?nearme&libraries',
+        reloadOnSearch: false,
         controller: 'MapCtrl',
-        label: 'Locations'
+        label: 'Locations',
+        resolve: {
+          params: getQueryParams
+        }
       })
       .state('subdivision', {
         url: '/divisions/:division/:subdivision',
@@ -382,7 +391,7 @@ var nypl_widget = angular.module('nypl_widget', [
           throw err;
         });
     }
-    LoadLocation.$inject = ["$stateParams", "config", "nyplLocationsService"];
+    LoadLocation.$inject = ['$stateParams', 'config', 'nyplLocationsService'];
 
     function LoadSubDivision($q, $stateParams, config, nyplLocationsService) {
       var division  = nyplLocationsService
@@ -397,8 +406,8 @@ var nypl_widget = angular.module('nypl_widget', [
         return subdiv;
       });
     }
-    LoadSubDivision.$inject = ["$q", "$stateParams",
-      "config", "nyplLocationsService"];
+    LoadSubDivision.$inject = ['$q', '$stateParams',
+      'config', 'nyplLocationsService'];
 
     function LoadDivision($stateParams, config, nyplLocationsService) {
       return nyplLocationsService
@@ -414,7 +423,7 @@ var nypl_widget = angular.module('nypl_widget', [
     function getConfig(nyplLocationsService) {
       return nyplLocationsService.getConfig();
     }
-    LoadDivision.$inject = ["$stateParams", "config", "nyplLocationsService"];
+    LoadDivision.$inject = ['$stateParams', 'config', 'nyplLocationsService'];
 
     // Load the interceptor for the loading image.
     $httpProvider.interceptors.push(nyplInterceptor);

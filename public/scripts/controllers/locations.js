@@ -7,6 +7,7 @@
     function LocationsCtrl(
         $filter,
         $rootScope,
+        $location,
         $scope,
         $timeout,
         $state,
@@ -92,7 +93,7 @@
             loadUserVariables = function () {
                 // Used for 'Get Address' link.
                 $scope.locationStart =
-                    user.coords.latitude + "," + user.coords.longitude;
+                    user.coords.latitude + ',' + user.coords.longitude;
                 $scope.userMarker = true;
 
                 if (!isMapPage()) {
@@ -100,7 +101,7 @@
                 }
                 sortListBy('distance');
                 nyplGeocoderService
-                    .createMarker('user', user.coords, "Your Current Location");
+                    .createMarker('user', user.coords, 'Your Current Location');
 
                 $scope.drawUserMarker();
             },
@@ -337,7 +338,7 @@
         }
 
         function branchClosedMessage() {
-            return "<b>Branch is temporarily closed.</b>"
+            return '<b>Branch is temporarily closed.</b>'
         }
 
         // Applies if the global alert has a closing and is active
@@ -410,6 +411,9 @@
                 .removeMarker('user');
 
             if (isMapPage()) {
+                // Remove the query params from the URL.
+                $location.search('libraries', null);
+                $location.search('nearme', null);
                 nyplGeocoderService.removeMarker('search')
                     .hideInfowindow()
                     .panMap();
@@ -478,28 +482,38 @@
 
             $scope.researchBranches = !$scope.researchBranches;
 
+            // Only add and remove the libraries query parameter
+            // if the user is on the map page.
             if ($scope.researchBranches) {
+                if (isMapPage()) {
+                    $location.search('libraries', 'research');
+                }
                 nyplGeocoderService.showResearchLibraries().panMap();
                 showLibrariesTypeOf('research');
                 sortListBy('research_order');
             } else {
+                if (isMapPage()) {
+                    $location.search('libraries', null);
+                }
                 nyplGeocoderService.showAllLibraries().panMap();
                 showLibrariesTypeOf();
                 sortListBy('name');
             }
         };
 
-        $rootScope.title = "Locations";
+        $rootScope.title = 'Locations';
         $scope.$state = $state;
 
         loadPreviousStateOrNewState();
         geolocationAvailable();
     }
-    LocationsCtrl.$inject = ["$filter", "$rootScope", "$scope", "$timeout", "$state", "$nyplAlerts", "config", "nyplAlertsService", "nyplCoordinatesService", "nyplGeocoderService", "nyplLocationsService", "nyplUtility", "nyplSearch", "nyplAmenities"];
+    LocationsCtrl.$inject = ['$filter', '$rootScope', '$location', '$scope', '$timeout', '$state', '$nyplAlerts', 'config', 'nyplAlertsService', 'nyplCoordinatesService', 'nyplGeocoderService', 'nyplLocationsService', 'nyplUtility', 'nyplSearch', 'nyplAmenities'];
     // End LocationsCtrl
 
-    function MapCtrl($scope, $timeout, nyplGeocoderService) {
-        var loadMapMarkers = function () {
+    function MapCtrl($scope, $timeout, nyplGeocoderService, params, nyplCoordinatesService) {
+        var nearMe = params.nearme,
+            libraryParam = params.libraries,
+            loadMapMarkers = function () {
                 $timeout(function () {
                     if ($scope.locations) {
                         nyplGeocoderService.showAllLibraries();
@@ -541,9 +555,36 @@
 
                     $scope.scrollPage();
                 }, 1200);
+            },
+            geolocate = function () {
+                // The value should be nearme=true.
+                // Make sure geolocation is available before attempt.
+                if (nearMe === 'true') {
+                    if (nyplCoordinatesService.geolocationAvailable()) {
+                        $scope.geolocationOn = true;
+                        $scope.useGeolocation();
+                    }
+                }
+            },
+            displayLibraries = function () {
+                if (libraryParam === 'research') {
+                    $scope.showResearch();
+                }
             };
 
         drawMap();
+
+        // Load the map and data first
+        setTimeout(function () {
+            if (nearMe) {
+                geolocate();
+            }
+
+            if (libraryParam) {
+                displayLibraries();
+            }
+        }, 1900);
+
 
         $scope.panToLibrary = function (slug) {
             nyplGeocoderService
@@ -553,7 +594,7 @@
             $scope.scrollPage();
         };
     }
-    MapCtrl.$inject = ["$scope", "$timeout", "nyplGeocoderService"];
+    MapCtrl.$inject = ['$scope', '$timeout', 'nyplGeocoderService', 'params', 'nyplCoordinatesService'];
 
     function LocationCtrl(
         $rootScope,
@@ -577,7 +618,7 @@
                         // Needed to update async var on geolocation success
                         $timeout(function () {
                             $scope.locationStart = userCoords.latitude +
-                                "," + userCoords.longitude;
+                                ',' + userCoords.longitude;
                         });
                     });
             };
@@ -648,8 +689,8 @@
             $scope.location.images.closed = config.closed_img;
         }
     }
-    LocationCtrl.$inject = ["$rootScope", "$scope", "$timeout", "config",
-        "location", "nyplCoordinatesService", "nyplUtility", "nyplAmenities"];
+    LocationCtrl.$inject = ['$rootScope', '$scope', '$timeout', 'config',
+        'location', 'nyplCoordinatesService', 'nyplUtility', 'nyplAmenities'];
 
     angular
         .module('nypl_locations')
