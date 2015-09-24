@@ -12,7 +12,7 @@
 <% if settings.env_config["angular_src"] == "ux-static-staging" %>
     <link rel="stylesheet" href="http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.6/css/nyplbase.min.css">
 <% else %>
-    <link rel="stylesheet" href="http://ux-static.nypl.org/nyplbase/0.1.6/css/nyplbase.min.css">
+    <link rel="stylesheet" href="//ux-static.nypl.org/nyplbase/0.1.6/css/nyplbase.min.css">
 <% end %>
 
 <% if @rq.forwarded? %>
@@ -49,8 +49,8 @@
     </script>
 
     <!--[if lt IE 9]>
-    <script src="http://ux-static.nypl.org/es5-shim/es5-shim.min.js"></script>
-    <script src="http://ux-static.nypl.org/json3/json3.min.js"></script>
+    <script src="//ux-static.nypl.org/es5-shim/es5-shim.min.js"></script>
+    <script src="//ux-static.nypl.org/json3/json3.min.js"></script>
     <![endif]-->
 
 <% if settings.env_config["angular_src"] == "bower" %>

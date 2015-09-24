@@ -274,7 +274,7 @@ describe('WidgetCtrl', function () {
       WidgetCtrl = _$controller_('WidgetCtrl', {
         $scope: scope,
         config: {api_root: 'http://dev.refinery.aws.nypl.org/api/nypl/locations',
-          closed_img: "http://ux-static.nypl.org/images/branch_closed.jpg",
+          closed_img: "//ux-static.nypl.org/images/branch_closed.jpg",
           divisions_with_appointments: ["ARN", "RBK", "MSS", "BRG", "PRN",
             "PHG", "SPN", "CPS"]},
         data: mockCathedralLocation
@@ -316,7 +316,7 @@ describe('WidgetCtrl', function () {
 
     it('should display a closed image', function () {
       expect(scope.data.images.closed)
-        .toEqual('http://ux-static.nypl.org/images/branch_closed.jpg');
+        .toEqual('//ux-static.nypl.org/images/branch_closed.jpg');
     });
 
     it('should not be regarded as a division', function () {
