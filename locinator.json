@@ -3,19 +3,19 @@
     "default": "qa",
     "production": {
       "url": "http://locations.nypl.org",
-      "api": "http://refinery.aws.nypl.org/api/nypl/locations",
+      "api": "https://refinery.nypl.org/api/nypl/locations",
       "api_version": "v1.0",
-      "nyplbase": "http://ux-static.nypl.org/nyplbase/0.1.1/css/nyplbase.min.css",
+      "nyplbase": "//ux-static.nypl.org/nyplbase/0.1.1/css/nyplbase.min.css",
       "optimizely": "//cdn.optimizely.com/js/284748925.js",
       "google_analytics": "UA-1420324-3",
       "google_maps": "AIzaSyCeqpIM6ylCguHdJq0Mp9WpaSrLJ3xrBWM",
       "angular_src": "ux-static",
       "app_src": "minified",
-      "closed_img": "http://ux-static.nypl.org/images/branch_closed.jpg"
+      "closed_img": "//ux-static.nypl.org/images/branch_closed.jpg"
     },
     "qa": {
       "url": "http://qa.locations.nypl.org",
-      "api": "http://qa.refinery.aws.nypl.org/api/nypl/locations",
+      "api": "https://qa-refinery.nypl.org/api/nypl/locations",
       "api_version": "v1.0",
       "nyplbase": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.1/css/nyplbase.min.css",
       "optimizely": null,
@@ -27,7 +27,7 @@
     },
     "development": {
       "url": "http://dev.locations.nypl.org",
-      "api": "http://dev.refinery.aws.nypl.org/api/nypl/locations",
+      "api": "https://dev-refinery.nypl.org/api/nypl/locations",
       "api_version": "v1.0",
       "nyplbase": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.1/css/nyplbase.min.css",
       "optimizely": null,
@@ -39,7 +39,7 @@
     },
     "local": {
       "url": "localhost:9292",
-      "api": "http://dev.refinery.aws.nypl.org/api/nypl/locations",
+      "api": "https://dev-refinery.nypl.org/api/nypl/locations",
       "api_version": "v1.0",
       "nyplbase": "http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.1/css/nyplbase.min.css",
       "optimizely": null,
