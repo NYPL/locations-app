@@ -18,6 +18,12 @@ input[type="text"] {
 	line-height: normal !important;
 }
 
+.locations-list-view {
+	th, td {
+		padding: 12px !important;
+	}
+}
+
 // To override NYPLBase button:hover rule.
 #Header-NavMenu-SearchButton:hover {
 	border: none;
