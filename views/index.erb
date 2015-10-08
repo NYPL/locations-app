@@ -62,8 +62,19 @@
     </div>
 
     <!-- Header -->
-    <!-- <div ng-include="'views/header.html'"></div> -->
-    <script type="text/javascript" src="https://qa-header.nypl.org/dgx-header.min.js" async=""></script>
+    <div id="Header-Placeholder">
+        <style>
+            #Header-Placeholder {
+                min-height: 60px;
+            }
+            @media screen and (min-width: 767px) {
+                #Header-Placeholder {
+                    min-height: 230px;
+                }
+            }
+        </style>
+        <script type="text/javascript" src="https://header.nypl.org/dgx-header.min.js" async=""></script>
+    </div>
 
     <div class="wrapper" id="main-content">
         <!-- Locinator App -->
