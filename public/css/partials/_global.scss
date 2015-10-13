@@ -8,12 +8,9 @@ body {
 
 // Main page wrapper (Necessary for centering grid items)
 .wrapper {
-	margin: 55px auto 0;
+	margin: 0 auto;
 	padding: 0 24px;
 	max-width: 1200px;
-	@include breakpoint($min, $pre-tablet) {
-		margin: 0 auto;
-	}
 }
 
 // To override normalize.scss from NYPLBase.
