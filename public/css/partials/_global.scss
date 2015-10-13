@@ -2,14 +2,51 @@
 ** Global Rules
 **
 **/
+body {
+	background-color: #fff;
+}
 
 // Main page wrapper (Necessary for centering grid items)
 .wrapper {
-	margin: 55px auto 0;
+	margin: 0 auto;
 	padding: 0 24px;
 	max-width: 1200px;
-	@include breakpoint($min, $pre-tablet) {
-		margin: 0 auto;
+}
+
+// To override normalize.scss from NYPLBase.
+input[type="text"] {
+	line-height: normal !important;
+}
+
+// To override NYPLBase button:hover rule.
+#Header-NavMenu-SearchButton:hover {
+	border: none;
+}
+
+// To make the width of the subscribe container wider.
+.EmailSubscription-Wrapper {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  -o-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+#Header-NavMenu-SearchBox-Elements-SubmitButton:hover {
+	background-color: transparent !important;
+	border: none !important;
+	color: #fff !important;
+}
+
+// For the homepage table view.
+.locations-list-view {
+	th, td {
+		padding: 6px;
+	}
+	@include breakpoint($min, $tablet) {
+		th, td {
+			padding: 12px !important;
+		}
 	}
 }
 
