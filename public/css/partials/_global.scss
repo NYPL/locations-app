@@ -35,6 +35,12 @@ input[type="text"] {
   box-sizing: content-box;
 }
 
+#Header-NavMenu-SearchBox-Elements-SubmitButton:hover {
+	background-color: transparent !important;
+	border: none !important;
+	color: #fff !important;
+}
+
 // For the homepage table view.
 .locations-list-view {
 	th, td {
