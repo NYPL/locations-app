@@ -38,7 +38,7 @@ footer {
 
 			@include breakpoint($min, 730px) {
 				float: left;
-				width: 18% !important;
+				width: 25% !important;
 
         &:nth-of-type(3) {
           margin-left: 20px;
