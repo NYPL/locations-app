@@ -176,9 +176,14 @@
 
 			.closings-link, .hours-toggle-btn {
 				display: block;
+				color: #fff;
 				width: 100%;
 				margin: 10px 0px 10px 1px;
 				text-align: center;
+
+				&:hover {
+					color: #0090c4;
+				}
 			}
 		}
 	}
