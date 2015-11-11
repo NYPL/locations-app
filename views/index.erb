@@ -106,7 +106,7 @@
     <![endif]-->
     
 <% if !settings.env_config["google_maps"].nil? %>
-    <script src="https://maps.googleapis.com/maps/api/js?key=<%= settings.env_config["google_maps"] %>&amp;sensor=false"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=<%= settings.env_config["google_maps"] %>"></script>
 <% end %>
 
 <% if settings.env_config["angular_src"] == "bower" %>
