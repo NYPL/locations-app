@@ -78,14 +78,6 @@
         </a>
       </div>
 
-      <div class="on-shelves" data-ng-if="data.type != 'research'">
-        <a id="catalog-link" class="icon-books"
-          data-ng-if="data._links.on_shelves && data.open"
-          data-ng-href="{{ data._links.on_shelves.href }}">
-          On Our Shelves Now
-        </a>
-      </div>
-
       <div class="social flush beta" data-ng-if="data.social_media">
         <a class="{{social.classes}}" data-ng-href="{{social.href}}" id="social_media"
           data-ng-repeat="social in data.social_media" class="inline"

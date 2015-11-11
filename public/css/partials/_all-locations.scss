@@ -76,6 +76,10 @@
 				width: 55%;
 				height: 45px;
 
+				&:hover {
+					color: #0090c4;
+				}
+
 				@include breakpoint($min, $post-palm) {
 					position: relative;
 					left: inherit;
