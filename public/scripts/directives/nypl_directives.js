@@ -283,9 +283,9 @@
           var today = moment(),
             date;
           if (index < today.weekday()) {
-            date = moment().weekday(index + 7);
+            date = moment().weekday(index + 7).endOf('day');
           } else {
-            date = moment().weekday(index);
+            date = moment().weekday(index).endOf('day');
           }
           return date;
         };
