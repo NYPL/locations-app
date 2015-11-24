@@ -964,17 +964,22 @@ var nypl_widget = angular.module('nypl_widget', [
                 eDate = moment(alerts.applies.end);
                 openHour = getMilitaryHours(hours.open);
                 closedHour = getMilitaryHours(hours.close);
-                allDay = (eDate.isAfter(sDate, 'day')) ? true : false;
+                allDay =
+                    (hours.date.isAfter(sDate, 'day') && hours.date.isBefore(eDate, 'day')) ||
+                    (eDate.isAfter(sDate, 'day') && hours.date.date() + 1 === eDate.date())
+                    ? true : false;
 
                 // First, check if this is an all day closing
                 // Then, verify that it is an early closing or late opening
                 // Finally, if the user enters something outside of those bounds
                 // default to a change in hours.
-                if (allDay || alert.infinite === true) {
+                if (allDay || alerts.infinite === true) {
                     displayString = 'Closed *';
                 } else if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
                     displayString = 'Closed *'
-                } else if (openHour < sDate.hours() && closedHour <= eDate.hours()) {
+                } else if (openHour < sDate.hours() && closedHour <= eDate.hours() ||
+                    (hours.date.hours() >= eDate.startOf('day').hour() &&
+                    hours.date.hours() <= sDate.endOf('day').hour())) {
                     displayString = 'Closing early *';
                 } else if (closedHour > eDate.hours() && openHour >= sDate.hours()) {
                     displayString = 'Opening late *';
@@ -1548,9 +1553,9 @@ var nypl_widget = angular.module('nypl_widget', [
           var today = moment(),
             date;
           if (index < today.weekday()) {
-            date = moment().weekday(index + 7);
+            date = moment().weekday(index + 7).endOf('day');
           } else {
-            date = moment().weekday(index);
+            date = moment().weekday(index).endOf('day');
           }
           return date;
         };
