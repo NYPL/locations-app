@@ -3650,7 +3650,7 @@ var nypl_widget = angular.module('nypl_widget', [
           var today = moment();
           return (startDay.isSame(endDay, 'day')
             && dayOfWeek.isSame(startDay, 'day')
-            && today.valueOf() <= endDay.valueOf()) ? true : false;
+            && today.isBefore(endDay)) ? true : false;
         };
 
         this.assignDynamicDate = function (index) {
