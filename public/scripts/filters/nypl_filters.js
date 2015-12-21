@@ -46,18 +46,17 @@
                     (eDate.isAfter(sDate, 'day') && hours.date.date() + 1 === eDate.date())
                     ? true : false;
 
-                // First, check if this is an all day closing
-                // Then, verify that it is an early closing or late opening
-                // Finally, if the user enters something outside of those bounds
-                // default to a change in hours.
+
                 if (allDay || alerts.infinite === true) {
-                    displayString = 'Closed *';
+                    // displayString = 'Closed *';
+                    displayString = 'Closing early *';
                 } else if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
-                    displayString = 'Closed *'
-                } else if (openHour < sDate.hours() && closedHour <= eDate.hours() ||
+                    displayString = 'Closed *';
+                } else if ((openHour < sDate.hours() && closedHour <= eDate.hours()) ||
                     (hours.date.hours() >= eDate.startOf('day').hour() &&
                     hours.date.hours() <= sDate.endOf('day').hour())) {
-                    displayString = 'Closing early *';
+                    // displayString = 'Closing early *';
+                    displayString = 'Closed *';
                 } else if (closedHour > eDate.hours() && openHour >= sDate.hours()) {
                     displayString = 'Opening late *';
                 } else {

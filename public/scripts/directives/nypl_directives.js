@@ -300,14 +300,14 @@
             // A non-infinite closing
             if (alert.applies.start && alert.applies.end) {
               startDay = moment(alert.applies.start);
-              endDay = moment(alert.applies.end);
+              endDay = moment(alert.applies.end).endOf('day');
               alert.infinite = false;
               // Handles Early/Late Closings/Openings
               if (_this.isSameDayAlert(startDay, endDay, dayDate)) {
                 return alert;
               }
               // All Day Closings
-              if (dayDate.isBetween(startDay, endDay)) {
+              if (dayDate.isBetween(startDay, endDay + 1)) {
                 return alert;
               }
             } else if (alert.applies.start && !alert.applies.end) {
