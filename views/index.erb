@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="nypl_locations" data-ng-strict-di>
+<html xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="nypl_locations" data-ng-strict-di lang="en">
   <head>
     <%#= New Relic Snippets %>
     <%if settings.locinator_env == "development" %>
@@ -73,7 +73,7 @@
                 }
             }
         </style>
-        <script type="text/javascript" src="https://header.nypl.org/dgx-header.min.js" async></script>
+        <script type="text/javascript" src="https://<%= settings.refinery_api %>header.nypl.org/dgx-header.min.js" async></script>
     </div>
 
     <div class="wrapper" id="main-content">

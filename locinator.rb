@@ -6,7 +6,6 @@ require 'erb'
 
 class Locinator < Sinatra::Base
   configure do
-    set :locinator_env, ENV['LOCINATOR_ENV']
     configs = JSON.parse(File.read('locinator.json'))
     if configs["environments"].has_key?(ENV['LOCINATOR_ENV'])
       set :env_config, configs["environments"][ENV['LOCINATOR_ENV']]
@@ -14,6 +13,21 @@ class Locinator < Sinatra::Base
       set :env_config, 
         configs["environments"][configs["environments"]["default"]]
     end
+
+    if ENV['LOCINATOR_ENV'].nil?
+      set :locinator_env, configs["environments"]["default"]
+    else
+      set :locinator_env, ENV['LOCINATOR_ENV']
+    end
+
+    if settings.locinator_env === 'development'
+      set :refinery_api, 'dev-'
+    elsif settings.locinator_env === 'qa'
+      set :refinery_api, 'qa-'
+    else
+      set :refinery_api, ''
+    end
+
     set :divisions_with_appointments, configs["divisions_with_appointments"]
     set :featured_amenities, configs["featured_amenities"]
     set :research_order, configs["research_order"]
