@@ -3754,14 +3754,14 @@ var nypl_widget = angular.module('nypl_widget', [
             // A non-infinite closing
             if (alert.applies.start && alert.applies.end) {
               startDay = moment(alert.applies.start);
-              endDay = moment(alert.applies.end);
+              endDay = moment(alert.applies.end).endOf('day');
               alert.infinite = false;
               // Handles Early/Late Closings/Openings
               if (_this.isSameDayAlert(startDay, endDay, dayDate)) {
                 return alert;
               }
               // All Day Closings
-              if (dayDate.isBetween(startDay, endDay)) {
+              if (dayDate.isBetween(startDay, endDay + 1)) {
                 return alert;
               }
             } else if (alert.applies.start && !alert.applies.end) {
@@ -4449,18 +4449,17 @@ var nypl_widget = angular.module('nypl_widget', [
                     (eDate.isAfter(sDate, 'day') && hours.date.date() + 1 === eDate.date())
                     ? true : false;
 
-                // First, check if this is an all day closing
-                // Then, verify that it is an early closing or late opening
-                // Finally, if the user enters something outside of those bounds
-                // default to a change in hours.
+
                 if (allDay || alerts.infinite === true) {
-                    displayString = 'Closed *';
+                    // displayString = 'Closed *';
+                    displayString = 'Closing early *';
                 } else if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
-                    displayString = 'Closed *'
-                } else if (openHour < sDate.hours() && closedHour <= eDate.hours() ||
+                    displayString = 'Closed *';
+                } else if ((openHour < sDate.hours() && closedHour <= eDate.hours()) ||
                     (hours.date.hours() >= eDate.startOf('day').hour() &&
                     hours.date.hours() <= sDate.endOf('day').hour())) {
-                    displayString = 'Closing early *';
+                    // displayString = 'Closing early *';
+                    displayString = 'Closed *';
                 } else if (closedHour > eDate.hours() && openHour >= sDate.hours()) {
                     displayString = 'Opening late *';
                 } else {
