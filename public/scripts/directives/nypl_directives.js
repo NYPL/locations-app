@@ -123,7 +123,15 @@
         }
 
         // Proper string assignment for today's hours
-        $scope.todaysHours = ctrl.computeHoursToday(hours, alerts);
+        // $scope.todaysHours = ctrl.computeHoursToday(hours, alerts);
+        var todayDate = moment().date();
+
+        if (todayDate === 24) {
+            $scope.todaysHours = 'Closing today at 3pm.';
+        } else if (todayDate === 25) {
+            $scope.todaysHours = 'Closed today.';
+        }
+
         // Display the clock icon (optional)
         $scope.showIcon = (attrs.displayIcon === 'true') ? true : false;
       },
