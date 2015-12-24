@@ -348,6 +348,14 @@
             if ($nyplAlerts.alerts && $nyplAlerts.alerts.length) {
                 $scope.globalClosingMessage =
                     nyplAlertsService.getCurrentActiveMessage($nyplAlerts.alerts);
+
+                var todayDate = moment().date();
+
+                if (todayDate === 24) {
+                    $scope.globalClosingMessage = 'Closing today at 3pm.';
+                } else if (todayDate === 25) {
+                    $scope.globalClosingMessage = 'Closed today.';
+                }
             }
         }
 
