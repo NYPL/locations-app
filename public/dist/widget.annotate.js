@@ -966,20 +966,17 @@ var nypl_widget = angular.module('nypl_widget', [
                 closedHour = getMilitaryHours(hours.close);
                 allDay =
                     (hours.date.isAfter(sDate, 'day') && hours.date.isBefore(eDate, 'day')) ||
-                    (eDate.isAfter(sDate, 'day') && hours.date.date() + 1 === eDate.date())
+                    (eDate.isAfter(sDate, 'day') && hours.date.date() === eDate.date())
                     ? true : false;
 
-
                 if (allDay || alerts.infinite === true) {
-                    // displayString = 'Closed *';
-                    displayString = 'Closing early *';
+                    displayString = 'Closed *';
                 } else if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
                     displayString = 'Closed *';
                 } else if ((openHour < sDate.hours() && closedHour <= eDate.hours()) ||
                     (hours.date.hours() >= eDate.startOf('day').hour() &&
                     hours.date.hours() <= sDate.endOf('day').hour())) {
-                    // displayString = 'Closing early *';
-                    displayString = 'Closed *';
+                    displayString = 'Closing early *';
                 } else if (closedHour > eDate.hours() && openHour >= sDate.hours()) {
                     displayString = 'Opening late *';
                 } else {
@@ -1392,12 +1389,14 @@ var nypl_widget = angular.module('nypl_widget', [
         }
 
         // Proper string assignment for today's hours
-        // $scope.todaysHours = ctrl.computeHoursToday(hours, alerts);
-        var todayDate = moment().date();
+        $scope.todaysHours = ctrl.computeHoursToday(hours, alerts);
+        var todayDay = moment().date(),
+          todayMonth = moment().month(),
+          todayYear = moment().year();
 
-        if (todayDate === 24) {
+        if (todayDay === 31 && todayMonth === 11 && todayYear === 2015) {
             $scope.todaysHours = 'Closing today at 3pm.';
-        } else if (todayDate === 25) {
+        } else if (todayDay === 1 && todayMonth === 0 && todayYear === 2016) {
             $scope.todaysHours = 'Closed today.';
         }
 
