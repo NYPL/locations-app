@@ -349,11 +349,13 @@
                 $scope.globalClosingMessage =
                     nyplAlertsService.getCurrentActiveMessage($nyplAlerts.alerts);
 
-                var todayDate = moment().date();
+                var todayDay = moment().date(),
+                  todayMonth = moment().month(),
+                  todayYear = moment().year();
 
-                if (todayDate === 24) {
+                if (todayDay === 31 && todayMonth === 11 && todayYear === 2015) {
                     $scope.globalClosingMessage = 'Closing today at 3pm.';
-                } else if (todayDate === 25) {
+                } else if (todayDay === 1 && todayMonth === 0 && todayYear === 2016) {
                     $scope.globalClosingMessage = 'Closed today.';
                 }
             }
@@ -513,6 +515,7 @@
         $scope.$state = $state;
 
         loadPreviousStateOrNewState();
+        configureGlobalAlert();
         geolocationAvailable();
     }
     LocationsCtrl.$inject = ['$filter', '$rootScope', '$location', '$scope', '$timeout', '$state', '$nyplAlerts', 'config', 'nyplAlertsService', 'nyplCoordinatesService', 'nyplGeocoderService', 'nyplLocationsService', 'nyplUtility', 'nyplSearch', 'nyplAmenities'];
