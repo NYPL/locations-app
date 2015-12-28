@@ -43,20 +43,17 @@
                 closedHour = getMilitaryHours(hours.close);
                 allDay =
                     (hours.date.isAfter(sDate, 'day') && hours.date.isBefore(eDate, 'day')) ||
-                    (eDate.isAfter(sDate, 'day') && hours.date.date() + 1 === eDate.date())
+                    (eDate.isAfter(sDate, 'day') && hours.date.date() === eDate.date())
                     ? true : false;
 
-
                 if (allDay || alerts.infinite === true) {
-                    // displayString = 'Closed *';
-                    displayString = 'Closing early *';
+                    displayString = 'Closed *';
                 } else if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
                     displayString = 'Closed *';
                 } else if ((openHour < sDate.hours() && closedHour <= eDate.hours()) ||
                     (hours.date.hours() >= eDate.startOf('day').hour() &&
                     hours.date.hours() <= sDate.endOf('day').hour())) {
-                    // displayString = 'Closing early *';
-                    displayString = 'Closed *';
+                    displayString = 'Closing early *';
                 } else if (closedHour > eDate.hours() && openHour >= sDate.hours()) {
                     displayString = 'Opening late *';
                 } else {
