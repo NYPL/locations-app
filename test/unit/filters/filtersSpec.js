@@ -180,7 +180,9 @@ describe('NYPL Filter Unit Tests', function () {
     describe('when a location has already opened', function () {
       it('should display the open times for today', function () {
         // Returns 11 for 11am in the afternoon when a library is open.
-        Date.prototype.getHours = function () { return 11; };
+        var todaysDateMock = new Date(2016, 0, 4, 11);
+
+        jasmine.clock().mockDate(todaysDateMock);
 
         expect(hoursTodayFormatFilter({
           'today': {'open': '10:00', 'close': '18:00'},
@@ -191,7 +193,9 @@ describe('NYPL Filter Unit Tests', function () {
 
       it('should display the open times for today with minutes', function () {
         // Returns 15 for 3pm in the afternoon when a library is open.
-        Date.prototype.getHours = function () { return 15; };
+        var todaysDateMock = new Date(2016, 0, 4, 15);
+
+        jasmine.clock().mockDate(todaysDateMock);
 
         expect(hoursTodayFormatFilter({
           'today': {'open': '10:00', 'close': '18:45'},
@@ -205,7 +209,9 @@ describe('NYPL Filter Unit Tests', function () {
     describe('when a location has closed but it is still the same day', function () {
       it('should display the open times for tomorrow without minutes', function () {
         // Returns 19 for 7pm after a library has closed.
-        Date.prototype.getHours = function () { return 19; };
+        var todaysDateMock = new Date(2016, 0, 4, 19);
+
+        jasmine.clock().mockDate(todaysDateMock);
 
         expect(hoursTodayFormatFilter({
           'today': {'open': '10:00', 'close': '18:00'},
@@ -216,7 +222,9 @@ describe('NYPL Filter Unit Tests', function () {
 
       it('should display the open times for tomorrow with minutes', function () {
         // Returns 19 for 7pm after a library has closed.
-        Date.prototype.getHours = function () { return 19; };
+        var todaysDateMock = new Date(2016, 0, 4, 19);
+
+        jasmine.clock().mockDate(todaysDateMock);
 
         expect(hoursTodayFormatFilter({
           'today': {'open': '10:30', 'close': '18:30'},
@@ -231,7 +239,9 @@ describe('NYPL Filter Unit Tests', function () {
 
       it('should display the open times for later today without minutes', function () {
         // Returns 7 for 7am in the morning before a library has opened.
-        Date.prototype.getHours = function () { return 7; };
+        var todaysDateMock = new Date(2016, 0, 4, 7);
+
+        jasmine.clock().mockDate(todaysDateMock);
 
         expect(hoursTodayFormatFilter({
           'today': {'open': '10:00', 'close': '18:00'},
@@ -242,7 +252,9 @@ describe('NYPL Filter Unit Tests', function () {
 
       it('should display the open times for later today with minutes', function () {
         // Returns 7 for 7am in the morning before a library has opened.
-        Date.prototype.getHours = function () { return 7; };
+        var todaysDateMock = new Date(2016, 0, 4, 7);
+
+        jasmine.clock().mockDate(todaysDateMock);
 
         expect(hoursTodayFormatFilter({
           'today': {'open': '10:30', 'close': '18:30'},
@@ -255,7 +267,9 @@ describe('NYPL Filter Unit Tests', function () {
     describe('when tomorrow\'s time is closed', function () {
       it('should say closed but not "Open tomorrow ..."', function () {
         // Returns 19 for 7pm in the afternoon when a library is open.
-        Date.prototype.getHours = function () { return 19; };
+        var todaysDateMock = new Date(2016, 0, 4, 19);
+
+        jasmine.clock().mockDate(todaysDateMock);
 
         // Since there are no hours for the tomorrow object and we are checking
         // after today's closing time, then we cannot display, for example,
