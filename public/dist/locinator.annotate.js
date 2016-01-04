@@ -3782,7 +3782,7 @@ var nypl_widget = angular.module('nypl_widget', [
                 return alert;
               }
               // All Day Closings
-              if (dayDate.isBetween(startDay, endDay + 1)) {
+              if (dayDate.isBetween(startDay, endDay)) {
                 return alert;
               }
             } else if (alert.applies.start && !alert.applies.end) {
@@ -4474,12 +4474,12 @@ var nypl_widget = angular.module('nypl_widget', [
                     displayString = 'Closed *';
                 } else if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
                     displayString = 'Closed *';
+                } else if (closedHour > eDate.hours() && openHour >= sDate.hours()) {
+                    displayString = 'Opening late *';
                 } else if ((openHour < sDate.hours() && closedHour <= eDate.hours()) ||
                     (hours.date.hours() >= eDate.startOf('day').hour() &&
                     hours.date.hours() <= sDate.endOf('day').hour())) {
                     displayString = 'Closing early *';
-                } else if (closedHour > eDate.hours() && openHour >= sDate.hours()) {
-                    displayString = 'Opening late *';
                 } else {
                     displayString = 'Change in hours *';
                 }
