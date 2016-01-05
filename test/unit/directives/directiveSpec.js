@@ -410,9 +410,9 @@ describe('NYPL Directive Unit Tests', function () {
 
       it('should display the alert closed_for field if an alert is defined ' +
       'and the branch has opened already (early closing)', function() {
-        var alerts = {},
-          todaysDateMock = new Date(2015, 2, 20, 10);
-        jasmine.clock().mockDate(todaysDateMock);
+        var alerts = {};
+
+        jasmine.clock().mockDate(new Date(2015, 2, 20, 16));
 
         $scope.alerts = [
           {
@@ -1348,7 +1348,7 @@ describe('NYPL Directive Unit Tests', function () {
   });
 
   /*
-   * <nypl-foot></nypl-footer>
+   * <nypl-footer></nypl-footer>
    */
   describe('Directive: nyplFooter', function () {
     var nyplFooter, template, $httpBackend;
@@ -1362,7 +1362,7 @@ describe('NYPL Directive Unit Tests', function () {
 
     it('should compile', function () {
       expect(nyplFooter.find('.copyright').length).toBe(1);
-      expect(nyplFooter.find('.footerlinks ul').length).toBe(4);
+      expect(nyplFooter.find('.footerlinks ul').length).toBe(3);
     });
 
     it('should trigger click', function () {

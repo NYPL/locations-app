@@ -224,8 +224,10 @@ describe('WidgetCtrl', function () {
 
   describe('Subdivision: DeWitt Wallace Periodical Room', function () {
     beforeEach(inject(function (_$rootScope_, _$controller_) {
-      // getDay() returns 2 to mock that today is Wednesday
-      Date.prototype.getDay = function () { return 3; };
+      // Mock for Wednesday, Jan. 6th.
+      var todaysDateMock = new Date(2016, 0, 6, 19);
+
+      jasmine.clock().mockDate(todaysDateMock);
 
       scope = _$rootScope_.$new();
       WidgetCtrl = _$controller_('WidgetCtrl', {
