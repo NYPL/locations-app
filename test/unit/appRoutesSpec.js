@@ -98,7 +98,7 @@ describe('Locinator State Routing', function () {
         state = 'home.map';
         stateConfig = $state.get(state);
         expectedConfig = {
-          url: 'map',
+          url: 'map?nearme&libraries',
           abstract: undefined,
           templateUrl: 'views/location-map-view.html',
           controller: 'MapCtrl',
