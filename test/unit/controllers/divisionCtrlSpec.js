@@ -219,8 +219,10 @@ describe('DivisionCtrl', function () {
 
   describe('General Research Division', function () {
     beforeEach(inject(function (_$rootScope_, _$controller_) {
-      // getDay() returns 2 to mock that today is Tuesday
-      Date.prototype.getDay = function () { return 2; };
+      // Mock for Jan 5th which is a Tuesday.
+      var todaysDateMock = new Date(2016, 0, 5);
+
+      jasmine.clock().mockDate(todaysDateMock);
 
       scope = _$rootScope_.$new();
       DivisionCtrl = _$controller_('DivisionCtrl', {

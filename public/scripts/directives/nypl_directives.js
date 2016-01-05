@@ -317,7 +317,7 @@
                 return alert;
               }
               // All Day Closings
-              if (dayDate.isBetween(startDay, endDay + 1)) {
+              if (dayDate.isBetween(startDay, endDay)) {
                 return alert;
               }
             } else if (alert.applies.start && !alert.applies.end) {

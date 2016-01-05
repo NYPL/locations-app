@@ -68,8 +68,10 @@ describe('NYPL Utility Service Tests', function () {
       it('should return today\'s and tomorrow\'s open and close times ' +
         '- mocking Wednesday',
         function () {
-          // getDay() returns 3 to mock that today is Wednesday
-          Date.prototype.getDay = function () { return 3; };
+          var todaysDateMock = new Date(2016, 0, 6, 20), // Jan 6th, 2016
+            todaysMomentMock = moment(todaysDateMock);
+
+          jasmine.clock().mockDate(todaysDateMock);
 
           var todayTomorrowObject = nyplUtility.hoursToday(hours);
 
@@ -81,8 +83,10 @@ describe('NYPL Utility Service Tests', function () {
       it('should return today\'s and tomorrow\'s open and close times ' +
         '- mocking Friday',
         function () {
-          // getDay() returns 5 to mock that today is Friday
-          Date.prototype.getDay = function () { return 5; };
+          var todaysDateMock = new Date(2016, 0, 8, 20), // Jan 6th, 2016
+            todaysMomentMock = moment(todaysDateMock);
+
+          jasmine.clock().mockDate(todaysDateMock);
 
           var todayTomorrowObject = nyplUtility.hoursToday(hours);
 
