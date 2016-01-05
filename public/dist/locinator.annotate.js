@@ -4466,20 +4466,22 @@ var nypl_widget = angular.module('nypl_widget', [
                 openHour = getMilitaryHours(hours.open);
                 closedHour = getMilitaryHours(hours.close);
                 allDay =
-                    (hours.date.isAfter(sDate, 'day') && hours.date.isBefore(eDate, 'day')) ||
-                    (eDate.isAfter(sDate, 'day') && hours.date.date() === eDate.date())
+                    (hours.date.startOf().isAfter(sDate, 'day') && hours.date.isBefore(eDate, 'day')) ||
+                    (eDate.isAfter(sDate, 'day') && hours.date.date() === eDate.date()) ||
+                    (sDate.isSame(hours.date, 'day') && (eDate.isAfter(hours.date, 'day'))) &&
+                    (sDate.hours() === 0 && eDate.hours() === 0)
                     ? true : false;
 
-                if (allDay || alerts.infinite === true) {
+                if ((closedHour > eDate.hours() && openHour >= sDate.hours()) && !allDay) {
+                    displayString = 'Opening late *';
+                } else if (((openHour < sDate.hours() && closedHour <= eDate.hours()) ||
+                    (hours.date.hours() >= eDate.startOf('day').hour() &&
+                    hours.date.hours() <= sDate.endOf('day').hour())) && !allDay) {
+                    displayString = 'Closing early *';
+                } else if (allDay || alerts.infinite === true) {
                     displayString = 'Closed *';
                 } else if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
                     displayString = 'Closed *';
-                } else if (closedHour > eDate.hours() && openHour >= sDate.hours()) {
-                    displayString = 'Opening late *';
-                } else if ((openHour < sDate.hours() && closedHour <= eDate.hours()) ||
-                    (hours.date.hours() >= eDate.startOf('day').hour() &&
-                    hours.date.hours() <= sDate.endOf('day').hour())) {
-                    displayString = 'Closing early *';
                 } else {
                     displayString = 'Change in hours *';
                 }
