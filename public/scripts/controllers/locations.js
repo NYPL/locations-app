@@ -676,7 +676,7 @@
         // Build exhibition pretty date
         if (location._embedded.exhibitions) {
             _.each(location._embedded.exhibitions, function (exh) {
-                if (exh.start && exh.end) {
+                if (exh.start) {
                     exh.prettyDate = nyplUtility.formatDate(exh.start, exh.end);
                 }
             });

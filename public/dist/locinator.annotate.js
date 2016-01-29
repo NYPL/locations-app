@@ -3388,6 +3388,7 @@ var nypl_widget = angular.module('nypl_widget', [
         if (config.closed_img) {
             $scope.location.images.closed = config.closed_img;
         }
+        console.log($scope.location);
     }
     LocationCtrl.$inject = ['$rootScope', '$scope', '$timeout', 'config',
         'location', 'nyplCoordinatesService', 'nyplUtility', 'nyplAmenities'];
