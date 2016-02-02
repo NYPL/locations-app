@@ -138,70 +138,38 @@
      * @description ...
      */
     utility.formatDate = function(startDate, endDate) {
-      var formattedDate;
+      var formattedDate,
+        sDate = (startDate) ? new Date(startDate) : null,
+        eDate = (endDate) ? new Date(endDate) : null,
+        today = new Date(),
+        daysBetweenStartEnd = (startDate && endDate) ?
+          moment(eDate).diff(moment(sDate), 'days') : null,
+        rangeLimit = 365,
+        months = ['January', 'February', 'March', 'April', 'May', 'June',
+          'July', 'August', 'September', 'October', 'November', 'December'];
 
-      this.numDaysBetween = function(start, end) {
-        var s = moment(start),
-          e = moment(end);
-        return e.diff(s, 'days');
-      };
+      if (!sDate || daysBetweenStartEnd < 0) { return; }
 
-      this.dateToString = function(start, end, type) {
-        var dateString,
-          months = ['January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'];
-
-        if (!start && !end) { return; }
-        // String assignment based on type
-        switch (type) {
-          case "current":
-            dateString = "Open now. Ends " + months[end.getUTCMonth()] +
-              " " + end.getUTCDate() + ", " + end.getUTCFullYear() + ".";
-            break;
-          case "current-ongoing":
-            dateString = "Open now. Ongoing.";
-            break;
-          case "upcoming":
-            dateString = "Opening soon. " + months[start.getUTCMonth()] +
-              " " + start.getUTCDate() + ", " + start.getUTCFullYear() +
-              " - " + months[end.getUTCMonth()] + " " + end.getUTCDate() +
-              ", " + end.getUTCFullYear() + ".";
-            break;
-          case "upcoming-ongoing":
-            dateString = "Opening soon. " + months[sDate.getUTCMonth()] +
-            " " + sDate.getUTCDate() + ", " + sDate.getUTCFullYear() + ".";
-            break;
-          default:
-            dateString = months[start.getUTCMonth()] + " " + start.getUTCDate() + 
-              ", " + start.getUTCFullYear() + " - " + months[end.getUTCMonth()] + 
-              " " + end.getUTCDate() + ", " + end.getUTCFullYear() + ".";
+      if (!eDate || daysBetweenStartEnd > rangeLimit) {
+        if (sDate.getTime() <= today.getTime()) {
+          formattedDate = 'Open now. Ongoing.';
+        } else {
+          formattedDate = 'Opening soon. ' + months[sDate.getUTCMonth()] +
+            ' ' + sDate.getUTCDate() + ', ' + sDate.getUTCFullYear() + '.';
         }
-        return dateString;
-      };
-
-      if (startDate) {
-        var sDate = new Date(startDate),
-          eDate   = (endDate) ? new Date(endDate) : null,
-          today   = new Date(),
-          daysBetweenStartEnd = this.numDaysBetween(sDate, eDate),
-          rangeLimit = 365;
-        
-        // If no end date, the app will consider this exhibition is ongoing
-        if (!eDate || daysBetweenStartEnd > rangeLimit) {
-          // Decide the ongoing exhibition is current or upcoming
-          if (sDate.getTime() <= today.getTime()) {
-            formattedDate = this.dateToString(sDate, eDate, 'current-ongoing');
-          } else {
-            formattedDate = this.dateToString(sDate, eDate, 'upcoming-ongoing');
-          }
-        } else if (eDate && eDate.getTime() >= sDate.getTime()){
-          if (sDate.getTime() <= today.getTime()) {
-            formattedDate = this.dateToString(sDate, eDate, 'current');
-          } else {
-            formattedDate = this.dateToString(sDate, eDate, 'upcoming');
-          }
+      } else {
+        if (sDate.getTime() <= today.getTime()) {
+          formattedDate = 'Open now. Ends ' + months[eDate.getUTCMonth()] +
+            ' ' + eDate.getUTCDate() + ', ' + eDate.getUTCFullYear() + '.';
+        } else {
+          formattedDate = 'Opening soon. ' + months[sDate.getUTCMonth()] +
+            ' ' + sDate.getUTCDate() + ', ' + sDate.getUTCFullYear() +
+            ' - ' + months[eDate.getUTCMonth()] + ' ' + eDate.getUTCDate() +
+            ', ' + eDate.getUTCFullYear() + '.';
         }
+        console.log(formattedDate);
       }
+
       return formattedDate;
     }
 
