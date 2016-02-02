@@ -140,6 +140,12 @@
     utility.formatDate = function(startDate, endDate) {
       var formattedDate;
 
+      this.numDaysBetween = function(start, end) {
+        var s = moment(start),
+          e = moment(end);
+        return e.diff(s, 'days');
+      };
+
       this.dateToString = function(start, end, type) {
         var dateString,
           months = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -181,7 +187,7 @@
           rangeLimit = 365;
         
         // If no end date, the app will consider this exhibition is ongoing
-        if (!eDate || rangeLimit > 365) {
+        if (!eDate || daysBetweenStartEnd > rangeLimit) {
           // Decide the ongoing exhibition is current or upcoming
           if (sDate.getTime() <= today.getTime()) {
             formattedDate = this.dateToString(sDate, eDate, 'current-ongoing');
