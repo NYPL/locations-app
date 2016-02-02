@@ -176,10 +176,12 @@
       if (startDate) {
         var sDate = new Date(startDate),
           eDate   = (endDate) ? new Date(endDate) : null,
-          today   = new Date();
+          today   = new Date(),
+          daysBetweenStartEnd = this.numDaysBetween(sDate, eDate),
+          rangeLimit = 365;
         
         // If no end date, the app will consider this exhibition is ongoing
-        if (!eDate) {
+        if (!eDate || rangeLimit > 365) {
           // Decide the ongoing exhibition is current or upcoming
           if (sDate.getTime() <= today.getTime()) {
             formattedDate = this.dateToString(sDate, eDate, 'current-ongoing');
