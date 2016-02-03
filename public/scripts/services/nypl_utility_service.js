@@ -142,6 +142,7 @@
         sDate = (startDate) ? new Date(startDate) : null,
         eDate = (endDate) ? new Date(endDate) : null,
         today = new Date(),
+        happeningSoon = (sDate.getTime() <= today.getTime()) ? true : false,
         daysBetweenStartEnd = (startDate && endDate) ?
           moment(eDate).diff(moment(sDate), 'days') : null,
         rangeLimit = 365,
@@ -153,14 +154,14 @@
       }
 
       if (!eDate || daysBetweenStartEnd > rangeLimit) {
-        if (sDate.getTime() <= today.getTime()) {
+        if (happeningSoon) {
           formattedDate = 'Open now. Ongoing.';
         } else {
           formattedDate = 'Opening soon. ' + months[sDate.getUTCMonth()] +
             ' ' + sDate.getUTCDate() + ', ' + sDate.getUTCFullYear() + '.';
         }
       } else {
-        if (sDate.getTime() <= today.getTime()) {
+        if (happeningSoon) {
           formattedDate = 'Open now. Ends ' + months[eDate.getUTCMonth()] +
             ' ' + eDate.getUTCDate() + ', ' + eDate.getUTCFullYear() + '.';
         } else {
