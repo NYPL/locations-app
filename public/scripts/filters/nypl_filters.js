@@ -82,7 +82,7 @@
                 } else if (alerts) {
                     return closingHoursDisplay(time, alerts);
                 }
-                return clockTime(time.open) + ' - ' + clockTime(time.close);
+                return clockTime(time.open) + '–' + clockTime(time.close);
             }
 
             console.log('timeFormat() filter error: Argument is' +
@@ -207,7 +207,7 @@
                     else if (tomorrow_open_time && tomorrow_close_time) {
                         return 'Open tomorrow ' + tomorrow_open_time.hours +
                             (parseInt(tomorrow_open_time.mins, 10) !== 0 ? ':' + tomorrow_open_time.mins : '')
-                            + tomorrow_open_time.meridian + '-' + tomorrow_close_time.hours +
+                            + tomorrow_open_time.meridian + '–' + tomorrow_close_time.hours +
                             (parseInt(tomorrow_close_time.mins, 10) !== 0 ? ':' + tomorrow_close_time.mins : '')
                             + tomorrow_close_time.meridian;
                     }
@@ -218,7 +218,7 @@
                 if (hour_now_military < open_time.military) {
                     return 'Open today ' + open_time.hours +
                         (parseInt(open_time.mins, 10) !== 0 ? ':' + open_time.mins : '')
-                        + open_time.meridian + '-' + closed_time.hours +
+                        + open_time.meridian + '–' + closed_time.hours +
                         (parseInt(closed_time.mins, 10) !== 0 ? ':' + closed_time.mins : '')
                         + closed_time.meridian;
                 }
