@@ -45,7 +45,7 @@ A new browser window should popup and all the tests should run automatically on 
 
 You do not need to start up a server before running the unit tests.
 
-    cd tests
+    cd test
     scripts/test.sh
 
 
