@@ -188,7 +188,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:00', 'close': '18:00'},
           'tomorrow': {'open': '10:00', 'close': '18:00', 'alert': null}
         }))
-          .toEqual('Open today until 6pm');
+          .toEqual('Open today until 6 PM');
       });
 
       it('should display the open times for today with minutes', function () {
@@ -201,7 +201,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:00', 'close': '18:45'},
           'tomorrow': {'open': '10:00', 'close': '18:45', 'alert': null}
         }))
-          .toEqual('Open today until 6:45pm');
+          .toEqual('Open today until 6:45 PM');
       });
     });
 
@@ -217,7 +217,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:00', 'close': '18:00'},
           'tomorrow': {'open': '11:00', 'close': '19:00', 'alert': null}
         }))
-          .toEqual('Open tomorrow 11am-7pm');
+          .toEqual('Open tomorrow 11 AM–7 PM');
       });
 
       it('should display the open times for tomorrow with minutes', function () {
@@ -230,7 +230,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:30', 'close': '18:30'},
           'tomorrow': {'open': '11:30', 'close': '18:30', 'alert': null}
         }, 'short'))
-          .toEqual('Open tomorrow 11:30am-6:30pm');
+          .toEqual('Open tomorrow 11:30 AM–6:30 PM');
       });
     });
 
@@ -247,7 +247,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:00', 'close': '18:00'},
           'tomorrow': {'open': '11:00', 'close': '19:00', 'alert': null}
         }))
-          .toEqual('Open today 10am-6pm');
+          .toEqual('Open today 10 AM–6 PM');
       });
 
       it('should display the open times for later today with minutes', function () {
@@ -260,7 +260,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:30', 'close': '18:30'},
           'tomorrow': {'open': '10:00', 'close': '18:00', 'alert': null}
         }))
-          .toEqual('Open today 10:30am-6:30pm');
+          .toEqual('Open today 10:30 AM–6:30 PM');
       });
     });
 
