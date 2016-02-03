@@ -164,12 +164,11 @@
         } else {
           formattedDate = 'Opening soon. ' + months[sDate.getUTCMonth()] +
             ' ' + sDate.getUTCDate() + ', ' + sDate.getUTCFullYear() +
-            ' - ' + months[eDate.getUTCMonth()] + ' ' + eDate.getUTCDate() +
+            '–' + months[eDate.getUTCMonth()] + ' ' + eDate.getUTCDate() +
             ', ' + eDate.getUTCFullYear() + '.';
         }
         console.log(formattedDate);
       }
-
       return formattedDate;
     }
 
