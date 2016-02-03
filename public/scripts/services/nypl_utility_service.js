@@ -148,7 +148,9 @@
         months = ['January', 'February', 'March', 'April', 'May', 'June',
           'July', 'August', 'September', 'October', 'November', 'December'];
 
-      if (!sDate || daysBetweenStartEnd < 0) { return; }
+      if (!sDate || daysBetweenStartEnd < 0) {
+        return;
+      }
 
       if (!eDate || daysBetweenStartEnd > rangeLimit) {
         if (sDate.getTime() <= today.getTime()) {
