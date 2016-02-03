@@ -167,7 +167,6 @@
             '–' + months[eDate.getUTCMonth()] + ' ' + eDate.getUTCDate() +
             ', ' + eDate.getUTCFullYear() + '.';
         }
-        console.log(formattedDate);
       }
       return formattedDate;
     }
