@@ -26,10 +26,9 @@
         function clockTime(time) {
             var components = time.split(':'),
                 hours = ((parseInt(components[0], 10) + 11) % 12 + 1),
-                minutes = components[1],
-                meridiem = components[0] >= 12 ? 'pm' : 'am';
+                meridiem = components[0] >= 12 ? ' PM' : ' AM';
 
-            return hours + ":" + minutes + meridiem;
+            return hours + meridiem;
         }
 
         function closingHoursDisplay(hours, alerts) {
@@ -141,7 +140,7 @@
                 ['hours', 'mins', 'meridian', 'military'],
                 [((parseInt(time[0], 10) + 11) % 12 + 1),
                     time[1],
-                    (time[0] >= 12 ? 'pm' : 'am'),
+                    (time[0] >= 12 ? ' PM' : ' AM'),
                     parseInt(time[0], 10)]
             );
         }
