@@ -26,9 +26,10 @@
         function clockTime(time) {
             var components = time.split(':'),
                 hours = ((parseInt(components[0], 10) + 11) % 12 + 1),
+                minutes = components[1],
                 meridiem = components[0] >= 12 ? ' PM' : ' AM';
 
-            return hours + meridiem;
+            return hours + ":" + minutes + meridiem;
         }
 
         function closingHoursDisplay(hours, alerts) {
