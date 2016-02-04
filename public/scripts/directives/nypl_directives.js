@@ -185,7 +185,7 @@
   }
   todayshours.$inject = ['$nyplAlerts', 'nyplAlertsService', 'nyplUtility', '$filter'];
 
-  function hoursTable(nyplAlertsService) {
+  function hoursTable(nyplAlertsService, $filter) {
     return {
       restrict: 'EA',
       templateUrl: 'scripts/directives/templates/hours-table.html',
@@ -218,6 +218,12 @@
         // Assign the number of alerts for the week
         $scope.numAlertsInWeek = ($scope.dynamicWeekHours) ?
           ctrl.findNumAlertsInWeek($scope.dynamicWeekHours) : 0;
+
+        // Convert the syntax of week day to AP style
+        $scope.hours.map(function (item, index) {
+          item.day = $filter('dayFormat')(item.day);
+          return item;
+        });
 
         $scope.regularWeekHours = $scope.hours || null;
         $scope.buttonText = (scopedAlerts) ? 'Regular hours' : null;
@@ -333,7 +339,7 @@
       }]
     };
   }
-  hoursTable.$inject = ['nyplAlertsService'];
+  hoursTable.$inject = ['nyplAlertsService', '$filter'];
 
   /**
    * @ngdoc directive
