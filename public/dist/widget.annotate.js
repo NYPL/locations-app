@@ -1015,13 +1015,36 @@ var nypl_widget = angular.module('nypl_widget', [
     }
     timeFormat.$inject = ["$sce"];
 
+
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:dayFormat
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Convert the syntax of week day to AP style.
+     * eg Sun. to SUN, Tue. to TUES
+     */
+    function dayFormat() {
+        return function (input) {
+            var day = input.split('.')[0].toUpperCase();
+
+            if (day === 'TUE') {
+                day = 'TUES';
+            } else if (day === 'THU') {
+                day = 'THURS';
+            }
+            return day;
+        }
+    }
+
     /**
      * @ngdoc filter
      * @name nypl_locations.filter:dateToISO
      * @param {string} input ...
      * @returns {string} ...
      * @description
-     * Coverts MYSQL Datetime stamp to ISO format
+     * Converts MYSQL Datetime stamp to ISO format
      */
     function dateToISO() {
         return function (input) {
@@ -1192,6 +1215,7 @@ var nypl_widget = angular.module('nypl_widget', [
     angular
         .module('nypl_locations')
         .filter('timeFormat', timeFormat)
+        .filter('dayFormat', dayFormat)
         .filter('dateToISO', dateToISO)
         .filter('capitalize', capitalize)
         .filter('hoursTodayFormat', hoursTodayFormat)
@@ -1453,7 +1477,7 @@ var nypl_widget = angular.module('nypl_widget', [
   }
   todayshours.$inject = ['$nyplAlerts', 'nyplAlertsService', 'nyplUtility', '$filter'];
 
-  function hoursTable(nyplAlertsService) {
+  function hoursTable(nyplAlertsService, $filter) {
     return {
       restrict: 'EA',
       templateUrl: 'scripts/directives/templates/hours-table.html',
@@ -1486,6 +1510,12 @@ var nypl_widget = angular.module('nypl_widget', [
         // Assign the number of alerts for the week
         $scope.numAlertsInWeek = ($scope.dynamicWeekHours) ?
           ctrl.findNumAlertsInWeek($scope.dynamicWeekHours) : 0;
+
+        // Convert the syntax of week day to AP style
+        $scope.hours.map(function (item, index) {
+          item.day = $filter('dayFormat')(item.day);
+          return item;
+        });
 
         $scope.regularWeekHours = $scope.hours || null;
         $scope.buttonText = (scopedAlerts) ? 'Regular hours' : null;
@@ -1601,7 +1631,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }]
     };
   }
-  hoursTable.$inject = ['nyplAlertsService'];
+  hoursTable.$inject = ['nyplAlertsService', '$filter'];
 
   /**
    * @ngdoc directive
