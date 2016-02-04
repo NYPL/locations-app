@@ -221,7 +221,7 @@
 
         // Convert the syntax of week day to AP style
         $scope.hours.map(function (item, index) {
-          item.day = $filter('dayFormat')(item.day);
+          item.day = (item.day) ? $filter('dayFormat')(item.day) : '';
           return item;
         });
 

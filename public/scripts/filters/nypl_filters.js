@@ -104,13 +104,16 @@
      */
     function dayFormat() {
         return function (input) {
-            var day = input.split('.')[0].toUpperCase();
+            var days = ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.'],
+                day = (days.includes(input)) ? input.split('.')[0]
+                .toUpperCase() : '';
 
             if (day === 'TUE') {
                 day = 'TUES';
             } else if (day === 'THU') {
                 day = 'THURS';
             }
+
             return day;
         }
     }

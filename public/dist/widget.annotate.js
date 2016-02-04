@@ -1027,13 +1027,16 @@ var nypl_widget = angular.module('nypl_widget', [
      */
     function dayFormat() {
         return function (input) {
-            var day = input.split('.')[0].toUpperCase();
+            var days = ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.'],
+                day = (days.includes(input)) ? input.split('.')[0]
+                .toUpperCase() : '';
 
             if (day === 'TUE') {
                 day = 'TUES';
             } else if (day === 'THU') {
                 day = 'THURS';
             }
+
             return day;
         }
     }
@@ -1513,7 +1516,7 @@ var nypl_widget = angular.module('nypl_widget', [
 
         // Convert the syntax of week day to AP style
         $scope.hours.map(function (item, index) {
-          item.day = $filter('dayFormat')(item.day);
+          item.day = (item.day) ? $filter('dayFormat')(item.day) : '';
           return item;
         });
 

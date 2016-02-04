@@ -10,6 +10,7 @@ describe('NYPL Filter Unit Tests', function () {
 
   // Load App dependency
   var timeFormatFilter,
+    dayFormatFilter,
     dateToISOFilter,
     capitalizeFilter,
     hoursTodayFormatFilter,
@@ -67,6 +68,39 @@ describe('NYPL Filter Unit Tests', function () {
     it('should be false if input is NOT given', function () {
       expect(timeFormatFilter()).toEqual('');
       expect(timeFormatFilter()).toBeFalsy();
+    });
+  });
+
+  /*
+   * dayFormat
+   *   The input is a string of the name of the weekday.
+   *
+   *   Returns the name in AP style.
+   */
+  describe('Filter: dayFormat', function () {
+    beforeEach(inject(function (_dayFormatFilter_) {
+      dayFormatFilter = _dayFormatFilter_;
+    }));
+
+    it('should have a dayFormat function', function () {
+      expect(dayFormatFilter).toBeDefined();
+      expect(angular.isFunction(dayFormatFilter)).toBe(true);
+    });
+
+    it('should convert the names of week day into AP style', function () {
+      expect(dayFormatFilter('Sun.')).toEqual('SUN');
+      expect(dayFormatFilter('Tue.')).toEqual('TUES');
+      expect(dayFormatFilter('Thu.')).toEqual('THURS');
+    });
+
+    it('should be empty string if input is NOT a name of weekday', function () {
+      expect(dayFormatFilter('Banana')).toEqual('');
+      expect(dayFormatFilter()).toBeFalsy();
+    });
+
+    it('should be empty string if input is NOT given', function () {
+      expect(dayFormatFilter()).toEqual('');
+      expect(dayFormatFilter()).toBeFalsy();
     });
   });
 
