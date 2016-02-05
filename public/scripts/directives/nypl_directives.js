@@ -219,9 +219,9 @@
         $scope.numAlertsInWeek = ($scope.dynamicWeekHours) ?
           ctrl.findNumAlertsInWeek($scope.dynamicWeekHours) : 0;
 
-        // Convert the syntax of week day to AP style
+        // Call convertApWeekday for the syntax of weekday styling
         $scope.hours.map(function (item, index) {
-          item.day = (item.day) ? $filter('dayFormat')(item.day) : '';
+          item.day = ctrl.convertApWeekday(item.day);
           return item;
         });
 
@@ -294,6 +294,12 @@
             && dayOfWeek.isSame(startDay, 'day')
             && today.isBefore(endDay)) ? true : false;
         };
+
+        // Call the filer dayFormat to convert the name of weekdays to AP style
+        this.convertApWeekday = function (day) {
+          day = (day) ? $filter('dayFormat')(day) : '';
+          return day;
+        }
 
         this.assignDynamicDate = function (index) {
           var today = moment(),
