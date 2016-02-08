@@ -146,7 +146,7 @@
         }
 
         function convertDay (input) {
-            var day = input.split('.')[0];
+            var day = input.split('.')[0].slice(0, 3);
 
             if (day === 'Tue') {
                 day  = 'Tues';
