@@ -108,6 +108,52 @@
 
     /**
      * @ngdoc filter
+     * @name nypl_locations.filter:eventTimeFormat
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Coverts the time stamp of events' start time to NYPL AP style
+     */
+    function eventTimeFormat() {
+        return function (input) {
+            var d = new Date(input),
+                dateStringArray = d.toDateString().split(' '),
+                day = dayAp(dateStringArray[0]),
+                month = monthAp(dateStringArray[1]),
+                date = dateStringArray[2],
+                year = dateStringArray[3],
+                hour = ((parseInt(d.getHours(), 10) + 11) % 12 + 1),
+                min = d.toTimeString().split(' ')[0].split(':')[1],
+                formattedMin = (min === '00') ? '' : ':' + min,
+                meridiem = (d.getHours() > 12) ? ' PM' : ' AM',
+                timeFormat = hour + formattedMin + meridiem;
+
+        function dayAp(day) {
+            if (day === 'Tue') {
+                day  = 'Tues';
+            } else if (day ==='Thu') {
+                day = 'Thurs';
+            }
+            return day;
+        }
+
+        function monthAp (month) {
+            if (month === 'Jun') {
+                month = 'June';
+            } else if (month === 'Jul') {
+                month = 'July';
+            } else if (month === 'Sep') {
+                month = 'Sept';
+            }
+            return month;
+        }
+
+            return (day + ', ' + month + ' ' + date + ' | '+ timeFormat);
+        }
+    }
+
+    /**
+     * @ngdoc filter
      * @name nypl_locations.filter:capitalize
      * @params {string} input
      * @returns {string} ...
@@ -270,11 +316,13 @@
         .module('nypl_locations')
         .filter('timeFormat', timeFormat)
         .filter('dateToISO', dateToISO)
+        .filter('eventTimeFormat', eventTimeFormat)
         .filter('capitalize', capitalize)
         .filter('hoursTodayFormat', hoursTodayFormat)
         .filter('truncate', truncate);
 
     angular
         .module('nypl_widget')
-        .filter('hoursTodayFormat', hoursTodayFormat);
+        .filter('hoursTodayFormat', hoursTodayFormat)
+        .filter('eventTimeFormat', eventTimeFormat);
 })();
