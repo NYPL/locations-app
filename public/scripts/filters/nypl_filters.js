@@ -128,25 +128,27 @@
                 meridiem = (d.getHours() > 12) ? ' PM' : ' AM',
                 timeFormat = hour + formattedMin + meridiem;
 
-        function dayAp(day) {
-            if (day === 'Tue') {
-                day  = 'Tues';
-            } else if (day ==='Thu') {
-                day = 'Thurs';
+            function dayAp(day) {
+                if (day === 'Tue') {
+                    day  = 'Tues';
+                } else if (day ==='Thu') {
+                    day = 'Thurs';
+                }
+                return day;
             }
-            return day;
-        }
 
-        function monthAp (month) {
-            if (month === 'Jun') {
-                month = 'June';
-            } else if (month === 'Jul') {
-                month = 'July';
-            } else if (month === 'Sep') {
-                month = 'Sept';
+            function monthAp (month) {
+                if (month === 'Jun') {
+                    month = 'June';
+                } else if (month === 'Jul') {
+                    month = 'July';
+                } else if (month === 'Sep') {
+                    month = 'Sept';
+                }
+                return month;
             }
-            return month;
-        }
+
+            console.log(d);
 
             return (day + ', ' + month + ' ' + date + ' | '+ timeFormat);
         }
