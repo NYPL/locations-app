@@ -118,37 +118,80 @@
         return function (input) {
             var d = new Date(input),
                 dateStringArray = d.toDateString().split(' '),
-                day = dayAp(dateStringArray[0]),
-                month = monthAp(dateStringArray[1]),
-                date = parseInt(dateStringArray[2], 10).toString(),
+                day = convertApStyle(dateStringArray[0], 'day'),
+                month = convertApStyle(dateStringArray[1], 'month'),
+                date = convertApStyle(dateStringArray[2], 'date'),
                 year = dateStringArray[3],
-                hour = ((parseInt(d.getHours(), 10) + 11) % 12 + 1),
-                min = d.toTimeString().split(' ')[0].split(':')[1],
-                formattedMin = (min === '00') ? '' : ':' + min,
-                meridiem = (d.getHours() > 12) ? ' PM' : ' AM',
-                timeFormat = hour + formattedMin + meridiem;
-
-            function dayAp(day) {
-                if (day === 'Tue') {
-                    day  = 'Tues';
-                } else if (day ==='Thu') {
-                    day = 'Thurs';
-                }
-                return day;
-            }
-
-            function monthAp (month) {
-                if (month === 'Jun') {
-                    month = 'June';
-                } else if (month === 'Jul') {
-                    month = 'July';
-                } else if (month === 'Sep') {
-                    month = 'Sept';
-                }
-                return month;
-            }
+                timeFormat = convertApStyle(d.toTimeString(), 'time');
 
             return (day + ', ' + month + ' ' + date + ' | '+ timeFormat);
+        }
+    }
+
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:convertApStyle
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Coverts time stamps of to NYPL AP style
+     */
+    function convertApStyle (input, format) {
+        switch (format) {
+            case 'time':
+                return convertTime(input);
+                break;
+            case 'date':
+                return convertDate(input);
+                break;
+            case 'day':
+                return convertDay(input);
+                break;
+            case 'month':
+                return convertMonth(input);
+                break;
+            default:
+                return input;
+        }
+
+        function convertTime (input) {
+            var timeArray = input.split(':'),
+                militaryHour = parseInt(timeArray[0], 10),
+                hour = (militaryHour + 11) % 12 + 1,
+                minute = (timeArray[1] === '00') ? '' : ':' + timeArray[1],
+                meridiem = (militaryHour > 12) ? ' PM' : ' AM';
+
+            return hour + minute + meridiem;
+        }
+
+        function convertDate (input) {
+            var date = parseInt(input, 10).toString();
+
+            return date;
+        }
+
+        function convertDay (input) {
+            var day = input.split('.')[0];
+
+            if (day === 'Tue') {
+                day  = 'Tues';
+            } else if (day ==='Thu') {
+                day = 'Thurs';
+            }
+            return day;
+        }
+
+        function convertMonth (input) {
+            var month = input.slice(0, 3);
+
+            if (month === 'Jun') {
+                month = 'June';
+            } else if (month === 'Jul') {
+                month = 'July';
+            } else if (month === 'Sep') {
+                month = 'Sept';
+            }
+            return month;
         }
     }
 
