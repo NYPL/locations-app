@@ -110,17 +110,17 @@ describe('NYPL Filter Unit Tests', function () {
 
     it('should convert event start time to AP Style', function () {
       expect(eventTimeFormatFilter('Tue Feb 09 2016 13:00:00 GMT-0500 (EST)'))
-        .toEqual('Tues, Feb 09 | 1 PM');
+        .toEqual('Tues, Feb 9 | 1 PM');
     });
 
     it('should convert event start time to AP Style', function () {
-      expect(eventTimeFormatFilter('Thu Sep 08 2016 8:15:00 GMT-0400 (EST)'))
-        .toEqual('Thurs, Sept 08 | 8:15 AM');
+      expect(eventTimeFormatFilter('Thu Sep 15 2016 8:15:00 GMT-0400 (EST)'))
+        .toEqual('Thurs, Sept 15 | 8:15 AM');
     });
 
     it('should convert event start time to AP Style', function () {
       expect(eventTimeFormatFilter('Fri Jul 08 2016 15:00:00 GMT-0400 (EST)'))
-        .toEqual('Fri, July 08 | 3 PM');
+        .toEqual('Fri, July 8 | 3 PM');
     });
   }); /* End eventTimeFormat */
 

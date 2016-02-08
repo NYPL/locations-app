@@ -120,7 +120,7 @@
                 dateStringArray = d.toDateString().split(' '),
                 day = dayAp(dateStringArray[0]),
                 month = monthAp(dateStringArray[1]),
-                date = dateStringArray[2],
+                date = parseInt(dateStringArray[2], 10).toString(),
                 year = dateStringArray[3],
                 hour = ((parseInt(d.getHours(), 10) + 11) % 12 + 1),
                 min = d.toTimeString().split(' ')[0].split(':')[1],
@@ -147,8 +147,6 @@
                 }
                 return month;
             }
-
-            console.log(d);
 
             return (day + ', ' + month + ' ' + date + ' | '+ timeFormat);
         }
