@@ -93,12 +93,12 @@ describe('NYPL Filter Unit Tests', function () {
       expect(dayFormatFilter('Thu.')).toEqual('THURS');
     });
 
-    it('should be empty string if input is NOT a name of weekday', function () {
+    it('should be an empty string if input is NOT a name of weekday', function () {
       expect(dayFormatFilter('Banana')).toEqual('');
       expect(dayFormatFilter()).toBeFalsy();
     });
 
-    it('should be empty string if input is NOT given', function () {
+    it('should be an empty string if input is NOT given', function () {
       expect(dayFormatFilter()).toEqual('');
       expect(dayFormatFilter()).toBeFalsy();
     });
