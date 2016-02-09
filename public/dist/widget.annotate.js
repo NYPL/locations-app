@@ -943,13 +943,8 @@ var nypl_widget = angular.module('nypl_widget', [
         function getMilitaryHours(time) {
             var components = time.split(':'),
                 hours = parseInt(components[0], 10);
+
             return hours;
-        }
-
-        function clockTime(time) {
-            var formattedClockTime = convertApStyle(time, 'time');
-
-            return formattedClockTime;
         }
 
         function closingHoursDisplay(hours, alerts) {
@@ -985,7 +980,7 @@ var nypl_widget = angular.module('nypl_widget', [
             return $sce.trustAsHtml(displayString);
         }
 
-        return function output(timeObj) {
+       function output(timeObj) {
             // The time object may have just today's hours
             // or be an object with today's and tomorrow's hours
             var alerts,
@@ -1002,13 +997,14 @@ var nypl_widget = angular.module('nypl_widget', [
                 } else if (alerts) {
                     return closingHoursDisplay(time, alerts);
                 }
-                return clockTime(time.open) + '–' + clockTime(time.close);
+                return apStyle(time.open, 'time') + '–' + apStyle(time.close, 'time');
             }
 
             console.log('timeFormat() filter error: Argument is' +
                 ' not defined or empty, verify API response for time');
             return '';
         };
+        return output;
     }
     timeFormat.$inject = ["$sce"];
 
@@ -1024,7 +1020,7 @@ var nypl_widget = angular.module('nypl_widget', [
      */
     function dayFormat() {
         return function (input) {
-            var day = (input) ? convertApStyle(input, 'day') : '',
+            var day = (input) ? apStyle(input, 'day') : '',
                 days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
                 formattedDay = (days.includes(day)) ? day.toUpperCase() : '';
 
@@ -1048,13 +1044,13 @@ var nypl_widget = angular.module('nypl_widget', [
 
     /**
      * @ngdoc filter
-     * @name nypl_locations.filter:convertApStyle
+     * @name nypl_locations.filter:apStyle
      * @param {string} input ...
      * @returns {string} ...
      * @description
      * Coverts time stamps of to NYPL AP style
      */
-    function convertApStyle (input, format) {
+    function apStyle (input, format) {
         switch (format) {
             case 'time':
                 return convertTime(input);
