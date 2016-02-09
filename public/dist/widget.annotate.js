@@ -2886,12 +2886,6 @@ var nypl_widget = angular.module('nypl_widget', [
     utility.formatDate = function(startDate, endDate) {
       var formattedDate;
 
-      this.numDaysBetween = function(start, end) {
-        var s = moment(start),
-          e = moment(end);
-        return e.diff(s, 'days');
-      };
-
       this.dateToString = function(start, end, type) {
         var dateString,
           months = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -2925,36 +2919,25 @@ var nypl_widget = angular.module('nypl_widget', [
         return dateString;
       };
 
-      if (startDate && endDate) {
+      if (startDate) {
         var sDate = new Date(startDate),
-          eDate   = new Date(endDate),
-          today   = new Date(),
-          daysBetweenStartEnd = this.numDaysBetween(sDate, eDate),
-          rangeLimit = 365;
-
-        // Current Event and not past 1 year between start and end dates.
-        if (sDate.getTime() <= today.getTime()
-          && eDate.getTime() >= today.getTime()
-          && daysBetweenStartEnd < rangeLimit
-          && daysBetweenStartEnd > 0) {
-          formattedDate = this.dateToString(sDate, eDate, 'current');
-        }
-        // Current Event and past 1 year which implies Ongoing
-        else if (sDate.getTime() <= today.getTime()
-          && eDate.getTime() >= today.getTime()
-          && daysBetweenStartEnd > rangeLimit) {
-          formattedDate = this.dateToString(sDate, eDate, 'current-ongoing');
-        }
-        // Upcoming Event and not past 1 year between start and end dates.
-        else if (sDate.getTime() > today.getTime()
-          && eDate.getTime() >= today.getTime()
-          && daysBetweenStartEnd < rangeLimit
-          && daysBetweenStartEnd > 0) {
-          formattedDate = this.dateToString(sDate, eDate, 'upcoming');
-        }
-        // Upcoming Event and past 1 year which implies Ongoing.
-        else {
-          formattedDate = this.dateToString(sDate, eDate, 'upcoming-ongoing');
+          eDate   = (endDate) ? new Date(endDate) : null,
+          today   = new Date();
+        
+        // If no end date, the app will consider this exhibition is ongoing
+        if (!eDate) {
+          // Decide the ongoing exhibition is current or upcoming
+          if (sDate.getTime() <= today.getTime()) {
+            formattedDate = this.dateToString(sDate, eDate, 'current-ongoing');
+          } else {
+            formattedDate = this.dateToString(sDate, eDate, 'upcoming-ongoing');
+          }
+        } else if (eDate && eDate.getTime() >= sDate.getTime()){
+          if (sDate.getTime() <= today.getTime()) {
+            formattedDate = this.dateToString(sDate, eDate, 'current');
+          } else {
+            formattedDate = this.dateToString(sDate, eDate, 'upcoming');
+          }
         }
       }
       return formattedDate;
