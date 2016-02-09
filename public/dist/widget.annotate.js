@@ -964,18 +964,24 @@ var nypl_widget = angular.module('nypl_widget', [
                     ? true : false;
 
                 if ((closedHour > eDate.hours() && openHour >= sDate.hours()) && !allDay) {
-                    displayString = 'Opening late *';
-                } else if (((openHour < sDate.hours() && closedHour <= eDate.hours()) ||
+                    return displayString = 'Opening late *';
+                }
+
+                if (((openHour < sDate.hours() && closedHour <= eDate.hours()) ||
                     (hours.date.hours() >= eDate.startOf('day').hour() &&
                     hours.date.hours() <= sDate.endOf('day').hour())) && !allDay) {
-                    displayString = 'Closing early *';
-                } else if (allDay || alerts.infinite === true) {
-                    displayString = 'Closed *';
-                } else if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
-                    displayString = 'Closed *';
-                } else {
-                    displayString = 'Change in hours *';
+                    return displayString = 'Closing early *';
                 }
+
+                if (allDay || alerts.infinite === true) {
+                    return displayString = 'Closed *';
+                }
+
+                if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
+                    return displayString = 'Closed *';
+                }
+
+                return displayString = 'Change in hours *';
             }
             return $sce.trustAsHtml(displayString);
         }
@@ -994,7 +1000,9 @@ var nypl_widget = angular.module('nypl_widget', [
 
                 if (time.open === null) {
                     return 'Closed';
-                } else if (alerts) {
+                }
+
+                if (alerts) {
                     return closingHoursDisplay(time, alerts);
                 }
                 return apStyle(time.open, 'time') + '–' + apStyle(time.close, 'time');
@@ -1051,21 +1059,20 @@ var nypl_widget = angular.module('nypl_widget', [
      * Coverts time stamps of to NYPL AP style
      */
     function apStyle (input, format) {
-        switch (format) {
-            case 'time':
-                return convertTime(input);
-                break;
-            case 'date':
-                return convertDate(input);
-                break;
-            case 'day':
-                return convertDay(input);
-                break;
-            case 'month':
-                return convertMonth(input);
-                break;
-            default:
-                return input;
+        if (!format) {
+            return input;
+        }
+        if (format === 'time') {
+            return convertTime(input);
+        }
+        if (format === 'date') {
+            return convertDate(input);
+        }
+        if (format === 'day') {
+            return convertDay(input);
+        }
+        if (format === 'month' ) {
+            return convertMonth(input);
         }
 
         function convertTime (input) {
@@ -1088,9 +1095,10 @@ var nypl_widget = angular.module('nypl_widget', [
             var day = input.split('.')[0].slice(0, 3);
 
             if (day === 'Tue') {
-                day  = 'Tues';
-            } else if (day ==='Thu') {
-                day = 'Thurs';
+                return 'Tues';
+            }
+            if (day ==='Thu') {
+                return 'Thurs';
             }
             return day;
         }
@@ -1099,11 +1107,13 @@ var nypl_widget = angular.module('nypl_widget', [
             var month = input.slice(0, 3);
 
             if (month === 'Jun') {
-                month = 'June';
-            } else if (month === 'Jul') {
-                month = 'July';
-            } else if (month === 'Sep') {
-                month = 'Sept';
+                return 'June';
+            }
+            if (month === 'Jul') {
+                return 'July';
+            }
+            if (month === 'Sep') {
+                return 'Sept';
             }
             return month;
         }

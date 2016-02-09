@@ -41,18 +41,24 @@
                     ? true : false;
 
                 if ((closedHour > eDate.hours() && openHour >= sDate.hours()) && !allDay) {
-                    displayString = 'Opening late *';
-                } else if (((openHour < sDate.hours() && closedHour <= eDate.hours()) ||
+                    return displayString = 'Opening late *';
+                }
+
+                if (((openHour < sDate.hours() && closedHour <= eDate.hours()) ||
                     (hours.date.hours() >= eDate.startOf('day').hour() &&
                     hours.date.hours() <= sDate.endOf('day').hour())) && !allDay) {
-                    displayString = 'Closing early *';
-                } else if (allDay || alerts.infinite === true) {
-                    displayString = 'Closed *';
-                } else if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
-                    displayString = 'Closed *';
-                } else {
-                    displayString = 'Change in hours *';
+                    return displayString = 'Closing early *';
                 }
+
+                if (allDay || alerts.infinite === true) {
+                    return displayString = 'Closed *';
+                }
+
+                if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
+                    return displayString = 'Closed *';
+                }
+
+                return displayString = 'Change in hours *';
             }
             return $sce.trustAsHtml(displayString);
         }
@@ -71,7 +77,9 @@
 
                 if (time.open === null) {
                     return 'Closed';
-                } else if (alerts) {
+                }
+
+                if (alerts) {
                     return closingHoursDisplay(time, alerts);
                 }
                 return apStyle(time.open, 'time') + '–' + apStyle(time.close, 'time');
