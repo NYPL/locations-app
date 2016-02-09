@@ -3672,7 +3672,7 @@ var nypl_widget = angular.module('nypl_widget', [
         $scope.numAlertsInWeek = ($scope.dynamicWeekHours) ?
           ctrl.findNumAlertsInWeek($scope.dynamicWeekHours) : 0;
 
-        // Call convertApWeekday for the syntax of weekday styling
+        // Call apWeekday for the syntax of weekday styling
         $scope.hours.map(function (item, index) {
           item.day = ctrl.apWeekday(item.day);
           return item;
