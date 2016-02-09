@@ -3041,12 +3041,6 @@ var nypl_widget = angular.module('nypl_widget', [
                 var todayDay = moment().date(),
                   todayMonth = moment().month(),
                   todayYear = moment().year();
-
-                if (todayDay === 31 && todayMonth === 11 && todayYear === 2015) {
-                    $scope.globalClosingMessage = 'Closing today at 3pm.';
-                } else if (todayDay === 1 && todayMonth === 0 && todayYear === 2016) {
-                    $scope.globalClosingMessage = 'Closed today.';
-                }
             }
         }
 
@@ -3592,12 +3586,6 @@ var nypl_widget = angular.module('nypl_widget', [
         var todayDay = moment().date(),
           todayMonth = moment().month(),
           todayYear = moment().year();
-
-        if (todayDay === 31 && todayMonth === 11 && todayYear === 2015) {
-            $scope.todaysHours = 'Closing today at 3pm.';
-        } else if (todayDay === 1 && todayMonth === 0 && todayYear === 2016) {
-            $scope.todaysHours = 'Closed today.';
-        }
 
         // Display the clock icon (optional)
         $scope.showIcon = (attrs.displayIcon === 'true') ? true : false;
@@ -4448,12 +4436,9 @@ var nypl_widget = angular.module('nypl_widget', [
         }
 
         function clockTime(time) {
-            var components = time.split(':'),
-                hours = ((parseInt(components[0], 10) + 11) % 12 + 1),
-                minutes = components[1],
-                meridiem = components[0] >= 12 ? 'pm' : 'am';
+            var formattedClockTime = convertApStyle(time, 'time');
 
-            return hours + ":" + minutes + meridiem;
+            return formattedClockTime;
         }
 
         function closingHoursDisplay(hours, alerts) {
@@ -4506,7 +4491,7 @@ var nypl_widget = angular.module('nypl_widget', [
                 } else if (alerts) {
                     return closingHoursDisplay(time, alerts);
                 }
-                return clockTime(time.open) + ' - ' + clockTime(time.close);
+                return clockTime(time.open) + '–' + clockTime(time.close);
             }
 
             console.log('timeFormat() filter error: Argument is' +
@@ -4528,6 +4513,73 @@ var nypl_widget = angular.module('nypl_widget', [
         return function (input) {
             return new Date(input).toISOString();
         };
+    }
+
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:convertApStyle
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Coverts time stamps of to NYPL AP style
+     */
+    function convertApStyle (input, format) {
+        switch (format) {
+            case 'time':
+                return convertTime(input);
+                break;
+            case 'date':
+                return convertDate(input);
+                break;
+            case 'day':
+                return convertDay(input);
+                break;
+            case 'month':
+                return convertMonth(input);
+                break;
+            default:
+                return input;
+        }
+
+        function convertTime (input) {
+            var timeArray = input.split(':'),
+                militaryHour = parseInt(timeArray[0], 10),
+                hour = (militaryHour + 11) % 12 + 1,
+                minute = (timeArray[1] === '00') ? '' : ':' + timeArray[1],
+                meridiem = (militaryHour > 12) ? ' PM' : ' AM';
+
+            return hour + minute + meridiem;
+        }
+
+        function convertDate (input) {
+            var date = parseInt(input, 10).toString();
+
+            return date;
+        }
+
+        function convertDay (input) {
+            var day = input.split('.')[0].slice(0, 3);
+
+            if (day === 'Tue') {
+                day  = 'Tues';
+            } else if (day ==='Thu') {
+                day = 'Thurs';
+            }
+            return day;
+        }
+
+        function convertMonth (input) {
+            var month = input.slice(0, 3);
+
+            if (month === 'Jun') {
+                month = 'June';
+            } else if (month === 'Jul') {
+                month = 'July';
+            } else if (month === 'Sep') {
+                month = 'Sept';
+            }
+            return month;
+        }
     }
 
     /**
@@ -4565,7 +4617,7 @@ var nypl_widget = angular.module('nypl_widget', [
                 ['hours', 'mins', 'meridian', 'military'],
                 [((parseInt(time[0], 10) + 11) % 12 + 1),
                     time[1],
-                    (time[0] >= 12 ? 'pm' : 'am'),
+                    (time[0] >= 12 ? ' PM' : ' AM'),
                     parseInt(time[0], 10)]
             );
         }
@@ -4631,7 +4683,7 @@ var nypl_widget = angular.module('nypl_widget', [
                     else if (tomorrow_open_time && tomorrow_close_time) {
                         return 'Open tomorrow ' + tomorrow_open_time.hours +
                             (parseInt(tomorrow_open_time.mins, 10) !== 0 ? ':' + tomorrow_open_time.mins : '')
-                            + tomorrow_open_time.meridian + '-' + tomorrow_close_time.hours +
+                            + tomorrow_open_time.meridian + '–' + tomorrow_close_time.hours +
                             (parseInt(tomorrow_close_time.mins, 10) !== 0 ? ':' + tomorrow_close_time.mins : '')
                             + tomorrow_close_time.meridian;
                     }
@@ -4642,7 +4694,7 @@ var nypl_widget = angular.module('nypl_widget', [
                 if (hour_now_military < open_time.military) {
                     return 'Open today ' + open_time.hours +
                         (parseInt(open_time.mins, 10) !== 0 ? ':' + open_time.mins : '')
-                        + open_time.meridian + '-' + closed_time.hours +
+                        + open_time.meridian + '–' + closed_time.hours +
                         (parseInt(closed_time.mins, 10) !== 0 ? ':' + closed_time.mins : '')
                         + closed_time.meridian;
                 }
