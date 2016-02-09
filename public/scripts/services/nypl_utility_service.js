@@ -142,7 +142,7 @@
         sDate = (startDate) ? new Date(startDate) : null,
         eDate = (endDate) ? new Date(endDate) : null,
         today = new Date(),
-        happeningSoon = (sDate.getTime() <= today.getTime()) ? true : false,
+        happeningSoon = (sDate && sDate.getTime() <= today.getTime()) ? true : false,
         daysBetweenStartEnd = (startDate && endDate) ?
           moment(eDate).diff(moment(sDate), 'days') : null,
         rangeLimit = 365,
