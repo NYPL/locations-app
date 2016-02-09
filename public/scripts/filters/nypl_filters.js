@@ -89,13 +89,33 @@
     }
     timeFormat.$inject = ["$sce"];
 
+
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:dayFormat
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Convert the syntax of week day to AP style.
+     * eg Sun. to SUN, Tue. to TUES
+     */
+    function dayFormat() {
+        return function (input) {
+            var day = (input) ? convertApStyle(input, 'day') : '',
+                days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
+                formattedDay = (days.includes(day)) ? day.toUpperCase() : '';
+
+            return formattedDay;
+        }
+    }
+
     /**
      * @ngdoc filter
      * @name nypl_locations.filter:dateToISO
      * @param {string} input ...
      * @returns {string} ...
      * @description
-     * Coverts MYSQL Datetime stamp to ISO format
+     * Converts MYSQL Datetime stamp to ISO format
      */
     function dateToISO() {
         return function (input) {
@@ -333,6 +353,7 @@
     angular
         .module('nypl_locations')
         .filter('timeFormat', timeFormat)
+        .filter('dayFormat', dayFormat)
         .filter('dateToISO', dateToISO)
         .filter('capitalize', capitalize)
         .filter('hoursTodayFormat', hoursTodayFormat)

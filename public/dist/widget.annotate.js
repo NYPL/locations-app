@@ -1012,13 +1012,33 @@ var nypl_widget = angular.module('nypl_widget', [
     }
     timeFormat.$inject = ["$sce"];
 
+
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:dayFormat
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Convert the syntax of week day to AP style.
+     * eg Sun. to SUN, Tue. to TUES
+     */
+    function dayFormat() {
+        return function (input) {
+            var day = (input) ? convertApStyle(input, 'day') : '',
+                days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
+                formattedDay = (days.includes(day)) ? day.toUpperCase() : '';
+
+            return formattedDay;
+        }
+    }
+
     /**
      * @ngdoc filter
      * @name nypl_locations.filter:dateToISO
      * @param {string} input ...
      * @returns {string} ...
      * @description
-     * Coverts MYSQL Datetime stamp to ISO format
+     * Converts MYSQL Datetime stamp to ISO format
      */
     function dateToISO() {
         return function (input) {
@@ -1256,6 +1276,7 @@ var nypl_widget = angular.module('nypl_widget', [
     angular
         .module('nypl_locations')
         .filter('timeFormat', timeFormat)
+        .filter('dayFormat', dayFormat)
         .filter('dateToISO', dateToISO)
         .filter('capitalize', capitalize)
         .filter('hoursTodayFormat', hoursTodayFormat)
@@ -1511,7 +1532,7 @@ var nypl_widget = angular.module('nypl_widget', [
   }
   todayshours.$inject = ['$nyplAlerts', 'nyplAlertsService', 'nyplUtility', '$filter'];
 
-  function hoursTable(nyplAlertsService) {
+  function hoursTable(nyplAlertsService, $filter) {
     return {
       restrict: 'EA',
       templateUrl: 'scripts/directives/templates/hours-table.html',
@@ -1544,6 +1565,12 @@ var nypl_widget = angular.module('nypl_widget', [
         // Assign the number of alerts for the week
         $scope.numAlertsInWeek = ($scope.dynamicWeekHours) ?
           ctrl.findNumAlertsInWeek($scope.dynamicWeekHours) : 0;
+
+        // Call convertApWeekday for the syntax of weekday styling
+        $scope.hours.map(function (item, index) {
+          item.day = ctrl.convertApWeekday(item.day);
+          return item;
+        });
 
         $scope.regularWeekHours = $scope.hours || null;
         $scope.buttonText = (scopedAlerts) ? 'Regular hours' : null;
@@ -1615,6 +1642,12 @@ var nypl_widget = angular.module('nypl_widget', [
             && today.isBefore(endDay)) ? true : false;
         };
 
+        // Call the filer dayFormat to convert the name of weekdays to AP style
+        this.convertApWeekday = function (day) {
+          day = (day) ? $filter('dayFormat')(day) : '';
+          return day;
+        }
+
         this.assignDynamicDate = function (index) {
           var today = moment(),
             date;
@@ -1659,7 +1692,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }]
     };
   }
-  hoursTable.$inject = ['nyplAlertsService'];
+  hoursTable.$inject = ['nyplAlertsService', '$filter'];
 
   /**
    * @ngdoc directive
@@ -2942,77 +2975,37 @@ var nypl_widget = angular.module('nypl_widget', [
      * @description ...
      */
     utility.formatDate = function(startDate, endDate) {
-      var formattedDate;
+      var formattedDate,
+        sDate = (startDate) ? new Date(startDate) : null,
+        eDate = (endDate) ? new Date(endDate) : null,
+        today = new Date(),
+        happeningSoon = (sDate && sDate.getTime() <= today.getTime()) ? true : false,
+        daysBetweenStartEnd = (startDate && endDate) ?
+          moment(eDate).diff(moment(sDate), 'days') : null,
+        rangeLimit = 365,
+        months = ['January', 'February', 'March', 'April', 'May', 'June',
+          'July', 'August', 'September', 'October', 'November', 'December'];
 
-      this.numDaysBetween = function(start, end) {
-        var s = moment(start),
-          e = moment(end);
-        return e.diff(s, 'days');
-      };
+      if (!sDate || daysBetweenStartEnd < 0) {
+        return;
+      }
 
-      this.dateToString = function(start, end, type) {
-        var dateString,
-          months = ['January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'];
-
-        if (!start && !end) { return; }
-        // String assignment based on type
-        switch (type) {
-          case "current":
-            dateString = "Open now. Ends " + months[end.getUTCMonth()] +
-              " " + end.getUTCDate() + ", " + end.getUTCFullYear() + ".";
-            break;
-          case "current-ongoing":
-            dateString = "Open now. Ongoing.";
-            break;
-          case "upcoming":
-            dateString = "Opening soon. " + months[start.getUTCMonth()] +
-              " " + start.getUTCDate() + ", " + start.getUTCFullYear() +
-              " - " + months[end.getUTCMonth()] + " " + end.getUTCDate() +
-              ", " + end.getUTCFullYear() + ".";
-            break;
-          case "upcoming-ongoing":
-            dateString = "Opening soon. " + months[sDate.getUTCMonth()] +
-            " " + sDate.getUTCDate() + ", " + sDate.getUTCFullYear() + ".";
-            break;
-          default:
-            dateString = months[start.getUTCMonth()] + " " + start.getUTCDate() + 
-              ", " + start.getUTCFullYear() + " - " + months[end.getUTCMonth()] + 
-              " " + end.getUTCDate() + ", " + end.getUTCFullYear() + ".";
+      if (!eDate || daysBetweenStartEnd > rangeLimit) {
+        if (happeningSoon) {
+          formattedDate = 'Open now. Ongoing.';
+        } else {
+          formattedDate = 'Opening soon. ' + months[sDate.getUTCMonth()] +
+            ' ' + sDate.getUTCDate() + ', ' + sDate.getUTCFullYear() + '.';
         }
-        return dateString;
-      };
-
-      if (startDate && endDate) {
-        var sDate = new Date(startDate),
-          eDate   = new Date(endDate),
-          today   = new Date(),
-          daysBetweenStartEnd = this.numDaysBetween(sDate, eDate),
-          rangeLimit = 365;
-
-        // Current Event and not past 1 year between start and end dates.
-        if (sDate.getTime() <= today.getTime()
-          && eDate.getTime() >= today.getTime()
-          && daysBetweenStartEnd < rangeLimit
-          && daysBetweenStartEnd > 0) {
-          formattedDate = this.dateToString(sDate, eDate, 'current');
-        }
-        // Current Event and past 1 year which implies Ongoing
-        else if (sDate.getTime() <= today.getTime()
-          && eDate.getTime() >= today.getTime()
-          && daysBetweenStartEnd > rangeLimit) {
-          formattedDate = this.dateToString(sDate, eDate, 'current-ongoing');
-        }
-        // Upcoming Event and not past 1 year between start and end dates.
-        else if (sDate.getTime() > today.getTime()
-          && eDate.getTime() >= today.getTime()
-          && daysBetweenStartEnd < rangeLimit
-          && daysBetweenStartEnd > 0) {
-          formattedDate = this.dateToString(sDate, eDate, 'upcoming');
-        }
-        // Upcoming Event and past 1 year which implies Ongoing.
-        else {
-          formattedDate = this.dateToString(sDate, eDate, 'upcoming-ongoing');
+      } else {
+        if (happeningSoon) {
+          formattedDate = 'Open now. Ends ' + months[eDate.getUTCMonth()] +
+            ' ' + eDate.getUTCDate() + ', ' + eDate.getUTCFullYear() + '.';
+        } else {
+          formattedDate = 'Opening soon. ' + months[sDate.getUTCMonth()] +
+            ' ' + sDate.getUTCDate() + ', ' + sDate.getUTCFullYear() +
+            '–' + months[eDate.getUTCMonth()] + ' ' + eDate.getUTCDate() +
+            ', ' + eDate.getUTCFullYear() + '.';
         }
       }
       return formattedDate;
