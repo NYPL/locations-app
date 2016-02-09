@@ -215,7 +215,7 @@
 
         // Call convertApWeekday for the syntax of weekday styling
         $scope.hours.map(function (item, index) {
-          item.day = ctrl.convertApWeekday(item.day);
+          item.day = ctrl.apWeekday(item.day);
           return item;
         });
 
@@ -290,7 +290,7 @@
         };
 
         // Call the filer dayFormat to convert the name of weekdays to AP style
-        this.convertApWeekday = function (day) {
+        this.apWeekday = function (day) {
           day = (day) ? $filter('dayFormat')(day) : '';
           return day;
         }
