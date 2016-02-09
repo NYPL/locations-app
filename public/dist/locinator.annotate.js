@@ -3684,9 +3684,9 @@ var nypl_widget = angular.module('nypl_widget', [
         $scope.numAlertsInWeek = ($scope.dynamicWeekHours) ?
           ctrl.findNumAlertsInWeek($scope.dynamicWeekHours) : 0;
 
-        // Convert the syntax of week day to AP style
+        // Call convertApWeekday for the syntax of weekday styling
         $scope.hours.map(function (item, index) {
-          item.day = (item.day) ? $filter('dayFormat')(item.day) : '';
+          item.day = ctrl.convertApWeekday(item.day);
           return item;
         });
 
@@ -3759,6 +3759,12 @@ var nypl_widget = angular.module('nypl_widget', [
             && dayOfWeek.isSame(startDay, 'day')
             && today.isBefore(endDay)) ? true : false;
         };
+
+        // Call the filer dayFormat to convert the name of weekdays to AP style
+        this.convertApWeekday = function (day) {
+          day = (day) ? $filter('dayFormat')(day) : '';
+          return day;
+        }
 
         this.assignDynamicDate = function (index) {
           var today = moment(),
@@ -4534,17 +4540,11 @@ var nypl_widget = angular.module('nypl_widget', [
      */
     function dayFormat() {
         return function (input) {
-            var days = ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.'],
-                day = (days.includes(input)) ? input.split('.')[0]
-                .toUpperCase() : '';
+            var day = (input) ? convertApStyle(input, 'day') : '',
+                days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
+                formattedDay = (days.includes(day)) ? day.toUpperCase() : '';
 
-            if (day === 'TUE') {
-                day = 'TUES';
-            } else if (day === 'THU') {
-                day = 'THURS';
-            }
-
-            return day;
+            return formattedDay;
         }
     }
 
@@ -4560,6 +4560,73 @@ var nypl_widget = angular.module('nypl_widget', [
         return function (input) {
             return new Date(input).toISOString();
         };
+    }
+
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:convertApStyle
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Coverts time stamps of to NYPL AP style
+     */
+    function convertApStyle (input, format) {
+        switch (format) {
+            case 'time':
+                return convertTime(input);
+                break;
+            case 'date':
+                return convertDate(input);
+                break;
+            case 'day':
+                return convertDay(input);
+                break;
+            case 'month':
+                return convertMonth(input);
+                break;
+            default:
+                return input;
+        }
+
+        function convertTime (input) {
+            var timeArray = input.split(':'),
+                militaryHour = parseInt(timeArray[0], 10),
+                hour = (militaryHour + 11) % 12 + 1,
+                minute = (timeArray[1] === '00') ? '' : ':' + timeArray[1],
+                meridiem = (militaryHour > 12) ? ' PM' : ' AM';
+
+            return hour + minute + meridiem;
+        }
+
+        function convertDate (input) {
+            var date = parseInt(input, 10).toString();
+
+            return date;
+        }
+
+        function convertDay (input) {
+            var day = input.split('.')[0].slice(0, 3);
+
+            if (day === 'Tue') {
+                day  = 'Tues';
+            } else if (day ==='Thu') {
+                day = 'Thurs';
+            }
+            return day;
+        }
+
+        function convertMonth (input) {
+            var month = input.slice(0, 3);
+
+            if (month === 'Jun') {
+                month = 'June';
+            } else if (month === 'Jul') {
+                month = 'July';
+            } else if (month === 'Sep') {
+                month = 'Sept';
+            }
+            return month;
+        }
     }
 
     /**
