@@ -92,18 +92,105 @@
     }
     timeFormat.$inject = ["$sce"];
 
+
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:dayFormat
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Convert the syntax of week day to AP style.
+     * eg Sun. to SUN, Tue. to TUES
+     */
+    function dayFormat() {
+        return function (input) {
+            var day = (input) ? convertApStyle(input, 'day') : '',
+                days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
+                formattedDay = (days.includes(day)) ? day.toUpperCase() : '';
+
+            return formattedDay;
+        }
+    }
+
     /**
      * @ngdoc filter
      * @name nypl_locations.filter:dateToISO
      * @param {string} input ...
      * @returns {string} ...
      * @description
-     * Coverts MYSQL Datetime stamp to ISO format
+     * Converts MYSQL Datetime stamp to ISO format
      */
     function dateToISO() {
         return function (input) {
             return new Date(input).toISOString();
         };
+    }
+
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:convertApStyle
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Coverts time stamps of to NYPL AP style
+     */
+    function convertApStyle (input, format) {
+        switch (format) {
+            case 'time':
+                return convertTime(input);
+                break;
+            case 'date':
+                return convertDate(input);
+                break;
+            case 'day':
+                return convertDay(input);
+                break;
+            case 'month':
+                return convertMonth(input);
+                break;
+            default:
+                return input;
+        }
+
+        function convertTime (input) {
+            var timeArray = input.split(':'),
+                militaryHour = parseInt(timeArray[0], 10),
+                hour = (militaryHour + 11) % 12 + 1,
+                minute = (timeArray[1] === '00') ? '' : ':' + timeArray[1],
+                meridiem = (militaryHour > 12) ? ' PM' : ' AM';
+
+            return hour + minute + meridiem;
+        }
+
+        function convertDate (input) {
+            var date = parseInt(input, 10).toString();
+
+            return date;
+        }
+
+        function convertDay (input) {
+            var day = input.split('.')[0].slice(0, 3);
+
+            if (day === 'Tue') {
+                day  = 'Tues';
+            } else if (day ==='Thu') {
+                day = 'Thurs';
+            }
+            return day;
+        }
+
+        function convertMonth (input) {
+            var month = input.slice(0, 3);
+
+            if (month === 'Jun') {
+                month = 'June';
+            } else if (month === 'Jul') {
+                month = 'July';
+            } else if (month === 'Sep') {
+                month = 'Sept';
+            }
+            return month;
+        }
     }
 
     /**
@@ -269,6 +356,7 @@
     angular
         .module('nypl_locations')
         .filter('timeFormat', timeFormat)
+        .filter('dayFormat', dayFormat)
         .filter('dateToISO', dateToISO)
         .filter('capitalize', capitalize)
         .filter('hoursTodayFormat', hoursTodayFormat)
