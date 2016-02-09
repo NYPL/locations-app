@@ -1063,19 +1063,19 @@ var nypl_widget = angular.module('nypl_widget', [
             return input;
         }
         if (format === 'time') {
-            return convertTime(input);
+            return apTime(input);
         }
         if (format === 'date') {
-            return convertDate(input);
+            return apDate(input);
         }
         if (format === 'day') {
-            return convertDay(input);
+            return apDay(input);
         }
         if (format === 'month' ) {
-            return convertMonth(input);
+            return apMonth(input);
         }
 
-        function convertTime (input) {
+        function apTime (input) {
             var timeArray = input.split(':'),
                 militaryHour = parseInt(timeArray[0], 10),
                 hour = (militaryHour + 11) % 12 + 1,
@@ -1085,13 +1085,13 @@ var nypl_widget = angular.module('nypl_widget', [
             return hour + minute + meridiem;
         }
 
-        function convertDate (input) {
+        function apDate (input) {
             var date = parseInt(input, 10).toString();
 
             return date;
         }
 
-        function convertDay (input) {
+        function apDay (input) {
             var day = input.split('.')[0].slice(0, 3);
 
             if (day === 'Tue') {
@@ -1103,7 +1103,7 @@ var nypl_widget = angular.module('nypl_widget', [
             return day;
         }
 
-        function convertMonth (input) {
+        function apMonth (input) {
             var month = input.slice(0, 3);
 
             if (month === 'Jun') {
