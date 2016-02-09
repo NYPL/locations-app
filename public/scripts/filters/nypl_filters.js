@@ -128,21 +128,20 @@
      * Coverts time stamps of to NYPL AP style
      */
     function apStyle (input, format) {
-        switch (format) {
-            case 'time':
-                return convertTime(input);
-                break;
-            case 'date':
-                return convertDate(input);
-                break;
-            case 'day':
-                return convertDay(input);
-                break;
-            case 'month':
-                return convertMonth(input);
-                break;
-            default:
-                return input;
+        if (!format) {
+            return input;
+        }
+        if (format === 'time') {
+            return convertTime(input);
+        }
+        if (format === 'date') {
+            return convertDate(input);
+        }
+        if (format === 'day') {
+            return convertDay(input);
+        }
+        if (format === 'month' ) {
+            return convertMonth(input);
         }
 
         function convertTime (input) {
@@ -165,9 +164,10 @@
             var day = input.split('.')[0].slice(0, 3);
 
             if (day === 'Tue') {
-                day  = 'Tues';
-            } else if (day ==='Thu') {
-                day = 'Thurs';
+                return 'Tues';
+            }
+            if (day ==='Thu') {
+                return 'Thurs';
             }
             return day;
         }
@@ -176,11 +176,13 @@
             var month = input.slice(0, 3);
 
             if (month === 'Jun') {
-                month = 'June';
-            } else if (month === 'Jul') {
-                month = 'July';
-            } else if (month === 'Sep') {
-                month = 'Sept';
+                return 'June';
+            }
+            if (month === 'Jul') {
+                return 'July';
+            }
+            if (month === 'Sep') {
+                return 'Sept';
             }
             return month;
         }
