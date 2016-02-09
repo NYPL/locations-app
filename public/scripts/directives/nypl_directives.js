@@ -128,12 +128,6 @@
           todayMonth = moment().month(),
           todayYear = moment().year();
 
-        if (todayDay === 31 && todayMonth === 11 && todayYear === 2015) {
-            $scope.todaysHours = 'Closing today at 3pm.';
-        } else if (todayDay === 1 && todayMonth === 0 && todayYear === 2016) {
-            $scope.todaysHours = 'Closed today.';
-        }
-
         // Display the clock icon (optional)
         $scope.showIcon = (attrs.displayIcon === 'true') ? true : false;
       },
@@ -219,9 +213,9 @@
         $scope.numAlertsInWeek = ($scope.dynamicWeekHours) ?
           ctrl.findNumAlertsInWeek($scope.dynamicWeekHours) : 0;
 
-        // Call convertApWeekday for the syntax of weekday styling
+        // Call apWeekday for the syntax of weekday styling
         $scope.hours.map(function (item, index) {
-          item.day = ctrl.convertApWeekday(item.day);
+          item.day = ctrl.apWeekday(item.day);
           return item;
         });
 
@@ -296,7 +290,7 @@
         };
 
         // Call the filer dayFormat to convert the name of weekdays to AP style
-        this.convertApWeekday = function (day) {
+        this.apWeekday = function (day) {
           day = (day) ? $filter('dayFormat')(day) : '';
           return day;
         }

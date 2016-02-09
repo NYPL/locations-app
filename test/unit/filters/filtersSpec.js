@@ -40,13 +40,13 @@ describe('NYPL Filter Unit Tests', function () {
     // The input is a simple object with 'open' and 'close' properties
     it('should convert Military time into standard time', function () {
       expect(timeFormatFilter({'open': '17:00', 'close': '18:00'}))
-        .toEqual('5:00pm - 6:00pm');
+        .toEqual('5 PM–6 PM');
       expect(timeFormatFilter({'open': '03:30', 'close': '05:30'}))
-        .toEqual('3:30am - 5:30am');
+        .toEqual('3:30 AM–5:30 AM');
       expect(timeFormatFilter({'open': '00:30', 'close': '02:30'}))
-        .toEqual('12:30am - 2:30am');
+        .toEqual('12:30 AM–2:30 AM');
       expect(timeFormatFilter({'open': '00:00', 'close': '2:00'}))
-        .toEqual('12:00am - 2:00am');
+        .toEqual('12 AM–2 AM');
     });
 
     // The input is an object with 'today' and 'tomorrow' properties but only
@@ -54,10 +54,10 @@ describe('NYPL Filter Unit Tests', function () {
     it('should also accept an object with today\'s and tomorrow\'s hours',
       function () {
         expect(timeFormatFilter({'today': {'open': '00:00', 'close': '2:00'}}))
-          .toEqual('12:00am - 2:00am');
+          .toEqual('12 AM–2 AM');
 
         expect(timeFormatFilter({'today': {'open': '10:00', 'close': '18:00'}}))
-          .toEqual('10:00am - 6:00pm');
+          .toEqual('10 AM–6 PM');
       });
 
     // The API returns null values
@@ -222,7 +222,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:00', 'close': '18:00'},
           'tomorrow': {'open': '10:00', 'close': '18:00', 'alert': null}
         }))
-          .toEqual('Open today until 6pm');
+          .toEqual('Open today until 6 PM');
       });
 
       it('should display the open times for today with minutes', function () {
@@ -235,7 +235,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:00', 'close': '18:45'},
           'tomorrow': {'open': '10:00', 'close': '18:45', 'alert': null}
         }))
-          .toEqual('Open today until 6:45pm');
+          .toEqual('Open today until 6:45 PM');
       });
     });
 
@@ -251,7 +251,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:00', 'close': '18:00'},
           'tomorrow': {'open': '11:00', 'close': '19:00', 'alert': null}
         }))
-          .toEqual('Open tomorrow 11am-7pm');
+          .toEqual('Open tomorrow 11 AM–7 PM');
       });
 
       it('should display the open times for tomorrow with minutes', function () {
@@ -264,7 +264,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:30', 'close': '18:30'},
           'tomorrow': {'open': '11:30', 'close': '18:30', 'alert': null}
         }, 'short'))
-          .toEqual('Open tomorrow 11:30am-6:30pm');
+          .toEqual('Open tomorrow 11:30 AM–6:30 PM');
       });
     });
 
@@ -281,7 +281,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:00', 'close': '18:00'},
           'tomorrow': {'open': '11:00', 'close': '19:00', 'alert': null}
         }))
-          .toEqual('Open today 10am-6pm');
+          .toEqual('Open today 10 AM–6 PM');
       });
 
       it('should display the open times for later today with minutes', function () {
@@ -294,7 +294,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:30', 'close': '18:30'},
           'tomorrow': {'open': '10:00', 'close': '18:00', 'alert': null}
         }))
-          .toEqual('Open today 10:30am-6:30pm');
+          .toEqual('Open today 10:30 AM–6:30 PM');
       });
     });
 
