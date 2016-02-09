@@ -172,10 +172,13 @@
             var day = input.split('.')[0].slice(0, 3);
 
             if (day === 'Tue') {
-                day  = 'Tues';
-            } else if (day ==='Thu') {
-                day = 'Thurs';
+                return 'Tues';
             }
+
+            if (day ==='Thu') {
+                return 'Thurs';
+            }
+
             return day;
         }
 
@@ -183,12 +186,17 @@
             var month = input.slice(0, 3);
 
             if (month === 'Jun') {
-                month = 'June';
-            } else if (month === 'Jul') {
-                month = 'July';
-            } else if (month === 'Sep') {
-                month = 'Sept';
+                return 'June';
             }
+
+            if (month === 'Jul') {
+                return 'July';
+            }
+
+            if (month === 'Sep') {
+               return 'Sept';
+            }
+
             return month;
         }
     }
