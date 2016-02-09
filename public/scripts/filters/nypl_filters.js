@@ -104,7 +104,7 @@
      */
     function dayFormat() {
         return function (input) {
-            var day = convertApStyle(input, 'day'),
+            var day = (input) ? convertApStyle(input, 'day') : '',
                 days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
                 formattedDay = (days.includes(day)) ? day.toUpperCase() : '';
 
