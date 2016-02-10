@@ -1678,7 +1678,7 @@ var nypl_widget = angular.module('nypl_widget', [
               // Assign the day to a formatted AP style
               day.day = (day.day) ? $filter('dayFormatUppercase')(day.day) : '';
               // Assign the date object to a string so we can use it in the filter
-              day.dateString = day.date._d.toDateString();
+              day.dateString = moment(day.date._d).format('ddd MMM DD');
             });
 
           return week;
