@@ -268,7 +268,7 @@ describe('NYPL Directive Unit Tests', function () {
 
         $scope.alerts = null;
         hoursToday = ctrl.computeHoursToday($scope.hours, $scope.alerts);
-        expect(hoursToday).toBe('Open today until 6pm');
+        expect(hoursToday).toBe('Open today until 6 PM');
       });
 
       it('should display hours today if no alert data is defined ' +
@@ -279,7 +279,7 @@ describe('NYPL Directive Unit Tests', function () {
 
         $scope.alerts = null;
         hoursToday = ctrl.computeHoursToday($scope.hours, $scope.alerts);
-        expect(hoursToday).toBe('Open today 10am-6pm');
+        expect(hoursToday).toBe('Open today 10 AM–6 PM');
       });
 
       it('should display hours for tomorrow if no alert data is defined ' +
@@ -290,7 +290,7 @@ describe('NYPL Directive Unit Tests', function () {
 
         $scope.alerts = null;
         hoursToday = ctrl.computeHoursToday($scope.hours, $scope.alerts);
-        expect(hoursToday).toBe('Open tomorrow 10am-8pm');
+        expect(hoursToday).toBe('Open tomorrow 10 AM–8 PM');
       });
 
 
