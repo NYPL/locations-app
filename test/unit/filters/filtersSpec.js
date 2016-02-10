@@ -10,7 +10,8 @@ describe('NYPL Filter Unit Tests', function () {
 
   // Load App dependency
   var timeFormatFilter,
-    dayFormatFilter,
+    dayFormatUppercaseFilter,
+    dateMonthFormatFilter,
     dateToISOFilter,
     eventTimeFormatFilter,
     capitalizeFilter,
@@ -73,35 +74,64 @@ describe('NYPL Filter Unit Tests', function () {
   });
 
   /*
-   * dayFormat
+   * dayFormatUppercase
    *   The input is a string of the name of the weekday.
    *
-   *   Returns the name in AP style.
+   *   Returns the name in AP style with uppercase.
    */
-  describe('Filter: dayFormat', function () {
-    beforeEach(inject(function (_dayFormatFilter_) {
-      dayFormatFilter = _dayFormatFilter_;
+  describe('Filter: dayFormatUppercase', function () {
+    beforeEach(inject(function (_dayFormatUppercaseFilter_) {
+      dayFormatUppercaseFilter = _dayFormatUppercaseFilter_;
     }));
 
-    it('should have a dayFormat function', function () {
-      expect(dayFormatFilter).toBeDefined();
-      expect(angular.isFunction(dayFormatFilter)).toBe(true);
+    it('should have a dayFormatUppercase function', function () {
+      expect(dayFormatUppercaseFilter).toBeDefined();
+      expect(angular.isFunction(dayFormatUppercaseFilter)).toBe(true);
     });
 
     it('should convert the names of week day into AP style', function () {
-      expect(dayFormatFilter('Sun.')).toEqual('SUN');
-      expect(dayFormatFilter('Tue.')).toEqual('TUES');
-      expect(dayFormatFilter('Thu.')).toEqual('THURS');
+      expect(dayFormatUppercaseFilter('Sun.')).toEqual('SUN');
+      expect(dayFormatUppercaseFilter('Tue.')).toEqual('TUES');
+      expect(dayFormatUppercaseFilter('Thu.')).toEqual('THURS');
     });
 
     it('should be an empty string if input is NOT a name of weekday', function () {
-      expect(dayFormatFilter('Banana')).toEqual('');
-      expect(dayFormatFilter()).toBeFalsy();
+      expect(dayFormatUppercaseFilter('Banana')).toEqual('');
+      expect(dayFormatUppercaseFilter()).toBeFalsy();
     });
 
     it('should be an empty string if input is NOT given', function () {
-      expect(dayFormatFilter()).toEqual('');
-      expect(dayFormatFilter()).toBeFalsy();
+      expect(dayFormatUppercaseFilter()).toEqual('');
+      expect(dayFormatUppercaseFilter()).toBeFalsy();
+    });
+  });
+
+  /*
+   * dateMonthFormat
+   *   The input is a string of the name of the weekday.
+   *
+   *   Returns the name in AP style with uppercase.
+   */
+   describe('Filter: dateMonthFormat', function () {
+    beforeEach(inject(function (_dateMonthFormatFilter_) {
+      dateMonthFormatFilter = _dateMonthFormatFilter_;
+    }));
+
+    it('should have a dateMonthFormat function', function () {
+      expect(dateMonthFormatFilter).toBeDefined();
+      expect(angular.isFunction(dateMonthFormatFilter)).toBe(true);
+    });
+
+    it('should convert the date and month of a date object into AP style', function () {
+      expect(dateMonthFormatFilter('Feb 16')).toEqual('Feb 16');
+      expect(dateMonthFormatFilter('Jun 02')).toEqual('June 02');
+      expect(dateMonthFormatFilter('Jul 07')).toEqual('July 07');
+      expect(dateMonthFormatFilter('Sep 21')).toEqual('Sept 21');
+    });
+
+    it('should be an empty string if input is NOT given', function () {
+      expect(dateMonthFormatFilter()).toEqual('');
+      expect(dateMonthFormatFilter()).toBeFalsy();
     });
   });
 
