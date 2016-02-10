@@ -13,6 +13,7 @@ describe('NYPL Filter Unit Tests', function () {
     dayFormatUppercaseFilter,
     dateMonthFormatFilter,
     dateToISOFilter,
+    eventTimeFormatFilter,
     capitalizeFilter,
     hoursTodayFormatFilter,
     truncateFilter;
@@ -155,6 +156,37 @@ describe('NYPL Filter Unit Tests', function () {
         .toEqual('2014-04-22T19:00:00.000Z');
     });
   }); /* End dateToISO */
+
+  /* eventTimeFormat
+   *   The input is a string date stamp.
+   *
+   *   Returns the date in NYPL's date and time AP style.
+   */
+  describe('Filter: eventTimeFormat', function () {
+    beforeEach(inject(function (_eventTimeFormatFilter_) {
+      eventTimeFormatFilter = _eventTimeFormatFilter_;
+    }));
+
+    it('should have a eventTimeFormatFilter function', function () {
+      expect(eventTimeFormatFilter).toBeDefined();
+      expect(angular.isFunction(eventTimeFormatFilter)).toBe(true);
+    });
+
+    it('should convert event start time to AP Style', function () {
+      expect(eventTimeFormatFilter('Tue Feb 09 2016 13:00:00 GMT-0500 (EST)'))
+        .toEqual('Tues, Feb 9 | 1 PM');
+    });
+
+    it('should convert event start time to AP Style', function () {
+      expect(eventTimeFormatFilter('Thu Sep 15 2016 8:15:00 GMT-0400 (EST)'))
+        .toEqual('Thurs, Sept 15 | 8:15 AM');
+    });
+
+    it('should convert event start time to AP Style', function () {
+      expect(eventTimeFormatFilter('Fri Jul 08 2016 15:00:00 GMT-0400 (EST)'))
+        .toEqual('Fri, July 8 | 3 PM');
+    });
+  }); /* End eventTimeFormat */
 
   /*
    * 'string' | capitalize

@@ -1075,14 +1075,35 @@ var nypl_widget = angular.module('nypl_widget', [
 
     /**
      * @ngdoc filter
+     * @name nypl_locations.filter:eventTimeFormat
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Converts the time stamp of events' start time to NYPL AP style
+     */
+    function eventTimeFormat() {
+        return function (input) {
+            var d = moment(input),
+                day = apStyle(d.format('ddd'), 'day'),
+                month = apStyle(d.format('MMM'), 'month'),
+                date = apStyle(d.format('DD'), 'date'),
+                year = d.format('YYYY'),
+                timeFormat = apStyle((d.format('H') + ':' + d.format('mm')), 'time');
+
+            return (day + ', ' + month + ' ' + date + ' | '+ timeFormat);
+        }
+    }
+
+    /**
+     * @ngdoc filter
      * @name nypl_locations.filter:apStyle
      * @param {string} input ...
      * @returns {string} ...
      * @description
-     * Coverts time stamps of to NYPL AP style
+     * Converts time stamps to NYPL AP style
      */
     function apStyle (input, format) {
-        if(!input) {
+        if (!input) {
             return '';
         }
         if (!format) {
@@ -1311,6 +1332,7 @@ var nypl_widget = angular.module('nypl_widget', [
         .filter('dayFormatUppercase', dayFormatUppercase)
         .filter('dateMonthFormat', dateMonthFormat)
         .filter('dateToISO', dateToISO)
+        .filter('eventTimeFormat', eventTimeFormat)
         .filter('capitalize', capitalize)
         .filter('hoursTodayFormat', hoursTodayFormat)
         .filter('truncate', truncate);
@@ -1319,7 +1341,7 @@ var nypl_widget = angular.module('nypl_widget', [
         .module('nypl_widget')
         .filter('dayFormatUppercase', dayFormatUppercase)
         .filter('dateMonthFormat', dateMonthFormat)
-        .filter('hoursTodayFormat', hoursTodayFormat);
+        .filter('eventTimeFormat', eventTimeFormat);
 })();
 
 (function () {
