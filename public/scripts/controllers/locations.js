@@ -353,11 +353,6 @@
                   todayMonth = moment().month(),
                   todayYear = moment().year();
 
-                if (todayDay === 31 && todayMonth === 11 && todayYear === 2015) {
-                    $scope.globalClosingMessage = 'Closing today at 3pm.';
-                } else if (todayDay === 1 && todayMonth === 0 && todayYear === 2016) {
-                    $scope.globalClosingMessage = 'Closed today.';
-                }
             }
         }
 

@@ -100,7 +100,7 @@
      * @param {string} input ...
      * @returns {string} ...
      * @description
-     * Convert the syntax of week day to AP style with all the words uppercase.
+     * Converts the syntax of week day to AP style with all the words uppercase.
      * eg Sun. to SUN, Tue. to TUES
      */
     function dayFormatUppercase() {
@@ -110,6 +110,26 @@
                 formattedDay = (days.includes(day)) ? day.toUpperCase() : '';
 
             return formattedDay;
+        }
+    }
+
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:dateMonthFormat
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Converts the syntax of date and month to AP style.
+     * And returns the month date time stamp
+     * eg February 14 to Feb 14, September 01 to Sept 01
+     */
+    function dateMonthFormat() {
+        return function (input) {
+            var dateStringArray = input.split(' '),
+                date = dateStringArray[2],
+                month = apStyle(dateStringArray[1], 'month');
+
+            return month + ' ' + date;
         }
     }
 
@@ -360,6 +380,7 @@
         .module('nypl_locations')
         .filter('timeFormat', timeFormat)
         .filter('dayFormatUppercase', dayFormatUppercase)
+        .filter('dateMonthFormat', dateMonthFormat)
         .filter('dateToISO', dateToISO)
         .filter('capitalize', capitalize)
         .filter('hoursTodayFormat', hoursTodayFormat)
@@ -368,5 +389,6 @@
     angular
         .module('nypl_widget')
         .filter('dayFormatUppercase', dayFormatUppercase)
+        .filter('dateMonthFormat', dateMonthFormat)
         .filter('hoursTodayFormat', hoursTodayFormat);
 })();

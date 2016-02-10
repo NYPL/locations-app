@@ -237,8 +237,6 @@
           elem.addClass('hide-regular-hours');
         }
 
-        // console.log($scope.dynamicWeekHours);
-
         // Toggle Hours visible only if dynamic hours are defined
         $scope.toggleHoursTable = function () {
           if (elem.hasClass('hide-regular-hours')) {
@@ -276,8 +274,9 @@
               }
 
               day.day = (day.day) ? $filter('dayFormatUppercase')(day.day) : '';
+              day.dateString = day.date._d.toDateString();
             });
-          // console.log(week);
+
           return week;
         };
 
