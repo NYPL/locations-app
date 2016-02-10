@@ -100,7 +100,7 @@
      * @param {string} input ...
      * @returns {string} ...
      * @description
-     * Convert the syntax of week day to AP style.
+     * Converts the syntax of week day to AP style.
      * eg Sun. to SUN, Tue. to TUES
      */
     function dayFormat() {
@@ -129,13 +129,37 @@
 
     /**
      * @ngdoc filter
+     * @name nypl_locations.filter:eventTimeFormat
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Converts the time stamp of events' start time to NYPL AP style
+     */
+    function eventTimeFormat() {
+        return function (input) {
+            var d = moment(input),
+                day = apStyle(d.format('ddd'), 'day'),
+                month = apStyle(d.format('MMM'), 'month'),
+                date = apStyle(d.format('DD'), 'date'),
+                year = d.format('YYYY'),
+                timeFormat = apStyle((d.format('H') + ':' + d.format('mm')), 'time');
+
+            return (day + ', ' + month + ' ' + date + ' | '+ timeFormat);
+        }
+    }
+
+    /**
+     * @ngdoc filter
      * @name nypl_locations.filter:apStyle
      * @param {string} input ...
      * @returns {string} ...
      * @description
-     * Coverts time stamps of to NYPL AP style
+     * Converts time stamps to NYPL AP style
      */
     function apStyle (input, format) {
+        if (!input) {
+            return '';
+        }
         if (!format) {
             return input;
         }
@@ -361,11 +385,13 @@
         .filter('timeFormat', timeFormat)
         .filter('dayFormat', dayFormat)
         .filter('dateToISO', dateToISO)
+        .filter('eventTimeFormat', eventTimeFormat)
         .filter('capitalize', capitalize)
         .filter('hoursTodayFormat', hoursTodayFormat)
         .filter('truncate', truncate);
 
     angular
         .module('nypl_widget')
-        .filter('hoursTodayFormat', hoursTodayFormat);
+        .filter('hoursTodayFormat', hoursTodayFormat)
+        .filter('eventTimeFormat', eventTimeFormat);
 })();
