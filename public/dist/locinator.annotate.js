@@ -4847,6 +4847,7 @@ var nypl_widget = angular.module('nypl_widget', [
     angular
         .module('nypl_widget')
         .filter('dayFormatUppercase', dayFormatUppercase)
+        .filter('hoursTodayFormat', hoursTodayFormat)
         .filter('dateMonthFormat', dateMonthFormat)
         .filter('eventTimeFormat', eventTimeFormat);
 })();
