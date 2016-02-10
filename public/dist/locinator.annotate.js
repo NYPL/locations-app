@@ -3753,9 +3753,9 @@ var nypl_widget = angular.module('nypl_widget', [
             && today.isBefore(endDay)) ? true : false;
         };
 
-        // Call the filer dayFormatUppercase to convert the name of weekdays to AP style
+        // Call the filter dayFormatUppercase to convert the name of weekdays to AP style
         this.apWeekday = function (day) {
-          var day = (day) ? $filter('dayFormatUppercase')(day) : '';
+          day = (day) ? $filter('dayFormatUppercase')(day) : '';
           return day;
         }
 
