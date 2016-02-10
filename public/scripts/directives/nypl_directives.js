@@ -277,7 +277,7 @@
 
               day.day = (day.day) ? $filter('dayFormatUppercase')(day.day) : '';
             });
-          console.log(week);
+          // console.log(week);
           return week;
         };
 
