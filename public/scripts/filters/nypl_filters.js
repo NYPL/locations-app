@@ -96,11 +96,11 @@
 
     /**
      * @ngdoc filter
-     * @name nypl_locations.filter:dayFormat
+     * @name nypl_locations.filter:dayFormatUppercase
      * @param {string} input ...
      * @returns {string} ...
      * @description
-     * Convert the syntax of week day to AP style.
+     * Convert the syntax of week day to AP style with all the words uppercase.
      * eg Sun. to SUN, Tue. to TUES
      */
     function dayFormatUppercase() {
