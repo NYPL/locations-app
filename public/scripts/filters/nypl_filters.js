@@ -116,13 +116,12 @@
      */
     function eventTimeFormat() {
         return function (input) {
-            var d = new Date(input),
-                dateStringArray = d.toDateString().split(' '),
-                day = convertApStyle(dateStringArray[0], 'day'),
-                month = convertApStyle(dateStringArray[1], 'month'),
-                date = convertApStyle(dateStringArray[2], 'date'),
-                year = dateStringArray[3],
-                timeFormat = convertApStyle(d.toTimeString(), 'time');
+            var d = moment(input),
+                day = apStyle(d.format('ddd'), 'day'),
+                month = apStyle(d.format('MMM'), 'month'),
+                date = apStyle(d.format('DD'), 'date'),
+                year = d.format('YYYY'),
+                timeFormat = apStyle((d.format('H') + ':' + d.format('mm')), 'time');
 
             return (day + ', ' + month + ' ' + date + ' | '+ timeFormat);
         }
@@ -136,7 +135,7 @@
      * @description
      * Coverts time stamps of to NYPL AP style
      */
-    function convertApStyle (input, format) {
+    function apStyle (input, format) {
         switch (format) {
             case 'time':
                 return convertTime(input);
