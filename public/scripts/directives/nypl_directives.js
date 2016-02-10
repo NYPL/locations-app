@@ -219,9 +219,9 @@
         $scope.numAlertsInWeek = ($scope.dynamicWeekHours) ?
           ctrl.findNumAlertsInWeek($scope.dynamicWeekHours) : 0;
 
-        // Call convertApWeekday for the syntax of weekday styling
+        // Call apWeekday for the syntax of weekday styling
         $scope.hours.map(function (item, index) {
-          item.day = ctrl.convertApWeekday(item.day);
+          item.day = ctrl.apWeekday(item.day);
           return item;
         });
 
@@ -236,6 +236,8 @@
         if ($scope.displayDynamicWeek) {
           elem.addClass('hide-regular-hours');
         }
+
+        // console.log($scope.dynamicWeekHours);
 
         // Toggle Hours visible only if dynamic hours are defined
         $scope.toggleHoursTable = function () {
@@ -266,12 +268,16 @@
               day.is_today = (index === today) ? true : false;
               // Assign the dynamic date for each week day
               day.date = _this.assignDynamicDate(index);
+              // console.log(_this.assignDynamicDate(index));
               // Assign any current closing alert to the day of the week
               // Only for day's that are open.
               if (day.open !== null && day.close !== null) {
                 day.alert = _this.assignCurrentDayAlert(alertsObj, day.date);
               }
+
+              day.day = (day.day) ? $filter('dayFormatUppercase')(day.day) : '';
             });
+          console.log(week);
           return week;
         };
 
@@ -295,9 +301,9 @@
             && today.isBefore(endDay)) ? true : false;
         };
 
-        // Call the filer dayFormat to convert the name of weekdays to AP style
-        this.convertApWeekday = function (day) {
-          day = (day) ? $filter('dayFormat')(day) : '';
+        // Call the filer dayFormatUppercase to convert the name of weekdays to AP style
+        this.apWeekday = function (day) {
+          day = (day) ? $filter('dayFormatUppercase')(day) : '';
           return day;
         }
 
@@ -309,6 +315,7 @@
           } else {
             date = moment().weekday(index).endOf('day');
           }
+          // console.log(date);
           return date;
         };
 
