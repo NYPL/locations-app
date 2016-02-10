@@ -123,10 +123,10 @@ describe('NYPL Filter Unit Tests', function () {
     });
 
     it('should convert the date and month of a date object into AP style', function () {
-      expect(dateMonthFormatFilter('Tue Feb 16 2016')).toEqual('Feb 16');
-      expect(dateMonthFormatFilter('Thu Jun 02 2016')).toEqual('June 02');
-      expect(dateMonthFormatFilter('Fri Jul 07 2016')).toEqual('July 07');
-      expect(dateMonthFormatFilter('Wed Sep 21 2016')).toEqual('Sept 21');
+      expect(dateMonthFormatFilter('Feb 16')).toEqual('Feb 16');
+      expect(dateMonthFormatFilter('Jun 02')).toEqual('June 02');
+      expect(dateMonthFormatFilter('Jul 07')).toEqual('July 07');
+      expect(dateMonthFormatFilter('Sep 21')).toEqual('Sept 21');
     });
 
     it('should be an empty string if input is NOT given', function () {

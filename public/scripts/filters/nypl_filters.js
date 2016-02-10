@@ -129,8 +129,8 @@
                 return '';
             }
             var dateStringArray = input.split(' '),
-                date = dateStringArray[2],
-                month = apStyle(dateStringArray[1], 'month');
+                date = dateStringArray[1],
+                month = apStyle(dateStringArray[0], 'month');
 
             return month + ' ' + date;
         }
