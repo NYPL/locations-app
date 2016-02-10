@@ -352,7 +352,6 @@
                 var todayDay = moment().date(),
                   todayMonth = moment().month(),
                   todayYear = moment().year();
-
             }
         }
 

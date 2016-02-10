@@ -3041,7 +3041,6 @@ var nypl_widget = angular.module('nypl_widget', [
                 var todayDay = moment().date(),
                   todayMonth = moment().month(),
                   todayYear = moment().year();
-
             }
         }
 
@@ -3588,12 +3587,6 @@ var nypl_widget = angular.module('nypl_widget', [
           todayMonth = moment().month(),
           todayYear = moment().year();
 
-        if (todayDay === 31 && todayMonth === 11 && todayYear === 2015) {
-            $scope.todaysHours = 'Closing today at 3pm.';
-        } else if (todayDay === 1 && todayMonth === 0 && todayYear === 2016) {
-            $scope.todaysHours = 'Closed today.';
-        }
-
         // Display the clock icon (optional)
         $scope.showIcon = (attrs.displayIcon === 'true') ? true : false;
       },
@@ -3762,7 +3755,7 @@ var nypl_widget = angular.module('nypl_widget', [
 
         // Call the filer dayFormatUppercase to convert the name of weekdays to AP style
         this.apWeekday = function (day) {
-          day = (day) ? $filter('dayFormatUppercase')(day) : '';
+          var day = (day) ? $filter('dayFormatUppercase')(day) : '';
           return day;
         }
 
