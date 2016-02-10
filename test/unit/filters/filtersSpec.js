@@ -122,19 +122,15 @@ describe('NYPL Filter Unit Tests', function () {
     });
 
     it('should convert the date and month of a date object into AP style', function () {
-      expect(dateMonthFormatFilter('Tue Feb 16 2016 18:59:59 GMT-0500 (EST)')).toEqual('Feb 16');
-      // expect(dateMonthFormatFilter('Tue.')).toEqual('TUES');
-      // expect(dateMonthFormatFilter('Thu.')).toEqual('THURS');
-    });
-
-    it('should be an empty string if input is NOT a name of weekday', function () {
-      // expect(dayFormatUppercaseFilter('Banana')).toEqual('');
-      // expect(dayFormatUppercaseFilter()).toBeFalsy();
+      expect(dateMonthFormatFilter('Tue Feb 16 2016')).toEqual('Feb 16');
+      expect(dateMonthFormatFilter('Thu Jun 02 2016')).toEqual('June 02');
+      expect(dateMonthFormatFilter('Fri Jul 07 2016')).toEqual('July 07');
+      expect(dateMonthFormatFilter('Wed Sep 21 2016')).toEqual('Sept 21');
     });
 
     it('should be an empty string if input is NOT given', function () {
-      // expect(dayFormatUppercaseFilter()).toEqual('');
-      // expect(dayFormatUppercaseFilter()).toBeFalsy();
+      expect(dateMonthFormatFilter()).toEqual('');
+      expect(dateMonthFormatFilter()).toBeFalsy();
     });
   });
 

@@ -125,6 +125,9 @@
      */
     function dateMonthFormat() {
         return function (input) {
+            if(!input) {
+                return '';
+            }
             var dateStringArray = input.split(' '),
                 date = dateStringArray[2],
                 month = apStyle(dateStringArray[1], 'month');
@@ -156,6 +159,9 @@
      * Coverts time stamps of to NYPL AP style
      */
     function apStyle (input, format) {
+        if(!input) {
+            return '';
+        }
         if (!format) {
             return input;
         }

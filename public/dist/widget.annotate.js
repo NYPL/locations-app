@@ -1019,20 +1019,43 @@ var nypl_widget = angular.module('nypl_widget', [
 
     /**
      * @ngdoc filter
-     * @name nypl_locations.filter:dayFormat
+     * @name nypl_locations.filter:dayFormatUppercase
      * @param {string} input ...
      * @returns {string} ...
      * @description
-     * Convert the syntax of week day to AP style.
+     * Converts the syntax of week day to AP style with all the words uppercase.
      * eg Sun. to SUN, Tue. to TUES
      */
-    function dayFormat() {
+    function dayFormatUppercase() {
         return function (input) {
             var day = (input) ? apStyle(input, 'day') : '',
                 days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
                 formattedDay = (days.includes(day)) ? day.toUpperCase() : '';
 
             return formattedDay;
+        }
+    }
+
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:dateMonthFormat
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Converts the syntax of date and month to AP style.
+     * And returns the month date time stamp
+     * eg February 14 to Feb 14, September 01 to Sept 01
+     */
+    function dateMonthFormat() {
+        return function (input) {
+            if(!input) {
+                return '';
+            }
+            var dateStringArray = input.split(' '),
+                date = dateStringArray[2],
+                month = apStyle(dateStringArray[1], 'month');
+
+            return month + ' ' + date;
         }
     }
 
@@ -1059,6 +1082,9 @@ var nypl_widget = angular.module('nypl_widget', [
      * Coverts time stamps of to NYPL AP style
      */
     function apStyle (input, format) {
+        if(!input) {
+            return '';
+        }
         if (!format) {
             return input;
         }
@@ -1118,7 +1144,6 @@ var nypl_widget = angular.module('nypl_widget', [
             return month;
         }
     }
-    apStyle.$inject = ["input", "format"];
 
     /**
      * @ngdoc filter
@@ -1126,7 +1151,7 @@ var nypl_widget = angular.module('nypl_widget', [
      * @params {string} input
      * @returns {string} ...
      * @description
-     * Capitalize all the words in a phrase.
+     * Capitalize the first word in a phrase.
      */
     function capitalize() {
         return function (input) {
@@ -1283,8 +1308,8 @@ var nypl_widget = angular.module('nypl_widget', [
     angular
         .module('nypl_locations')
         .filter('timeFormat', timeFormat)
-        .filter('dayFormat', dayFormat)
-        .filter('apStyle', apStyle)
+        .filter('dayFormatUppercase', dayFormatUppercase)
+        .filter('dateMonthFormat', dateMonthFormat)
         .filter('dateToISO', dateToISO)
         .filter('capitalize', capitalize)
         .filter('hoursTodayFormat', hoursTodayFormat)
@@ -1292,7 +1317,8 @@ var nypl_widget = angular.module('nypl_widget', [
 
     angular
         .module('nypl_widget')
-        .filter('apStyle', apStyle)
+        .filter('dayFormatUppercase', dayFormatUppercase)
+        .filter('dateMonthFormat', dateMonthFormat)
         .filter('hoursTodayFormat', hoursTodayFormat);
 })();
 
@@ -1599,8 +1625,6 @@ var nypl_widget = angular.module('nypl_widget', [
           elem.addClass('hide-regular-hours');
         }
 
-        // console.log($scope.dynamicWeekHours);
-
         // Toggle Hours visible only if dynamic hours are defined
         $scope.toggleHoursTable = function () {
           if (elem.hasClass('hide-regular-hours')) {
@@ -1630,18 +1654,17 @@ var nypl_widget = angular.module('nypl_widget', [
               day.is_today = (index === today) ? true : false;
               // Assign the dynamic date for each week day
               day.date = _this.assignDynamicDate(index);
-              // console.log(_this.assignDynamicDate(index));
               // Assign any current closing alert to the day of the week
               // Only for day's that are open.
               if (day.open !== null && day.close !== null) {
                 day.alert = _this.assignCurrentDayAlert(alertsObj, day.date);
               }
-
-              day.day = $filter('apStyle')(day.day, 'day');
-              // day = (day) ? $filter('dayFormat')(day) : '';
-              // console.log($filter('apStyle'));
+              // Assign the day to a formatted AP style
+              day.day = (day.day) ? $filter('dayFormatUppercase')(day.day) : '';
+              // Assign the date object to a string so we can use it in the filter
+              day.dateString = day.date._d.toDateString();
             });
-          console.log(week);
+
           return week;
         };
 
@@ -1665,9 +1688,9 @@ var nypl_widget = angular.module('nypl_widget', [
             && today.isBefore(endDay)) ? true : false;
         };
 
-        // Call the filer dayFormat to convert the name of weekdays to AP style
+        // Call the filer dayFormatUppercase to convert the name of weekdays to AP style
         this.apWeekday = function (day) {
-          day = (day) ? $filter('dayFormat')(day) : '';
+          day = (day) ? $filter('dayFormatUppercase')(day) : '';
           return day;
         }
 
