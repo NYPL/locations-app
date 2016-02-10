@@ -202,7 +202,7 @@
             {{event.title}}
           </a>
         </h3>
-        <time class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
+        <time class="date">{{event.start | eventTimeFormat}}</time>
         <p class="desc">{{event.body}}</p>
         <div>
           <event-registration

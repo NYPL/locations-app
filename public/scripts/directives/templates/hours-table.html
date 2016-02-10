@@ -22,7 +22,7 @@
     </h2>
 		<table class="weekly-hours zeta">
 			<tr class="{{hours.day}}" data-ng-class="{'open': !hours.alert, 'closed': hours.alert || !hours.open, 'today': hours.is_today}" data-ng-repeat="hours in dynamicWeekHours" data-ng-if="$index != 7">
-				<th class="date">{{hours.date.format('MM/DD')}}</th>
+				<th class="date" ng-bind-html="hours.dateString | dateMonthFormat"></th>
 				<th class="day">{{hours.day}}</th>
 				<td class="time" ng-bind-html="hours | timeFormat"></td>
 			</tr>
