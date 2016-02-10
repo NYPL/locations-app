@@ -266,14 +266,14 @@
               day.is_today = (index === today) ? true : false;
               // Assign the dynamic date for each week day
               day.date = _this.assignDynamicDate(index);
-              // console.log(_this.assignDynamicDate(index));
               // Assign any current closing alert to the day of the week
               // Only for day's that are open.
               if (day.open !== null && day.close !== null) {
                 day.alert = _this.assignCurrentDayAlert(alertsObj, day.date);
               }
-
+              // Assign the day to a formatted AP style
               day.day = (day.day) ? $filter('dayFormatUppercase')(day.day) : '';
+              // Assign the date object to a string so we can use it in the filter
               day.dateString = day.date._d.toDateString();
             });
 
