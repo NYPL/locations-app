@@ -826,7 +826,7 @@ describe('NYPL Utility Service Tests', function () {
           formattedDate =
             nyplUtility.formatDate(mockedStartDate, mockedEndDate);
 
-          expect(formattedDate).toEqual("Opening soon. February 27, 2015 - April 18, 2015.");
+          expect(formattedDate).toEqual("Opening soon. February 27, 2015–April 18, 2015.");
         });
 
       // check to see if it has the expected function
