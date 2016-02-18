@@ -10,7 +10,10 @@ describe('NYPL Filter Unit Tests', function () {
 
   // Load App dependency
   var timeFormatFilter,
+    dayFormatUppercaseFilter,
+    dateMonthFormatFilter,
     dateToISOFilter,
+    eventTimeFormatFilter,
     capitalizeFilter,
     hoursTodayFormatFilter,
     truncateFilter;
@@ -38,14 +41,14 @@ describe('NYPL Filter Unit Tests', function () {
 
     // The input is a simple object with 'open' and 'close' properties
     it('should convert Military time into standard time', function () {
-      expect(timeFormatFilter({'open': '17:00', 'close': '18:00'}))
-        .toEqual('5:00pm - 6:00pm');
+      expect(timeFormatFilter({'open': '12:00', 'close': '18:00'}))
+        .toEqual('12 PM–6 PM');
       expect(timeFormatFilter({'open': '03:30', 'close': '05:30'}))
-        .toEqual('3:30am - 5:30am');
+        .toEqual('3:30 AM–5:30 AM');
       expect(timeFormatFilter({'open': '00:30', 'close': '02:30'}))
-        .toEqual('12:30am - 2:30am');
+        .toEqual('12:30 AM–2:30 AM');
       expect(timeFormatFilter({'open': '00:00', 'close': '2:00'}))
-        .toEqual('12:00am - 2:00am');
+        .toEqual('12 AM–2 AM');
     });
 
     // The input is an object with 'today' and 'tomorrow' properties but only
@@ -53,10 +56,10 @@ describe('NYPL Filter Unit Tests', function () {
     it('should also accept an object with today\'s and tomorrow\'s hours',
       function () {
         expect(timeFormatFilter({'today': {'open': '00:00', 'close': '2:00'}}))
-          .toEqual('12:00am - 2:00am');
+          .toEqual('12 AM–2 AM');
 
         expect(timeFormatFilter({'today': {'open': '10:00', 'close': '18:00'}}))
-          .toEqual('10:00am - 6:00pm');
+          .toEqual('10 AM–6 PM');
       });
 
     // The API returns null values
@@ -67,6 +70,68 @@ describe('NYPL Filter Unit Tests', function () {
     it('should be false if input is NOT given', function () {
       expect(timeFormatFilter()).toEqual('');
       expect(timeFormatFilter()).toBeFalsy();
+    });
+  });
+
+  /*
+   * dayFormatUppercase
+   *   The input is a string of the name of the weekday.
+   *
+   *   Returns the name in AP style with uppercase.
+   */
+  describe('Filter: dayFormatUppercase', function () {
+    beforeEach(inject(function (_dayFormatUppercaseFilter_) {
+      dayFormatUppercaseFilter = _dayFormatUppercaseFilter_;
+    }));
+
+    it('should have a dayFormatUppercase function', function () {
+      expect(dayFormatUppercaseFilter).toBeDefined();
+      expect(angular.isFunction(dayFormatUppercaseFilter)).toBe(true);
+    });
+
+    it('should convert the names of week day into AP style', function () {
+      expect(dayFormatUppercaseFilter('Sun.')).toEqual('SUN');
+      expect(dayFormatUppercaseFilter('Tue.')).toEqual('TUES');
+      expect(dayFormatUppercaseFilter('Thu.')).toEqual('THURS');
+    });
+
+    it('should be an empty string if input is NOT a name of weekday', function () {
+      expect(dayFormatUppercaseFilter('Banana')).toEqual('');
+      expect(dayFormatUppercaseFilter()).toBeFalsy();
+    });
+
+    it('should be an empty string if input is NOT given', function () {
+      expect(dayFormatUppercaseFilter()).toEqual('');
+      expect(dayFormatUppercaseFilter()).toBeFalsy();
+    });
+  });
+
+  /*
+   * dateMonthFormat
+   *   The input is a string of the name of the weekday.
+   *
+   *   Returns the name in AP style with uppercase.
+   */
+   describe('Filter: dateMonthFormat', function () {
+    beforeEach(inject(function (_dateMonthFormatFilter_) {
+      dateMonthFormatFilter = _dateMonthFormatFilter_;
+    }));
+
+    it('should have a dateMonthFormat function', function () {
+      expect(dateMonthFormatFilter).toBeDefined();
+      expect(angular.isFunction(dateMonthFormatFilter)).toBe(true);
+    });
+
+    it('should convert the date and month of a date object into AP style', function () {
+      expect(dateMonthFormatFilter('Feb 16')).toEqual('Feb 16');
+      expect(dateMonthFormatFilter('Jun 02')).toEqual('June 02');
+      expect(dateMonthFormatFilter('Jul 07')).toEqual('July 07');
+      expect(dateMonthFormatFilter('Sep 21')).toEqual('Sept 21');
+    });
+
+    it('should be an empty string if input is NOT given', function () {
+      expect(dateMonthFormatFilter()).toEqual('');
+      expect(dateMonthFormatFilter()).toBeFalsy();
     });
   });
 
@@ -91,6 +156,37 @@ describe('NYPL Filter Unit Tests', function () {
         .toEqual('2014-04-22T19:00:00.000Z');
     });
   }); /* End dateToISO */
+
+  /* eventTimeFormat
+   *   The input is a string date stamp.
+   *
+   *   Returns the date in NYPL's date and time AP style.
+   */
+  describe('Filter: eventTimeFormat', function () {
+    beforeEach(inject(function (_eventTimeFormatFilter_) {
+      eventTimeFormatFilter = _eventTimeFormatFilter_;
+    }));
+
+    it('should have a eventTimeFormatFilter function', function () {
+      expect(eventTimeFormatFilter).toBeDefined();
+      expect(angular.isFunction(eventTimeFormatFilter)).toBe(true);
+    });
+
+    it('should convert event start time to AP Style', function () {
+      expect(eventTimeFormatFilter('Tue Feb 09 2016 12:00:00 GMT-0500 (EST)'))
+        .toEqual('Tues, Feb 9 | 12 PM');
+    });
+
+    it('should convert event start time to AP Style', function () {
+      expect(eventTimeFormatFilter('Thu Sep 15 2016 8:15:00 GMT-0400 (EST)'))
+        .toEqual('Thurs, Sept 15 | 8:15 AM');
+    });
+
+    it('should convert event start time to AP Style', function () {
+      expect(eventTimeFormatFilter('Fri Jul 08 2016 15:00:00 GMT-0400 (EST)'))
+        .toEqual('Fri, July 8 | 3 PM');
+    });
+  }); /* End eventTimeFormat */
 
   /*
    * 'string' | capitalize
@@ -188,7 +284,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:00', 'close': '18:00'},
           'tomorrow': {'open': '10:00', 'close': '18:00', 'alert': null}
         }))
-          .toEqual('Open today until 6pm');
+          .toEqual('Open today until 6 PM');
       });
 
       it('should display the open times for today with minutes', function () {
@@ -201,7 +297,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:00', 'close': '18:45'},
           'tomorrow': {'open': '10:00', 'close': '18:45', 'alert': null}
         }))
-          .toEqual('Open today until 6:45pm');
+          .toEqual('Open today until 6:45 PM');
       });
     });
 
@@ -217,7 +313,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:00', 'close': '18:00'},
           'tomorrow': {'open': '11:00', 'close': '19:00', 'alert': null}
         }))
-          .toEqual('Open tomorrow 11am-7pm');
+          .toEqual('Open tomorrow 11 AM–7 PM');
       });
 
       it('should display the open times for tomorrow with minutes', function () {
@@ -230,7 +326,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:30', 'close': '18:30'},
           'tomorrow': {'open': '11:30', 'close': '18:30', 'alert': null}
         }, 'short'))
-          .toEqual('Open tomorrow 11:30am-6:30pm');
+          .toEqual('Open tomorrow 11:30 AM–6:30 PM');
       });
     });
 
@@ -247,7 +343,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:00', 'close': '18:00'},
           'tomorrow': {'open': '11:00', 'close': '19:00', 'alert': null}
         }))
-          .toEqual('Open today 10am-6pm');
+          .toEqual('Open today 10 AM–6 PM');
       });
 
       it('should display the open times for later today with minutes', function () {
@@ -260,7 +356,7 @@ describe('NYPL Filter Unit Tests', function () {
           'today': {'open': '10:30', 'close': '18:30'},
           'tomorrow': {'open': '10:00', 'close': '18:00', 'alert': null}
         }))
-          .toEqual('Open today 10:30am-6:30pm');
+          .toEqual('Open today 10:30 AM–6:30 PM');
       });
     });
 

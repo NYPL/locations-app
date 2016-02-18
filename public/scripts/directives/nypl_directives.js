@@ -128,12 +128,6 @@
           todayMonth = moment().month(),
           todayYear = moment().year();
 
-        if (todayDay === 31 && todayMonth === 11 && todayYear === 2015) {
-            $scope.todaysHours = 'Closing today at 3pm.';
-        } else if (todayDay === 1 && todayMonth === 0 && todayYear === 2016) {
-            $scope.todaysHours = 'Closed today.';
-        }
-
         // Display the clock icon (optional)
         $scope.showIcon = (attrs.displayIcon === 'true') ? true : false;
       },
@@ -185,7 +179,7 @@
   }
   todayshours.$inject = ['$nyplAlerts', 'nyplAlertsService', 'nyplUtility', '$filter'];
 
-  function hoursTable(nyplAlertsService) {
+  function hoursTable(nyplAlertsService, $filter) {
     return {
       restrict: 'EA',
       templateUrl: 'scripts/directives/templates/hours-table.html',
@@ -218,6 +212,12 @@
         // Assign the number of alerts for the week
         $scope.numAlertsInWeek = ($scope.dynamicWeekHours) ?
           ctrl.findNumAlertsInWeek($scope.dynamicWeekHours) : 0;
+
+        // Call apWeekday for the syntax of weekday styling
+        $scope.hours.map(function (item, index) {
+          item.day = ctrl.apWeekday(item.day);
+          return item;
+        });
 
         $scope.regularWeekHours = $scope.hours || null;
         $scope.buttonText = (scopedAlerts) ? 'Regular hours' : null;
@@ -265,7 +265,12 @@
               if (day.open !== null && day.close !== null) {
                 day.alert = _this.assignCurrentDayAlert(alertsObj, day.date);
               }
+              // Assign the day to a formatted AP style
+              day.day = (day.day) ? $filter('dayFormatUppercase')(day.day) : '';
+              // Assign the date object to a string so we can use it in the filter
+              day.dateString = moment(day.date._d).format('MMM DD');
             });
+
           return week;
         };
 
@@ -289,6 +294,12 @@
             && today.isBefore(endDay)) ? true : false;
         };
 
+        // Call the filter dayFormatUppercase to convert the name of weekdays to AP style
+        this.apWeekday = function (day) {
+          day = (day) ? $filter('dayFormatUppercase')(day) : '';
+          return day;
+        }
+
         this.assignDynamicDate = function (index) {
           var today = moment(),
             date;
@@ -297,6 +308,7 @@
           } else {
             date = moment().weekday(index).endOf('day');
           }
+          // console.log(date);
           return date;
         };
 
@@ -333,7 +345,7 @@
       }]
     };
   }
-  hoursTable.$inject = ['nyplAlertsService'];
+  hoursTable.$inject = ['nyplAlertsService', '$filter'];
 
   /**
    * @ngdoc directive
