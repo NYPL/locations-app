@@ -41,8 +41,8 @@ describe('NYPL Filter Unit Tests', function () {
 
     // The input is a simple object with 'open' and 'close' properties
     it('should convert Military time into standard time', function () {
-      expect(timeFormatFilter({'open': '17:00', 'close': '18:00'}))
-        .toEqual('5 PM–6 PM');
+      expect(timeFormatFilter({'open': '12:00', 'close': '18:00'}))
+        .toEqual('12 PM–6 PM');
       expect(timeFormatFilter({'open': '03:30', 'close': '05:30'}))
         .toEqual('3:30 AM–5:30 AM');
       expect(timeFormatFilter({'open': '00:30', 'close': '02:30'}))
@@ -173,8 +173,8 @@ describe('NYPL Filter Unit Tests', function () {
     });
 
     it('should convert event start time to AP Style', function () {
-      expect(eventTimeFormatFilter('Tue Feb 09 2016 13:00:00 GMT-0500 (EST)'))
-        .toEqual('Tues, Feb 9 | 1 PM');
+      expect(eventTimeFormatFilter('Tue Feb 09 2016 12:00:00 GMT-0500 (EST)'))
+        .toEqual('Tues, Feb 9 | 12 PM');
     });
 
     it('should convert event start time to AP Style', function () {

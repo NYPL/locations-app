@@ -204,7 +204,7 @@
                 militaryHour = parseInt(timeArray[0], 10),
                 hour = (militaryHour + 11) % 12 + 1,
                 minute = (timeArray[1] === '00') ? '' : ':' + timeArray[1],
-                meridiem = (militaryHour > 12) ? ' PM' : ' AM';
+                meridiem = (militaryHour >= 12) ? ' PM' : ' AM';
 
             return hour + minute + meridiem;
         }
