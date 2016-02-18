@@ -131,7 +131,7 @@
   <!-- Divisions (API dependent) -->
   <div id="container__divisions" data-ng-if="location.type == 'research' && location._embedded.divisions">
     <h2 class="hdg">
-      <a data-ng-click="createHash('divisions')" id="divisions" class="hashlink">DIVISIONS</a>
+      <span id="divisions">DIVISIONS</span>
     </h2>
     <div class="grid">
       <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
@@ -165,7 +165,7 @@
   <!-- Features -->
   <div id="container__features" data-ng-if="location._embedded.features && location._embedded.features.length">
     <h2 class="hdg">
-      <a data-ng-click="createHash('featured')" id="featured" class="hashlink">FEATURED</a>
+      <span id="featured">FEATURED</span>
     </h2>
     <div class="grid">
       <div class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in location._embedded.features'>
@@ -191,7 +191,7 @@
   <!-- Events -->
   <div id="container__events" data-ng-if="location._embedded.events && location._embedded.events.length">
     <h2 class="hdg">
-      <a data-ng-click="createHash('events')" id="events" class="hashlink">EVENTS</a>
+      <span id="events">EVENTS</span>
     </h2>
     <ul class="grid">
       <li class="chunk one-whole desk-one-third" data-ng-repeat="event in location._embedded.events">
@@ -202,7 +202,7 @@
             {{event.title}}
           </a>
         </h3>
-        <time class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
+        <time class="date">{{event.start | eventTimeFormat}}</time>
         <p class="desc">{{event.body}}</p>
         <div>
           <event-registration
@@ -247,13 +247,13 @@
   <!-- About (multi-view conditional) -->
   <div id="container__about">
     <h2 class="hdg" data-ng-if="location.type == 'circulating'">
-      <a data-ng-click="createHash('about')" id="about" class="hashlink">ABOUT</a>
+      <span id="about">ABOUT</span>
     </h2>
     <div class="grid">
       <div class="grid__item one-whole"
         data-ng-class="{true: 'lap-and-up-two-thirds', false: ''}[location.type == 'research']">
         <h2 class="hdg" data-ng-if="location.type == 'research'">
-          <a data-ng-click="createHash('about')" id="about" class="hashlink">About</a>
+          <span id="about">About</span>
         </h2>
         <div class="grid">
           <div id="location-secondary-img" class="grid__item one-whole lap-and-up-one-half" data-ng-if="location.images.interior">
@@ -304,7 +304,7 @@
   <!-- Blogs (conditonal) -->
   <div id="container__blogs" data-ng-if="location._embedded.blogs && location._embedded.blogs.length">
     <h2 class="hdg">
-      <a data-ng-click="createHash('blogs')" id="blogs" class="hashlink">BLOGS</a>
+      <span id="blogs">BLOGS</span>
     </h2>
     <div class="grid">
       <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
@@ -345,7 +345,7 @@
   <!-- Exhibitions (conditional) -->
   <div id="container__exhibitions" data-ng-if="location._embedded.exhibitions && location._embedded.exhibitions.length">
     <h2 class="hdg">
-      <a data-ng-click="createHash('exhibitions')" id="exhibitions" class="hashlink">EXHIBITIONS</a>
+      <span id="exhibitions">EXHIBITIONS</span>
     </h2>
     <div class="grid">
       <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat="exhibition in location._embedded.exhibitions | orderBy:'-start'">

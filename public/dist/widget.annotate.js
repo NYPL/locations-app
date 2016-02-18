@@ -943,16 +943,8 @@ var nypl_widget = angular.module('nypl_widget', [
         function getMilitaryHours(time) {
             var components = time.split(':'),
                 hours = parseInt(components[0], 10);
+
             return hours;
-        }
-
-        function clockTime(time) {
-            var components = time.split(':'),
-                hours = ((parseInt(components[0], 10) + 11) % 12 + 1),
-                minutes = components[1],
-                meridiem = components[0] >= 12 ? 'pm' : 'am';
-
-            return hours + ":" + minutes + meridiem;
         }
 
         function closingHoursDisplay(hours, alerts) {
@@ -972,23 +964,29 @@ var nypl_widget = angular.module('nypl_widget', [
                     ? true : false;
 
                 if ((closedHour > eDate.hours() && openHour >= sDate.hours()) && !allDay) {
-                    displayString = 'Opening late *';
-                } else if (((openHour < sDate.hours() && closedHour <= eDate.hours()) ||
+                    return displayString = 'Opening late *';
+                }
+
+                if (((openHour < sDate.hours() && closedHour <= eDate.hours()) ||
                     (hours.date.hours() >= eDate.startOf('day').hour() &&
                     hours.date.hours() <= sDate.endOf('day').hour())) && !allDay) {
-                    displayString = 'Closing early *';
-                } else if (allDay || alerts.infinite === true) {
-                    displayString = 'Closed *';
-                } else if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
-                    displayString = 'Closed *';
-                } else {
-                    displayString = 'Change in hours *';
+                    return displayString = 'Closing early *';
                 }
+
+                if (allDay || alerts.infinite === true) {
+                    return displayString = 'Closed *';
+                }
+
+                if (sDate.hours() <= openHour && eDate.hours() >= closedHour) {
+                    return displayString = 'Closed *';
+                }
+
+                return displayString = 'Change in hours *';
             }
             return $sce.trustAsHtml(displayString);
         }
 
-        return function output(timeObj) {
+       function output(timeObj) {
             // The time object may have just today's hours
             // or be an object with today's and tomorrow's hours
             var alerts,
@@ -1002,36 +1000,62 @@ var nypl_widget = angular.module('nypl_widget', [
 
                 if (time.open === null) {
                     return 'Closed';
-                } else if (alerts) {
+                }
+
+                if (alerts) {
                     return closingHoursDisplay(time, alerts);
                 }
-                return clockTime(time.open) + ' - ' + clockTime(time.close);
+                return apStyle(time.open, 'time') + '–' + apStyle(time.close, 'time');
             }
 
             console.log('timeFormat() filter error: Argument is' +
                 ' not defined or empty, verify API response for time');
             return '';
         };
+        return output;
     }
     timeFormat.$inject = ["$sce"];
 
 
     /**
      * @ngdoc filter
-     * @name nypl_locations.filter:dayFormat
+     * @name nypl_locations.filter:dayFormatUppercase
      * @param {string} input ...
      * @returns {string} ...
      * @description
-     * Convert the syntax of week day to AP style.
+     * Converts the syntax of week day to AP style with all the words uppercase.
      * eg Sun. to SUN, Tue. to TUES
      */
-    function dayFormat() {
+    function dayFormatUppercase() {
         return function (input) {
-            var day = (input) ? convertApStyle(input, 'day') : '',
+            var day = (input) ? apStyle(input, 'day') : '',
                 days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
                 formattedDay = (days.includes(day)) ? day.toUpperCase() : '';
 
             return formattedDay;
+        }
+    }
+
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:dateMonthFormat
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Converts the syntax of date and month to AP style.
+     * And returns the month date time stamp
+     * eg February 14 to Feb 14, September 01 to Sept 01
+     */
+    function dateMonthFormat() {
+        return function (input) {
+            if(!input) {
+                return '';
+            }
+            var dateStringArray = input.split(' '),
+                date = dateStringArray[1],
+                month = apStyle(dateStringArray[0], 'month');
+
+            return month + ' ' + date;
         }
     }
 
@@ -1051,66 +1075,92 @@ var nypl_widget = angular.module('nypl_widget', [
 
     /**
      * @ngdoc filter
-     * @name nypl_locations.filter:convertApStyle
+     * @name nypl_locations.filter:eventTimeFormat
      * @param {string} input ...
      * @returns {string} ...
      * @description
-     * Coverts time stamps of to NYPL AP style
+     * Converts the time stamp of events' start time to NYPL AP style
      */
-    function convertApStyle (input, format) {
-        switch (format) {
-            case 'time':
-                return convertTime(input);
-                break;
-            case 'date':
-                return convertDate(input);
-                break;
-            case 'day':
-                return convertDay(input);
-                break;
-            case 'month':
-                return convertMonth(input);
-                break;
-            default:
-                return input;
+    function eventTimeFormat() {
+        return function (input) {
+            var d = moment(input),
+                day = apStyle(d.format('ddd'), 'day'),
+                month = apStyle(d.format('MMM'), 'month'),
+                date = apStyle(d.format('DD'), 'date'),
+                year = d.format('YYYY'),
+                timeFormat = apStyle((d.format('H') + ':' + d.format('mm')), 'time');
+
+            return (day + ', ' + month + ' ' + date + ' | '+ timeFormat);
+        }
+    }
+
+    /**
+     * @ngdoc filter
+     * @name nypl_locations.filter:apStyle
+     * @param {string} input ...
+     * @returns {string} ...
+     * @description
+     * Converts time stamps to NYPL AP style
+     */
+    function apStyle (input, format) {
+        if (!input) {
+            return '';
+        }
+        if (!format) {
+            return input;
+        }
+        if (format === 'time') {
+            return apTime(input);
+        }
+        if (format === 'date') {
+            return apDate(input);
+        }
+        if (format === 'day') {
+            return apDay(input);
+        }
+        if (format === 'month' ) {
+            return apMonth(input);
         }
 
-        function convertTime (input) {
+        function apTime (input) {
             var timeArray = input.split(':'),
                 militaryHour = parseInt(timeArray[0], 10),
                 hour = (militaryHour + 11) % 12 + 1,
                 minute = (timeArray[1] === '00') ? '' : ':' + timeArray[1],
-                meridiem = (militaryHour > 12) ? ' PM' : ' AM';
+                meridiem = (militaryHour >= 12) ? ' PM' : ' AM';
 
             return hour + minute + meridiem;
         }
 
-        function convertDate (input) {
+        function apDate (input) {
             var date = parseInt(input, 10).toString();
 
             return date;
         }
 
-        function convertDay (input) {
+        function apDay (input) {
             var day = input.split('.')[0].slice(0, 3);
 
             if (day === 'Tue') {
-                day  = 'Tues';
-            } else if (day ==='Thu') {
-                day = 'Thurs';
+                return 'Tues';
+            }
+            if (day ==='Thu') {
+                return 'Thurs';
             }
             return day;
         }
 
-        function convertMonth (input) {
+        function apMonth (input) {
             var month = input.slice(0, 3);
 
             if (month === 'Jun') {
-                month = 'June';
-            } else if (month === 'Jul') {
-                month = 'July';
-            } else if (month === 'Sep') {
-                month = 'Sept';
+                return 'June';
+            }
+            if (month === 'Jul') {
+                return 'July';
+            }
+            if (month === 'Sep') {
+                return 'Sept';
             }
             return month;
         }
@@ -1122,7 +1172,7 @@ var nypl_widget = angular.module('nypl_widget', [
      * @params {string} input
      * @returns {string} ...
      * @description
-     * Capitalize all the words in a phrase.
+     * Capitalize the first word in a phrase.
      */
     function capitalize() {
         return function (input) {
@@ -1151,7 +1201,7 @@ var nypl_widget = angular.module('nypl_widget', [
                 ['hours', 'mins', 'meridian', 'military'],
                 [((parseInt(time[0], 10) + 11) % 12 + 1),
                     time[1],
-                    (time[0] >= 12 ? 'pm' : 'am'),
+                    (time[0] >= 12 ? ' PM' : ' AM'),
                     parseInt(time[0], 10)]
             );
         }
@@ -1217,7 +1267,7 @@ var nypl_widget = angular.module('nypl_widget', [
                     else if (tomorrow_open_time && tomorrow_close_time) {
                         return 'Open tomorrow ' + tomorrow_open_time.hours +
                             (parseInt(tomorrow_open_time.mins, 10) !== 0 ? ':' + tomorrow_open_time.mins : '')
-                            + tomorrow_open_time.meridian + '-' + tomorrow_close_time.hours +
+                            + tomorrow_open_time.meridian + '–' + tomorrow_close_time.hours +
                             (parseInt(tomorrow_close_time.mins, 10) !== 0 ? ':' + tomorrow_close_time.mins : '')
                             + tomorrow_close_time.meridian;
                     }
@@ -1228,7 +1278,7 @@ var nypl_widget = angular.module('nypl_widget', [
                 if (hour_now_military < open_time.military) {
                     return 'Open today ' + open_time.hours +
                         (parseInt(open_time.mins, 10) !== 0 ? ':' + open_time.mins : '')
-                        + open_time.meridian + '-' + closed_time.hours +
+                        + open_time.meridian + '–' + closed_time.hours +
                         (parseInt(closed_time.mins, 10) !== 0 ? ':' + closed_time.mins : '')
                         + closed_time.meridian;
                 }
@@ -1279,15 +1329,20 @@ var nypl_widget = angular.module('nypl_widget', [
     angular
         .module('nypl_locations')
         .filter('timeFormat', timeFormat)
-        .filter('dayFormat', dayFormat)
+        .filter('dayFormatUppercase', dayFormatUppercase)
+        .filter('dateMonthFormat', dateMonthFormat)
         .filter('dateToISO', dateToISO)
+        .filter('eventTimeFormat', eventTimeFormat)
         .filter('capitalize', capitalize)
         .filter('hoursTodayFormat', hoursTodayFormat)
         .filter('truncate', truncate);
 
     angular
         .module('nypl_widget')
-        .filter('hoursTodayFormat', hoursTodayFormat);
+        .filter('dayFormatUppercase', dayFormatUppercase)
+        .filter('hoursTodayFormat', hoursTodayFormat)
+        .filter('dateMonthFormat', dateMonthFormat)
+        .filter('eventTimeFormat', eventTimeFormat);
 })();
 
 (function () {
@@ -1484,12 +1539,6 @@ var nypl_widget = angular.module('nypl_widget', [
           todayMonth = moment().month(),
           todayYear = moment().year();
 
-        if (todayDay === 31 && todayMonth === 11 && todayYear === 2015) {
-            $scope.todaysHours = 'Closing today at 3pm.';
-        } else if (todayDay === 1 && todayMonth === 0 && todayYear === 2016) {
-            $scope.todaysHours = 'Closed today.';
-        }
-
         // Display the clock icon (optional)
         $scope.showIcon = (attrs.displayIcon === 'true') ? true : false;
       },
@@ -1575,9 +1624,9 @@ var nypl_widget = angular.module('nypl_widget', [
         $scope.numAlertsInWeek = ($scope.dynamicWeekHours) ?
           ctrl.findNumAlertsInWeek($scope.dynamicWeekHours) : 0;
 
-        // Call convertApWeekday for the syntax of weekday styling
+        // Call apWeekday for the syntax of weekday styling
         $scope.hours.map(function (item, index) {
-          item.day = ctrl.convertApWeekday(item.day);
+          item.day = ctrl.apWeekday(item.day);
           return item;
         });
 
@@ -1627,7 +1676,12 @@ var nypl_widget = angular.module('nypl_widget', [
               if (day.open !== null && day.close !== null) {
                 day.alert = _this.assignCurrentDayAlert(alertsObj, day.date);
               }
+              // Assign the day to a formatted AP style
+              day.day = (day.day) ? $filter('dayFormatUppercase')(day.day) : '';
+              // Assign the date object to a string so we can use it in the filter
+              day.dateString = moment(day.date._d).format('MMM DD');
             });
+
           return week;
         };
 
@@ -1651,9 +1705,9 @@ var nypl_widget = angular.module('nypl_widget', [
             && today.isBefore(endDay)) ? true : false;
         };
 
-        // Call the filer dayFormat to convert the name of weekdays to AP style
-        this.convertApWeekday = function (day) {
-          day = (day) ? $filter('dayFormat')(day) : '';
+        // Call the filter dayFormatUppercase to convert the name of weekdays to AP style
+        this.apWeekday = function (day) {
+          day = (day) ? $filter('dayFormatUppercase')(day) : '';
           return day;
         }
 
@@ -1665,6 +1719,7 @@ var nypl_widget = angular.module('nypl_widget', [
           } else {
             date = moment().weekday(index).endOf('day');
           }
+          // console.log(date);
           return date;
         };
 
@@ -2984,77 +3039,37 @@ var nypl_widget = angular.module('nypl_widget', [
      * @description ...
      */
     utility.formatDate = function(startDate, endDate) {
-      var formattedDate;
+      var formattedDate,
+        sDate = (startDate) ? new Date(startDate) : null,
+        eDate = (endDate) ? new Date(endDate) : null,
+        today = new Date(),
+        happeningSoon = (sDate && sDate.getTime() <= today.getTime()) ? true : false,
+        daysBetweenStartEnd = (startDate && endDate) ?
+          moment(eDate).diff(moment(sDate), 'days') : null,
+        rangeLimit = 365,
+        months = ['January', 'February', 'March', 'April', 'May', 'June',
+          'July', 'August', 'September', 'October', 'November', 'December'];
 
-      this.numDaysBetween = function(start, end) {
-        var s = moment(start),
-          e = moment(end);
-        return e.diff(s, 'days');
-      };
+      if (!sDate || daysBetweenStartEnd < 0) {
+        return;
+      }
 
-      this.dateToString = function(start, end, type) {
-        var dateString,
-          months = ['January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'];
-
-        if (!start && !end) { return; }
-        // String assignment based on type
-        switch (type) {
-          case "current":
-            dateString = "Open now. Ends " + months[end.getUTCMonth()] +
-              " " + end.getUTCDate() + ", " + end.getUTCFullYear() + ".";
-            break;
-          case "current-ongoing":
-            dateString = "Open now. Ongoing.";
-            break;
-          case "upcoming":
-            dateString = "Opening soon. " + months[start.getUTCMonth()] +
-              " " + start.getUTCDate() + ", " + start.getUTCFullYear() +
-              " - " + months[end.getUTCMonth()] + " " + end.getUTCDate() +
-              ", " + end.getUTCFullYear() + ".";
-            break;
-          case "upcoming-ongoing":
-            dateString = "Opening soon. " + months[sDate.getUTCMonth()] +
-            " " + sDate.getUTCDate() + ", " + sDate.getUTCFullYear() + ".";
-            break;
-          default:
-            dateString = months[start.getUTCMonth()] + " " + start.getUTCDate() + 
-              ", " + start.getUTCFullYear() + " - " + months[end.getUTCMonth()] + 
-              " " + end.getUTCDate() + ", " + end.getUTCFullYear() + ".";
+      if (!eDate || daysBetweenStartEnd > rangeLimit) {
+        if (happeningSoon) {
+          formattedDate = 'Open now. Ongoing.';
+        } else {
+          formattedDate = 'Opening soon. ' + months[sDate.getUTCMonth()] +
+            ' ' + sDate.getUTCDate() + ', ' + sDate.getUTCFullYear() + '.';
         }
-        return dateString;
-      };
-
-      if (startDate && endDate) {
-        var sDate = new Date(startDate),
-          eDate   = new Date(endDate),
-          today   = new Date(),
-          daysBetweenStartEnd = this.numDaysBetween(sDate, eDate),
-          rangeLimit = 365;
-
-        // Current Event and not past 1 year between start and end dates.
-        if (sDate.getTime() <= today.getTime()
-          && eDate.getTime() >= today.getTime()
-          && daysBetweenStartEnd < rangeLimit
-          && daysBetweenStartEnd > 0) {
-          formattedDate = this.dateToString(sDate, eDate, 'current');
-        }
-        // Current Event and past 1 year which implies Ongoing
-        else if (sDate.getTime() <= today.getTime()
-          && eDate.getTime() >= today.getTime()
-          && daysBetweenStartEnd > rangeLimit) {
-          formattedDate = this.dateToString(sDate, eDate, 'current-ongoing');
-        }
-        // Upcoming Event and not past 1 year between start and end dates.
-        else if (sDate.getTime() > today.getTime()
-          && eDate.getTime() >= today.getTime()
-          && daysBetweenStartEnd < rangeLimit
-          && daysBetweenStartEnd > 0) {
-          formattedDate = this.dateToString(sDate, eDate, 'upcoming');
-        }
-        // Upcoming Event and past 1 year which implies Ongoing.
-        else {
-          formattedDate = this.dateToString(sDate, eDate, 'upcoming-ongoing');
+      } else {
+        if (happeningSoon) {
+          formattedDate = 'Open now. Ends ' + months[eDate.getUTCMonth()] +
+            ' ' + eDate.getUTCDate() + ', ' + eDate.getUTCFullYear() + '.';
+        } else {
+          formattedDate = 'Opening soon. ' + months[sDate.getUTCMonth()] +
+            ' ' + sDate.getUTCDate() + ', ' + sDate.getUTCFullYear() +
+            '–' + months[eDate.getUTCMonth()] + ' ' + eDate.getUTCDate() +
+            ', ' + eDate.getUTCFullYear() + '.';
         }
       }
       return formattedDate;

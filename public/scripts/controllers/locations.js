@@ -352,12 +352,6 @@
                 var todayDay = moment().date(),
                   todayMonth = moment().month(),
                   todayYear = moment().year();
-
-                if (todayDay === 31 && todayMonth === 11 && todayYear === 2015) {
-                    $scope.globalClosingMessage = 'Closing today at 3pm.';
-                } else if (todayDay === 1 && todayMonth === 0 && todayYear === 2016) {
-                    $scope.globalClosingMessage = 'Closed today.';
-                }
             }
         }
 
@@ -676,7 +670,7 @@
         // Build exhibition pretty date
         if (location._embedded.exhibitions) {
             _.each(location._embedded.exhibitions, function (exh) {
-                if (exh.start && exh.end) {
+                if (exh.start) {
                     exh.prettyDate = nyplUtility.formatDate(exh.start, exh.end);
                 }
             });
