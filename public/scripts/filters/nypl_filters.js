@@ -107,7 +107,7 @@
         return function (input) {
             var day = (input) ? apStyle(input, 'day') : '',
                 days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
-                formattedDay = (days.includes(day)) ? day.toUpperCase() : '';
+                formattedDay = (_.contains(days, day)) ? day.toUpperCase() : '';
 
             return formattedDay;
         }
