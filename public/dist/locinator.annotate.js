@@ -4537,7 +4537,7 @@ var nypl_widget = angular.module('nypl_widget', [
         return function (input) {
             var day = (input) ? apStyle(input, 'day') : '',
                 days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
-                formattedDay = (days.includes(day)) ? day.toUpperCase() : '';
+                formattedDay = (_.contains(days, day)) ? day.toUpperCase() : '';
 
             return formattedDay;
         }
@@ -4634,7 +4634,7 @@ var nypl_widget = angular.module('nypl_widget', [
                 militaryHour = parseInt(timeArray[0], 10),
                 hour = (militaryHour + 11) % 12 + 1,
                 minute = (timeArray[1] === '00') ? '' : ':' + timeArray[1],
-                meridiem = (militaryHour > 12) ? ' PM' : ' AM';
+                meridiem = (militaryHour >= 12) ? ' PM' : ' AM';
 
             return hour + minute + meridiem;
         }
