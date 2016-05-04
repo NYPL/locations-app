@@ -24,18 +24,18 @@
     <meta name="twitter:card" content="summary" />
     <meta property="og:title" content="NYPL Locations" />
     <meta property="og:site_name" content="The New York Public Library" />
-    <meta property="og:url" content="http://nypl.org/locations" />
+    <meta property="og:url" content="https://nypl.org/locations" />
     <meta property="og:description" content="The mission of The New York Public Library is to inspire lifelong learning, advance knowledge, and strengthen our communities." />
     <meta property="og:type" content="website" />
 
     <meta name="keywords" content="NYPL, The New York Public Library, Manhattan, Bronx, Staten Island" />
 
-    <link rel="shortcut icon" type="image/ico" href="//ux-static.nypl.org/images/favicon.ico">
+    <link rel="shortcut icon" type="image/ico" href="//d2znry4lg8s0tq.cloudfront.net/images/favicon.ico">
 
 <% if settings.env_config["angular_src"] == "ux-static-staging" %>
-    <link rel="stylesheet" href="http://staging.ux-static.nypl.org.s3-website-us-east-1.amazonaws.com/nyplbase/0.1.6/css/nyplbase.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="//d3rw2mydk59brd.cloudfront.net/nyplbase/0.1.7/css/nyplbase.min.css" type="text/css" media="screen" />
 <% else %>
-    <link rel="stylesheet" href="//ux-static.nypl.org/nyplbase/0.1.6/css/nyplbase.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="//d2znry4lg8s0tq.cloudfront.net/nyplbase/0.1.7/css/nyplbase.min.css" type="text/css" media="screen" />
 <% end %>
 
 
@@ -101,8 +101,8 @@
     <% end %>
 
     <!--[if lt IE 9]>
-    <script src="//ux-static.nypl.org/es5-shim/es5-shim.min.js"></script>
-    <script src="//ux-static.nypl.org/json3/json3.min.js"></script>
+    <script src="//d2znry4lg8s0tq.cloudfront.net/es5-shim/es5-shim.min.js"></script>
+    <script src="//d2znry4lg8s0tq.cloudfront.net/json3/json3.min.js"></script>
     <![endif]-->
     
 <% if !settings.env_config["google_maps"].nil? %>
