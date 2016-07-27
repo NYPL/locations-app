@@ -161,6 +161,8 @@ module.exports = function (grunt) {
     'concat:basic_with_components', 'sass:basic_with_components'
   ]);
 
+    grunt.registerTask('build-all', ['buildJS', 'sass-basic']);
+
   grunt.registerTask('docs', ['jsdoc']);
   grunt.registerTask('ngdocumentation', ['ngdocs']);
 
