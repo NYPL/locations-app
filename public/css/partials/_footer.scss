@@ -3,6 +3,7 @@
 **
 **/
 
+/*variables for Footer*/
 $small: 320px;
 $portrait: 768px;
 $landscape: 1024px;
@@ -40,10 +41,12 @@ footer {
   padding: 30px 20px 100px;
   background: #7d7972;*/
 
+  box-sizing: content-box;
   padding: 15px 20px 100px;
   background: #54514A;
   color: #fff;
   font-family: "Kievit-Medium";
+  height: 310px;
   min-height: 280px;
   position: relative;
   clear: both;
@@ -54,6 +57,7 @@ footer {
     text-decoration: none;
 
     &:hover {
+      color: #fff;
       text-decoration: underline;
     }
   }
@@ -99,6 +103,7 @@ footer {
       }
 
       .linkItemList {
+        margin: 0;
         li {
           @include visuallyHidden;
 
