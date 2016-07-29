@@ -31,7 +31,7 @@ header {
 				display: block;
 				height: 50px;
 				width: 115px;
-				background: url(http://cdn-prod.www.aws.nypl.org/sites/all/themes/nypl_new/css/tmp-header-sprite.png) no-repeat top left;
+				background: url(//cdn-prod.www.aws.nypl.org/sites/all/themes/nypl_new/css/tmp-header-sprite.png) no-repeat top left;
 				
 				// Tablet Landscape and Up
 				@include breakpoint($min, $pre-tablet) {
