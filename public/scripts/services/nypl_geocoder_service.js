@@ -17,7 +17,7 @@
       markers = [],
       filteredLocation,
       searchMarker = new google.maps.Marker({
-        icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+        icon: "https://maps.google.com/mapfiles/ms/icons/green-dot.png"
       }),
       searchInfoWindow = new google.maps.InfoWindow(),
       infowindow = new google.maps.InfoWindow(),
@@ -338,12 +338,12 @@
           new google.maps.LatLng(location.latitude, location.longitude),
         markerOptions = {
           position: position,
-          icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+          icon: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
         };
 
       if (id === 'user') {
         markerOptions.icon =
-          "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+          "https://maps.google.com/mapfiles/ms/icons/blue-dot.png";
         markerOptions.zIndex = 1000;
         markerOptions.animation = google.maps.Animation.DROP;
       }

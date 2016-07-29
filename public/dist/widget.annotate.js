@@ -1376,7 +1376,7 @@ var nypl_widget = angular.module('nypl_widget', [
 
     $rootScope.title = data.name;
     $scope.data = data;
-    $scope.locinator_url = "http://www.nypl.org/locations" +
+    $scope.locinator_url = "//nypl.org/locations" +
       $location.path().substr(7);
     $scope.widget_name = data.name;
 
