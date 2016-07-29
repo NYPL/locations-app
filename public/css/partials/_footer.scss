@@ -1,149 +1,283 @@
-/**
+/*
 ** Footer Styles
 **
 **/
+
+/*variables for Footer*/
+$small: 320px;
+$portrait: 768px;
+$landscape: 1024px;
+$large: 1500px;
+
+/* VISUALLY HIDE ELEMENTS
+ * ---------------------
+ * Usage: Visually hides an element from the screen
+ * but is still readable by screen readers for accessibility.
+*/
+@mixin visuallyHidden {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* DISPLAY VISUALLY HIDDEN ELEMENTS
+ * ---------------------
+ * Usage: Displays an element that is visually hidden.
+*/
+@mixin displayVisuallyHidden {
+  position: relative;
+  left: 0;
+  height: auto;
+  width: 100%;
+}
+
 footer {
-	position: relative;
+  box-sizing: content-box;
+  padding: 15px 20px 100px;
+  background: #54514A;
+  color: #fff;
+  font-family: "Kievit-Medium";
+  height: 310px;
+  min-height: 280px;
+  position: relative;
   clear: both;
-  margin-top: 20px;
-  padding: 30px 20px 100px;
-  background: #7d7972;
-    
-  .footerlinks {
-  	ul {
-	    list-style: none;
-	    margin: 0px;
 
-      @include breakpoint($min, $post-mobile-phone) {
-        margin: 0 20px;
+  a {
+    font-weight: 300;
+    color: #fff;
+    text-decoration: none;
 
-        &:first-of-type {
-          margin-left: 0px;
-          float: left;
-          width: 35%;
-        }
-        &:nth-of-type(2) {
-          float: left;
-        }
-        &:nth-of-type(3) {
-          clear: both;
-          margin-left: 0px;
-          width: 35%;
-          float: left;
-        }
-        &.last {
-          float: left;
+    &:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+
+  .logoText {
+    font-family: "nypl-moon";
+    font-size: 82px;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+
+    @include breakpoint($min, $portrait) {
+      font-size: 75px;
+      top: 15px;
+      left: 15%;
+    }
+
+    @include breakpoint($min, $landscape) {
+      font-size: 80px;
+      left: 13%;
+      top: 30px;
+    }
+  }
+
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 75px;
+
+    .footerLinks {
+      font-size: 16px;
+      line-height: 35px;
+      margin: 0;
+      padding: 0;
+      order: 2;
+      list-style: none;
+      text-align: right;
+      width: 100%;
+
+      @include breakpoint($min, $portrait) {
+        width: auto;
+      }
+
+      .linkItemList {
+        margin: 0;
+        li {
+          @include visuallyHidden;
+
+          &:first-child {
+            @include displayVisuallyHidden;
+          }
+
+          @include breakpoint($min, $portrait) {
+            @include displayVisuallyHidden;
+          }
         }
       }
 
-			@include breakpoint($min, 730px) {
-				float: left;
-				width: 25% !important;
+      ul {
+        padding: 0;
+      }
 
-        &:nth-of-type(3) {
-          margin-left: 20px;
-          clear: none;
-        }
-			}
+      li {
+       @include breakpoint($min, $portrait) {
 
-	    li {
+          float: left;
+          width: 135px;
 
-	    	margin: 0px 0px 12px;
-        display: none;
-
-        @include breakpoint($min, $post-mobile-phone) {
-          display: list-item;
+          &:first-child {
+            width: 110px;
+          }
         }
 
-        &.footer1 {
-          display: list-item;
+       @include breakpoint($min, $landscape) {
+          width: 155px;
+
+          &:first-child {
+            margin-right: 110px;
+          }
+
+          &:nth-child(2) {
+            margin-right: 60px;
+          }
         }
 
-	    	a {
-	    		font-weight: 300;
-	    		font-size: 15px;
-	    		color: #FFF;
-	    		text-decoration: none;
-
-	    		&:hover {
-	    			text-decoration: underline;
-	    		}
-	    	}
-	    }
-
-	    &.last {
-	    	
-	    }
-	  }
-  }
-
-  .socialmedia {
-  	position: absolute;
-  	right: 0px;
-  	list-style-type: none;
-  	text-align: right;
-  	margin: 0 20px 0 0;
-
-  	li {
-  		display: inline-block;
-
-  		a {
-  			display: block;
-  			color: #FFF;
-  			font-size: 24px;
-        text-decoration: none;
-
-        @include breakpoint($min, $post-mobile-phone) {
-    			opacity: .5;
-    			@include transition(all .1s ease);
+        @include breakpoint($min, $large) {
+          &:first-child,
+          &:nth-child(2) {
+            width: 155px;
+            margin-right: 0;
+          }
         }
+      }
 
-  			&:hover {
-  				opacity: 1;
-  			}
+      // MQs for .footerLinks
+      @include breakpoint($min, $portrait) {
+        order: 1;
+        margin: 0;
+        font-size: 13px;
+        line-height: 25px;
+        text-align: left;
+      }
 
-			  .replaced-text {
-					//h5bp technique
-			    border: 0;
-			    clip: rect(0 0 0 0);
-			    height: 1px;
-			    margin: -1px;
-			    overflow: hidden;
-			    padding: 0;
-			    position: absolute;
-			    width: 1px;
-		    }
-  		}
+      @include breakpoint($min, $landscape) {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 30px;
+      }
 
-  		[class^="icon-"], 
-  		[class*=" icon-"] {
-  			padding: 0;
-  		}
-  		
-  		[data-icon]:before, 
-  		[class^="icon-"]:before, 
-  		[class*=" icon-"]:before {
-  			margin: 0 5px 0 0 !important;
-  		}
-  	} 
-  }
-    
-  .copyright {
-    clear: both;
-    text-align: center;
-    background: url(//cdn-prod.www.aws.nypl.org/sites/all/themes/nypl_new/images/main-logo-lion.png) no-repeat;
-    background-size: 60px;
-    background-position: 50%;
-    
-    p {
-    	max-width: none;
-			padding-top: 30px;
-      padding-bottom: 140px;
-      color: #FFF;
-	    font-size: 14px;
-	    font-weight: 300;
-	    letter-spacing: .07em;
-	    line-height: 2em;
+     @include breakpoint($min, $large) {
+        margin-right: 70px;
+        order: 2;
+      }
     }
+
+    .socialMedia {
+      order: 1;
+      margin: 20px -6px 15px 0;
+      list-style-type: none;
+      // icons are square, we want three across
+      text-align: right;
+      width: 45px * 3;
+
+      li {
+        display: inline-block;
+
+        a {
+          display: block;
+          color: #FFF;
+          font-size: 40px;
+          line-height: 45px;
+          text-decoration: none;
+
+          .replaced-text {
+            /* h5bp technique */
+            border: 0;
+            clip: rect(0 0 0 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px;
+          }
+
+          @include breakpoint($min, $portrait) {
+            font-size: 50px;
+          }
+        }
+
+        [class^="icon-"],
+        [class*=" icon-"] {
+          padding: 0;
+        }
+
+        [data-icon]:before,
+        [class^="icon-"]:before,
+        [class*=" icon-"]:before {
+          margin: 0 5px 0 0 !important;
+        }
+      }
+
+      // MQs for .socialMedia
+      @include breakpoint($min, $portrait) {
+        width: 170px;
+        margin-top: 30px;
+      }
+
+      @include breakpoint($min, $landscape) {
+        margin-top: 30px;
+      }
+
+      @include breakpoint($min, $large) {
+        margin-top: 0;
+        width: 280px;
+      }
+    }
+
+    // MQs for &-content
+    @include breakpoint($min, $portrait) {
+      flex-direction: column;
+      margin-top: 0;
+      margin: 0;
+      right: 6%;
+      position: absolute;
+      align-items: flex-end;
+    }
+
+    @include breakpoint($min, $landscape) {
+      left: 35%;
+    }
+
+    @include breakpoint($min, $large) {
+      flex-direction: row-reverse;
+      align-items: flex-start;
+    }
+  }
+
+  .copyright {
+    margin: 35px 0 0 0;
+    font-size: 12px;
+    font-family: "Kievit-Book";
+    text-align: right;
+
+    @include breakpoint($min, $portrait) {
+      font-size: 20px;
+      position: absolute;
+      left: 15%;
+      top: 110px;
+      font-size: 11px;
+    }
+
+    @include breakpoint($min, $landscape) {
+      left: 13%;
+      top: 140px;
+      font-size: 13px;
+    }
+  }
+
+  // MQs for .footer
+  @include breakpoint($min, $portrait) {
+    padding: 15px 0;
+  }
+
+  @include breakpoint($min, $landscape) {
+    padding: 30px 0;
   }
 }
