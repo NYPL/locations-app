@@ -3424,7 +3424,7 @@ var nypl_widget = angular.module('nypl_widget', [
 
     $rootScope.title = data.name;
     $scope.data = data;
-    $scope.locinator_url = "http://www.nypl.org/locations" +
+    $scope.locinator_url = "//nypl.org/locations" +
       $location.path().substr(7);
     $scope.widget_name = data.name;
 
@@ -5169,7 +5169,7 @@ var nypl_widget = angular.module('nypl_widget', [
       markers = [],
       filteredLocation,
       searchMarker = new google.maps.Marker({
-        icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+        icon: "https://maps.google.com/mapfiles/ms/icons/green-dot.png"
       }),
       searchInfoWindow = new google.maps.InfoWindow(),
       infowindow = new google.maps.InfoWindow(),
@@ -5490,12 +5490,12 @@ var nypl_widget = angular.module('nypl_widget', [
           new google.maps.LatLng(location.latitude, location.longitude),
         markerOptions = {
           position: position,
-          icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+          icon: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
         };
 
       if (id === 'user') {
         markerOptions.icon =
-          "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+          "https://maps.google.com/mapfiles/ms/icons/blue-dot.png";
         markerOptions.zIndex = 1000;
         markerOptions.animation = google.maps.Animation.DROP;
       }
