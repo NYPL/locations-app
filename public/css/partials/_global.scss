@@ -90,9 +90,9 @@ input[type="text"] {
 // Lokinator content wrapper
 .nypl-locations {
 	min-height: 700px;
-
+	margin: 10px 0px;
 	@include breakpoint($min, $tablet) {
-		margin-top: 8px;
+		margin: 15px 0px 20px;
 	}
 }
 
@@ -101,7 +101,7 @@ input[type="text"] {
 	.desc {
 		color: #7d7872;
 	}
-	
+
 	.date {
 		font-style: italic;
 		margin-bottom: .5rem;
@@ -155,7 +155,7 @@ time {
 // AskNYPL
 .askNYPL {
 	padding-left: 0px;
-	
+
 	@include breakpoint($min, $post-palm) {
 		padding-left: 24px;
 	}
@@ -192,9 +192,9 @@ time {
 				border-radius: 2px;
 				border: 1px solid transparent;
 				color: #5e564b;
-				padding: 6px;		
+				padding: 6px;
 				text-decoration: none;
-				
+
 				&:hover {
 					background-color: #fff;
 					border: 1px solid lighten(#5e564b, 50%);
@@ -206,7 +206,7 @@ time {
 				vertical-align: baseline;
 			}
 		}
-	}	
+	}
 }
 
 // Accessibility Icons
@@ -279,7 +279,7 @@ time {
 
 	.geocoding-search {
 		padding: 10px;
-		
+
 		&.active {
 			background-color: #FFFFCD;
 		}
