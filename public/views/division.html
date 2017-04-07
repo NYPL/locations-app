@@ -87,7 +87,7 @@
         </div>
 
         <div class="social flush beta" data-ng-if="division.social_media">
-          <a class="{{social.classes}}" data-ng-href="{{social.href}}" id="social_media"
+          <a class="{{social.classes}}" data-ng-href="{{social.href}}" id="social_media_{{$index}}"
             data-ng-repeat="social in division.social_media" class="inline"
             analytics-on="click" analytics-category="Locations"
             analytics-event="Social Media" analytics-label="{{social.site}}"></a>
@@ -140,7 +140,7 @@
           <span id="about">ABOUT THE DIVISION</span>
         </h2>
         <img data-ng-if="division.images.collection_item" class="img--left img--outline division_second_image"
-          data-ng-src="{{division.images.collection_item}}" style="max-width: 165px;" />
+          data-ng-src="{{division.images.collection_item}}" style="max-width: 165px;" alt="{{division.images.collection_item_alt || ' '}}" />
         <p>{{division.about}}</p>
         <div class="text--right">
           <a class="read-more collection-more" data-ng-href="{{division._links.self.about}}"
@@ -247,7 +247,7 @@
           analytics-on="click" analytics-category="Locations"
           analytics-event="Feature image" analytics-label="{{feature._links.self.href}}">
           <img class="img--left img--outline one-third lap-and-up-one-whole desk-one-third"
-            data-ng-src="{{feature.image}}" alt="{{feature.title}}"/>
+            data-ng-src="{{feature.image}}" alt="{{feature.title}}" title="{{feature.title}}" />
         </a>
         <h3 class="feature-title" data-ng-if="feature.title">
           <a data-ng-if="feature._links.self.href" data-ng-href="{{feature._links.self.href}}"
@@ -279,7 +279,7 @@
         <a data-ng-if="blog.image" data-ng-href="{{blog._links.self.href}}"
           analytics-on="click" analytics-category="Locations"
           analytics-event="Blog image" analytics-label="{{blog._links.self.href}}">
-          <img class="img--left" data-ng-src="{{blog.image}}" alt="" style="max-width: 120px;" />
+          <img class="img--left" data-ng-src="{{blog.image}}" alt="{{blog.title}}" title="{{blog.title}}"" style="max-width: 120px;" />
         </a>
         <div class="blog_author" data-ng-if="blog.author">
           <span class="blog_name" data-ng-if="blog.author.name">By {{blog.author.name}}</span>
