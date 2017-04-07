@@ -124,12 +124,12 @@
         bounds = new google.maps.LatLngBounds(sw_bound, ne_bound),
         geocodeOptions = {
           address: address,
-          bounds: bounds,
+          // bounds: bounds,
           region: "US",
-          componentRestrictions: {
-            'country': 'US',
-            'locality': 'New York'
-          }
+          // componentRestrictions: {
+          //   'country': 'US',
+          //   'locality': 'New York'
+          // }
         };
 
       geocoder.geocode(geocodeOptions, function (result, status) {
@@ -153,7 +153,7 @@
      * @methodOf nypl_locations.service:nyplGeocoderService
      * @param {object} coords Object with lat and long properties.
      * @returns {object} Deferred promise. If it resolves, a string of Google's
-     *  best attempt to reverse geocode coordinates into a formatted address. 
+     *  best attempt to reverse geocode coordinates into a formatted address.
      * @example
      * <pre>
      *  nyplGeocoderService.reverseGeocoding({
@@ -187,7 +187,7 @@
     };
 
     /*
-     * @ngdoc function 
+     * @ngdoc function
      * @name drawMap
      * @methodOf nypl_locations.service:nyplGeocoderService
      * @param {object} coords Object with lat and long properties.
