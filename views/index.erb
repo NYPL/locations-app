@@ -32,11 +32,7 @@
 
     <link rel="shortcut icon" type="image/ico" href="//d2znry4lg8s0tq.cloudfront.net/images/favicon.ico">
 
-<% if settings.env_config["angular_src"] == "ux-static-staging" %>
-    <link rel="stylesheet" href="//d3rw2mydk59brd.cloudfront.net/nyplbase/0.1.7/css/nyplbase.min.css" type="text/css" media="screen" />
-<% else %>
-    <link rel="stylesheet" href="//d2znry4lg8s0tq.cloudfront.net/nyplbase/0.1.7/css/nyplbase.min.css" type="text/css" media="screen" />
-<% end %>
+    <link rel="stylesheet" href="<%= settings.env_config['nyplbase'] %>" type="text/css" media="screen" />
 
 
 <% if @rq.forwarded? %>
@@ -56,7 +52,7 @@
 
     <div class="visuallyhidden">
         <div>
-            <a href="http://lblpac.nypl.org/klasweb/" title="Click to search the Andrew Heiskell Braille and Talking Book Library">Click to search the Andrew Heiskell Braille and Talking Book Library</a> 
+            <a href="http://lblpac.nypl.org/klasweb/" title="Click to search the Andrew Heiskell Braille and Talking Book Library">Click to search the Andrew Heiskell Braille and Talking Book Library</a>
             <a href="#main-content">Skip Navigation</a>
         </div>
     </div>
@@ -80,7 +76,7 @@
         <!-- Locinator App -->
         <div class="nypl-locations" data-ui-view data-autoscroll="false" scrolltop></div>
     </div>
-    
+
     <!-- Footer -->
     <nypl-footer></nypl-footer>
 
@@ -104,7 +100,7 @@
     <script src="//d2znry4lg8s0tq.cloudfront.net/es5-shim/es5-shim.min.js"></script>
     <script src="//d2znry4lg8s0tq.cloudfront.net/json3/json3.min.js"></script>
     <![endif]-->
-    
+
 <% if !settings.env_config["google_maps"].nil? %>
     <script src="https://maps.googleapis.com/maps/api/js?key=<%= settings.env_config["google_maps"] %>"></script>
 <% end %>

@@ -5276,12 +5276,12 @@ var nypl_widget = angular.module('nypl_widget', [
         bounds = new google.maps.LatLngBounds(sw_bound, ne_bound),
         geocodeOptions = {
           address: address,
-          bounds: bounds,
+          // bounds: bounds,
           region: "US",
-          componentRestrictions: {
-            'country': 'US',
-            'locality': 'New York'
-          }
+          // componentRestrictions: {
+          //   'country': 'US',
+          //   'locality': 'New York'
+          // }
         };
 
       geocoder.geocode(geocodeOptions, function (result, status) {
@@ -5305,7 +5305,7 @@ var nypl_widget = angular.module('nypl_widget', [
      * @methodOf nypl_locations.service:nyplGeocoderService
      * @param {object} coords Object with lat and long properties.
      * @returns {object} Deferred promise. If it resolves, a string of Google's
-     *  best attempt to reverse geocode coordinates into a formatted address. 
+     *  best attempt to reverse geocode coordinates into a formatted address.
      * @example
      * <pre>
      *  nyplGeocoderService.reverseGeocoding({
@@ -5339,7 +5339,7 @@ var nypl_widget = angular.module('nypl_widget', [
     };
 
     /*
-     * @ngdoc function 
+     * @ngdoc function
      * @name drawMap
      * @methodOf nypl_locations.service:nyplGeocoderService
      * @param {object} coords Object with lat and long properties.
