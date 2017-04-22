@@ -32,8 +32,7 @@
 
       --><div id="container__div_image" class="grid__item lap-one-half one-whole desk-one-third">
         <!-- Division Image -->
-        <img class="img--outline main_division_image" data-ng-src="{{division.images.interior}}"
-          alt="{{division.name}}" title="{{division.name}}">
+        <img class="img--outline main_division_image" data-ng-src="{{division.images.interior}}" alt="" />
       </div><!--
       
       --><div id="container__div_address" class="grid__item lap-one-half one-whole desk-one-third">
@@ -110,8 +109,7 @@
             analytics-on="click" analytics-category="Locations"
             analytics-event="Division Image" analytics-label="{{subdivision.name}}">
             <img data-ng-if="subdivision.images.interior" class="img--outline" 
-            data-ng-src="{{subdivision.images.interior}}"
-            alt="{{subdivision.name}}" title="{{subdivision.name}}"/>
+            data-ng-src="{{subdivision.images.interior}}" alt=""/>
           </a>
           <h4 class="subdivision-title">
             <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})"
@@ -247,7 +245,7 @@
           analytics-on="click" analytics-category="Locations"
           analytics-event="Feature image" analytics-label="{{feature._links.self.href}}">
           <img class="img--left img--outline one-third lap-and-up-one-whole desk-one-third"
-            data-ng-src="{{feature.image}}" alt="{{feature.title}}" title="{{feature.title}}" />
+            data-ng-src="{{feature.image}}" alt="" />
         </a>
         <h3 class="feature-title" data-ng-if="feature.title">
           <a data-ng-if="feature._links.self.href" data-ng-href="{{feature._links.self.href}}"
