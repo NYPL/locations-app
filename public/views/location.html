@@ -86,7 +86,7 @@
               data-ng-repeat="social in location.social_media" data-ng-if="location.social_media.length"
               title="{{social.site | capitalize}}"
               analytics-on="click" analytics-category="Locations"
-              analytics-event="Social Media" analytics-label="{{social.site}}"></a>
+              analytics-event="Social Media" analytics-label="{{social.site}}"><span class="visuallyHidden">{{social.site | capitalize}}</span></a>
           </div>
         </div><!--
 
