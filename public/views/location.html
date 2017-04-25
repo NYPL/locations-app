@@ -91,8 +91,7 @@
         </div><!--
 
         --><div id="container__image" class="grid__item desk-one-third">
-          <img class="img--outline" data-ng-if="location.open" data-ng-src="{{location.images.exterior}}"
-            alt="{{location.name}}" title="{{location.name}}">
+          <img class="img--outline" data-ng-if="location.open" data-ng-src="{{location.images.exterior}}" alt="" >
           <img class="img--outline" data-ng-if="!location.open" data-ng-src="{{location.images.closed}}"
             alt="Branch Closed" title="Branch closed">
         </div>
@@ -141,7 +140,7 @@
             analytics-on="click" analytics-category="Locations"
             analytics-event="Division Image" analytics-label="{{division.name}}">
             <img class="img--outline" data-ng-src="{{division.images.interior}}"
-              alt="Image for {{division.name}}" title="Image for {{division.name}}"/>
+              alt=""/>
           </a>
           <h4>
             <a data-ui-sref="division({division: division.slug})"
@@ -173,7 +172,7 @@
           analytics-on="click" analytics-category="Locations"
           analytics-event="Feature image" analytics-label="{{feature._links.self.href}}">
           <img class="one-third lap-and-up-one-whole desk-one-third img--left img--outline"
-            data-ng-src="{{feature.image}}" alt="{{feature.title}}" />
+            data-ng-src="{{feature.image}}" alt="" />
         </a>
         <h3 class="feature-title">
           <a data-ng-if="feature._links.self.href" data-ng-href="{{feature._links.self.href}}"
@@ -257,8 +256,8 @@
         </h2>
         <div class="grid">
           <div id="location-secondary-img" class="grid__item one-whole lap-and-up-one-half" data-ng-if="location.images.interior">
-            <img class="img--outline" title="{{location.name}}"
-              data-ng-src="{{location.images.interior}}" alt="{{location.name}}">
+            <img class="img--outline"
+              data-ng-src="{{location.images.interior}}" alt="">
           </div><!--
 
           --><div class="grid__item one-whole lap-and-up-one-half">
@@ -318,8 +317,7 @@
         <a data-ng-if="blog.image" data-ng-href="{{blog._links.self.href}}"
           analytics-on="click" analytics-category="Locations"
           analytics-event="Blog image" analytics-label="{{blog._links.self.href}}">
-          <img class="img--left" data-ng-src="{{blog.image}}" style="max-height: 120px; max-width: 120px;"
-            alt="Image for blog post {{blog.title}}" title="Image for blog post {{blog.title}}" />
+          <img class="img--left" data-ng-src="{{blog.image}}" style="max-height: 120px; max-width: 120px;" alt="" />
         </a>
         <div class="blog_author" data-ng-if="blog.author">
           <span class="blog_name" data-ng-if="blog.author.name">By {{blog.author.name}}</span>
@@ -352,8 +350,7 @@
         <a data-ng-href="{{exhibition._links.self.href}}" data-ng-if="exhibition.image"
           analytics-on="click" analytics-category="Locations"
           analytics-event="Exhibition image" analytics-label="{{exhibition._links.self.href}}">
-          <img class="img--left" data-ng-src="{{exhibition.image}}" style="height: 100px;"
-            alt="Image for exhibition {{exhibition.title}}" title="Image for exhibition {{exhibition.title}}" />
+          <img class="img--left" data-ng-src="{{exhibition.image}}" style="height: 100px;" alt="" />
         </a>
         <h3 class="exhibition__title">
           <a data-ng-href="{{exhibition._links.self.href}}"
