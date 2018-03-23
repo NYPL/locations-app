@@ -4,7 +4,7 @@ gem 'sinatra'
 gem 'sinatra-jsonp'
 gem 'json'
 gem 'kgio'
-gem 'lionactor', :git => 'https://github.com/NYPL/lionactor', :tag => '0.0.13'
+gem 'lionactor', :git => 'https://github.com/NYPL/lionactor', :tag => '0.0.14'
 #unicorn web
 gem 'unicorn'
 

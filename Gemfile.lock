@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/NYPL/lionactor
-  revision: 57eae34a271b6e4195b60ee75b03108cd45d9b18
-  tag: 0.0.13
+  revision: 0e919f4de5e0a98a718cb93524114a9d1473c4e1
+  tag: 0.0.14
   specs:
     lionactor (0.0.13)
       faraday
