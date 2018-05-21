@@ -15,7 +15,7 @@ The backend is supported by Sinatra. To get all the Ruby dependencies, run:
 ### Front-end
 Node and npm are needed to install front-end dependencies and tools.
 
-If node is not availabe on your computer, install it from [nodjs.org](http://nodejs.org/). This is also download and install npm.
+If node is not available on your computer, install it from [nodjs.org](http://nodejs.org/). This is also download and install npm.
 
 To get all the front end dependencies, run:
 
@@ -35,7 +35,7 @@ Checkout the `development` branch and run
 
     bundle exec rackup
 
-to start the server in the default `development` environment. The app will be available on `http://localhost:9292/`. 
+to start the server in the default `development` environment. The app will be available on `http://localhost:9292/`.
 
 ### Running different environments
 There are four different enviroments that the Locinator can be run in:
