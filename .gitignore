@@ -14,4 +14,3 @@ ngdocs
 test/coverage/*
 Gemfile.lock
 public/bower_components
-dist
