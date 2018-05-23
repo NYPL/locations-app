@@ -1,7 +1,7 @@
 GIT
-  remote: https://bitbucket.org/rdmond/lionactor
-  revision: 57eae34a271b6e4195b60ee75b03108cd45d9b18
-  tag: 0.0.13
+  remote: https://github.com/NYPL/lionactor
+  revision: 0e919f4de5e0a98a718cb93524114a9d1473c4e1
+  tag: 0.0.14
   specs:
     lionactor (0.0.13)
       faraday
@@ -12,7 +12,7 @@ GEM
     daemons (1.2.2)
     diff-lcs (1.2.5)
     eventmachine (1.0.7)
-    faraday (0.9.1)
+    faraday (0.14.0)
       multipart-post (>= 1.2, < 3)
     json (1.8.2)
     kgio (2.9.3)
@@ -71,4 +71,4 @@ DEPENDENCIES
   unicorn
 
 BUNDLED WITH
-   1.10.1
+   1.15.4

@@ -108,7 +108,8 @@
         <div class="subdivision-wrapper">
           <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})"
             analytics-on="click" analytics-category="Locations"
-            analytics-event="Division Image" analytics-label="{{subdivision.name}}">
+            analytics-event="Division Image" analytics-label="{{subdivision.name}}"
+            aria-hidden="true">
             <img data-ng-if="subdivision.images.interior" class="img--outline" 
             data-ng-src="{{subdivision.images.interior}}" alt=""/>
           </a>
@@ -244,7 +245,8 @@
       <div class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in division._embedded.features'>
         <a data-ng-if="feature.image" data-ng-href="{{feature._links.self.href}}"
           analytics-on="click" analytics-category="Locations"
-          analytics-event="Feature image" analytics-label="{{feature._links.self.href}}">
+          analytics-event="Feature image" analytics-label="{{feature._links.self.href}}"
+          aria-hidden="true">
           <img class="img--left img--outline one-third lap-and-up-one-whole desk-one-third"
             data-ng-src="{{feature.image}}" alt="" />
         </a>
@@ -277,7 +279,8 @@
         </h3>
         <a data-ng-if="blog.image" data-ng-href="{{blog._links.self.href}}"
           analytics-on="click" analytics-category="Locations"
-          analytics-event="Blog image" analytics-label="{{blog._links.self.href}}">
+          analytics-event="Blog image" analytics-label="{{blog._links.self.href}}"
+          aria-hidden="true">
           <img class="img--left" data-ng-src="{{blog.image}}" alt="" style="max-width: 120px;" />
         </a>
         <div class="blog_author" data-ng-if="blog.author">
