@@ -390,6 +390,28 @@ time {
 	}
 }
 
+.read-more {
+	background: #fff;
+	border: 1px solid #1b7fa7;
+	color: #1b7fa7;
+	display: inline-block;
+	padding: 0 6px;
+	text-decoration: none;
+
+
+	&:hover {
+		background: #fff;
+		border: 1px solid #1b7fa7;
+		color: #1b7fa7;
+  }
+
+	&:visited {
+		background: #fff;
+		border: 1px solid #333;
+		color: #333;
+  }
+}
+
 // Firefox specific override rules
 @-moz-document url-prefix() {
 
