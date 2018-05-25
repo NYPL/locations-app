@@ -1,3 +1,7 @@
+## Tag v1.10.0
+* Update the gem json version to 2.1.0.
+* Update colors for accessibility performance.
+
 ## Tag v1.2.4
 * LOC-474 Update GA events for footer links. Made links relative so that duplicates do not show up in GA.
 * Update to widget link that goes to the new locations pages.
