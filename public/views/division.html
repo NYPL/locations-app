@@ -102,8 +102,8 @@
     <h2 class="hdg">
       <span id="subdivisions">Subdivisions</span>
     </h2>
-    <div class="grid">
-      <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
+    <ul class="grid">
+      <li class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
         data-ng-repeat='subdivision in division._embedded.divisions'>
         <div class="subdivision-wrapper">
           <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})"
@@ -113,13 +113,13 @@
             <img data-ng-if="subdivision.images.interior" class="img--outline" 
             data-ng-src="{{subdivision.images.interior}}" alt=""/>
           </a>
-          <h4 class="subdivision-title">
+          <h3 class="subdivision-title delta">
             <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})"
               analytics-on="click" analytics-category="Locations"
               analytics-event="Division Title" analytics-label="{{subdivision.name}}">
               {{subdivision.name}}
             </a>
-          </h4>
+          </h3>
           <!-- Subdivisions Hours Today -->
           <div class='subdivision-hours-wrapper' data-ng-if="subdivision.open">
             <todayshours hours="subdivision.hours" alerts="subdivision._embedded.alerts" />
@@ -128,8 +128,8 @@
             <b>Division is temporarily closed.</b>
           </div>
         </div>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 
   <!-- About Division -->
@@ -241,8 +241,8 @@
     <h2 class="hdg">
       <span id="featured">FEATURED</span>
     </h2>
-    <div class="grid">
-      <div class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in division._embedded.features'>
+    <ul class="grid">
+      <li class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in division._embedded.features'>
         <a data-ng-if="feature.image" data-ng-href="{{feature._links.self.href}}"
           analytics-on="click" analytics-category="Locations"
           analytics-event="Feature image" analytics-label="{{feature._links.self.href}}"
@@ -259,8 +259,8 @@
           <span data-ng-if="!feature._links.self.href">{{feature.title}}</span>
         </h3>
         <div class="desc" data-ng-bind-html="feature.body"></div>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 
   <!-- Blogs (conditonal) -->
@@ -268,8 +268,8 @@
     <h2 class="hdg">
       <span id="blogs">BLOGS</span>
     </h2>
-    <div class="grid">
-      <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in division._embedded.blogs'>
+    <ul class="grid">
+      <li class="chunk one-whole desk-one-third" data-ng-repeat='blog in division._embedded.blogs'>
         <h3>
           <a data-ng-href="{{blog._links.self.href}}"
             analytics-on="click" analytics-category="Locations"
@@ -292,8 +292,8 @@
           <span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span>
         </time>
         <div class="desc" data-ng-if="blog.body" data-ng-bind-html="blog.body"></div>
-      </div>
-    </div>
+      </li>
+    </ul>
     <!-- More Blogs Link -->
     <div class="text--right" data-ng-if="division._links.blogs.all">
       <a class="read-more blogs-more" data-ng-href="{{division._links.blogs.all}}">
@@ -307,6 +307,9 @@
     <nypl-fundraising fundraising="division.fundraising" category="Locations"></nypl-fundraising><!--
 
     --><div class="askNYPL grid__item one-whole lap-and-up-one-half " id="ask-nypl">
+      <h2 class="visuallyHidden">
+        <span id="ask-nypl">Ask NYPL</span>
+      </h2>
       <ul>
         <li class="asknum icon-phone">
           <a href="tel:917-275-6975">917-ASK-NYPL</a>
