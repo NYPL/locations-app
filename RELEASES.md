@@ -2,6 +2,7 @@
 * Update the gem json version to 2.1.0.
 * Update colors for accessibility performance.
 * Update the headings of individual location pages and research division pages for accessibility performance.
+* Removed native tab behavior in the autofill search component.
 
 ## Tag v1.2.4
 * LOC-474 Update GA events for footer links. Made links relative so that duplicates do not show up in GA.
