@@ -118,10 +118,14 @@ This will generate an 'ngdoc' folder in the root directory which must be viewed 
 
 To learn more about how to document, please see [codeDocumentation](codeDocumentation.md).
 
-### Update the styles from NYPLBase
-Now, we can test how this CSS file works on the application that requires changes. For example, at Location App, first disable the current styles sheet from cloudfront in `view/index.erb`by removing or commenting out the line, `<link rel="stylesheet" href="<%= settings.env_config['nyplbase'] %>" type="text/css" media="screen" />`.
+### Update the styles from NYPLBase Locally
 
-And then, add `<link rel="stylesheet" href="css/nyplbaseTest.min.css" type="text/css" />` in the same file, `view/index.erb`. Last, create a new file named `nyplbaseTest.min.css` in the folder `public/css`. Run Location App, it should pick up the styles you created at NYPLBase.
+The repo of `NYPLBase` is here.
+https://github.com/NYPL/NYPLBase
+
+We can test how the CSS min files of `NYPLBase` work on Location App. First, disable the current styles sheet from cloudfront in `view/index.erb`by removing or commenting out the line, `<link rel="stylesheet" href="<%= settings.env_config['nyplbase'] %>" type="text/css" media="screen" />`.Second, add `<link rel="stylesheet" href="css/nyplbaseTest.min.css" type="text/css" />` in the same file, `view/index.erb`. Last, create a new file named `nyplbaseTest.min.css` in the folder `public/css` and paste the content from `nyplbaseTest.min.css` to this new created folder. To compile the correct `nyplbaseTest.min.css` at `NYPLBase`, please check its documentation.
+
+Run Location App, it should pick up the styles you created at NYPLBase.
 
 After the changes are approved, we need to update the changes to the repo of `UX-Static`. The link is as below.
 
@@ -138,11 +142,11 @@ After deployment, go to the repo of Location App.
 
 https://github.com/NYPL/locations-app
 
-In the root, find the file, `lociator.json`. You will see different environments and their configurations. The configuration of `nyplbase` is the one points to the stylesheets from `UX-Static`. We have two different sources,
+In the root, find the file, `locinator.json`. You will see different environments and their configurations. The configuration of `nyplbase` is the one points to the stylesheets from `UX-Static`. We have two different sources,
 
 master: `//d2znry4lg8s0tq.cloudfront.net/nyplbase/0.2.0/css/nyplbase.min.css`
 staging: `//d3rw2mydk59brd.cloudfront.net/nyplbase/0.2.0/css/nyplbase.min.css`
 
 Change the source for the environment you want to have the updates. Also, make sure that the version(here is `0.2.0`, for example) is correct as the version you created in `UX-Static` repo.
 
-Run `Location App` at the correct environment, and the updates should be applied.
+Run `Location App` in the correct environment, and the updates should be applied.
