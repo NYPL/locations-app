@@ -34,13 +34,51 @@ $large: 1500px;
   width: 100%;
 }
 
-footer {
-  box-sizing: content-box;
+/* --- Media Query Generator ---
+ * Reusable mixin used to generate
+ * variations of media query properties.
+ */
+@mixin generate-mq($args...) {
+  $media-type: 'only screen';
+  $media-type-key: 'media-type';
+  $args: keywords($args);
+  $expr: '';
+
+  @if map-has-key($args, $media-type-key) {
+    $media-type: map-get($args, $media-type-key);
+    $args: map-remove($args, $media-type-key);
+  }
+
+  @each $key, $value in $args {
+    @if $value {
+      $expr: "#{$expr} and (#{$key}: #{$value})";
+    }
+  }
+
+  @media #{$media-type} #{$expr} {
+    @content;
+  }
+}
+
+/* min-screen($min, $orientation)
+ * $min - required
+ * $orientation - optional
+ * Ex #1: @include min-screen(768px, landscape) { ... }
+ * Ex #2: @include min-screen(768px) { ... }
+ */
+@mixin min-screen($min, $orientation: false) {
+  @include generate-mq($min-width: $min, $orientation: $orientation) {
+    @content;
+  }
+}
+
+$footer-color: #54514A;
+
+.footer {
   padding: 15px 20px 100px;
-  background: #54514A;
+  background: $footer-color;
   color: #fff;
   font-family: "Kievit-Medium";
-  height: 310px;
   min-height: 280px;
   position: relative;
   clear: both;
@@ -51,32 +89,44 @@ footer {
     text-decoration: none;
 
     &:hover {
-      color: #fff;
       text-decoration: underline;
     }
   }
 
-  .logoText {
-    font-family: "nypl-moon";
-    font-size: 82px;
-    position: absolute;
-    top: 15px;
-    left: 15px;
+  .svgIcon {
+    fill: #fff;
+  }
 
-    @include breakpoint($min, $portrait) {
-      font-size: 75px;
-      top: 15px;
-      left: 15%;
+  .logoText {
+    position: absolute;
+    top: 20px;
+    left: -105px;
+
+    .nyplLionLogo {
+      height: 120px;
+      width: 250px;
+
+      &-lion {
+        display: none;
+      }
     }
 
-    @include breakpoint($min, $landscape) {
-      font-size: 80px;
-      left: 13%;
-      top: 30px;
+    @include min-screen($portrait) {
+      top: 20px;
+      left: 1%;
+    }
+
+    @include min-screen($landscape) {
+      left: 2.5%;
+      top: 35px;
+    }
+
+    @include min-screen($large) {
+      left: 5%;
     }
   }
 
-  .footer-content {
+  &-content {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -92,12 +142,11 @@ footer {
       text-align: right;
       width: 100%;
 
-      @include breakpoint($min, $portrait) {
+      @include min-screen($portrait) {
         width: auto;
       }
 
       .linkItemList {
-        margin: 0;
         li {
           @include visuallyHidden;
 
@@ -105,7 +154,7 @@ footer {
             @include displayVisuallyHidden;
           }
 
-          @include breakpoint($min, $portrait) {
+          @include min-screen($portrait) {
             @include displayVisuallyHidden;
           }
         }
@@ -113,11 +162,11 @@ footer {
 
       ul {
         padding: 0;
+        margin-left: 0;
       }
 
       li {
-       @include breakpoint($min, $portrait) {
-
+        @include min-screen($portrait) {
           float: left;
           width: 135px;
 
@@ -126,7 +175,7 @@ footer {
           }
         }
 
-       @include breakpoint($min, $landscape) {
+        @include min-screen($landscape) {
           width: 155px;
 
           &:first-child {
@@ -138,7 +187,7 @@ footer {
           }
         }
 
-        @include breakpoint($min, $large) {
+        @include min-screen($large) {
           &:first-child,
           &:nth-child(2) {
             width: 155px;
@@ -148,7 +197,7 @@ footer {
       }
 
       // MQs for .footerLinks
-      @include breakpoint($min, $portrait) {
+      @include min-screen($portrait) {
         order: 1;
         margin: 0;
         font-size: 13px;
@@ -156,13 +205,13 @@ footer {
         text-align: left;
       }
 
-      @include breakpoint($min, $landscape) {
+      @include min-screen($landscape) {
         font-size: 14px;
         font-weight: 400;
         line-height: 30px;
       }
 
-     @include breakpoint($min, $large) {
+      @include min-screen($large) {
         margin-right: 70px;
         order: 2;
       }
@@ -178,6 +227,7 @@ footer {
 
       li {
         display: inline-block;
+        width: 45px;
 
         a {
           display: block;
@@ -186,19 +236,12 @@ footer {
           line-height: 45px;
           text-decoration: none;
 
-          .replaced-text {
-            /* h5bp technique */
-            border: 0;
-            clip: rect(0 0 0 0);
-            height: 1px;
-            margin: -1px;
-            overflow: hidden;
-            padding: 0;
-            position: absolute;
-            width: 1px;
+          svg {
+            width: 36px;
+            height: 36px;
           }
 
-          @include breakpoint($min, $portrait) {
+          @include min-screen($portrait) {
             font-size: 50px;
           }
         }
@@ -216,36 +259,34 @@ footer {
       }
 
       // MQs for .socialMedia
-      @include breakpoint($min, $portrait) {
+      @include min-screen($portrait) {
         width: 170px;
         margin-top: 30px;
       }
 
-      @include breakpoint($min, $landscape) {
+      @include min-screen($landscape) {
         margin-top: 30px;
       }
 
-      @include breakpoint($min, $large) {
+      @include min-screen($large) {
         margin-top: 0;
         width: 280px;
       }
     }
 
     // MQs for &-content
-    @include breakpoint($min, $portrait) {
-      flex-direction: column;
-      margin-top: 0;
+    @include min-screen($portrait) {
       margin: 0;
       right: 6%;
       position: absolute;
       align-items: flex-end;
     }
 
-    @include breakpoint($min, $landscape) {
+    @include min-screen($landscape) {
       left: 35%;
     }
 
-    @include breakpoint($min, $large) {
+    @include min-screen($large) {
       flex-direction: row-reverse;
       align-items: flex-start;
     }
@@ -257,7 +298,7 @@ footer {
     font-family: "Kievit-Book";
     text-align: right;
 
-    @include breakpoint($min, $portrait) {
+    @include min-screen($portrait) {
       font-size: 20px;
       position: absolute;
       left: 15%;
@@ -265,7 +306,7 @@ footer {
       font-size: 11px;
     }
 
-    @include breakpoint($min, $landscape) {
+    @include min-screen($landscape) {
       left: 13%;
       top: 140px;
       font-size: 13px;
@@ -273,11 +314,11 @@ footer {
   }
 
   // MQs for .footer
-  @include breakpoint($min, $portrait) {
+  @include min-screen($portrait) {
     padding: 15px 0;
   }
 
-  @include breakpoint($min, $landscape) {
+  @include min-screen($landscape) {
     padding: 30px 0;
   }
 }
