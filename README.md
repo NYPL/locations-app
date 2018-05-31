@@ -69,7 +69,7 @@ A list of all the dependencies used in the Locinator, Locations project.
 
 Third Party
 * jQuery
-* AngularJs v1.2.14
+* AngularJs v1.3.15
   * ngSanitize
   * ngAnimate
   * [ui-router](https://github.com/angular-ui/ui-router)
