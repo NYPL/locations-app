@@ -123,22 +123,22 @@ To learn more about how to document, please see [codeDocumentation](codeDocument
 The repo of `NYPLBase` is here.
 https://github.com/NYPL/NYPLBase
 
-To integrate with the styles from `NYPLBase`, we have to reference to the sources of `NYPLBase` that hosted at the repo of `UX-Static`.
+To integrate with the styles from `NYPLBase`, we have to reference the source of `NYPLBase`, hosted by the `UX-Static` repo.
 
 You can find the repo here,
 https://bitbucket.org/NYPL/ux-static/src/master/
 
-And in the root folder of `Location App`, find the file, `locinator.json`. You will see different environments and their configurations. The configuration of `nyplbase` is the one points to the stylesheets from `UX-Static`. We have two different sources,
+And in the root folder of `Locations App`, find the file, `locinator.json`. You will see different environments and their configurations. The configuration of `nyplbase` is the one that points to the stylesheets from `UX-Static`. We have two different sources,
 
 master: `//d2znry4lg8s0tq.cloudfront.net/nyplbase/0.2.0/css/nyplbase.min.css`
 staging: `//d3rw2mydk59brd.cloudfront.net/nyplbase/0.2.0/css/nyplbase.min.css`
 
-Change the source for the environment you want to have the styles from `NYPLBase`. Also, make sure that the version(here is `0.2.0`, for example) is correct as the version you want in `UX-Static` repo.
+Change the source for the environment you want to have the styles from `NYPLBase`. Also, make sure version(`0.2.0`, for example) matches the version you want from `UX-Static` repo.
 
-Run `Location App` in the correct environment, and the updates should be applied.
+Run `Locations App` in the correct environment, and the updates should be applied.
 
 ### Test the styles from NYPLBase locally
 
-We can test how the CSS min files of `NYPLBase` work on `Location App` directly. First, disable the current styles sheet from cloudfront in `view/index.erb`by removing or commenting out the line, `<link rel="stylesheet" href="<%= settings.env_config['nyplbase'] %>" type="text/css" media="screen" />`.Second, add `<link rel="stylesheet" href="css/nyplbaseTest.min.css" type="text/css" />` in the same file, `view/index.erb`. Last, create a new file named `nyplbaseTest.min.css` in the folder `public/css` and paste the content from `nyplbaseTest.min.css` to this new created folder. To compile the correct `nyplbaseTest.min.css` at `NYPLBase`, please check its documentation.
+We can test how the CSS min files of `NYPLBase` work on `Locations App` directly. First, disable the current styles sheet from cloudfront in `view/index.erb` by removing or commenting out the line, `<link rel="stylesheet" href="<%= settings.env_config['nyplbase'] %>" type="text/css" media="screen" />`. Second, add `<link rel="stylesheet" href="css/nyplbaseTest.min.css" type="text/css" />` in the same file, `view/index.erb`. Last, create a new file named `nyplbaseTest.min.css` in the folder `public/css` and paste the contents from `nyplbaseTest.min.css` to this folder. To compile the correct `nyplbaseTest.min.css` at `NYPLBase`, please check its documentation.
 
-Run Location App, it should pick up the styles you created at NYPLBase.
+Run Locations App, it should pick up the styles you created at NYPLBase.
