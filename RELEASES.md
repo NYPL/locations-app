@@ -4,6 +4,7 @@
 * Update the headings of individual location pages and research division pages for accessibility performance.
 * Removed tab behavior that didn't allow tabbing out of autofill search input component.
 * Update to enable `Make an Appointment` button for General Research Division.
+> Update Footer to v1.0.2.
 
 ## Tag v1.2.4
 * LOC-474 Update GA events for footer links. Made links relative so that duplicates do not show up in GA.
