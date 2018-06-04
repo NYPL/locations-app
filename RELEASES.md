@@ -1,3 +1,6 @@
+## Tag v1.10.1
+* Update the NYPLBase version to 0.2.0.
+
 ## Tag v1.10.0
 * Update the gem json version to 2.1.0.
 * Update colors for accessibility performance.
