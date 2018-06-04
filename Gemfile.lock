@@ -14,7 +14,7 @@ GEM
     eventmachine (1.0.7)
     faraday (0.14.0)
       multipart-post (>= 1.2, < 3)
-    json (1.8.2)
+    json (2.1.0)
     kgio (2.9.3)
     multi_json (1.11.0)
     multipart-post (2.0.0)
