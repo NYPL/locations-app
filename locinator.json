@@ -1,6 +1,6 @@
 {
   "environments": {
-    "default": "qa",
+    "default": "development",
     "production": {
       "url": "http://locations.nypl.org",
       "api": "https://refinery.nypl.org/api/nypl/locations",
@@ -50,27 +50,12 @@
       "closed_img": "//d3rw2mydk59brd.cloudfront.net/images/branch_closed.jpg"
     }
   },
-  "divisions_with_appointments": [
-    "ARN",
-    "RBK",
-    "MSS",
-    "BRG",
-    "PRN",
-    "PHG",
-    "SPN",
-    "CPS",
-    "SCM"
-  ],
+  "divisions_with_appointments": ["ARN", "RBK", "MSS", "BRG", "PRN", "PHG", "SPN", "CPS", "SCM", "GRD"],
   "featured_amenities": {
     "global": 3,
     "local": 2
   },
-  "research_order": [
-    "SASB",
-    "LPA",
-    "SC",
-    "SIBL"
-  ],
+  "research_order": ["SASB", "LPA", "SC", "SIBL"],
   "fundraising": {
     "statement": "Become a Member",
     "appeal": "Friends of the Library can support their favorite library and receive great benefits!",

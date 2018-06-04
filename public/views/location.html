@@ -104,7 +104,7 @@
       <div class="grid__item one-whole">
         <div class="callout">
           <div class='amenities-title'>
-            <h5>Highlighted Amenities: </h5>
+            <h2 class="epsilon">Highlighted Amenities: </h2>
           </div>
           <ul data-ng-if="location.amenities_list">
             <li data-ng-repeat="amenity in location.amenities_list"
@@ -132,8 +132,8 @@
     <h2 class="hdg">
       <span id="divisions">DIVISIONS</span>
     </h2>
-    <div class="grid">
-      <div class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
+    <ul class="grid">
+      <li class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
         data-ng-repeat='division in location._embedded.divisions'>
         <div class="division-wrapper">
           <a data-ui-sref="division({division: division.slug})"
@@ -143,13 +143,13 @@
             <img class="img--outline" data-ng-src="{{division.images.interior}}"
               alt=""/>
           </a>
-          <h4>
+          <h3 class="delta">
             <a data-ui-sref="division({division: division.slug})"
               analytics-on="click" analytics-category="Locations"
               analytics-event="Division Title" analytics-label="{{division.name}}">
               {{division.name}}
             </a>
-          </h4>
+          </h3>
           <!-- Division Hours Today -->
           <div class='division-hours-wrapper' data-ng-if="division.open">
             <todayshours hours="division.hours" alerts="division._embedded.alerts" />
@@ -158,8 +158,8 @@
             <b>Division is temporarily closed.</b>
           </div>
         </div>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 
   <!-- Features -->
@@ -167,8 +167,8 @@
     <h2 class="hdg">
       <span id="featured">FEATURED</span>
     </h2>
-    <div class="grid">
-      <div class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in location._embedded.features'>
+    <ul class="grid">
+      <li class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in location._embedded.features'>
         <a data-ng-href="{{feature._links.self.href}}" data-ng-if="feature.image"
           analytics-on="click" analytics-category="Locations"
           analytics-event="Feature image" analytics-label="{{feature._links.self.href}}"
@@ -185,8 +185,8 @@
           <span data-ng-if="!feature._links.self.href">{{feature.title}}</span>
         </h3>
         <div class="desc" data-ng-bind-html="feature.body"></div>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 
   <!-- Events -->
@@ -307,8 +307,8 @@
     <h2 class="hdg">
       <span id="blogs">BLOGS</span>
     </h2>
-    <div class="grid">
-      <div class="chunk one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
+    <ul class="grid">
+      <li class="chunk one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
         <h3>
           <a data-ng-href="{{blog._links.self.href}}"
             analytics-on="click" analytics-category="Locations"
@@ -331,8 +331,8 @@
           <span>{{blog.pubdate | dateToISO | date:'MMMM d, y'}}</span>
         </time>
         <div class="teaser desc" data-ng-if="blog.body" data-ng-bind-html="blog.body"></div>
-      </div>
-    </div>
+      </li>
+    </ul>
     <!-- More Link -->
     <div class="text--right" data-ng-if="location._links.blogs.all">
       <a class="read-more blogs-more" data-ng-href="{{location._links.blogs.all}}"
@@ -348,8 +348,8 @@
     <h2 class="hdg">
       <span id="exhibitions">EXHIBITIONS</span>
     </h2>
-    <div class="grid">
-      <div class="chunk one-whole lap-and-up-one-half" data-ng-repeat="exhibition in location._embedded.exhibitions | orderBy:'-start'">
+    <ul class="grid">
+      <li class="chunk one-whole lap-and-up-one-half" data-ng-repeat="exhibition in location._embedded.exhibitions | orderBy:'-start'">
         <a data-ng-href="{{exhibition._links.self.href}}" data-ng-if="exhibition.image"
           analytics-on="click" analytics-category="Locations"
           analytics-event="Exhibition image" analytics-label="{{exhibition._links.self.href}}"
@@ -365,14 +365,14 @@
         </h3>
         <time class="date">{{exhibition.prettyDate}}</time>
         <p class="teaser desc">{{exhibition.body}}</p>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 
   <!-- Ask/Donate -->
   <div class="ask-donate">
     <nypl-fundraising fundraising="location.fundraising" category="Locations"></nypl-fundraising><!--
-
+      This blank line keeps the divs before and after it in a side-by-side layout.
     --><div class="askNYPL grid__item one-whole lap-and-up-one-half " id="ask-nypl">
       <ul>
         <li class="asknum icon-phone">
