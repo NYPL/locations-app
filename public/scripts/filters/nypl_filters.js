@@ -11,8 +11,8 @@
      * @returns {string} Closed or open times for a branch with possible
      *  alert returned.
      * @description
-     *  timeFormat() filter formats military time to standard time. 
-     *  In addition, if an alert is present, it displays 
+     *  timeFormat() filter formats military time to standard time.
+     *  In addition, if an alert is present, it displays
      *  the approapriate message for a relevant alert.
      *  1) all day closing 2) early/late opening/closing
      */

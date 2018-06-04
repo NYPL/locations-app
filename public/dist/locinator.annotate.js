@@ -2857,7 +2857,7 @@ var nypl_widget = angular.module('nypl_widget', [
                     resetProperty(locations, 'highlight');
 
                     _.each(filteredLocations, function (location) {
-                        // To differentiate between angular matched filter 
+                        // To differentiate between angular matched filter
                         // results and reverse geocoding results.
                         location.highlight = 'active';
                         location.distance = '';
@@ -2896,7 +2896,7 @@ var nypl_widget = angular.module('nypl_widget', [
             },
 
             showLibrariesTypeOf = function (type) {
-                // undefined value for type is actually okay, 
+                // undefined value for type is actually okay,
                 // as it will show all locations if that's the case
                 $scope.location_type = type;
             },
@@ -2935,6 +2935,7 @@ var nypl_widget = angular.module('nypl_widget', [
                     locations = data.locations;
                     $scope.locations = locations;
 
+                    console.log(data.locations);
                     configureGlobalAlert();
 
                     _.each($scope.locations, function (location) {
@@ -2969,8 +2970,8 @@ var nypl_widget = angular.module('nypl_widget', [
                                 location.id
                             );
 
-                        // Initially, when the map is drawn and 
-                        // markers are available, they will be drawn too. 
+                        // Initially, when the map is drawn and
+                        // markers are available, they will be drawn too.
                         // No need to draw them again if they exist.
                         if (!nyplGeocoderService
                                 .doesMarkerExist(location.slug) &&
@@ -2995,7 +2996,7 @@ var nypl_widget = angular.module('nypl_widget', [
                             closedFn: branchClosedMessage
                         };
                         // Hours or closing message that will display
-                        location.hoursOrClosingMessage = 
+                        location.hoursOrClosingMessage =
                             nyplAlertsService
                                 .getHoursOrMessage(hoursMessageOpts);
                     });
@@ -4441,8 +4442,8 @@ var nypl_widget = angular.module('nypl_widget', [
      * @returns {string} Closed or open times for a branch with possible
      *  alert returned.
      * @description
-     *  timeFormat() filter formats military time to standard time. 
-     *  In addition, if an alert is present, it displays 
+     *  timeFormat() filter formats military time to standard time.
+     *  In addition, if an alert is present, it displays
      *  the approapriate message for a relevant alert.
      *  1) all day closing 2) early/late opening/closing
      */
