@@ -3603,7 +3603,7 @@ var nypl_widget = angular.module('nypl_widget', [
         };
 
         // Generates the correct string representation
-        // for today's hours with proper filter       
+        // for today's hours with proper filter
         this.getLocationHours = function (hoursObj, alertsObj) {
           return $filter('hoursTodayFormat')(nyplUtility.hoursToday(hoursObj, alertsObj));
         };
@@ -3682,7 +3682,7 @@ var nypl_widget = angular.module('nypl_widget', [
         $scope.buttonText = (scopedAlerts) ? 'Regular hours' : null;
 
         // Boolean control to display/hide dynamic week hours
-        $scope.displayDynamicWeek = ($scope.dynamicWeekHours 
+        $scope.displayDynamicWeek = ($scope.dynamicWeekHours
           && $scope.numAlertsInWeek > 0) ? true : false;
 
         // Hide Regular hours only if dynamic hours are defined
@@ -3841,7 +3841,7 @@ var nypl_widget = angular.module('nypl_widget', [
       link: function (scope, element, attrs, $window) {
         scope.openChat = function () {
           // Utilize service in directive to fire off the new window.
-          // Arguments: 
+          // Arguments:
           // link (req),
           // title (optional), width (optional), height (optional)
           nyplUtility.popupWindow(
@@ -4181,7 +4181,7 @@ var nypl_widget = angular.module('nypl_widget', [
 
         // Tab, Enter and Escape keys
         input.bind('keydown', function (e) {
-          if (e.keyCode === 9 || e.keyCode === 13 || e.keyCode === 27) {
+          if (e.keyCode === 13 || e.keyCode === 27) {
             e.preventDefault();
           }
 
@@ -4278,7 +4278,7 @@ var nypl_widget = angular.module('nypl_widget', [
           $scope.geocodingactive = false;
           if ($scope.currentIndex === -1) {
             $scope.currentIndex = $scope.filtered.length - 1;
-            $scope.active = this.activate($scope.filtered[$scope.currentIndex]);         
+            $scope.active = this.activate($scope.filtered[$scope.currentIndex]);
           }
           else if ($scope.currentIndex <= $scope.filtered.length && $scope.currentIndex > 0) {
             $scope.currentIndex = $scope.currentIndex - 1;
@@ -4295,7 +4295,7 @@ var nypl_widget = angular.module('nypl_widget', [
 
         this.setSearchText = function () {
           if ($scope.completeWord === $scope.model ||
-              $scope.completeWord === '' || 
+              $scope.completeWord === '' ||
               $scope.model === '') {
             return;
           }
