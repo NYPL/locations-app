@@ -136,7 +136,7 @@ describe('NYPL Directive Unit Tests', function () {
 
   /*
    * <todayshours hours=""></todayshours>
-   *   The todayshours directive returns text that should be displayed 
+   *   The todayshours directive returns text that should be displayed
    *   based on what time is currently is and what the library time is.
    *   It will display either closed, open today until, or not available
    *   if the API is down.
@@ -196,7 +196,7 @@ describe('NYPL Directive Unit Tests', function () {
       it('should display a clock icon', function() {
         $scope.showIcon = true;
         expect($scope.showIcon).toBeTruthy();
-      });    
+      });
 
       it('should display hours today message as "Not available"', function() {
         msg = todayshours.find('.msg');
@@ -461,7 +461,7 @@ describe('NYPL Directive Unit Tests', function () {
           {scope: 'location', only_closings: 'current'}
         );
         hoursToday = ctrl.computeHoursToday($scope.hours, alerts);
-        
+
         expect(hoursToday).toBe('Today: Closing early due to hazardous weather');
       });
 
@@ -796,7 +796,7 @@ describe('NYPL Directive Unit Tests', function () {
       });
     });
 
-    describe('Directive with Regular hours, without any closing ' + 
+    describe('Directive with Regular hours, without any closing ' +
       'alerts for the week',function () {
 
       it('should compile', function() {
@@ -813,8 +813,7 @@ describe('NYPL Directive Unit Tests', function () {
    */
   describe('Directive: emailusbutton', function () {
     var emailusbutton, template,
-      link = 'http://www.questionpoint.org/crs/servlet/org.oclc.' +
-      'admin.BuildForm?&institution=10208&type=1&language=1';
+      link = 'https://gethelp.nypl.org/customer/portal/emails/new';
 
     beforeEach(inject(function () {
       scope.link = link;
@@ -840,10 +839,7 @@ describe('NYPL Directive Unit Tests', function () {
   describe('Directive: librarianchatbutton', function () {
     var librarianchatbutton, template, nyplUtility;
 
-    beforeEach(inject(function (_nyplUtility_) {
-      nyplUtility = _nyplUtility_;
-      nyplUtility.popupWindow = jasmine.createSpy('popupWindow');
-
+    beforeEach(inject(function () {
       template = '<librarianchatbutton />';
       librarianchatbutton = createDirective(template);
     }));
@@ -853,28 +849,17 @@ describe('NYPL Directive Unit Tests', function () {
     });
 
     it('should create a link', function () {
-      expect(librarianchatbutton.text().trim())
-        .toEqual('Chat with a librarian');
+      var text = librarianchatbutton.text().split('\n');
+      text = text.map(function (t) {
+        if (t.trim().length) {
+          return t.trim();
+        }
+        return '';
+      });
+      expect(text.join(''))
+        .toEqual('Chat with a librarianMonday–Saturday, 9 AM–6 PM ET');
     });
 
-    it('should call the nyplUtility service to open a new window', function () {
-      librarianchatbutton.click();
-
-      expect(nyplUtility.popupWindow).toHaveBeenCalledWith(
-        'http://www.nypl.org/ask-librarian',
-        'NYPL Chat',
-        210,
-        450
-      );
-    });
-
-    it('should add an active class when clicked', function () {
-      expect(librarianchatbutton.attr('class')).not.toContain('active');
-
-      librarianchatbutton.click();
-
-      expect(librarianchatbutton.attr('class')).toContain('active');
-    });
   });
 
   /*
@@ -1362,7 +1347,6 @@ describe('NYPL Directive Unit Tests', function () {
 
     it('should compile', function () {
       expect(nyplFooter.find('.copyright').length).toBe(1);
-      expect(nyplFooter.find('.footerlinks ul').length).toBe(3);
     });
 
     it('should trigger click', function () {

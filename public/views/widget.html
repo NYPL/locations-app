@@ -14,8 +14,8 @@
       <!-- http://microformats.org/wiki/h-card -->
       <div class="p-adr" data-ng-if="!division">
         <div class="p-street-address">{{data.street_address}}</div>
-        <span class="p-locality">{{data.locality}}</span>, 
-        <span class="p-region">{{data.region}}</span>, 
+        <span class="p-locality">{{data.locality}}</span>,
+        <span class="p-region">{{data.region}}</span>,
         <span class="p-postal-code">{{data.postal_code}}</span>
         <div class="p-tel">{{data.contacts.phone}}</div>
         <div class="p-manager" data-ng-if="data.contacts.manager">
@@ -39,8 +39,8 @@
           , Room {{data.room}}
           </span>
         </div>
-        <span class="p-locality">{{data._embedded.location.locality}}</span>, 
-        <span class="p-region">{{data._embedded.location.region}}</span>, 
+        <span class="p-locality">{{data._embedded.location.locality}}</span>,
+        <span class="p-region">{{data._embedded.location.region}}</span>,
         <span class="p-postal-code">{{data._embedded.location.postal_code}}</span>
         <div class="p-tel">{{data.contacts.phone}}</div>
         <div class="p-manager" data-ng-if="data.contacts.manager">
@@ -97,7 +97,7 @@
         <h2>Branch is temporarily closed.</h2>
       </div>
     </div><!--
-      
+
     --><div class="grid__item lap-one-half one-whole grid--center learn-more">
       <p>
         <a class="gamma" data-ng-href="{{locinator_url}}"
@@ -114,9 +114,14 @@
     <nypl-fundraising fundraising="data.fundraising" category="Location Widget"></nypl-fundraising><!--
 
     --><div class="askNYPL grid__item one-whole lap-and-up-one-half " id="ask-nypl">
+      <h2>
+        <span id="ask-nypl-title">Ask NYPL</span>
+      </h2>
       <ul>
         <li class="asknum icon-phone">
-          <a href="tel:917-275-6975">917-ASK-NYPL</a>
+          Have a question? Call <a href="tel:917-275-6975" aria-label="9 1 7 ASK NYPL">917-ASK-NYPL</a><br />
+          <a href="tel:917-275-6975" aria-label="9 1 7 2 7 5 6 9 7 5">917-275-6975</a> |
+					TTY <a href="tel:212-930-0020" aria-label="2 1 2 9 3 0 0 0 2 0">212-930-0020</a>
         </li>
         <li>
           <librarianchatbutton
