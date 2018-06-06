@@ -161,6 +161,16 @@ time {
 		padding-left: 24px;
 	}
 
+	@include breakpoint($max, $palm) {
+		margin: 20px 0 0 0;
+	}
+
+	h2 {
+		font-size: 18px;
+		font-weight: normal;
+		text-align: center;
+	}
+
 	ul {
 		text-align: center;
 		color: #5e564b;
