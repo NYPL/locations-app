@@ -108,18 +108,15 @@
         <div class="subdivision-wrapper">
           <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})"
             analytics-on="click" analytics-category="Locations"
-            analytics-event="Division Image" analytics-label="{{subdivision.name}}"
+            analytics-event="Division item" analytics-label="{{subdivision.name}}"
             aria-hidden="true">
             <img data-ng-if="subdivision.images.interior" class="img--outline" 
             data-ng-src="{{subdivision.images.interior}}" alt=""/>
-          </a>
-          <h3 class="subdivision-title delta">
-            <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})"
-              analytics-on="click" analytics-category="Locations"
-              analytics-event="Division Title" analytics-label="{{subdivision.name}}">
+            <h3 class="subdivision-title delta">
               {{subdivision.name}}
-            </a>
-          </h3>
+            </h3>
+          </a>
+
           <!-- Subdivisions Hours Today -->
           <div class='subdivision-hours-wrapper' data-ng-if="subdivision.open">
             <todayshours hours="subdivision.hours" alerts="subdivision._embedded.alerts" />
@@ -245,19 +242,15 @@
       <li class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in division._embedded.features'>
         <a data-ng-if="feature.image" data-ng-href="{{feature._links.self.href}}"
           analytics-on="click" analytics-category="Locations"
-          analytics-event="Feature image" analytics-label="{{feature._links.self.href}}"
+          analytics-event="Feature item" analytics-label="{{feature._links.self.href}}"
           aria-hidden="true">
           <img class="img--left img--outline one-third lap-and-up-one-whole desk-one-third"
             data-ng-src="{{feature.image}}" alt="" />
-        </a>
-        <h3 class="feature-title" data-ng-if="feature.title">
-          <a data-ng-if="feature._links.self.href" data-ng-href="{{feature._links.self.href}}"
-            analytics-on="click" analytics-category="Locations"
-            analytics-event="Feature title" analytics-label="{{feature._links.self.href}}">
+          <h3 class="feature-title" data-ng-if="feature.title">
             {{feature.title}}
-          </a>
-          <span data-ng-if="!feature._links.self.href">{{feature.title}}</span>
-        </h3>
+            <span data-ng-if="!feature._links.self.href">{{feature.title}}</span>
+          </h3>
+        </a>
         <div class="desc" data-ng-bind-html="feature.body"></div>
       </li>
     </ul>
@@ -270,17 +263,12 @@
     </h2>
     <ul class="grid">
       <li class="chunk one-whole desk-one-third" data-ng-repeat='blog in division._embedded.blogs'>
-        <h3>
-          <a data-ng-href="{{blog._links.self.href}}"
-            analytics-on="click" analytics-category="Locations"
-            analytics-event="Blog title" analytics-label="{{blog._links.self.href}}">
-            {{blog.title}}
-          </a>
-        </h3>
-        <a data-ng-if="blog.image" data-ng-href="{{blog._links.self.href}}"
+        <a data-ng-href="{{blog._links.self.href}}"
           analytics-on="click" analytics-category="Locations"
-          analytics-event="Blog image" analytics-label="{{blog._links.self.href}}"
-          aria-hidden="true">
+          analytics-event="Blog item" analytics-label="{{blog._links.self.href}}">
+          <h3>
+            {{blog.title}}
+          </h3>
           <img class="img--left" data-ng-src="{{blog.image}}" alt="" style="max-width: 120px;" />
         </a>
         <div class="blog_author" data-ng-if="blog.author">
