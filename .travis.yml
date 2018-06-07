@@ -6,7 +6,7 @@ before_install:
 - bundle install
 - bower install --force
 script:
-- npm install --unsafe-perm=true
+- npm install
 - node_modules/jasmine/bin/jasmine.js test/unit/**/*Spec.js
 deploy:
 - provider: elasticbeanstalk
