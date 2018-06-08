@@ -4,6 +4,11 @@
 **/
 body {
 	background-color: #fff;
+
+	a:focus, button:focus {
+		outline: 5px solid #0f465c;
+		/*outline: 5px auto -webkit-focus-ring-color;*/
+	}
 }
 
 // Main page wrapper (Necessary for centering grid items)
