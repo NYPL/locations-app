@@ -71,8 +71,7 @@ module.exports = function (config) {
             'karma-script-launcher',
             'karma-jasmine',
             'karma-ng-html2js-preprocessor',
-            'karma-coverage',
-            'karma-phantomjs-launcher'
+            'karma-coverage'
         ],
 
         reporters: ['progress', 'coverage'],
