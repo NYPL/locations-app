@@ -1,3 +1,6 @@
+## Tag v1.10.2
+* TODO: add the updates that from sprint 12 here and update the version
+
 ## Tag v1.10.1
 * Update the NYPLBase version to 0.2.0.
 
