@@ -10,7 +10,7 @@ before_script:
   - sh -e /etc/init.d/xvfb start
 script:
 - npm install
-#- test/scripts/test-travis.sh
+- test/scripts/test-travis.sh
 deploy:
 - provider: elasticbeanstalk
   skip_cleanup: true
