@@ -6,10 +6,9 @@ body {
 	background-color: #fff;
 
 	a:focus, button:focus, input:focus {
-		outline: 5px solid #0f465c;
+		outline: 5px solid $focus-color !important;
 		overflow: visible;
-		box-shadow: 1px 1px 1px 1px darken(#0f465c, 10%);
-		border-radius: 0;
+		box-shadow: 1px 1px 1px 1px darken($focus-color, 10%);
 	}
 }
 
@@ -261,7 +260,10 @@ time {
 		position: relative;
 
 		&.active {
-			background-color: #FFFFCD;
+			background-color: #FFF;
+			outline: 5px solid $focus-color;
+			overflow: visible;
+			box-shadow: 1px 1px 1px 1px darken($focus-color, 10%);
 		}
 
 		.location-name {
@@ -291,7 +293,10 @@ time {
 		padding: 10px;
 
 		&.active {
-			background-color: #FFFFCD;
+			background-color: #FFF;
+			box-shadow: 1px 1px 1px 1px darken($focus-color, 10%);
+			outline: 5px solid $focus-color;
+			overflow: visible;
 		}
 
 		&:hover {
