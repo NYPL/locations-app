@@ -6,8 +6,10 @@ before_install:
 - bundle install
 - bower install --force
 before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+- export TZ=America/New_York
+- date
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
 script:
 - npm install
 - test/scripts/test-travis.sh
