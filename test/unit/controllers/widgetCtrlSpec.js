@@ -80,9 +80,9 @@ var mockGeneralResearchDivision = {
     ]},
     open: true,
     images: {
-      interior: "http://cdn-prod.www.aws.nypl.org/sites/default/files/" + 
+      interior: "http://cdn-prod.www.aws.nypl.org/sites/default/files/" +
         "images/locations/173/research_interior_sasb_periodicals.jpg",
-      collection_item: "http://cdn-prod.www.aws.nypl.org/sites/default/" + 
+      collection_item: "http://cdn-prod.www.aws.nypl.org/sites/default/" +
         "files/images/locations/173/dc_sasb_periodicals.jpg"
     },
     _embedded: {
@@ -174,7 +174,7 @@ describe('WidgetCtrl', function () {
     });
 
     it('should generate a url to the Locinator', function () {
-      expect(scope.locinator_url).toEqual('http://www.nypl.org/locations');
+      expect(scope.locinator_url).toEqual('//nypl.org/locations');
     });
 
     it('should get the widget\'s name', function () {
@@ -244,7 +244,7 @@ describe('WidgetCtrl', function () {
     });
 
     it('should generate a url to the Locinator', function () {
-      expect(scope.locinator_url).toEqual('http://www.nypl.org/locations');
+      expect(scope.locinator_url).toEqual('//nypl.org/locations');
     });
 
     it('should get the widget\'s name', function () {
@@ -288,7 +288,7 @@ describe('WidgetCtrl', function () {
     });
 
     it('should generate a url to the Locinator', function () {
-      expect(scope.locinator_url).toEqual('http://www.nypl.org/locations');
+      expect(scope.locinator_url).toEqual('//nypl.org/locations');
     });
 
     it('should get the widget\'s name', function () {
@@ -327,5 +327,3 @@ describe('WidgetCtrl', function () {
 
   });
 });
-
-

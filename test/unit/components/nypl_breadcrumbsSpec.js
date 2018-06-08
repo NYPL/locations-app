@@ -55,8 +55,8 @@ describe('Directive: nyplbreadcrumbs', function () {
     };
   });
 
-  it('should create an unordered list with class breadcrumb', function () {
-    var crumbList = nyplbreadcrumbs.find('ul');
+  it('should create an ordered list with class breadcrumb', function () {
+    var crumbList = nyplbreadcrumbs.find('ol');
     expect(crumbList.attr('class')).toContain('breadcrumb');
   });
 
