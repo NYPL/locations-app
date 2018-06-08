@@ -8,7 +8,7 @@ body {
 	a:focus, button:focus, input:focus {
 		outline: 5px solid $focus-color !important;
 		overflow: visible;
-		box-shadow: 1px 1px 1px 1px darken($focus-color, 10%);
+		box-shadow: 1px 1px 2px 2px darken($focus-color, 10%);
 	}
 }
 
@@ -263,7 +263,7 @@ time {
 			background-color: #FFF;
 			outline: 5px solid $focus-color;
 			overflow: visible;
-			box-shadow: 1px 1px 1px 1px darken($focus-color, 10%);
+			box-shadow: 1px 1px 2px 2px darken($focus-color, 10%);
 		}
 
 		.location-name {
@@ -294,7 +294,7 @@ time {
 
 		&.active {
 			background-color: #FFF;
-			box-shadow: 1px 1px 1px 1px darken($focus-color, 10%);
+			box-shadow: 1px 1px 2px 2px darken($focus-color, 10%);
 			outline: 5px solid $focus-color;
 			overflow: visible;
 		}
