@@ -162,7 +162,7 @@
         return function (input) {
             var d = moment(input),
                 day = apStyle(d.format('ddd'), 'day'),
-                month = apStyle(d.format('MMM'), 'month'),
+                month = apStyle(d.format('MMMM'), 'month'),
                 date = apStyle(d.format('DD'), 'date'),
                 year = d.format('YYYY'),
                 timeFormat = apStyle((d.format('H') + ':' + d.format('mm')), 'time');
@@ -199,6 +199,23 @@
             return apMonth(input);
         }
 
+        function mapDays (input) {
+          if (!input) {
+            return null;
+          }
+          var dayMap = {
+            'Mon': 'Monday',
+            'Tue': 'Tuesday',
+            'Wed': 'Wednesday',
+            'Thu': 'Thursday',
+            'Fri': 'Friday',
+            'Sat': 'Saturday',
+            'Sun': 'Sunday',
+          };
+
+          return dayMap[input];
+        }
+
         function apTime (input) {
             var timeArray = input.split(':'),
                 militaryHour = parseInt(timeArray[0], 10),
@@ -217,29 +234,11 @@
 
         function apDay (input) {
             var day = input.split('.')[0].slice(0, 3);
-
-            if (day === 'Tue') {
-                return 'Tues';
-            }
-            if (day ==='Thu') {
-                return 'Thurs';
-            }
-            return day;
+            return mapDays(day);
         }
 
         function apMonth (input) {
-            var month = input.slice(0, 3);
-
-            if (month === 'Jun') {
-                return 'June';
-            }
-            if (month === 'Jul') {
-                return 'July';
-            }
-            if (month === 'Sep') {
-                return 'Sept';
-            }
-            return month;
+            return input;
         }
     }
 

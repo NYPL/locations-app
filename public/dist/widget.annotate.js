@@ -1085,7 +1085,7 @@ var nypl_widget = angular.module('nypl_widget', [
         return function (input) {
             var d = moment(input),
                 day = apStyle(d.format('ddd'), 'day'),
-                month = apStyle(d.format('MMM'), 'month'),
+                month = apStyle(d.format('MMMM'), 'month'),
                 date = apStyle(d.format('DD'), 'date'),
                 year = d.format('YYYY'),
                 timeFormat = apStyle((d.format('H') + ':' + d.format('mm')), 'time');
@@ -1122,6 +1122,23 @@ var nypl_widget = angular.module('nypl_widget', [
             return apMonth(input);
         }
 
+        function mapDays (input) {
+          if (!input) {
+            return null;
+          }
+          var dayMap = {
+            'Mon': 'Monday',
+            'Tue': 'Tuesday',
+            'Wed': 'Wednesday',
+            'Thu': 'Thursday',
+            'Fri': 'Friday',
+            'Sat': 'Saturday',
+            'Sun': 'Sunday',
+          };
+
+          return dayMap[input];
+        }
+
         function apTime (input) {
             var timeArray = input.split(':'),
                 militaryHour = parseInt(timeArray[0], 10),
@@ -1140,29 +1157,11 @@ var nypl_widget = angular.module('nypl_widget', [
 
         function apDay (input) {
             var day = input.split('.')[0].slice(0, 3);
-
-            if (day === 'Tue') {
-                return 'Tues';
-            }
-            if (day ==='Thu') {
-                return 'Thurs';
-            }
-            return day;
+            return mapDays(day);
         }
 
         function apMonth (input) {
-            var month = input.slice(0, 3);
-
-            if (month === 'Jun') {
-                return 'June';
-            }
-            if (month === 'Jul') {
-                return 'July';
-            }
-            if (month === 'Sep') {
-                return 'Sept';
-            }
-            return month;
+            return input;
         }
     }
 
@@ -1624,9 +1623,9 @@ var nypl_widget = angular.module('nypl_widget', [
         $scope.numAlertsInWeek = ($scope.dynamicWeekHours) ?
           ctrl.findNumAlertsInWeek($scope.dynamicWeekHours) : 0;
 
-        // Call apWeekday for the syntax of weekday styling
+        // Call weekdayMapper for the syntax of weekday styling
         $scope.hours.map(function (item, index) {
-          item.day = ctrl.apWeekday(item.day);
+          item.day = ctrl.weekdayMapper(item.day);
           return item;
         });
 
@@ -1705,10 +1704,20 @@ var nypl_widget = angular.module('nypl_widget', [
             && today.isBefore(endDay)) ? true : false;
         };
 
-        // Call the filter dayFormatUppercase to convert the name of weekdays to AP style
-        this.apWeekday = function (day) {
-          day = (day) ? $filter('dayFormatUppercase')(day) : '';
-          return day;
+        this.weekdayMapper = function (day) {
+          day = day || '';
+          var dayMap = {
+            'Mon': 'Monday',
+            'Tue': 'Tuesday',
+            'Wed': 'Wednesday',
+            'Thu': 'Thursday',
+            'Fri': 'Friday',
+            'Sat': 'Saturday',
+            'Sun': 'Sunday',
+            '': '',
+          };
+
+          return dayMap[day];
         }
 
         this.assignDynamicDate = function (index) {
