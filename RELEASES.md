@@ -1,13 +1,13 @@
 ## Tag v1.11.0
 * Add CD/CI pipline for deployment.
-* Update styles focus outline for better accessibility performance.
+* Update styles for focus outline for better accessibility.
 * Update the structure of location and division pages to remove duplicated links.
 * Update `<main>` tag for better accessibility performance.
 * Update the texts for `See more` buttons on location and division pages.
-* Updated the HTML elements of breadcrumbs as `<nav>`.
-* Updated the contents and add the heading for `Ask NYPL` sections among all the pages.
+* Update the HTML element structure that make up the breadcrumbs component.
+* Update the contents and add the heading for `Ask NYPL` sections in all the pages.
 * Remove the abbreviations for days and months.
-* Update the headings of different sections from all caps to only first character uppercase.
+* Update the headings of different sections from all caps to capitalized.
 
 ## Tag v1.10.1
 * Update the NYPLBase version to 0.2.0.
