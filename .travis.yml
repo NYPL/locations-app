@@ -49,7 +49,7 @@ deploy:
   bucket_path: nypl-locations-development
   on:
     repo: NYPL/locations-app
-    branch: test-deploy-asknypl
+    branch: development
 env:
   global:
   - secure: gVgU1bK1h+sRDGinsiIMQ49AptUTRmpSLULydNynjEsxGR8aCMAVp3tCiqL6aZ0mOPVMvFObJ3i3otftpNrLeF19C9DaVi5ld0g+tHcl5Sap71i+Ll3z3ttjwMXPDrO42TUrrFQ4hjdHNUN618FbVlBv++N7LGZgqsEnj5TefMArMCVQIDIkw68MeD6wAeOTU8FVXXeLunJPm0jRUD7GUAGUDqUqkyceAyIm3Q+mvP35ThvEL0vriLAs8VhDNZMNpytqenomDavu8IJg/IX/C9abx9X6jVPSmuxuGmXyyK7BSjEStIXi7/KjhfKcQxtBj7m4Cb0PIoK2/nzzjg2Gh60Ladai7Z4bzsKbNAvooXBIDD3nSe+n/R0VnNUBJJiHCjshbhyDcl3b8IQKMfddfEvjD8MgYH2fWO5TAJuofwhy9IY2/WAvRm3mw7fyJROgr5bEaqyCO/QgtGzzBYCsFyzs+/MsT9GSFQPOXm7fAGYAx8V3pcCd0J/WGpjJ2m6mjJDd7EWuie7xpvx+aZG57JMAIYLwniXO+9uLlZUBgxZczbKikLkA7VUCXoIiWXrA0Yrd8Il1y0RNeQREJGngE0JPtz5wbHl6Pmb/if8hsc36iOkenqDZq/ADxszWpQ3cBz5QyEmq5Lb08GTh9GFnJHAj/fvY6OFFw2x+OCMRZL0=
