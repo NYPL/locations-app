@@ -1,5 +1,13 @@
-## Tag v1.10.2
-* TODO: add the updates that from sprint 12 here and update the version
+## Tag v1.11.0
+* Add CD/CI pipline for deployment.
+* Update styles focus outline for better accessibility performance.
+* Update the structure of location and division pages to remove duplicated links.
+* Update `<main>` tag for better accessibility performance.
+* Update the texts for `See more` buttons on location and division pages.
+* Updated the HTML elements of breadcrumbs as `<nav>`.
+* Updated the contents and add the heading for `Ask NYPL` sections among all the pages.
+* Remove the abbreviations for days and months.
+* Update the headings of different sections from all caps to only first character uppercase.
 
 ## Tag v1.10.1
 * Update the NYPLBase version to 0.2.0.
