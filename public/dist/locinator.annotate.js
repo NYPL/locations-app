@@ -10,10 +10,6 @@
  * @requires ngAnimate
  * @requires locationService
  * @requires coordinateService
- * @requires nyplFeedback
- * @requires nyplSearch
- * @requires nyplSSO
- * @requires nyplNavigation
  * @requires nyplBreadcrumbs
  * @requires nyplAlerts
  * @requires angulartics
@@ -28,10 +24,6 @@ var nypl_locations = angular.module('nypl_locations', [
   'ngAnimate',
   'locationService',
   'coordinateService',
-  'nyplFeedback',
-  'nyplSearch',
-  'nyplSSO',
-  'nyplNavigation',
   'nyplBreadcrumbs',
   'angulartics',
   'angulartics.google.analytics',
@@ -448,7 +440,7 @@ var nypl_widget = angular.module('nypl_widget', [
         resolve: {
           config: getConfig,
           data: LoadSubDivision
-        } 
+        }
       })
       .state('division', {
         url: '/widget/divisions/:division',
@@ -3501,31 +3493,6 @@ var nypl_widget = angular.module('nypl_widget', [
 
   /**
    * @ngdoc directive
-   * @name nypl_locations.directive:nyplTranslate
-   * @restrict E
-   * @description
-   * Directive to display a list of languages to translate the site into.
-   * Commented out until use.
-   * @example
-   * <pre>
-   *  <nypl-translate></nypl-translate>
-   * </pre>
-   */
-  // function nyplTranslate() {
-  //   return {
-  //     restrict: 'E',
-  //     templateUrl: 'scripts/directives/templates/translatebuttons.html',
-  //     replace: true,
-  //     controller: function ($scope, $translate) {
-  //       $scope.translate = function (language) {
-  //         $translate.use(language);
-  //       };
-  //     }
-  //   };
-  // }
-
-  /**
-   * @ngdoc directive
    * @name nypl_locations.directive:todayshours
    * @restrict EA
    * @scope
@@ -4400,7 +4367,6 @@ var nypl_widget = angular.module('nypl_widget', [
   angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
-    // .directive('nyplTranslate', nyplTranslate)
     .directive('todayshours', todayshours)
     .directive('hoursTable', hoursTable)
     .directive('emailusbutton', emailusbutton)

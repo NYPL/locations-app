@@ -10,10 +10,6 @@
  * @requires ngAnimate
  * @requires locationService
  * @requires coordinateService
- * @requires nyplFeedback
- * @requires nyplSearch
- * @requires nyplSSO
- * @requires nyplNavigation
  * @requires nyplBreadcrumbs
  * @requires nyplAlerts
  * @requires angulartics
@@ -28,10 +24,6 @@ var nypl_locations = angular.module('nypl_locations', [
   'ngAnimate',
   'locationService',
   'coordinateService',
-  'nyplFeedback',
-  'nyplSearch',
-  'nyplSSO',
-  'nyplNavigation',
   'nyplBreadcrumbs',
   'angulartics',
   'angulartics.google.analytics',
@@ -446,7 +438,7 @@ var nypl_widget = angular.module('nypl_widget', [
         resolve: {
           config: getConfig,
           data: LoadSubDivision
-        } 
+        }
       })
       .state('division', {
         url: '/widget/divisions/:division',
