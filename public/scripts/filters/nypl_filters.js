@@ -93,26 +93,6 @@
     }
     timeFormat.$inject = ["$sce"];
 
-
-    /**
-     * @ngdoc filter
-     * @name nypl_locations.filter:dayFormatUppercase
-     * @param {string} input ...
-     * @returns {string} ...
-     * @description
-     * Converts the syntax of week day to AP style with all the words uppercase.
-     * eg Sun. to SUN, Tue. to TUES
-     */
-    function dayFormatUppercase() {
-        return function (input) {
-            var day = (input) ? apStyle(input, 'day') : '',
-                days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
-                formattedDay = (_.contains(days, day)) ? day.toUpperCase() : '';
-
-            return formattedDay;
-        }
-    }
-
     /**
      * @ngdoc filter
      * @name nypl_locations.filter:dateMonthFormat
@@ -171,6 +151,52 @@
         }
     }
 
+    function mapDays (input) {
+      if (!input) {
+        return null;
+      }
+      var dayMap = {
+        'Mon': 'Monday',
+        'Tue': 'Tuesday',
+        'Wed': 'Wednesday',
+        'Thu': 'Thursday',
+        'Fri': 'Friday',
+        'Sat': 'Saturday',
+        'Sun': 'Sunday',
+        'Mon.': 'Monday',
+        'Tue.': 'Tuesday',
+        'Wed.': 'Wednesday',
+        'Thu.': 'Thursday',
+        'Fri.': 'Friday',
+        'Sat.': 'Saturday',
+        'Sun.': 'Sunday',
+      };
+
+      return dayMap[input];
+    }
+
+    function mapMonths (input) {
+      if (!input) {
+        return null;
+      }
+      var monthMap = {
+        'Jan': 'January',
+        'Feb': 'February',
+        'Mar': 'March',
+        'Apr': 'April',
+        'May': 'May',
+        'Jun': 'June',
+        'Jul': 'July',
+        'Aug': 'August',
+        'Sep': 'September',
+        'Oct': 'October',
+        'Nov': 'November',
+        'Dec': 'December',
+      };
+
+      return monthMap[input];
+    }
+
     /**
      * @ngdoc filter
      * @name nypl_locations.filter:apStyle
@@ -199,23 +225,6 @@
             return apMonth(input);
         }
 
-        function mapDays (input) {
-          if (!input) {
-            return null;
-          }
-          var dayMap = {
-            'Mon': 'Monday',
-            'Tue': 'Tuesday',
-            'Wed': 'Wednesday',
-            'Thu': 'Thursday',
-            'Fri': 'Friday',
-            'Sat': 'Saturday',
-            'Sun': 'Sunday',
-          };
-
-          return dayMap[input];
-        }
-
         function apTime (input) {
             var timeArray = input.split(':'),
                 militaryHour = parseInt(timeArray[0], 10),
@@ -238,6 +247,9 @@
         }
 
         function apMonth (input) {
+            if (input.length <= 3) {
+              return mapMonths(input);
+            }
             return input;
         }
     }
@@ -405,7 +417,6 @@
     angular
         .module('nypl_locations')
         .filter('timeFormat', timeFormat)
-        .filter('dayFormatUppercase', dayFormatUppercase)
         .filter('dateMonthFormat', dateMonthFormat)
         .filter('dateToISO', dateToISO)
         .filter('eventTimeFormat', eventTimeFormat)
@@ -415,7 +426,6 @@
 
     angular
         .module('nypl_widget')
-        .filter('dayFormatUppercase', dayFormatUppercase)
         .filter('hoursTodayFormat', hoursTodayFormat)
         .filter('dateMonthFormat', dateMonthFormat)
         .filter('eventTimeFormat', eventTimeFormat);

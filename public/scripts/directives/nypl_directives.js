@@ -179,7 +179,7 @@
   }
   todayshours.$inject = ['$nyplAlerts', 'nyplAlertsService', 'nyplUtility', '$filter'];
 
-  function hoursTable(nyplAlertsService, $filter) {
+  function hoursTable(nyplAlertsService, $filter, nyplUtility) {
     return {
       restrict: 'EA',
       templateUrl: 'scripts/directives/templates/hours-table.html',
@@ -213,9 +213,9 @@
         $scope.numAlertsInWeek = ($scope.dynamicWeekHours) ?
           ctrl.findNumAlertsInWeek($scope.dynamicWeekHours) : 0;
 
-        // Call weekdayMapper for the syntax of weekday styling
+        // Call nyplUtility.mapDays for the syntax of weekday styling
         $scope.hours.map(function (item, index) {
-          item.day = ctrl.weekdayMapper(item.day);
+          item.day = nyplUtility.mapDays(item.day);
           return item;
         });
 
@@ -266,9 +266,9 @@
                 day.alert = _this.assignCurrentDayAlert(alertsObj, day.date);
               }
               // Assign the day to a formatted AP style
-              day.day = (day.day) ? $filter('dayFormatUppercase')(day.day) : '';
+              day.day = (day.day) ? nyplUtility.mapDays(day.day) : '';
               // Assign the date object to a string so we can use it in the filter
-              day.dateString = moment(day.date._d).format('MMM DD');
+              day.dateString = moment(day.date._d).format('MMMM DD');
             });
 
           return week;
@@ -294,22 +294,6 @@
             && today.isBefore(endDay)) ? true : false;
         };
 
-        this.weekdayMapper = function (day) {
-          day = day || '';
-          var dayMap = {
-            'Mon': 'Monday',
-            'Tue': 'Tuesday',
-            'Wed': 'Wednesday',
-            'Thu': 'Thursday',
-            'Fri': 'Friday',
-            'Sat': 'Saturday',
-            'Sun': 'Sunday',
-            '': '',
-          };
-
-          return dayMap[day];
-        }
-
         this.assignDynamicDate = function (index) {
           var today = moment(),
             date;
@@ -318,7 +302,6 @@
           } else {
             date = moment().weekday(index).endOf('day');
           }
-          // console.log(date);
           return date;
         };
 
@@ -355,7 +338,7 @@
       }]
     };
   }
-  hoursTable.$inject = ['nyplAlertsService', '$filter'];
+  hoursTable.$inject = ['nyplAlertsService', '$filter', 'nyplUtility'];
 
   /**
    * @ngdoc directive

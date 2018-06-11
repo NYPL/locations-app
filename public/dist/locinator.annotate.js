@@ -3638,7 +3638,7 @@ var nypl_widget = angular.module('nypl_widget', [
   }
   todayshours.$inject = ['$nyplAlerts', 'nyplAlertsService', 'nyplUtility', '$filter'];
 
-  function hoursTable(nyplAlertsService, $filter) {
+  function hoursTable(nyplAlertsService, $filter, nyplUtility) {
     return {
       restrict: 'EA',
       templateUrl: 'scripts/directives/templates/hours-table.html',
@@ -3672,9 +3672,9 @@ var nypl_widget = angular.module('nypl_widget', [
         $scope.numAlertsInWeek = ($scope.dynamicWeekHours) ?
           ctrl.findNumAlertsInWeek($scope.dynamicWeekHours) : 0;
 
-        // Call weekdayMapper for the syntax of weekday styling
+        // Call nyplUtility.mapDays for the syntax of weekday styling
         $scope.hours.map(function (item, index) {
-          item.day = ctrl.weekdayMapper(item.day);
+          item.day = nyplUtility.mapDays(item.day);
           return item;
         });
 
@@ -3725,9 +3725,9 @@ var nypl_widget = angular.module('nypl_widget', [
                 day.alert = _this.assignCurrentDayAlert(alertsObj, day.date);
               }
               // Assign the day to a formatted AP style
-              day.day = (day.day) ? $filter('dayFormatUppercase')(day.day) : '';
+              day.day = (day.day) ? nyplUtility.mapDays(day.day) : '';
               // Assign the date object to a string so we can use it in the filter
-              day.dateString = moment(day.date._d).format('MMM DD');
+              day.dateString = moment(day.date._d).format('MMMM DD');
             });
 
           return week;
@@ -3753,22 +3753,6 @@ var nypl_widget = angular.module('nypl_widget', [
             && today.isBefore(endDay)) ? true : false;
         };
 
-        this.weekdayMapper = function (day) {
-          day = day || '';
-          var dayMap = {
-            'Mon': 'Monday',
-            'Tue': 'Tuesday',
-            'Wed': 'Wednesday',
-            'Thu': 'Thursday',
-            'Fri': 'Friday',
-            'Sat': 'Saturday',
-            'Sun': 'Sunday',
-            '': '',
-          };
-
-          return dayMap[day];
-        }
-
         this.assignDynamicDate = function (index) {
           var today = moment(),
             date;
@@ -3777,7 +3761,6 @@ var nypl_widget = angular.module('nypl_widget', [
           } else {
             date = moment().weekday(index).endOf('day');
           }
-          // console.log(date);
           return date;
         };
 
@@ -3814,7 +3797,7 @@ var nypl_widget = angular.module('nypl_widget', [
       }]
     };
   }
-  hoursTable.$inject = ['nyplAlertsService', '$filter'];
+  hoursTable.$inject = ['nyplAlertsService', '$filter', 'nyplUtility'];
 
   /**
    * @ngdoc directive
@@ -4533,26 +4516,6 @@ var nypl_widget = angular.module('nypl_widget', [
     }
     timeFormat.$inject = ["$sce"];
 
-
-    /**
-     * @ngdoc filter
-     * @name nypl_locations.filter:dayFormatUppercase
-     * @param {string} input ...
-     * @returns {string} ...
-     * @description
-     * Converts the syntax of week day to AP style with all the words uppercase.
-     * eg Sun. to SUN, Tue. to TUES
-     */
-    function dayFormatUppercase() {
-        return function (input) {
-            var day = (input) ? apStyle(input, 'day') : '',
-                days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
-                formattedDay = (_.contains(days, day)) ? day.toUpperCase() : '';
-
-            return formattedDay;
-        }
-    }
-
     /**
      * @ngdoc filter
      * @name nypl_locations.filter:dateMonthFormat
@@ -4611,6 +4574,52 @@ var nypl_widget = angular.module('nypl_widget', [
         }
     }
 
+    function mapDays (input) {
+      if (!input) {
+        return null;
+      }
+      var dayMap = {
+        'Mon': 'Monday',
+        'Tue': 'Tuesday',
+        'Wed': 'Wednesday',
+        'Thu': 'Thursday',
+        'Fri': 'Friday',
+        'Sat': 'Saturday',
+        'Sun': 'Sunday',
+        'Mon.': 'Monday',
+        'Tue.': 'Tuesday',
+        'Wed.': 'Wednesday',
+        'Thu.': 'Thursday',
+        'Fri.': 'Friday',
+        'Sat.': 'Saturday',
+        'Sun.': 'Sunday',
+      };
+
+      return dayMap[input];
+    }
+
+    function mapMonths (input) {
+      if (!input) {
+        return null;
+      }
+      var monthMap = {
+        'Jan': 'January',
+        'Feb': 'February',
+        'Mar': 'March',
+        'Apr': 'April',
+        'May': 'May',
+        'Jun': 'June',
+        'Jul': 'July',
+        'Aug': 'August',
+        'Sep': 'September',
+        'Oct': 'October',
+        'Nov': 'November',
+        'Dec': 'December',
+      };
+
+      return monthMap[input];
+    }
+
     /**
      * @ngdoc filter
      * @name nypl_locations.filter:apStyle
@@ -4639,23 +4648,6 @@ var nypl_widget = angular.module('nypl_widget', [
             return apMonth(input);
         }
 
-        function mapDays (input) {
-          if (!input) {
-            return null;
-          }
-          var dayMap = {
-            'Mon': 'Monday',
-            'Tue': 'Tuesday',
-            'Wed': 'Wednesday',
-            'Thu': 'Thursday',
-            'Fri': 'Friday',
-            'Sat': 'Saturday',
-            'Sun': 'Sunday',
-          };
-
-          return dayMap[input];
-        }
-
         function apTime (input) {
             var timeArray = input.split(':'),
                 militaryHour = parseInt(timeArray[0], 10),
@@ -4678,6 +4670,9 @@ var nypl_widget = angular.module('nypl_widget', [
         }
 
         function apMonth (input) {
+            if (input.length <= 3) {
+              return mapMonths(input);
+            }
             return input;
         }
     }
@@ -4845,7 +4840,6 @@ var nypl_widget = angular.module('nypl_widget', [
     angular
         .module('nypl_locations')
         .filter('timeFormat', timeFormat)
-        .filter('dayFormatUppercase', dayFormatUppercase)
         .filter('dateMonthFormat', dateMonthFormat)
         .filter('dateToISO', dateToISO)
         .filter('eventTimeFormat', eventTimeFormat)
@@ -4855,7 +4849,6 @@ var nypl_widget = angular.module('nypl_widget', [
 
     angular
         .module('nypl_widget')
-        .filter('dayFormatUppercase', dayFormatUppercase)
         .filter('hoursTodayFormat', hoursTodayFormat)
         .filter('dateMonthFormat', dateMonthFormat)
         .filter('eventTimeFormat', eventTimeFormat);
@@ -6358,6 +6351,30 @@ var nypl_widget = angular.module('nypl_widget', [
       this.scrollToHash();
     };
 
+    utility.mapDays = function (input) {
+      if (!input) {
+        return null;
+      }
+      var dayMap = {
+        'Mon': 'Monday',
+        'Tue': 'Tuesday',
+        'Wed': 'Wednesday',
+        'Thu': 'Thursday',
+        'Fri': 'Friday',
+        'Sat': 'Saturday',
+        'Sun': 'Sunday',
+        'Mon.': 'Monday',
+        'Tue.': 'Tuesday',
+        'Wed.': 'Wednesday',
+        'Thu.': 'Thursday',
+        'Fri.': 'Friday',
+        'Sat.': 'Saturday',
+        'Sun.': 'Sunday',
+      };
+
+      return dayMap[input];
+    };
+
     return utility;
   }
   nyplUtility.$inject = ['$anchorScroll', '$location', '$sce',
@@ -6373,4 +6390,3 @@ var nypl_widget = angular.module('nypl_widget', [
     .factory('nyplUtility', nyplUtility)
     .factory('requestNotificationChannel', requestNotificationChannel);
 })();
-
