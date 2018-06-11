@@ -29,7 +29,7 @@ Please refer to NYPL/aws for configuration using to NYPL Digital AWS accounts.
 ```
 eb deploy nypl-locations-<<environment name>> --profile <<AWS Profile Name>>
 ```
-The command above CAN be used for manual deployments, and SHOULD ONLY be used for troubleshooting when the CI/CD pipeline fails.
+The command above CAN be used for manual deployments, and SHOULD be used for troubleshooting when the CI/CD pipeline fails.
 
 ### Travis CI
 We use Travis CI integration with Github as our CI/CD pipeline. A configuration file `.travis.yml` is set up to trigger building, testing and deploying to AWS Elastic Beanstalk. The branches `development`, `qa`, and `production` are set to trigger deployment to AWS Elastic Beanstalk when build and test phases are both successful.
