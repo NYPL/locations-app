@@ -4,7 +4,7 @@ rvm:
 before_install:
 - npm install -g bower
 - bundle install
-- bower install --force
+- bower install
 before_script:
 - export TZ=America/New_York
 - date
