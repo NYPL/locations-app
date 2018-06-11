@@ -6,7 +6,7 @@ body {
 	background-color: #fff;
 
 	a:focus, button:focus, input:focus {
-		outline: 5px solid $focus-color !important;
+		outline: 5px solid $focus-color;
 		overflow: visible;
 		box-shadow: 1px 1px 2px 2px darken($focus-color, 10%);
 	}
