@@ -1,6 +1,8 @@
 language: ruby
 rvm:
 - 2.2
+addons:
+  chrome: stable # have Travis install chrome stable.
 before_install:
 - npm install -g bower
 - bundle install
@@ -12,7 +14,7 @@ before_script:
 - sh -e /etc/init.d/xvfb start
 script:
 - npm install
-- test/scripts/test-travis.sh
+- test/scripts/test.sh --single-run
 deploy:
 - provider: elasticbeanstalk
   skip_cleanup: true
