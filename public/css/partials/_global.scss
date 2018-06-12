@@ -14,12 +14,18 @@ body {
 	.grid {
 		.chunk {
 			a {
-				display: block;
+				display: inline-block;
 			}
 			.event-buttons {
 				a {
 					display: inline-block;
 				}
+			}
+		}
+
+		.division-wrapper {
+			a {
+				display: inline-block;
 			}
 		}
 	}
