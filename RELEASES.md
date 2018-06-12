@@ -9,6 +9,7 @@
 * Update the contents and add the heading for `Ask NYPL` sections in all the pages.
 * Remove the abbreviations for days and months.
 * Update the headings of different sections from all caps to capitalized.
+* Update rack to 1.5.4 and rack-protection to 1.5.5.
 
 ## Tag v1.10.1
 * Update the NYPLBase version to 0.2.0.
