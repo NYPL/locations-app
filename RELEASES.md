@@ -1,5 +1,6 @@
 ## Tag v1.11.0
 * Add CD/CI pipline for deployment.
+* Update test script to support testing with headless browsers and optional single-run mode.
 * Update styles for focus outline for better accessibility.
 * Update the structure of location and division pages to remove duplicated links.
 * Update `<main>` tag for better accessibility performance.
