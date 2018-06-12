@@ -42,31 +42,6 @@
 
   /**
    * @ngdoc directive
-   * @name nypl_locations.directive:nyplTranslate
-   * @restrict E
-   * @description
-   * Directive to display a list of languages to translate the site into.
-   * Commented out until use.
-   * @example
-   * <pre>
-   *  <nypl-translate></nypl-translate>
-   * </pre>
-   */
-  // function nyplTranslate() {
-  //   return {
-  //     restrict: 'E',
-  //     templateUrl: 'scripts/directives/templates/translatebuttons.html',
-  //     replace: true,
-  //     controller: function ($scope, $translate) {
-  //       $scope.translate = function (language) {
-  //         $translate.use(language);
-  //       };
-  //     }
-  //   };
-  // }
-
-  /**
-   * @ngdoc directive
    * @name nypl_locations.directive:todayshours
    * @restrict EA
    * @scope
@@ -941,7 +916,6 @@
   angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
-    // .directive('nyplTranslate', nyplTranslate)
     .directive('todayshours', todayshours)
     .directive('hoursTable', hoursTable)
     .directive('emailusbutton', emailusbutton)
