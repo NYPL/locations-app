@@ -69,7 +69,7 @@ module.exports = function (grunt) {
     ngdocs: {
       options: {
         dest: 'ngdocs',
-        scripts: ['public/bower_components/jquery/jquery.min.js',
+        scripts: ['public/bower_components/jquery/dist/jquery.min.js',
           'public/bower_components/angular/angular.js',
           'public/bower_components/angular-sanitize/angular-sanitize.js',
           'public/bower_components/angular-ui-router/release/angular-ui-router.js',
