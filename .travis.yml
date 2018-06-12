@@ -1,6 +1,7 @@
 language: ruby
 rvm:
 - 2.2
+sudo: required
 addons:
   chrome: stable # have Travis install chrome stable.
 before_install:
