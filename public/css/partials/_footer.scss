@@ -83,6 +83,14 @@ $footer-color: #54514A;
   position: relative;
   clear: both;
 
+  .footerLinks {
+    a {
+      &:focus {
+        margin: 0 .5rem 0;
+      }
+    }
+  }
+
   a {
     font-weight: 300;
     color: #fff;
