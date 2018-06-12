@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###################
-# Fires up karma test suite
+# Starts tests with karma test suite
 #
 # Arguments:
 #   (Optional) --single-run Enables single-run mode on karma
