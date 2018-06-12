@@ -546,6 +546,30 @@
       this.scrollToHash();
     };
 
+    utility.mapDays = function (input) {
+      if (!input) {
+        return null;
+      }
+      var dayMap = {
+        'Mon': 'Monday',
+        'Tue': 'Tuesday',
+        'Wed': 'Wednesday',
+        'Thu': 'Thursday',
+        'Fri': 'Friday',
+        'Sat': 'Saturday',
+        'Sun': 'Sunday',
+        'Mon.': 'Monday',
+        'Tue.': 'Tuesday',
+        'Wed.': 'Wednesday',
+        'Thu.': 'Thursday',
+        'Fri.': 'Friday',
+        'Sat.': 'Saturday',
+        'Sun.': 'Sunday',
+      };
+
+      return dayMap[input];
+    };
+
     return utility;
   }
   nyplUtility.$inject = ['$anchorScroll', '$location', '$sce',
@@ -561,4 +585,3 @@
     .factory('nyplUtility', nyplUtility)
     .factory('requestNotificationChannel', requestNotificationChannel);
 })();
-

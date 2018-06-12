@@ -8,7 +8,7 @@ module.exports = function (config) {
     basePath : '../../',
 
     files : [
-      'public/bower_components/jquery/jquery.js',
+      'public/bower_components/jquery/dist/jquery.js',
       'public/bower_components/angular/angular.js',
       'public/bower_components/angular-mocks/angular-mocks.js',
       'public/bower_components/angular-sanitize/angular-sanitize.js',
@@ -62,7 +62,7 @@ module.exports = function (config) {
 
     frameworks: ['jasmine'],
 
-    browsers : ['Chrome'],
+    browsers : ['ChromeHeadless', 'FirefoxHeadless'],
 
     plugins : [
       'karma-junit-reporter',

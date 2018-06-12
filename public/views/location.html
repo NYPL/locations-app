@@ -2,7 +2,7 @@
 <div class="individual-location {{location.type}} h-card">
   <!-- Breadcrumbs -->
   <nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>
-  
+
   <!-- Individual location alerts -->
   <nypl-location-alerts alerts="location._embedded.alerts" type="location"></nypl-location-alerts>
 
@@ -29,14 +29,14 @@
           <h2>Branch is temporarily closed.</h2>
         </div>
       </div><!--
-        
+
       --><div id="container__address" class="grid__item one-whole lap-one-half desk-one-third">
           <!-- This is h-card microformat -->
           <!-- http://microformats.org/wiki/h-card -->
           <div class="p-adr">
             <div class="p-street-address">{{location.street_address}}</div>
-            <span class="p-locality">{{location.locality}}</span>, 
-            <span class="p-region">{{location.region}}</span>, 
+            <span class="p-locality">{{location.locality}}</span>,
+            <span class="p-region">{{location.region}}</span>,
             <span class="p-postal-code">{{location.postal_code}}</span>
             <div class="p-tel">{{location.contacts.phone}}</div>
             <div class="p-manager" data-ng-if="location.contacts.manager">
@@ -56,7 +56,7 @@
               {{location.access}}
             </div>
             <div data-ng-if="location.access == 'Partially Accessible'" class="accessible">
-    
+
                 <div data-ng-if="location.accessibility_note">
 	                <span class="partially icon-accessibility"></span>
 	                {{location.accessibility_note}}
@@ -130,7 +130,7 @@
   <!-- Divisions (API dependent) -->
   <div id="container__divisions" data-ng-if="location.type == 'research' && location._embedded.divisions">
     <h2 class="hdg">
-      <span id="divisions">DIVISIONS</span>
+      <span id="divisions">Divisions</span>
     </h2>
     <ul class="grid">
       <li class="grid__item one-whole tablet-and-up-one-half lap-and-up-one-third"
@@ -160,7 +160,7 @@
   <!-- Features -->
   <div id="container__features" data-ng-if="location._embedded.features && location._embedded.features.length">
     <h2 class="hdg">
-      <span id="featured">FEATURED</span>
+      <span id="featured">Featured</span>
     </h2>
     <ul class="grid">
       <li class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in location._embedded.features'>
@@ -182,7 +182,7 @@
   <!-- Events -->
   <div id="container__events" data-ng-if="location._embedded.events && location._embedded.events.length">
     <h2 class="hdg">
-      <span id="events">EVENTS</span>
+      <span id="events">Events</span>
     </h2>
     <ul class="grid">
       <li class="chunk one-whole desk-one-third" data-ng-repeat="event in location._embedded.events">
@@ -224,7 +224,7 @@
           </aside>
         </div>
       </li>
-    </ul>   
+    </ul>
     <!-- More Events Link -->
     <div data-ng-if="location._links.events.all" class="text--right">
       <a class="read-more events-more" data-ng-href="{{location._links.events.all}}"
@@ -238,7 +238,7 @@
   <!-- About (multi-view conditional) -->
   <div id="container__about">
     <h2 class="hdg" data-ng-if="location.type == 'circulating'">
-      <span id="about">ABOUT</span>
+      <span id="about">About</span>
     </h2>
     <div class="grid">
       <div class="grid__item one-whole"
@@ -292,10 +292,10 @@
     </div>
   </div>
 
-  <!-- Blogs (conditonal) -->
+  <!-- Blogs (conditional) -->
   <div id="container__blogs" data-ng-if="location._embedded.blogs && location._embedded.blogs.length">
     <h2 class="hdg">
-      <span id="blogs">BLOGS</span>
+      <span id="blogs">Blogs</span>
     </h2>
     <ul class="grid">
       <li class="chunk one-whole desk-one-third" data-ng-repeat='blog in location._embedded.blogs'>
@@ -331,7 +331,7 @@
   <!-- Exhibitions (conditional) -->
   <div id="container__exhibitions" data-ng-if="location._embedded.exhibitions && location._embedded.exhibitions.length">
     <h2 class="hdg">
-      <span id="exhibitions">EXHIBITIONS</span>
+      <span id="exhibitions">Exhibitions</span>
     </h2>
     <ul class="grid">
       <li class="chunk one-whole lap-and-up-one-half" data-ng-repeat="exhibition in location._embedded.exhibitions | orderBy:'-start'">
@@ -359,8 +359,10 @@
         <span id="ask-nypl-title">Ask NYPL</span>
       </h2>
       <ul>
-        <li class="asknum icon-phone">
-          <a href="tel:917-275-6975">917-ASK-NYPL</a>
+        <li class="asknum">
+          Have a question? Call <a href="tel:917-275-6975" aria-label="9 1 7 ASK NYPL">917-ASK-NYPL</a><br />
+          <a href="tel:917-275-6975" aria-label="9 1 7 2 7 5 6 9 7 5">917-275-6975</a> |
+					TTY <a href="tel:212-930-0020" aria-label="2 1 2 9 3 0 0 0 2 0">212-930-0020</a>
         </li>
         <li><librarianchatbutton /></li>
         <li><emailusbutton link="{{location._links.contact.href}}" /></li>
