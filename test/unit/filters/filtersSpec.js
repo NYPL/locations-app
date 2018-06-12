@@ -74,39 +74,6 @@ describe('NYPL Filter Unit Tests', function () {
   });
 
   /*
-   * dayFormatUppercase
-   *   The input is a string of the name of the weekday.
-   *
-   *   Returns the name in AP style with uppercase.
-   */
-  describe('Filter: dayFormatUppercase', function () {
-    beforeEach(inject(function (_dayFormatUppercaseFilter_) {
-      dayFormatUppercaseFilter = _dayFormatUppercaseFilter_;
-    }));
-
-    it('should have a dayFormatUppercase function', function () {
-      expect(dayFormatUppercaseFilter).toBeDefined();
-      expect(angular.isFunction(dayFormatUppercaseFilter)).toBe(true);
-    });
-
-    it('should convert the names of week day into AP style', function () {
-      expect(dayFormatUppercaseFilter('Sun.')).toEqual('SUN');
-      expect(dayFormatUppercaseFilter('Tue.')).toEqual('TUES');
-      expect(dayFormatUppercaseFilter('Thu.')).toEqual('THURS');
-    });
-
-    it('should be an empty string if input is NOT a name of weekday', function () {
-      expect(dayFormatUppercaseFilter('Banana')).toEqual('');
-      expect(dayFormatUppercaseFilter()).toBeFalsy();
-    });
-
-    it('should be an empty string if input is NOT given', function () {
-      expect(dayFormatUppercaseFilter()).toEqual('');
-      expect(dayFormatUppercaseFilter()).toBeFalsy();
-    });
-  });
-
-  /*
    * dateMonthFormat
    *   The input is a string of the name of the weekday.
    *
@@ -123,10 +90,10 @@ describe('NYPL Filter Unit Tests', function () {
     });
 
     it('should convert the date and month of a date object into AP style', function () {
-      expect(dateMonthFormatFilter('Feb 16')).toEqual('Feb 16');
+      expect(dateMonthFormatFilter('Feb 16')).toEqual('February 16');
       expect(dateMonthFormatFilter('Jun 02')).toEqual('June 02');
       expect(dateMonthFormatFilter('Jul 07')).toEqual('July 07');
-      expect(dateMonthFormatFilter('Sep 21')).toEqual('Sept 21');
+      expect(dateMonthFormatFilter('Sep 21')).toEqual('September 21');
     });
 
     it('should be an empty string if input is NOT given', function () {
@@ -174,17 +141,17 @@ describe('NYPL Filter Unit Tests', function () {
 
     it('should convert event start time to AP Style', function () {
       expect(eventTimeFormatFilter('Tue Feb 09 2016 12:00:00 GMT-0500 (EST)'))
-        .toEqual('Tues, Feb 9 | 12 PM');
+        .toEqual('Tuesday, February 9 | 12 PM');
     });
 
     it('should convert event start time to AP Style', function () {
       expect(eventTimeFormatFilter('Thu Sep 15 2016 8:15:00 GMT-0400 (EST)'))
-        .toEqual('Thurs, Sept 15 | 8:15 AM');
+        .toEqual('Thursday, September 15 | 8:15 AM');
     });
 
     it('should convert event start time to AP Style', function () {
       expect(eventTimeFormatFilter('Fri Jul 08 2016 15:00:00 GMT-0400 (EST)'))
-        .toEqual('Fri, July 8 | 3 PM');
+        .toEqual('Friday, July 8 | 3 PM');
     });
   }); /* End eventTimeFormat */
 
@@ -239,7 +206,7 @@ describe('NYPL Filter Unit Tests', function () {
     });
 
     /* Tests each case missing an .open/.close property */
-    it('should display "Closed today" if no .open or .closed ' + 
+    it('should display "Closed today" if no .open or .closed ' +
       'object properties are in place', function () {
 
       expect(
@@ -330,7 +297,7 @@ describe('NYPL Filter Unit Tests', function () {
       });
     });
 
-    describe('when a location has closed and it is past midnight, ' + 
+    describe('when a location has closed and it is past midnight, ' +
       'esentially we are on the next day', function () {
 
       it('should display the open times for later today without minutes', function () {

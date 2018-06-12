@@ -11,8 +11,8 @@
      * @returns {string} Closed or open times for a branch with possible
      *  alert returned.
      * @description
-     *  timeFormat() filter formats military time to standard time. 
-     *  In addition, if an alert is present, it displays 
+     *  timeFormat() filter formats military time to standard time.
+     *  In addition, if an alert is present, it displays
      *  the approapriate message for a relevant alert.
      *  1) all day closing 2) early/late opening/closing
      */
@@ -93,26 +93,6 @@
     }
     timeFormat.$inject = ["$sce"];
 
-
-    /**
-     * @ngdoc filter
-     * @name nypl_locations.filter:dayFormatUppercase
-     * @param {string} input ...
-     * @returns {string} ...
-     * @description
-     * Converts the syntax of week day to AP style with all the words uppercase.
-     * eg Sun. to SUN, Tue. to TUES
-     */
-    function dayFormatUppercase() {
-        return function (input) {
-            var day = (input) ? apStyle(input, 'day') : '',
-                days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
-                formattedDay = (_.contains(days, day)) ? day.toUpperCase() : '';
-
-            return formattedDay;
-        }
-    }
-
     /**
      * @ngdoc filter
      * @name nypl_locations.filter:dateMonthFormat
@@ -162,13 +142,59 @@
         return function (input) {
             var d = moment(input),
                 day = apStyle(d.format('ddd'), 'day'),
-                month = apStyle(d.format('MMM'), 'month'),
+                month = apStyle(d.format('MMMM'), 'month'),
                 date = apStyle(d.format('DD'), 'date'),
                 year = d.format('YYYY'),
                 timeFormat = apStyle((d.format('H') + ':' + d.format('mm')), 'time');
 
             return (day + ', ' + month + ' ' + date + ' | '+ timeFormat);
         }
+    }
+
+    function mapDays (input) {
+      if (!input) {
+        return null;
+      }
+      var dayMap = {
+        'Mon': 'Monday',
+        'Tue': 'Tuesday',
+        'Wed': 'Wednesday',
+        'Thu': 'Thursday',
+        'Fri': 'Friday',
+        'Sat': 'Saturday',
+        'Sun': 'Sunday',
+        'Mon.': 'Monday',
+        'Tue.': 'Tuesday',
+        'Wed.': 'Wednesday',
+        'Thu.': 'Thursday',
+        'Fri.': 'Friday',
+        'Sat.': 'Saturday',
+        'Sun.': 'Sunday',
+      };
+
+      return dayMap[input];
+    }
+
+    function mapMonths (input) {
+      if (!input) {
+        return null;
+      }
+      var monthMap = {
+        'Jan': 'January',
+        'Feb': 'February',
+        'Mar': 'March',
+        'Apr': 'April',
+        'May': 'May',
+        'Jun': 'June',
+        'Jul': 'July',
+        'Aug': 'August',
+        'Sep': 'September',
+        'Oct': 'October',
+        'Nov': 'November',
+        'Dec': 'December',
+      };
+
+      return monthMap[input];
     }
 
     /**
@@ -217,29 +243,14 @@
 
         function apDay (input) {
             var day = input.split('.')[0].slice(0, 3);
-
-            if (day === 'Tue') {
-                return 'Tues';
-            }
-            if (day ==='Thu') {
-                return 'Thurs';
-            }
-            return day;
+            return mapDays(day);
         }
 
         function apMonth (input) {
-            var month = input.slice(0, 3);
-
-            if (month === 'Jun') {
-                return 'June';
+            if (input.length <= 3) {
+              return mapMonths(input);
             }
-            if (month === 'Jul') {
-                return 'July';
-            }
-            if (month === 'Sep') {
-                return 'Sept';
-            }
-            return month;
+            return input;
         }
     }
 
@@ -406,7 +417,6 @@
     angular
         .module('nypl_locations')
         .filter('timeFormat', timeFormat)
-        .filter('dayFormatUppercase', dayFormatUppercase)
         .filter('dateMonthFormat', dateMonthFormat)
         .filter('dateToISO', dateToISO)
         .filter('eventTimeFormat', eventTimeFormat)
@@ -416,7 +426,6 @@
 
     angular
         .module('nypl_widget')
-        .filter('dayFormatUppercase', dayFormatUppercase)
         .filter('hoursTodayFormat', hoursTodayFormat)
         .filter('dateMonthFormat', dateMonthFormat)
         .filter('eventTimeFormat', eventTimeFormat);
