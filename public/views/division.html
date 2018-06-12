@@ -69,15 +69,14 @@
             {{division.access}}
           </div>
           <div data-ng-if="division.access == 'Partially Accessible'" class="accessible">
-
-                <div data-ng-if="division.accessibility_note">
-	                <span class="partially icon-accessibility"></span>
-	                {{division.accessibility_note}}
-                </div>
-                <div data-ng-if="!division.accessibility_note">
-	               <span class="partially icon-accessibility"></span>
-	               {{division.access}}
-                </div>
+            <div data-ng-if="division.accessibility_note">
+              <span class="partially icon-accessibility"></span>
+              {{division.accessibility_note}}
+            </div>
+            <div data-ng-if="!division.accessibility_note">
+             <span class="partially icon-accessibility"></span>
+             {{division.access}}
+            </div>
           </div>
           <div data-ng-if="!division.access" class="not-accessible">
             <span class="none icon-accessibility"></span>
@@ -134,7 +133,7 @@
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-three-fifths">
         <h2 class="hdg">
-          <span id="about">ABOUT THE DIVISION</span>
+          <span id="about">About the Division</span>
         </h2>
         <img data-ng-if="division.images.collection_item" class="img--left img--outline division_second_image"
           data-ng-src="{{division.images.collection_item}}" style="max-width: 165px;" alt="{{division.images.collection_item_alt || ' '}}" />
@@ -180,7 +179,7 @@
   <!-- Division Events -->
   <div class="container__events" data-ng-if="division._embedded.events">
     <h2 class="hdg">
-      <span id="events">EVENTS</span>
+      <span id="events">Events</span>
     </h2>
     <ul class="grid">
       <li class="grid__item one-whole desk-one-third" data-ng-repeat="event in division._embedded.events">
@@ -191,7 +190,7 @@
             {{event.title}}
           </a>
         </h3>
-        <time class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
+        <time class="date">{{event.start | eventTimeFormat}}</time>
         <p class="desc">{{event.body}}</p>
         <div>
           <event-registration
@@ -236,7 +235,7 @@
   <!-- Features -->
   <div id="container__features" data-ng-if="division._embedded.features">
     <h2 class="hdg">
-      <span id="featured">FEATURED</span>
+      <span id="featured">Featured</span>
     </h2>
     <ul class="grid">
       <li class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in division._embedded.features'>
@@ -259,7 +258,7 @@
   <!-- Blogs (conditonal) -->
   <div id="container__blogs" data-ng-if="division._embedded.blogs">
     <h2 class="hdg">
-      <span id="blogs">BLOGS</span>
+      <span id="blogs">Blogs</span>
     </h2>
     <ul class="grid">
       <li class="chunk one-whole desk-one-third" data-ng-repeat='blog in division._embedded.blogs'>
@@ -299,7 +298,7 @@
         <span id="ask-nypl-title">Ask NYPL</span>
       </h2>
       <ul>
-        <li class="asknum icon-phone">
+        <li class="asknum">
           Have a question? Call <a href="tel:917-275-6975" aria-label="9 1 7 ASK NYPL">917-ASK-NYPL</a><br />
           <a href="tel:917-275-6975" aria-label="9 1 7 2 7 5 6 9 7 5">917-275-6975</a> |
 					TTY <a href="tel:212-930-0020" aria-label="2 1 2 9 3 0 0 0 2 0">212-930-0020</a>
