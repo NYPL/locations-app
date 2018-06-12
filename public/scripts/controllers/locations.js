@@ -168,7 +168,7 @@
                     resetProperty(locations, 'highlight');
 
                     _.each(filteredLocations, function (location) {
-                        // To differentiate between angular matched filter 
+                        // To differentiate between angular matched filter
                         // results and reverse geocoding results.
                         location.highlight = 'active';
                         location.distance = '';
@@ -207,7 +207,7 @@
             },
 
             showLibrariesTypeOf = function (type) {
-                // undefined value for type is actually okay, 
+                // undefined value for type is actually okay,
                 // as it will show all locations if that's the case
                 $scope.location_type = type;
             },
@@ -280,8 +280,8 @@
                                 location.id
                             );
 
-                        // Initially, when the map is drawn and 
-                        // markers are available, they will be drawn too. 
+                        // Initially, when the map is drawn and
+                        // markers are available, they will be drawn too.
                         // No need to draw them again if they exist.
                         if (!nyplGeocoderService
                                 .doesMarkerExist(location.slug) &&
@@ -306,7 +306,7 @@
                             closedFn: branchClosedMessage
                         };
                         // Hours or closing message that will display
-                        location.hoursOrClosingMessage = 
+                        location.hoursOrClosingMessage =
                             nyplAlertsService
                                 .getHoursOrMessage(hoursMessageOpts);
                     });

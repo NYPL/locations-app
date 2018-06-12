@@ -210,10 +210,6 @@ time {
 			list-style-type: none;
 			margin-bottom: .5rem;
 
-			&.asknum {
-				font-size: 24px;
-			}
-
 			.askchat,.askemail {
 				display: inline-block;
 				background-color: #ece94c;
@@ -622,4 +618,11 @@ time {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
+}
+
+// The .hdg class is a pattern coming from NYPLBase. It is overridden here
+// since it's a heading pattern used there and there's no clear future plan
+// to update it so for now this change will only be affected in this app.
+.hdg {
+	text-transform: none;
 }
