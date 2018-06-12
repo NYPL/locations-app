@@ -62,7 +62,7 @@ module.exports = function (config) {
 
     frameworks: ['jasmine'],
 
-    browsers : ['Chrome'],
+    browsers : ['ChromeHeadless', 'FirefoxHeadless'],
 
     plugins : [
       'karma-junit-reporter',
