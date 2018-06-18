@@ -28,7 +28,7 @@ deploy:
   bucket_path: nypl-locations-production
   on:
     repo: NYPL/locations-app
-    branch: production
+    branch: master
 - provider: elasticbeanstalk
   skip_cleanup: true
   access_key_id: "$AWS_ACCESS_KEY_ID_PRODUCTION"
