@@ -4,6 +4,31 @@
 **/
 body {
 	background-color: #fff;
+
+	a:focus, button:focus, input:focus {
+		outline: 5px solid $focus-color;
+		overflow: visible;
+		box-shadow: 1px 1px 2px 2px darken($focus-color, 10%);
+	}
+
+	.grid {
+		.chunk {
+			a {
+				display: inline-block;
+			}
+			.event-buttons {
+				a {
+					display: inline-block;
+				}
+			}
+		}
+
+		.division-wrapper {
+			a {
+				display: inline-block;
+			}
+		}
+	}
 }
 
 // Main page wrapper (Necessary for centering grid items)
@@ -161,6 +186,16 @@ time {
 		padding-left: 24px;
 	}
 
+	@include breakpoint($max, $palm) {
+		margin: 20px 0 0 0;
+	}
+
+	h2 {
+		font-size: 18px;
+		font-weight: normal;
+		text-align: center;
+	}
+
 	ul {
 		text-align: center;
 		color: #5e564b;
@@ -174,18 +209,6 @@ time {
 			display: block;
 			list-style-type: none;
 			margin-bottom: .5rem;
-
-			&.asknum {
-				font-size: 24px;
-
-				@include breakpoint($min, $post-palm) {
-					font-size: 36px;
-				}
-
-				a {
-					text-decoration: none;
-				}
-			}
 
 			.askchat,.askemail {
 				display: inline-block;
@@ -252,7 +275,10 @@ time {
 		position: relative;
 
 		&.active {
-			background-color: #FFFFCD;
+			background-color: #FFF;
+			outline: 5px solid $focus-color;
+			overflow: visible;
+			box-shadow: 1px 1px 2px 2px darken($focus-color, 10%);
 		}
 
 		.location-name {
@@ -282,7 +308,10 @@ time {
 		padding: 10px;
 
 		&.active {
-			background-color: #FFFFCD;
+			background-color: #FFF;
+			box-shadow: 1px 1px 2px 2px darken($focus-color, 10%);
+			outline: 5px solid $focus-color;
+			overflow: visible;
 		}
 
 		&:hover {
@@ -578,4 +607,22 @@ time {
 			}
 		}
 	}
+}
+
+.nypl-screenreader-only {
+	position: absolute;
+  width: 0.1rem;
+  height: 0.1rem;
+  margin: -0.1rem;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+// The .hdg class is a pattern coming from NYPLBase. It is overridden here
+// since it's a heading pattern used there and there's no clear future plan
+// to update it so for now this change will only be affected in this app.
+.hdg {
+	text-transform: none;
 }

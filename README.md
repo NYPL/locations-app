@@ -139,6 +139,6 @@ Run `Locations App` in the correct environment, and the updates should be applie
 
 ### Test the styles from NYPLBase locally
 
-We can test how the CSS min files of `NYPLBase` work on `Locations App` directly. First, disable the current stylesheet from Cloudfront in `view/index.erb` by removing or commenting out the line, `<link rel="stylesheet" href="<%= settings.env_config['nyplbase'] %>" type="text/css" media="screen" />`. Second, add `<link rel="stylesheet" href="css/nyplbaseTest.min.css" type="text/css" />` in the same file, `view/index.erb`. Last, create a new file named `nyplbaseTest.min.css` in the folder `public/css` and paste the contents from `nyplbaseTest.min.css` to this folder. To compile the correct `nyplbaseTest.min.css` at `NYPLBase`, please check its documentation.
+We can test how the CSS min files of `NYPLBase` work on `Locations App` directly. First, disable the current stylesheet from Cloudfront in `views/index.erb` by removing or commenting out the line, `<link rel="stylesheet" href="<%= settings.env_config['nyplbase'] %>" type="text/css" media="screen" />`. Second, add `<link rel="stylesheet" href="css/nyplbaseTest.min.css" type="text/css" />` in the same file, `view/index.erb`. Last, create a new file named `nyplbaseTest.min.css` in the folder `public/css` and paste the contents from `nyplbaseTest.min.css` to this folder. To compile the correct `nyplbaseTest.min.css` at `NYPLBase`, please check its documentation.
 
 Run Locations App, it should pick up the styles you created at NYPLBase.

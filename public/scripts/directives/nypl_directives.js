@@ -42,31 +42,6 @@
 
   /**
    * @ngdoc directive
-   * @name nypl_locations.directive:nyplTranslate
-   * @restrict E
-   * @description
-   * Directive to display a list of languages to translate the site into.
-   * Commented out until use.
-   * @example
-   * <pre>
-   *  <nypl-translate></nypl-translate>
-   * </pre>
-   */
-  // function nyplTranslate() {
-  //   return {
-  //     restrict: 'E',
-  //     templateUrl: 'scripts/directives/templates/translatebuttons.html',
-  //     replace: true,
-  //     controller: function ($scope, $translate) {
-  //       $scope.translate = function (language) {
-  //         $translate.use(language);
-  //       };
-  //     }
-  //   };
-  // }
-
-  /**
-   * @ngdoc directive
    * @name nypl_locations.directive:todayshours
    * @restrict EA
    * @scope
@@ -179,7 +154,7 @@
   }
   todayshours.$inject = ['$nyplAlerts', 'nyplAlertsService', 'nyplUtility', '$filter'];
 
-  function hoursTable(nyplAlertsService, $filter) {
+  function hoursTable(nyplAlertsService, $filter, nyplUtility) {
     return {
       restrict: 'EA',
       templateUrl: 'scripts/directives/templates/hours-table.html',
@@ -213,9 +188,9 @@
         $scope.numAlertsInWeek = ($scope.dynamicWeekHours) ?
           ctrl.findNumAlertsInWeek($scope.dynamicWeekHours) : 0;
 
-        // Call apWeekday for the syntax of weekday styling
+        // Call nyplUtility.mapDays for the syntax of weekday styling
         $scope.hours.map(function (item, index) {
-          item.day = ctrl.apWeekday(item.day);
+          item.day = nyplUtility.mapDays(item.day);
           return item;
         });
 
@@ -266,9 +241,9 @@
                 day.alert = _this.assignCurrentDayAlert(alertsObj, day.date);
               }
               // Assign the day to a formatted AP style
-              day.day = (day.day) ? $filter('dayFormatUppercase')(day.day) : '';
+              day.day = (day.day) ? nyplUtility.mapDays(day.day) : '';
               // Assign the date object to a string so we can use it in the filter
-              day.dateString = moment(day.date._d).format('MMM DD');
+              day.dateString = moment(day.date._d).format('MMMM DD');
             });
 
           return week;
@@ -294,12 +269,6 @@
             && today.isBefore(endDay)) ? true : false;
         };
 
-        // Call the filter dayFormatUppercase to convert the name of weekdays to AP style
-        this.apWeekday = function (day) {
-          day = (day) ? $filter('dayFormatUppercase')(day) : '';
-          return day;
-        }
-
         this.assignDynamicDate = function (index) {
           var today = moment(),
             date;
@@ -308,7 +277,6 @@
           } else {
             date = moment().weekday(index).endOf('day');
           }
-          // console.log(date);
           return date;
         };
 
@@ -345,7 +313,7 @@
       }]
     };
   }
-  hoursTable.$inject = ['nyplAlertsService', '$filter'];
+  hoursTable.$inject = ['nyplAlertsService', '$filter', 'nyplUtility'];
 
   /**
    * @ngdoc directive
@@ -948,7 +916,6 @@
   angular
     .module('nypl_locations')
     .directive('loadingWidget', loadingWidget)
-    // .directive('nyplTranslate', nyplTranslate)
     .directive('todayshours', todayshours)
     .directive('hoursTable', hoursTable)
     .directive('emailusbutton', emailusbutton)

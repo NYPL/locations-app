@@ -2,7 +2,7 @@
 <div class="individual-division">
   <!-- Breadcrumbs -->
   <nypl-breadcrumbs crumb-name="data.crumbName"></nypl-breadcrumbs>
-  
+
   <!-- Individual division alerts -->
   <nypl-location-alerts alerts="division._embedded.alerts" type="division"></nypl-location-alerts>
 
@@ -14,7 +14,7 @@
         <div class="callout branch-open" data-ng-if="division.open">
           <!-- Hours Today -->
           <todayshours hours="division.hours" alerts="division._embedded.alerts" display-icon="true" />
-          
+
           <div id="location-hours" class="location-hours" data-ng-if="division.hours">
             <!-- Hours Table -->
             <hours-table hours="division.hours.regular" alerts="division._embedded.alerts">
@@ -34,9 +34,9 @@
         <!-- Division Image -->
         <img class="img--outline main_division_image" data-ng-src="{{division.images.interior}}" alt="" />
       </div><!--
-      
+
       --><div id="container__div_address" class="grid__item lap-one-half one-whole desk-one-third">
-        
+
         <!-- Division address and related location data -->
         <div class="div_name">{{location.name}}</div>
         <div class="div_loc_info">
@@ -69,15 +69,14 @@
             {{division.access}}
           </div>
           <div data-ng-if="division.access == 'Partially Accessible'" class="accessible">
-    
-                <div data-ng-if="division.accessibility_note">
-	                <span class="partially icon-accessibility"></span>
-	                {{division.accessibility_note}}
-                </div>
-                <div data-ng-if="!division.accessibility_note">
-	               <span class="partially icon-accessibility"></span>
-	               {{division.access}}
-                </div>
+            <div data-ng-if="division.accessibility_note">
+              <span class="partially icon-accessibility"></span>
+              {{division.accessibility_note}}
+            </div>
+            <div data-ng-if="!division.accessibility_note">
+             <span class="partially icon-accessibility"></span>
+             {{division.access}}
+            </div>
           </div>
           <div data-ng-if="!division.access" class="not-accessible">
             <span class="none icon-accessibility"></span>
@@ -108,18 +107,15 @@
         <div class="subdivision-wrapper">
           <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})"
             analytics-on="click" analytics-category="Locations"
-            analytics-event="Division Image" analytics-label="{{subdivision.name}}"
+            analytics-event="Division item" analytics-label="{{subdivision.name}}"
             aria-hidden="true">
-            <img data-ng-if="subdivision.images.interior" class="img--outline" 
+            <img data-ng-if="subdivision.images.interior" class="img--outline"
             data-ng-src="{{subdivision.images.interior}}" alt=""/>
-          </a>
-          <h3 class="subdivision-title delta">
-            <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})"
-              analytics-on="click" analytics-category="Locations"
-              analytics-event="Division Title" analytics-label="{{subdivision.name}}">
+            <h3 class="subdivision-title delta">
               {{subdivision.name}}
-            </a>
-          </h3>
+            </h3>
+          </a>
+
           <!-- Subdivisions Hours Today -->
           <div class='subdivision-hours-wrapper' data-ng-if="subdivision.open">
             <todayshours hours="subdivision.hours" alerts="subdivision._embedded.alerts" />
@@ -137,7 +133,7 @@
     <div class="grid">
       <div class="grid__item one-whole lap-and-up-three-fifths">
         <h2 class="hdg">
-          <span id="about">ABOUT THE DIVISION</span>
+          <span id="about">About the Division</span>
         </h2>
         <img data-ng-if="division.images.collection_item" class="img--left img--outline division_second_image"
           data-ng-src="{{division.images.collection_item}}" style="max-width: 165px;" alt="{{division.images.collection_item_alt || ' '}}" />
@@ -146,7 +142,7 @@
           <a class="read-more collection-more" data-ng-href="{{division._links.self.about}}"
             analytics-on="click" analytics-category="Locations"
             analytics-event="Click" analytics-label="Learn More">
-            Learn more</a>
+            Learn more about this division</a>
         </div>
       </div><!--
 
@@ -183,7 +179,7 @@
   <!-- Division Events -->
   <div class="container__events" data-ng-if="division._embedded.events">
     <h2 class="hdg">
-      <span id="events">EVENTS</span>
+      <span id="events">Events</span>
     </h2>
     <ul class="grid">
       <li class="grid__item one-whole desk-one-third" data-ng-repeat="event in division._embedded.events">
@@ -194,7 +190,7 @@
             {{event.title}}
           </a>
         </h3>
-        <time class="date">{{event.start | dateToISO | date:'EEEE, MMMM d, y, h:mma'}}</time>
+        <time class="date">{{event.start | eventTimeFormat}}</time>
         <p class="desc">{{event.body}}</p>
         <div>
           <event-registration
@@ -226,7 +222,7 @@
         </div>
       </li>
     </ul>
-      
+
     <div class="text--right">
       <a class="read-more events-more" data-ng-href="{{location._links.events.all}}"
         analytics-on="click" analytics-category="Locations"
@@ -239,25 +235,21 @@
   <!-- Features -->
   <div id="container__features" data-ng-if="division._embedded.features">
     <h2 class="hdg">
-      <span id="featured">FEATURED</span>
+      <span id="featured">Featured</span>
     </h2>
     <ul class="grid">
       <li class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in division._embedded.features'>
         <a data-ng-if="feature.image" data-ng-href="{{feature._links.self.href}}"
           analytics-on="click" analytics-category="Locations"
-          analytics-event="Feature image" analytics-label="{{feature._links.self.href}}"
+          analytics-event="Feature item" analytics-label="{{feature._links.self.href}}"
           aria-hidden="true">
           <img class="img--left img--outline one-third lap-and-up-one-whole desk-one-third"
             data-ng-src="{{feature.image}}" alt="" />
-        </a>
-        <h3 class="feature-title" data-ng-if="feature.title">
-          <a data-ng-if="feature._links.self.href" data-ng-href="{{feature._links.self.href}}"
-            analytics-on="click" analytics-category="Locations"
-            analytics-event="Feature title" analytics-label="{{feature._links.self.href}}">
+          <h3 class="feature-title" data-ng-if="feature.title">
             {{feature.title}}
-          </a>
-          <span data-ng-if="!feature._links.self.href">{{feature.title}}</span>
-        </h3>
+            <span data-ng-if="!feature._links.self.href">{{feature.title}}</span>
+          </h3>
+        </a>
         <div class="desc" data-ng-bind-html="feature.body"></div>
       </li>
     </ul>
@@ -266,21 +258,16 @@
   <!-- Blogs (conditonal) -->
   <div id="container__blogs" data-ng-if="division._embedded.blogs">
     <h2 class="hdg">
-      <span id="blogs">BLOGS</span>
+      <span id="blogs">Blogs</span>
     </h2>
     <ul class="grid">
       <li class="chunk one-whole desk-one-third" data-ng-repeat='blog in division._embedded.blogs'>
-        <h3>
-          <a data-ng-href="{{blog._links.self.href}}"
-            analytics-on="click" analytics-category="Locations"
-            analytics-event="Blog title" analytics-label="{{blog._links.self.href}}">
-            {{blog.title}}
-          </a>
-        </h3>
-        <a data-ng-if="blog.image" data-ng-href="{{blog._links.self.href}}"
+        <a data-ng-href="{{blog._links.self.href}}"
           analytics-on="click" analytics-category="Locations"
-          analytics-event="Blog image" analytics-label="{{blog._links.self.href}}"
-          aria-hidden="true">
+          analytics-event="Blog item" analytics-label="{{blog._links.self.href}}">
+          <h3>
+            {{blog.title}}
+          </h3>
           <img class="img--left" data-ng-src="{{blog.image}}" alt="" style="max-width: 120px;" />
         </a>
         <div class="blog_author" data-ng-if="blog.author">
@@ -307,9 +294,14 @@
     <nypl-fundraising fundraising="division.fundraising" category="Locations"></nypl-fundraising><!--
       This blank line keeps the divs before and after it in a side-by-side layout.
     --><div class="askNYPL grid__item one-whole lap-and-up-one-half " id="ask-nypl">
+      <h2>
+        <span id="ask-nypl-title">Ask NYPL</span>
+      </h2>
       <ul>
-        <li class="asknum icon-phone">
-          <a href="tel:917-275-6975">917-ASK-NYPL</a>
+        <li class="asknum">
+          Have a question? Call <a href="tel:917-275-6975" aria-label="9 1 7 ASK NYPL">917-ASK-NYPL</a><br />
+          <a href="tel:917-275-6975" aria-label="9 1 7 2 7 5 6 9 7 5">917-275-6975</a> |
+					<abbr title="Teletype">TTY</abbr> <a href="tel:212-930-0020" aria-label="2 1 2 9 3 0 0 0 2 0">212-930-0020</a>
         </li>
         <li><librarianchatbutton /></li>
         <li><emailusbutton link="{{division._links.contact.href}}" /></li>
