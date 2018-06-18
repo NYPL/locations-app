@@ -1,3 +1,6 @@
+## Tag v1.11.1
+* Update production deployment branch to master on CI/CD pipeline.
+
 ## Tag v1.11.0
 * Add CD/CI pipline for deployment.
 * Update test script to support testing with headless browsers and optional single-run mode.
