@@ -164,11 +164,14 @@
     </h2>
     <ul class="grid">
       <li class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in location._embedded.features'>
-        <a data-ng-href="{{feature._links.self.href}}" data-ng-if="feature.image"
+        <a data-ng-href="{{feature._links.self.href}}"
           analytics-on="click" analytics-category="Locations"
           analytics-event="Feature item" analytics-label="{{feature._links.self.href}}">
-          <img class="one-third lap-and-up-one-whole desk-one-third img--left img--outline"
-            data-ng-src="{{feature.image}}" alt="" />
+          <img
+            data-ng-if="feature.image"
+            class="one-third lap-and-up-one-whole desk-one-third img--left img--outline"
+            data-ng-src="{{feature.image}}"
+            alt="" />
           <h3 class="feature-title">
             {{feature.title}}
             <span data-ng-if="!feature._links.self.href">{{feature.title}}</span>
@@ -335,11 +338,16 @@
     </h2>
     <ul class="grid">
       <li class="chunk one-whole lap-and-up-one-half" data-ng-repeat="exhibition in location._embedded.exhibitions | orderBy:'-start'">
-        <a data-ng-href="{{exhibition._links.self.href}}" data-ng-if="exhibition.image"
+        <a data-ng-href="{{exhibition._links.self.href}}"
           analytics-on="click" analytics-category="Locations"
           analytics-event="Exhibition item" analytics-label="{{exhibition._links.self.href}}"
           aria-hidden="true">
-          <img class="img--left" data-ng-src="{{exhibition.image}}" style="height: 100px;" alt="" />
+          <img
+            data-ng-if="exhibition.image"
+            class="img--left"
+            data-ng-src="{{exhibition.image}}"
+            style="height: 100px;"
+            alt="" />
           <h3 class="exhibition__title">
             {{exhibition.title}}
           </h3>
