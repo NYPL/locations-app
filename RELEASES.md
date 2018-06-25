@@ -1,3 +1,7 @@
+## Tag v1.11.2
+* Update to the closing nav tag to fix HTML issue.
+* Updating logic check for blocks where items display both an image and a heading so that if no image is in the API, the heading will still be rendered. This is specifically a fix for the Features block on Location/Division pages.
+
 ## Tag v1.11.1
 * Update production deployment branch to master on CI/CD pipeline.
 
@@ -55,4 +59,3 @@
 * Update to SEO pages with better links.
 * LOC-472 Added GA event tracking to the header buttons, header search, and SSO events.
 * Update to Optimizely url and GA tracking code for the production environment.
-
