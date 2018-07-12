@@ -107,8 +107,7 @@
         <div class="subdivision-wrapper">
           <a ui-sref="subdivision({division: division.slug, subdivision: subdivision.slug})"
             analytics-on="click" analytics-category="Locations"
-            analytics-event="Division item" analytics-label="{{subdivision.name}}"
-            aria-hidden="true">
+            analytics-event="Division item" analytics-label="{{subdivision.name}}">
             <img data-ng-if="subdivision.images.interior" class="img--outline"
             data-ng-src="{{subdivision.images.interior}}" alt=""/>
             <h3 class="subdivision-title delta">
@@ -241,8 +240,7 @@
       <li class="chunk one-whole lap-and-up-one-third" data-ng-repeat='feature in division._embedded.features'>
         <a data-ng-href="{{feature._links.self.href}}"
           analytics-on="click" analytics-category="Locations"
-          analytics-event="Feature item" analytics-label="{{feature._links.self.href}}"
-          aria-hidden="true">
+          analytics-event="Feature item" analytics-label="{{feature._links.self.href}}">
           <img
             data-ng-if="feature.image"
             class="img--left img--outline one-third lap-and-up-one-whole desk-one-third"

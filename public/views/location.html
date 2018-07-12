@@ -340,8 +340,7 @@
       <li class="chunk one-whole lap-and-up-one-half" data-ng-repeat="exhibition in location._embedded.exhibitions | orderBy:'-start'">
         <a data-ng-href="{{exhibition._links.self.href}}"
           analytics-on="click" analytics-category="Locations"
-          analytics-event="Exhibition item" analytics-label="{{exhibition._links.self.href}}"
-          aria-hidden="true">
+          analytics-event="Exhibition item" analytics-label="{{exhibition._links.self.href}}">
           <img
             data-ng-if="exhibition.image"
             class="img--left"
