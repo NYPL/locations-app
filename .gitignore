@@ -15,3 +15,5 @@ test/coverage/*
 Gemfile.lock
 public/bower_components
 package-lock.json
+
+.elasticbeanstalk/*
