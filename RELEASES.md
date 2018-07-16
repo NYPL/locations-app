@@ -1,3 +1,6 @@
+## Tag v1.11.3
+* Adding focusable="false" to SVGs in the Footer.
+
 ## Tag v1.11.2
 * Update to the closing nav tag to fix HTML issue.
 * Updating logic check for blocks where items display both an image and a heading so that if no image is in the API, the heading will still be rendered. This is specifically a fix for the Features block on Location/Division pages.
