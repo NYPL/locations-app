@@ -2,13 +2,13 @@
 
 	<!-- Regular Hours -->
 	<div class='reg-week-hours-wrapper' data-ng-if="regularWeekHours">
-    <caption>
-      <h2 class="flush--ends hdg">
-        Regular Hours
-        <span id="toggle-hours"></span>
-      </h2>
-    </caption>
 		<table class="weekly-hours zeta">
+      <caption>
+        <h2 class="flush--ends hdg">
+          Regular hours
+          <span id="toggle-hours"></span>
+        </h2>
+      </caption>
 			<tr class="{{hours.day}}" data-ng-class="{'open': !hours.alert, 'closed': hours.alert || !hours.open, 'today': hours.is_today}" data-ng-repeat="hours in regularWeekHours" data-ng-if="$index != 7">
 				<th class="day">{{hours.day}}</th>
 				<td class="time" ng-bind-html="hours | timeFormat"></td>
@@ -18,13 +18,13 @@
 
 	<!-- Dynamic Hours -->
 	<div class='dynamic-week-hours-wrapper' data-ng-if="displayDynamicWeek">
-    <caption>
-      <h2 class="flush--ends hdg">
-        Upcoming Hours
-        <span id="toggle-hours"></span>
-      </h2>
-    </caption>
 		<table class="weekly-hours zeta">
+      <caption>
+        <h2 class="flush--ends hdg">
+          Upcoming hours
+          <span id="toggle-hours"></span>
+        </h2>
+      </caption>
 			<tr class="{{hours.day}}" data-ng-class="{'open': !hours.alert, 'closed': hours.alert || !hours.open, 'today': hours.is_today}" data-ng-repeat="hours in dynamicWeekHours" data-ng-if="$index != 7">
 				<th class="date" ng-bind-html="hours.dateString | dateMonthFormat"></th>
 				<th class="day">{{hours.day}}</th>
