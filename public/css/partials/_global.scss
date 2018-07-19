@@ -57,6 +57,14 @@ input[type="text"] {
   box-sizing: content-box;
 }
 
+.emailSubscription-wrapper {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	-ms-box-sizing: content-box;
+	-o-box-sizing: content-box;
+	box-sizing: content-box;
+}
+
 #Header-NavMenu-SearchBox-Elements-SubmitButton:hover {
 	background-color: transparent !important;
 	border: none !important;
@@ -625,4 +633,8 @@ time {
 // to update it so for now this change will only be affected in this app.
 .hdg {
 	text-transform: none;
+}
+
+.emailSubscription-wrapper {
+
 }
