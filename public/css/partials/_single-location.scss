@@ -139,6 +139,10 @@
 			}
 
 			.weekly-hours {
+				caption {
+					text-align: left;
+				}
+
 				tr {
 					// Closed hours
 					&.closed {

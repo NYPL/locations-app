@@ -2,30 +2,51 @@
 
 	<!-- Regular Hours -->
 	<div class='reg-week-hours-wrapper' data-ng-if="regularWeekHours">
-    <h2 class="flush--ends hdg">
-    	Regular Hours
-      <span id="toggle-hours"></span>
-    </h2>
 		<table class="weekly-hours zeta">
-			<tr class="{{hours.day}}" data-ng-class="{'open': !hours.alert, 'closed': hours.alert || !hours.open, 'today': hours.is_today}" data-ng-repeat="hours in regularWeekHours" data-ng-if="$index != 7">
-				<th class="day">{{hours.day}}</th>
-				<td class="time" ng-bind-html="hours | timeFormat"></td>
-			</tr>
+      <caption>
+        <h2 class="flush--ends hdg">
+          Regular hours
+          <span id="toggle-hours"></span>
+        </h2>
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">day</th>
+          <th scope="col">open hours</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="{{hours.day}}" data-ng-class="{'open': !hours.alert, 'closed': hours.alert || !hours.open, 'today': hours.is_today}" data-ng-repeat="hours in regularWeekHours" data-ng-if="$index != 7">
+  				<td class="day">{{hours.day}}</td>
+  				<td class="time" ng-bind-html="hours | timeFormat"></td>
+        </tr>
+      </tbody>
 		</table>
 	</div>
 
 	<!-- Dynamic Hours -->
 	<div class='dynamic-week-hours-wrapper' data-ng-if="displayDynamicWeek">
-    <h2 class="flush--ends hdg">
-    	Upcoming hours
-      <span id="toggle-hours"></span>
-    </h2>
 		<table class="weekly-hours zeta">
-			<tr class="{{hours.day}}" data-ng-class="{'open': !hours.alert, 'closed': hours.alert || !hours.open, 'today': hours.is_today}" data-ng-repeat="hours in dynamicWeekHours" data-ng-if="$index != 7">
-				<th class="date" ng-bind-html="hours.dateString | dateMonthFormat"></th>
-				<th class="day">{{hours.day}}</th>
-				<td class="time" ng-bind-html="hours | timeFormat"></td>
-			</tr>
+      <caption>
+        <h2 class="flush--ends hdg">
+          Upcoming hours
+          <span id="toggle-hours"></span>
+        </h2>
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">date</th>
+          <th scope="col">day</th>
+          <th scope="col">open hours</th>
+        </tr>
+      </thead>
+      <tbody>
+  			<tr class="{{hours.day}}" data-ng-class="{'open': !hours.alert, 'closed': hours.alert || !hours.open, 'today': hours.is_today}" data-ng-repeat="hours in dynamicWeekHours" data-ng-if="$index != 7">
+  				<td class="date" ng-bind-html="hours.dateString | dateMonthFormat"></td>
+  				<td class="day">{{hours.day}}</td>
+  				<td class="time" ng-bind-html="hours | timeFormat"></td>
+  			</tr>
+      <tbody>
 		</table>
 	</div>
 
