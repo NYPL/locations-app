@@ -11,8 +11,8 @@
       </caption>
       <thead>
         <tr>
-          <th scope="col">day</th>
-          <th scope="col">open hours</th>
+          <th scope="col">Day</th>
+          <th scope="col">Hours</th>
         </tr>
       </thead>
       <tbody>
@@ -35,15 +35,15 @@
       </caption>
       <thead>
         <tr>
-          <th scope="col">date</th>
-          <th scope="col">day</th>
-          <th scope="col">open hours</th>
+          <th scope="col">Date</th>
+          <th scope="col">Day</th>
+          <th scope="col">Hours</th>
         </tr>
       </thead>
       <tbody>
   			<tr class="{{hours.day}}" data-ng-class="{'open': !hours.alert, 'closed': hours.alert || !hours.open, 'today': hours.is_today}" data-ng-repeat="hours in dynamicWeekHours" data-ng-if="$index != 7">
   				<td class="date" ng-bind-html="hours.dateString | dateMonthFormat"></td>
-  				<td class="day" scope="col">{{hours.day}}</td>
+  				<td class="day">{{hours.day}}</td>
   				<td class="time" ng-bind-html="hours | timeFormat"></td>
   			</tr>
       <tbody>
