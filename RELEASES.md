@@ -1,9 +1,10 @@
 ## Tag v1.11.3
-* Adding focusable="false" to SVGs in the Footer.
+* Add focusable="false" to SVGs in the Footer.
+* Update the HTML structures of the tables of Regular Hours and Upcoming Hours for individual location pages.
 
 ## Tag v1.11.2
 * Update to the closing nav tag to fix HTML issue.
-* Updating logic check for blocks where items display both an image and a heading so that if no image is in the API, the heading will still be rendered. This is specifically a fix for the Features block on Location/Division pages.
+* Update logic check for blocks where items display both an image and a heading so that if no image is in the API, the heading will still be rendered. This is specifically a fix for the Features block on Location/Division pages.
 
 ## Tag v1.11.1
 * Update production deployment branch to master on CI/CD pipeline.
