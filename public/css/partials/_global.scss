@@ -626,3 +626,15 @@ time {
 .hdg {
 	text-transform: none;
 }
+
+// The .emailSubscription-newEmail class overrides line height specified by nypl_base
+// for emailSubscription-newEmail's button, it moves the bottom border
+// away from text to give an underline effect instead of a struck out
+// effect, which was incorrect.
+// Github issue: https://github.com/NYPL/locations-app/issues/85
+// Jira ticket: https://jira.nypl.org/browse/WWW-404
+.emailSubscription-newEmail {
+  button {
+    line-height:0.5em;
+  }
+}
