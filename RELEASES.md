@@ -1,3 +1,6 @@
+## Tag v1.11.4
+* Updated line-height for .emailSubscription-newEmail button to match layout of e-mail subscription box in header.
+
 ## Tag v1.11.3
 * Add focusable="false" to SVGs in the Footer.
 * Update the HTML structures of the tables of Regular Hours and Upcoming Hours for individual location pages.
