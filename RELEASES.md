@@ -1,7 +1,8 @@
 ## Tag v1.11.3
 * Add focusable="false" to SVGs in the Footer.
 * Update the HTML structures of the tables of Regular Hours and Upcoming Hours for individual location pages.
-* Updated line-height for .emailSubscription-newEmail button to match layout of e-mail subscription box in header.
+* Update line-height for .emailSubscription-newEmail button to match layout of e-mail subscription box in header.
+* Remove the `<span id="toggle-hours"></span>` inside the `<h2>` of Regular Hours and Upcoming Hours tables for individual location pages. They are no longer needed and cause the issue of duplicate IDs.
 
 ## Tag v1.11.2
 * Update to the closing nav tag to fix HTML issue.
