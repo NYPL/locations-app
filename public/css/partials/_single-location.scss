@@ -81,24 +81,6 @@
 			}
 		}
 
-		#toggle-hours {
-			display: inline;
-			position: absolute;
-			width: 78px;
-			left: 0px;
-			top: 2.5px;
-			text-align: right;
-
-
-			&:hover {
-				cursor: pointer;
-			}
-
-			@include breakpoint($min, $post-palm) {
-				display: none;
-			} 
-		}
-
 		#location-hours {
 			margin: .75em 5px .75em 5px;
 
