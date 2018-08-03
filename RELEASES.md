@@ -1,3 +1,6 @@
+## Tag v1.11.4
+* Update Google Maps API Key to use `nypl-locations-map` Google Cloud project
+
 ## Tag v1.11.3
 * Add focusable="false" to SVGs in the Footer.
 * Update the HTML structures of the tables of Regular Hours and Upcoming Hours for individual location pages.
