@@ -1,3 +1,6 @@
+## Tag v1.11.5
+* Add link for Atlas tool on Locations pages
+
 ## Tag v1.11.4
 * Update Google Maps API Key to use `nypl-locations-map` Google Cloud project
 

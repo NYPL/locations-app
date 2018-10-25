@@ -265,6 +265,16 @@
                 Learn more about this location
               </a>
             </div>
+
+            <!-- Projects/Atlas Link -->
+            <div class="text--right">
+              <a class="read-more" data-ng-if="location._links.projects.href"
+                 data-ng-href="{{location._links.projects.href}}"
+                 analytics-on="click" analytics-category="Locations"
+                 analytics-event="Click" analytics-label="Projects">
+                 Learn about capital projects at this location
+              </a>
+            </div>
           </div>
         </div>
       </div><!--
