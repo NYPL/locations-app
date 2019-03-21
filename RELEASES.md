@@ -1,8 +1,11 @@
+## Tag v1.11.6
+* Add non-profit status information to Footer.
+
 ## Tag v1.11.5
-* Add link for Atlas tool on Locations pages
+* Add link for Atlas tool on Locations pages.
 
 ## Tag v1.11.4
-* Update Google Maps API Key to use `nypl-locations-map` Google Cloud project
+* Update Google Maps API Key to use `nypl-locations-map` Google Cloud project.
 
 ## Tag v1.11.3
 * Add focusable="false" to SVGs in the Footer.
