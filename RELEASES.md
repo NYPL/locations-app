@@ -1,3 +1,9 @@
+## Tag v1.11.8
+* Added fix to skip CrowdStrike installation to prevent deployment failures.
+
+## Tag v1.11.7
+* Added Falcon Crowdstrike sensor to operating system
+
 ## Tag v1.11.6
 * Add non-profit status information to Footer.
 
