@@ -1,3 +1,6 @@
+## Tag v1.12.0
+* Updating the ASK widget by removing the chat option and updating the email.
+
 ## Tag v1.11.8
 * Added fix to skip CrowdStrike installation to prevent deployment failures.
 
