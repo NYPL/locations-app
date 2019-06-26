@@ -813,7 +813,7 @@ describe('NYPL Directive Unit Tests', function () {
    */
   describe('Directive: emailusbutton', function () {
     var emailusbutton, template,
-      link = 'https://gethelp.nypl.org/customer/portal/emails/new';
+      link = 'mailto:gethelp@nypl.org';
 
     beforeEach(inject(function () {
       scope.link = link;
@@ -827,7 +827,7 @@ describe('NYPL Directive Unit Tests', function () {
 
     it('should create a link', function () {
       expect(emailusbutton.find('a').attr('href')).toEqual(link);
-      expect(emailusbutton.text().trim()).toEqual('Email us your question');
+      expect(emailusbutton.text().trim()).toEqual('Email gethelp@nypl.org');
     });
   });
 
