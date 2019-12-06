@@ -8,6 +8,8 @@ before_install:
 - npm install -g bower
 - bundle install
 - bower install
+services:
+  - xvfb
 before_script:
 - export TZ=America/New_York
 - date
