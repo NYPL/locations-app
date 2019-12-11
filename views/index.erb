@@ -10,9 +10,6 @@
     <%= erb :newrelic_prod %>
     <% end %>
 
-    <% if ! settings.env_config["optimizely"].nil? %>
-    <script src="<%= settings.env_config["optimizely"] %>"></script>
-    <% end %>
     <meta charset="utf-8">
     <title data-ng-bind="'NYPL | ' + $root.title">NYPL |</title>
     <meta name="fragment" content="!" />
@@ -105,7 +102,9 @@
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
     ga('create', '<%= settings.env_config["google_analytics"] %>', 'nypl.org');
+    <% if ! settings.env_config["google_optimize"].nil? %>
     ga('require', '<%= settings.env_config["google_optimize"] %>');
+    <% end %>
     ga('set', 'anonymizeIp', true);
     </script>
 <% end %>
