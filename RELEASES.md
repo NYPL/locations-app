@@ -1,3 +1,6 @@
+## Tag v1.12.1
+* Replace Optimizely with Google Optimize.
+
 ## Tag v1.12.0
 * Updating the ASK widget by removing the chat option and updating the email.
 
