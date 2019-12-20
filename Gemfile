@@ -9,6 +9,6 @@ gem 'lionactor', :git => 'https://github.com/NYPL/lionactor', :tag => '0.0.14'
 gem 'unicorn'
 
 # Bug in Rack, see https://github.com/sinatra/sinatra/issues/951
-gem 'rack', ' < 1.6'
+gem 'rack', '< 1.7'
 gem 'rack-test', :group => :development
 gem 'rspec', :group => :development

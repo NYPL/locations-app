@@ -18,7 +18,7 @@ GEM
     kgio (2.9.3)
     multi_json (1.11.0)
     multipart-post (2.0.0)
-    rack (1.5.4)
+    rack (1.6.12)
     rack-protection (1.5.5)
       rack
     rack-test (0.6.3)
@@ -62,7 +62,7 @@ DEPENDENCIES
   json
   kgio
   lionactor!
-  rack (< 1.6)
+  rack (< 1.7)
   rack-test
   rspec
   sinatra
