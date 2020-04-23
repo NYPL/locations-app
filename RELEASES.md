@@ -1,3 +1,7 @@
+## Tag v1.12.2
+* Removed Tumblr icon link in footer.
+* Added system-font-css.
+
 ## Tag v1.12.1
 * Replace Optimizely with Google Optimize.
 
