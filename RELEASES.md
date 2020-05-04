@@ -1,3 +1,6 @@
+## Tag v1.12.3
+* Updating Falcon Crowdstrike sensor to 5.29.
+
 ## Tag v1.12.2
 * Removed Tumblr icon link in footer.
 * Added system-font-css.
