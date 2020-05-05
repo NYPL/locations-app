@@ -1,5 +1,6 @@
 ## Tag v1.12.2
 * Removed Tumblr icon link in footer.
+* Updated YouTube icon to match brand guidelines.
 * Added system-font-css.
 
 ## Tag v1.12.1

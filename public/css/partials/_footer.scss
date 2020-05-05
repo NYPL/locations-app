@@ -137,7 +137,7 @@ $footer-color: #54514A;
   padding: 15px 20px 100px;
   background: $footer-color;
   color: #fff;
-  font-family: system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   min-height: 280px;
   position: relative;
   clear: both;
@@ -294,9 +294,9 @@ $footer-color: #54514A;
       order: 1;
       margin: 20px -6px 15px 0;
       list-style-type: none;
-      // icons are square, we want three across
+      // icons are square, we want four across
       text-align: right;
-      width: 45px * 3;
+      width: 50px * 4;
 
       li {
         display: inline-block;
@@ -333,7 +333,6 @@ $footer-color: #54514A;
 
       // MQs for .socialMedia
       @include min-screen($portrait) {
-        width: 170px;
         margin-top: 30px;
       }
 
@@ -368,7 +367,7 @@ $footer-color: #54514A;
   .copyright {
     margin: 35px 0 0 0;
     font-size: 12px;
-    font-family: system-ui, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     text-align: right;
 
     @include min-screen($portrait) {
