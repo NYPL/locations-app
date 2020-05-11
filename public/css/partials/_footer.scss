@@ -34,6 +34,64 @@ $large: 1500px;
   width: 100%;
 }
 
+/*! system-font.css v2.0.2 | CC0-1.0 License | github.com/jonathantneal/system-font-css */
+
+@font-face {
+	font-family: system-ui;
+	font-style: normal;
+	font-weight: 300;
+	src: local(".SFNSText-Light"), local(".HelveticaNeueDeskInterface-Light"), local(".LucidaGrandeUI"), local("Segoe UI Light"), local("Ubuntu Light"), local("Roboto-Light"), local("DroidSans"), local("Tahoma");
+}
+
+@font-face {
+	font-family: system-ui;
+	font-style: italic;
+	font-weight: 300;
+	src: local(".SFNSText-LightItalic"), local(".HelveticaNeueDeskInterface-Italic"), local(".LucidaGrandeUI"), local("Segoe UI Light Italic"), local("Ubuntu Light Italic"), local("Roboto-LightItalic"), local("DroidSans"), local("Tahoma");
+}
+
+@font-face {
+	font-family: system-ui;
+	font-style: normal;
+	font-weight: 400;
+	src: local(".SFNSText-Regular"), local(".HelveticaNeueDeskInterface-Regular"), local(".LucidaGrandeUI"), local("Segoe UI"), local("Ubuntu"), local("Roboto-Regular"), local("DroidSans"), local("Tahoma");
+}
+
+@font-face {
+	font-family: system-ui;
+	font-style: italic;
+	font-weight: 400;
+	src: local(".SFNSText-Italic"), local(".HelveticaNeueDeskInterface-Italic"), local(".LucidaGrandeUI"), local("Segoe UI Italic"), local("Ubuntu Italic"), local("Roboto-Italic"), local("DroidSans"), local("Tahoma");
+}
+
+@font-face {
+	font-family: system-ui;
+	font-style: normal;
+	font-weight: 500;
+	src: local(".SFNSText-Medium"), local(".HelveticaNeueDeskInterface-MediumP4"), local(".LucidaGrandeUI"), local("Segoe UI Semibold"), local("Ubuntu Medium"), local("Roboto-Medium"), local("DroidSans-Bold"), local("Tahoma Bold");
+}
+
+@font-face {
+	font-family: system-ui;
+	font-style: italic;
+	font-weight: 500;
+	src: local(".SFNSText-MediumItalic"), local(".HelveticaNeueDeskInterface-MediumItalicP4"), local(".LucidaGrandeUI"), local("Segoe UI Semibold Italic"), local("Ubuntu Medium Italic"), local("Roboto-MediumItalic"), local("DroidSans-Bold"), local("Tahoma Bold");
+}
+
+@font-face {
+	font-family: system-ui;
+	font-style: normal;
+	font-weight: 700;
+	src: local(".SFNSText-Bold"), local(".HelveticaNeueDeskInterface-Bold"), local(".LucidaGrandeUI"), local("Segoe UI Bold"), local("Ubuntu Bold"), local("Roboto-Bold"), local("DroidSans-Bold"), local("Tahoma Bold");
+}
+
+@font-face {
+	font-family: system-ui;
+	font-style: italic;
+	font-weight: 700;
+	src: local(".SFNSText-BoldItalic"), local(".HelveticaNeueDeskInterface-BoldItalic"), local(".LucidaGrandeUI"), local("Segoe UI Bold Italic"), local("Ubuntu Bold Italic"), local("Roboto-BoldItalic"), local("DroidSans-Bold"), local("Tahoma Bold");
+}
+
 /* --- Media Query Generator ---
  * Reusable mixin used to generate
  * variations of media query properties.
@@ -79,7 +137,7 @@ $footer-color: #54514A;
   padding: 15px 20px 100px;
   background: $footer-color;
   color: #fff;
-  font-family: "Kievit-Medium";
+  font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   min-height: 280px;
   position: relative;
   clear: both;
@@ -236,9 +294,9 @@ $footer-color: #54514A;
       order: 1;
       margin: 20px -6px 15px 0;
       list-style-type: none;
-      // icons are square, we want three across
+      // icons are square, we want four across
       text-align: right;
-      width: 45px * 3;
+      width: 50px * 4;
 
       li {
         display: inline-block;
@@ -275,7 +333,6 @@ $footer-color: #54514A;
 
       // MQs for .socialMedia
       @include min-screen($portrait) {
-        width: 170px;
         margin-top: 30px;
       }
 
@@ -310,7 +367,7 @@ $footer-color: #54514A;
   .copyright {
     margin: 35px 0 0 0;
     font-size: 12px;
-    font-family: "Kievit-Book";
+    font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     text-align: right;
 
     @include min-screen($portrait) {

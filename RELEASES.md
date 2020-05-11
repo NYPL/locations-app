@@ -1,3 +1,11 @@
+## Tag v1.12.3
+* Updating Falcon Crowdstrike sensor to 5.29.
+
+## Tag v1.12.2
+* Removed Tumblr icon link in footer.
+* Updated YouTube icon to match brand guidelines.
+* Added system-font-css.
+
 ## Tag v1.12.1
 * Replace Optimizely with Google Optimize.
 

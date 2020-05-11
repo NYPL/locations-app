@@ -1,6 +1,6 @@
 {
   "name": "locations",
-  "version": "1.12.0",
+  "version": "1.12.3",
   "dependencies": {
     "protractor": "1.8.0",
     "karma-jasmine": "0.3.5",
