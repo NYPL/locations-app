@@ -1,3 +1,7 @@
+## Tag v1.12.4
+* Updating to use NYPL "text-only" svg logo.
+* Adding SASB building facade image.
+
 ## Tag v1.12.3
 * Updating Falcon Crowdstrike sensor to 5.29.
 
