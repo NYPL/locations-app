@@ -1,3 +1,6 @@
+## Tag v1.12.5
+* Fix exception when geolocation is not available .
+
 ## Tag v1.12.4
 * Updating to use NYPL "text-only" svg logo.
 * Adding SASB building facade image.

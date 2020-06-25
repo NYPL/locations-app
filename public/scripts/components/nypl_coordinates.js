@@ -25,7 +25,7 @@
      *  available in the browser, false otherwise.
      */
     coordinatesService.geolocationAvailable = function () {
-      return (!$window.navigator && !$window.navigator.geolocation) ?
+      return (!$window.navigator || !$window.navigator.geolocation) ?
           false :
           true;
     };
