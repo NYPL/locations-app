@@ -1,6 +1,6 @@
 # DEPRECATED
 
-As of July 2020, this app is no longer in use at NYPL, and the current implementation is Drupal-based. Please contact the DXP/RENO team in Digital for more information.
+As of September 2020, this app is no longer in use at NYPL, and the current implementation is Drupal-based for details pages ([https://github.com/NYPL/nypl-d8](https://github.com/NYPL/nypl-d8)), and the "Location Finder" search is built in the Scout app ([https://github.com/NYPL/dxp-react-search](https://github.com/NYPL/dxp-react-search)). Please contact the DXP/RENO team in Digital for more information.
 
 ## The Locinator
 
